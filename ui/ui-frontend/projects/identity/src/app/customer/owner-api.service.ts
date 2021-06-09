@@ -38,7 +38,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BASE_URL, BaseHttpClient, Owner } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, Owner } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'

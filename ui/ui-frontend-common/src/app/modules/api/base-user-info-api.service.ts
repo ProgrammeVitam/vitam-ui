@@ -34,55 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
-import {BaseHttpClient, BASE_URL, Group, PageRequest, PaginatedResponse, SearchQuery} from 'ui-frontend-common';
+import { BaseHttpClient } from '../base-http-client';
+import { BASE_URL } from '../injection-tokens';
+import { UserInfo } from '../models/user/user-info.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GroupApiService extends BaseHttpClient<Group> {
+export class BaseUserInfoApiService extends BaseHttpClient<UserInfo> {
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/groups');
+    super(http, baseUrl + '/userinfos');
   }
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
-    return super.getAllByParams(params, headers);
-  }
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Group>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  getOne(id: string, headers?: HttpHeaders): Observable<Group> {
+  getOne(id: string, headers?: HttpHeaders): Observable<UserInfo> {
     return super.getOne(id, headers);
   }
 
-  getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Group> {
-    return super.getOneWithEmbedded(id, embedded, headers);
+
+  create(userInfo: UserInfo, headers?: HttpHeaders): Observable<UserInfo> {
+    return super.create(userInfo, headers);
   }
 
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
-    return super.checkExistsByParam(params, headers);
+  patch(data: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<UserInfo> {
+    return super.patch(data, headers);
   }
 
-  create(group: Group, headers?: HttpHeaders): Observable<Group> {
-    return super.create(group, headers);
+  public patchMyUserInfo(userPartial: { [key: string]: any }, headers?: HttpHeaders): Observable<Account> {
+    return this.http.patch<Account>(this.apiUrl + '/me', userPartial, { headers });
   }
 
-  patch(groupPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
-    return super.patch(groupPartial, headers);
+
+
+  getMyUserInfo(): Observable<UserInfo> {
+    return super.getHttp().get<any>(super.getApiUrl() + '/me');
   }
 
-  getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
-    if (query) {
-      params = params.set('criteria', JSON.stringify(query));
-    }
-
-    return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
-  }
 }

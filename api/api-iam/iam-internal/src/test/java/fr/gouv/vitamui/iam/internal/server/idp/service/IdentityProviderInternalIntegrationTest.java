@@ -46,8 +46,8 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { IdentityProviderRepository.class,
-        CustomSequenceRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {IdentityProviderRepository.class, CustomSequenceRepository.class},
+        repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class IdentityProviderInternalIntegrationTest extends AbstractLogbookIntegrationTest {
 
     @MockBean
@@ -170,4 +170,5 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
 
         return service.create(dto);
     }
+
 }

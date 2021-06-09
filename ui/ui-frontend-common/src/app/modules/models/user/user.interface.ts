@@ -45,9 +45,9 @@ export interface User extends Id {
   lastname: string;
   mobile: string;
   phone: string;
-  language: string;
   level: string;
   groupId: string;
+  userInfoId: string;
   customerId: string;
   otp: boolean;
   status: string;

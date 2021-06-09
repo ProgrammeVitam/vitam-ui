@@ -166,8 +166,8 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
 
         internalProfileService =
             new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository,
-                repository,
-                userRepository, internalSecurityService, iamLogbookService, profileConverter, null);
+                repository,userRepository,
+                        internalSecurityService, iamLogbookService, profileConverter, null);
 
         repository.deleteAll();
         service = new TenantInternalService(sequenceRepository, repository, customerRepository, ownerRepository,
@@ -312,8 +312,8 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         assertThat(evTenantUpdate).isPresent();
         assertThat(evTenantUpdate.get().getEvDetData())
             .isEqualTo("{\"diff\":{\"-Nom\":\"tenantName\"," + "\"+Nom\":\"" + NEW_NAME + "\"," +
-                "\"-Identifiant du propriétaire\":\"identifier_ownerId\","
-                + "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," +
+                "\"-Identifiant du propriétaire\":\"identifier_ownerId\","+
+                 "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," +
                 "\"+Activé\":\"false\"" + "}}");
     }
 
@@ -323,4 +323,5 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         externalParameters.setName("identifierdefault_ac_customerId");
         return externalParameters;
     }
+
 }

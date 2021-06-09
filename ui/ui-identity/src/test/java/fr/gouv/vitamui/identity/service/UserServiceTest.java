@@ -92,7 +92,6 @@ public class UserServiceTest extends UIIdentityServiceTest<UserDto> {
         user.setCustomerId(ID);
         user.setStatus(UserStatusEnum.ENABLED);
         user.setType(UserTypeEnum.NOMINATIVE);
-        user.setLanguage("FRENCH");
         user.setLevel("DEV");
         user.setGroupId("123456");
         return user;

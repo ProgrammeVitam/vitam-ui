@@ -39,7 +39,7 @@ import { Group, User } from 'ui-frontend-common';
 
 import { Component, forwardRef, Inject, OnInit } from '@angular/core';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 

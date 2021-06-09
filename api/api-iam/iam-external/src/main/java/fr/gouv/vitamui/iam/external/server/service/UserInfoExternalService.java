@@ -41,7 +41,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.internal.client.UserInfoInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
@@ -74,6 +76,12 @@ public class UserInfoExternalService extends AbstractResourceClientService<UserI
 
     public UserInfoDto getMe() {
         return userInfoInternalRestClient.getMe(getInternalHttpContext());
+    }
+
+    public UserInfoDto patchMe(final Map<String, Object> partialDto) {
+        final AuthUserDto user = externalSecurityService.getUser();
+        partialDto.put("id", user.getUserInfoId());
+        return patch(partialDto);
     }
 
     @Override

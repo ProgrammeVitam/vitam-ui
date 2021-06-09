@@ -34,6 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+/* tslint:disable: max-file-line-count max-classes-per-file */
+import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
 
 import { EMPTY, of } from 'rxjs';
 import { AdminUserProfile, AuthService, Customer, OtpState, User } from 'ui-frontend-common';
@@ -46,6 +48,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CountryService } from 'ui-frontend-common';
 import { UserCreateValidators } from '../../user-create/user-create.validators';
+import { UserInfoService } from '../../user-info.service';
 import { UserService } from '../../user.service';
 import { UserInfoTabComponent } from './user-information-tab.component';
 
@@ -56,8 +59,8 @@ let expectedUser: User = {
   firstname: 'Emmanuel',
   lastname: 'Deviller',
   mobile: '',
+  userInfoId: '',
   phone: '',
-  language: 'FRENCH',
   level : '',
   groupId: 'profile_group_id',
   customerId: '42',
@@ -79,7 +82,10 @@ let expectedUser: User = {
   centerCode: '000001',
   autoProvisioningEnabled: false
 };
-
+ let userInfolanguage: UserInfo = {
+   id : '1',
+   language: 'fr'
+ }
 let expectedCustomer: Customer = {
   id: 'idCustomer',
   identifier : '1',
@@ -125,7 +131,7 @@ let expectedCustomer: Customer = {
   portalTitles: {}
 };
 
-let expectedUserInfo: AdminUserProfile = {
+let expectedAdminUserProfile: AdminUserProfile = {
   multifactorAllowed: true,
   createUser: true,
   genericAllowed: true,
@@ -148,13 +154,14 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-    template: `<app-user-info-tab [user]="user" [customer]="customer" [readOnly]="readOnly" [userInfo]="userInfo"></app-user-info-tab>`
+    template: `<app-user-info-tab [user]="user" [customer]="customer" [readOnly]="readOnly" [adminUserProfile]="adminUserProfile"></app-user-info-tab>`
 })
 class TestHostComponent {
     user = expectedUser;
     customer = expectedCustomer;
     readOnly = false;
-    userInfo = expectedUserInfo;
+    adminUserProfile = expectedAdminUserProfile;
+    userInfo = userInfolanguage;
 
   @ViewChild(UserInfoTabComponent, { static: false }) component: UserInfoTabComponent;
 }
@@ -171,8 +178,8 @@ describe('UserInfoTabComponent', () => {
       firstname: 'Emmanuel',
       lastname: 'Deviller',
       mobile: '',
+      userInfoId: '',
       phone: '',
-      language: 'FRENCH',
       level : '',
       groupId: 'profile_group_id',
       customerId: '42',
@@ -238,7 +245,7 @@ describe('UserInfoTabComponent', () => {
       portalMessages: {},
       portalTitles: {}
     };
-    expectedUserInfo = {
+    expectedAdminUserProfile = {
       multifactorAllowed: true,
       createUser: true,
       genericAllowed: true,
@@ -252,7 +259,13 @@ describe('UserInfoTabComponent', () => {
         description: 'Une description du profil group'
       }]
     };
+     userInfolanguage = {
+      id : '1',
+      language: 'fr'
+    }
     const userServiceSpy = jasmine.createSpyObj('UserService', { patch: of({}) });
+    const userInfoServiceSpy = jasmine.createSpyObj('UserInfoService', { patch: of({}) });
+
     const userCreateValidatorsSpy = jasmine.createSpyObj(
       'userCreateValidators',
       { uniqueEmail: () => of(null) }
@@ -268,6 +281,7 @@ describe('UserInfoTabComponent', () => {
       declarations: [ UserInfoTabComponent, TestHostComponent, MatTooltipStubDirective ],
       providers: [
         { provide: UserService, useValue: userServiceSpy },
+        { provide: UserInfoService, useValue: userInfoServiceSpy },
         { provide: UserCreateValidators, useValue: userCreateValidatorsSpy },
         { provide: AuthService, useValue: { user: {} } },
         { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
@@ -282,6 +296,7 @@ describe('UserInfoTabComponent', () => {
     fixture.detectChanges();
 
     testhost.user = expectedUser;
+    testhost.userInfo = userInfolanguage;
   });
 
   it('should create', () => {

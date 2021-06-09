@@ -58,7 +58,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { CustomSequenceRepository.class, TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {CustomSequenceRepository.class, TokenRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private static final int PASSWORD_EXPIRATION_DELAY = 42;
@@ -271,11 +271,12 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, 4, UserStatusEnum.ENABLED);
 
-        final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_BLOCK_USER);
+        final Criteria criteria =
+                Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_BLOCK_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();
         assertThat(event.getEvDetData()).isEqualTo("{\"diff\":{\"-Statut\":\"ENABLED\"," + "\"+Statut\":\"BLOCKED\"},\"Durée du blocage\":\"PT20M\"}");
     }
+
 }

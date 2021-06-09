@@ -58,7 +58,6 @@ import java.util.Optional;
 /**
  * Abstract class for CRUD calls for UI.
  *
- *
  * @param <T>
  */
 public abstract class AbstractCrudService<T extends IdDto> {
@@ -111,8 +110,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
         final T entity = getClient().getOne(context, id);
         if (entity == null) {
             throw new NotFoundException("No entities founds with id : " + id);
-        }
-        else {
+        } else {
             return entity;
         }
     }
@@ -123,8 +121,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
         final T entity = getClient().getOne(context, id, Optional.empty(), embedded);
         if (entity == null) {
             throw new NotFoundException("No entities founds with id : " + id);
-        }
-        else {
+        } else {
             return entity;
         }
     }
@@ -142,6 +139,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
 
     /**
      * Find collection history.
+     *
      * @param context
      * @param id
      * @return
@@ -151,8 +149,7 @@ public abstract class AbstractCrudService<T extends IdDto> {
         final JsonNode body = getClient().findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
-        }
-        catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new InternalServerException(VitamRestUtils.PARSING_ERROR_MSG, e);
         }
     }

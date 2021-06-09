@@ -43,6 +43,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -64,11 +65,10 @@ import static org.mockito.Mockito.when;
 
 /**
  * Class for test InternalProfileService with a real repository
- *
  */
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { ProfileRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {ProfileRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     @Autowired
@@ -141,10 +141,10 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         final String userLevel = "TEST";
 
         repository.save(IamServerUtilsTest.buildProfile("idTest", "1", "nametest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, userLevel));
-        repository.save(IamServerUtilsTest.buildProfile("idAdmin", "2", "nameadmin", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
-                ApiIamInternalConstants.ADMIN_LEVEL));
-        repository.save(IamServerUtilsTest.buildProfile("idSubTest", "3", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
-                userLevel + ".SUB"));
+        repository.save(IamServerUtilsTest
+                .buildProfile("idAdmin", "2", "nameadmin", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, ApiIamInternalConstants.ADMIN_LEVEL));
+        repository.save(IamServerUtilsTest
+                .buildProfile("idSubTest", "3", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, userLevel + ".SUB"));
 
         final Group group = IamServerUtilsTest.buildGroup();
         group.setLevel(userLevel);
@@ -227,8 +227,8 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     @Test
     public void checkNameExistByTenantIdentifierAndLevel() {
         repository.save(IamServerUtilsTest.buildProfile("id", "identifier1", "nametest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, "EDF.RH"));
-        final Criteria criteria = Criteria.where("customerId").is("customerId").and("name").is("nametest").and("level").is("EDF.RH").and("tenantIdentifier")
-                .is(10);
+        final Criteria criteria =
+                Criteria.where("customerId").is("customerId").and("name").is("nametest").and("level").is("EDF.RH").and("tenantIdentifier").is(10);
 
         assertThat(repository.exists(criteria)).isTrue();
 
@@ -238,17 +238,17 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     public void testGetSubLevels() {
         repository.save(IamServerUtilsTest.buildProfile("id", "identifier1", "nametest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, "EDF.RH"));
 
-        repository.save(IamServerUtilsTest.buildProfile("id25", "identifier2", "nametest25", "customerId", 11, CommonConstants.USERS_APPLICATIONS_NAME,
-                "EDF.RH.PARIS"));
+        repository.save(IamServerUtilsTest
+                .buildProfile("id25", "identifier2", "nametest25", "customerId", 11, CommonConstants.USERS_APPLICATIONS_NAME, "EDF.RH.PARIS"));
 
-        repository.save(IamServerUtilsTest.buildProfile("id30", "identifier3", "nametest30", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME,
-                "EDF.INFRA"));
+        repository.save(IamServerUtilsTest
+                .buildProfile("id30", "identifier3", "nametest30", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME, "EDF.INFRA"));
 
-        repository.save(IamServerUtilsTest.buildProfile("id31", "identifier4", "nametest31", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME,
-                "EDF.INFRA.DSI"));
+        repository.save(IamServerUtilsTest
+                .buildProfile("id31", "identifier4", "nametest31", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME, "EDF.INFRA.DSI"));
 
-        repository.save(
-                IamServerUtilsTest.buildProfile("id32", "identifier5", "nametest32", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME, "EDF"));
+        repository.save(IamServerUtilsTest
+                .buildProfile("id32", "identifier5", "nametest32", "customerId2", 10, CommonConstants.PROFILES_APPLICATIONS_NAME, "EDF"));
 
         List<String> levels = service.getSubLevels("EDF", "customerId");
         assertThat(levels).containsOnly("EDF.RH.PARIS", "EDF.RH");
@@ -343,6 +343,22 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
 
 
+    @Test
+    public void testCreateProfilesWithDuplicateIdentifier() {
+        final String identifier = "duplicateIdentifier";
+        try {
+            repository.save(IamServerUtilsTest
+                    .buildProfile("idSubTest1", identifier, "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, "TEST"));
+            repository.save(IamServerUtilsTest
+                    .buildProfile("idSubTest2", identifier, "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, "SUPPORT"));
+        } catch (final DuplicateKeyException e) {
+            // DuplicateKeyException was thrown as expected
+            assertThat(e.getMessage()).contains(identifier);
+            return;
+        }
+        Assert.fail("Excepted DuplicateKeyException to be thrown");
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void should_raised_exception_when_trying_to_create_two_same_profile() {
 
@@ -362,17 +378,16 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         service.create(profileDto2);
 
         // Then : Exception is raised
-
     }
 
     @Test
     public void testGetLevels() {
         final String profileLevel = "TEST";
         final String profileSupportLevel = "SUPPORT";
-        repository.save(
-                IamServerUtilsTest.buildProfile("idSubTest1", "3", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, profileLevel));
-        repository.save(IamServerUtilsTest.buildProfile("idSubTest2", "4", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
-                profileSupportLevel));
+        repository.save(IamServerUtilsTest
+                .buildProfile("idSubTest1", "3", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, profileLevel));
+        repository.save(IamServerUtilsTest
+                .buildProfile("idSubTest2", "4", "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME, profileSupportLevel));
 
         final Collection<String> levels = service.getLevels(Optional.empty());
         assertThat(levels).containsExactlyInAnyOrder(profileLevel, profileSupportLevel);

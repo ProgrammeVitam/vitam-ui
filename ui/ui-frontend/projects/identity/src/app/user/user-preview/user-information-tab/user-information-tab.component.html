@@ -118,15 +118,17 @@
       </vitamui-common-editable-input>
     </div>
   </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-common-editable-select formControlName="language" [label]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate">
-        <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
-        </vitamui-common-editable-option>
-        <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
-        </vitamui-common-editable-option>
-      </vitamui-common-editable-select>
+  <div class="row"><div class="col-6">
+  <form [formGroup]="userInfoForm">
+        <div>
+          <vitamui-common-editable-select formControlName="language" [label]="'USER.INFORMATIONS.DEFAULT_LANGUAGE' | translate">
+            <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
+            </vitamui-common-editable-option>
+            <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
+            </vitamui-common-editable-option>
+          </vitamui-common-editable-select>
+        </div>
+      </form>
     </div>
     <div class="col-6">
       <vitamui-common-editable-input formControlName="level" [label]="'USER.INFORMATIONS.GROUP_LEVEL' | translate"></vitamui-common-editable-input>
@@ -172,3 +174,4 @@
   <h2>ATTENTION</h2>
  L'utilisateur que vous cherchez est déja supprimé
 </div>
+

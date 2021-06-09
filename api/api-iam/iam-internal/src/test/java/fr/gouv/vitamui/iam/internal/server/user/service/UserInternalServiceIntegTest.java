@@ -333,7 +333,6 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"Nom\":\"-\","
                 + "\"Prénom\":\"-\","
                 + "\"Email\":\"-\","
-                + "\"Langue\":\"FRENCH\","
                 + "\"Numéro mobile\":\"-\","
                 + "\"Numéro fixe\":\"-\","
                 + "\"Type\":\"NOMINATIVE\","

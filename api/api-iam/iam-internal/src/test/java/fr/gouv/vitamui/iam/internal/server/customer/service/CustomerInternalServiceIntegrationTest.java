@@ -128,6 +128,7 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
     @MockBean
     private UserRepository userRepository;
 
+
     @MockBean
     private TenantRepository tenantRepository;
 
@@ -295,4 +296,5 @@ public class CustomerInternalServiceIntegrationTest extends AbstractLogbookInteg
         dto.setGdprAlertDelay(72);
         return dto;
     }
+
 }

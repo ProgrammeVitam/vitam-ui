@@ -80,7 +80,7 @@ public class ServicesData {
     public static final String ROLE_UPDATE_ME_USERS = UPDATE_ME_ROLE_PREFIX + SERVICE_USERS;
 
     //------------------------------------ USERS INFO ROLE_GET_USER_INFOS  -------------------------------------------
-    public static final String SERVICE_USER_INFOS = "USERS_INFO";
+    public static final String SERVICE_USER_INFOS = "USER_INFOS";
     public static final String ROLE_GET_USER_INFOS = GET_ROLE_PREFIX + SERVICE_USER_INFOS;
     public static final String ROLE_CREATE_USER_INFOS = CREATE_ROLE_PREFIX + SERVICE_USER_INFOS;
     public static final String ROLE_UPDATE_USER_INFOS = UPDATE_ROLE_PREFIX + SERVICE_USER_INFOS;

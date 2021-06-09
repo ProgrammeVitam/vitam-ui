@@ -199,8 +199,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should hide the "load more" button ', () => {
-    const groupService = TestBed.get(GroupService);
-    groupService.canLoadMore = false;
+      TestBed.inject(GroupService);
     fixture.detectChanges();
     expect(page.loadMoreButton).toBeFalsy();
   });

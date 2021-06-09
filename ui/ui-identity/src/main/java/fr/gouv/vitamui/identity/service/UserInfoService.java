@@ -40,7 +40,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.UserInfoExternalRestClient;
@@ -60,7 +59,7 @@ public class UserInfoService extends AbstractPaginateService<UserInfoDto> {
 
     @Override
     public UserInfoExternalRestClient getClient() {
-        throw new NotFoundException("not implemented yet");
+        return factory.getUserInfoInfoExternalRestClient();
     }
 
 

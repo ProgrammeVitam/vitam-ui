@@ -46,6 +46,7 @@ import fr.gouv.vitamui.ui.commons.rest.RuleController;
 import fr.gouv.vitamui.ui.commons.rest.SecurityController;
 import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
 import fr.gouv.vitamui.ui.commons.rest.UserController;
+import fr.gouv.vitamui.ui.commons.rest.UserInfoController;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
@@ -54,6 +55,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UserInfoService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -109,6 +111,13 @@ public class AutoConfigurationRestController {
     @ConditionalOnProperty(prefix = "controller.user", value = "enabled", matchIfMissing = true)
     public UserController userController(final UserService userService) {
         return new UserController(userService);
+    }
+
+    @Bean("commonUserInfoController")
+    @DependsOn("commonUserInfoService")
+    @ConditionalOnProperty(prefix = "controller.userinfos", value = "enabled", matchIfMissing = true)
+    public UserInfoController userInfoController(final UserInfoService userInfoService) {
+        return new UserInfoController(userInfoService);
     }
 
     @Bean("externalParamProfileController")

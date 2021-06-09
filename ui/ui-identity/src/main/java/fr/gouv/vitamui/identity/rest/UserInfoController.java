@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.server.rest;
+package fr.gouv.vitamui.identity.rest;
 
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -49,98 +48,66 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
-import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.identity.service.UserInfoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
-/**
- * The controller to check existence, create, read, update and delete the users.
- */
+@Api(tags = "userinfos")
+@RequestMapping("${ui-prefix}/userinfos")
 @RestController
-@RequestMapping(RestApi.V1_USERS_INFO_URL)
-@Getter
-@Setter
-public class UserInfoInternalController implements CrudController<UserInfoDto> {
+@ResponseBody
+public class UserInfoController extends AbstractUiRestController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoInternalController.class);
+    protected final UserInfoService service;
 
-    private UserInfoInternalService userInfoInternalService;
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoController.class);
 
     @Autowired
-    public UserInfoInternalController(final UserInfoInternalService userInfoInternalService) {
-        this.userInfoInternalService = userInfoInternalService;
+    public UserInfoController(final UserInfoService service) {
+        this.service = service;
     }
 
-
-    @Override
-    public ResponseEntity<Void> checkExist(final String criteria) {
-        throw new NotImplementedException("checkExist not supported");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @PostMapping
-    public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto) {
-        LOGGER.debug("Create {}", userInfoDto);
-        return userInfoInternalService.create(userInfoDto);
-    }
-
-    @Override
-    public UserInfoDto update(final String id, final UserInfoDto dto) {
-        throw new NotImplementedException("update not supported");
-    }
-
-
-    /**
-     * GetOne with criteria, item id.
-     *
-     * @param id
-     * @param criteria
-     * @return
-     */
+    @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
-    public UserInfoDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
-        LOGGER.debug("Get {} criteria={}", id, criteria);
-        RestUtils.checkCriteria(criteria);
-        return userInfoInternalService.getOne(id, Optional.empty());
+    @ResponseStatus(HttpStatus.OK)
+    public UserInfoDto getOne(final @PathVariable String id) {
+        LOGGER.debug("Get user={}", id);
+        return service.getOne(buildUiHttpContext(), id);
     }
 
+
     /**
-     * Get user info for  current user .
+     * Create user info
      *
+     * @param dto
      * @return
      */
-    @GetMapping(CommonConstants.PATH_ME)
-    public UserInfoDto getMe() {
-        LOGGER.debug("getMe {}");
-        return userInfoInternalService.getMe();
+    @ApiOperation(value = "Create entity")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserInfoDto create(@RequestBody final UserInfoDto dto) {
+        LOGGER.debug("create user info  = {}", dto.getLanguage());
+        return service.create(buildUiHttpContext(), dto);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+    @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
     public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
-        return userInfoInternalService.patch(partialDto);
+        LOGGER.debug("Patch User {} with {}", id, partialDto);
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user  info: the DTO id must match the path id.");
+        return service.patch(buildUiHttpContext(), partialDto, id);
     }
+
 
 }

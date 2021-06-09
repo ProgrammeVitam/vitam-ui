@@ -73,9 +73,9 @@ public class UserServiceTest extends ServiceTest<UserDto> {
         user.setCustomerId(ID);
         user.setStatus(UserStatusEnum.ENABLED);
         user.setType(UserTypeEnum.NOMINATIVE);
-        user.setLanguage("FRENCH");
         user.setLevel("DEV");
         user.setGroupId("123456");
+        user.setUserInfoId("userInfoId");
         return user;
     }
 

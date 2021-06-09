@@ -50,7 +50,7 @@ import {
   SkipSelf,
   TemplateRef
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarConfig, MatSnackBarContainer, MatSnackBarRef, MAT_SNACK_BAR_DATA, SimpleSnackBar } from '@angular/material/snack-bar';
 import { take, takeUntil } from 'rxjs/operators';
 
 export const MAT_SNACK_BAR_DEFAULT_OPTIONS =

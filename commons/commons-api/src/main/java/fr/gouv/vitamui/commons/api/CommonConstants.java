@@ -219,6 +219,8 @@ public class CommonConstants {
 
     public static final String VERSION_RELEASE = "VERSION_RELEASE";
 
+    public static final String USER_INFO_ID = "userInfoId";
+
 
     /**
      * Constant contains application list for portal/header applications display

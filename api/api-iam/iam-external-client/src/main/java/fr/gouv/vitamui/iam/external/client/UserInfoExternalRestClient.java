@@ -38,16 +38,19 @@ package fr.gouv.vitamui.iam.external.client;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -80,7 +83,17 @@ public class UserInfoExternalRestClient extends BasePaginatingAndSortingRestClie
         return response.getBody();
     }
 
+    public UserInfoDto patchMe(final ExternalHttpContext context, final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch me partialDto={}");
+        final URIBuilder uriBuilder = getUriBuilderFromPath(CommonConstants.PATH_ME);
+        final MultiValueMap<String, String> headers = buildHeaders(context);
 
+        final URI uri = buildUriBuilder(uriBuilder);
+        final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, headers);
+        final ResponseEntity<UserInfoDto> response = restTemplate.exchange(uri, HttpMethod.PATCH, request, getDtoClass());
+        checkResponse(response);
+        return response.getBody();
+    }
 
 
 

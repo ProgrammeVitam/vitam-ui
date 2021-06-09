@@ -38,7 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, SubrogationUser } from 'ui-frontend-common';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse, SubrogationUser } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root'

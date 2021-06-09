@@ -35,6 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export * from './user.interface';
+export * from './user-info.interface';
 export * from './auth-user.interface';
 export * from './user-profile-group-info.interface';
 export * from './tenants-by-application.interface';

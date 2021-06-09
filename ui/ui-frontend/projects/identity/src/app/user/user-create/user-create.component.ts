@@ -37,12 +37,14 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
   AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState
 } from 'ui-frontend-common';
+import { UserInfo } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
+import { UserInfoService } from './../user-info.service';
 
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { UserService } from '../user.service';
@@ -80,6 +82,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { userInfo: AdminUserProfile, customer: Customer, groups: Group[] },
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private userInfoService: UserInfoService,
     private authService: AuthService,
     private userCreateValidators: UserCreateValidators,
     private confirmDialogService: ConfirmDialogService,
@@ -120,7 +123,6 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         domain: [this.customer.emailDomains[0], Validators.required],
         groupId: [null, Validators.required],
         customerId: this.authService.user.customerId,
-        language: this.customer.language,
         otp: [{
           value: this.customer.otp !== OtpState.DEACTIVATED,
           disabled: this.customer.otp !== OtpState.OPTIONAL
@@ -128,6 +130,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         type: [{ value: 'NOMINATIVE', disabled: !this.connectedUserInfo.genericAllowed }],
         subrogeable: false,
         status: null,
+        userInfoId: null,
         address: this.formBuilder.group({
           street: [null],
           zipCode: [null],
@@ -207,12 +210,26 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     let status = '';
     this.form.get('enabled').value ? status = 'ENABLED' : status = 'DISABLED';
     this.form.get('status').setValue(status);
-    this.userService.create(this.form.getRawValue()).subscribe(
-      () => this.dialogRef.close(true),
-      (error) => {
-        this.creating = false;
-        console.error(error);
-      });
+    this.userInfoService
+      .create({ id: null, language: this.customer.language })
+      .subscribe(
+         (response: UserInfo) => {
+          this.form.get('userInfoId').setValue(response.id);
+          this.userService.create(this.form.getRawValue()).subscribe(
+            () => this.dialogRef.close(true),
+            (error) => {
+              this.creating = false;
+              console.error(error);
+            }
+          );
+        },
+        (error) => {
+          this.creating = false;
+          console.error(error);
+        }
+    );
+
+
   }
 
   onChanges(): void {

@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,55 +34,50 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+package fr.gouv.vitamui.ui.commons.rest;
 
-import {BaseHttpClient, BASE_URL, Group, PageRequest, PaginatedResponse, SearchQuery} from 'ui-frontend-common';
+import java.util.Map;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class GroupApiService extends BaseHttpClient<Group> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/groups');
-  }
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.ui.commons.service.UserInfoService;
+import io.swagger.annotations.Api;
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders) {
-    return super.getAllByParams(params, headers);
-  }
+@Api(tags = "userinfos")
+@RequestMapping("${ui-prefix}/userinfos")
+@ResponseBody
+public class UserInfoController extends AbstractUiRestController {
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Group>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
+    protected final UserInfoService service;
 
-  getOne(id: string, headers?: HttpHeaders): Observable<Group> {
-    return super.getOne(id, headers);
-  }
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInfoController.class);
 
-  getOneWithEmbedded(id: string, embedded: string, headers?: HttpHeaders): Observable<Group> {
-    return super.getOneWithEmbedded(id, embedded, headers);
-  }
-
-  checkExistsByParam(params: Array<{ key: string, value: string }>, headers?: HttpHeaders): Observable<boolean> {
-    return super.checkExistsByParam(params, headers);
-  }
-
-  create(group: Group, headers?: HttpHeaders): Observable<Group> {
-    return super.create(group, headers);
-  }
-
-  patch(groupPartial: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<Group> {
-    return super.patch(groupPartial, headers);
-  }
-
-  getLevels(query?: SearchQuery, headers?: HttpHeaders): Observable<string[]> {
-    let params =  new HttpParams();
-    if (query) {
-      params = params.set('criteria', JSON.stringify(query));
+    @Autowired
+    public UserInfoController(final UserInfoService service) {
+        this.service = service;
     }
 
-    return this.http.get<string[]>(this.apiUrl + '/levels', { params, headers });
-  }
+
+    @GetMapping(CommonConstants.PATH_ME)
+    public UserInfoDto getMyUserInfo() {
+        LOGGER.debug("get my user info ");
+        return service.getMyUserInfo(buildUiHttpContext());
+    }
+
+    @PatchMapping(CommonConstants.PATH_ME)
+    public UserInfoDto patchMyUserInfo(@RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch me with {}", partialDto);
+        return service.patchMyUserInfo(buildUiHttpContext(), partialDto);
+    }
 }

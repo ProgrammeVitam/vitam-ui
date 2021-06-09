@@ -1,5 +1,22 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.*;
+
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.*;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -7,6 +24,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
@@ -44,6 +62,7 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.InitVitamTenantService;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -120,6 +139,9 @@ public final class CustomerCrudControllerTest {
 
     @Mock
     private UserInternalService internalUserService;
+
+    @Mock
+    private UserInfoInternalService userInfoInternalService;
 
     @Mock
     private GroupInternalService internalGroupService;
@@ -216,7 +238,9 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationOK() throws Exception {
+    public void testCreationOK() {
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
+
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -226,7 +250,8 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutTenantOK() throws Exception {
+    public void testCreationWithoutTenantOK()  {
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -236,7 +261,9 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutIdpOK() throws Exception {
+    public void testCreationWithoutIdpOK()  {
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
+
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -384,6 +411,7 @@ public final class CustomerCrudControllerTest {
 
     @Test(expected = InternalServerException.class)
     public void testRollbackOnUserError() {
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -514,6 +542,10 @@ public final class CustomerCrudControllerTest {
 
     private UserDto buildUserDto() {
         return IamServerUtilsTest.buildUserDto();
+    }
+
+    private UserInfoDto buildUserInfoDto() {
+        return IamServerUtilsTest.buildUserInfoDto();
     }
 
     private Tenant buildTenant() {

@@ -415,16 +415,10 @@ public final class IamServerUtilsTest {
         return address;
     }
 
-    public static UserInfo buildUserInfo() {
-        UserInfo userInfo = new UserInfo();
-        userInfo.setId("id");
-        userInfo.setLanguage("fr");
-        return userInfo;
-    }
     public static UserInfoDto buildUserInfoDto() {
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setId("id");
-        userInfoDto.setLanguage("fr");
+        userInfoDto.setLanguage("FRENCH");
         return userInfoDto;
     }
 

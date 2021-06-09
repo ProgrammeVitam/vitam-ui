@@ -130,8 +130,8 @@ public class ConverterConfig {
             final CustomerConverter customerConverter, final IdentityProviderConverter identityProviderConverter,
             final SubrogationConverter subrogationConverter, final ExternalParametersConverter externalParametersConverter,
             final ExternalParamProfileConverter externalParamProfileConverter) {
-        return new Converters(userConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter, identityProviderConverter,
-                subrogationConverter, externalParametersConverter, externalParamProfileConverter);
+        return new Converters(userConverter, tenantConverter, ownerConverter, profileConverter, applicationConverter, groupConverter, customerConverter,
+                identityProviderConverter, subrogationConverter, externalParametersConverter, externalParamProfileConverter);
     }
 
     @Bean

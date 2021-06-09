@@ -131,6 +131,12 @@ public class UserInfoExternalController implements CrudController<UserInfoDto> {
         return userInfoExternalService.getMe();
     }
 
+    @PatchMapping(CommonConstants.PATH_ME)
+    public UserInfoDto patchMe(@RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch me with {}", partialDto);
+        return userInfoExternalService.patchMe(partialDto);
+    }
+
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_USER_INFOS)

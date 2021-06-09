@@ -50,6 +50,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UserInfoService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.info.BuildProperties;
@@ -107,6 +108,13 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public UserService userService(final IamExternalRestClientFactory factory) {
         return new UserService(factory);
+    }
+
+    @Bean("commonUserInfoService")
+    @DependsOn("iamRestClientFactory")
+    @ConditionalOnMissingBean
+    public UserInfoService userInfoService(final IamExternalRestClientFactory factory) {
+        return new UserInfoService(factory);
     }
 
     @Bean

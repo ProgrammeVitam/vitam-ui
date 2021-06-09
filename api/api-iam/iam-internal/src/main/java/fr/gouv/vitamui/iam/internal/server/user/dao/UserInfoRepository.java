@@ -36,21 +36,11 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.dao;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 
 /**
  * MongoDB repository for the users info.
- *
- *
  */
 public interface UserInfoRepository extends VitamUIRepository<UserInfo, String> {
 

@@ -41,7 +41,7 @@ public class IamDtoBuilder {
         userDto.setIdentifier("code");
         userDto.setStatus(UserStatusEnum.ENABLED);
         userDto.setType(UserTypeEnum.NOMINATIVE);
-        userDto.setLanguage(LanguageDto.FRENCH.toString());
+        userDto.setUserInfoId("userInfoId");
         userDto.setLevel(level);
         userDto.setMobile("+33671270699");
         userDto.setPhone("+33134237766");
@@ -62,7 +62,7 @@ public class IamDtoBuilder {
         userDto.setOtp(true);
         userDto.setIdentifier("code");
         userDto.setType(UserTypeEnum.NOMINATIVE);
-        userDto.setLanguage(LanguageDto.FRENCH.toString());
+        userDto.setUserInfoId("userInfoId");
         userDto.setLevel("level");
         userDto.setMobile("+33671270699");
         userDto.setPhone("+33134237766");

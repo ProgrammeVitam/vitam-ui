@@ -15,7 +15,7 @@
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
     <mat-tab [label]="'USER.TAB.INFORMATIONS' | translate">
-      <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-info-tab>
+      <app-user-info-tab [user]="user" [customer]="customer" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [adminUserProfile]="connectedUserInfo" [userInfo] = "userInfo"></app-user-info-tab>
     </mat-tab>
 
     <mat-tab [label]="'USER.TAB.GROUP' | translate" class="no-padding">

@@ -12,6 +12,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { AuthService, Customer, LanguageService, Option, StartupService } from 'ui-frontend-common';
+import { UserInfoService } from './../../../../user/user-info.service';
 
 @Component({
   selector: 'app-homepage-message',
@@ -37,7 +38,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
   public defaultForm: FormGroup;
   public customerForm: FormGroup;
 
-  private language = this.authService.user.language;
+  private language: string;
   private portalTitles: { [language: string]: string; } = {};
   private portalMessages: { [language: string]: string; } = {};
   private destroy = new Subject();
@@ -47,7 +48,8 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
     private formBuilder: FormBuilder,
     private startupService: StartupService,
     private authService: AuthService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private userInfoService: UserInfoService
   ) { }
 
   ngOnInit() {
@@ -57,6 +59,10 @@ export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewIni
       portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
       translations: this.formBuilder.array([])
     });
+    const userInfosId = this.authService.user.userInfoId;
+    this.userInfoService.get(userInfosId).subscribe((userInfo) => {
+      this.language = userInfo.language;
+  });
   }
 
   ngAfterViewInit() {

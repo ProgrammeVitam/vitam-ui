@@ -38,7 +38,7 @@ import { AuthService, buildValidators, collapseAnimation, ConfirmDialogService, 
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Subscription } from 'rxjs';
 import { HierarchyService } from '../hierarchy.service';
