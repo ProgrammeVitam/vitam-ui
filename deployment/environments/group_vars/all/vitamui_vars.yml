@@ -286,7 +286,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   ingest_external:
-    host: "ingest-external.service.{{ consul_domain }}"
+    host: "vitamui-ingest-external.service.{{ consul_domain }}"
     vitamui_component: "ingest-external"
     vitamui_component_type: "external"
     package_name: "vitamui-ingest-external"
@@ -305,7 +305,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   ingest_internal:
-    host: "ingest-internal.service.{{ consul_domain }}"
+    host: "vitamui-ingest-internal.service.{{ consul_domain }}"
     vitamui_component: "ingest-internal"
     vitamui_component_type: "internal"
     package_name: "vitamui-ingest-internal"
