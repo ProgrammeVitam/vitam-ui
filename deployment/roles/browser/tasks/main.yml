@@ -7,7 +7,7 @@
 - name: Install Apache package for displaying data content
   package:
     name: httpd
-  when: (ansible_distribution == "CentOS" )
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
 - name: Install Apache package for displaying data content
   package:
@@ -21,7 +21,7 @@
     name: httpd
     enabled: yes
     state: started
-  when: (ansible_distribution == "CentOS" )
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
 - name: Ensure  Apache autostart && Apache is started on Debian
   service: 
@@ -34,7 +34,7 @@
   user:
     name: apache
     groups: vitamui
-  when: (ansible_distribution == "CentOS" )
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
 
 - name: add vitamui group to apache user on Centos
   user:
@@ -55,7 +55,7 @@
     dest: "/etc/httpd/conf.d/{{item}}"
     mode: 0500
     owner: root
-  when: (ansible_distribution == "CentOS" )
+  when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
   notify: restart apache
   with_items:
   - "httpd-offer-view.conf"

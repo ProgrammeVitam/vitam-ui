@@ -4,3 +4,5 @@ mongo_express_conf:
     service_name: "vitamui-mongo-express"
     baseuri: "/mongo-express"
     mongo_express_port: 9200
+mongo_express:
+    baseuri: "mongo-express"
