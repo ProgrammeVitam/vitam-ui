@@ -34,5 +34,6 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+export * from './facet-colors.enum';
 export * from './operation-status.enum';
 export * from './operation-type.enum';
