@@ -1,72 +1,21 @@
-<div>
-  <div class="row row-data">
-    <div class="col-5 title-text">
-      <span>{{ 'LOGBOOK_OPERATION_LIST.STATE' | translate }}</span>
-      <div class="row row-data">
-        <div class="col-4 title-text" (click)="getOperationsByGlobalState(operationsList, 'RUNNING')">
-          <div class="layout-data clickable">
-            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.IN_PROGRESS' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByState(operationsList, 'RUNNING') }}
-            </div>
-          </div>
-        </div>
-        <div class="col-4 title-text" (click)="getOperationsByGlobalState(operationsList, 'PAUSE')">
-          <div class="layout-data clickable">
-            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.BREAK' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByState(operationsList, 'PAUSE') }}
-            </div>
-          </div>
-        </div>
-        <div class="col-4 title-text clickable" (click)="getOperationsByGlobalState(operationsList, 'COMPLETED')">
-          <div class="layout-data">
-            <span class="status-text">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATE.FINISHED' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByState(operationsList, 'COMPLETED') }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-7 title-text">
-      <span>{{ 'LOGBOOK_OPERATION_LIST.STATUS' | translate }}</span>
-      <div class="row row-data">
-        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'OK')">
-          <div class="layout-data clickable">
-            <span class="status-text text-green">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.SUCCESS' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByStatus(operationsList, 'OK') }}
-            </div>
-          </div>
-        </div>
-        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'WARNING')">
-          <div class="layout-data clickable">
-            <span class="status-text text-orange">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.WARNING' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByStatus(operationsList, 'WARNING') }}
-            </div>
-          </div>
-        </div>
-        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'KO')">
-          <div class="layout-data clickable">
-            <span class="status-text text-red">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.ERROR' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByStatus(operationsList, 'KO') }}
-            </div>
-          </div>
-        </div>
-        <div class="col-3 title-text" (click)="getOperationsByStatus(operationsList, 'FATAL')">
-          <div class="layout-data clickable">
-            <span class="status-text text-red-fatal">{{ 'LOGBOOK_OPERATION_LIST.RESULT_STATUS.FATAL' | translate }}</span>
-            <div class="result-text">
-              {{ getTotalResultsByStatus(operationsList, 'FATAL') }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="row row-data">
+  <div class="col">
+    <app-logbook-operation-facet
+      [facetDetails]="stateFacetDetails"
+      [facetTitle]="stateFacetTitle"
+      (filter)="getOperationsByGlobalState($event)"
+    ></app-logbook-operation-facet>
   </div>
+  <div class="col">
+    <app-logbook-operation-facet
+      [facetDetails]="statusFacetDetails"
+      [facetTitle]="statusFacetTitle"
+      (filter)="getOperationsByStatus($event)"
+    ></app-logbook-operation-facet>
+  </div>
+</div>
+
+<div>
   <div class="row row-data">
     <div class="col-12 title-text">
       <div class="result-layout">
@@ -79,9 +28,9 @@
     <div class="vitamui-table-head">
       <div class="col-3">
         <span>{{ 'LOGBOOK_OPERATION_LIST.OPERATION_ID' | translate }}</span>
-        <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('operationId', 'Identifier')">{{
-          filtredByIdentifier ? 'expand_less' : 'expand_more'
-        }}</i>
+        <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('operationId', 'Identifier')">
+          {{ filtredByIdentifier ? 'expand_less' : 'expand_more' }}
+        </i>
       </div>
       <div class="col-2">
         <span>{{ 'LOGBOOK_OPERATION_LIST.OPERATION_CATEGORY' | translate }}</span>

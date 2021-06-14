@@ -45,7 +45,7 @@ import { ApplicationSelectContentModule } from './components/application-select-
 import { BlankComponent } from './components/blank/blank.component';
 import { CancelledSnackBarModule } from './components/cancelled-snack-bar/cancelled-snack-bar.module';
 import { CollapseModule } from './components/collapse/collapse.module';
-import { CommonProgressBarModule} from './components/common-progress-bar/common-progress-bar.module';
+import { CommonProgressBarModule } from './components/common-progress-bar/common-progress-bar.module';
 import { CommonTooltipModule } from './components/common-tooltip/common-tooltip.module';
 import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.module';
 import { CountryModule } from './components/country/country.module';
@@ -58,6 +58,7 @@ import { HeaderModule } from './components/header/header.module';
 import { SelectLanguageModule } from './components/header/select-language/select-language.module';
 import { SelectTenantDialogModule } from './components/header/select-tenant-dialog/select-tenant-dialog.module';
 import { UserPhotoModule } from './components/header/user-photo/user-photo.module';
+import { LogbookOperationFacetModule } from './components/logbook-operation-facet/logbook-operation-facet.module';
 import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
@@ -82,9 +83,11 @@ import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-me
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
+import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
 import { DragAndDropModule } from './directives/drag-and-drop/drag-and-drop.module';
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
+import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
 import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
 import { TooltipModule } from './directives/tooltip/tooltip.module';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
@@ -96,8 +99,6 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
-import {ResizeSidebarModule} from './directives/resize-sidebar/resize-sidebar.module';
-import {AutocompletePositionDirectiveModule} from './directives/autocomplete-position/autocomplete-position.directive.module';
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -108,10 +109,7 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
-  declarations: [
-    BlankComponent,
-    ErrorDialogComponent,
-  ],
+  declarations: [BlankComponent, ErrorDialogComponent],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -166,11 +164,10 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiMenuButtonModule,
     VitamuiSidenavHeaderModule,
     ResizeSidebarModule,
-    AutocompletePositionDirectiveModule
+    AutocompletePositionDirectiveModule,
+    LogbookOperationFacetModule,
   ],
-  entryComponents: [
-    ErrorDialogComponent
-  ],
+  entryComponents: [ErrorDialogComponent],
   exports: [
     AccountModule,
     TranslateModule,
@@ -222,7 +219,8 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiSidenavHeaderModule,
     VitamuiMenuButtonModule,
     ResizeSidebarModule,
-    AutocompletePositionDirectiveModule
+    AutocompletePositionDirectiveModule,
+    LogbookOperationFacetModule,
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },
@@ -231,9 +229,9 @@ export function startupServiceFactory(startupService: StartupService) {
       provide: APP_INITIALIZER,
       useFactory: startupServiceFactory,
       deps: [StartupService],
-      multi: true
+      multi: true,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true }
-  ]
+    { provide: HTTP_INTERCEPTORS, useClass: VitamUIHttpInterceptor, multi: true },
+  ],
 })
-export class VitamUICommonModule { }
+export class VitamUICommonModule {}

@@ -124,12 +124,12 @@ describe('LogbookManagementOperationListComponent', () => {
     expect(component.results[0].operationId).toEqual('aecaaereragfogjqbaai6malzquerteaaaq');
   });
   it('should get one operation as results', () => {
-    component.getOperationsByStatus(operationsResults, 'WARNING');
+    component.getOperationsByStatus('WARNING');
     expect(component.results.length).toEqual(1);
   });
 
   it('should have one operation as results', () => {
-    component.getOperationsByGlobalState(operationsResults, 'PAUSE');
+    component.getOperationsByGlobalState('PAUSE');
     expect(component.results.length).toEqual(1);
   });
   it('should return one element as result', () => {
@@ -138,5 +138,13 @@ describe('LogbookManagementOperationListComponent', () => {
 
   it('should have one element as result', () => {
     expect(component.getTotalResultsByStatus(operationsResults, 'OK')).toEqual(1);
+  });
+  it('should create three state facet component', () => {
+    component.initializeFacet();
+    expect(component.stateFacetDetails.length).toEqual(3);
+  });
+  it('should create four status facet component', () => {
+    component.initializeFacet();
+    expect(component.statusFacetDetails.length).toEqual(4);
   });
 });
