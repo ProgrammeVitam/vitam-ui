@@ -70,7 +70,8 @@ ui-archive-search:
       hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
-
+    archives-search: "https://dev.vitamui.com:4209/archive-search"
+    ingest: "https://dev.vitamui.com:4208/ingest"
 
   portal-categories:
     ingest_and_consultation:
