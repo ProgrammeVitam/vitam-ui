@@ -117,24 +117,16 @@ public class ResetPasswordController {
             return false;
         }
 
-        final int expMinutes;
-        if (PmMessageToSend.ONE_DAY.equals(ttl)) {
-            expMinutes = 1440; // 24 * 60 Minutes
-        } else {
-            expMinutes = (int) casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
-        }
-        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
-
         final String url = buildPasswordResetUrl(usernameLower, casProperties);
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, ttl, url, vitamuiPlatformName, new Locale(language));
+        final Locale locale = new Locale(language);
+        final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
+        request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
 
         LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
             email, messageToSend.getSubject(), expMinutes);
-        if (!sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText())) {
-            return false;
-        }
 
-        return true;
+        return sendPasswordResetEmailToAccount(email, messageToSend.getSubject(), messageToSend.getText());
     }
 
     protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties) {

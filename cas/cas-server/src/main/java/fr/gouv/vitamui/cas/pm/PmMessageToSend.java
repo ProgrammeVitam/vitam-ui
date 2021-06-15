@@ -38,6 +38,7 @@ package fr.gouv.vitamui.cas.pm;
 
 import java.util.Locale;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.HierarchicalMessageSource;
 
 import lombok.EqualsAndHashCode;
@@ -58,7 +59,9 @@ public class PmMessageToSend {
 
     private static final String PM_RESET_SUBJECT_KEY = "cas.authn.pm.reset.subject";
 
-    private static final String PM_RESET_TEXT_KEY = "cas.authn.pm.reset.text";
+    private static final String PM_RESET_TEXT_KEY_1 = "cas.authn.pm.reset.text1";
+
+    private static final String PM_RESET_TEXT_KEY_2 = "cas.authn.pm.reset.text2";
 
     private static final String PM_ACCOUNTCREATION_SUBJECT_KEY = "cas.authn.pm.accountcreation.subject";
 
@@ -82,9 +85,15 @@ public class PmMessageToSend {
             text = messageSource.getMessage(PM_ACCOUNTCREATION_TEXT_KEY,
                     new Object[] { firstname, lastname, "24", url, platformName }, locale);
         } else {
-            subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
-            text = messageSource.getMessage(PM_RESET_TEXT_KEY, new Object[] { firstname, lastname, ttlInMinutes, url, platformName},
+            final long validityDurationInMinutes = Long.valueOf(ttlInMinutes);
+            if (validityDurationInMinutes % 60 == 0) {
+                text = messageSource.getMessage(PM_RESET_TEXT_KEY_2, new Object[] { firstname, lastname, validityDurationInMinutes / 60, url, platformName},
                     locale);
+            } else {
+                text = messageSource.getMessage(PM_RESET_TEXT_KEY_1, new Object[] { firstname, lastname, ttlInMinutes, url, platformName},
+                    locale);
+            }
+            subject = messageSource.getMessage(PM_RESET_SUBJECT_KEY, null, locale);
         }
         return new PmMessageToSend(subject, text);
     }
