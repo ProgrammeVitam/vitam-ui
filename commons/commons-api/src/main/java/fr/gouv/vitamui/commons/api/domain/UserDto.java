@@ -128,6 +128,5 @@ public class UserDto extends CustomerIdDto {
 
     private boolean autoProvisioningEnabled;
 
-    @NotNull
     private String userInfoId;
 }
