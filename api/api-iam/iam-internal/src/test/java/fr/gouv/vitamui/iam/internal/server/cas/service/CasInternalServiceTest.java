@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.cas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,8 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
+import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,6 +43,8 @@ class CasInternalServiceTest {
 
     private static final String GROUP_ID = "groupID";
 
+    private static final String CUSTOMER_ID = "customerID";
+
     @InjectMocks
     private CasInternalService casInternalService;
 
@@ -57,6 +62,9 @@ class CasInternalServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     void setUp() {
@@ -87,10 +95,15 @@ class CasInternalServiceTest {
         when(userInternalService.findUserByEmail(USER_EMAIL))
                 .thenReturn(buildAuthUser(false));
 
+        final Customer customer = new Customer();
+        customer.setLanguage("fr");
+        when(customerRepository.findById(anyString())).thenReturn(Optional.of(customer));
+
         final UserDto user = casInternalService.getUser(USER_EMAIL, IDP, null, null);
         verify(userInternalService, times(1)).create(any());
         verify(userInternalService, times(0)).patch(any());
         assertThat(user).isNotNull();
+        assertThat(user.getLanguage()).isEqualTo(customer.getLanguage());
     }
 
     @Test
@@ -130,6 +143,7 @@ class CasInternalServiceTest {
     private GroupDto buildGroup() {
         final GroupDto group = new GroupDto();
         group.setId(GROUP_ID);
+        group.setCustomerId(CUSTOMER_ID);
         return group;
     }
 
@@ -138,6 +152,7 @@ class CasInternalServiceTest {
         authUser.setEmail(USER_EMAIL);
         authUser.setFirstname("Jean-Jacques");
         authUser.setLastname("Dupont");
+        authUser.setLanguage("fr");
         authUser.setAutoProvisioningEnabled(autoProvisioningEnabled);
         authUser.setGroupId(GROUP_ID);
         return authUser;

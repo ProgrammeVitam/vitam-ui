@@ -356,6 +356,10 @@ public class CasInternalService {
         user.setGroupId(groupDto.getId());
         user.setCustomerId(groupDto.getCustomerId());
 
+        final Customer customer = customerRepository.findById(user.getCustomerId())
+            .orElseThrow(() -> new NotFoundException(String.format("Cannot find customer : %s", user.getCustomerId())));
+        user.setLanguage(customer.getLanguage());
+
         internalUserService.create(user);
     }
 
