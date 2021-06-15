@@ -36,23 +36,13 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.util.List;
-import java.util.UUID;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-
-import lombok.extern.slf4j.Slf4j;
+import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
@@ -68,18 +58,24 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
-import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * A rest client factory to create each domain specific REST client. The http connection is configured by the
@@ -89,9 +85,9 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
  *
  */
 
-public class BaseRestClientFactory implements RestClientFactory {
+public class BaseStreamingRestClientFactory implements RestClientFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseRestClientFactory.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(BaseStreamingRestClientFactory.class);
 
     private final RestTemplate restTemplate;
 
@@ -103,12 +99,11 @@ public class BaseRestClientFactory implements RestClientFactory {
 
     protected int socketTimeout = 500000;
 
-    public BaseRestClientFactory(final RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
-        this(restClientConfiguration, null, restTemplateBuilder);
+    public BaseStreamingRestClientFactory(final RestClientConfiguration restClientConfiguration) {
+        this(restClientConfiguration, null);
     }
 
-    public BaseRestClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig,
-            final RestTemplateBuilder restTemplateBuilder) {
+    public BaseStreamingRestClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
 
         final boolean useSSL = restClientConfig.isSecure();
@@ -133,8 +128,10 @@ public class BaseRestClientFactory implements RestClientFactory {
             .setDefaultRequestConfig(requestConfig)
             .build();
 
-        restTemplate = restTemplateBuilder.errorHandler(new ErrorHandler()).build();
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())));
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        requestFactory.setBufferRequestBody(false);
+        restTemplate = new RestTemplate(requestFactory);
+        restTemplate.setErrorHandler(new ErrorHandler());
     }
 
     /*

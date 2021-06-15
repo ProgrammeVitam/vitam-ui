@@ -34,64 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.rest.client.configuration;
+package fr.gouv.vitamui.ingest.external.client;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
- * The RestClientConfiguration stores properties used in the RestClient
+ * A Rest client factory to create Streaming specialized Ingest Rest clients
  *
  *
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class RestClientConfiguration {
+public class IngestStreamingExternalRestClientFactory extends BaseStreamingRestClientFactory {
 
-    private String serverHost;
+    public IngestStreamingExternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
+    }
 
-    private int serverPort;
+    public IngestStreamingExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+        super(restClientConfiguration, httpHostConfiguration);
+    }
 
-    private boolean secure;
 
-    private boolean noClientAuthentication = false;
-
-    private SSLConfiguration sslConfiguration;
-
-    /**
-     * Connection timeout in seconds.
-     */
-    private int connectTimeOut = 10;
-
-    /**
-     * Read timeout in seconds.
-     */
-    private int readTimeOut = 10;
-
-    /**
-     * Write timeout in seconds.
-     */
-    private int writeTimeOut = 10;
-
-    /**
-     * Total pool size for httpClient.
-     */
-    private int poolMaxTotal = 20;
-
-    /**
-     * Pool size per route(host).
-     */
-    private int poolMaxPerRoute = 20;
-
-    /**
-     * Indicates whether this request factory should buffer the request body internally.
-     * Default is true. When sending large amounts of data via POST or PUT, it is recommended to change this property to false, so as not to run out of memory.
-     */
-    //private boolean bufferingBody = false;
-
+    public IngestStreamingExternalRestClient getIngestStreamingExternalRestClient() {
+        return new IngestStreamingExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

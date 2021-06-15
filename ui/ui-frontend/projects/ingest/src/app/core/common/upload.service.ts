@@ -34,30 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { IngestApiService } from '../api/ingest-api.service';
-import { retry } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { IngestInfo, IngestList, IngestStatus } from './ingest-list';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHeaders,
+  HttpRequest,
+  HttpResponse,
+} from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { retry, timeout } from "rxjs/operators";
+import { IngestApiService } from "../api/ingest-api.service";
+import { IngestInfo, IngestList, IngestStatus } from "./ingest-list";
 
 const BYTES_PER_CHUNK = 1024 * 1024; // 1MB request
-const tenantKey = 'X-Tenant-Id';
-const contextIdKey = 'X-Context-Id';
-const actionKey = 'X-Action';
-const chunkOffsetKey = 'X-Chunk-Offset';
-const totalSizeKey = 'X-Size-Total';
-const requestIdKey = 'X-Request-Id';
+const tenantKey = "X-Tenant-Id";
+const contextIdKey = "X-Context-Id";
+const actionKey = "X-Action";
+const chunkOffsetKey = "X-Chunk-Offset";
+const totalSizeKey = "X-Size-Total";
+const requestIdKey = "X-Request-Id";
 
 const MAX_RETRIES = 3;
 
 @Injectable()
 export class UploadService {
-
   uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 
-  constructor( private ingestApiService: IngestApiService) {
-  }
+  constructor(
+    private ingestApiService: IngestApiService,
+    private httpClient: HttpClient
+  ) {}
 
   filesStatus(): BehaviorSubject<IngestList> {
     return this.uploadStatus;
@@ -78,23 +85,46 @@ export class UploadService {
     map.update(requestId, status);
   }
 
-  uploadFile(file: File, contextId: string, action: string, tenantIdentifier: string): Observable<IngestList> {
+  uploadFile(
+    file: File,
+    contextId: string,
+    action: string,
+    tenantIdentifier: string
+  ): Observable<IngestList> {
     const totalSize = file.size;
     let start = 0;
-    let end = (totalSize < BYTES_PER_CHUNK) ? totalSize : BYTES_PER_CHUNK;
+    let end = totalSize < BYTES_PER_CHUNK ? totalSize : BYTES_PER_CHUNK;
     const nbChunks = Math.ceil(totalSize / BYTES_PER_CHUNK);
 
-    const request = this.generateIngestRequest(tenantIdentifier, contextId, action, start, end, totalSize, file);
+    const request = this.generateIngestRequest(
+      tenantIdentifier,
+      contextId,
+      action,
+      start,
+      end,
+      totalSize,
+      file
+    );
 
-    this.ingestApiService.upload(request)
-      .pipe( retry(MAX_RETRIES) )
+    this.ingestApiService
+      .upload(request)
+      .pipe(timeout(1480000), retry(MAX_RETRIES))
       .subscribe(
         (event) => {
           if (event instanceof HttpResponse) {
             // We get the requestId with the first request.
             const requestId = event.headers.get(requestIdKey);
-            this.addNewUploadFile(requestId, new IngestInfo(file.name, totalSize, nbChunks, 1, IngestStatus.WIP));
-            console.log('First API Request Id : ' + requestId);
+            this.addNewUploadFile(
+              requestId,
+              new IngestInfo(
+                file.name,
+                totalSize,
+                nbChunks,
+                1,
+                IngestStatus.WIP
+              )
+            );
+            console.log("First API Request Id : " + requestId);
             start = end;
             end = start + BYTES_PER_CHUNK;
 
@@ -103,35 +133,75 @@ export class UploadService {
               return;
             }
 
-            for (let pointer = start; pointer < totalSize; pointer += BYTES_PER_CHUNK) {
-              this.uploadChunks(file, requestId, pointer, pointer + BYTES_PER_CHUNK, totalSize, tenantIdentifier, contextId, action);
+            for (
+              let pointer = start;
+              pointer < totalSize;
+              pointer += BYTES_PER_CHUNK
+            ) {
+              this.uploadChunks(
+                file,
+                requestId,
+                pointer,
+                pointer + BYTES_PER_CHUNK,
+                totalSize,
+                tenantIdentifier,
+                contextId,
+                action
+              );
             }
-
           }
         },
         (error) => {
           console.log(error);
-          this.addNewUploadFile('error', new IngestInfo(file.name, totalSize, nbChunks, 1, IngestStatus.ERROR));
+          this.addNewUploadFile(
+            "error",
+            new IngestInfo(
+              file.name,
+              totalSize,
+              nbChunks,
+              1,
+              IngestStatus.ERROR
+            )
+          );
         }
       );
     return this.uploadStatus;
   }
 
-  private uploadChunks(file: File, requestId: any, start: number, end: number, totalSize: any, tenantIdentifier: string,
-                       contextId: string, action: string ) {
-
-    const request = this.generateIngestRequest(tenantIdentifier, contextId, action, start, end, totalSize, file, requestId);
-    this.ingestApiService.upload(request).pipe(retry(MAX_RETRIES)).subscribe(
-      (event) => {
-        if (event instanceof HttpResponse) {
-          this.updateFileStatus(requestId);
-        }
-      },
-      (error) => {
-        console.log(error);
-        this.updateFileStatus(requestId, IngestStatus.ERROR);
-      }
+  private uploadChunks(
+    file: File,
+    requestId: any,
+    start: number,
+    end: number,
+    totalSize: any,
+    tenantIdentifier: string,
+    contextId: string,
+    action: string
+  ) {
+    const request = this.generateIngestRequest(
+      tenantIdentifier,
+      contextId,
+      action,
+      start,
+      end,
+      totalSize,
+      file,
+      requestId
     );
+    this.ingestApiService
+      .upload(request)
+      .pipe(retry(MAX_RETRIES))
+      .subscribe(
+        (event) => {
+          if (event instanceof HttpResponse) {
+            this.updateFileStatus(requestId);
+          }
+        },
+        (error) => {
+          console.log(error);
+          this.updateFileStatus(requestId, IngestStatus.ERROR);
+        }
+      );
   }
 
   private generateIngestRequest(
@@ -150,14 +220,52 @@ export class UploadService {
     headers = headers.set(totalSizeKey, totalSize.toString());
     headers = headers.set(contextIdKey, contextId);
     headers = headers.set(actionKey, action);
+    headers = headers.set("reportProgress", "true");
+    headers = headers.set("fileName", file.name);
     if (requestId) {
       headers = headers.set(requestIdKey, requestId);
     }
 
     const formdata: FormData = new FormData();
-    formdata.append('uploadedFile', file.slice(start, end), file.name);
+    formdata.append("uploadedFile", file.slice(start, end), file.name);
 
-    return new HttpRequest('POST', this.ingestApiService.getBaseUrl() + '/ingest/upload', formdata, { headers });
+    return new HttpRequest(
+      "POST",
+      this.ingestApiService.getBaseUrl() + "/ingest/upload",
+      formdata,
+      { headers }
+    );
   }
 
+  public uploadFileV2(
+    tenantIdentifier: string,
+    contextId: string,
+    action: string,
+    file: Blob,
+    fileName: string
+  ): Observable<HttpEvent<void>> {
+    let headers = new HttpHeaders();
+    headers = headers.set(tenantKey, tenantIdentifier.toString());
+    headers = headers.set(contextIdKey, contextId);
+    headers = headers.set(actionKey, action);
+    headers = headers.set("Content-Type", "application/octet-stream");
+    headers = headers.set("reportProgress", "true");
+    headers = headers.set("ngsw-bypass", "true");
+    headers = headers.set("fileName", fileName);
+
+    const options = {
+      headers: headers,
+      responseType: "text" as "text",
+      reportProgress: true,
+    };
+
+    return this.httpClient.request(
+      new HttpRequest(
+        "POST",
+        this.ingestApiService.getBaseUrl() + "/ingest/upload-v2",
+        file,
+        options
+      )
+    );
+  }
 }

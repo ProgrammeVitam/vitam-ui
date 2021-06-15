@@ -34,7 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.external.client;
+package fr.gouv.vitamui.ingest.internal.client;
+
 
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -42,7 +43,7 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
@@ -52,8 +53,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -62,14 +61,14 @@ import java.io.InputStream;
 import java.util.List;
 
 /**
- * A REST client to get logbooks for an External API.
+ * Ingest Streaming Internal REST Client.
  */
-public class IngestExternalRestClient
-    extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
+public class IngestStreamingInternalRestClient
+    extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestStreamingInternalRestClient.class);
 
-    public IngestExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
+    public IngestStreamingInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
@@ -95,11 +94,31 @@ public class IngestExternalRestClient
         };
     }
 
-    public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
+    public ResponseEntity<Void> streamingUpload(final InternalHttpContext context, String originalFileName,
+        InputStream inputStream,
+        final String contextId,
+        final String action) {
+        LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD_V2);
 
+        final MultiValueMap<String, String> headersList = new HttpHeaders();
+        headersList.addAll(buildHeaders(context));
+        headersList.add(CommonConstants.X_CONTEXT_ID, contextId);
+        headersList.add(CommonConstants.X_ACTION, action);
+        headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, originalFileName);
+
+        HttpHeaders headersParams = new HttpHeaders();
+        headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headersParams.addAll(headersList);
+
+        final HttpEntity<InputStreamResource> request =
+            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+
+        final ResponseEntity<Void> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+                request, Void.class);
+        LOGGER.info("The response on ingest is {} ", response.toString());
+        return response;
     }
 }
