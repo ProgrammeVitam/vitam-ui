@@ -38,7 +38,6 @@ import { LogbookManagementOperationService } from '../logbook-management-operati
   styleUrls: ['./logbook-management-operation-list.component.scss'],
 })
 export class LogbookManagementOperationListComponent implements OnInit {
-  page: number;
   elementInPage: number;
   filter = false;
   operationsList: OperationsResults;
@@ -46,8 +45,6 @@ export class LogbookManagementOperationListComponent implements OnInit {
   filtredByIdentifier = false;
   filtredByStatus = false;
   filtredByDate = false;
-  hasNext = false;
-  hasPrevious = false;
   filterMap: { [key: string]: any[] } = {
     categories: [],
   };
@@ -57,6 +54,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
   stateFacetDetails: FacetDetails[] = [];
   stateFacetTitle: string;
   statusFacetTitle: string;
+  resultShowed: number;
+  show = false;
 
   OperationCategories: OperationCategory[] = [
     { key: 'TRACEABILITY', value: 'Sécurisation' },
@@ -84,8 +83,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
       this.filter = false;
       this.results = this.operationsList.results.slice(0, this.elementInPage);
       this.totalResults = this.operationsList.hits.total;
-      this.hasNext = this.totalResults > 10 ? true : false;
-      this.hasPrevious = false;
+      this.show = this.totalResults < 5 ? true : false;
     });
   }
 
@@ -151,42 +149,14 @@ export class LogbookManagementOperationListComponent implements OnInit {
   }
 
   filterByOerationCategory() {
+    window.scroll(0, 20);
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((x) => this.filterMap.categories.includes(x.processType));
     if (this.filterMap.categories.length === 0) {
       this.resultsFiltred = this.operationsList.results;
     }
-    this.results = this.resultsFiltred.slice(0, 10);
-    this.hasNext = this.resultsFiltred.length > 10 ? true : false;
-  }
-
-  next() {
-    this.hasPrevious = true;
-    if (this.filter) {
-      this.results = this.sliceResults(this.resultsFiltred, this.elementInPage, this.page);
-      this.page++;
-    } else {
-      this.results = this.sliceResults(this.operationsList.results, this.elementInPage, this.page);
-      this.page++;
-    }
-    if (this.results.length < 10) {
-      this.hasNext = false;
-    }
-  }
-
-  previous() {
-    this.hasNext = true;
-    if (this.filter) {
-      this.results = this.sliceResults(this.resultsFiltred, this.elementInPage, this.page - 2);
-      this.page--;
-    } else {
-      this.results = this.sliceResults(this.operationsList.results, this.elementInPage, this.page - 2);
-
-      this.page--;
-    }
-    if (this.page === 1) {
-      this.hasPrevious = false;
-    }
+    this.results = this.resultsFiltred.slice(0, 5);
+    this.show = this.resultsFiltred.length < 5 ? true : false;
   }
 
   orderByParam(property: any, filtredElement: string) {
@@ -199,19 +169,37 @@ export class LogbookManagementOperationListComponent implements OnInit {
       resultsToShow.sort((a, b) => (a[property] < b[property] ? 1 : -1));
       this.changeParamShow(filtredElement, false);
     }
-    this.results = resultsToShow.slice(0, 10);
-    this.hasNext = this.results.length < 10 ? false : true;
+    this.results = resultsToShow.slice(0, 5);
+    this.show = this.results.length < 5 ? true : false;
+  }
+
+  getOperationsByGlobalState(state: string) {
+    window.scroll(0, 20);
+    this.filterMap.categories = [];
+    this.initializeParameters(true);
+    this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
+    this.results = this.resultsFiltred.slice(0, 5);
+    this.show = this.results.length < 5 ? true : false;
+  }
+
+  getOperationsByStatus(status: string) {
+    window.scroll(0, 20);
+    this.filterMap.categories = [];
+    this.initializeParameters(true);
+    this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
+    this.results = this.resultsFiltred.slice(0, 5);
+    this.show = this.results.length < 5 ? true : false;
+  }
+
+  getTotalResultsByStatus(operationsList: OperationsResults, status: string): number {
+    if (operationsList && operationsList.results) {
+      return operationsList.results.filter((element) => element.stepStatus === status).length;
+    }
   }
 
   getTotalResultsByState(operationsList: OperationsResults, state: string): number {
     if (operationsList && operationsList.results) {
       return operationsList.results.filter((element) => element.globalState === state).length;
-    }
-  }
-
-  getTotalResultsByStatus(operationsList: OperationsResults, status: string) {
-    if (operationsList && operationsList.results) {
-      return operationsList.results.filter((element) => element.stepStatus === status).length;
     }
   }
 
@@ -222,20 +210,16 @@ export class LogbookManagementOperationListComponent implements OnInit {
     return this.OperationCategories.find((category) => category.value === value).key;
   }
 
-  getOperationsByGlobalState(state: string) {
-    this.filterMap.categories = [];
-    this.initializeParameters(true);
-    this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
-    this.results = this.resultsFiltred.slice(0, 10);
-    this.hasNext = this.results.length < 10 ? false : true;
+  onScroll() {
+    this.loadMore();
   }
 
-  getOperationsByStatus(status: string) {
-    this.filterMap.categories = [];
-    this.initializeParameters(true);
-    this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
-    this.results = this.resultsFiltred.slice(0, 10);
-    this.hasNext = this.results.length < 10 ? false : true;
+  loadMore() {
+    if (this.filter) {
+      this.scrollAction(this.resultsFiltred);
+    } else {
+      this.scrollAction(this.operationsList.results);
+    }
   }
 
   private changeParamShow(parameter: string, change: boolean) {
@@ -252,14 +236,9 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   private initializeParameters(filter: boolean) {
     this.filter = filter;
-    this.page = 1;
-    this.elementInPage = 10;
-    this.hasPrevious = false;
+    this.elementInPage = 5;
   }
 
-  private sliceResults(sourceResults: OperationDetails[], elementInPage: number, page: number): OperationDetails[] {
-    return sourceResults.slice(elementInPage * page, (page + 1) * elementInPage);
-  }
   private getParamShow(parameter: string): boolean {
     if (parameter === 'Date') {
       return this.filtredByDate;
@@ -275,5 +254,14 @@ export class LogbookManagementOperationListComponent implements OnInit {
   private initializeFacetDetails() {
     this.stateFacetDetails = [];
     this.statusFacetDetails = [];
+  }
+
+  private scrollAction(operationsList: OperationDetails[]) {
+    if (this.elementInPage < operationsList.length) {
+      this.elementInPage = this.elementInPage + 5;
+      this.results = operationsList.slice(0, this.elementInPage);
+    } else {
+      this.show = true;
+    }
   }
 }
