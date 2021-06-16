@@ -1,12 +1,7 @@
-# vitam_reverse_external_dns: "mitogen.env.programmevitam.fr"
-    # https://zo-ui.env.programmevitam.fr/
-    # https://zo.env.programmevitam.fr/ui/zo-ui/services
-
-
 - name: set vitamui_consul_url
   set_fact:
     vitamui_consul_url: "/ui/{{ vitam_site_name }}-ui/services"
-    mongo_express_uri: "https://{{ vitam_site_name }}-ui.env.programmevitam.fr/mongo-express"
+    mongo_express_uri: "https://{{ vitam_reverse_external_dns }}/mongo-express"
 
 - name: save index.html
   command: cp -p index.html index.html.{{ ansible_date_time.date }}-{{ ansible_date_time.time }}
@@ -19,13 +14,13 @@
     marker: "<!-- {mark} BEGIN ANSIBLE MANAGED BLOCK -->"
     insertafter: <div class="col-md-2"><a href="/ihm-recette/" class="btn btn-primary btn-xs" target="_blank">IHM recette</a> </div>
     block: | 
-                                 <div class="col-md-4"><a href="https://{{ vitam_site_name }}-ui.env.programmevitam.fr" class="btn btn-primary btn-xs" target="_blank">VITAM UI</a> </div>
+                                 <div class="col-md-4"><a href="https://{{ vitam_reverse_external_dns }}" class="btn btn-primary btn-xs" target="_blank">VITAM UI</a> </div>
 
 - name: consul
   lineinfile:
     path: "/var/www/html-{{ vitam_site_name }}/index.html"
     insertafter: ">Portail Consul</a>"
-    line: "                        <div class=\"col-md-4\"><a href=\"{{ vitamui_consul_url }}\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Portail Consul UI</a>&nbsp;<a href=\"https://{{ vitam_site_name }}-ui.env.programmevitam.fr/v1/health/state/any?pretty\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Services health</a></div>"
+    line: "                        <div class=\"col-md-4\"><a href=\"{{ vitamui_consul_url }}\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Portail Consul UI</a>&nbsp;<a href=\"https://{{ vitam_reverse_external_dns }}/v1/health/state/any?pretty\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Services health</a></div>"
 
 - name: read index.html
   command: cat "/var/www/html-{{ vitam_site_name }}/index.html"
@@ -80,7 +75,7 @@
                             {% endfor %}
                         </div>
                         <div class="col-md-2">
-                            <a href="https://{{ vitam_site_name }}-ui.env.programmevitam.fr/nodes/{{ item }}/browse" class="btn btn-primary btn-xs" target="_blank">/vitam browser</a>
+                            <a href="https://{{ vitam_reverse_external_dns }}/nodes/{{ item }}/browse" class="btn btn-primary btn-xs" target="_blank">/vitam browser</a>
                         </div>
                     </div>
          {% endfor %}
