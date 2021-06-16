@@ -59,8 +59,8 @@ export interface Customer extends Id {
   portalTitles: {[language: string]: string};
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
-  gdprAlert : boolean;
-  gdprAlertDelay : number;
+  gdprAlert: boolean;
+  gdprAlertDelay: number;
   tenantName?: string;
 
 }

@@ -182,9 +182,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     this.graphicIdentityForm.get('portalUrl').setValue(theme.portalUrl);
 
     // do not use this.graphicIdentityForm.controls (and new FormGroup)
-    this.graphicIdentityForm.get('portalTitle').setValue(theme.portalTitle);
-    this.graphicIdentityForm.get('portalMessage').setValue(theme.portalMessage);
-
     const newForm = this.formBuilder.group(this.graphicIdentityForm.value);
     newForm.controls.themeColors = newTheme;
     return newForm;
