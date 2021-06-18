@@ -43,7 +43,6 @@ ui-ingest:
         key-path: src/main/config/truststore.jks
         key-password: jkspasswd
       hostname-verification: false
-
 ui-prefix: ingest-api
 
 server-identity:

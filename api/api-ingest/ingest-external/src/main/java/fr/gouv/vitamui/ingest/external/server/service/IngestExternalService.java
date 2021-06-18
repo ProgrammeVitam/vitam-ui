@@ -45,9 +45,9 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
+import fr.gouv.vitamui.ingest.internal.client.IngestStreamingInternalRestClient;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,6 @@ import java.util.stream.Collectors;
 
 /**
  * The service to create vitam ingest.
- *
  */
 @Getter
 @Setter
@@ -71,29 +70,35 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
 
     @Autowired
     private final IngestInternalWebClient ingestInternalWebClient;
+    @Autowired
+    private final IngestStreamingInternalRestClient ingestStreamingInternalRestClient;
 
     public IngestExternalService(@Autowired IngestInternalRestClient ingestInternalRestClient,
         IngestInternalWebClient ingestInternalWebClient,
-            final ExternalSecurityService externalSecurityService) {
+        final ExternalSecurityService externalSecurityService,
+        final IngestStreamingInternalRestClient ingestStreamingInternalRestClient) {
         super(externalSecurityService);
         this.ingestInternalRestClient = ingestInternalRestClient;
         this.ingestInternalWebClient = ingestInternalWebClient;
+        this.ingestStreamingInternalRestClient = ingestStreamingInternalRestClient;
     }
 
     public Mono<RequestResponseOK> upload(InputStream in, String action, String contextId) {
         return ingestInternalWebClient.upload(getInternalHttpContext(), in, action, contextId);
     }
 
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction) {
 
         ParameterChecker.checkPagination(size, page);
-        final PaginatedValuesDto<LogbookOperationDto> result = getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+        final PaginatedValuesDto<LogbookOperationDto> result =
+            getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
         return new PaginatedValuesDto<>(
-                result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
-                result.getPageNum(),
-                result.getPageSize(),
-                result.isHasMore());
+            result.getValues().stream().map(element -> converterToExternalDto(element)).collect(Collectors.toList()),
+            result.getPageNum(),
+            result.getPageSize(),
+            result.isHasMore());
     }
 
     public LogbookOperationDto getOne(final String id) {
@@ -101,7 +106,7 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
 
     }
 
-     public ResponseEntity<byte[]> generateODTReport(String id) {
+    public ResponseEntity<byte[]> generateODTReport(String id) {
         return ingestInternalRestClient.generateODTReport(getInternalHttpContext(), id);
     }
 
@@ -109,4 +114,15 @@ public class IngestExternalService extends AbstractResourceClientService<Logbook
     protected IngestInternalRestClient getClient() {
         return ingestInternalRestClient;
     }
+
+
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream, final String originalFileName,
+        final String contextId,
+        final String action) {
+        return
+            ingestStreamingInternalRestClient
+                .streamingUpload(getInternalHttpContext(), originalFileName, inputStream, contextId,
+                    action);
+    }
+
 }

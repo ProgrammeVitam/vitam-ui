@@ -47,18 +47,25 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * Ingest Internal REST Client.
  */
-public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
+public class IngestInternalRestClient
+    extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalRestClient.class);
 
@@ -71,20 +78,26 @@ public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient
         return RestApi.V1_INGEST;
     }
 
-    @Override protected Class<LogbookOperationDto> getDtoClass() {
+    @Override
+    protected Class<LogbookOperationDto> getDtoClass() {
         return LogbookOperationDto.class;
     }
 
-    @Override protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
+    @Override
+    protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
+        };
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
+        };
     }
 
-    public ResponseEntity<byte[]> generateODTReport(InternalHttpContext context , String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID );
+    public ResponseEntity<byte[]> generateODTReport(InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID);
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
     }

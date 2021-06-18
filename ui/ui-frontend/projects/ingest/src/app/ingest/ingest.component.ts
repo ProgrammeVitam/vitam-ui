@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -45,7 +45,7 @@ import { GlobalEventService, SidenavPage, SearchBarComponent, AdminUserProfile, 
 import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
 import { IngestList } from '../core/common/ingest-list';
-
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-ingest',
@@ -54,6 +54,12 @@ import { IngestList } from '../core/common/ingest-list';
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
   search: string;
+  progressPercent = 0;
+  uploadError = false;
+
+  uploadSucces= false;
+  uploadInProgress = false;
+
   tenantIdentifier: string;
   guard = true;
   connectedUserInfo: AdminUserProfile;
@@ -64,6 +70,8 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
   @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
+
+  @ViewChild('inputFile') inputFile: ElementRef;
 
   constructor( private router: Router, private route: ActivatedRoute,
                globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder,
@@ -159,5 +167,47 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   refresh() {
     this.ingestListComponent.direction = Direction.DESCENDANT;
     this.ingestListComponent.emitOrderChange();
+  }
+
+
+
+  public uploadV2(event: any) {
+    if(event.target.files && event.target.files.length > 0) {
+      this.uploadInProgress = true;
+      const file = event.target.files[0];
+      console.log("start upload file ", file)
+      this.uploadSipService.uploadFileV2(this.tenantIdentifier,'DEFAULT_WORKFLOW', 'RESUME', file, file.name)
+      .subscribe(
+        data => {
+          if(data) {
+            console.log(data);
+            console.log(data.type);
+            switch(data.type) {
+              case HttpEventType.UploadProgress:
+                //this.uploadStatus.emit({ status: ProgressStatusEnum.IN_PROGRESS, percentage: Math.round((data.loaded / data.total) * 100) });
+                this.progressPercent = Math.round((data.loaded / data.total) * 100);
+                console.log('IN_PROGRESS: ', Math.round((data.loaded / data.total) * 100));
+                break;
+              case HttpEventType.Response:
+                this.inputFile.nativeElement.value = '';
+                console.log('COMPLETE: ');
+                //this.uploadStatus.emit({ status: ProgressStatusEnum.COMPLETE });
+                this.uploadInProgress = false;
+                this.uploadError = false;
+                this.uploadSucces = true;
+                break;
+            }
+          }
+        },
+        error => {
+          this.inputFile.nativeElement.value = '';
+          console.log('ERROR: ', error);
+          this.uploadInProgress = false;
+          this.uploadError = true;
+          this.uploadSucces = false;
+          //this.uploadStatus.emit({ status: ProgressStatusEnum.ERROR });
+        }
+      );
+    }
   }
 }

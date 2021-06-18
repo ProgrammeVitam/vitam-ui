@@ -25,6 +25,8 @@
         </button>
       </vitamui-common-banner>
 
+
+
       <div class="actions">
         <form [formGroup]="dateRangeFilterForm">
           <div class="date-filter-container">
@@ -57,6 +59,30 @@
     </div>
     <div class="vitamui-content">
       <app-upload-tracking></app-upload-tracking>
+
+
+
+      <div class="container-upload">
+        <button class="button upload" (click)="inputFile.click()">
+          UPLOAD
+        </button>
+        <input name="file" id="file" (change)="uploadV2($event)" type="file" #inputFile hidden>
+      </div>
+      
+      
+      <div class="progress" *ngIf="uploadInProgress">       
+          {{progressPercent}} %      
+      </div>
+      
+      
+      
+      
+      <div *ngIf="!uploadInProgress && uploadError" class="alert alert-danger" role="alert">
+        Error on uploading
+      </div>
+      <div *ngIf="!uploadInProgress && uploadSucces" class="alert alert-primary" role="alert">
+        uploading on success
+      </div>
     </div> <br>
 
     <div class="vitamui-content">

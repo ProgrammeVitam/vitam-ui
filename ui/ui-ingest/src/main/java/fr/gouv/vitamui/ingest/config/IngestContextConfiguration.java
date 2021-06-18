@@ -44,8 +44,11 @@ import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClientFactory;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClientFactory;
+import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClient;
+import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -74,6 +77,14 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
         return new IngestExternalRestClientFactory(uiProperties.getIngestExternalClient(), restTemplateBuilder);
     }
 
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory(final IngestApplicationProperties uiProperties) {
+        return new IngestStreamingExternalRestClientFactory(uiProperties.getIngestExternalClient());
+    }
+
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
@@ -94,5 +105,13 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
         final IngestExternalWebClientFactory ingestExternalWebClientFactory) {
         return ingestExternalWebClientFactory.getIngestExternalWebClient();
     }
+
+
+    @Bean
+    public IngestStreamingExternalRestClient ingestStreamingExternalRestClient(
+        final IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory) {
+        return ingestStreamingExternalRestClientFactory.getIngestStreamingExternalRestClient();
+    }
+
 
 }

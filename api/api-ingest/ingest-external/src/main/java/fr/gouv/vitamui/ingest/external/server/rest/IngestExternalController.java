@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -50,6 +51,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,8 +73,6 @@ import java.util.Optional;
 
 /**
  * UI Ingest External controller
- *
- *
  */
 @Api(tags = "ingest")
 @RequestMapping(RestApi.V1_INGEST)
@@ -90,11 +90,14 @@ public class IngestExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ALL_INGEST)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -134,5 +137,35 @@ public class IngestExternalController {
         LOGGER.debug("export ODT report for ingest with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
         return ingestExternalService.generateODTReport(id);
+    }
+
+    @Secured(ServicesData.ROLE_CREATE_INGEST)
+    @ApiOperation(value = "Upload an streaming SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) {
+        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
+            originalFileName);
+        SanityChecker.isValidFileName(originalFileName);
+/*
+        final Path tmpFilePath =
+            Paths.get(FileUtils.getTempDirectoryPath(), "internal-" + originalFileName);
+        int length = 0;
+        try {
+            length = inputStream.available();
+            LOGGER.debug("[streamingUpload] in progress InputStream of length [{}] to temporary path {}",
+                length, tmpFilePath.toAbsolutePath());
+            Files.copy(inputStream, tmpFilePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            LOGGER.debug("[streamingUpload] Error writing InputStream of length [{}] to temporary path {}",
+                length, tmpFilePath.toAbsolutePath());
+            throw new BadRequestException("ERROR: InputStream writing error : ", e);
+        }
+*/
+        return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }
 }

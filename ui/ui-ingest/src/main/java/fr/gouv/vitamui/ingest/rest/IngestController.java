@@ -53,12 +53,12 @@ import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.service.IngestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,15 +92,15 @@ import java.util.concurrent.atomic.AtomicLong;
 @Produces("application/json")
 public class IngestController extends AbstractUiRestController {
 
-    private final IngestService service;
+    private final IngestService ingestService;
 
     private final Map<String, AtomicLong> uploadMap = new ConcurrentHashMap<>();
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestController.class);
 
     @Autowired
-    public IngestController(final IngestService service) {
-        this.service = service;
+    public IngestController(final IngestService ingestService) {
+        this.ingestService = ingestService;
     }
 
     @ApiOperation(value = "Get entities paginated")
@@ -112,7 +112,7 @@ public class IngestController extends AbstractUiRestController {
         @RequestParam final Optional<DirectionDto> direction) {
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
-        return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
+        return ingestService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get one ingest operation details")
@@ -121,7 +121,7 @@ public class IngestController extends AbstractUiRestController {
     public LogbookOperationDto getOne(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.error("Get Ingest={}", id);
-        return service.getOne(buildUiHttpContext(), id);
+        return ingestService.getOne(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "download ODT Report for an ingest operation")
@@ -129,7 +129,7 @@ public class IngestController extends AbstractUiRestController {
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("download ODT report for the ingest with id :{}", id);
-        byte[] bytes = service.generateODTReport(buildUiHttpContext(), id).getBody();
+        byte[] bytes = ingestService.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
             .body(bytes);
@@ -184,7 +184,7 @@ public class IngestController extends AbstractUiRestController {
             LOGGER.debug("Total upload : {} {} ...", writtenDataSize, size);
             if (writtenDataSize >= size) {
                 LOGGER.debug("Start uploading file ...");
-                service.upload(buildUiHttpContext(), in, contextId, xAction, file.getOriginalFilename());
+                ingestService.upload(buildUiHttpContext(), in, contextId, xAction, file.getOriginalFilename());
             }
             final HttpHeaders headers = new HttpHeaders();
             headers.add(CommonConstants.X_REQUEST_ID_HEADER, requestId);
@@ -201,8 +201,32 @@ public class IngestController extends AbstractUiRestController {
                 requestId,
                 chunkOffset, totalSize, exception.getMessage());
             throw new InternalServerException(message, exception);
-
         }
+    }
+
+    @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(CommonConstants.INGEST_UPLOAD_V2)
+    public ResponseEntity<Void> ingest(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
+        @RequestHeader(value = CommonConstants.X_ACTION) final String xAction,
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
+        @RequestHeader(value = "fileName") final String fileName,
+        final InputStream inputStream) {
+        ParameterChecker
+            .checkParameter("The tenantId, xAction and contextId are mandatory parameters : ",
+                tenantId, xAction, contextId);
+        SafeFileChecker.checkSafeFilePath(fileName);
+        LOGGER.info("Start uploading file ...");
+        /*
+            @TODO Should return operation Id from Vitam
+         */
+
+        ResponseEntity<Void> response =
+            ingestService.streamingUpload(buildUiHttpContext(), fileName, inputStream, contextId, xAction);
+
+        LOGGER.info("The response in ui Ingest is {} ", response.toString());
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }

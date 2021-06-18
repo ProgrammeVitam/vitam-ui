@@ -51,10 +51,13 @@
   - name: debug vitam-ui
     replace:
       path: "/var/www/html-{{ vitam_site_name }}/index.html"
-      regexp: "(/nodes/vitam-env-{{ vitam_site_name }}-vm-3.vitam-env/browse.*\n.*</div>)"
+      regexp: "(</div>\n.*</div>\n.*\n<!-- MAIN FOOTER -->)"
       replace: |
-        \1
-        	</div> 
+        <div class="panel panel-default col-md-12 container">
+        <a class="panel-header no-toggle" href="#">
+            <h2>Debug UI</h2>
+        </a>
+        <div class="panel-body">
         {% for item in groups['hosts_vitamui'] %}
                     <div class="row component-line">
                         <div class="col-md-3">{{ item }}</div>
@@ -79,4 +82,7 @@
                         </div>
                     </div>
          {% endfor %}
-  when:  index_content.stdout is not search("/nodes/vitam-env-{{ vitam_site_name }}-vm-5.vitam-env/browse")
+            </div>
+         </div>
+         \1
+  when:  index_content.stdout is not search("vitamui-security-internal")
