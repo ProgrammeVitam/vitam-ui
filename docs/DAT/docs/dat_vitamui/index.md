@@ -22,14 +22,14 @@
         3.2.2. [Service cas-server](architecture/services_externes.md#service-cas-server)  
         3.2.3. [Service referential-external](architecture/services_externes.md#service-referential-external)  
         3.2.4. [Service ingest-external](architecture/services_externes.md#service-ingest-external)  
-        3.2.5. [Service archive-serach-external](architecture/services_externes.md#service-archive-search-external)  
+        3.2.5. [Service archive-search-external](architecture/services_externes.md#service-archive-search-external)  
 
     3.3. [Services internes](architecture/services_internes.md)  
         3.3.1. [Service iam-internal](architecture/services_internes.md#service-iam-internal)  
         3.3.2. [Service security-internal](architecture/services_internes.md#service-security-internal)  
-        3.2.3. [Service referential-internal](architecture/services_internes.md#service-referential-internal)  
-        3.2.4. [Service ingest-internal](architecture/services_internes.md#service-ingest-internal)  
-        3.2.5. [Service archive-serach-internal](architecture/services_internes.md#service-archive-search-internal)  
+        3.3.3. [Service referential-internal](architecture/services_internes.md#service-referential-internal)  
+        3.3.4. [Service ingest-internal](architecture/services_internes.md#service-ingest-internal)  
+        3.3.5. [Service archive-search-internal](architecture/services_internes.md#service-archive-search-internal)  
 
     3.4. [Services d’infrastructure](architecture/services_infrastructures.md)  
     
@@ -79,6 +79,7 @@
          3.10.2. [Base IAM](architecture/mdd.md#Base-IAM)  
          3.10.3. [Base security](architecture/mdd.md#base-security)  
          3.10.4. [Base Cas](architecture/mdd.md#base-cas)  
+         3.10.5. [Base archivesearch](architecture/mdd.md#Base-archivesearch)
 
 4. [Implémentation](implementation/composants.md)
 

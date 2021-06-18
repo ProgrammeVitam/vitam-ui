@@ -41,13 +41,9 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.FileOperationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import org.apache.commons.io.FileUtils;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -65,16 +61,16 @@ import java.util.Optional;
 
 /**
  * Internal WebClient for Ingest operations.
- *
- *
  */
 public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalWebClient.class);
 
+
     public IngestExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
+
 
     public ClientResponse upload(final ExternalHttpContext context, InputStream in, String contextId, String action,
         final String originalFilename) {
@@ -83,14 +79,16 @@ public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> 
             throw new FileOperationException("The uploaded file stream is null.");
         }
 
-        final Path filePath = Paths.get(FileUtils.getTempDirectoryPath(), context.getRequestId());
+        final Path filePath =
+            Paths.get(System.getProperty(CommonConstants.VITAMUI_TEMP_DIRECTORY), context.getRequestId());
         int length = 0;
         try {
             length = in.available();
             Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             LOGGER
-                .debug("[IngestExternalWebClient] Error writing InputStream of lenth [{}] to temporary path {}", length,
+                .debug("[IngestExternalWebClient] Error writing InputStream of length [{}] to temporary path {}",
+                    length,
                     filePath.toAbsolutePath());
             throw new BadRequestException("ERROR: InputStream writing error : ", e);
         }

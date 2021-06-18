@@ -1,10 +1,12 @@
 <div class="vitamui-autocomplete" [class.disabled]="control.disabled" [class.label-up]="labelUp">
   <label class="input-label">{{ placeholder }}</label>
   <input
-      #input
+      #input="matAutocompleteTrigger"
+      matInput
       type="text"
       [formControl]="control"
       [matAutocomplete]="auto"
+      [vitamuiAutocompletePosition]="input"
       (blur)="onBlur()"
       (focus)="onFocus()"
   >

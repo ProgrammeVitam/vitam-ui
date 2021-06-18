@@ -98,6 +98,8 @@ import { SidenavPage } from './sidenav-page.class';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import {ResizeSidebarModule} from "./directives/resize-sidebar/resize-sidebar.module";
+import {AutocompletePositionDirectiveModule} from "./directives/autocomplete-position/autocomplete-position.directive.module";
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -164,7 +166,9 @@ export function startupServiceFactory(startupService: StartupService) {
     VitamuiCommonBannerModule,
     UserPhotoModule,
     VitamuiMenuButtonModule,
-    VitamuiSidenavHeaderModule
+    VitamuiSidenavHeaderModule,
+    ResizeSidebarModule,
+    AutocompletePositionDirectiveModule
   ],
   entryComponents: [
     ErrorDialogComponent
@@ -218,7 +222,9 @@ export function startupServiceFactory(startupService: StartupService) {
     CommonProgressBarModule,
     CommonTooltipModule,
     VitamuiSidenavHeaderModule,
-    VitamuiMenuButtonModule
+    VitamuiMenuButtonModule,
+    ResizeSidebarModule,
+    AutocompletePositionDirectiveModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

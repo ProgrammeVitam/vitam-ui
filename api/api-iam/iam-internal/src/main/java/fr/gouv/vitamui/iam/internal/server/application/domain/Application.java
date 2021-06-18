@@ -83,6 +83,10 @@ public class Application extends IdDocument {
     private String category;
 
     @NotNull
+    @Length(max = 100)
+    private String serviceId;
+
+    @NotNull
     private Integer position;
 
     @NotNull

@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,73 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.domain;
+import {AutocompletePositionDirective} from "./autocomplete-position.directive";
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
-
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-/**
- * The DTO v1 for an application.
- *
- *
- */
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = true)
-@ToString(callSuper = true)
-public class ApplicationDto extends IdDto {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = -3608467690332832042L;
-
-    @NotNull
-    @Length(min = 1, max = 100)
-    private String identifier;
-
-    @NotNull
-    @Length(max = 100)
-    private String url;
-
-    @NotNull
-    @Length(max = 100)
-    private String serviceId;
-
-    @NotNull
-    @Length(max = 50)
-    private String icon;
-
-    @NotNull
-    @Length(max = 50)
-    private String name;
-
-    @NotNull
-    @Length(max = 25)
-    private String category;
-
-    @NotNull
-    private Integer position;
-
-    @NotNull
-    private Boolean hasCustomerList;
-
-    @NotNull
-    private Boolean hasTenantList;
-
-    @NotNull
-    private Boolean hasHighlight;
-
-    @NotNull
-    @Length(max = 200)
-    private String tooltip;
-
-    @Length(max = 25)
-    private String target;
-}
+describe('AutocompletePositionDirective', () => {
+  it('should create an instance', () => {
+    const directive = new AutocompletePositionDirective();
+    expect(directive).toBeTruthy();
+  });
+});
