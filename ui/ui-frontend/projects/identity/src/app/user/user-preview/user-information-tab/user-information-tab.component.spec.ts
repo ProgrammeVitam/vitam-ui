@@ -119,7 +119,6 @@ let expectedCustomer: Customer = {
   themeColors: {},
   gdprAlert : false,
   gdprAlertDelay : 72,
-  themeColors: {},
   portalMessages: {},
   portalTitles: {}
 };
@@ -232,7 +231,6 @@ describe('UserInfoTabComponent', () => {
       themeColors: {},
       gdprAlert : false,
       gdprAlertDelay : 72,
-      themeColors: {},
       portalMessages: {},
       portalTitles: {}
     };

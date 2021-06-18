@@ -94,7 +94,6 @@ class TestHostComponent {
     themeColors: {},
     gdprAlert : false,
     gdprAlertDelay : 72,
-    themeColors: {},
     portalMessages: {},
     portalTitles: {}
   };
