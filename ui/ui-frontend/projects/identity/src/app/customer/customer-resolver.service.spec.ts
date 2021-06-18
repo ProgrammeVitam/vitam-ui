@@ -71,7 +71,6 @@ const expectedCustomer: Customer = {
   themeColors: {},
   gdprAlert : false,
   gdprAlertDelay : 72,
-  themeColors: {},
   portalMessages: {},
   portalTitles: {}
 };

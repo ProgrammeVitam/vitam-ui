@@ -1,12 +1,12 @@
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { AccessContractNodesTabComponent } from './access-contract-nodes-tab.component';
 
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {SearchUnitApiService} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {AccessContractNodesTabComponent} from './access-contract-nodes-tab.component';
-import {ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
 
 describe('AccessContractNodesTabComponent', () => {
   let component: AccessContractNodesTabComponent;
@@ -61,7 +61,7 @@ describe('AccessContractNodesTabComponent', () => {
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {

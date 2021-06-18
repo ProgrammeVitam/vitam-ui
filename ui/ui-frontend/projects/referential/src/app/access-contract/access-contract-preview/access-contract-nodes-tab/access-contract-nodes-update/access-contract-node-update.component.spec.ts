@@ -84,7 +84,6 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: {},
   gdprAlert: false,
   gdprAlertDelay : 72,
   themeColors: {},

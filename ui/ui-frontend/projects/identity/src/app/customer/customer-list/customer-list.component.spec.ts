@@ -1,43 +1,44 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
- * and the signatories of the "VITAM - Accord du Contributeur" agreement.
- *
- * contact@programmevitam.fr
- *
- * This software is a computer program whose purpose is to implement
- * implement a digital archiving front-office system for the secure and
- * efficient high volumetry VITAM solution.
- *
- * This software is governed by the CeCILL-C license under French law and
- * abiding by the rules of distribution of free software.  You can  use,
- * modify and/ or redistribute the software under the terms of the CeCILL-C
- * license as circulated by CEA, CNRS and INRIA at the following URL
- * "http://www.cecill.info".
- *
- * As a counterpart to the access to the source code and  rights to copy,
- * modify and redistribute granted by the license, users are provided only
- * with a limited warranty  and the software's author,  the holder of the
- * economic rights,  and the successive licensors  have only  limited
- * liability.
- *
- * In this respect, the user's attention is drawn to the risks associated
- * with loading,  using,  modifying and/or developing or reproducing the
- * software by the user in light of its specific status of free software,
- * that may mean  that it is complicated to manipulate,  and  that  also
- * therefore means  that it is reserved for developers  and  experienced
- * professionals having in-depth computer knowledge. Users are therefore
- * encouraged to load and test the software's suitability as regards their
- * requirements in conditions enabling the security of their systems and/or
- * data to be ensured and,  more generally, to use and operate it in the
- * same conditions as regards security.
- *
- * The fact that you are presently reading this means that you have had
- * knowledge of the CeCILL-C license and that you accept its terms.
- */
+* Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
+* and the signatories of the "VITAM - Accord du Contributeur" agreement.
+*
+* contact@programmevitam.fr
+*
+* This software is a computer program whose purpose is to implement
+* implement a digital archiving front-office system for the secure and
+* efficient high volumetry VITAM solution.
+*
+* This software is governed by the CeCILL-C license under French law and
+* abiding by the rules of distribution of free software.  You can  use,
+* modify and/ or redistribute the software under the terms of the CeCILL-C
+* license as circulated by CEA, CNRS and INRIA at the following URL
+* "http://www.cecill.info".
+*
+* As a counterpart to the access to the source code and  rights to copy,
+* modify and redistribute granted by the license, users are provided only
+* with a limited warranty  and the software's author,  the holder of the
+* economic rights,  and the successive licensors  have only  limited
+* liability.
+*
+* In this respect, the user's attention is drawn to the risks associated
+* with loading,  using,  modifying and/or developing or reproducing the
+* software by the user in light of its specific status of free software,
+* that may mean  that it is complicated to manipulate,  and  that  also
+* therefore means  that it is reserved for developers  and  experienced
+* professionals having in-depth computer knowledge. Users are therefore
+* encouraged to load and test the software's suitability as regards their
+* requirements in conditions enabling the security of their systems and/or
+* data to be ensured and,  more generally, to use and operate it in the
+* same conditions as regards security.
+*
+* The fact that you are presently reading this means that you have had
+* knowledge of the CeCILL-C license and that you accept its terms.
+*/
 
 
 import { Component, Directive, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { By } from '@angular/platform-browser';
@@ -74,10 +75,11 @@ let fixture: ComponentFixture<CustomerListComponent>;
 
 class Page {
 
-  get table() { return fixture.nativeElement.querySelector('table'); }
-  get columns() { return fixture.nativeElement.querySelectorAll('th'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('tbody > tr:nth-of-type(odd)'); }
-  get loadMoreButton() { return fixture.nativeElement.querySelector('.vitamui-table-footer button'); }
+  get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
+  get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head div'); }
+  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row'); }
+  get ownerBtn() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary'); }
+  get loadMoreButton() { return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message'); }
   get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
 
 }
@@ -88,9 +90,8 @@ let tenants: Tenant[];
 
 describe('CustomerListComponent', () => {
 
-  beforeEach(async(() => {
-    customers = [
-      {
+  beforeEach(waitForAsync(() => {
+    customers = [{
         id: '11',
         identifier: '11',
         code: '011000',
@@ -116,7 +117,9 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         gdprAlert : false,
-        gdprAlertDelay : 72
+        gdprAlertDelay : 72,
+        portalMessages: {},
+        portalTitles: {},
       },
       {
         id: '12',
@@ -144,7 +147,9 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         gdprAlert : false,
-        gdprAlertDelay : 72
+        gdprAlertDelay : 72,
+        portalMessages: {},
+        portalTitles: {},
       },
       {
         id: '13',
@@ -172,7 +177,9 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         gdprAlert : false,
-        gdprAlertDelay : 72
+        gdprAlertDelay : 72,
+        portalMessages: {},
+        portalTitles: {},
       },
       {
         id: '14',
@@ -200,7 +207,9 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         gdprAlert : false,
-        gdprAlertDelay : 72
+        gdprAlertDelay : 72,
+        portalMessages: {},
+        portalTitles: {},
       },
       {
         id: '15',
@@ -228,7 +237,9 @@ describe('CustomerListComponent', () => {
         owners: [],
         themeColors: {},
         gdprAlert : false,
-        gdprAlertDelay : 72
+        gdprAlertDelay : 72,
+        portalMessages: {},
+        portalTitles: {},
       },
     ];
 
@@ -288,7 +299,7 @@ describe('CustomerListComponent', () => {
     page = new Page();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -298,10 +309,10 @@ describe('CustomerListComponent', () => {
 
   it('should have the right columns', () => {
     expect(page.columns).toBeTruthy();
-    expect(page.columns.length).toBe(7);
-    expect(page.columns[1].textContent).toContain('Code Client');
-    expect(page.columns[2].textContent).toContain('Client');
-    expect(page.columns[3].textContent).toContain('Raison Sociale');
+    expect(page.columns.length).toBe(6);
+    expect(page.columns[1].textContent).toContain('Code organisation');
+    expect(page.columns[2].textContent).toContain('Organisation');
+    expect(page.columns[3].textContent).toContain('Raison sociale');
     expect(page.columns[4].textContent).toContain('SSO');
     expect(page.columns[5].textContent).toContain('Validation en deux étapes');
   });
@@ -333,14 +344,14 @@ describe('CustomerListComponent', () => {
     const customerListService = TestBed.get(CustomerListService);
     customerListService.canLoadMore = false;
     fixture.detectChanges();
-    expect(page.loadMoreButton).toBeFalsy();
+    expect(page.loadMoreButton.length).toBe(0);
   });
 
   it('should call loadMore()', () => {
     const customerListService = TestBed.get(CustomerListService);
     component.infiniteScrollDisabled = true;
     fixture.detectChanges();
-    page.loadMoreButton.click();
+    page.loadMoreButton[0].click();
     expect(customerListService.loadMore).toHaveBeenCalled();
   });
 
@@ -353,8 +364,7 @@ describe('CustomerListComponent', () => {
   });
 
   it('should open the owner creation dialog', () => {
-    const addOwnerBtn = page.rows[2].querySelector('.actions > button:first-child');
-    addOwnerBtn.click();
+    page.ownerBtn[2].click();
     const matDialogSpy = TestBed.get(MatDialog);
     expect(matDialogSpy.open.calls.count()).toBe(1);
     expect(matDialogSpy.open).toHaveBeenCalledWith(OwnerCreateComponent, {
@@ -382,7 +392,7 @@ describe('CustomerListComponent', () => {
     };
     const matDialogSpy = TestBed.get(MatDialog);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of({ owner: newOwner }) });
-    const addOwnerBtn = page.rows[0].querySelector('.actions > button:first-child');
+    const addOwnerBtn = page.rows[0].querySelector('.btn.btn-circle.primary');
     addOwnerBtn.click();
     expect(customers[0].owners).toContain(newOwner);
   });
@@ -390,34 +400,8 @@ describe('CustomerListComponent', () => {
   it('should not add anything to the owners list', () => {
     const matDialogSpy = TestBed.get(MatDialog);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(undefined) });
-    const addOwnerBtn = page.rows[0].querySelector('.actions > button:first-child');
-    addOwnerBtn.click();
+    page.ownerBtn[0].click();
     expect(customers[0].owners.length).toBe(0);
-  });
-
-  it('should add the new tenant to the list', () => {
-    const newTenant: Tenant = {
-      id: '43',
-      identifier: 43,
-      name: 'Toto',
-      customerId: '42',
-      ownerId: '42',
-      enabled: true,
-      proof: true,
-      readonly : false,
-      accessContractHoldingIdentifier: 'AC-000001',
-      accessContractLogbookIdentifier: 'AC-000002',
-      ingestContractHoldingIdentifier: 'IC-000001',
-      itemIngestContractIdentifier : 'IC-000001',
-    };
-
-    const matDialogSpy = TestBed.get(MatDialog);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of({ tenant: newTenant }) });
-
-    const addOwnerBtn = page.rows[0].querySelector('.actions > button:first-child');
-    addOwnerBtn.click();
-
-    expect(tenants.length).toEqual(0);
   });
 
   it('should update the customer', () => {
@@ -427,19 +411,10 @@ describe('CustomerListComponent', () => {
   });
 
   function testRow(index: number) {
-    const cells = page.rows[index].querySelectorAll('td');
-    expect(cells.length).toBe(7);
-    expect(cells[1].textContent).toContain(customers[index].code);
-    expect(cells[2].textContent).toContain(customers[index].name);
-    expect(cells[3].textContent).toContain(customers[index].companyName);
-    expect(cells[4].textContent).toContain(customers[index].idp ? 'Oui' : 'Non');
-    if (customers[index].otp === 'OPTIONAL') {
-      expect(cells[5].textContent).toContain('Optionnelle');
-    } else if (customers[index].otp === 'DISABLED') {
-      expect(cells[5].textContent).toContain('Non');
-    } else {
-      expect(cells[5].textContent).toContain('Obligatoire');
-    }
+    const cells = page.rows[index].querySelectorAll('.d-flex');
+    expect(cells.length).toBe(6);
+    expect(cells[2].textContent).toContain(customers[index].code);
+    expect(cells[3].textContent).toContain(customers[index].name);
+    expect(cells[4].textContent).toContain(customers[index].companyName);
   }
-
 });
