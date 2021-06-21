@@ -475,7 +475,7 @@ public class IamLogbookService {
      */
     public void createExternalParamProfileEvent(final ExternalParamProfileDto externalParamProfileDto) {
         LOGGER.info("Create ExternalParameter Profile {}", externalParamProfileDto.toString());
-        create(getCurrentProofTenantIdentifier(), externalParamProfileDto.getProfileIdentifier(), "externalparamprofile",
+        create(getCurrentProofTenantIdentifier(), externalParamProfileDto.getIdProfile(), "externalparamprofile",
             EventType.EXT_VITAMUI_CREATE_EXTERNAL_PARAM_PROFILE,
             converters.getExternalParamProfileConverter().convertToLogbook(externalParamProfileDto));
     }
@@ -487,7 +487,7 @@ public class IamLogbookService {
      */
     public void updateExternalParamProfileEvent(final ExternalParamProfileDto externalParamProfileDto, final Collection<EventDiffDto> logbooks) {
         LOGGER.info("Update Profile {}", externalParamProfileDto.toString());
-        update(getCurrentProofTenantIdentifier(), externalParamProfileDto.getProfileIdentifier(), "externalparamprofile", EventType.EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE, logbooks);
+        update(getCurrentProofTenantIdentifier(), externalParamProfileDto.getIdProfile(), "externalparamprofile", EventType.EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE, logbooks);
     }
 
 }

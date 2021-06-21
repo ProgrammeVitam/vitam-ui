@@ -58,6 +58,18 @@
       "PORTAL_MESSAGE_LENGTH": "/500 caractères max restants",
       "ADD_LANGUAGE" : "Ajouter une langue",
       "DELETE_LANGUAGE" : "Supprimer la langue"
+    },
+    "EXTERNAL_PARAM_PROFILE": {
+      "CREATE_EXTERNAL_PARAM_PROFILE": "CREER UN PROFIL PARAMETRES EXTERNES",
+      "TITLE": "Paramétrer les droits des administrateurs",
+      "PLACEHOLDER_INPUT": "Nom du profil paramètres externes",
+      "INPUT_REQUIRED": "Champ requis",
+      "NAME_ALREADY_USED": "Nom déjà utilisé",
+      "SELECT_ACCESSCONTRACT": "Sélectionner un contrat d'accès",
+      "ACTIVATED": "actif",
+      "EXTERNAL_PARAM_PROFILE_NAME": "Nom du profil paramétrage externe",
+      "IDENTIFIER": "Identifiant",
+      "DESCRIPTION": "Description"
     }
   }
 }

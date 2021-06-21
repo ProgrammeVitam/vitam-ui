@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.externalparamprofile.service;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -15,6 +16,7 @@ import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.utils.DtoFactory;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
+import fr.gouv.vitamui.iam.internal.server.common.builder.ExternalParamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.utils.ProfileSequenceGenerator;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -25,8 +27,10 @@ import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalPa
 import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.domain.Group;
+import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
+import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
@@ -35,12 +39,15 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.bson.Document;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,16 +61,21 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
+@RunWith(SpringRunner.class)
 public class ExternalParamProfileInternalServiceTest {
 
     private ExternalParamProfileInternalService externalParamProfileInternalService;
-    private ProfileInternalService profileInternalService;
-    private ExternalParametersInternalService externalParametersInternalService;
+
+    private ProfileInternalService profileInternalService = mock(ProfileInternalService.class);
+
+    private ExternalParametersInternalService externalParametersInternalService = mock(ExternalParametersInternalService.class);
+
     private final ExternalParamProfileRepository externalParamProfileRepository = mock(ExternalParamProfileRepository.class);
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
@@ -79,14 +91,9 @@ public class ExternalParamProfileInternalServiceTest {
     private final LogbookService logbookService = mock(LogbookService.class);
 
     private final ProfileConverter profileConverter = new ProfileConverter();
-    private final ExternalParametersConverter ExternalParametersConverter = new ExternalParametersConverter();
 
     @Before
     public void setup() throws Exception {
-
-        externalParametersInternalService = new ExternalParametersInternalService(sequenceRepository, externalParametersRepository, ExternalParametersConverter,
-            internalSecurityService, iamLogbookService);
-
         externalParamProfileInternalService = new ExternalParamProfileInternalService(externalParametersInternalService, profileInternalService,
             internalSecurityService, profileSequenceGenerator,iamLogbookService,
             externalParamProfileRepository, logbookService, profileConverter);
@@ -102,7 +109,12 @@ public class ExternalParamProfileInternalServiceTest {
     }
 
     @Test
-    public void testCreateExternalParamProfile() {
+    public void testCreateProfileUser() {
+        // Givens
+        final ProfileDto profileDto = DtoFactory.buildProfileDto("User", "User", false, "", 10, "USERS_APP",
+            Arrays.asList(ServicesData.ROLE_GET_USERS, ServicesData.ROLE_GET_GROUPS), IamServerUtilsTest.CUSTOMER_ID);
+        profileDto.setExternalParamId("external_param_id");
+
         final ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
         externalParamProfileDto.setIdExternalParam("id");
         externalParamProfileDto.setName("name");
@@ -113,36 +125,57 @@ public class ExternalParamProfileInternalServiceTest {
         VitamUIUtils.copyProperties(externalParamProfileDto, other);
         other.setId(UUID.randomUUID().toString());
 
+        final Profile otherProfile = new Profile();
+        VitamUIUtils.copyProperties(profileDto, otherProfile);
+        other.setId(UUID.randomUUID().toString());
+
         final AuthUserDto user = IamServerUtilsTest.buildAuthUserDto();
         user.setLevel("");
 
         final Group group = IamServerUtilsTest.buildGroup();
         group.setLevel("");
 
-        ExternalParametersDto externalParametersDto = new ExternalParametersDto();
-        externalParametersDto.setIdentifier("identifier");
-
+        // Whens
         when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
         when(internalSecurityService.getUser()).thenReturn(user);
         when(internalSecurityService.getLevel()).thenReturn("");
+        when(internalSecurityService.isLevelAllowed(ArgumentMatchers.any())).thenReturn(true);
+        when(internalSecurityService.getCustomerId()).thenReturn(IamServerUtilsTest.CUSTOMER_ID);
 
         ExternalParameters externalParameters = new ExternalParameters();
-        externalParameters.setIdentifier("identifier");
-
+        externalParameters.setIdentifier("external_param_id");
+        ExternalParametersDto externalParametersDto = new ExternalParametersDto();
+        externalParametersDto.setName("name");
+        externalParametersDto.setIdentifier("external_param_id");
+        externalParametersDto.setIdentifier("identifier");
         when(externalParametersRepository.save(externalParameters)).thenReturn(externalParameters);
-
-        //doNothing().when(iamLogbookService).createExternalParametersEvent(externalParametersDto);
-
-        /*final ExternalParametersDto ep = new ExternalParametersDto();
-        VitamUIUtils.copyProperties(externalParametersDto, ep);
-
-
+        when(externalParametersRepository.save(externalParameters)).thenReturn(externalParameters);
+        when(externalParametersInternalService.getExternalParametersRepository()).thenReturn(externalParametersRepository);
         when(externalParametersRepository.generateSuperId()).thenReturn("id");
+        when(externalParametersInternalService.create(any())).thenReturn(externalParametersDto);
+        when(profileInternalService.create(any())).thenReturn(profileDto);
 
-        when(externalParametersInternalService.create(externalParametersDto)).thenReturn(ep);
+        // Then
+        final ExternalParamProfileDto expectedValue = new ExternalParamProfileDto();
+        expectedValue.setEnabled(false);
+        expectedValue.setExternalParamIdentifier(externalParametersDto.getIdentifier());
+        expectedValue.setName(externalParametersDto.getName());
+        expectedValue.setDescription(other.getDescription());
+        expectedValue.setAccessContract("access_contract");
 
-        final ExternalParamProfileDto externalParamProfileDtoCreated = externalParamProfileInternalService.create(other);
+        final ExternalParamProfileDto CreatedExternalParamProfileDto = externalParamProfileInternalService.create(externalParamProfileDto);
 
-        assertNotNull("external Profile id should be defined", externalParamProfileDtoCreated.getId());*/
+        assertNotNull("Of course external parameter profile should not be null", CreatedExternalParamProfileDto);
+        // compare all fields except operation dateTime
+        assertThat(CreatedExternalParamProfileDto).isEqualToComparingOnlyGivenFields(
+            expectedValue,
+            "name",
+            "externalParamIdentifier",
+            "description",
+            "accessContract",
+            "enabled",
+            "idProfile",
+            "profileIdentifier",
+            "idExternalParam");
     }
 }

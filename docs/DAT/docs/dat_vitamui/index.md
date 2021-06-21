@@ -69,6 +69,10 @@
     
     3.9. [Profils de paramétrage externes](architecture/external_param_profile.md)  
         3.9.1. [External Parameter Profile](architecture/external_param_profile.md#external-param-profile)    
+        3.9.2. [Profil](architecture/external_param_profile.md#profil)    
+        3.9.3. [External Parameters](architecture/external_param_profile.md#external-parameters)    
+        3.9.4. [Illustration](architecture/external_param_profile.md#illustration)    
+        3.9.5. [Événement lors de la mise à jour](architecture/external_param_profile.md#evenement_lors-de-la-mise-a-jour)    
 
     3.10. [Journalisation](architecture/journalisation.md) 
         3.10.1. [Objectifs](architecture/journalisation.md#Objectifs)

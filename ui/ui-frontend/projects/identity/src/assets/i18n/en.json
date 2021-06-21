@@ -5,11 +5,11 @@
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
     "NEXT": "Next",
-    "REQUIRED" :"Required param",
+    "REQUIRED": "Required param",
     "LANGUAGE": {
-      "TITLE" : "Language",
-      "ENGLISH" :"English",
-      "FRENCH" : "French",
+      "TITLE": "Language",
+      "ENGLISH": "English",
+      "FRENCH": "French",
       "GERMAN": "German"
     }
   },
@@ -55,9 +55,20 @@
       "DEFAULT_PORTAL_MESSAGE": "Default Portal message",
       "LANGUAGE_PORTAL_MESSAGE": "Portal message language",
       "PORTAL_MESSAGE_LENGTH": "/500 characters max left",
-      "ADD_LANGUAGE" : "Add a language",
-      "DELETE_LANGUAGE" : "Delete the language"
+      "ADD_LANGUAGE": "Add a language",
+      "DELETE_LANGUAGE": "Delete the language"
+    },
+    "EXTERNAL_PARAM_PROFILE": {
+      "CREATE_EXTERNAL_PARAM_PROFILE": "CREATE AN EXTERNAL PARAMETERS PROFILE",
+      "TITLE": "Configure administrator rights",
+      "PLACEHOLDER_INPUT": "External parameters profile name",
+      "INPUT_REQUIRED": "Required field",
+      "NAME_ALREADY_USED": "Name already used",
+      "SELECT_ACCESSCONTRACT": "Select an Access Contract",
+      "ACTIVATED": "activated",
+      "EXTERNAL_PARAM_PROFILE_NAME": "External parameters profile name",
+      "IDENTIFIER": "Identifier",
+      "DESCRIPTION": "Description"
     }
   }
-
 }

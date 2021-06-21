@@ -10,11 +10,11 @@
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
-      <vitamui-common-title-breadcrumb> Paramétrer les droits des administrateurs </vitamui-common-title-breadcrumb>
+      <vitamui-common-title-breadcrumb> {{ 'EXTERNAL_PARAM_PROFILE.TITLE' | translate }} </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'Nom du profil paramètres externes'" (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'EXTERNAL_PARAM_PROFILE.PLACEHOLDER_INPUT' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openExternalParamProfilCreateDialog()">
-          <span>CREER UN PROFIL PARAMETRES EXTERNES</span>
+          <span>{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE' | translate }}</span>
         </button>
       </vitamui-common-banner>
     </div>
