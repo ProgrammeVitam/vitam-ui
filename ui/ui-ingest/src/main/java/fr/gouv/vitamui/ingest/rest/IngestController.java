@@ -217,11 +217,7 @@ public class IngestController extends AbstractUiRestController {
             .checkParameter("The tenantId, xAction and contextId are mandatory parameters : ",
                 tenantId, xAction, contextId);
         SafeFileChecker.checkSafeFilePath(fileName);
-        LOGGER.info("Start uploading file ...");
-        /*
-            @TODO Should return operation Id from Vitam
-         */
-
+        LOGGER.info("Start uploading file ...{} ", fileName);
         ResponseEntity<Void> response =
             ingestService.streamingUpload(buildUiHttpContext(), fileName, inputStream, contextId, xAction);
 
