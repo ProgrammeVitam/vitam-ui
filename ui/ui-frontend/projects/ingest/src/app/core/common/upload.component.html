@@ -2,28 +2,34 @@
   <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
 <form [formGroup]="sipForm">
-  <div class="content">    
-  <ng-container [ngSwitch]="contextId">    
-        <ng-container *ngSwitchCase="'HOLDING_SCHEME'">
-        <h4> {{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.HOLDING_SCHEME' | translate}}</h4>
-        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.HOLDING_SCHEME' | translate}}</h2>
-        </ng-container>
-        <ng-container *ngSwitchCase="'FILING_SCHEME'">
-        <h4>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.FILING_SCHEME' | translate}}</h4>
-        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.FILING_SCHEME' | translate}}</h2>
+  <div class="content">
+    <ng-container [ngSwitch]="contextId">
+      <ng-container *ngSwitchCase="'HOLDING_SCHEME'">
+        <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.HOLDING_SCHEME' | translate }}</h4>
+        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.HOLDING_SCHEME' | translate }}</h2>
       </ng-container>
-        <ng-container *ngSwitchCase="'DEFAULT_WORKFLOW'">
-        <h4>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate}}</h4>
-        <h2>{{'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate}}</h2>
-      </ng-container>¯
-      
-</ng-container>
+      <ng-container *ngSwitchCase="'FILING_SCHEME'">
+        <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.FILING_SCHEME' | translate }}</h4>
+        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.FILING_SCHEME' | translate }}</h2>
+      </ng-container>
+      <ng-container *ngSwitchCase="'DEFAULT_WORKFLOW'">
+        <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate }}</h4>
+        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate }}</h2> </ng-container
+      >¯
+    </ng-container>
     <div class="d-flex">
-      <div class="drag-and-drop-area" [ngClass]="{'on-over': hasDropZoneOver}" vitamuiCommonDragAndDrop
-        (fileToUploadEmitter)="onDropped($event)" (fileDragOverEmitter)="onDragOver($event)" (fileDragLeaveEmitter)="onDragLeave($event)">
-        <div *ngIf="fileName && fileSize>0 && fileSizeString" class="drag-container">
-          <div class="file-info-class">{{ fileName }}
-            <span class="text-grey" [ngStyle]="{'font-size':'13px'}"> | {{ fileSizeString }} </span>
+      <div
+        class="drag-and-drop-area"
+        [ngClass]="{ 'on-over': hasDropZoneOver }"
+        vitamuiCommonDragAndDrop
+        (fileToUploadEmitter)="onDropped($event)"
+        (fileDragOverEmitter)="onDragOver($event)"
+        (fileDragLeaveEmitter)="onDragLeave($event)"
+      >
+        <div *ngIf="fileName && fileSize > 0 && fileSizeString" class="drag-container">
+          <div class="file-info-class">
+            {{ fileName }}
+            <span class="text-grey" [ngStyle]="{ 'font-size': '13px' }"> | {{ fileSizeString }} </span>
             <i class="material-icons success-icon" *ngIf="!hasError">check_circle</i>
             <div>
               <span class="text-red">{{ message }} </span>
@@ -35,23 +41,25 @@
         <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
 
         <div class="drop-area">
-          <div *ngIf="!fileSize || !hasSip" class="sip-drop">
-            {{'INGEST_UPLOAD.ADD_FILE' | translate}} <br>
-          </div>
+          <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>
           <div *ngIf="!fileSize || !hasSip">
             <div class="sip-drop">
-              <div class="upload"><span class="url-select" (click)="addSip()">{{'INGEST_UPLOAD.BROWSE' | translate}}</span>
+              <div class="upload">
+                <span class="url-select" (click)="addSip()">{{ 'INGEST_UPLOAD.BROWSE' | translate }}</span>
               </div>
-              <span class="sip-drop-small">{{'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate}}</span><br/>
-              <span class="sip-drop-small">{{'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate}}</span>
+              <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate }}</span
+              ><br />
+              <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate }}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="actions">
-      <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">{{'INGEST_UPLOAD.CONFIRME' | translate}}</button>
-      <button type="button" class="btn cancel" (click)="onCancel()">{{'COMMON.CANCEL' | translate}}</button>
+      <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">
+        {{ 'INGEST_UPLOAD.CONFIRME' | translate }}
+      </button>
+      <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
     </div>
   </div>
 </form>

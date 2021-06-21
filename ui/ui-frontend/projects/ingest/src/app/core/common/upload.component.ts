@@ -34,27 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { BytesPipe, Logger } from 'ui-frontend-common';
-import { UploadService } from './upload.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
-
+import { UploadService } from './upload.service';
 
 const LAST_STEP_INDEX = 2;
-const action = 'RESUME';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  styleUrls: ['./upload.component.scss'],
 })
-
 export class UploadComponent implements OnInit {
-
   sipForm: FormGroup;
   hasSip: boolean;
   hasDropZoneOver = false;
@@ -73,7 +68,6 @@ export class UploadComponent implements OnInit {
   isDisabled = true;
   public stepIndex = 0;
   public stepCount = 2;
-  
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -86,7 +80,7 @@ export class UploadComponent implements OnInit {
     public logger: Logger
   ) {
     this.sipForm = this.formBuilder.group({
-      hasSip: null
+      hasSip: null,
     });
 
     this.tenantIdentifier = data.tenantIdentifier;
@@ -97,9 +91,7 @@ export class UploadComponent implements OnInit {
     this.extensions = ['.zip', '.tar', '.tar.gz', '.tar.bz2'];
     this.sipForm.get('hasSip').setValue(true);
     this.hasSip = this.sipForm.get('hasSip').value;
-
   }
- 
 
   onDragOver(inDropZone: boolean) {
     this.hasDropZoneOver = inDropZone;
@@ -127,7 +119,7 @@ export class UploadComponent implements OnInit {
     this.fileSizeString = transformer.transform(this.fileSize);
 
     if (!this.checkFileExtension(this.fileName)) {
-      this.message = 'Le fichier déposé n\'est pas au bon format';
+      this.message = "Le fichier déposé n'est pas au bon format";
       this.hasError = true;
       return;
     }
@@ -143,33 +135,33 @@ export class UploadComponent implements OnInit {
   }
 
   upload() {
-    if (!this.isValidSIP) { return; }
+    if (!this.isValidSIP) {
+      return;
+    }
 
-    this.uploadService.uploadFile(this.fileToUpload, this.contextId, action, this.tenantIdentifier)
-      .subscribe(
-        () => {
-          this.dialogRef.close();
-          this.displaySnackBar(true);
-        },
-        (error: any) => {
-          console.error(error);
-          this.message = error.message;
-        });
+    this.uploadService.uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name).subscribe(
+      () => {
+        this.dialogRef.close();
+        this.displaySnackBar(true);
+      },
+      (error: any) => {
+        console.error(error);
+        this.message = error.message;
+      }
+    );
   }
 
   displaySnackBar(uploadComplete: boolean) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       data: { type: 'fileUploaded', name: uploadComplete },
-      duration: 10000
+      duration: 10000,
     });
   }
 
   isValidSIP() {
-    return this.sipForm.get('hasSip').value === false ||
-      (this.sipForm.get('hasSip').value === true);
+    return this.sipForm.get('hasSip').value === false || this.sipForm.get('hasSip').value === true;
   }
-
 
   onCancel() {
     this.dialogRef.close();
@@ -184,5 +176,4 @@ export class UploadComponent implements OnInit {
     }
     return false;
   }
-
 }

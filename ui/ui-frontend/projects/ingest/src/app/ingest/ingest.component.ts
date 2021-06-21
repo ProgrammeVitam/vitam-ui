@@ -34,30 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { IngestListComponent } from './ingest-list/ingest-list.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-
-import { GlobalEventService, SidenavPage, SearchBarComponent, AdminUserProfile, Direction } from 'ui-frontend-common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { IngestList } from '../core/common/ingest-list';
 import { UploadComponent } from '../core/common/upload.component';
 import { UploadService } from '../core/common/upload.service';
-import { IngestList } from '../core/common/ingest-list';
-import { HttpEventType } from '@angular/common/http';
+import { IngestListComponent } from './ingest-list/ingest-list.component';
 
 @Component({
   selector: 'app-ingest',
   templateUrl: './ingest.component.html',
-  styleUrls: ['./ingest.component.scss']
+  styleUrls: ['./ingest.component.scss'],
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
   search: string;
   progressPercent = 0;
   uploadError = false;
 
-  uploadSucces= false;
+  uploadSucces = false;
   uploadInProgress = false;
 
   tenantIdentifier: string;
@@ -68,25 +65,30 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   filters: any = {};
   ingestList: IngestList = new IngestList();
 
-  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
-  @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
+  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
+  @ViewChild(IngestListComponent, { static: true }) ingestListComponent: IngestListComponent;
 
   @ViewChild('inputFile') inputFile: ElementRef;
 
-  constructor( private router: Router, private route: ActivatedRoute,
-               globalEventService: GlobalEventService, public dialog: MatDialog, private formBuilder: FormBuilder,
-               private uploadSipService: UploadService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
+    public dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private uploadSipService: UploadService
+  ) {
     super(route, globalEventService);
 
-    route.params.subscribe(params => {
+    route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
-      endDate: null
+      endDate: null,
     });
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
       this.filters.startDate = value;
       this.ingestListComponent.filters = this.filters;
     });
@@ -106,10 +108,10 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
       this.filters.startDate = null;
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
       this.filters.endDate = null;
     } else {
       console.error('clearDate() error: unknown date ' + date);
@@ -149,7 +151,7 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
     dialogConfig.data = {
       tenantIdentifier: this.tenantIdentifier,
-      givenContextId: type
+      givenContextId: type,
     };
 
     const dialogRef = this.dialog.open(UploadComponent, dialogConfig);
@@ -161,53 +163,11 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
   refresh() {
     this.ingestListComponent.direction = Direction.DESCENDANT;
     this.ingestListComponent.emitOrderChange();
-  }
-
-
-
-  public uploadV2(event: any) {
-    if(event.target.files && event.target.files.length > 0) {
-      this.uploadInProgress = true;
-      const file = event.target.files[0];
-      console.log("start upload file ", file)
-      this.uploadSipService.uploadFileV2(this.tenantIdentifier,'DEFAULT_WORKFLOW', 'RESUME', file, file.name)
-      .subscribe(
-        data => {
-          if(data) {
-            console.log(data);
-            console.log(data.type);
-            switch(data.type) {
-              case HttpEventType.UploadProgress:
-                //this.uploadStatus.emit({ status: ProgressStatusEnum.IN_PROGRESS, percentage: Math.round((data.loaded / data.total) * 100) });
-                this.progressPercent = Math.round((data.loaded / data.total) * 100);
-                console.log('IN_PROGRESS: ', Math.round((data.loaded / data.total) * 100));
-                break;
-              case HttpEventType.Response:
-                this.inputFile.nativeElement.value = '';
-                console.log('COMPLETE: ');
-                //this.uploadStatus.emit({ status: ProgressStatusEnum.COMPLETE });
-                this.uploadInProgress = false;
-                this.uploadError = false;
-                this.uploadSucces = true;
-                break;
-            }
-          }
-        },
-        error => {
-          this.inputFile.nativeElement.value = '';
-          console.log('ERROR: ', error);
-          this.uploadInProgress = false;
-          this.uploadError = true;
-          this.uploadSucces = false;
-          //this.uploadStatus.emit({ status: ProgressStatusEnum.ERROR });
-        }
-      );
-    }
   }
 }
