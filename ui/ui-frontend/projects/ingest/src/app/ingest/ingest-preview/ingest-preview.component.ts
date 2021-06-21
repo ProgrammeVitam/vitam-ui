@@ -35,34 +35,24 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { LogbookService, StartupService } from 'ui-frontend-common';
+import { LogbookService } from 'ui-frontend-common';
 import { IngestService } from '../ingest.service';
 
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
-  styleUrls: ['./ingest-preview.component.scss'],
+  styleUrls: ['./ingest-preview.component.scss']
 })
 export class IngestPreviewComponent implements OnInit {
+
   @Input() ingest: any; // Make a type ?
   @Output() previewClose = new EventEmitter();
 
-  archiveSearchUrl: string;
-  tenantIdentifier: string;
 
-  constructor(
-    private logbookService: LogbookService,
-    private ingestService: IngestService,
-    private route: ActivatedRoute,
-    private startupService: StartupService
-  ) {}
+  constructor(private logbookService: LogbookService, private ingestService : IngestService) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
-    });
-    this.archiveSearchUrl = this.startupService.getArchivesSearchUrl() + '/tenant/' + this.tenantIdentifier;
+
   }
 
   emitClose() {
@@ -70,8 +60,9 @@ export class IngestPreviewComponent implements OnInit {
   }
 
   filterEvents(event: any): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST'))
+    return event.outDetail && (
+      event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') ||
+      event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST')
     );
   }
 
@@ -90,7 +81,8 @@ export class IngestPreviewComponent implements OnInit {
     if (this.getOperationStatus(ingest) === 'En cours') {
       return 'En cours';
     } else {
-      return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+      return (ingest.events !== undefined && ingest.events.length !== 0) ?
+        ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
     }
   }
 
