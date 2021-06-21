@@ -48,6 +48,7 @@ import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -63,6 +64,7 @@ import org.springframework.util.Assert;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -127,29 +129,37 @@ public final class RestUtils {
 
     /**
      * Build the response to get a file, based on the api response.
-     * @param getFileResponse
+     * @param responseEntity
      * @param disposition
      * @return
      * @throws IOException
      */
-    public static ResponseEntity<Resource> buildFileResponse(final ResponseEntity<Resource> getFileResponse, Optional<ContentDispositionType> disposition,
+    public static ResponseEntity<Resource> buildFileResponse(final ResponseEntity<Resource> responseEntity, Optional<ContentDispositionType> disposition,
             final Optional<String> filename) {
         // Sets default disposition
         if (!disposition.isPresent()) {
             disposition = Optional.of(ContentDispositionType.ATTACHMENT);
         }
-        Assert.notNull(getFileResponse, "File response cannot be null");
+        Assert.notNull(responseEntity, "File response cannot be null");
         final BodyBuilder builder = ResponseEntity.ok();
-        InputStream fileStream;
+        InputStream fileInputStream = null;
+        // The InputStreamResource to construct in case the body is null for the Response entity
+        // the body could be null when fetching empty byte resources.
+        InputStreamResource fileInputStreamResource = null;
         try {
-            fileStream = getFileResponse.getBody().getInputStream();
+            if(responseEntity.getBody() != null) {
+                fileInputStream = responseEntity.getBody().getInputStream();
+            } else {
+                LOGGER.debug("The request body is null in response : {}", responseEntity);
+                fileInputStreamResource = new InputStreamResource(new ByteArrayInputStream(ArrayUtils.EMPTY_BYTE_ARRAY));
+            }
         }
         catch (final IOException e) {
             throw new InternalServerException("An error occured while opening the response stream", e);
         }
-        final InputStreamResource fileStreamRessource = new InputStreamResource(fileStream);
+        final InputStreamResource fileStreamRessource = fileInputStream != null ? new InputStreamResource(fileInputStream): fileInputStreamResource;
 
-        final HttpHeaders responseHeaders = getFileResponse.getHeaders();
+        final HttpHeaders responseHeaders = responseEntity.getHeaders();
 
         // Set the content type
         final String contentType = responseHeaders.getFirst(HttpHeaders.CONTENT_TYPE);
@@ -157,7 +167,7 @@ public final class RestUtils {
             builder.contentType(MediaType.parseMediaType(contentType));
         }
         else {
-            LOGGER.debug("No content-type in response : {}", getFileResponse);
+            LOGGER.debug("No content-type in response : {}", responseEntity);
         }
 
         // Set the content disposition as inline
