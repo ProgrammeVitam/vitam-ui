@@ -133,8 +133,7 @@ public class IngestInternalController {
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void streamingUpload(
-        InputStream inputStream,
+    public void streamingUpload(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
@@ -144,20 +143,6 @@ public class IngestInternalController {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
-/*
-
-        final Path tmpFilePath =
-            Paths.get(FileUtils.getTempDirectoryPath(), originalFileName);
-        int length = 0;
-        try {
-            length = inputStream.available();
-            Files.copy(inputStream, tmpFilePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            LOGGER.debug("[streamingUpload] Error writing InputStream of length [{}] to temporary path {}",
-                length, tmpFilePath.toAbsolutePath());
-            throw new BadRequestException("ERROR: InputStream writing error : ", e);
-        }
-*/
         ingestInternalService.streamingUpload(inputStream, contextId, action);
     }
 }

@@ -83,7 +83,7 @@ public class IngestExternalController {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalController.class);
 
     private final IngestExternalService ingestExternalService;
-
+ 
     @Autowired
     public IngestExternalController(final IngestExternalService ingestExternalService) {
         this.ingestExternalService = ingestExternalService;
@@ -151,21 +151,6 @@ public class IngestExternalController {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
-/*
-        final Path tmpFilePath =
-            Paths.get(FileUtils.getTempDirectoryPath(), "internal-" + originalFileName);
-        int length = 0;
-        try {
-            length = inputStream.available();
-            LOGGER.debug("[streamingUpload] in progress InputStream of length [{}] to temporary path {}",
-                length, tmpFilePath.toAbsolutePath());
-            Files.copy(inputStream, tmpFilePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            LOGGER.debug("[streamingUpload] Error writing InputStream of length [{}] to temporary path {}",
-                length, tmpFilePath.toAbsolutePath());
-            throw new BadRequestException("ERROR: InputStream writing error : ", e);
-        }
-*/
         return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }
 }
