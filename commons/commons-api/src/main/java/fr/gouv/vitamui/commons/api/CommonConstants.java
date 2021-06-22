@@ -197,6 +197,8 @@ public class CommonConstants {
 
     public static final String INGEST_URL = "INGEST_URL";
 
+    public static final String REFERENTIAL_URL = "REFERENTIAL_URL";
+
     public static final String CAS_LOGIN_URL = "CAS_URL";
 
     public static final String CAS_LOGOUT_URL = "CAS_LOGOUT_URL";

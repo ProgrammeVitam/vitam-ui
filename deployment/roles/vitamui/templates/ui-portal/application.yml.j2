@@ -92,7 +92,8 @@ ui-portal:
     portal: "{{ url_prefix }}" # TODO OMA : revoir avec les redirections du RP
     admin-identity: "{{ url_prefix }}/identity-admin" # TODO OMA : revoir avec les redirections du RP
     identity: "{{ url_prefix }}/identity" # TODO OMA : revoir avec les redirections du RP
-    archives-search: "{{ url_prefix }}/archive_search" # TODO OMA : revoir avec les redirections du RP
+    archives-search: "{{ url_prefix }}/archives-search" # TODO OMA : revoir avec les redirections du RP
+    referential: "{{ url_prefix }}/referential" # TODO OMA : revoir avec les redirections du RP
 ui:
   url: "{{ url_prefix }}"
   redirect-url: ${ui.url}/${ui-prefix}
@@ -101,7 +102,9 @@ ui:
     portal: "{{ vitamui.portal.base_url}}"
     admin-identity: "{{ vitamui.identity_admin.base_url }}"
     identity: "{{ vitamui.identity.base_url }}"
+    ingest: "{{ vitamui.ingest.base_url }}"
     archives-search: "{{ vitamui.archive_search.base_url }}"
+    referential: "{{ vitamui.referential.base_url }}"
 
 ui:
   url: "{{ vitamui.portal.base_url }}"

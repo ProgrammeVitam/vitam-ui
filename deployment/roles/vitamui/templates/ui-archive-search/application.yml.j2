@@ -106,11 +106,6 @@ ui-archive-search:
 {% else %}
     archive-search: "{{ url_prefix }}/archive-search"
 {% endif %}
-{% if vitamui.archive_search.base_url is defined %}
-    archives-search: "{{ vitamui.archive_search.base_url }}"
-{% else %}
-    archives-search: "{{ url_prefix }}/archive-search"
-{% endif %}
   portal-categories:
 {% for id, category in vitamui_defaults.portal_categories.items() %}
     {{ id }}:

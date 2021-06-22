@@ -222,6 +222,14 @@ export class StartupService {
 
     return null;
   }
+
+  getReferentialUrl(): string {
+      if (this.configurationLoaded()) {
+        return this.configurationData.REFERENTIAL_SEARCH_URL;
+      }
+
+      return null;
+    }
   getConfigStringValue(key: string): string {
     if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
       return this.configurationData[key];
