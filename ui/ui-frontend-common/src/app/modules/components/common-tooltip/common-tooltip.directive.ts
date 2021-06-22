@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import {
   ConnectedPosition,
   Overlay,
@@ -61,6 +62,20 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input() type = 'BOTTOM';
   @Input() outline = false;
 
+ /** Disables the display of the tooltip. */
+  @Input('vitamuiCommonToolTipDisabled')
+  get disabled(): boolean { return this._disabled; }
+  set disabled(value) {
+    this._disabled = coerceBooleanProperty(value);
+
+    // If tooltip is disabled, hide immediately.
+    if (this._disabled && this.overlayRef) {
+      this.hide();
+    }
+  }
+  // tslint:disable-next-line:variable-name
+  private _disabled = false;
+
   private overlayRef: OverlayRef;
 
   constructor(
@@ -84,6 +99,9 @@ export class CommonTooltipDirective implements OnInit, OnDestroy {
 
   @HostListener('mouseenter')
   show() {
+    if (this.disabled) {
+      return;
+    }
     const tooltipPortal = new ComponentPortal(CommonTooltipComponent);
     const tooltipRef: ComponentRef<CommonTooltipComponent> = this.overlayRef.attach(
       tooltipPortal
