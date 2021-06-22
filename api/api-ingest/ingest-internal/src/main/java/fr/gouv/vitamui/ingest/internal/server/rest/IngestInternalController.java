@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -37,15 +36,14 @@ import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
-
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,9 +55,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
@@ -77,16 +75,21 @@ public class IngestInternalController {
     private InternalSecurityService securityService;
 
     @Autowired
-    public IngestInternalController(final IngestInternalService ingestInternalService, final InternalSecurityService securityService) {
+    public IngestInternalController(final IngestInternalService ingestInternalService,
+        final InternalSecurityService securityService) {
         this.ingestInternalService = ingestInternalService;
         this.securityService = securityService;
     }
 
     @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER
+            .debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
+                orderBy, direction);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
@@ -99,31 +102,34 @@ public class IngestInternalController {
         return ingestInternalService.getOne(vitamContext, id);
     }
 
-    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RequestResponseOK upload(
-        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
-        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile path)
-        throws IngestExternalException {
-        LOGGER.debug("[Internal] upload file : {}", path.getOriginalFilename());
-        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId);
-        SanityChecker.isValidFileName(path.getOriginalFilename());
-        return ingestInternalService.upload(path, contextId, action);
-    }
-
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
         throws IngestFileGenerationException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-      try {
-          LOGGER.debug("export ODT report for operation with id :{}", id);
-          ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-       byte[] response =  this.ingestInternalService.generateODTReport(vitamContext, id);
-        return new ResponseEntity<>(response, HttpStatus.OK);
-      }
-       catch(IOException | URISyntaxException | IngestFileGenerationException e) {
-            LOGGER.error("Error with generating Report : {} " , e.getMessage());
+        try {
+            LOGGER.debug("export ODT report for operation with id :{}", id);
+            ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+            byte[] response = this.ingestInternalService.generateODTReport(vitamContext, id);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
+            LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
-      }
+        }
+    }
+
+    @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void streamingUpload(
+        InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    )
+        throws IngestExternalException {
+        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
+            originalFileName);
+        SanityChecker.isValidFileName(originalFileName);
+        ingestInternalService.streamingUpload(inputStream, contextId, action);
     }
 }

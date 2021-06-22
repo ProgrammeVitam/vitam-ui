@@ -36,20 +36,19 @@
  */
 package fr.gouv.vitamui.ingest.external.server.rest;
 
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,17 +61,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 
 /**
  * UI Ingest External controller
- *
- *
  */
 @Api(tags = "ingest")
 @RequestMapping(RestApi.V1_INGEST)
@@ -90,11 +84,14 @@ public class IngestExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_ALL_INGEST)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
+            direction);
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -106,33 +103,26 @@ public class IngestExternalController {
         return ingestExternalService.getOne(id);
     }
 
-    @Secured(ServicesData.ROLE_CREATE_INGEST)
-    @PostMapping(value = CommonConstants.INGEST_UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Mono<RequestResponseOK> upload(
-        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
-        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
-        @RequestParam(CommonConstants.MULTIPART_FILE_PARAM_NAME) final MultipartFile file) {
-        ParameterChecker
-            .checkParameter("The Action and contextId are mandatory parameters : ", action, contextId);
-        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-        InputStream in = null;
-        try {
-            in = file.getInputStream();
-            LOGGER.debug("[IngestExternalController] upload file [{}], [{}] bytes.", file.getOriginalFilename(),
-                file.getInputStream().available());
-        } catch (IOException e) {
-            LOGGER.error("ERROR: InputStream error ", e);
-            throw new BadRequestException("ERROR: InputStream writing error : ", e);
-        }
-
-        return ingestExternalService.upload(in, action, contextId);
-    }
-
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
         LOGGER.debug("export ODT report for ingest with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
         return ingestExternalService.generateODTReport(id);
+    }
+
+    @Secured(ServicesData.ROLE_CREATE_INGEST)
+    @ApiOperation(value = "Upload an streaming SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_ACTION) final String action,
+        @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) {
+        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
+            originalFileName);
+        SanityChecker.isValidFileName(originalFileName);
+        return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }
 }
