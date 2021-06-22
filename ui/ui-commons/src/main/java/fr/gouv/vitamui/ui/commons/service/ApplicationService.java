@@ -39,7 +39,11 @@ package fr.gouv.vitamui.ui.commons.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
+import fr.gouv.vitamui.commons.api.domain.Criterion;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
+import fr.gouv.vitamui.commons.api.domain.QueryOperator;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -63,7 +67,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -111,8 +119,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     private Map<String, List<String>> listEnableExternalIdentifiers;
 
-    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl, final IamExternalRestClientFactory factory,
-    final BuildProperties buildProperties) {
+    public ApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl,
+        final IamExternalRestClientFactory factory,
+        final BuildProperties buildProperties) {
         this.properties = properties;
         this.casLogoutUrl = casLogoutUrl;
         this.buildProperties = buildProperties;
@@ -140,7 +149,7 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     }
 
     private Map<String, List<String>> getListEnableExternalIdentifiers() {
-        if(listEnableExternalIdentifiers == null) {
+        if (listEnableExternalIdentifiers == null) {
             listEnableExternalIdentifiers = autoConfigurationVitam.getTenants();
         }
         return listEnableExternalIdentifiers;
@@ -151,12 +160,13 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
         final Map<String, List<String>> externalIdentifiers = getListEnableExternalIdentifiers();
-        LOGGER.info("Reading list of external identifiers {}", externalIdentifiers == null ? "null" : externalIdentifiers.toString());
+        LOGGER.info("Reading list of external identifiers {}",
+            externalIdentifiers == null ? "null" : externalIdentifiers.toString());
 
-        if(externalIdentifiers != null) {
-            if(listEnableExternalIdentifiers.containsKey(tenantId)) {
+        if (externalIdentifiers != null) {
+            if (listEnableExternalIdentifiers.containsKey(tenantId)) {
                 final List<String> enabledApplications = listEnableExternalIdentifiers.get(tenantId);
-                return(enabledApplications.contains(identifier));
+                return (enabledApplications.contains(identifier));
             }
         }
 
@@ -170,18 +180,23 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
     public Map<String, Object> getConf() {
         final Map<String, Object> configurationData = new HashMap<>();
         configurationData.put(CommonConstants.PORTAL_URL, properties.getBaseUrl().getPortal());
+        configurationData.put(CommonConstants.ARCHIVES_SEARCH_URL, properties.getBaseUrl().getArchivesSearch());
+        configurationData.put(CommonConstants.INGEST_URL, properties.getBaseUrl().getIngest());
+        configurationData.put(CommonConstants.REFERENTIAL_URL, properties.getBaseUrl().getReferential());
         configurationData.put(CommonConstants.CAS_LOGIN_URL, getCasLoginUrl());
         configurationData.put(CommonConstants.CAS_LOGOUT_URL, casLogoutUrl.getValue());
         configurationData.put(CommonConstants.UI_URL, uiUrl);
-        configurationData.put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
+        configurationData
+            .put(CommonConstants.LOGOUT_REDIRECT_UI_URL, casLogoutUrl.getValueWithRedirection(uiRedirectUrl));
         configurationData.put(CommonConstants.THEME_COLORS, properties.getThemeColors());
         configurationData.put(CommonConstants.PORTAL_TITLE, properties.getPortalTitle());
         configurationData.put(CommonConstants.PORTAL_MESSAGE, properties.getPortalMessage());
         configurationData.put(CommonConstants.CUSTOMER, properties.getCustomer());
         String versionRelease = properties.getVersionRelease();
         if (StringUtils.isEmpty(versionRelease)) {
-            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER)).limit(2).map(Object::toString)
-                    .collect(Collectors.joining(DELIMITER));
+            versionRelease = Stream.of(buildProperties.get(VERSION_RELEASE_KEY).split("\\" + DELIMITER)).limit(2)
+                .map(Object::toString)
+                .collect(Collectors.joining(DELIMITER));
 
         }
         if (StringUtils.isNotEmpty(versionRelease)) {
@@ -207,7 +222,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
 
     public String getBase64File(final String fileName, final String basePath) {
         if (StringUtils.isBlank(fileName) || StringUtils.isBlank(basePath)) {
-            LOGGER.warn(String.format("Logo information missing : cannot load logo with name \"%s\" in path \"%s\"", fileName, basePath));
+            LOGGER.warn(String
+                .format("Logo information missing : cannot load logo with name \"%s\" in path \"%s\"", fileName,
+                    basePath));
             return null;
         }
 

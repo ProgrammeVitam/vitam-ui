@@ -11,7 +11,7 @@
     <button mat-menu-item i18n="@@ingestPreviewDownloadATR"
             (click)="downloadATR()"
             [disabled]="ingestStatus(ingest) === 'En cours'"
-            >{{'INGEST_DETAIL.DOWNLOAD_ATR' | translate}}           
+            >{{'INGEST_DETAIL.DOWNLOAD_ATR' | translate}}
     </button>
     <button mat-menu-item i18n="@@ingestPreviewGenerateDocX" (click)="generateODTreport()"
             matTooltip="{{'INGEST_DETAIL.DOWNLOAD_DOCX' | translate}}" matTooltipClass="vitamui-tooltip"
@@ -29,6 +29,6 @@
     <mat-tab label="{{'INGEST_DETAIL.INGEST_ERROR_DETAIL' | translate}}">
       <app-ingest-errors-details-tab [ingest]="ingest"></app-ingest-errors-details-tab>
     </mat-tab>
-    
+
   </mat-tab-group>
 </div>

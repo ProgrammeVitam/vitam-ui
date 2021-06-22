@@ -47,6 +47,12 @@ public class BaseUrl {
 
     private String adminIdentity;
 
+    private String archivesSearch;
+
+    private String ingest;
+
+    private String referential;
+
     private String identity;
 
 }
