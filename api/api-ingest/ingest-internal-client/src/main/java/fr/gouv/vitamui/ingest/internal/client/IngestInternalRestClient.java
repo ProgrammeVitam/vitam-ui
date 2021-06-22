@@ -58,7 +58,8 @@ import java.util.List;
 /**
  * Ingest Internal REST Client.
  */
-public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
+public class IngestInternalRestClient
+    extends BasePaginatingAndSortingRestClient<LogbookOperationDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalRestClient.class);
 
@@ -71,20 +72,26 @@ public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient
         return RestApi.V1_INGEST;
     }
 
-    @Override protected Class<LogbookOperationDto> getDtoClass() {
+    @Override
+    protected Class<LogbookOperationDto> getDtoClass() {
         return LogbookOperationDto.class;
     }
 
-    @Override protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {};
+    @Override
+    protected ParameterizedTypeReference<List<LogbookOperationDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<List<LogbookOperationDto>>() {
+        };
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {
+        };
     }
 
-    public ResponseEntity<byte[]> generateODTReport(InternalHttpContext context , String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID );
+    public ResponseEntity<byte[]> generateODTReport(InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID);
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
     }

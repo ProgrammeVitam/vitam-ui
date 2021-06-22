@@ -11,10 +11,6 @@ spring:
     mongodb:
       uri: "mongodb://{{ mongodb.iam.user }}:{{ mongodb.iam.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.iam.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 
-# should we fix some limit here ?
-spring.servlet.multipart.max-file-size: -1
-spring.servlet.multipart.max-request-size: -1
-
 server-identity:
   identityName: {{ vitamui_site_name }}
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}

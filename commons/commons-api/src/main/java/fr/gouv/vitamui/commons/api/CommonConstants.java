@@ -313,6 +313,7 @@ public class CommonConstants {
 
     public static final String MULTIPART_FILE_PARAM_NAME = "uploadedFile";
     public static final String INGEST_UPLOAD = "/upload";
+    public static final String INGEST_UPLOAD_V2 = "/upload-v2";
     public static final String X_ACTION = "X-Action";
     public static final String X_CONTEXT_ID = "X-Context-Id";
     public static final String X_SIZE_TOTAL = "X-Size-Total";

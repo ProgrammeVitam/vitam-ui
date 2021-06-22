@@ -34,28 +34,32 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ingest.internal.client;
+package fr.gouv.vitamui.ingest.external.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import org.springframework.web.reactive.function.client.WebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
- * External WebClient for Ingest operations.
+ * A Rest client factory to create Streaming specialized Ingest Rest clients
+ *
+ *
  */
-public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalWebClient.class);
+public class IngestStreamingExternalRestClientFactory extends BaseStreamingRestClientFactory {
 
-    public IngestInternalWebClient(final WebClient webClient, final String baseUrl) {
-        super(webClient, baseUrl);
+    public IngestStreamingExternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
     }
 
-    @Override
-    public String getPathUrl() {
-        return RestApi.V1_INGEST;
+    public IngestStreamingExternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+        super(restClientConfiguration, httpHostConfiguration);
+    }
+
+
+    public IngestStreamingExternalRestClient getIngestStreamingExternalRestClient() {
+        return new IngestStreamingExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 }

@@ -44,7 +44,7 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
-import fr.gouv.vitamui.ingest.thread.IngestThread;
+import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,24 +64,28 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
 
     private final IngestExternalWebClient ingestExternalWebClient;
     private final IngestExternalRestClient ingestExternalRestClient;
+    private final IngestStreamingExternalRestClient ingestStreamingExternalRestClient;
     private CommonService commonService;
 
     @Autowired
     public IngestService(final CommonService commonService, final IngestExternalRestClient ingestExternalRestClient,
-        final IngestExternalWebClient ingestExternalWebClient) {
+        final IngestExternalWebClient ingestExternalWebClient,
+        final IngestStreamingExternalRestClient ingestStreamingExternalRestClient) {
         this.commonService = commonService;
         this.ingestExternalRestClient = ingestExternalRestClient;
         this.ingestExternalWebClient = ingestExternalWebClient;
+        this.ingestStreamingExternalRestClient = ingestStreamingExternalRestClient;
     }
 
     @Override
-    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
+    public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
         return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
     }
 
     public LogbookOperationDto getOne(final ExternalHttpContext context, final String id) {
-        return super.getOne(context,id);
+        return super.getOne(context, id);
     }
 
     @Override
@@ -89,22 +93,20 @@ public class IngestService extends AbstractPaginateService<LogbookOperationDto> 
         return commonService.checkPagination(page, size);
     }
 
-    public void upload(final ExternalHttpContext context, InputStream in, final String contextId, final String action,
-        final String originalFilename) {
-
-        final IngestThread
-            ingestThread =
-            new IngestThread(ingestExternalWebClient, context, in, contextId, action, originalFilename);
-
-        ingestThread.start();
-    }
-
-     public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
+    public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
         return ingestExternalRestClient.generateODTReport(context, id);
     }
 
     public IngestExternalRestClient getClient() {
         return ingestExternalRestClient;
+    }
+
+    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
+        InputStream inputStream,
+        final String contextId,
+        final String action) {
+        return ingestStreamingExternalRestClient.streamingUpload(context, fileName, inputStream, contextId,
+            action);
     }
 
 }
