@@ -11,10 +11,9 @@ import { SessionStorageService } from '../../../services/session-storage.service
 @Component({
   selector: 'vitamui-common-select-language',
   templateUrl: './select-language.component.html',
-  styleUrls: ['./select-language.component.scss']
+  styleUrls: ['./select-language.component.scss'],
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
-
   /**
    * This component have two display mode :
    * select : displays a select box with the current selected lang as text.
@@ -33,7 +32,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private sessionStorageService: SessionStorageService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (this.authService.user && this.authService.user.language) {
@@ -43,8 +42,9 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
       this.currentLang = this.translateService.defaultLang;
     }
 
-    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$))
-      .subscribe((lang: LangChangeEvent) => this.currentLang = lang.lang);
+    this.translateService.onLangChange
+      .pipe(takeUntil(this.destroyer$))
+      .subscribe((lang: LangChangeEvent) => (this.currentLang = lang.lang));
 
     this.router.events.pipe(takeUntil(this.destroyer$)).subscribe((data) => {
       if (data instanceof RoutesRecognized) {
@@ -60,7 +60,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   }
 
   public use(lang: string): void {
-    this.accountApiService.patchMe({language: lang === 'fr' ? 'FRENCH' : 'ENGLISH'}).subscribe(() => {
+    this.accountApiService.patchMe({ language: lang === 'fr' ? 'FRENCH' : 'ENGLISH' }).subscribe(() => {
       this.sessionStorageService.language = lang;
       this.translateService.use(lang);
     });
@@ -71,7 +71,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
   }
 
   private translateConverter(lang: string): string {
-    return (lang === 'FRENCH' || lang === 'fr') ? 'fr' : 'en';
+    return lang === 'FRENCH' || lang === 'fr' ? 'fr' : 'en';
   }
 
   private hasLanguageSelection(appId: string): boolean {
@@ -81,29 +81,30 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
       switch (appId) {
         case ApplicationId.PORTAL_APP:
         case ApplicationId.STARTER_KIT_APP:
-        case ApplicationId.CUSTOMERS_APP :
-        case ApplicationId.USERS_APP :
-        case ApplicationId.GROUPS_APP :
-        case ApplicationId.PROFILES_APP :
-        case ApplicationId.SUBROGATIONS_APP :
-        case ApplicationId.ACCOUNTS_APP :
-        case ApplicationId.HIERARCHY_PROFILE_APP :
-        case ApplicationId.INGEST_APP :
-        case ApplicationId.ARCHIVE_SEARCH_APP :
-        case ApplicationId.RULES_APP :
-        case ApplicationId.HOLDING_FILLING_SCHEME_APP :
-        case ApplicationId.LOGBOOK_OPERATION_APP :
-        case ApplicationId.PROBATIVE_VALUE_APP :
-        case ApplicationId.DSL_APP :
-        case ApplicationId.SECURE_APP :
-        case ApplicationId.AUDIT_APP :
-        case ApplicationId.ONTOLOGY_APP :
-        case ApplicationId.SECURITY_PROFILES_APP :
-        case ApplicationId.CONTEXTS_APP :
-        case ApplicationId.FILE_FORMATS_APP :
-        case ApplicationId.AGENCIES_APP :
-        case ApplicationId.ACCESS_APP :
-        case ApplicationId.INGEST_APP_REF :
+        case ApplicationId.CUSTOMERS_APP:
+        case ApplicationId.USERS_APP:
+        case ApplicationId.GROUPS_APP:
+        case ApplicationId.PROFILES_APP:
+        case ApplicationId.SUBROGATIONS_APP:
+        case ApplicationId.ACCOUNTS_APP:
+        case ApplicationId.HIERARCHY_PROFILE_APP:
+        case ApplicationId.INGEST_APP:
+        case ApplicationId.ARCHIVE_SEARCH_APP:
+        case ApplicationId.RULES_APP:
+        case ApplicationId.HOLDING_FILLING_SCHEME_APP:
+        case ApplicationId.LOGBOOK_OPERATION_APP:
+        case ApplicationId.PROBATIVE_VALUE_APP:
+        case ApplicationId.DSL_APP:
+        case ApplicationId.SECURE_APP:
+        case ApplicationId.AUDIT_APP:
+        case ApplicationId.ONTOLOGY_APP:
+        case ApplicationId.SECURITY_PROFILES_APP:
+        case ApplicationId.CONTEXTS_APP:
+        case ApplicationId.FILE_FORMATS_APP:
+        case ApplicationId.AGENCIES_APP:
+        case ApplicationId.ACCESS_APP:
+        case ApplicationId.INGEST_APP_REF:
+        case ApplicationId.LOGBOOK_MANAGEMENT_OPERATION_APP:
           return true;
         default:
           return false;

@@ -1,0 +1,55 @@
+{
+  "COMMON": {
+    "CANCEL": "Annuler",
+    "SUBMIT": "Terminer",
+    "UPDATE": "Modifier",
+    "APPLY_UPDATE": "Appliquer les modifications "
+  },
+  "LOGBOOK_OPERATION_LIST": {
+    "HOUR" : "Heure",
+    "NEXT" : "Suivant",
+    "PREVIOUS" : "Précédent",
+    "STATE" : "Etat",
+    "STATUS": "Statut",
+    "RESULTS" : "Résultats",
+    "OPERATION_ID" : "Identifiant de l'opération",
+    "OPERATION_CATEGORY" : "Catégorie d'opération",
+    "START_DATE" : "Date de début",
+    "STEP_STATUS" : "Statut de l'étape",
+    "LAST_STEP" : "Dernière étape jouée",
+    "RESULT_STATUS": {
+      "SUCCESS": "Succès",
+      "WARNING": "Avertissement",
+      "ERROR" :"Erreur",
+      "FATAL" : "Erreur technique"
+    } ,
+    "RESULT_STATE": {
+      "FINISHED": "Terminé",
+      "BREAK": "En pause",
+      "IN_PROGRESS" : "En cours"
+        }
+  },
+  "LOGBOOK_OPERATION_PAGE": {
+    "TITLE": "Gestion des opérations",
+    "SEARCH" : "Rechercher par identifiant d'opération",
+    "REFRESH" : "Rafraîchir",
+    "ToolTip_Refresh" : "Rafraîchir la liste des opérations",
+    "FILTER_BY_DATE" : "Filtrer par date de début d'opération entre le :",
+    "OPERATION_DATE" : "Date d'opération",
+    "AND" : "et le :",
+    "ADD_INTREVAL" : "AJOUTER UN INTERVALLE",
+    "DELETE_INTERVAL" : "SUPPRIMER L'INTERVALLE"
+  },
+  "STATE_VALUE": {
+    "COMPLETED" :"Terminé",
+    "PAUSE" : "En pause",
+    "RUNNING" : "En cours"
+  },
+  "STATUS_VALUE":{
+    "KO" : "Erreur",
+    "OK" : "Succès",
+    "FATAL" : "Erreur technique",
+    "WARNING" : "Avertissement"
+  }
+
+}

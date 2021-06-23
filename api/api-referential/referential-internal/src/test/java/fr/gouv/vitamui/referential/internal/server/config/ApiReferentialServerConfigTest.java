@@ -38,6 +38,9 @@ package fr.gouv.vitamui.referential.internal.server.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +62,7 @@ import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(properties = {"spring.config.name=referential-internal-application"})
 @ActiveProfiles("test")
-public class ApiReferentialServerConfigTest {
+public class ApiReferentialServerConfigTest extends AbstractContextConfiguration {
 
     @MockBean(name ="adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -82,6 +85,12 @@ public class ApiReferentialServerConfigTest {
     @MockBean
     private AgencyService agencyService;
 
+    @Autowired
+    private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
+
+    @MockBean
+    private VitamOperationService vitamOperationService;
+
     @Test
     public void testContext() {
         assertThat(accessContractInternalService).isNotNull();
@@ -90,5 +99,10 @@ public class ApiReferentialServerConfigTest {
     @Test
     public void testAgency() {
         assertThat(agencyInternalService).isNotNull();
+    }
+
+    @Test
+    public void testLogbookManagementOperation() {
+        assertThat(logbookManagementOperationInternalService).isNotNull();
     }
 }

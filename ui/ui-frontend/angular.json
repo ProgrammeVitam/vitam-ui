@@ -353,8 +353,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+             "customWebpackConfig": {
+                "path": "./extra-webpack.config.js"
+               },
             "outputPath": "dist/referential",
             "index": "projects/referential/src/index.html",
             "main": "projects/referential/src/main.ts",
@@ -363,7 +366,12 @@
             "aot": false,
             "assets": [
               "projects/referential/src/favicon.ico",
-              "projects/referential/src/assets"
+              "projects/referential/src/assets",
+                 {
+                   "glob": "**/*",
+                    "input": "node_modules/ui-frontend-common/assets",
+                    "output": "/assets"
+                   }
             ],
             "styles": [
               "projects/referential/src/sass/styles.scss"
@@ -378,6 +386,8 @@
                   "with": "projects/referential/src/environments/environment.prod.ts"
                 }
               ],
+              "serviceWorker": true,
+              "ngswConfigPath": "projects/referential/ngsw-config.json",
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -398,7 +408,7 @@
           }
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-builders/custom-webpack:dev-server",
           "options": {
             "browserTarget": "referential:build",
             "host": "dev.vitamui.com",

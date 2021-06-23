@@ -127,7 +127,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
                                                                                      final RestTemplateBuilder restTemplateBuilder) {
         return new ReferentialInternalRestClientFactory(apiReferentialApplicationProperties.getReferentialInternalClient(), restTemplateBuilder);
     }
-    
+
     @Bean
     public ReferentialInternalWebClientFactory referentialInternalWebClientFactory(final ApiReferentialApplicationProperties apiReferentialApplicationProperties) {
     	return new ReferentialInternalWebClientFactory(apiReferentialApplicationProperties.getReferentialInternalClient());
@@ -137,7 +137,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public AccessContractInternalRestClient accessContractInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getAccessContractInternalRestClient();
     }
-    
+
     @Bean
     public IngestContractInternalRestClient ingestContractInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getIngestContractInternalRestClient();
@@ -197,19 +197,24 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public RuleInternalRestClient ruleInternalRestClient(final ReferentialInternalRestClientFactory factory) {
         return factory.getRuleInternalRestClient();
     }
-    
+
     @Bean
     public AgencyInternalWebClient agencyInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
     	return referentialInternalWebClientFactory.getAgencyInternalWebClient();
     }
-    
+
     @Bean
     public FileFormatInternalWebClient fileFormatInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
     	return referentialInternalWebClientFactory.getFileFormatInternalWebClient();
     }
-    
+
     @Bean
     public OntologyInternalWebClient ontologyInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
     	return referentialInternalWebClientFactory.getOntologyInternalWebClient();
+    }
+
+    @Bean
+    public LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
+        return referentialInternalRestClientFactory.getLogbookManagementOperationInternalRestClient();
     }
 }
