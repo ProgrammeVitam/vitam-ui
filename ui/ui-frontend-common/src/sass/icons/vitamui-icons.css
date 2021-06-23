@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?r1fmvv');
-  src:  url('fonts/vitamui-icon.eot?r1fmvv#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?r1fmvv') format('truetype'),
-    url('fonts/vitamui-icon.woff?r1fmvv') format('woff'),
-    url('fonts/vitamui-icon.svg?r1fmvv#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?7yonv4');
+  src:  url('fonts/vitamui-icon.eot?7yonv4#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?7yonv4') format('truetype'),
+    url('fonts/vitamui-icon.woff?7yonv4') format('woff'),
+    url('fonts/vitamui-icon.svg?7yonv4#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,8 +26,9 @@ i.vitamui-icon {
 }
 
 .vitamui-icon-filing-plan:before {
-  content: "\ea7a";
+  content: "\ea77";
 }
+
 .vitamui-icon-add-basket:before {
   content: "\ea74";
 }
@@ -38,10 +39,10 @@ i.vitamui-icon {
   content: "\ea76";
 }
 .vitamui-icon-mobile:before {
-  content: "\ea78";
+  content: "\ea72";
 }
 .vitamui-icon-gestion-de-profil:before {
-  content: "\ea79";
+  content: "\ea73";
 }
 .vitamui-icon-app_unknown .path1:before {
   content: "\ea4d";
@@ -185,7 +186,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-arrow-back:before {
   content: "\ea4e";
-  color: #757575;
 }
 .vitamui-icon-attribution-liste .path1:before {
   content: "\ea4f";
@@ -247,7 +247,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-close:before {
   content: "\ea83";
-  color: #757575;
 }
 .vitamui-icon-comment:before {
   content: "\ea86";
@@ -406,7 +405,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-repeat:before {
   content: "\eae7";
-  color: #757575;
 }
 .vitamui-icon-salle:before {
   content: "\eae8";
@@ -414,7 +412,7 @@ i.vitamui-icon {
 .vitamui-icon-scanner:before {
   content: "\eaec";
 }
-.vitamui-icon-search1:before {
+.vitamui-icon-search:before {
   content: "\eaed";
 }
 .vitamui-icon-serie:before {
@@ -461,7 +459,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-versement:before {
   content: "\eb20";
-  color: #757575;
 }
 .vitamui-icon-visibility:before {
   content: "\eb24";
@@ -1804,11 +1801,9 @@ i.vitamui-icon {
 }
 .vitamui-icon-lock:before {
   content: "\e933";
-  color: #757575;
 }
 .vitamui-icon-refresh:before {
   content: "\e934";
-  color: #757575;
 }
 .vitamui-icon-cycle-gear:before {
   content: "\e931";
@@ -1824,7 +1819,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-chevron-right:before {
   content: "\e92c";
-  color: #757575;
 }
 .vitamui-icon-chevron-right-plus:before {
   content: "\e92d";

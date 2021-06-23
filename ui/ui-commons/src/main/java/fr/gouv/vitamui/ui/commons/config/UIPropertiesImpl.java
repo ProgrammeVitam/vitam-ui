@@ -71,11 +71,11 @@ public class UIPropertiesImpl implements UIProperties {
 
     private String footerLogo;
 
-    private Map<String, String> themeColors;
-
     private String portalTitle;
 
     private String portalMessage;
+
+    private Map<String, String> themeColors;
 
     private String assets;
 

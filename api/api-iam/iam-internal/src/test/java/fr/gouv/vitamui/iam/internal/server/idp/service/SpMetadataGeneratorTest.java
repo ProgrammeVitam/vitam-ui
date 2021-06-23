@@ -3,6 +3,7 @@ package fr.gouv.vitamui.iam.internal.server.idp.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -37,7 +38,7 @@ public final class SpMetadataGeneratorTest {
     public void testRealProvider() throws Exception {
         final IdentityProviderDto provider = new IdentityProviderBuilder("google", "idp0", true, false, null,
                 new ClassPathResource("test-idp/sp-test-keystore.jks"), "password", "password", new ClassPathResource("test-idp/idp-test-metadata.xml"),
-                "clientId", false, "mailAttribute").build();
+                "clientId", false, "mailAttribute", AuthnRequestBindingEnum.POST).build();
         final SpMetadataGenerator generator = new SpMetadataGenerator();
         generator.setSaml2ClientBuilder(builder);
         final String metadata = generator.generate(provider);

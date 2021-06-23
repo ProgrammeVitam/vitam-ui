@@ -1,15 +1,19 @@
 :host {
   position: relative;
-  width: 255px;
+  width: 300px;
   display: block;
 
   .input-color-preview {
     padding: 0;
     position: absolute;
-    top: 14px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
   }
+}
+
+vitamui-common-input {
+  width: 300px !important;
 }

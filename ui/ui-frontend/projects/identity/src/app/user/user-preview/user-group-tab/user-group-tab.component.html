@@ -14,12 +14,12 @@
 
     <div class="mb-3">
         <p class="text normal spaced light mb-1" i18n="user group tab level@@userGroupTabLevel">Niveau</p>
-        <p class="text medium bold m-0">{{ userGroup.level }}Support</p>
+        <p class="text medium bold m-0">{{ userGroup?.level }}</p>
     </div>
 
     <div class="mb-3">
         <p class="text normal spaced light mb-1" i18n="user group tab description@@userGroupTabDescription">Description</p>
-        <p class="text medium bold m-0">{{ userGroup.description }}</p>
+        <p class="text medium bold m-0">{{ userGroup?.description }}</p>
     </div>
 </div>
 
@@ -29,9 +29,9 @@
         <div class="text medium">{{ profile?.name }}</div>
     </div>
     <div>
-        <div class="material-icons clickable text-primary" [matTooltip]="profile?.description" matTooltipClass="vitamui-tooltip">
-        info_outline
-        </div>
+        <i class="vitamui-icon vitamui-icon-info primary clickable"
+        [matTooltip]="profile?.description ? profile.description : 'MISC.NO_DESC' | translate"
+        matTooltipClass="vitamui-tooltip"></i>
     </div>
 </div>
 

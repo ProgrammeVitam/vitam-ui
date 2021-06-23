@@ -107,6 +107,15 @@
             </vitamui-common-editable-select>
         </div>
     </div>
+
+    <h4>Auto complete</h4>
+
+    <div class="d-flex justify-content-around">
+        <vitamui-common-vitamui-autocomplete [options]="countries" placeholder="Pays">
+        </vitamui-common-vitamui-autocomplete>
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" placeholder="Pays" disable="true">
+        </vitamui-common-vitamui-autocomplete>
+    </div>
     <h4>Textarea</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 mt-4">
@@ -146,11 +155,12 @@
     <h4>Toggle</h4>
     <div class="row m-0">
         <div class="col-12 mt-4">
-            <vitamui-common-slide-toggle class="mr-3">Slide Toggle</vitamui-common-slide-toggle>
-            <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle On disabled</vitamui-common-slide-toggle>
+            <vitamui-common-slide-toggle class="mr-3">Slide Toggle Off</vitamui-common-slide-toggle>
             <vitamui-common-slide-toggle class="mr-3" [checked]="false" [disabled]="true">Slide Toggle Off disabled</vitamui-common-slide-toggle>
+            <vitamui-common-slide-toggle class="mr-3" [checked]="true">Slide Toggle On</vitamui-common-slide-toggle>
+            <vitamui-common-slide-toggle class="mr-3" [checked]="true" [disabled]="true">Slide Toggle On disabled</vitamui-common-slide-toggle>
         </div>
-       
+
     </div>
     <h4>Toggle Group</h4>
     <div class="d-flex flex-column">
@@ -166,7 +176,7 @@
                     <span>Last</span>
                 </mat-button-toggle>
             </mat-button-toggle-group>
-    
+
             <mat-button-toggle-group disabled [formControl]="control" class="vitamui-button-toggle-group disabled">
                 <mat-button-toggle [value]="'FIRST'">
                     <span>First</span>
@@ -203,6 +213,23 @@
             </div>
         </div>
     </div>
+
+
+  <h4>Date</h4>
+  <div class="d-flex">
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
+      <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis">
+      <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4">
+      <input [matDatepicker]="pickerEnd"  matInput placeholder="jusqu'au">
+      <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+  </div>
+
     <h4>Duration</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 mt-4 pl-3">

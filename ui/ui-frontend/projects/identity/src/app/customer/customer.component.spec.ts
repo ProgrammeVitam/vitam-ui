@@ -37,7 +37,7 @@
 
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { EMPTY, of } from 'rxjs';
 import { ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from './../../environments/environment';
@@ -59,7 +59,7 @@ let fixture: ComponentFixture<CustomerComponent>;
 class Page {
 
   get customerList() { return fixture.nativeElement.querySelector('app-customer-list'); }
-  get createCustomer() { return fixture.nativeElement.querySelector('.actions button:first-child'); }
+  get createCustomer() { return fixture.nativeElement.querySelector('.vitamui-heading button:first-child'); }
 
 }
 
@@ -90,7 +90,7 @@ describe('CustomerComponent', () => {
   };
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
@@ -141,7 +141,7 @@ describe('CustomerComponent', () => {
   it('should open a modal with CustomerCreateComponent', () => {
     const matDialogSpy = TestBed.get(MatDialog);
     page.createCustomer.click();
-    expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, { panelClass: 'vitamui-modal', disableClose: true });
+    expect(matDialogSpy.open).toHaveBeenCalledWith(CustomerCreateComponent, { data: { gdprReadOnlySettingStatus: true }, panelClass: 'vitamui-modal', disableClose: true });
   });
 
 });

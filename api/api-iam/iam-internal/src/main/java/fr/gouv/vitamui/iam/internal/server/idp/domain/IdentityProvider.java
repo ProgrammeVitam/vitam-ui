@@ -41,6 +41,7 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -101,4 +102,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private boolean readonly;
 
     private String mailAttribute;
+
+    private AuthnRequestBindingEnum authnRequestBinding;
 }

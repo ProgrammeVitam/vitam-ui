@@ -42,6 +42,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
@@ -54,6 +55,11 @@ import { GraphicIdentityTabComponent } from './graphic-identity-tab/graphic-iden
 import { GraphicIdentityUpdateComponent } from './graphic-identity-tab/graphic-identity-update/graphic-identity-update.component';
 import { GraphicIdentityFormComponent } from './graphic-identity-tab/graphic-identity/graphic-identity-form/graphic-identity-form.component';
 import { GraphicIdentityComponent } from './graphic-identity-tab/graphic-identity/graphic-identity.component';
+import { HomepageMessageTabComponent } from './homepage-message-tab/homepage-message-tab.component';
+import { HomepageMessageUpdateComponent } from './homepage-message-tab/homepage-message-update/homepage-message-update.component';
+// tslint:disable-next-line: max-line-length
+import { HomepageMessageTranslationComponent } from './homepage-message-tab/homepage-message/homepage-message-translation/homepage-message-translation';
+import { HomepageMessageComponent } from './homepage-message-tab/homepage-message/homepage-message.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
 import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-create/identity-provider-create.component';
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
@@ -69,6 +75,7 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     MatDialogModule,
     MatMenuModule,
     MatTabsModule,
+    MatSelectModule,
     MatButtonToggleModule,
     ReactiveFormsModule,
     MatProgressBarModule,
@@ -86,9 +93,13 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     GraphicIdentityUpdateComponent,
     GraphicIdentityComponent,
     GraphicIdentityFormComponent,
+    HomepageMessageTabComponent,
+    HomepageMessageUpdateComponent,
+    HomepageMessageComponent,
+    HomepageMessageTranslationComponent
   ],
-  exports: [ CustomerPreviewComponent, GraphicIdentityComponent ],
-  entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent],
+  exports: [ CustomerPreviewComponent, GraphicIdentityComponent, HomepageMessageComponent, HomepageMessageTranslationComponent],
+  entryComponents: [IdentityProviderCreateComponent, GraphicIdentityUpdateComponent, HomepageMessageUpdateComponent],
   providers: [IdentityProviderService]
 })
 export class CustomerPreviewModule { }

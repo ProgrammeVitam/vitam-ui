@@ -87,6 +87,11 @@
     &:disabled {
          @include disabled();
     }
+
+    &.uppercase
+    {
+        text-transform: uppercase;
+    }
 }
 
 .btn.contrast {
@@ -191,6 +196,8 @@
     &:disabled {
         @include disabled(transparent, var(--vitamui-grey), transparent);
     }
+
+    @include text-colors;
 }
 
 .btn.outline {

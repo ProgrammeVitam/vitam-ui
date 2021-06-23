@@ -37,7 +37,7 @@
 
 
 import { EMPTY, of, throwError as observableThrowError } from 'rxjs';
-import { ConfirmDialogService, newFile } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -119,7 +119,8 @@ describe('IdentityProviderCreateComponent', () => {
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
         enabled: true,
-        mailAttribute: ''
+        mailAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -156,7 +157,8 @@ describe('IdentityProviderCreateComponent', () => {
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
         enabled: true,
-        mailAttribute: ''
+        mailAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -204,7 +206,8 @@ describe('IdentityProviderCreateComponent', () => {
         keystorePassword: 'testpassword1234',
         patterns: ['test.com', 'test.fr'],
         enabled: true,
-        mailAttribute: ''
+        mailAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

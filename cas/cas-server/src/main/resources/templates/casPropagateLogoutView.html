@@ -57,14 +57,10 @@
 
 
     <div class="centered">
-        <div class="flex-justify-end-margin">
-            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+        <div class="flex-justify-content-center">
+            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding step-email">
-        <div>
-            <h1><img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}"></h1>
-        </div>
-
         <div>
             <h4 th:utext="#{screen.logout.header}">Logout successful</h4>
             <p th:utext="#{screen.logout.fc.success}">You have successfully logged out of the Central Authentication
@@ -77,7 +73,7 @@
 
             <p th:utext="#{screen.logout.security}">For security reasons, exit your web browser.</p>
 
-            <button type="button" th:if="${logoutRedirectUrl}" class="vitamui-primary" name="submit" accesskey="l" onclick="redirectToApp();">[[${'Go to ' + logoutRedirectUrl}]]</button>
+            <button type="button" th:if="${logoutRedirectUrl}" class="vitamui-secondary" name="submit" accesskey="l" onclick="redirectToApp();">[[${'Go to ' + logoutRedirectUrl}]]</button>
 
         </div>
 

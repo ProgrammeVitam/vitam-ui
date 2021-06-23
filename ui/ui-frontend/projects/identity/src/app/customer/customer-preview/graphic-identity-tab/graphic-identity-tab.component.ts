@@ -69,7 +69,6 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
   private destroy = new Subject();
   public isLoading = false;
   public customerLogos: LogosSafeResourceUrl = {};
-  public defaultTheme: Theme;
 
   public theme: Theme;
   public COLOR_NAME: {[colorId: string]: string};
@@ -86,23 +85,20 @@ export class GraphicIdentityTabComponent implements OnInit, OnDestroy {
     this.COLOR_NAME = this.themeService.getBaseColors();
   }
 
-  private majTheme(colors: {[colorId: string]: string}, portalMessage: string, portalTitle: string): Theme {
+  private majTheme(colors: {[colorId: string]: string}): Theme {
     return {
       colors,
-      portalMessage,
-      portalTitle,
     };
   }
 
   private resetTab(customer: Customer): void {
+
     if (customer.hasCustomGraphicIdentity) {
       const colors = this.themeService.getThemeColors(customer.themeColors);
-      this.theme = this.majTheme(colors, customer.portalMessage, customer.portalTitle);
+      this.theme = this.majTheme(colors);
     } else {
       this.theme = this.majTheme(
-        this.themeService.getThemeColors(this.themeService.defaultTheme.colors),
-        this.themeService.defaultTheme.portalMessage,
-        this.themeService.defaultTheme.portalTitle
+        this.themeService.getThemeColors(this.themeService.defaultTheme.colors)
       );
       this.theme.headerUrl = this.themeService.defaultTheme.headerUrl;
       this.theme.portalUrl = this.themeService.defaultTheme.portalUrl;

@@ -48,7 +48,7 @@ import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 
 
-@Component({ selector: 'lib-vitamui-library-node', template: '' })
+@Component({selector: 'lib-vitamui-library-node', template: ''})
 class NodeStubComponent {
   @Input() tenantIdentifier: any;
   @Input() node: any;

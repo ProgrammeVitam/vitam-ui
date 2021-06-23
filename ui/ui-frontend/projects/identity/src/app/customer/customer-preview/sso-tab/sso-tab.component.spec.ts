@@ -93,7 +93,9 @@ class TestHostComponent {
     owners: [],
     themeColors: {},
     gdprAlert : false,
-    gdprAlertDelay : 72
+    gdprAlertDelay : 72,
+    portalMessages: {},
+    portalTitles: {}
   };
   @ViewChild(SsoTabComponent, { static: false }) component: SsoTabComponent;
 }

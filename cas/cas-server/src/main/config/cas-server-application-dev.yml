@@ -159,7 +159,7 @@ theme:
   #  vitamui-logo-large: /absolute/path/to/logo.png
   primary: '#702382'
   secondary: '#241f63'
-  background: '#0F0D2D'
+  background: '#FFFFFF'
 
 # Jaeger
 opentracing:

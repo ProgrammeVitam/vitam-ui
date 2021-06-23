@@ -11,8 +11,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
-        <h2 th:utext="#{screen.accountlocked.heading}">This account has been locked.</h2>
-        <p th:utext="#{screen.accountlocked.message}">Please contact the system administrator to regain access.</p>
+        <h4 th:utext="#{screen.accountlocked.heading}">This account has been locked.</h4>
+        <div class="text large marging-top-form margin-bottom-form" th:utext="#{screen.accountlocked.message}">Please contact the system administrator to regain access.</div>
     </div>
 </div>
 </body>

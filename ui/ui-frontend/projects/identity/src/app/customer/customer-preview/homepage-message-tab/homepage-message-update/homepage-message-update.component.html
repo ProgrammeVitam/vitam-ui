@@ -1,0 +1,15 @@
+<div class="content">
+
+  <app-homepage-message [customer]="data.customer"
+    (formToSend)="customForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages">
+  </app-homepage-message>
+
+    <div class="d-flex mt-4">
+      <button type="button" class="btn primary uppercase mr-4" [disabled]="disabled" (click)="updateHomepageMessage()">
+        {{'COMMON.APPLY_UPDATE' | translate}}
+      </button>
+      <button type="button" class="btn cancel link uppercase" (click)="onCancel()">
+        {{'COMMON.CANCEL' | translate}}
+      </button>
+    </div>
+</div>

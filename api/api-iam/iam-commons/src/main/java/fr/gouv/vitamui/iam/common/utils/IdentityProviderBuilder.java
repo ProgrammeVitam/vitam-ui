@@ -42,6 +42,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
 
+import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
 
@@ -78,10 +79,12 @@ public class IdentityProviderBuilder {
 
     private final String mailAttribute;
 
+    private final AuthnRequestBindingEnum authnRequestBinding;
+
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
             final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
             final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-            final boolean readonly, final String mailAttribute) {
+            final boolean readonly, final String mailAttribute, final AuthnRequestBindingEnum authnRequestBinding) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -94,6 +97,7 @@ public class IdentityProviderBuilder {
         this.customerId = customerId;
         this.readonly = readonly;
         this.mailAttribute = mailAttribute;
+        this.authnRequestBinding =  authnRequestBinding;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -105,6 +109,7 @@ public class IdentityProviderBuilder {
         idp.setPatterns(patterns);
         idp.setReadonly(readonly);
         idp.setMailAttribute(mailAttribute);
+        idp.setAuthnRequestBinding(authnRequestBinding);
 
         extractKeystore(idp, keystore);
 

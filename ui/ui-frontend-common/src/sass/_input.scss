@@ -61,6 +61,18 @@ $anim-timing: 150ms ease-out;
         width: 100%;
     }
 
+    &.vitamui-date {
+        .mat-form-field-underline {
+            display: none;
+          }
+        .mat-icon-button {
+            font-size: 25px !important;
+            .mat-icon {
+                font-size: 25px !important;
+            }
+        }
+    }
+
     textarea {
         resize: none;
         width: 100%;

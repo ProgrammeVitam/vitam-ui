@@ -205,7 +205,7 @@
           <div class="text medium bold" i18n="Email domain input label@@customerCreateEmailDomainInputLabel">
             Restriction de domaine e-mail
           </div>
-          <div class="text normal bold light">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
+          <div class="mb-4 text normal bold light">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
 
           <app-domains-input formControlName="emailDomains" placeholder="domaine.xyz"
                              i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder"
@@ -228,9 +228,23 @@
         <app-graphic-identity (formToSend)="customerForm = $event.form; logos = $event.logos"></app-graphic-identity>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()"
-                  i18n="Create owner button@@customerCreateCreateOwnerButton">
-            Suivant
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!thirdStepValid()">
+            {{'COMMON.NEXT' | translate}}
+          </button>
+          <ng-container *ngTemplateOutlet="cancel"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="back"></ng-container>
+      </div>
+
+    </cdk-step>
+
+    <cdk-step>
+      <div *ngIf="stepIndex===3" class="content mt-4">
+        <app-homepage-message (formToSend)="homepageMessageForm = $event.form; portalTitles = $event.portalTitles; portalMessages = $event.portalMessages"></app-homepage-message>
+
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="!fourthStepValid()">
+            {{'COMMON.NEXT' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -297,7 +311,7 @@
     </ng-template>
 
     <ng-template #back>
-      <button type="button" class="btn link mt-1 ml-1 text-primary" cdkStepperPrevious>
+      <button type="button" class="btn link mt-1 ml-1 primary" cdkStepperPrevious>
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
         <span i18n="Previous step button label@@customerCreateBackButton" class="underline">Retour</span>
       </button>

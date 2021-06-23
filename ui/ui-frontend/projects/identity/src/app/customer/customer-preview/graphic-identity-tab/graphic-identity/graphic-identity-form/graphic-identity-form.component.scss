@@ -3,13 +3,6 @@
 :host {
   h2 {
     margin-top: 0;
-    color: var(--vitamui-grey-900);
-  }
-  
-  label {
-    font-size: 13px;
-    color: $greyish-two;
-    font-weight: normal;
   }
 
   ::ng-deep .color-header-footer > * > .drag-and-drop-area { 
@@ -18,6 +11,21 @@
 
   ::ng-deep .color-background > * > .drag-and-drop-area { 
     background-color: var(--vitamui-background);
+  }
+
+  ::ng-deep .image-area-big > * > .drag-and-drop-area > .image-area { 
+    height: 230px;
+    width: 410px;
+    max-width: 100%;
+
+    img {
+      max-height: 120px;
+      max-width: 100%;
+    }
+  }
+
+  ::ng-deep .image-area-small > * > .drag-and-drop-area > .image-area { 
+    width: 200px;
   }
 
   .form-group {

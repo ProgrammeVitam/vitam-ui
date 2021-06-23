@@ -97,7 +97,7 @@
 
 
     </div>
-    <div class="vitamui-table-body">
+    <div *ngIf="groups" class="vitamui-table-body">
       <div class="vitamui-table-rows" *ngFor="let user of dataSource; let index = index" (click)="userClick.emit(user)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="row col-2 padding-user">
@@ -129,7 +129,7 @@
           </div>
           <div class="col-2">{{ user?.identifier }}</div>
           <div class="col-2">{{ user?.lastConnection|date:'dd/MM/yyyy'|empty}}</div>
-          <div class="row col-2">{{ user?.level }}{{ user?.level }}</div>
+          <div class="row col-2">{{ user?.level }}</div>
           <div class="row col-2">{{ getGroup(user)?.name }}</div>
 
         </div>
@@ -140,7 +140,9 @@
 
   </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+  <div *ngIf="!dataSource || pending || !groups then loadingSpinner"></div>
+
+ 
 </div>
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">

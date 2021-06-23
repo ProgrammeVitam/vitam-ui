@@ -2,9 +2,7 @@ h1, h2, h3, h4, h5 {
     color: var(--vitamui-grey-900);
     margin: 10px 0;
 
-    &.light {
-        color: var(--vitamui-grey-600);
-    }
+    @include text-colors;
 }
 
 h1 {
@@ -65,19 +63,10 @@ h5 {
         letter-spacing: 0.8px;
     }
 
-    &.light {
-        color: var(--vitamui-grey-600);
+    &.uppercase
+    {
+        text-transform: uppercase;
     }
-
-    &.success {
-        color: $green;
-    }
-
-    &.warning {
-        color: $orange;
-    }
-
-    &.danger {
-        color: $red;
-    }
+    
+    @include text-colors;
 }

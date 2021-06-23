@@ -6,22 +6,22 @@
         (fileDragOverEmitter)="onImageDragOver($event)"
         (fileDragLeaveEmitter)="onImageDragLeave($event)">
         <input type="file" #fileSearch class="d-none" (change)="handleFileInput($event.target.files)">
-        <div class="drop-area d-flex flex-column justify-content-center align-items-center">
+        <div class="image-area d-flex flex-column justify-content-center align-items-center">
             <div *ngIf="!imageUrl && messContent" class="">
-                <h3 >
+                <h5>
                     {{messContent}}
-                </h3>
+                </h5>
             </div>
             <img *ngIf="imageUrl" [src]="imageUrl"/>
         </div>
     </div>
     <div class="d-flex flex-column pt-2">
-        <small (click)="addLogo()" class="upload pointer">
+        <span (click)="addLogo()" class="upload pointer text caption light bold">
             <mat-icon class="pj">attach_file</mat-icon>
             {{messPj}}
-        </small>
-        <small class="error-message" *ngIf="hasError">
-            {{ message }}
+        </span>
+        <small class="error-message">
+            <div *ngIf="hasError">  {{ message }}</div>
         </small>
     </div>
 </div>

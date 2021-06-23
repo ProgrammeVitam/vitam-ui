@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { BASE_URL, Customer, LoggerModule, OtpState } from 'ui-frontend-common';
 
@@ -48,6 +48,7 @@ import { VitamUISnackBar } from '../../../shared/vitamui-snack-bar';
 import { SafeStylePipe } from './../../../../../../../../ui-frontend-common/src/app/modules/pipes/safe-style.pipe';
 import { environment } from './../../../../environments/environment';
 import { GraphicIdentityTabComponent } from './graphic-identity-tab.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 
 let expectedCustomer: Customer = {
   id: 'idCustomer',
@@ -89,7 +90,9 @@ let expectedCustomer: Customer = {
   }],
   themeColors: {},
   gdprAlert : false,
-  gdprAlertDelay : 72
+  gdprAlertDelay : 72,
+  portalMessages: {},
+  portalTitles: {}
 };
 
 @Component({
@@ -103,6 +106,14 @@ let expectedCustomer: Customer = {
 class TestHostComponent {
   customer = expectedCustomer;
   readOnly = false;
+}
+
+const translations: any = {TEST: 'This is a test'};
+
+class FakeLoader implements TranslateLoader {
+  getTranslation(): Observable<any> {
+    return of(translations);
+  }
 }
 
 describe('GraphicIdentityTabComponent', () => {
@@ -152,14 +163,19 @@ describe('GraphicIdentityTabComponent', () => {
       }],
       themeColors: {},
       gdprAlert : false,
-      gdprAlertDelay : 72
+      gdprAlertDelay : 72,
+      portalMessages: {},
+      portalTitles: {}
     };
     const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
 
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        TranslateModule.forRoot({
+          loader: {provide: TranslateLoader, useClass: FakeLoader}
+        })
       ],
       declarations: [GraphicIdentityTabComponent, TestHostComponent, SafeStylePipe],
       providers: [

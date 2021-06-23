@@ -176,19 +176,29 @@
   display: flex;
   align-items: center; }
 
+.flex-justify-content-center {
+  display: flex;
+  justify-content: center; }
+
 .flex-justify-end-margin {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1.5rem; }
 
+.line-height-medium {
+  line-height: 1.5; }
+
 .login-padding {
   padding: 48px 80px; }
 
 .login-marging {
-  margin: 120px auto; }
+  margin: 30px auto; }
 
 .marging-top-form {
-  margin-top: 2rem; }
+  margin-top: 1rem; }
+
+.margin-bottom-form {
+  margin-bottom: 1rem; }
 
 .text-red {
   color: #C10000; }
@@ -206,7 +216,8 @@
   width: 800px;
   border-radius: 20px;
   background-color: #ffffff;
-  box-shadow: 0 0 80px 0 rgba(163, 163, 163, 0.3); }
+  box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
+  border: 1px solid #BDBDBD; }
   .login-box h1 {
     font-size: 28px;
     font-weight: 300;
@@ -227,14 +238,13 @@
   .login-box a {
     font-size: 15px;
     color: var(--vitamui-primary);
-    text-decoration: underline; }
+    text-decoration: none; }
   .login-box input[type=text],
   .login-box input[type=email],
   .login-box input[type=password] {
-    border: none;
     outline: none;
-    border-radius: 25px;
-    box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
@@ -298,7 +308,6 @@
     font-weight: normal;
     border: none;
     padding: 0;
-    margin-top: 40px;
     cursor: pointer; }
     .login-box button.back i {
       display: block;
@@ -395,7 +404,7 @@
       transition: opacity 100ms ease-out;
       vertical-align: middle; }
     .helper.password-helper ul li.valid {
-      color: var(--vitamui-secondary); }
+      color: #27740A; }
       .helper.password-helper ul li.valid i {
         opacity: 1; }
 
@@ -412,7 +421,7 @@
 
 .step-email form {
   display: flex;
-  margin-bottom: 30px; }
+  margin-bottom: 15px; }
   .step-email form .form-control {
     flex-grow: 1; }
     .step-email form .form-control input {
@@ -473,12 +482,11 @@
 .mfa-login .textfield {
   float: left; }
   .mfa-login .textfield #token {
-    width: 300px;
-    height: 87px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
-    background-color: #ffffff;
-    border: solid 1px #f0f0f0; }
+    width: 200px;
+    height: 60px;
+    border-radius: 5px;
+    box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);
+    background-color: #ffffff; }
 
 .mfa-login .information {
   margin-bottom: 33px; }
@@ -506,18 +514,17 @@
   height: 50px;
   float: left;
   margin-left: 30px;
-  margin-top: 36px;
   margin-right: 20px; }
   .mfa-login .buttonbckgrnd .submittoken {
     width: 80px;
     height: 50px;
     border-radius: 50px;
-    background-color: var(--vitamui-secondary);
+    background-color: var(--vitamui-primary);
     box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
     text-align: center;
     padding: 15px 30px;
     transition: opacity 200ms ease-in-out;
-    border: 1px solid var(--vitamui-secondary);
+    border: 1px solid var(--vitamui-primary);
     font-size: 15px;
     font-weight: 500;
     color: #ffffff;
@@ -533,7 +540,6 @@
   font-size: 15px;
   font-weight: normal;
   color: #aab0b3;
-  margin-top: 18px;
   width: 150px;
   float: left; }
 
@@ -562,11 +568,11 @@
   .mfa-expired #resendCodeForm .button {
     height: 50px;
     border-radius: 50px;
-    background-color: var(--vitamui-secondary);
+    background-color: var(--vitamui-primary);
     box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
     padding: 15px 30px;
     transition: opacity 200ms ease-in-out;
-    border: 1px solid var(--vitamui-secondary);
+    border: 1px solid var(--vitamui-primary);
     font-size: 15px;
     font-weight: 500;
     color: #ffffff;

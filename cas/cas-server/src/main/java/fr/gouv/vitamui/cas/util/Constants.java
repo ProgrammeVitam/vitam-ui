@@ -45,8 +45,6 @@ public abstract class Constants {
 
     public static final String USERNAME = "username";
 
-    public static final String PROVIDER_TECHNICAL_NAME = "providerTechnicalName";
-
     // surrogation:
     public static final String SURROGATE = "surrogate";
 

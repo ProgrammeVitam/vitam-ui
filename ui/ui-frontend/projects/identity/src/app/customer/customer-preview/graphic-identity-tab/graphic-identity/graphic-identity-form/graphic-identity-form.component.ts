@@ -19,8 +19,6 @@ export class GraphicIdentityFormComponent implements OnInit {
   public formChange = new EventEmitter<{form: FormGroup, logos: Logo[]}>();
 
   public ATTACHMENT_TYPE = AttachmentType;
-  public logosSize = {width: 280, height: 100};
-
   private logos: Logo[] = [];
 
   constructor(private themeService: ThemeService) { }

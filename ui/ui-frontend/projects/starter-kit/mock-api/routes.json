@@ -1,0 +1,8 @@
+{
+    "/identity-api/ui/applications/conf": "/conf",
+    "/identity-api/security": "/security",
+    "/identity-api/ui/applications/asset?assets=HEADER,FOOTER,PORTAL": "/asset",
+    "/identity-api/ui/applications?filterApp=true": "/applications",
+    "/identity-api/accounts/me": "/security"
+    }
+  

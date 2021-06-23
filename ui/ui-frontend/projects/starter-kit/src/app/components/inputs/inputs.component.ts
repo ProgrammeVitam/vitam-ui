@@ -1,15 +1,18 @@
+import { CountryService } from './../../services/CountryService.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import {Option} from "ui-frontend-common";
 
 @Component({
   selector: 'starter-kit-inputs',
   templateUrl: './inputs.component.html',
-  styleUrls: ['./inputs.component.scss']
+  styleUrls: ['./inputs.component.scss'],
+  providers: [CountryService]
 })
 export class InputsComponent implements OnInit {
 
   public control = new FormControl();
-  
+
   public streetEmpty = new FormControl('', [Validators.maxLength(3)]);
   public streetInvalid = new FormControl('azerty', [Validators.maxLength(3)]);
   public streetDisable = new FormControl('azerty', [Validators.maxLength(6)]);
@@ -25,7 +28,12 @@ export class InputsComponent implements OnInit {
   public duration = new FormControl( {days: 5, hours: 10, minutes: 5});
   public file = new FormControl( new File(['test'], 'test', {type: 'text/plain'}));
 
-  constructor() { }
+  countries: Option[];
+
+  autoCompletSelect = new FormControl();
+
+
+  constructor(private countryService: CountryService) { }
 
   onChange = (_: any) => {};
   onTouched = () => {};
@@ -39,6 +47,11 @@ export class InputsComponent implements OnInit {
     this.onTouched = fn;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.countryService.getCountries().then(countries => {
+      this.countries = countries;
+  });
+    this.autoCompletSelect.disable({ emitEvent: false });
+  }
 
 }

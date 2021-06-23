@@ -44,7 +44,7 @@ export function buildCriteriaFromSearch(search: string, keys: string[]): SearchQ
 
   return [{
     queryOperator: 'OR',
-    criteria: keys.map((key) => ({ key, value: search + '*', operator: Operators.equalsIgnoreCase }))
+    criteria: keys.map((key) => ({ key, value: '*' + search + '*', operator: Operators.equalsIgnoreCase }))
   }];
 }
 

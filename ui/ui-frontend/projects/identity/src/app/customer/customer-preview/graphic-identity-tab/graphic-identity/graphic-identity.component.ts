@@ -69,9 +69,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     colors: null,
     headerUrl: '',
     footerUrl: '',
-    portalUrl: '',
-    portalMessage: '',
-    portalTitle: ''
+    portalUrl: ''
   };
 
   private defaultTheme: Theme = this.themeService.defaultTheme;
@@ -100,8 +98,6 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
         [ThemeColorType.VITAMUI_HEADER_FOOTER]: new FormControl('', [this.hexValidator, Validators.required]),
         [ThemeColorType.VITAMUI_BACKGROUND]: new FormControl('', [this.hexValidator, Validators.required]),
       }),
-      portalTitle: ['', [Validators.required]],
-      portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
       headerUrl: '',
       footerUrl: '',
       portalUrl: '',
@@ -113,9 +109,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
         : this.defaultTheme.colors,
       headerUrl: this.customerLogosUrl ? this.customerLogosUrl.headerUrl : this.defaultTheme.headerUrl,
       footerUrl: this.customerLogosUrl ? this.customerLogosUrl.footerUrl : this.defaultTheme.footerUrl,
-      portalUrl: this.customerLogosUrl ? this.customerLogosUrl.portalUrl : this.defaultTheme.portalUrl,
-      portalMessage: this.customer && this.customer.portalMessage ? this.customer.portalMessage : this.defaultTheme.portalMessage,
-      portalTitle: this.customer && this.customer.portalTitle ? this.customer.portalTitle : this.defaultTheme.portalTitle
+      portalUrl: this.customerLogosUrl ? this.customerLogosUrl.portalUrl : this.defaultTheme.portalUrl
     };
 
     if (this.customer) {
@@ -187,13 +181,9 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     this.graphicIdentityForm.get('footerUrl').setValue(theme.footerUrl);
     this.graphicIdentityForm.get('portalUrl').setValue(theme.portalUrl);
 
-    this.graphicIdentityForm.get('portalTitle').setValue(theme.portalTitle);
-    this.graphicIdentityForm.get('portalMessage').setValue(theme.portalMessage);
-
+    // do not use this.graphicIdentityForm.controls (and new FormGroup)
     const newForm = this.formBuilder.group(this.graphicIdentityForm.value);
     newForm.controls.themeColors = newTheme;
-    newForm.get('portalTitle').validator = this.graphicIdentityForm.get('portalTitle').validator;
-    newForm.get('portalMessage').validator = this.graphicIdentityForm.get('portalMessage').validator;
     return newForm;
   }
 }

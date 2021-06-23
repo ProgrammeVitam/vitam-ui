@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { AuthnRequestBindingEnum } from '../../utils';
 import { Id } from '../id.interface';
 
 export interface IdentityProvider extends Id {
@@ -50,6 +51,7 @@ export interface IdentityProvider extends Id {
   idpMetadataUrl?: string;
   readonly: boolean;
   mailAttribute?: string;
+  authnRequestBinding: AuthnRequestBindingEnum;
 }
 
 /**

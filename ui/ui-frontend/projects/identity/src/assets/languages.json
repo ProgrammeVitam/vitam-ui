@@ -1,0 +1,7 @@
+{
+  "data": [
+    {"label": "Français","key": "FRENCH"},
+    {"label": "Anglais","key": "ENGLISH"},
+    {"label": "Allemand","key": "GERMAN"}
+  ]
+}

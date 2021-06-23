@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'vitamui-common-search-bar',
@@ -55,6 +55,8 @@ export class SearchBarComponent implements OnInit {
 
   @Output() clear = new EventEmitter<string>();
 
+  @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+
   searchValue: string;
 
   constructor() { }
@@ -71,6 +73,12 @@ export class SearchBarComponent implements OnInit {
     this.searchValue = null;
     this.clear.emit();
     this.search.emit(this.searchValue);
+  }
+
+  public onFocus() {
+    if (this.searchInput) {
+      setTimeout(() => this.searchInput.nativeElement.focus(), 0);
+    }
   }
 
 }

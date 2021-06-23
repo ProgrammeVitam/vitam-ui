@@ -204,7 +204,7 @@ describe('GroupListComponent', () => {
   });
 
   it('should call loadMore()', () => {
-    const groupService = TestBed.get(GroupService);
+    const groupService = TestBed.inject(GroupService);
     component.infiniteScrollDisabled = true;
     fixture.detectChanges();
     page.loadMoreButton.click();

@@ -17,21 +17,22 @@
     <img [src]="trustedInlineLogoUrl" />
   </div>
 
-  <div class="account" [matMenuTriggerFor]="accountMenu">
+  <div class="account">
     <div *ngIf="appId && currentUser?.basicCustomer?.graphicIdentity?.hasCustomGraphicIdentity" class="application-logo">
       <img class="logo" [src]="trustedInlineLogoUrl" />
     </div>
-    <div class="account-picture">
-      <i class="vitamui-icon vitamui-icon-user"></i>
-    </div>
+    <div class="d-flex align-items-center cursor-effect" [matMenuTriggerFor]="accountMenu">
+      <div class="account-picture">
+        <i class="vitamui-icon vitamui-icon-user"></i>
+      </div>
 
-    <div class="account-info">
-      {{currentUser?.firstname}}
-    <br/>
-    {{currentUser?.lastname}}
-    </div>
-    <i class="material-icons vitamui-menu-caret">keyboard_arrow_down</i>
-
+      <div class="account-info">
+        {{currentUser?.firstname}}
+      <br/>
+      {{currentUser?.lastname}}
+      </div>
+      <i class="material-icons vitamui-menu-caret">keyboard_arrow_down</i>
+  </div>
     <div class="account-menu">
       <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
         <ng-container>

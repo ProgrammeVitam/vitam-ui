@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Customer, IdentityProvider } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, ConfirmDialogService, Customer, IdentityProvider } from 'ui-frontend-common';
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -72,7 +72,8 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
       internal: [{ value: false, disabled: true }, Validators.required],
       keystorePassword: [null, Validators.required],
       patterns: [null, Validators.required],
-      mailAttribute: [null]
+      mailAttribute: [null],
+      authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required]
     });
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }

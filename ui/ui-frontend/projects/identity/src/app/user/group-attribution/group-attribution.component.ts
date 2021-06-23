@@ -62,6 +62,7 @@ export class GroupAttributionComponent implements OnInit {
   activeGroups: GroupSelection[];
   selectedGroupName: string;
   CUSTOMER_ACTIVE_PROFILE_GROUPS_INDEX = 2;
+  userGroupName: string;
 
   public stepIndex = 0;
   public stepCount = 1;
@@ -78,6 +79,7 @@ export class GroupAttributionComponent implements OnInit {
 
   public ngOnInit(): void {
     this.user = this.data[0];
+    this.userGroupName = this.data[1].name;
     this.resetActiveGroups();
   }
 

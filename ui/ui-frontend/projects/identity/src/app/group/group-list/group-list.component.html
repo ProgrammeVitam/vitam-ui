@@ -10,13 +10,11 @@
           <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
               <div class="table-filter-icon" i18n="@@groupStatusEnabled">
-                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-green" [style.fontSize.px]="25"></i>
                 <span class="badge-state">Actif</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
               <div class="table-filter-icon" i18n="@@groupStatusDisabled">
-                <i class="vitamui-icon vitamui-icon-user status-badge status-badge-grey" [style.fontSize.px]="25"></i>
                 <span class="badge-state">Désactivé</span>
               </div>
             </vitamui-common-table-filter-option>

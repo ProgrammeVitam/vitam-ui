@@ -19,7 +19,7 @@
     </mat-tab>
 
     <mat-tab label="Groupe" i18n-label="Groupe tab@@userPreviewTabGroupe" class="no-padding">
-      <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo"></app-user-group-tab>
+      <app-user-group-tab [user]="user" [readOnly]="isPopup || user?.readonly || levelNotAllowed()" [userInfo]="connectedUserInfo" [groups]="groups"></app-user-group-tab>
     </mat-tab>
 
     <mat-tab label="Historique" i18n-label="History tab@@userPreviewTabHistory">

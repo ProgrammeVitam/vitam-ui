@@ -1,48 +1,64 @@
 {
-    "COMMON" : {
-        "CANCEL" : "Annuler",
-        "SUBMIT" : "Terminer",
-        "UPDATE" : "Modifier",
-        "APPLY_UPDATE" : "Appliquer les modifications "
-    },
-    "MISC" : {
-        "NO_DESC": "Aucune description"
-    },
-    "COLOR" : {
-        "INVALID": "Couleur incorrecte",
-        "TOO_LIGHT": "La couleur est trop claire.",
-        "TOO_DARK": "La couleur est trop foncée.",
-        "INCOMPATIBLE": "Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA.",
-        "TERTIARY": "Couleur tertiaire",
-        "HEADER_FOOTER": "Couleur header/footer",
-        "BACKGROUND": "Couleur background"
-    },
-    "GRAPHIC_IDENTITY" : {
-        "TOGGLE_TITLE" : "Identité graphique personnalisée",
-        "COLOR_TITLE" :"Paramètrage des couleurs",
-        "LOGO_TITLE" :"Gestion des logos",
-        "LOGO_HEADER_TITLE" :"Logo d'entête",
-        "LOGO_FOOTER_TITLE" :"Logo pied de page",
-        "LOGO_PORTAL_TITLE" :"Logo du portail",
-        "LOGO_DROP":"Déposez votre logo",
-        "LOGO_ATTACH":"Joindre un logo",
-        "TERTIARY_COLOR_SHOW":"Afficher la couleur tertiaire",
-        "TERTIARY_COLOR_HIDE":"Ne pas afficher la couleur tertiaire",
-        "SUBMIT":"Appliquer la charte graphique"
-    },
-    "CUSTOMER" : {
-        "TAB" : {
-            "INFORMATION" : "Informations",
-            "SSO" : "SSO",
-            "GRAPHIC_ID" :"ID. graphique",
-            "HOMEPAGE_MESSAGE" : "Message d'accueil",
-            "HISTORY" : "Historique"
-        }
-    },
-    "HOMEPAGE_MESSAGE" : {
-        "UPDATE_TITLE" : "Personnalisation du message d'accueil",
-        "PORTAL_TITLE" : "Titre du portail",
-        "PORTAL_MESSAGE" : "Message d'accueil du portail",
-        "PORTAL_MESSAGE_LENGTH" : "/500 caractères max restants"
+  "COMMON": {
+    "CANCEL": "Annuler",
+    "SUBMIT": "Terminer",
+    "UPDATE": "Modifier",
+    "APPLY_UPDATE": "Appliquer les modifications",
+    "NEXT": "Suivant",
+    "REQUIRED" :"Champ requis",
+    "LANGUAGE": {
+      "TITLE" : "Langue",
+      "ENGLISH" :"Anglais",
+      "FRENCH" : "Français",
+      "GERMAN": "Allemand"
+
     }
+  },
+  "MISC": {
+    "NO_DESC": "Aucune description"
+  },
+  "COLOR": {
+    "INVALID": "Couleur incorrecte",
+    "TOO_LIGHT": "La couleur est trop claire.",
+    "TOO_DARK": "La couleur est trop foncée.",
+    "INCOMPATIBLE": "Cette couleur ne sera pas compatible avec les normes d'accessibilité RGAA.",
+    "TERTIARY": "Couleur tertiaire",
+    "HEADER_FOOTER": "Couleur header/footer",
+    "BACKGROUND": "Couleur background"
+  },
+  "CUSTOMER": {
+    "TAB": {
+      "INFORMATION": "Informations",
+      "SSO": "SSO",
+      "GRAPHIC_ID": "ID. graphique",
+      "HOMEPAGE_MESSAGE": "Message d'accueil",
+      "HISTORY": "Historique"
+    },
+    "GRAPHIC_IDENTITY": {
+      "TOGGLE_TITLE": "Identité graphique personnalisée",
+      "COLOR_TITLE": "Paramètrage des couleurs",
+      "LOGO_TITLE": "Gestion des logos",
+      "LOGO_HEADER_TITLE": "Logo d'entête",
+      "LOGO_FOOTER_TITLE": "Logo pied de page",
+      "LOGO_PORTAL_TITLE": "Logo du portail",
+      "LOGO_DROP": "Déposez votre logo",
+      "LOGO_ATTACH": "Joindre un logo",
+      "TERTIARY_COLOR_SHOW": "Afficher la couleur tertiaire",
+      "TERTIARY_COLOR_HIDE": "Ne pas afficher la couleur tertiaire",
+      "SUBMIT": "Appliquer la charte graphique"
+    },
+    "HOMEPAGE_MESSAGE": {
+      "TITLE": "Personnalisation du message d'accueil",
+      "PORTAL_TITLE": "Titre du portail",
+      "DEFAULT_PORTAL_TITLE": "Titre par défaut",
+      "LANGUAGE_TITLE": "Titre langue",
+      "PORTAL_MESSAGE": "Message d'accueil du portail",
+      "DEFAULT_PORTAL_MESSAGE": "Message d'accueil par défaut",
+      "LANGUAGE_PORTAL_MESSAGE": "Message d'accueil langue",
+      "PORTAL_MESSAGE_LENGTH": "/500 caractères max restants",
+      "ADD_LANGUAGE" : "Ajouter une langue",
+      "DELETE_LANGUAGE" : "Supprimer la langue"
+    }
+  }
 }
+

@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.iam.internal.server.customer.domain;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -115,6 +117,10 @@ public class Customer extends IdDocument {
 
     @NotNull
     private GraphicIdentity graphicIdentity;
+
+    Map<String, String> portalTitles = new HashMap<>();
+
+    Map<String, String> portalMessages = new HashMap<>();
 
     @Getter
     private boolean gdprAlert = false;

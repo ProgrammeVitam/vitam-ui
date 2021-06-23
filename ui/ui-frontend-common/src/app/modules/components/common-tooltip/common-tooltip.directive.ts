@@ -47,6 +47,7 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
 } from '@angular/core';
 import { CommonTooltipComponent } from './common-tooltip.component';
@@ -55,7 +56,7 @@ import { TooltipType } from './TooltipType.enum';
 @Directive({
   selector: '[vitamuiCommonToolTip]',
 })
-export class CommonTooltipDirective implements OnInit {
+export class CommonTooltipDirective implements OnInit, OnDestroy {
   @Input('vitamuiCommonToolTip') text = '';
   @Input() type = 'BOTTOM';
   @Input() outline = false;
@@ -75,6 +76,10 @@ export class CommonTooltipDirective implements OnInit {
       .withPositions([position]);
 
     this.overlayRef = this.overlay.create({ positionStrategy });
+  }
+
+  ngOnDestroy() {
+    this.overlayRef.detach();
   }
 
   @HostListener('mouseenter')

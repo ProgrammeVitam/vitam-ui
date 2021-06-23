@@ -84,9 +84,11 @@ const expectedCustomer: Customer = {
     customerId: 'idCustomer',
     readonly: false
   }],
-  themeColors: {},
   gdprAlert: false,
-  gdprAlertDelay : 72
+  gdprAlertDelay : 72,
+  themeColors: {},
+  portalMessages: {},
+  portalTitles: {}
 };
 
 // TODO fix tests with filling plan

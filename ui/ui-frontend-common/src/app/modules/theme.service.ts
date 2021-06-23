@@ -10,8 +10,6 @@ export interface Theme {
   headerUrl?: SafeResourceUrl;
   footerUrl?: SafeResourceUrl;
   portalUrl?: SafeResourceUrl;
-  portalMessage: string;
-  portalTitle: string;
 }
 
 @Injectable({
@@ -43,9 +41,7 @@ export class ThemeService {
     colors: {},
     headerUrl: '',
     footerUrl: '',
-    portalUrl: '',
-    portalMessage: '',
-    portalTitle: ''
+    portalUrl: ''
   };
 
   // Default theme
@@ -94,8 +90,6 @@ export class ThemeService {
     if (conf) {
       this.defaultTheme = {
         colors: conf.THEME_COLORS,
-        portalMessage: conf.PORTAL_MESSAGE,
-        portalTitle: conf.PORTAL_TITLE,
         headerUrl: this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + conf.HEADER_LOGO),
         footerUrl: this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + conf.FOOTER_LOGO),
         portalUrl: this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + conf.PORTAL_LOGO),
@@ -124,16 +118,6 @@ export class ThemeService {
       ? authUser.basicCustomer.graphicIdentity
       : null;
     switch (type) {
-      case ThemeDataType.PORTAL_MESSAGE: return userAuthGraphicIdentity
-        && userAuthGraphicIdentity.portalMessage && userAuthGraphicIdentity.hasCustomGraphicIdentity
-        ? userAuthGraphicIdentity.portalMessage
-        : this.defaultTheme.portalMessage;
-                                         break;
-      case ThemeDataType.PORTAL_TITLE: return userAuthGraphicIdentity
-        && userAuthGraphicIdentity.portalTitle && userAuthGraphicIdentity.hasCustomGraphicIdentity
-        ? userAuthGraphicIdentity.portalTitle
-        : this.defaultTheme.portalTitle;
-                                       break;
       case ThemeDataType.PORTAL_LOGO: return userAuthGraphicIdentity
         && userAuthGraphicIdentity.portalDataBase64 && userAuthGraphicIdentity.hasCustomGraphicIdentity
         ? this.domSanitizer.bypassSecurityTrustUrl('data:image/*;base64,' + userAuthGraphicIdentity.portalDataBase64)

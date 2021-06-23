@@ -55,12 +55,12 @@ export interface Customer extends Id {
   defaultEmailDomain: string;
   owners: Owner[];
   readonly: boolean;
-  portalMessage?: string;
-  portalTitle?: string;
+  portalMessages: {[language: string]: string};
+  portalTitles: {[language: string]: string};
   hasCustomGraphicIdentity: boolean;
   themeColors: {[key: string]: string};
-  gdprAlert : boolean;
-  gdprAlertDelay : number;
+  gdprAlert: boolean;
+  gdprAlertDelay: number;
   tenantName?: string;
 
 }

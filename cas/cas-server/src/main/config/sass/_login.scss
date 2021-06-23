@@ -2,21 +2,31 @@
     display: flex;
     align-items: center;
 }
+.flex-justify-content-center {
+    display: flex;
+    justify-content: center;
+}
 .flex-justify-end-margin {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 1.5rem;
 }
-
+.line-height-medium {
+    line-height: 1.5;
+}
 .login-padding {
     padding: 48px 80px;
 }
 .login-marging {
-    margin: 120px auto;
+    margin: 30px auto;
 }
 
 .marging-top-form {
-    margin-top: 2rem;
+    margin-top: 1rem;
+}
+
+.margin-bottom-form {
+    margin-bottom: 1rem;
 }
 .text-red {
     color: $red;
@@ -63,16 +73,15 @@ strong {
 
 a {
     @include login-link;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 input[type=text],
 input[type=email],
 input[type=password] {
-    border: none;
     outline: none;
-    border-radius: 25px;
-    box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(33, 33, 33, 0.2), 0 1px 4px rgba(33, 33, 33, 0.05);
     transition: border-color 200ms ease-out;
     height: 50px;
     padding: 0 30px;
@@ -104,6 +113,7 @@ input[type=password] {
         margin-right: 10px;
     }
 }
+
 
 button.vitamui-primary {
     @include button-primary;
@@ -150,7 +160,6 @@ button.back {
     font-weight: normal;
     border: none;
     padding: 0;
-    margin-top: 40px;
     cursor: pointer;
 
     i {

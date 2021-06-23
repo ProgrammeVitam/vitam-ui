@@ -22,32 +22,34 @@
     </div>
 
     <div class="centered">
-        <div class="flex-justify-end-margin">
-            <img th:src="${vitamLogo} ? 'data:image/png;base64,' + ${vitamLogo} : @{/images/vitam-logo.png}">
+        <div class="flex-justify-content-center">
+            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding step-password">
-            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
             <div>
                 <h5 th:if="${!#strings.isEmpty(superUser)}">
                     Bon retour parmi nous [[${superUser}]] !
                 </h5>
 
-                <h5 th:if="${#strings.isEmpty(superUser)}">
+                <h5 th:if="${#strings.isEmpty(superUser)}" th:utext="#{cas.authentication.welcomeback.msg (${credential.username})}">
                     Bon retour parmi nous [[${credential.username}]] !<br>
                 </h5>
             </div>
-            <div class="marging-top-form" >
-            <div class="text medium bold"> Veuillez saisir votre mot de passe <span class="text-red">*</span></div>
-            <div>
-                <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
-                    <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
-                    <input type="hidden" name="_eventId" value="resetPassword"/>
-                    <span class="fa fa-unlock"></span>
-                    <div class="text medium">Vous avez oubliez votre mot de passe ? <a href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();">
-                        créer un nouveau mot de passe</a>.
-                    </div>
-                </form>
-            </div>
+            <div class="marging-top-form line-height-medium" >
+                <div class="text medium bold" th:text="#{cas.authentication.password.input}"> Veuillez saisir votre mot de passe <span class="text-red">*</span></div>
+                <div>
+                    <form th:if="${passwordManagementEnabled}" method="post" id="passwordManagementForm">
+                        <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
+                        <input type="hidden" name="_eventId" value="resetPassword"/>
+                        <span class="fa fa-unlock"></span>
+                        <div>
+                            <div class="text medium" th:text="#{cas.authentication.password.forgot}">Vous avez oubliez votre mot de passe ?
+                            </div>
+                            <a class="flex-justify-content-center" href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();" th:text="#{cas.authentication.password.create}">
+                                CRÉER UN NOUVEAU MOT DE PASSE.</a>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <form class="marging-top-form" method="post" id="fm1" th:object="${credential}" action="login">
@@ -55,7 +57,8 @@
 
                     <input class="required"
                            type="password"
-                           name="password" placeholder="Mot de passe *"
+                           name="password"
+                           th:placeholder="#{cas.authentication.password.placeholder}"
                            autofocus
                            id="password"
                            size="25"
@@ -82,7 +85,7 @@
             </form>
 
             <button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|">
-                <i class="material-icons">arrow_back</i> Retour
+                <i class="material-icons">chevron_left</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>
             </button>
         </div>
     </div>

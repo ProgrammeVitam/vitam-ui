@@ -72,13 +72,28 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     companyName: null,
   };
   public stepIndex = 0;
-  public stepCount = 5;
+  public stepCount = 6;
   private _customerForm: FormGroup;
   public get customerForm(): FormGroup { return this._customerForm; }
   public set customerForm(form: FormGroup) {
     this._customerForm = form;
   }
   gdprReadOnlyStatus: boolean;
+
+  // tslint:disable-next-line: variable-name
+  private _homepageMessageForm: FormGroup;
+  public get homepageMessageForm(): FormGroup { return this._homepageMessageForm; }
+  public set homepageMessageForm(form: FormGroup) {
+    this._homepageMessageForm = form;
+  }
+
+  public portalTitles: {
+    [language: string]: string;
+  };
+
+  public portalMessages: {
+    [language: string]: string;
+  };
 
   public logos: Logo[];
 
@@ -120,6 +135,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       defaultEmailDomain: [null, Validators.required],
       hasCustomGraphicIdentity: false,
       themeColors: [null],
+      portalMessages: [null],
+      portalTitles: [null],
       owners: this.formBuilder.array([
         this.formBuilder.control(null, Validators.required),
       ]),
@@ -202,13 +219,19 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   private updateForCustomerModel(formValue: any): Customer {
     let customer = formValue;
+
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
       customer = {...formValue, ...{
-        id : this.customerForm.get('id').value,
         hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
         themeColors: this.customerForm.get('themeColors').value,
-        portalTitle: this.customerForm.get('portalTitle').value,
-        portalMessage: this.customerForm.get('portalMessage').value,
+      }};
+    }
+
+    if (this.homepageMessageForm) {
+      customer = {...customer, ...{
+        id : this.homepageMessageForm.get('id').value,
+        portalTitles: this.portalTitles,
+        portalMessages: this.portalMessages,
       }};
     }
 
@@ -250,9 +273,18 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     return !this.customerForm || (this.customerForm && this.customerForm.valid);
   }
 
-  lastStepIsInvalid(): boolean {
-      const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid();
-      return this.form.pending || this.form.invalid || invalid || this.creating;
+  public fourthStepValid(): boolean {
+    return this.homepageMessageForm && this.homepageMessageForm.valid && this.checkValidation(this.homepageMessageForm.value.translations);
   }
 
+  private checkValidation(forms: FormGroup[]): boolean {
+    let isValid = true;
+    forms.forEach(((x) => {if (!x.valid) { isValid = false; }}));
+    return isValid;
+  }
+
+  lastStepIsInvalid(): boolean {
+      const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
+      return this.form.pending || this.form.invalid || invalid || this.creating;
+  }
 }

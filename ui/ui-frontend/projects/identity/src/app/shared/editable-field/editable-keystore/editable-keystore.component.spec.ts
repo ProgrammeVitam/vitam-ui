@@ -43,7 +43,7 @@ import { ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of, throwError as observableThrowError } from 'rxjs';
 
-import { IdentityProvider, newFile } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile } from 'ui-frontend-common';
 import { input, VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from '../../../customer/customer-preview/sso-tab/identity-provider.service';
 import { EditableKeystoreComponent } from './editable-keystore.component';
@@ -66,7 +66,8 @@ class TesthostComponent {
     idpMetadata: null,
     patterns: ['test1.com', 'test2.com'],
     enabled: true,
-    readonly : false
+    readonly : false,
+    authnRequestBinding: AuthnRequestBindingEnum.POST
   };
   disabled: boolean;
   @ViewChild(EditableKeystoreComponent, { static: false }) component: EditableKeystoreComponent;

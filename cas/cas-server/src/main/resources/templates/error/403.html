@@ -18,7 +18,7 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div layout:fragment="content">
         <div>
-            <h2 th:utext="#{screen.error.page.authdenied}">Authorization Denied</h2>
+            <h4 th:utext="#{screen.error.page.authdenied}">Authorization Denied</h4>
             <p th:utext="#{screen.error.page.permissiondenied}">You do not have permission to view this page.</p>
             <a class="btn btn-submit" th:href="@{/login}" th:utext="#{screen.error.page.loginagain}">Login Again</a>
         </div>

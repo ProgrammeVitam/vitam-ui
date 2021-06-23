@@ -123,6 +123,8 @@ const expectedCustomer = {
   themeColors: {},
   gdprAlert : true,
   gdprAlertDelay : 72,
+  portalMessages: {},
+  portalTitles: {},
   tenantName: 'tenantName'
 };
 

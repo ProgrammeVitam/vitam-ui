@@ -125,12 +125,11 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     @Autowired
     public CustomerInternalService(final CustomSequenceRepository sequenceRepository,
-        final CustomerRepository customerRepository,
-        final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
-        final InternalSecurityService internalSecurityService, final AddressService addressService,
-        final InitCustomerService initCustomerService,
-        final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
-        final LogbookService logbookService) {
+            final CustomerRepository customerRepository, final OwnerInternalService internalOwnerService,
+            final UserInternalService userInternalService, final InternalSecurityService internalSecurityService,
+            final AddressService addressService, final InitCustomerService initCustomerService,
+            final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
+            final LogbookService logbookService) {
         super(sequenceRepository);
         this.customerRepository = customerRepository;
         this.internalOwnerService = internalOwnerService;
@@ -236,8 +235,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Customer customer = find(id, "Unable to patch customer");
         final String message = "Unable to patch customer " + id;
 
-        Assert
-            .isTrue(!checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")),
+        Assert.isTrue(
+                !checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")),
                 message);
         final String code = CastUtils.toString(partialDto.get("code"));
         if (code != null) {
@@ -288,8 +287,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     customer.setCompanyName(CastUtils.toString(entry.getValue()));
                     break;
                 case "enabled":
-                    logbooks
-                        .add(new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
+                    logbooks.add(
+                            new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
                     customer.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "language":
@@ -318,7 +317,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                 case "defaultEmailDomain":
                     final String defaultEmailDomain = CastUtils.toString(entry.getValue());
                     logbooks.add(
-                        new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY, customer.getDefaultEmailDomain(),
+                        new EventDiffDto(CustomerConverter.DEFAULT_EMAIL_DOMAIN_KEY,
+                            customer.getDefaultEmailDomain(),
                             entry.getValue()));
                     customer.setDefaultEmailDomain(defaultEmailDomain);
                     break;
@@ -362,7 +362,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                         customer.setAddress(new Address());
                     }
                     addressService
-                        .processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks, false);
+                        .processPatch(customer.getAddress(), CastUtils.toMap(entry.getValue()), logbooks,
+                            false);
                     break;
                 case "internalCode":
                     logbooks.add(new EventDiffDto(CustomerConverter.INTERNAL_CODE_KEY, customer.getInternalCode(),
@@ -385,32 +386,46 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                 case "themeColors":
                     final Object themeColorsValue = entry.getValue();
 
-                    LOGGER.debug("Update theme colors");
-
                     if (themeColorsValue instanceof Map) {
                         final Map<String, String> themeColors = (Map) themeColorsValue;
                         customer.getGraphicIdentity().setThemeColors(themeColors);
                     } else {
                         LOGGER.error("Cannot instantiate themeColors value as a Map<String, String>.");
                         throw new IllegalArgumentException(
-                            "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
+                            "Unable to patch customer " + customer.getId()
+                                + ": value for " + entry.getKey() +
                                 " is not allowed");
                     }
                     break;
-                case "portalTitle":
-                    logbooks.add(
-                        new EventDiffDto(CustomerConverter.PORTAL_TITLE, customer.getGraphicIdentity().getPortalTitle(),
-                            entry.getValue()));
-                    customer.getGraphicIdentity().setPortalTitle(CastUtils.toString(entry.getValue()));
+                case "portalTitles":
+                    final Object portalTitlesValue =
+                            entry.getValue();
+
+                    if (portalTitlesValue instanceof Map) {
+                        final Map<String, String> portalTitles = (Map) portalTitlesValue;
+                        customer.setPortalTitles(portalTitles);
+                    } else {
+                        LOGGER.error("Cannot instantiate portalTitles value as a Map<String, String>.");
+                        throw new IllegalArgumentException("Unable to patch customer " + customer.getId()
+                                + ": value for " + entry.getKey() + " is not allowed");
+                    }
                     break;
-                case "portalMessage":
-                    logbooks.add(new EventDiffDto(CustomerConverter.PORTAL_MESSAGE,
-                        customer.getGraphicIdentity().getPortalMessage(), entry.getValue()));
-                    customer.getGraphicIdentity().setPortalMessage(CastUtils.toString(entry.getValue()));
+                case "portalMessages":
+                    final Object portalMessagesValue = entry.getValue();
+
+                    if (portalMessagesValue instanceof Map) {
+                        final Map<String, String> portalMessages = (Map) portalMessagesValue;
+                        customer.setPortalMessages(portalMessages);
+                    } else {
+                        LOGGER.error("Cannot instantiate portalMessages value as a Map<String, String>.");
+                        throw new IllegalArgumentException("Unable to patch customer " + customer.getId()
+                                + ": value for " + entry.getKey() + " is not allowed");
+                    }
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        "Unable to patch customer " + customer.getId() + ": key " + entry.getKey() + " is not allowed");
+                        "Unable to patch customer " + customer.getId() + ": key "
+                            + entry.getKey() + " is not allowed");
             }
         }
         iamLogbookService.updateCustomerEvent(customer, logbooks);
@@ -449,7 +464,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Optional<MultipartFile> footer = customerFormData.getFooter();
         final Optional<MultipartFile> portal = customerFormData.getPortal();
 
-        if ((header != null && header.isPresent()) || (footer != null && footer.isPresent()) ||
+        if ((header != null && header.isPresent()) || (footer != null && footer.isPresent())
+                ||
             (portal != null && portal.isPresent())) {
             if (header != null && header.isPresent()) {
                 patchLogos(customer, header.get(), AttachmentType.HEADER);
@@ -493,12 +509,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     /**
      * Method allowing to check if a code can be used.
      *
-     * @param customerId Id of an existing customer wanting code's update.
+     * @param customerId   Id of an existing customer wanting code's update.
      * @param customerCode Code to check.
      */
     protected void checkCode(final Optional<String> customerId, final String customerCode) {
         final Optional<Customer> optCustomer = customerRepository.findByCode(customerCode);
-        if (optCustomer.isPresent() &&
+        if (optCustomer.isPresent()
+                &&
             (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))) {
             throw new IllegalArgumentException(String.format(
                 "Integrity constraint error on the customer %s : the new code is already used by another customer.",
@@ -547,14 +564,16 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     public JsonNode findHistoryById(final String id) throws VitamClientException {
         LOGGER.debug("findHistoryById for id" + id);
         final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
-            .setAccessContract(internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
+            .setAccessContract(
+                        internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
                 .getAccessContractLogbookIdentifier())
             .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);
         customer.orElseThrow(() -> new NotFoundException(String.format("No user found with id : %s", id)));
         return logbookService
-            .findEventsByIdentifierAndCollectionNames(customer.get().getIdentifier(), MongoDbCollections.CUSTOMERS,
+            .findEventsByIdentifierAndCollectionNames(customer.get().getIdentifier(),
+                MongoDbCollections.CUSTOMERS,
                 vitamContext).toJsonNode();
     }
 

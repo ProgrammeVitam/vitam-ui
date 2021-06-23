@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
 
 import { AdminUserProfile, AuthService, Group, isRootLevel, User } from 'ui-frontend-common';
 import { GroupService } from '../../../group/group.service';
@@ -49,7 +50,7 @@ import { UserService } from '../../user.service';
   templateUrl: './user-group-tab.component.html',
   styleUrls: ['./user-group-tab.component.scss'],
 })
-export class UserGroupTabComponent implements OnInit, OnChanges {
+export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input()
   set user(user: User) {
@@ -76,10 +77,21 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
   get userInfo() { return this._userInfo; }
   private _userInfo: AdminUserProfile;
 
+  @Input()
+  get groups(): Group[] { return this._groups; }
+  set groups(groupList: Group[]) {
+    this._groups = groupList;
+  }
+
+  // tslint:disable-next-line:variable-name
+  private _groups: Group[];
+
   form: FormGroup;
   activeGroups: GroupSelection[];
   userGroup: Group;
   showUpdateButton: boolean;
+
+  private destroy = new Subject();
 
   constructor(
     public groupAttrDialog: MatDialog,
@@ -88,8 +100,11 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
     public authService: AuthService,
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy.next();
+  }
+
   ngOnInit() {
-    this.getUserProfileDetail();
   }
 
   ngOnChanges() {
@@ -97,8 +112,7 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
   }
 
   getUserProfileDetail() {
-    this.groupService.getAll(true).subscribe((data: Group[]) => {
-      this.activeGroups = data.map((group) => Object({ id: group.id, name: group.name,
+      this.activeGroups = this.groups.map((group) => Object({ id: group.id, name: group.name,
                                                        description: group.description,
                                                        level: group.level,
                                                        selected: false }));
@@ -106,9 +120,8 @@ export class UserGroupTabComponent implements OnInit, OnChanges {
       this.activeGroups = this.activeGroups.filter((g) => g.id !== this.authService.user.groupId);
       }
       if (this.user.groupId) {
-        this.userGroup = data.find((group) => group.id === this.user.groupId);
+        this.userGroup = this.groups.find((group) => group.id === this.user.groupId);
       }
-    });
   }
 
   getAttributableGroups(): GroupSelection [] {

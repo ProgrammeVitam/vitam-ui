@@ -29,14 +29,16 @@ label {
 
 
     // ON ENABLED
-    &.slide-toggle-on:not(.slide-toggle-disabled) {
+    &.slide-toggle-on {
         background-color: var(--vitamui-secondary);
 
         .slide-toggle-thumb {
             background-color: var(--vitamui-primary);
         }
 
-        &:hover {
+        &:hover:not(.slide-toggle-disabled) {
+            background-color: var(--vitamui-secondary-700);
+
             .slide-toggle-thumb {
                 background-color: var(--vitamui-primary-700);
             }
@@ -44,37 +46,19 @@ label {
     }
 
     // OFF ENABLED
-    &.slide-toggle-off:not(.slide-toggle-disabled) {
-        background-color: $red;
-
-        .slide-toggle-thumb {
-            background-color: $red;
-        }
-
-        &:hover {
-            .slide-toggle-thumb {
-                background-color: $red;
-            }
-        }
-    }
-
-    // ON DISABLED
-    &.slide-toggle-on.slide-toggle-disabled {
+    &.slide-toggle-off {
         background-color: var(--vitamui-grey-300);
 
         .slide-toggle-thumb {
-            cursor: not-allowed;
             background-color: var(--vitamui-grey);
         }
-    }
 
-    // OFF DISABLED
-    &.slide-toggle-off.slide-toggle-disabled {
-        background-color: var(--vitamui-grey);
-
-        .slide-toggle-thumb {
-            cursor: not-allowed;
-            background-color: var(--vitamui-grey-700);
+        &:hover:not(.slide-toggle-disabled) {
+            background-color: var(--vitamui-grey-400);
+            
+            .slide-toggle-thumb {
+                background-color: var(--vitamui-grey-700);
+            }
         }
     }
 
@@ -109,6 +93,10 @@ label {
 
     &.slide-toggle-disabled {
         cursor: not-allowed;
-        background-color: var(--vitamui-grey);
+        opacity: 0.5;
+
+        .slide-toggle-thumb {
+            cursor: not-allowed;
+        }
     }
 }

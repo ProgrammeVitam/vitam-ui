@@ -1,28 +1,12 @@
 @import '~ui-frontend-common/sass/variables/colors';
 
 :host {
-  .image-area {
-    border: 2px dashed $greyish-two;
-    border-radius: 6px;
-    height: 100px;
-    max-width: 200px;
-  }
-
-  img {
-    max-width: 180px;
-    max-height: 120px;
-  }
 
   .label-color {
     display: flex;
     flex-direction: column;
   }
 
-  label {
-    font-size: 13px;
-    color: $greyish-two;
-    font-weight: normal;
-  }
 
   label+* {
     text-overflow: ellipsis;

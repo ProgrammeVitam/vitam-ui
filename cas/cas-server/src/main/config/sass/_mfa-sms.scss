@@ -31,12 +31,11 @@
         float: left;
 
         #token {
-            width: 300px;
-            height: 87px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px 0 rgba(169, 169, 169, 0.3);
+            width: 200px;
+            height: 60px;
+            border-radius: 5px;
+            box-shadow: $dp-dark;
             background-color: $white;
-            border: solid 1px #f0f0f0;
         }
     }
     .information {
@@ -70,19 +69,18 @@
         height: 50px;
         float: left;
         margin-left: 30px;
-        margin-top: 36px;
         margin-right: 20px;
 
         .submittoken {
             width: 80px;
             height: 50px;
             border-radius: 50px;
-            background-color: var(--vitamui-secondary);
+            background-color: var(--vitamui-primary);
             box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
             text-align: center;
             padding: 15px 30px;
             transition: opacity 200ms ease-in-out;
-            border: 1px solid var(--vitamui-secondary);
+            border: 1px solid var(--vitamui-primary);
 
             font-size: 15px;
             font-weight: 500;
@@ -106,7 +104,6 @@
         font-size: 15px;
         font-weight: normal;
         color: $cool-grey;
-        margin-top: 18px;
         width: 150px;
         float: left;
     }
@@ -143,11 +140,11 @@
             height: 50px;
 
             border-radius: 50px;
-            background-color: var(--vitamui-secondary);
+            background-color: var(--vitamui-primary);
             box-shadow: 20px 20px 40px 0 rgba(214, 208, 208, 0.5);
             padding: 15px 30px;
             transition: opacity 200ms ease-in-out;
-            border: 1px solid var(--vitamui-secondary);
+            border: 1px solid var(--vitamui-primary);
             font-size: 15px;
             font-weight: 500;
             color: $white;
