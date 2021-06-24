@@ -50,6 +50,8 @@ import javax.xml.bind.JAXBException;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -186,19 +188,16 @@ public class RuleInternalService {
         }
     }
 
-    public RuleDto create(VitamContext vitamContext, RuleDto ruleDto) {
+    public Boolean create(VitamContext vitamContext, RuleDto ruleDto) {
         LOGGER.debug("Try to create Rule {} {}", ruleDto, vitamContext);
         try {
-            RequestResponse<?> requestResponse = ruleService.createRule(vitamContext, converter.convertDtoToVitam(ruleDto));
-            final FileRulesModel ruleVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), FileRulesModel.class);
-            return converter.convertVitamToDto(ruleVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | IOException | VitamClientException | JAXBException e) {
+            return ruleService.createRule(vitamContext, converter.convertDtoToVitam(ruleDto));
+        } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException | JAXBException e) {
             throw new InternalServerException("Unable to create rule", e);
         }
     }
 
-    public RuleDto patch(VitamContext vitamContext,final Map<String, Object> partialDto){
+    public Boolean patch(VitamContext vitamContext,final Map<String, Object> partialDto){
         LOGGER.debug("Try to patch rule {} {}", partialDto, vitamContext);
         String ruleId = (String) partialDto.get("id");
         RuleDto rule = this.getOne(vitamContext, ruleId);
@@ -217,23 +216,17 @@ public class RuleInternalService {
         FileRulesModel ruleVitam = converter.convertDtoToVitam(rule);
         LOGGER.debug("Converted rule Vitam DTO : {}", ruleVitam);
         try {
-            RequestResponse<?> requestResponse = ruleService.patchRule(vitamContext, ruleId, ruleVitam);
-            final FileRulesModel ruleVitamDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), FileRulesModel.class);
-            LOGGER.debug("Patched rule Vitam DTO : {}", ruleVitamDto);
-            RuleDto result = converter.convertVitamToDto(ruleVitamDto);
-            LOGGER.debug("Result DTO : {}", result);
-            return result;
+            return ruleService.patchRule(vitamContext, ruleId, ruleVitam);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException | JAXBException e) {
             throw new InternalServerException("Unable to patch rule", e);
         }
     }
 
-    public void delete(VitamContext context, String ruleId) {
+    public Boolean delete(VitamContext context, String ruleId) {
         LOGGER.debug("Try to delete rule {} {}", ruleId, context);
 
         try {
-            ruleService.deleteRule(context, ruleId);
+            return ruleService.deleteRule(context, ruleId);
         } catch (InvalidParseOperationException | AccessExternalClientException | VitamClientException | IOException | JAXBException e) {
             throw new InternalServerException("Unable to delete rule", e);
         }

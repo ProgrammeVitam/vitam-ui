@@ -108,11 +108,11 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
         final RuleDto ruleDto = new RuleDto();
         ruleDto.setTenant(1);
 
-        when(ruleInternalRestClient.create(any(InternalHttpContext.class), any(RuleDto.class)))
-            .thenReturn(ruleDto);
+        when(ruleInternalRestClient.createRule(any(InternalHttpContext.class), any(RuleDto.class)))
+            .thenReturn(true);
 
         assertThatCode(() -> {
-            ruleExternalService.create(new RuleDto());
+            ruleExternalService.createRule(new RuleDto());
         }).doesNotThrowAnyException();
     }
 
@@ -128,11 +128,11 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_ruleInternalRestClient_return_ok() {
-        doNothing().when(ruleInternalRestClient).delete(any(InternalHttpContext.class), any(String.class));
+        doNothing().when(ruleInternalRestClient).deleteRule(any(InternalHttpContext.class), any(String.class));
         String id = "1";
 
         assertThatCode(() -> {
-            ruleExternalService.delete(id);
+            ruleExternalService.deleteRule(id);
         }).doesNotThrowAnyException();
     }
 

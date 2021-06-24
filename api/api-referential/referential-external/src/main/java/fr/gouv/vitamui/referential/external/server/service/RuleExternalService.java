@@ -41,7 +41,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -59,7 +58,6 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
-import fr.gouv.vitamui.referential.internal.client.AgencyInternalWebClient;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
 import lombok.Getter;
@@ -100,13 +98,12 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override
-    public RuleDto patch(final Map<String, Object> partialDto) {
-        return super.patch(partialDto);
+    public boolean patchRule(final String id, final Map<String, Object> partialDto) {
+    	return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
     }
 
-    public RuleDto create(final RuleDto ruleDto) {
-        return ruleInternalRestClient.create(getInternalHttpContext(), ruleDto);
+    public boolean createRule(final RuleDto ruleDto) {
+        return ruleInternalRestClient.createRule(getInternalHttpContext(), ruleDto);
     }
 
     @Override
@@ -123,8 +120,8 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
         return ruleInternalRestClient.check(getInternalHttpContext(), accessContractDto);
     }
 
-    public void delete(final String id) {
-        ruleInternalRestClient.delete(getInternalHttpContext(), id);
+    public boolean deleteRule(final String id) {
+        return ruleInternalRestClient.deleteRule(getInternalHttpContext(), id);
     }
 
     public ResponseEntity<Resource> export() {

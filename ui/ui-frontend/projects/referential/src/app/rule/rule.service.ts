@@ -79,65 +79,78 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.check(objectRule, this.headers);
   }
 
-  create(rule: Rule) {
-    return this.ruleApiService.create(rule, this.headers)
-      .pipe(
-        tap(
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: {type: 'ruleCreate', name: rule.ruleId},
-              duration: 10000
-            });
-          },
-          (error: any) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
-  }
+  create(rule: Rule): Observable<boolean> {
+    return this.ruleApiService.createRule(rule, this.headers).pipe(
+      tap(
+        (success) => {
+          const message = success ? 'ruleCreateSuccess' : 'ruleCreateFailed';
 
-  patch(data: {id: string, [key: string]: any}): Observable<Rule> {
-    console.log(data);
-    return this.ruleApiService.patch(data)
-      .pipe(
-        tap((response) => this.updated.next(response)),
-        tap(
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000,
-              data: {type: 'ruleUpdate', name: data.ruleId}
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
-  }
-
-  delete(rule: Rule): Observable<any> {
-    return this.ruleApiService.delete(rule.ruleId).pipe(
-      tap(() => {
-        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-          data: {type: 'ruleDelete', name: rule.ruleId}
-        });
-      },
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: {
+              type: message, 
+              name: rule.ruleId
+            }
+          });
+        },
         (error) => {
           this.snackBar.open(error.error.message, null, {
             panelClass: 'vitamui-snack-bar',
             duration: 10000
           });
-        })
+        }
+      )
+    );
+  }
+
+  patch(data: {id: string, [key: string]: any}): Observable<boolean> {
+    return this.ruleApiService.patchRule(data).pipe(
+      tap(
+        (success) => {
+          const message = success ? 'ruleUpdateSuccess' : 'ruleUpdateFailed';
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: {
+              type: message, 
+              name: data.id
+            }
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
+        }
+      )
+    );
+  }
+
+  delete(rule: Rule): Observable<boolean> {
+    return this.ruleApiService.deleteRule(rule.ruleId).pipe(
+      tap(
+        (success) => {
+          const message = success ? 'ruleDeleteSuccess' : 'ruleDeleteFailed';
+
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+            data: {
+              type: message, 
+              name: rule.ruleId
+            }
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000
+          });
+        }
+      )
     );
   }
 
