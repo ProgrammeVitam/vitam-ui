@@ -6,6 +6,7 @@
     "APPLY_UPDATE": "Appliquer les modifications "
   },
   "LOGBOOK_OPERATION_LIST": {
+    "NO_RESULTS" : "Fin des résultats",
     "HOUR" : "Heure",
     "NEXT" : "Suivant",
     "PREVIOUS" : "Précédent",

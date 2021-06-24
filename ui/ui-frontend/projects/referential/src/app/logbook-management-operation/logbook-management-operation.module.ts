@@ -30,6 +30,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
@@ -50,6 +51,7 @@ import { LogbookManagementOperationComponent } from './logbook-management-operat
     FormsModule,
     MatFormFieldModule,
     TableFilterModule,
+    MatProgressSpinnerModule,
   ],
   exports: [LogbookManagementOperationListComponent],
 })

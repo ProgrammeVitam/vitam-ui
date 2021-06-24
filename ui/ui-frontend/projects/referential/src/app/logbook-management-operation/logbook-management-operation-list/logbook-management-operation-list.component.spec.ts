@@ -127,7 +127,6 @@ describe('LogbookManagementOperationListComponent', () => {
     component.getOperationsByStatus('WARNING');
     expect(component.results.length).toEqual(1);
   });
-
   it('should have one operation as results', () => {
     component.getOperationsByGlobalState('PAUSE');
     expect(component.results.length).toEqual(1);
@@ -135,7 +134,6 @@ describe('LogbookManagementOperationListComponent', () => {
   it('should return one element as result', () => {
     expect(component.getTotalResultsByState(operationsResults, 'RUNNING')).toEqual(1);
   });
-
   it('should have one element as result', () => {
     expect(component.getTotalResultsByStatus(operationsResults, 'OK')).toEqual(1);
   });
@@ -146,5 +144,12 @@ describe('LogbookManagementOperationListComponent', () => {
   it('should create four status facet component', () => {
     component.initializeFacet();
     expect(component.statusFacetDetails.length).toEqual(4);
+  });
+  it('should show the message End of Results', () => {
+    component.loadMore();
+    expect(component.show).toBe(true);
+  });
+  it('should show return ELIMINATION as result', () => {
+    expect(component.getProcessTypeByValue('Élimination des unités archivistiques')).toBe('ELIMINATION');
   });
 });
