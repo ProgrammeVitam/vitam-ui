@@ -33,10 +33,13 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum ProfileDtoBuilder {
-    INSTANCE;
+public class ProfileDtoBuilder {
 
-    public ProfileDto build(final String name, final String description,
+    private ProfileDtoBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static ProfileDto build(final String name, final String description,
         final boolean enabled, final boolean isReadonly, final String level, final Integer tenant, final String service,
         final List<String> roleNames, final String customerId, final String externalParameterId) {
 

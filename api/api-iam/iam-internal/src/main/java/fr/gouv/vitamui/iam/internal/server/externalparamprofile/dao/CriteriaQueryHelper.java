@@ -37,10 +37,13 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public enum CriteriaQueryHelper {
-    INSTANCE;
+public class CriteriaQueryHelper {
 
-    public Criteria getCriteria(final String criteriaJsonString) {
+    private CriteriaQueryHelper() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static Criteria getCriteria(final String criteriaJsonString) {
         final Collection<Criteria> criteria = convertCriteriaJsonToMongoCriteria(criteriaJsonString);
         final Criteria rootCriteria = new Criteria();
 
@@ -52,7 +55,7 @@ public enum CriteriaQueryHelper {
         return rootCriteria;
     }
 
-    private Collection<Criteria> convertCriteriaJsonToMongoCriteria(final String queryJsonString) {
+    private static Collection<Criteria> convertCriteriaJsonToMongoCriteria(final String queryJsonString) {
         final Collection<Criteria> result = new ArrayList<>();
         Criteria rootCriteria = new Criteria();
         if (queryJsonString != null) {
@@ -63,7 +66,7 @@ public enum CriteriaQueryHelper {
         return result;
     }
 
-    private Criteria convertQueryDtoToCriteria(final QueryDto query) {
+    private static Criteria convertQueryDtoToCriteria(final QueryDto query) {
         Criteria rootCriteria = new Criteria();
         final Collection<Criteria> criteria = new ArrayList<>();
         final Collection<Criterion> criterion = query.getCriterionList();

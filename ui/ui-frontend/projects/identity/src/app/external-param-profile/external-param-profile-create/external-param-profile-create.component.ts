@@ -51,7 +51,7 @@ export class ExternalParamProfileCreateComponent implements OnInit, OnDestroy {
     this.externalParamProfileForm
       .get('name')
       .setAsyncValidators(
-        this.externalParamProfileValidators.nameExists(+tenantIdentifier, ApplicationId.EXTERNAL_PARAM_PROFILE_APP_REF)
+        this.externalParamProfileValidators.nameExists(+tenantIdentifier, ApplicationId.EXTERNAL_PARAM_PROFILE_APP)
       );
   }
 

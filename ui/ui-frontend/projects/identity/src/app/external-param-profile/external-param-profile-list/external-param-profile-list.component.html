@@ -34,12 +34,12 @@
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  <div class="vitamui-min-content vitamui-table-message">{{ 'COMMON.NO_RESULT' | translate }}</div>
 </ng-template>
 
 <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="externalParamProfileServiceService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+    <span class="clickable">{{ 'COMMON.MORE_RESULT' | translate }}</span>
   </div>
 </ng-template>
 

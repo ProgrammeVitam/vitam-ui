@@ -30,10 +30,13 @@ package fr.gouv.vitamui.iam.internal.server.common.builder;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 
-public enum ExternalParamProfileDtoBuilder {
-    INSTANCE;
+public class ExternalParamProfileDtoBuilder {
 
-    public ExternalParamProfileDto build(Profile profileDto) {
+    private ExternalParamProfileDtoBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static ExternalParamProfileDto build(Profile profileDto) {
 
         final ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
 

@@ -27,14 +27,13 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -45,14 +44,12 @@ import javax.ws.rs.Produces;
 import java.util.List;
 
 
-@Api(tags = "archives Search")
+@Api(tags = "access contracts")
 @RestController
 @RequestMapping("${ui-prefix}/accesscontracts")
-@Consumes("application/json")
-@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON_VALUE)
+@Produces(MediaType.APPLICATION_JSON_VALUE)
 public class AccessContractController extends AbstractUiRestController {
-
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
 
     private final AccessContractService accessContractService;
 

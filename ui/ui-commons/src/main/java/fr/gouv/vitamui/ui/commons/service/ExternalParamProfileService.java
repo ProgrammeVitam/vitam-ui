@@ -41,8 +41,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -53,14 +51,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- *  UI external parameters service.
- *
+ *  UI profile external params service.
  *
  */
 @Service
 public class ExternalParamProfileService extends AbstractPaginateService<ExternalParamProfileDto> {
-
-	static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParamProfileService.class);
 
 	private final ExternalParamProfileExternalRestClient client;
     private final CommonService commonService;
@@ -73,19 +68,18 @@ public class ExternalParamProfileService extends AbstractPaginateService<Externa
 
     @Override
     public ExternalParamProfileDto getOne(ExternalHttpContext context, final String id) {
-        LOGGER.debug("Get external parameters for id : {}", id);
         return client.getOne(context, id);
     }
 
     @Override
-    public ExternalParamProfileDto create(final ExternalHttpContext c, final ExternalParamProfileDto dto) {
-        return client.create(c, dto);
+    public ExternalParamProfileDto create(final ExternalHttpContext context, final ExternalParamProfileDto dto) {
+        return client.create(context, dto);
     }
 
     @Override
     public LogbookOperationsResponseDto findHistoryById(final ExternalHttpContext context, final String id) {
         SanityChecker.check(id);
-        final JsonNode body = getClient().findHistoryById(context, id);
+        final JsonNode body = client.findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);
         }

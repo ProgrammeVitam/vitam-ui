@@ -1,24 +1,19 @@
 package fr.gouv.vitamui.ui.commons.service;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.external.client.ExternalParamProfileExternalRestClient;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
 public class ExternalParamProfileServiceTest extends ServiceTest<ExternalParamProfileDto> {
 
     private ExternalParamProfileService service;
@@ -28,27 +23,45 @@ public class ExternalParamProfileServiceTest extends ServiceTest<ExternalParamPr
 
     @Before
     public void setup() {
-
-        Mockito.when(factory.getExternalParamProfileExternalRestClient()).thenReturn(client);
-
+        MockitoAnnotations.openMocks(this);
         when(factory.getExternalParamProfileExternalRestClient()).thenReturn(client);
         service = new ExternalParamProfileService(factory, commonService);
     }
 
     @Test
-    public void testCreate() {
-        Mockito.when(client.create(any(), any())).thenReturn(buildDto("ID"));
-        final ExternalParamProfileDto dto = service.create(null, buildDto("ID"));
-        assertThat(dto).isNotNull();
+    public void should_call_appropriate_rest_client_method_when_get_one_operation_is_invoked() {
+        //Given
+        when(client.getOne(any(), any())).thenReturn(buildDto("ID"));
+
+        //When
+        service.getOne(null, "ID");
+
+        //Then
+        verify(client, Mockito.times(1)).getOne(any(), any());
     }
 
     @Test
-    public void testUpdate() {
-        Mockito.when(getClient().update(any(), any())).thenReturn(buildDto(ID));
-        final ExternalParamProfileDto dtoUpdate = buildDto(null);
-        dtoUpdate.setId(ID);
-        final ExternalParamProfileDto dto = getService().update(null, dtoUpdate);
-        assertThat(dto).isNotNull();
+    public void should_call_appropriate_rest_client_method_when_create_operation_is_invoked() {
+        //Given
+        when(client.create(any(), any())).thenReturn(buildDto("ID"));
+
+        //When
+        service.create(null, buildDto("ID"));
+
+        //Then
+        verify(client, Mockito.times(1)).create(any(), any());
+    }
+
+    @Test
+    public void should_call_appropriate_rest_client_method_when_find_history_by_id_operation_is_invoked() {
+        //Given
+        when(client.findHistoryById(any(), any())).thenReturn(null);
+
+        //When
+        service.findHistoryById(null,"ID");
+
+        //Then
+        verify(client, Mockito.times(1)).findHistoryById(any(), any());
     }
 
     @Override

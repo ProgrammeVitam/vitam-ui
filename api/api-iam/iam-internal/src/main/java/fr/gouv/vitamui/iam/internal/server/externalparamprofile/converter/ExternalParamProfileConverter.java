@@ -39,14 +39,10 @@ package fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.logbook.util.LogbookUtils;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@Getter
-@Setter
 public class ExternalParamProfileConverter {
 
     public static final String EXTERNAL_PARAM_IDENTIFIER = "externalParamIdentifier";
@@ -57,17 +53,15 @@ public class ExternalParamProfileConverter {
 
     public static final String ID_PROFILE = "idProfile";
 
-    public static final String NAME_KEY = "Nom";
+    public static final String NAME_KEY = "nom";
 
-    public static final String ACCESS_CONTRACT = "AccessContract";
+    public static final String ACCESS_CONTRACT = "accessContract";
 
-    public static final String PARAMETER_VALUE_KEY = "Valeur";
+    public static final String DESCRIPTION = "description";
 
-    public static final String DESCRIPTION = "Description";
+    public static final String ENABLED_KEY = "activé";
 
-    public static final String ENABLED_KEY = "Activé";
-
-    public static final String DATE_TIME = "DateTime";
+    public static final String DATE_TIME = "dateTime";
 
     public ExternalParamProfileConverter() {
         // default constructor

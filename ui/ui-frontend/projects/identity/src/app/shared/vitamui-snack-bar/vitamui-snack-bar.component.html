@@ -97,11 +97,11 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'externalParamProfileCreate'">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil paramétrage externe {{ data?.name }} a bien été créé
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_CREATED' | translate : {name: data?.name} }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'externalParamProfileUpdate'">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil paramétrage externe {{ data?.name }} a bien été modifié
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED' | translate : {name: data?.name} }}
     </ng-container>
   </span>
 

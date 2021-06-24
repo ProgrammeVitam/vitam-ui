@@ -115,7 +115,7 @@ public class ExternalParamProfileRepository {
         List<AggregationOperation> operations = new ArrayList<>();
 
         if (criteria != null) {
-            MatchOperation matchOperation = Aggregation.match(CriteriaQueryHelper.INSTANCE.getCriteria(criteria));
+            MatchOperation matchOperation = Aggregation.match(CriteriaQueryHelper.getCriteria(criteria));
             operations.add(matchOperation);
         }
 

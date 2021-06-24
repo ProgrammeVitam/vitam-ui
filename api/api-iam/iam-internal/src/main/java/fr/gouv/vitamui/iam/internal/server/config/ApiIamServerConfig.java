@@ -51,14 +51,11 @@ import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.cas.service.CasInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
-import fr.gouv.vitamui.iam.internal.server.common.utils.ProfileSequenceGenerator;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.converter.CustomerConverter;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -67,6 +64,8 @@ import fr.gouv.vitamui.iam.internal.server.customer.service.InitCustomerService;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
@@ -377,22 +376,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final ExternalParametersInternalService externalParametersInternalService,
         final ProfileInternalService profileInternalService,
         final InternalSecurityService internalSecurityService,
-        final ProfileSequenceGenerator profileSequenceGenerator,
         final IamLogbookService iamLogbookService,
         final ExternalParamProfileRepository externalParamProfileRepository,
         final LogbookService logbookService,
         final ProfileConverter profileConverter) {
 
         return new ExternalParamProfileInternalService(externalParametersInternalService,
-            profileInternalService, internalSecurityService, profileSequenceGenerator, iamLogbookService,
+            profileInternalService, internalSecurityService, iamLogbookService,
             externalParamProfileRepository,logbookService, profileConverter);
     }
-
-    @Bean
-    public ProfileSequenceGenerator profileSequenceGenerator(CustomSequenceRepository sequenceRepository) {
-        return new ProfileSequenceGenerator(sequenceRepository);
-    }
-
 
     @Bean
     ExternalParamProfileRepository externalParamProfileRepository(MongoOperations mongoOperations) {

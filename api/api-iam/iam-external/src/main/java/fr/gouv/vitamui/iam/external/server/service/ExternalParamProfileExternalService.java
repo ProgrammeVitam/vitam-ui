@@ -40,17 +40,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.internal.client.ExternalParamProfileInternalRestClient;
-import fr.gouv.vitamui.iam.internal.client.ProfileInternalRestClient;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,27 +52,22 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The service to read, create, update and delete the external parameters.
- *
+ * The service to read, create, update and delete the profile external params.
  *
  */
-@Getter
-@Setter
 @Service
 public class ExternalParamProfileExternalService extends AbstractResourceClientService<ExternalParamProfileDto, ExternalParamProfileDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExternalParamProfileExternalService.class);
-
 	private final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient;
-    private final ProfileInternalRestClient profileInternalRestClient;
+    private final ProfileExternalService profileExternalService;
 
     @Autowired
     public ExternalParamProfileExternalService(final ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient,
-                                                final ProfileInternalRestClient profileInternalRestClient,
-    		                                    final ExternalSecurityService externalSecurityService) {
+    		                                    final ExternalSecurityService externalSecurityService,
+                                                final ProfileExternalService profileExternalService) {
         super(externalSecurityService);
         this.externalParamProfileInternalRestClient = externalParamProfileInternalRestClient;
-        this.profileInternalRestClient = profileInternalRestClient;
+        this.profileExternalService = profileExternalService;
     }
 
     @Override
@@ -112,20 +99,8 @@ public class ExternalParamProfileExternalService extends AbstractResourceClientS
 
     @Override
     public JsonNode findHistoryById(final String id) {
-        checkLogbookRight(id);
+        this.profileExternalService.checkLogbookRight(id);
         return super.findHistoryById(id);
-    }
-
-    private void checkLogbookRight(final String id) {
-        final boolean hasRoleGetUsers = externalSecurityService.hasRole(ServicesData.ROLE_GET_PROFILES);
-        if (!hasRoleGetUsers && !externalSecurityService.getUser().getProfileGroup().getProfileIds().contains(id)) {
-            LOGGER.info("The profile is not in the group of the authenticated user");
-             throw new ForbiddenException(String.format("Unable to access profile with id: %s", id));
-        }
-        final ProfileDto profileDto = profileInternalRestClient.getOne(getInternalHttpContext(), id);
-        if (profileDto == null) {
-            throw new ForbiddenException(String.format("Unable to access profile with id: %s", id));
-        }
     }
 
     @Override

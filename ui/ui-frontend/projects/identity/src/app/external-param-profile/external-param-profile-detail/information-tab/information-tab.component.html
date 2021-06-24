@@ -1,7 +1,7 @@
 <div>
   <form [formGroup]="form">
     <vitamui-common-slide-toggle formControlName="enabled">
-      Profil <span *ngIf="!form.get('enabled')?.value">in</span>{{ 'EXTERNAL_PARAM_PROFILE.ACTIVATED' | translate }}
+      {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!form.get('enabled')?.value">in</span>{{ 'COMMON.ACTIVE' | translate }}
     </vitamui-common-slide-toggle>
     <div class="row">
       <div class="col-6">
@@ -11,7 +11,7 @@
         <vitamui-common-editable-input
           formControlName="name"
           maxlength="100"
-          label="Nom"
+          label="{{ 'EXTERNAL_PARAM_PROFILE.NAME' | translate }}"
           [validator]="form?.get('name')?.validator"
           [asyncValidator]="form?.get('name')?.asyncValidator"
         >
@@ -26,7 +26,7 @@
         <vitamui-common-editable-input
           formControlName="description"
           maxlength="380"
-          label="Description"
+          label="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION' | translate }}"
           [validator]="form?.get('description')?.validator"
         >
           <vitamui-common-field-error errorKey="required">{{ 'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate }}</vitamui-common-field-error>
@@ -38,7 +38,7 @@
         <mat-form-field class="vitamui-mat-select">
           <mat-select formControlName="accessContract"
                       placeholder="{{ 'EXTERNAL_PARAM_PROFILE.SELECT_ACCESSCONTRACT' | translate }}" required="required" panelclass="vitamui-mat-select"
-                      style="width: 100%">
+                      class="w-100">
             <mat-option *ngFor='let accessContract of (accessContracts$|async)' [value]="accessContract.identifier">{{accessContract.name}}
             </mat-option>
           </mat-select>

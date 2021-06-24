@@ -47,12 +47,9 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
-import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
 import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -75,23 +72,18 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.V1_EXTERNAL_PARAM_PROFILE_URL)
-@Getter
-@Setter
 @Api(tags = "externalparamprofile", value = "Access Contract External Parameters Profile")
 public class ExternalParamProfileInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
         ExternalParamProfileInternalController.class);
 
-    private ExternalParamProfileInternalService externalParamProfileInternalService;
-    private ExternalParametersInternalService externalParametersInternalService;
+    private final ExternalParamProfileInternalService externalParamProfileInternalService;
 
     @Autowired
     public ExternalParamProfileInternalController(
-        final ExternalParamProfileInternalService externalParamProfileInternalService,
-        final ExternalParametersInternalService externalParametersInternalService) {
+        final ExternalParamProfileInternalService externalParamProfileInternalService) {
         this.externalParamProfileInternalService = externalParamProfileInternalService;
-        this.externalParametersInternalService = externalParametersInternalService;
     }
 
     @GetMapping(params = { "page", "size" })

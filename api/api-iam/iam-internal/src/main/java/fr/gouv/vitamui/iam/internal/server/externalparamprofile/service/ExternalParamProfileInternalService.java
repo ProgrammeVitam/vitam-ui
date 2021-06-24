@@ -40,48 +40,37 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
-import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.common.builder.ExternalParamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.builder.ProfileDtoBuilder;
-import fr.gouv.vitamui.iam.internal.server.common.utils.ProfileSequenceGenerator;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.converter.ExternalParamProfileConverter;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
-import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
-@Getter
-@Setter
 public class ExternalParamProfileInternalService {
 
     private static final VitamUILogger LOGGER =
@@ -90,7 +79,6 @@ public class ExternalParamProfileInternalService {
     private final InternalSecurityService internalSecurityService;
     private final ProfileInternalService profileInternalService;
     private final ExternalParametersInternalService externalParametersInternalService;
-    private final ProfileSequenceGenerator profileSequenceGenerator;
     private final IamLogbookService iamLogbookService;
     private final ExternalParamProfileRepository externalParamProfileRepository;
     private final LogbookService logbookService;
@@ -102,13 +90,13 @@ public class ExternalParamProfileInternalService {
     private static final String ACCESS_CONTRACT = "accessContract";
     private static final String ID_PROFILE = "idProfile";
     private static final String ID_EXTERNAL_PARAM = "idExternalParam";
+    private static final String EXTERNAL_PARAM_PROFILE = "externalparamprofile";
 
     @Autowired
     public ExternalParamProfileInternalService(
         final ExternalParametersInternalService externalParametersInternalService,
         final ProfileInternalService profileInternalService,
         final InternalSecurityService internalSecurityService,
-        final ProfileSequenceGenerator profileSequenceGenerator,
         final IamLogbookService iamLogbookService,
         final ExternalParamProfileRepository externalParamProfileRepository,
         final LogbookService logbookService,
@@ -116,7 +104,6 @@ public class ExternalParamProfileInternalService {
         this.externalParametersInternalService = externalParametersInternalService;
         this.internalSecurityService = internalSecurityService;
         this.profileInternalService = profileInternalService;
-        this.profileSequenceGenerator = profileSequenceGenerator;
         this.iamLogbookService = iamLogbookService;
         this.externalParamProfileRepository = externalParamProfileRepository;
         this.logbookService = logbookService;
@@ -139,9 +126,9 @@ public class ExternalParamProfileInternalService {
         String externalParamIdentifier =
             externalParametersInternalService.getExternalParametersRepository().generateSuperId();
         ExternalParametersDto savedExternalParametersDto = externalParametersInternalService
-            .create(ExternalParamDtoBuilder.INSTANCE.build(entityDto, externalParamIdentifier));
+            .create(ExternalParamDtoBuilder.build(entityDto, externalParamIdentifier));
 
-        ProfileDto profileDto = ProfileDtoBuilder.INSTANCE.build(
+        ProfileDto profileDto = ProfileDtoBuilder.build(
             entityDto.getName(),
             entityDto.getDescription(),
             entityDto.isEnabled(),
@@ -189,11 +176,10 @@ public class ExternalParamProfileInternalService {
 
         LOGGER.debug("Find History of external parameter profile by id {}, EvIdAppSession : {}", id,
             vitamContext.getApplicationSessionId());
-        LOGGER.debug("findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}", id,
-            "externalparamprofile",
+        LOGGER.debug("findHistoryById : events.obId {}, events.obIdReq {}, VitamContext {}", id, "externalparamprofile",
             vitamContext);
         return logbookService
-            .findEventsByIdentifierAndCollectionNames(id, "externalparamprofile", vitamContext)
+            .findEventsByIdentifierAndCollectionNames(id, EXTERNAL_PARAM_PROFILE, vitamContext)
             .toJsonNode();
     }
 

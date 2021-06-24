@@ -39,8 +39,8 @@ package fr.gouv.vitamui.iam.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -53,8 +53,6 @@ import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.ExternalParamProfileExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
-import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,12 +75,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The controller to check existence, create, read, update and delete the external parameters.
+ * The controller to check existence, create, read, update and delete the profile external params.
  */
 @RestController
 @RequestMapping(RestApi.V1_EXTERNAL_PARAM_PROFILE_URL)
-@Getter
-@Setter
 @Api(tags = "externalparamprofile", value = "Access Contract External Parameters Profile")
 public class ExternalParamProfileExternalController implements
     CrudController<ExternalParamProfileDto> {
@@ -90,7 +86,7 @@ public class ExternalParamProfileExternalController implements
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
         ExternalParamProfileExternalController.class);
 
-    private ExternalParamProfileExternalService service;
+    private final ExternalParamProfileExternalService service;
 
     @Autowired
     public ExternalParamProfileExternalController(
@@ -137,7 +133,7 @@ public class ExternalParamProfileExternalController implements
     @Secured(ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE)
     @Override
     public ExternalParamProfileDto update(String id, ExternalParamProfileDto dto) {
-        return null;
+        throw new UnsupportedOperationException("update not implemented");
     }
 
     @GetMapping(CommonConstants.PATH_ID)

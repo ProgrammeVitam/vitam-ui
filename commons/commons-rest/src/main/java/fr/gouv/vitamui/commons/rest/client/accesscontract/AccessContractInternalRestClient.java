@@ -49,12 +49,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
- * A REST client to get logbooks.
- *
+ * A REST client to get access contracts.
  *
  */
 public class AccessContractInternalRestClient<C extends AbstractHttpContext> extends BaseRestClient<C> {
@@ -71,14 +69,13 @@ public class AccessContractInternalRestClient<C extends AbstractHttpContext> ext
     }
 
     /**
-     * Find unit life cycle by id.
+     * Fetch all access contracts
      *
-     * @param context
+     * @param context rest context
      */
     public List<AccessContractsDto> getAll(final C context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         final HttpEntity<Void> request = new HttpEntity<>(headers);
-        LOGGER.info("getPathUrl() ==> {}, getUrl() ==> {}", getPathUrl(), getUrl());
         final ResponseEntity<List<AccessContractsDto>> response =
             restTemplate.exchange(getUrl() + "/accesscontracts" , HttpMethod.GET, request, new ParameterizedTypeReference<>(){});
         checkResponse(response);

@@ -39,15 +39,13 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
@@ -56,23 +54,17 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import fr.gouv.vitam.common.database.builder.request.single.Select;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
- * Controller for logbooks.
+ * Controller for Access contracts.
  */
 @RestController
 @RequestMapping(CommonConstants.API_VERSION_1)
-@Api(tags = "accesscontracts", value = "Access contact", description = "Acess contract Management")
+@Api(tags = "accesscontracts", value = "Access contacts", description = "Access contracts Management")
 public class AccessContractInternalController {
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalController.class);
 
     protected final InternalSecurityService securityService;
     private final AccessContractService accessContractService;
@@ -92,9 +84,6 @@ public class AccessContractInternalController {
 
     @GetMapping("/accesscontracts")
     public List<AccessContractsDto> getAll() {
-        LOGGER.info("Collection<AccessContractsDto> getAll(@RequestParam final Optional<String> criteria)");
-//        LOGGER.debug("get all accessContract criteria={}", criteria);
-//        RestUtils.checkCriteria(criteria);
 
         final RequestResponse<AccessContractModel> requestResponse;
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());

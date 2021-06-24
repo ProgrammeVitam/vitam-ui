@@ -106,7 +106,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
         case ApplicationId.ACCESS_APP:
         case ApplicationId.INGEST_APP_REF:
         case ApplicationId.LOGBOOK_MANAGEMENT_OPERATION_APP:
-        case ApplicationId.EXTERNAL_PARAM_PROFILE_APP_REF :
+        case ApplicationId.EXTERNAL_PARAM_PROFILE_APP :
           return true;
         default:
           return false;

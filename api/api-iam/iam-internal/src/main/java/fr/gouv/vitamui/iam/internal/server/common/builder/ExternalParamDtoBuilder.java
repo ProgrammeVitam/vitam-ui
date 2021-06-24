@@ -33,12 +33,15 @@ import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 
 import java.util.List;
 
-public enum ExternalParamDtoBuilder {
-    INSTANCE;
+public class ExternalParamDtoBuilder {
 
     public static final String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
 
-    public ExternalParametersDto build(ExternalParamProfileDto entityDto, String externalParamIdentifier) {
+    private ExternalParamDtoBuilder() {
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static ExternalParametersDto build(ExternalParamProfileDto entityDto, String externalParamIdentifier) {
 
         ExternalParametersDto externalParametersDto = new ExternalParametersDto();
 

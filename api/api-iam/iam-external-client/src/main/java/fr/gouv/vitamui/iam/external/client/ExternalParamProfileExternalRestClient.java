@@ -47,8 +47,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 /**
- * A REST client to check existence, read, create, update and delete the external parameters.
- *
+ * A REST client to check existence, read, create, update and delete the profile external params.
  *
  */
 public class ExternalParamProfileExternalRestClient extends

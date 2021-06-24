@@ -129,7 +129,7 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
       .setAsyncValidators(
         this.externalParamProfileValidators.nameExists(
           +this.tenantIdentifier,
-          ApplicationId.EXTERNAL_PARAM_PROFILE_APP_REF,
+          ApplicationId.EXTERNAL_PARAM_PROFILE_APP,
           externalParamProfile.name
         )
       );
