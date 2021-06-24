@@ -310,11 +310,11 @@ describe('CustomerListComponent', () => {
   it('should have the right columns', () => {
     expect(page.columns).toBeTruthy();
     expect(page.columns.length).toBe(6);
-    expect(page.columns[1].textContent).toContain('Code organisation');
-    expect(page.columns[2].textContent).toContain('Organisation');
-    expect(page.columns[3].textContent).toContain('Raison sociale');
-    expect(page.columns[4].textContent).toContain('SSO');
-    expect(page.columns[5].textContent).toContain('Validation en deux étapes');
+    expect(page.columns[1].textContent).toContain('CUSTOMER.HOME.RESULTS_TABLE.CODE');
+    expect(page.columns[2].textContent).toContain('CUSTOMER.HOME.RESULTS_TABLE.NAME');
+    expect(page.columns[3].textContent).toContain('CUSTOMER.HOME.RESULTS_TABLE.SOCIAL_REASON');
+    expect(page.columns[4].textContent).toContain('CUSTOMER.HOME.RESULTS_TABLE.SSO');
+    expect(page.columns[5].textContent).toContain('CUSTOMER.HOME.RESULTS_TABLE.VALIDATION');
   });
 
   it('should have a list of clients', () => {
