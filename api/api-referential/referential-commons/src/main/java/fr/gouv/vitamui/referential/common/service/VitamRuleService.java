@@ -318,6 +318,6 @@ public class VitamRuleService {
     private boolean checkImportRulesResponse(RequestResponse response) {
         // Check the Vitam response (if status == 200, the rule has been deleted else if status == BAD_REQUEST, Vitam has not delete the rule else, a technical  exception occured)
         VitamRestUtils.checkResponse(response, HttpStatus.OK.value(), HttpStatus.CREATED.value(), HttpStatus.ACCEPTED.value(), HttpStatus.BAD_REQUEST.value());
-        return response.getStatus() == HttpStatus.OK.value() | response.getStatus() ==  HttpStatus.CREATED.value() | response.getStatus() == HttpStatus.ACCEPTED.value();
+        return response.getStatus() == HttpStatus.OK.value() || response.getStatus() ==  HttpStatus.CREATED.value() || response.getStatus() == HttpStatus.ACCEPTED.value();
     }
 }
