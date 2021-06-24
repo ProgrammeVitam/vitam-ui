@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.StringUtils;
@@ -59,7 +60,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.RuleExternalService;
 import lombok.Getter;
@@ -117,17 +117,21 @@ public class RuleExternalController {
     @Secured(ServicesData.ROLE_CREATE_RULES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public RuleDto create(final @Valid @RequestBody RuleDto accessContractDto) {
+    public ResponseEntity<Void> create(final @Valid @RequestBody RuleDto accessContractDto) {
         LOGGER.debug("Create {}", accessContractDto);
-        return ruleExternalService.create(accessContractDto);
+        return RestUtils.buildBooleanResponse(
+        		ruleExternalService.createRule(accessContractDto)
+        );
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_RULES)
-    public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
-        return ruleExternalService.patch(partialDto);
+        return RestUtils.buildBooleanResponse(
+        		ruleExternalService.patchRule(id, partialDto)
+        );
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
@@ -139,9 +143,12 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_RULES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete fileFormat with id :{}", id);
-        ruleExternalService.delete(id);
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
+        LOGGER.debug("Delete rule with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return RestUtils.buildBooleanResponse(
+        	ruleExternalService.deleteRule(id)
+        );
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)

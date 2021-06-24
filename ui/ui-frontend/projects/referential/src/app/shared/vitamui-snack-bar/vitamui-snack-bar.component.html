@@ -64,16 +64,28 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Suppression du format de fichier {{ data?.name }} en cours...
     </ng-container>
 
-    <ng-container *ngSwitchCase="'ruleCreate'" i18n="@@notificationRuleCreate">
+    <ng-container *ngSwitchCase="'ruleCreateSuccess'" i18n="@@notificationRuleCreate">
       <i class="vitamui-icon vitamui-icon-rules"></i> La règle de gestion {{ data?.name }} a bien été créée.
     </ng-container>
 
-    <ng-container *ngSwitchCase="'ruleUpdate'" i18n="@@notificationRuleUpdate">
+    <ng-container *ngSwitchCase="'ruleCreateFailed'" i18n="@@notificationRuleCreate">
+      <i class="vitamui-icon vitamui-icon-rules"></i> La règle de gestion {{ data?.name }} n'a pu être créée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleUpdateSuccess'" i18n="@@notificationRuleUpdateSuccess">
       <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été mise à jour.
     </ng-container>
 
-    <ng-container *ngSwitchCase="'ruleDelete'" i18n="@@notificationRuleDelete">
+    <ng-container *ngSwitchCase="'ruleUpdateFailed'" i18n="@@notificationRuleUpdateFailed">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} n'a pu être mise à jour.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDeleteSuccess'" i18n="@@notificationRuleDeleteSuccess">
       <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} a bien été supprimée.
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'ruleDeleteFailed'" i18n="@@notificationRuleDeleteFailed">
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> La règle de gestion {{ data?.name }} n'a pu être supprimée.
     </ng-container>
 
     <ng-container *ngSwitchCase="'ruleDeleteStart'" i18n="@@notificationRuleDeleteStart">

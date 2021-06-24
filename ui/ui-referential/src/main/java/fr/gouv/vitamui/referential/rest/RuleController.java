@@ -129,18 +129,22 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Create rule")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RuleDto create(@Valid @RequestBody  RuleDto ruleDto) {
+    public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) {
         LOGGER.debug("create rule={}", ruleDto);
-        return service.create(buildUiHttpContext(), ruleDto);
+        return RestUtils.buildBooleanResponse(
+            service.createRule(buildUiHttpContext(), ruleDto)
+        );
     }
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
-        return service.patch(buildUiHttpContext(), partialDto, id);
+        return RestUtils.buildBooleanResponse(
+        	service.patchRule(buildUiHttpContext(), partialDto, id)
+        );
     }
 
     @ApiOperation(value = "get history by rule's id")
@@ -152,9 +156,12 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete rule")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
+    public ResponseEntity<Void> delete(final @PathVariable String id) {
         LOGGER.debug("delete rule with id :{}", id);
-        service.delete(buildUiHttpContext(), id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return RestUtils.buildBooleanResponse(
+        	service.deleteRule(buildUiHttpContext(), id)
+        );
     }
 
     @ApiOperation(value = "get exported csv for rules")

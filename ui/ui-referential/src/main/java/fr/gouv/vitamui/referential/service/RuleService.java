@@ -37,9 +37,9 @@
 package fr.gouv.vitamui.referential.service;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
-import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -55,8 +55,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
-import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
-import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.RuleExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
@@ -100,6 +98,18 @@ public class RuleService extends AbstractPaginateService<RuleDto> {
 
     public boolean check(ExternalHttpContext context, RuleDto ruleDto) {
         return client.check(context,ruleDto);
+    }
+    
+    public boolean createRule(ExternalHttpContext context, RuleDto ruleDto) {
+    	return client.createRule(context, ruleDto);
+    }
+    
+    public boolean patchRule(ExternalHttpContext context, Map<String, Object> partialDto, String id) {
+    	return client.patchRule(context, partialDto, id);
+    }
+    
+    public boolean deleteRule(ExternalHttpContext context, String id) {
+    	return client.deleteRule(context, id);
     }
 
     public ResponseEntity<Resource> export(ExternalHttpContext context) {
