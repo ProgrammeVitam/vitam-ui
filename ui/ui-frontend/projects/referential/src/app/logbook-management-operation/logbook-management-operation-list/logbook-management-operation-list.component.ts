@@ -26,6 +26,9 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Colors } from 'ui-frontend-common';
+import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 
@@ -50,6 +53,10 @@ export class LogbookManagementOperationListComponent implements OnInit {
   };
   resultsFiltred: OperationDetails[];
   totalResults: number;
+  statusFacetDetails: FacetDetails[] = [];
+  stateFacetDetails: FacetDetails[] = [];
+  stateFacetTitle: string;
+  statusFacetTitle: string;
 
   OperationCategories: OperationCategory[] = [
     { key: 'TRACEABILITY', value: 'Sécurisation' },
@@ -66,18 +73,76 @@ export class LogbookManagementOperationListComponent implements OnInit {
     { key: 'EXTERNAL_LOGBOOK', value: 'Journalisation d’événements externes' },
   ];
 
-  constructor(public logbookManagementOperationService: LogbookManagementOperationService) {}
+  constructor(public logbookManagementOperationService: LogbookManagementOperationService, private translate: TranslateService) {}
 
   searchOperationsList(searchCriteria: any) {
     this.filterMap.categories = [];
     this.initializeParameters(this.filter);
     this.logbookManagementOperationService.listOperationsDetails(searchCriteria).subscribe((data) => {
       this.operationsList = data;
+      this.initializeFacet();
       this.filter = false;
       this.results = this.operationsList.results.slice(0, this.elementInPage);
       this.totalResults = this.operationsList.hits.total;
       this.hasNext = this.totalResults > 10 ? true : false;
       this.hasPrevious = false;
+    });
+  }
+
+  initializeFacet() {
+    this.stateFacetTitle = this.translate.instant('LOGBOOK_OPERATION_LIST.STATE');
+    this.statusFacetTitle = this.translate.instant('LOGBOOK_OPERATION_LIST.STATUS');
+
+    this.initializeFacetDetails();
+    this.stateFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.IN_PROGRESS'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'RUNNING'),
+      clickable: true,
+      color: Colors.DEFAULT,
+      filter: 'RUNNING',
+    });
+    this.stateFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.BREAK'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'PAUSE'),
+      clickable: true,
+      color: Colors.DEFAULT,
+      filter: 'PAUSE',
+    });
+    this.stateFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATE.FINISHED'),
+      totalResults: this.getTotalResultsByState(this.operationsList, 'COMPLETED'),
+      clickable: true,
+      color: Colors.DEFAULT,
+      filter: 'COMPLETED',
+    });
+
+    this.statusFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.SUCCESS'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'OK'),
+      clickable: true,
+      color: Colors.OK_COLOR,
+      filter: 'OK',
+    });
+    this.statusFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.WARNING'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'WARNING'),
+      clickable: true,
+      color: Colors.WARNING_COLOR,
+      filter: 'WARNING',
+    });
+    this.statusFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.ERROR'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'KO'),
+      clickable: true,
+      color: Colors.KO_COLOR,
+      filter: 'KO',
+    });
+    this.statusFacetDetails.push({
+      title: this.translate.instant('LOGBOOK_OPERATION_LIST.RESULT_STATUS.FATAL'),
+      totalResults: this.getTotalResultsByStatus(this.operationsList, 'FATAL'),
+      clickable: true,
+      color: Colors.FATAL_COLOR,
+      filter: 'FATAL',
     });
   }
 
@@ -138,23 +203,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.hasNext = this.results.length < 10 ? false : true;
   }
 
-  getOperationsByStatus(operationsList: OperationsResults, status: string) {
-    this.filterMap.categories = [];
-    this.initializeParameters(true);
-    this.resultsFiltred = operationsList.results.filter((element) => element.stepStatus === status);
-    this.results = this.resultsFiltred.slice(0, 10);
-    this.hasNext = this.results.length < 10 ? false : true;
-  }
-
-  getOperationsByGlobalState(operationsList: OperationsResults, state: string) {
-    this.filterMap.categories = [];
-    this.initializeParameters(true);
-    this.resultsFiltred = operationsList.results.filter((element) => element.globalState === state);
-    this.results = this.resultsFiltred.slice(0, 10);
-    this.hasNext = this.results.length < 10 ? false : true;
-  }
-
-  getTotalResultsByState(operationsList: OperationsResults, state: string) {
+  getTotalResultsByState(operationsList: OperationsResults, state: string): number {
     if (operationsList && operationsList.results) {
       return operationsList.results.filter((element) => element.globalState === state).length;
     }
@@ -171,6 +220,22 @@ export class LogbookManagementOperationListComponent implements OnInit {
   }
   getProcessTypeByValue(value: string) {
     return this.OperationCategories.find((category) => category.value === value).key;
+  }
+
+  getOperationsByGlobalState(state: string) {
+    this.filterMap.categories = [];
+    this.initializeParameters(true);
+    this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
+    this.results = this.resultsFiltred.slice(0, 10);
+    this.hasNext = this.results.length < 10 ? false : true;
+  }
+
+  getOperationsByStatus(status: string) {
+    this.filterMap.categories = [];
+    this.initializeParameters(true);
+    this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
+    this.results = this.resultsFiltred.slice(0, 10);
+    this.hasNext = this.results.length < 10 ? false : true;
   }
 
   private changeParamShow(parameter: string, change: boolean) {
@@ -205,5 +270,10 @@ export class LogbookManagementOperationListComponent implements OnInit {
     if (parameter === 'Status') {
       return this.filtredByStatus;
     }
+  }
+
+  private initializeFacetDetails() {
+    this.stateFacetDetails = [];
+    this.statusFacetDetails = [];
   }
 }
