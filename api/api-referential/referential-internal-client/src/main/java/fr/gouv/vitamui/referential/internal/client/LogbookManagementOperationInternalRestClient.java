@@ -29,6 +29,7 @@ package fr.gouv.vitamui.referential.internal.client;
 
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
@@ -69,11 +70,25 @@ public class LogbookManagementOperationInternalRestClient extends BasePaginating
         return new ParameterizedTypeReference<PaginatedValuesDto<ProcessDetailDto>>() { };
     }
 
-    public ProcessDetailDto listOperationsDetails(InternalHttpContext context, ProcessQuery processQuery) {
+    public ProcessDetailDto searchOperationsDetails(InternalHttpContext context, ProcessQuery processQuery) {
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.OPERATIONS_PATH );
         final HttpEntity<AuditOptions> request = new HttpEntity(processQuery,buildHeaders(context));
         ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build().toUri(), HttpMethod.POST, request, ProcessDetailDto.class);
         return response.getBody();
-
     }
+
+    public ProcessDetailDto cancelOperationProcessExecution(InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID);
+        final HttpEntity<AuditOptions> request = new HttpEntity(buildHeaders(context));
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.POST, request, ProcessDetailDto.class);
+        return response.getBody();
+    }
+
+    public ProcessDetailDto updateOperationActionProcess(InternalHttpContext context, String actionId, String operationId) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.UPDATE_OPERATION_PATH + CommonConstants.PATH_ID);
+        final HttpEntity<AuditOptions> request = new HttpEntity(actionId,buildHeaders(context));
+        ResponseEntity<ProcessDetailDto> response = restTemplate.exchange(uriBuilder.build(operationId), HttpMethod.POST, request, ProcessDetailDto.class);
+        return response.getBody();
+    }
+
 }

@@ -28,6 +28,8 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -52,9 +54,26 @@ public class LogbookManagementOperationExternalController {
 
     @PostMapping(RestApi.OPERATIONS_PATH)
     @Secured(ServicesData.ROLE_GET_ALL_LOGBOOK_OPERATION)
-    public ProcessDetailDto listOperationsDetails(@RequestBody final ProcessQuery processQuery) {
+    public ProcessDetailDto searchOperationsDetails(@RequestBody final ProcessQuery processQuery) {
         LOGGER.debug("All Operations details by Criteria={}", processQuery);
-        return logbookManagementOperationExternalService.listOperationsDetails(processQuery);
+        return logbookManagementOperationExternalService.searchOperationsDetails(processQuery);
+    }
+
+
+    @PostMapping(RestApi.CANCEL_OPERATION_PATH + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
+    public ProcessDetailDto cancelOperationProcessExecution(final @PathVariable("id") String operationId) {
+        LOGGER.debug("Cancel the operation with id={}", operationId);
+        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
+        return logbookManagementOperationExternalService.cancelOperationProcessExecution(operationId);
+    }
+
+    @PostMapping(RestApi.UPDATE_OPERATION_PATH+ CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_LOGBOOK_OPERATION)
+    public ProcessDetailDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId) {
+        LOGGER.debug("Update the operation id={} with actionId={}", operationId, actionId);
+        ParameterChecker.checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
+        return logbookManagementOperationExternalService.updateOperationActionProcess(actionId, operationId);
     }
 
 

@@ -27,6 +27,10 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatSidenav } from '@angular/material/sidenav';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'ui-frontend-common';
+import { OperationDetails } from '../models/operation-response.interface';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
 
 @Component({
@@ -35,14 +39,18 @@ import { LogbookManagementOperationListComponent } from './logbook-management-op
   styleUrls: ['./logbook-management-operation.component.scss'],
 })
 export class LogbookManagementOperationComponent implements OnInit {
+  tenantIdentifier: number;
   dateRangeFilterForm: FormGroup;
   showStartDateMax = false;
   searchCriteria: any = {};
+  tenant: any;
+  openedItem: OperationDetails;
+  @ViewChild('panel') panel: MatSidenav;
 
   @ViewChild(LogbookManagementOperationListComponent, { static: true })
   logbookManagementOperationListComponent: LogbookManagementOperationListComponent;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private authService: AuthService) {
     this.dateRangeFilterForm = this.formBuilder.group({
       startDateMin: null,
       startDateMax: null,
@@ -71,6 +79,10 @@ export class LogbookManagementOperationComponent implements OnInit {
         this.logbookManagementOperationListComponent.searchOperationsList(this.searchCriteria);
       }
     });
+    if (this.route && this.route.paramMap) {
+      this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
+      this.tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
+    }
   }
 
   ngOnInit(): void {}
@@ -118,6 +130,23 @@ export class LogbookManagementOperationComponent implements OnInit {
       return day.toString();
     } else {
       return '0' + day.toString();
+    }
+  }
+
+  showOperation(item: OperationDetails) {
+    this.openPanel(item);
+  }
+
+  openPanel(item: OperationDetails) {
+    this.openedItem = item;
+    if (this.panel && !this.panel.opened) {
+      this.panel.open();
+    }
+  }
+
+  closePanel() {
+    if (this.panel && this.panel.opened) {
+      this.panel.close();
     }
   }
 }

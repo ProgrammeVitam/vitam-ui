@@ -40,6 +40,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,14 +66,42 @@ public class LogbookManagementOperationExternalServiceTest extends ExternalServi
     @Test()
     public void list_operations_details_should_call_appropriate_rest_client_once()  {
         // Given
-        when(logbookManagementOperationInternalRestClient.listOperationsDetails(any(InternalHttpContext.class), any(ProcessQuery.class)))
+        when(logbookManagementOperationInternalRestClient.searchOperationsDetails(any(InternalHttpContext.class), any(ProcessQuery.class)))
             .thenReturn(new ProcessDetailDto());
 
         // When
-        logbookManagementOperationExternalService.listOperationsDetails(new ProcessQuery());
+        logbookManagementOperationExternalService.searchOperationsDetails(new ProcessQuery());
 
         // Then
         verify(logbookManagementOperationInternalRestClient, Mockito.times(1))
-            .listOperationsDetails(any(InternalHttpContext.class), any(ProcessQuery.class));
+            .searchOperationsDetails(any(InternalHttpContext.class), any(ProcessQuery.class));
+    }
+
+    @Test
+    public void cancelOperationProcessExecution_should_call_appropriate_rest_client_once() {
+        // Given
+        when(logbookManagementOperationInternalRestClient.cancelOperationProcessExecution(any(InternalHttpContext.class), any(String.class)))
+            .thenReturn(new ProcessDetailDto());
+
+        // When
+        logbookManagementOperationExternalService.cancelOperationProcessExecution(new String());
+
+        // Then
+        verify(logbookManagementOperationInternalRestClient, Mockito.times(1))
+            .cancelOperationProcessExecution(any(InternalHttpContext.class), any(String.class));
+    }
+
+    @Test
+    public void updateOperationActionProcess_should_call_appropriate_rest_client_once() {
+        // Given
+        when(logbookManagementOperationInternalRestClient.updateOperationActionProcess(any(InternalHttpContext.class), any(String.class),any(String.class)))
+            .thenReturn(new ProcessDetailDto());
+
+        // When
+        logbookManagementOperationExternalService.updateOperationActionProcess(new String(), new String());
+
+        // Then
+        verify(logbookManagementOperationInternalRestClient, Mockito.times(1))
+            .updateOperationActionProcess(any(InternalHttpContext.class), any(String.class),any(String.class));
     }
 }
