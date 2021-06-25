@@ -46,23 +46,28 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * A REST client to get logbooks for an External API.
  */
-public class IngestExternalRestClient
+public class IngestStreamingExternalRestClient
     extends BasePaginatingAndSortingRestClient<LogbookOperationDto, ExternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestExternalRestClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestStreamingExternalRestClient.class);
 
-    public IngestExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
+    public IngestStreamingExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
@@ -88,10 +93,32 @@ public class IngestExternalRestClient
         };
     }
 
-    public ResponseEntity<byte[]> generateODTReport(ExternalHttpContext context, String id) {
+
+    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
+        InputStream inputStream,
+        final String contextId,
+        final String action) {
+        LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID);
-        final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_UPLOAD_V2);
+
+        final MultiValueMap<String, String> headersList = new HttpHeaders();
+        headersList.addAll(buildHeaders(context));
+        headersList.add(CommonConstants.X_CONTEXT_ID, contextId);
+        headersList.add(CommonConstants.X_ACTION, action);
+        headersList.add(CommonConstants.X_ORIGINAL_FILENAME_HEADER, fileName);
+        HttpHeaders headersParams = new HttpHeaders();
+        headersParams.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headersParams.addAll(headersList);
+
+        final HttpEntity<InputStreamResource> request =
+            new HttpEntity<>(new InputStreamResource(inputStream), headersParams);
+
+        final ResponseEntity<Void> response =
+            restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+                request, Void.class);
+        LOGGER.info("The response is {}", response.toString());
+        return response;
     }
+
 }

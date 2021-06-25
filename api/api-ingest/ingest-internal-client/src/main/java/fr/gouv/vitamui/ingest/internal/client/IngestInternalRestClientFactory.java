@@ -43,18 +43,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * A Rest client factory to create specialized IAM Rest clients
- *
- *
  */
 
 public class IngestInternalRestClientFactory extends BaseRestClientFactory {
 
-    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration,
-                                                final RestTemplateBuilder restTemplateBuilder) {
+    public IngestInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration,
+        final RestTemplateBuilder restTemplateBuilder) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 

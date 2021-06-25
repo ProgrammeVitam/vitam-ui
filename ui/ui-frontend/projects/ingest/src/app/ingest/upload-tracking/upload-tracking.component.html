@@ -1,34 +1,35 @@
 <div class="row">
   <div class="col-11">
-    <h5 class="mt-0 mb-4">{{'INGEST_TRACKING.TITLE' | translate}} <span>({{ ingestList.wipNumber }})</span></h5>
+    <h5 class="mt-0 mb-4">
+      {{ 'INGEST_TRACKING.TITLE' | translate }} <span>({{ ingestList.wipNumber }})</span>
+    </h5>
   </div>
   <div class="col-1">
     <button class="btn-circle" (click)="toogleTracking()">
-      <i class="material-icons"  [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
+      <i class="material-icons" [@rotateAnimation]="displayTracking ? 'collapse' : 'expand'">keyboard_arrow_down</i>
     </button>
   </div>
 </div>
 <div *ngIf="displayTracking">
-  <span *ngIf="ingestList.wipNumber === 0">{{'INGEST_TRACKING.MESSAGE' | translate}}</span>
+  <span *ngIf="ingestList.wipNumber === 0">{{ 'INGEST_TRACKING.MESSAGE' | translate }}</span>
 
   <table class="vitamui-table" *ngIf="ingestList.wipNumber > 0">
     <thead>
-    <tr>
-      <th>{{'INGEST_TRACKING.SIP_NAME' | translate}}</th>
-      <th style="width: 100px">{{'INGEST_TRACKING.WEIGHT' | translate}}</th>
-      <th>{{'INGEST_TRACKING.STATUS' | translate}}</th>
-    </tr>
+      <tr>
+        <th>{{ 'INGEST_TRACKING.SIP_NAME' | translate }}</th>
+        <th style="width: 100px">{{ 'INGEST_TRACKING.WEIGHT' | translate }}</th>
+        <th>{{ 'INGEST_TRACKING.STATUS' | translate }}</th>
+      </tr>
     </thead>
     <tbody>
-    <tr class="vitamui-table-row" *ngFor="let ingestInfo of ingestList.ingests | keyvalue">
-      <td>{{ ingestInfo.value.name }}</td>
-      <td>{{ ingestInfo.value.size | filesize }}</td>
-      <td>
-        <span class="purcent">{{ (ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks | number:'1.0-0' }} %</span>
-        <mat-progress-bar mode="determinate" [value]="(ingestInfo.value.actualChunk * 100) / ingestInfo.value.nbChunks" class="stepper-progress-bar">
-        </mat-progress-bar>
-      </td>
-    </tr>
+      <tr class="vitamui-table-row" *ngFor="let ingestInfo of ingestList.ingests | keyvalue">
+        <td>{{ ingestInfo.value.name }}</td>
+        <td>{{ ingestInfo.value.size | filesize }}</td>
+        <td>
+          <span class="purcent">{{ ingestInfo.value.sizeUploaded | number: '1.0-0' }} %</span>
+          <mat-progress-bar mode="determinate" [value]="ingestInfo.value.sizeUploaded" class="stepper-progress-bar"> </mat-progress-bar>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
