@@ -44,6 +44,8 @@ import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClientFactory;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClientFactory;
+import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClient;
+import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -69,9 +71,19 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IngestExternalRestClientFactory ingestExternalRestClientFactory(final IngestApplicationProperties uiProperties,
+    public IngestExternalRestClientFactory ingestExternalRestClientFactory(
+        final IngestApplicationProperties uiProperties,
         RestTemplateBuilder restTemplateBuilder) {
         return new IngestExternalRestClientFactory(uiProperties.getIngestExternalClient(), restTemplateBuilder);
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory(
+        final IngestApplicationProperties uiProperties) {
+        return new IngestStreamingExternalRestClientFactory(uiProperties.getIngestExternalClient());
     }
 
     @Bean
@@ -94,5 +106,13 @@ public class IngestContextConfiguration extends AbstractContextConfiguration {
         final IngestExternalWebClientFactory ingestExternalWebClientFactory) {
         return ingestExternalWebClientFactory.getIngestExternalWebClient();
     }
+
+
+    @Bean
+    public IngestStreamingExternalRestClient ingestStreamingExternalRestClient(
+        final IngestStreamingExternalRestClientFactory ingestStreamingExternalRestClientFactory) {
+        return ingestStreamingExternalRestClientFactory.getIngestStreamingExternalRestClient();
+    }
+
 
 }

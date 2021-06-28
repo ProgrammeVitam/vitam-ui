@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.ingest.internal.server.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
@@ -61,11 +62,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Arrays;
 
 @Configuration
-@Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class, VitamIngestConfig.class,
+@Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, WebSecurityConfig.class,
+    VitamAccessConfig.class, VitamIngestConfig.class,
     VitamAdministrationConfig.class})
 public class ApiIngestInternalServerConfig extends AbstractContextConfiguration {
 
@@ -83,17 +87,31 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     }
 
     @Bean
-    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(final InternalAuthentificationService internalAuthentificationService) {
+    public MappingJackson2HttpMessageConverter customizedJacksonMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(
+            Arrays.asList(
+                MediaType.APPLICATION_JSON,
+                new MediaType("application", "*+json"),
+                MediaType.APPLICATION_OCTET_STREAM));
+        return converter;
+    }
+
+    @Bean
+    public InternalApiAuthenticationProvider internalApiAuthenticationProvider(
+        final InternalAuthentificationService internalAuthentificationService) {
         return new InternalApiAuthenticationProvider(internalAuthentificationService);
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public UserInternalRestClient userInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
-    public InternalAuthentificationService internalAuthentificationService(final UserInternalRestClient userInternalRestClient) {
+    public InternalAuthentificationService internalAuthentificationService(
+        final UserInternalRestClient userInternalRestClient) {
         return new InternalAuthentificationService(userInternalRestClient);
     }
 
@@ -101,8 +119,10 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
     public InternalSecurityService securityService() {
         return new InternalSecurityService();
     }
+
     @Bean
-    public CustomerInternalRestClient customerInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public CustomerInternalRestClient customerInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getCustomerInternalRestClient();
     }
 
@@ -113,14 +133,15 @@ public class ApiIngestInternalServerConfig extends AbstractContextConfiguration 
 
     @Bean
     public IngestInternalService ingestInternalService(
-            final InternalSecurityService internalSecurityService,
-            final LogbookService logbookService,
-            final ObjectMapper objectMapper,
-            final IngestExternalClient ingestExternalClient,
-            final IngestService ingestService,
-            final CustomerInternalRestClient customerInternalRestClient,
-            final IngestODTGenerator ingestODTGenerator) {
-        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient, ingestService,
+        final InternalSecurityService internalSecurityService,
+        final LogbookService logbookService,
+        final ObjectMapper objectMapper,
+        final IngestExternalClient ingestExternalClient,
+        final IngestService ingestService,
+        final CustomerInternalRestClient customerInternalRestClient,
+        final IngestODTGenerator ingestODTGenerator) {
+        return new IngestInternalService(internalSecurityService, logbookService, objectMapper, ingestExternalClient,
+            ingestService,
             customerInternalRestClient, ingestODTGenerator);
     }
 }

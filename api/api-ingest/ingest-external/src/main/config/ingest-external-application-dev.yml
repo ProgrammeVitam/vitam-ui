@@ -5,17 +5,11 @@ spring:
     active: swagger
 
   cloud:
-    consul:  #disabled for dev
+    consul: #disabled for dev
       enabled: false
       discovery:
         enabled: false
         register: false
-
-multipart:
-  enabled: true
-
-spring.servlet.multipart.max-file-size: -1
-spring.servlet.multipart.max-request-size: -1
 
 server-identity:
   identityName: vitamui-dev

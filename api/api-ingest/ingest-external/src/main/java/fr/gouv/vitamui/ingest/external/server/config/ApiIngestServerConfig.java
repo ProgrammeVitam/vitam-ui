@@ -48,6 +48,8 @@ import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClientFactory;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClient;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalWebClientFactory;
+import fr.gouv.vitamui.ingest.internal.client.IngestStreamingInternalRestClient;
+import fr.gouv.vitamui.ingest.internal.client.IngestStreamingInternalRestClientFactory;
 import fr.gouv.vitamui.security.client.ContextRestClient;
 import fr.gouv.vitamui.security.client.SecurityRestClientFactory;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -55,15 +57,21 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import java.util.Arrays;
 
 @Configuration
 @Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 public class ApiIngestServerConfig extends AbstractContextConfiguration {
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
-                                                               final RestTemplateBuilder restTemplateBuilder) {
-        return new SecurityRestClientFactory(apiIngestExternalApplicationProperties.getSecurityClient(), restTemplateBuilder);
+    public SecurityRestClientFactory securityRestClientFactory(
+        final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new SecurityRestClientFactory(apiIngestExternalApplicationProperties.getSecurityClient(),
+            restTemplateBuilder);
     }
 
     @Bean
@@ -72,7 +80,19 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(final ExternalAuthentificationService externalAuthentificationService) {
+    public MappingJackson2HttpMessageConverter customizedJacksonMessageConverter() {
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setSupportedMediaTypes(
+            Arrays.asList(
+                MediaType.APPLICATION_JSON,
+                new MediaType("application", "*+json"),
+                MediaType.APPLICATION_OCTET_STREAM));
+        return converter;
+    }
+
+    @Bean
+    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
+        final ExternalAuthentificationService externalAuthentificationService) {
         return new ExternalApiAuthenticationProvider(externalAuthentificationService);
     }
 
@@ -83,28 +103,46 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public ExternalAuthentificationService externalAuthentificationService(final ContextRestClient contextRestClient,
-                                                                           final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient) {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
-                                                                     final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(apiIngestExternalApplicationProperties.getIamInternalClient(), restTemplateBuilder);
+    public IamInternalRestClientFactory iamInternalRestClientFactory(
+        final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new IamInternalRestClientFactory(apiIngestExternalApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder);
 
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public UserInternalRestClient userInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
     @Bean
-    public IngestInternalRestClientFactory ingestInternalRestClientFactory(final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
-                                                                                     final RestTemplateBuilder restTemplateBuilder) {
-        return new IngestInternalRestClientFactory(apiIngestExternalApplicationProperties.getIngestInternalClient(), restTemplateBuilder);
+    public IngestInternalRestClientFactory ingestInternalRestClientFactory(
+        final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new IngestInternalRestClientFactory(apiIngestExternalApplicationProperties.getIngestInternalClient(),
+            restTemplateBuilder);
     }
 
+    @Bean
+    public IngestStreamingInternalRestClientFactory ingestStreamingInternalRestClientFactory(
+        final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties) {
+        return new IngestStreamingInternalRestClientFactory(
+            apiIngestExternalApplicationProperties.getIngestInternalClient());
+    }
+
+
+    @Bean
+    public IngestStreamingInternalRestClient ingestStreamingInternalRestClient(
+        final IngestStreamingInternalRestClientFactory factory) {
+        return factory.getIngestStreamingInternalRestClient();
+    }
 
     @Bean
     public IngestInternalRestClient ingestInternalRestClient(final IngestInternalRestClientFactory factory) {
@@ -112,7 +150,8 @@ public class ApiIngestServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IngestInternalWebClientFactory ingestInternalWebClientFactory(final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
+    public IngestInternalWebClientFactory ingestInternalWebClientFactory(
+        final ApiIngestExternalApplicationProperties apiIngestExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder) {
         return new IngestInternalWebClientFactory(apiIngestExternalApplicationProperties.getIngestInternalClient());
     }

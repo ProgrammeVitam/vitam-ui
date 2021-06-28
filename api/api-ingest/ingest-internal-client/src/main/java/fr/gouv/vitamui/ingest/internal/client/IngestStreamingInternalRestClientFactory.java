@@ -36,26 +36,26 @@
  */
 package fr.gouv.vitamui.ingest.internal.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.ingest.common.rest.RestApi;
-import org.springframework.web.reactive.function.client.WebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
 /**
- * External WebClient for Ingest operations.
+ * A Rest client factory to create specialized IAM Rest clients
  */
-public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalWebClient.class);
+public class IngestStreamingInternalRestClientFactory extends BaseStreamingRestClientFactory {
 
-    public IngestInternalWebClient(final WebClient webClient, final String baseUrl) {
-        super(webClient, baseUrl);
+    public IngestStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
     }
 
-    @Override
-    public String getPathUrl() {
-        return RestApi.V1_INGEST;
+    public IngestStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpHostConfiguration) {
+        super(restClientConfiguration, httpHostConfiguration);
+    }
+
+    public IngestStreamingInternalRestClient getIngestStreamingInternalRestClient() {
+        return new IngestStreamingInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 }
