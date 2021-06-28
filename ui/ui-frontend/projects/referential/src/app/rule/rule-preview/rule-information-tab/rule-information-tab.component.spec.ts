@@ -56,7 +56,8 @@ describe('RuleInformationTabComponent', () => {
     ruleType: 'AppraisalRule',
     ruleDescription: 'Règle de gestion XXXX',
     ruleDuration: '20',
-    ruleMeasurement: 'Day'
+    ruleMeasurement: 'Day',
+    ruleValue: 'RuleValue'
   };
 
   const previousValue: Rule = {
