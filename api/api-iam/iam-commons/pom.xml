@@ -22,6 +22,10 @@
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-rest</artifactId>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui.commons</groupId>
+            <artifactId>commons-vitam</artifactId>
+        </dependency>
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
     		<artifactId>spring-boot-starter-json</artifactId>

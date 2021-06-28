@@ -64,6 +64,8 @@ import fr.gouv.vitamui.iam.internal.server.customer.service.InitCustomerService;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.converter.ExternalParametersConverter;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.dao.ExternalParamProfileRepository;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import fr.gouv.vitamui.iam.internal.server.group.converter.GroupConverter;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;
 import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
@@ -105,6 +107,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartResolver;
@@ -124,8 +127,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public MultipartResolver multipartResolver() {
-        final MultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
-        return commonsMultipartResolver;
+        return new CommonsMultipartResolver();
     }
 
     @SuppressWarnings("rawtypes")
@@ -363,8 +365,30 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final CustomSequenceRepository sequenceRepository,
         final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersConverter externalParametersConverter,
-        final InternalSecurityService internalSecurityService) {
+        final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService) {
         return new ExternalParametersInternalService(sequenceRepository, externalParametersRepository,
-            externalParametersConverter, internalSecurityService);
+            externalParametersConverter, internalSecurityService, iamLogbookService);
     }
+
+    @Bean
+    public ExternalParamProfileInternalService externalParamProfileInternalService(
+        final ExternalParametersInternalService externalParametersInternalService,
+        final ProfileInternalService profileInternalService,
+        final InternalSecurityService internalSecurityService,
+        final IamLogbookService iamLogbookService,
+        final ExternalParamProfileRepository externalParamProfileRepository,
+        final LogbookService logbookService,
+        final ProfileConverter profileConverter) {
+
+        return new ExternalParamProfileInternalService(externalParametersInternalService,
+            profileInternalService, internalSecurityService, iamLogbookService,
+            externalParamProfileRepository,logbookService, profileConverter);
+    }
+
+    @Bean
+    ExternalParamProfileRepository externalParamProfileRepository(MongoOperations mongoOperations) {
+        return new ExternalParamProfileRepository(mongoOperations);
+    }
+
 }

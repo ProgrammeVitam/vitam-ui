@@ -1,0 +1,25 @@
+<vitamui-common-sidenav-header
+  [title]="externalParamProfile?.name"
+  [icon]="'vitamui-icon-gestion-de-profil'"
+  [badge]="externalParamProfile?.enabled ? 'green' : 'grey'"
+  (onclose)="emitClose()"
+>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="Informations">
+      <app-information-tab [tenantIdentifier]="tenantIdentifier" [externalParamProfile]="externalParamProfile" [readOnly]="readOnly"></app-information-tab>
+    </mat-tab>
+
+    <mat-tab label="Historique">
+      <vitamui-common-operation-history-tab
+        [id]="externalParamProfile?.idProfile"
+        [identifier]="externalParamProfile?.idProfile"
+        collectionName="externalparamprofile"
+        [filter]="filterEvents"
+      >
+      </vitamui-common-operation-history-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>

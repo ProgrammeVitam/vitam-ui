@@ -38,7 +38,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import {
-  AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard
+  AccountComponent,
+  ActiveTenantGuard,
+  AnalyticsResolver,
+  AppGuard,
+  AuthGuard
 } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
@@ -61,7 +65,8 @@ const routes: Routes = [
   // =====================================================
   {
     path: 'customer',
-    loadChildren: () => import('./customer/customer.module').then(m => m.CustomerModule),
+    loadChildren: () =>
+      import('./customer/customer.module').then(m => m.CustomerModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'CUSTOMERS_APP' }
@@ -92,17 +97,19 @@ const routes: Routes = [
   // =====================================================
   {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
+    loadChildren: () =>
+      import('./profile/profile.module').then(m => m.ProfileModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PROFILES_APP' },
+    data: { appId: 'PROFILES_APP' }
   },
   // =====================================================
   //                      Hierarchy
   // =====================================================
   {
     path: 'profile-hierarchy',
-    loadChildren: () => import('./hierarchy/hierarchy.module').then(m => m.HierarchyModule),
+    loadChildren: () =>
+      import('./hierarchy/hierarchy.module').then(m => m.HierarchyModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'HIERARCHY_PROFILE_APP' }
@@ -112,10 +119,24 @@ const routes: Routes = [
   // =====================================================
   {
     path: 'subrogation',
-    loadChildren: () => import('./subrogation/subrogation.module').then(m => m.SubrogationModule),
+    loadChildren: () =>
+      import('./subrogation/subrogation.module').then(m => m.SubrogationModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'SUBROGATIONS_APP' }
+  },
+  // =====================================================
+  //                      Profile
+  // =====================================================
+  {
+    path: 'externalparamprofile',
+    loadChildren: () =>
+      import('./external-param-profile/external-param-profile.module').then(
+        m => m.ExternalParamProfileModule
+      ),
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'EXTERNAL_PARAM_PROFILE_APP' }
   },
   // =====================================================
   //                      unknown path
@@ -130,9 +151,6 @@ const routes: Routes = [
     })
   ],
   exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
-  ]
+  providers: [ActiveTenantGuard, AuthGuard]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -87,7 +87,7 @@
     <ng-container *ngSwitchCase="'accountUpdate'" i18n="@@notificationAccountUpdate">
       <i class="vitamui-icon vitamui-icon-user"></i> Les informations ont été mises à jour
     </ng-container>
- 
+
     <ng-container *ngSwitchCase="'useralreadyDeleted'" i18n="@@notificationUserAlreadyDelete">
         <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur que vous cherchez est déja supprimé
       </ng-container>
@@ -96,6 +96,13 @@
       <i class="vitamui-icon vitamui-icon-key"></i> Un ou plusieurs utilisateur(s) inactif(s) de votre organisation nécessitent l'effacement de leurs données personnelles
     </ng-container>
 
+    <ng-container *ngSwitchCase="'externalParamProfileCreate'">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_CREATED' | translate : {name: data?.name} }}
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'externalParamProfileUpdate'">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ 'EXTERNAL_PARAM_PROFILE.NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED' | translate : {name: data?.name} }}
+    </ng-container>
   </span>
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>

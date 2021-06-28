@@ -123,6 +123,8 @@ public class TestConstants {
 
     public static final String SEARCH_CRITERIA_NAME = "Search Name";
 
+    public static final String EXTERNAL_PARAM_IDENTIFEIR = "externaparamidentifier";
+
     private TestConstants() {
         // do nothing
     }

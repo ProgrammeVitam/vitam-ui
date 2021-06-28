@@ -12,6 +12,9 @@
             <list>
               <option value="clean" />
               <option value="spring-boot:run" />
+              <option value="-DskipTests" />
+              <option value="-DskipAllFrontendTests" />
+              <option value="-Pvitam" />
             </list>
           </option>
           <option name="pomFileName" />

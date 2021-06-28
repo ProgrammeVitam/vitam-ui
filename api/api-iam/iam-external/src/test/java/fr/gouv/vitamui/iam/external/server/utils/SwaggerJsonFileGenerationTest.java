@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.external.server.utils;
 
+import fr.gouv.vitamui.iam.external.server.service.ExternalParamProfileExternalService;
 import fr.gouv.vitamui.iam.external.server.service.ExternalParametersExternalService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -74,5 +75,8 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ExternalParametersExternalService externalParametersExternalService;
+
+    @MockBean
+    private ExternalParamProfileExternalService externalParamProfileExternalService;
 
 }

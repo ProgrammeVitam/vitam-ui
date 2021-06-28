@@ -36,6 +36,10 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import fr.gouv.vitamui.ui.commons.rest.AccessContractController;
+import fr.gouv.vitamui.ui.commons.rest.ExternalParamProfileController;
+import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
+import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -92,7 +96,7 @@ public class AutoConfigurationRestController {
     public LogbookController logbookController(final LogbookService logbookService) {
         return new LogbookController(logbookService);
     }
-    
+
     @Bean("externalParametersController")
     @DependsOn("externalParametersService")
     public ExternalParametersController externalParametersController(final ExternalParametersService externalParametersService) {
@@ -106,4 +110,15 @@ public class AutoConfigurationRestController {
         return new UserController(userService);
     }
 
+    @Bean("externalParamProfileController")
+    @DependsOn("externalParamProfileService")
+    public ExternalParamProfileController externalParamProfileController(final ExternalParamProfileService externalParamProfileService) {
+        return new ExternalParamProfileController(externalParamProfileService);
+    }
+
+    @Bean("CommonAccessContractController")
+    @DependsOn("CommonAccessContractService")
+    public AccessContractController accessContractController(final AccessContractService accessContractService) {
+        return new AccessContractController(accessContractService);
+    }
 }

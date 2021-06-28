@@ -38,10 +38,10 @@ package fr.gouv.vitamui.iam.internal.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
-
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
@@ -52,12 +52,14 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 
 public class IamInternalRestClientFactory extends BaseRestClientFactory {
 
-    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final RestTemplateBuilder restTemplateBuilder) {
+    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+        final RestTemplateBuilder restTemplateBuilder) {
         super(restClientConfiguration, restTemplateBuilder);
     }
 
-    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration,
-            final RestTemplateBuilder restTemplateBuilder) {
+    public IamInternalRestClientFactory(final RestClientConfiguration restClientConfiguration,
+                                        final HttpPoolConfiguration httpHostConfiguration,
+                                        final RestTemplateBuilder restTemplateBuilder) {
         super(restClientConfiguration, httpHostConfiguration, restTemplateBuilder);
     }
 
@@ -108,9 +110,17 @@ public class IamInternalRestClientFactory extends BaseRestClientFactory {
     public LogbookInternalRestClient<InternalHttpContext> getLogbookInternalRestClient() {
         return new LogbookInternalRestClient<>(getRestTemplate(), getBaseUrl());
     }
-    
+
     public ExternalParametersInternalRestClient getExternalParametersInternalRestClient() {
         return new ExternalParametersInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
+    public ExternalParamProfileInternalRestClient getExternalParamProfileInternalRestClient() {
+        return new ExternalParamProfileInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
+    public AccessContractInternalRestClient<InternalHttpContext> getAccessContractInternalRestClient() {
+        return new AccessContractInternalRestClient<>(getRestTemplate(), getBaseUrl());
     }
 
 }

@@ -123,10 +123,10 @@
         <powermock.version>2.0.2</powermock.version>
         <selma.version>1.0</selma.version>
         <fop.version>2.4</fop.version>
-        <serenity.cucumber.version>2.2.6</serenity.cucumber.version>
+        <serenity.cucumber.version>2.2.2</serenity.cucumber.version>
         <serenity.maven.plugin>2.2.2</serenity.maven.plugin>
-        <serenity.spring.version>2.4.3</serenity.spring.version>
-        <serenity.version>2.4.3</serenity.version>
+        <serenity.spring.version>2.2.2</serenity.spring.version>
+        <serenity.version>2.2.2</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
         <spring.boot.version>2.4.4</spring.boot.version>
         <spring.version>5.3.5</spring.version>
@@ -144,7 +144,7 @@
         <antisamy.version>1.5.8</antisamy.version>
         <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
-        <mongo.driver.version>3.11.0</mongo.driver.version>
+        <mongo.driver.sync.version>4.1.2</mongo.driver.sync.version>
 
 
         <!-- Web Pack -->
@@ -620,8 +620,8 @@
             <!-- Mongo-Driver -->
             <dependency>
                 <groupId>org.mongodb</groupId>
-                <artifactId>mongo-java-driver</artifactId>
-                <version>${mongo.driver.version}</version>
+                <artifactId>mongodb-driver-sync</artifactId>
+                <version>${mongo.driver.sync.version}</version>
             </dependency>
 
             <!-- VITAM -->

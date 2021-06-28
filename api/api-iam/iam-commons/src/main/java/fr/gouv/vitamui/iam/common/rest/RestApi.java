@@ -80,8 +80,10 @@ public abstract class RestApi {
     public static final String CAS_SUBROGATIONS_PATH = "/subrogations";
 
     public static final String V1_IAM_URL = "/iam/v1";
-    
+
     public static final String V1_EXTERNAL_PARAMETERS_URL = "/iam/v1/externalparameters";
+
+    public static final String V1_EXTERNAL_PARAM_PROFILE_URL = "/iam/v1/externalparamprofile";
 
     private RestApi() {
         // do nothing

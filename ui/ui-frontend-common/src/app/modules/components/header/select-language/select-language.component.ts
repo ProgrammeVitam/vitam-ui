@@ -6,14 +6,15 @@ import { takeUntil } from 'rxjs/operators';
 import { AccountApiService } from '../../../account/account-api.service';
 import { ApplicationId } from '../../../application-id.enum';
 import { AuthService } from '../../../auth.service';
-import { SessionStorageService } from '../../../services/session-storage.service';
+import { SessionStorageService } from '../../../services';
 
 @Component({
   selector: 'vitamui-common-select-language',
   templateUrl: './select-language.component.html',
-  styleUrls: ['./select-language.component.scss'],
+  styleUrls: ['./select-language.component.scss']
 })
 export class SelectLanguageComponent implements OnInit, OnDestroy {
+
   /**
    * This component have two display mode :
    * select : displays a select box with the current selected lang as text.
@@ -32,7 +33,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private sessionStorageService: SessionStorageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.authService.user && this.authService.user.language) {
@@ -105,6 +106,7 @@ export class SelectLanguageComponent implements OnInit, OnDestroy {
         case ApplicationId.ACCESS_APP:
         case ApplicationId.INGEST_APP_REF:
         case ApplicationId.LOGBOOK_MANAGEMENT_OPERATION_APP:
+        case ApplicationId.EXTERNAL_PARAM_PROFILE_APP :
           return true;
         default:
           return false;

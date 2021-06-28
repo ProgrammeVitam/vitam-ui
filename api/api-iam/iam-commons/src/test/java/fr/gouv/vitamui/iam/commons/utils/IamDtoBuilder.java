@@ -8,9 +8,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
@@ -69,13 +71,29 @@ public class IamDtoBuilder {
         return userDto;
     }
 
-    public static ProfileDto buildProfileDto(final String id, final String name, final String customerId, final Integer tenantId, final String applicationName,
-            final String level, final List<Role> roles) {
-        final ProfileDto profileDto = DtoFactory.buildProfileDto(name, "description", false, level, tenantId, applicationName, new ArrayList<String>(),
+    public static ProfileDto buildProfileDto(final String id, final String name, final String customerId,
+        final Integer tenantId, final String applicationName,
+        final String level, final List<Role> roles) {
+        final ProfileDto profileDto = DtoFactory
+            .buildProfileDto(name, "description", false, level, tenantId, applicationName, new ArrayList<String>(),
                 customerId);
         profileDto.setId(id);
         profileDto.setRoles(roles);
         return profileDto;
+    }
+
+
+    public static ExternalParametersDto buildExternalParametersDto() {
+
+        String PARAM_ACCESS_CONTRACT_NAME = "PARAM_ACCESS_CONTRACT";
+
+        ExternalParametersDto externalParametersDto = new ExternalParametersDto();
+        externalParametersDto.setId("externaparamidentifier");
+        externalParametersDto.setParameters(List.of(new ParameterDto(PARAM_ACCESS_CONTRACT_NAME, "AC-000001")));
+        externalParametersDto.setName("external parameter TNR");
+        externalParametersDto.setIdentifier("externaparamidentifier");
+
+        return externalParametersDto;
     }
 
     public static ApplicationDto buildApplicationDto(final String id, final String identifier, final String url) {
@@ -86,7 +104,8 @@ public class IamDtoBuilder {
         return applicationDto;
     }
 
-    public static GroupDto buildGroupDto(final String id, final String name, final String customerId, final List<String> profileIds, final String level) {
+    public static GroupDto buildGroupDto(final String id, final String name, final String customerId,
+        final List<String> profileIds, final String level) {
         final GroupDto groupDto = new GroupDto();
         groupDto.setId(id);
         groupDto.setCustomerId(customerId);

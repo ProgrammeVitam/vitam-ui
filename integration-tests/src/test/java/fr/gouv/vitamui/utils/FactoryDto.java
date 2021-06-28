@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
@@ -80,6 +81,9 @@ public class FactoryDto {
         else if (clazz.equals(SearchCriteriaHistoryDto.class)) {
             dto = (T) buildSearchCriteriaHistoryDto();
         }
+        else if (clazz.equals(ExternalParametersDto.class)) {
+            dto = (T) buildExternalParametersDto();
+        }
         else {
             throw new InvalidArgumentException("build method not implemented for class " + clazz);
         }
@@ -101,6 +105,10 @@ public class FactoryDto {
     private static ProfileDto buildProfileDto() {
         return IamDtoBuilder.buildProfileDto(null, randomString(), SYSTEM_CUSTOMER_ID, proofTenantIdentitfier, "applicationName", ADMIN_LEVEL,
                 Arrays.asList(new Role(ServicesData.ROLE_CREATE_PROFILES)));
+    }
+
+    private static ExternalParametersDto buildExternalParametersDto() {
+        return IamDtoBuilder.buildExternalParametersDto();
     }
 
     private static TenantDto buildTenantDto() {

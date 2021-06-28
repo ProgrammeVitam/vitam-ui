@@ -152,6 +152,15 @@ customer-init:
         - ROLE_GET_ALL_LOGBOOK_OPERATION
         - ROLE_UPDATE_LOGBOOK_OPERATION
 
+    - name: Profil pour la création des profils paramétrage externe
+      description: Gérer et consulter l'ensemble des profils paramétrage externe
+      app-name: ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE_APP
+      level:
+      roles:
+        - ROLE_CREATE_EXTERNAL_PARAM_PROFILE
+        - ROLE_EDIT_EXTERNAL_PARAM_PROFILE
+        - ROLE_SEARCH_EXTERNAL_PARAM_PROFILE
+
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName
