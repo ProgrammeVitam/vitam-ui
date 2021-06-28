@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.utils;
 
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
@@ -17,6 +18,7 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
+import fr.gouv.vitamui.iam.internal.server.common.builder.ExternalParamProfileDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
@@ -198,6 +200,16 @@ public final class IamServerUtilsTest {
         final Integer tenantId,
         final String applicationName) {
         return IamDtoBuilder.buildProfileDto(id, name, customerId, tenantId, applicationName, LEVEL, ROLES);
+    }
+
+
+    /**
+     * External param ProfileDto
+     */
+    public static ExternalParamProfileDto buildExternalParamProfileDto() {
+        ExternalParamProfileDto externalParamProfileDto = new ExternalParamProfileDto();
+        externalParamProfileDto.setId(PROFILE_IDENTIFIER);
+        return externalParamProfileDto;
     }
 
     /**

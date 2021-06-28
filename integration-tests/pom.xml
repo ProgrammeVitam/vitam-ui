@@ -155,11 +155,11 @@
 			<artifactId>serenity-cucumber5</artifactId>
 			<scope>test</scope>
 		</dependency>
+
         <dependency>
             <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
+            <artifactId>mongodb-driver-sync</artifactId>
         </dependency>
-
     </dependencies>
 
 	<build>

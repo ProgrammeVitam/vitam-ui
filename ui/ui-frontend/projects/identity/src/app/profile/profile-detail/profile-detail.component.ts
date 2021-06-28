@@ -38,18 +38,17 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Subscription } from 'rxjs';
 import { AuthService, Event, isLevelAllowed, Profile, StartupService } from 'ui-frontend-common';
 
-import { ProfileService } from './../profile.service';
+import { ProfileService } from '../profile.service';
 
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
-  styleUrls: ['./profile-detail.component.scss']
+  styleUrls: ['./profile-detail.component.scss'],
 })
 export class ProfileDetailComponent implements OnInit, OnDestroy {
-
   @Input()
   set id(id: string) {
-    this.rngProfileService.get(id).subscribe((profile) => this.profile = profile);
+    this.rngProfileService.get(id).subscribe((profile) => (this.profile = profile));
   }
   @Input() profile: Profile;
   @Input() isPopup: boolean;
@@ -58,25 +57,24 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
 
   profileUpdateSub: Subscription;
 
-  constructor(
-    private rngProfileService: ProfileService, private authService: AuthService,
-    private startupService: StartupService
-  ) {}
+  constructor(private rngProfileService: ProfileService, private authService: AuthService, private startupService: StartupService) {}
 
   ngOnInit(): void {
     this.profileUpdateSub = this.rngProfileService.updated.subscribe((updatedProfile) => {
       if (updatedProfile) {
         this.rngProfileService.get(updatedProfile.id).subscribe((newProfileInfo) => {
           this.profile = newProfileInfo;
-
         });
       }
     });
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/profile/' + this.profile.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/profile/' + this.profile.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no'
+    );
     this.emitClose();
   }
 
@@ -95,10 +93,8 @@ export class ProfileDetailComponent implements OnInit, OnDestroy {
   }
 
   filterEvents(event: Event): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_CREATE_PROFILE') || event.outDetail.includes('EXT_VITAMUI_UPDATE_PROFILE'))
     );
   }
-
 }

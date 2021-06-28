@@ -36,19 +36,7 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -64,6 +52,16 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * The service to read, create, update and delete the profiles.
@@ -200,12 +198,10 @@ public class ProfileExternalService extends AbstractResourceClientService<Profil
         return getClient().findHistoryById(getInternalHttpContext(), id);
     }
 
-    private void checkLogbookRight(final String id) {
+    public void checkLogbookRight(final String id) {
         final boolean hasRoleGetUsers = externalSecurityService.hasRole(ServicesData.ROLE_GET_PROFILES);
-        if (!hasRoleGetUsers) {
-            if (!externalSecurityService.getUser().getProfileGroup().getProfileIds().contains(id)) {
-                throw new ForbiddenException(String.format("Unable to access profile with id: %s", id));
-            }
+        if (!hasRoleGetUsers && !externalSecurityService.getUser().getProfileGroup().getProfileIds().contains(id)) {
+            throw new ForbiddenException(String.format("Unable to access profile with id: %s", id));
         }
         final ProfileDto profileDto = super.getOne(id);
         if (profileDto == null) {

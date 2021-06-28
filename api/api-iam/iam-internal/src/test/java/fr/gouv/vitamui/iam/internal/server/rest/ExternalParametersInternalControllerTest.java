@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
@@ -79,16 +80,19 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
 
     @Mock
     private ExternalParametersRepository externalParametersRepository;
-    
+
     @Mock
     private CustomSequenceRepository sequenceRepository;
-    
+
     @Mock
     private ExternalParametersConverter externalParametersConverter;
-    
+
     @Mock
     private InternalSecurityService internalSecurityService;
-    
+
+    @Mock
+    private IamLogbookService iamLogbookService;
+
     private static final String PARAMETER_ID = "1";
 
     @Before
@@ -97,10 +101,11 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
 
         Mockito.when(externalParametersConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(externalParametersConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        
+
         externalParametersInternalService = new ExternalParametersInternalService(
-        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService); 
-        
+        		sequenceRepository, externalParametersRepository, externalParametersConverter, internalSecurityService,
+            iamLogbookService);
+
         controller = new ExternalParametersInternalController(externalParametersInternalService);
     }
 
@@ -111,21 +116,21 @@ public class ExternalParametersInternalControllerTest extends AbstractServerIden
     	profile.setExternalParamId(PARAMETER_ID);
     	List<ProfileDto> profiles = new ArrayList<ProfileDto>();
     	profiles.add(profile);
-    	
+
     	GroupDto group = new GroupDto();
     	group.setProfiles(profiles);
-    	
+
     	AuthUserDto user = new AuthUserDto();
     	user.setProfileGroup(group);
-    	
-    	
+
+
     	ExternalParameters result = new ExternalParameters();
     	result.setId(PARAMETER_ID);
-    	
+
     	when(internalSecurityService.getUser()).thenReturn(user);
     	when(externalParametersRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(result));
         ExternalParametersDto dto = controller.getMyExternalParameters();
-        
+
         assertNotNull(dto);
         assertEquals(dto.getId(), PARAMETER_ID);
     }

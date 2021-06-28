@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cucumber.common.context;
 
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -101,6 +102,10 @@ public class TestContext {
     public SearchCriteriaHistoryDto searchCriteriaHistoryDto;
 
     public SearchCriteriaHistoryDto savedSearchCriteriaHistoryDto;
+
+    public ExternalParametersDto externalParametersDto;
+
+    public ExternalParametersDto savedExternalParametersDto;
 
     public void reset() {
         exception = null;

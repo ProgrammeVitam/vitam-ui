@@ -1,14 +1,17 @@
 package fr.gouv.vitamui.cucumber.common;
 
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.InsertOneResult;
 import fr.gouv.vitamui.RegisterRestQueryInterceptor;
 import fr.gouv.vitamui.TestContextConfiguration;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
 import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
+import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -34,6 +37,7 @@ import fr.gouv.vitamui.utils.TestConstants;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
+import org.bson.BsonValue;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -136,6 +140,8 @@ public abstract class BaseIntegration {
 
     private SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient;
 
+    private ExternalParamProfileExternalRestClient externalParamProfileExternalRestClient;
+
     private static MongoClient mongoClientIam;
 
     private static MongoClient mongoClientSecurity;
@@ -151,6 +157,8 @@ public abstract class BaseIntegration {
     private MongoCollection<Document> certificatesCollection;
 
     private MongoCollection<Document> profilesCollection;
+
+    private MongoCollection<Document> externalParametersCollection;
 
     private MongoCollection<Document> searchCriteriaHistoryCollection;
 
@@ -462,21 +470,21 @@ public abstract class BaseIntegration {
 
     protected MongoClient getMongoIam() {
         if (BaseIntegration.mongoClientIam == null) {
-            BaseIntegration.mongoClientIam = new MongoClient(new MongoClientURI(mongoIamUri));
+            BaseIntegration.mongoClientIam = MongoClients.create(mongoIamUri);
         }
         return BaseIntegration.mongoClientIam;
     }
 
     protected MongoClient getMongoSecurity() {
         if (BaseIntegration.mongoClientSecurity == null) {
-            BaseIntegration.mongoClientSecurity = new MongoClient(new MongoClientURI(mongoSecurityUri));
+            BaseIntegration.mongoClientSecurity = MongoClients.create(mongoSecurityUri);
         }
         return BaseIntegration.mongoClientSecurity;
     }
 
     protected MongoClient getMongoArchiveSearch() {
         if (BaseIntegration.mongoClientArchiveSearch == null) {
-            BaseIntegration.mongoClientArchiveSearch = new MongoClient(new MongoClientURI(mongoArchiveSearchUri));
+            BaseIntegration.mongoClientArchiveSearch = MongoClients.create(mongoArchiveSearchUri);
         }
         return BaseIntegration.mongoClientIam;
     }
@@ -756,6 +764,12 @@ public abstract class BaseIntegration {
         return searchCriteriaHistoryExternalRestClient;
     }
 
+    protected ExternalParamProfileExternalRestClient getExternalParamProfileExternalRestClient() {
+        if (externalParamProfileExternalRestClient == null) {
+            externalParamProfileExternalRestClient = getIamRestClientFactory().getExternalParamProfileExternalRestClient();
+        }
+        return externalParamProfileExternalRestClient;
+    }
 
     protected MongoCollection<Document> getProfilesCollection() {
         if (profilesCollection == null) {
@@ -768,7 +782,14 @@ public abstract class BaseIntegration {
         if (searchCriteriaHistoryCollection == null) {
             searchCriteriaHistoryCollection = getArchiveSearchDatabase().getCollection("searchCriteriaHistories");
         }
-        return profilesCollection;
+        return searchCriteriaHistoryCollection;
+    }
+
+    protected MongoCollection<Document> getExternalParametersCollection() {
+        if (externalParametersCollection == null) {
+            externalParametersCollection = getIamDatabase().getCollection("externalParameters");
+        }
+        return externalParametersCollection;
     }
 
     protected MongoCollection<Document> getSubrogationsCollection() {
@@ -798,6 +819,41 @@ public abstract class BaseIntegration {
                 .append("customerId", customerId);
         //@formatter:on
         getProfilesCollection().insertOne(profile);
+    }
+
+    protected void writeExternalParameter(ExternalParametersDto externalParametersDto) {
+        final List<Document> parameters = new ArrayList<>();
+        for (final ParameterDto parameter : externalParametersDto.getParameters()) {
+            parameters.add(new Document("key", parameter.getKey()).append("value", parameter.getValue()));
+        }
+
+        getExternalParametersCollection().deleteOne(eq("_id", externalParametersDto.getId()));
+        //@formatter:off
+        final Document ExternalParametersDtoDocument = new Document("_id", externalParametersDto.getId())
+            .append("name", "Test External Parameter" + externalParametersDto.getId())
+            .append("identifier", externalParametersDto.getIdentifier())
+            .append("parameters", parameters);
+        //@formatter:on
+        getExternalParametersCollection().insertOne(ExternalParametersDtoDocument);
+
+    }
+
+    protected void deleteProfiles(final String ... identifiers) {
+        for(String identifier : identifiers)
+            deleteProfile(identifier);
+    }
+
+    protected void deleteProfile(final String identifier) {
+            getProfilesCollection().deleteOne(eq("externalParamId", identifier));
+    }
+
+    protected void deleteExternalParameters(final String ... identifiers) {
+        for(String identifier : identifiers)
+            deleteExternalParameter(identifier);
+    }
+
+    protected void deleteExternalParameter(final String identifier) {
+            getExternalParametersCollection().deleteOne(eq("identifier", identifier));
     }
 
     protected String generateRandomInteger() {

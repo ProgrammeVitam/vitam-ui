@@ -1,0 +1,26 @@
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-external-param-profile-detail
+      (externalParamProfileClose)="closePanel()"
+      [externalParamProfile]="openedItem"
+      [tenantIdentifier]="tenantIdentifier"
+    >
+    </app-external-param-profile-detail>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="vitamui-heading">
+      <vitamui-common-title-breadcrumb> {{ 'EXTERNAL_PARAM_PROFILE.TITLE' | translate }} </vitamui-common-title-breadcrumb>
+
+      <vitamui-common-banner [searchbarPlaceholder]="'EXTERNAL_PARAM_PROFILE.EXTERNAL_PARAM_PROFILE_NAME' | translate" (search)="onSearchSubmit($event)">
+        <button class="btn primary ml-5" (click)="openExternalParamProfilCreateDialog()">
+          <span>{{ 'EXTERNAL_PARAM_PROFILE.CREATE_EXTERNAL_PARAM_PROFILE' | translate }}</span>
+        </button>
+      </vitamui-common-banner>
+    </div>
+
+    <div class="vitamui-content">
+      <app-external-param-profile-list [search]="search" (externalParamProfileClick)="openPanel($event)"></app-external-param-profile-list>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

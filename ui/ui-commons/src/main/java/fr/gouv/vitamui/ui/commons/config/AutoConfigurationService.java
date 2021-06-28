@@ -36,15 +36,11 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.info.BuildProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
+import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
@@ -52,6 +48,11 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.info.BuildProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 @Configuration
 public class AutoConfigurationService {
@@ -76,7 +77,7 @@ public class AutoConfigurationService {
     public LogbookService logbookService(final IamExternalRestClientFactory factory) {
         return new LogbookService(factory.getLogbookExternalRestClient());
     }
-    
+
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
@@ -105,4 +106,21 @@ public class AutoConfigurationService {
         return new UserService(factory);
     }
 
+    @Bean
+    @DependsOn("iamRestClientFactory")
+    @ConditionalOnMissingBean
+    public ExternalParamProfileService externalParamProfileService(final IamExternalRestClientFactory factory,
+        CommonService commonService) {
+        return new ExternalParamProfileService(
+            factory,
+            commonService
+        );
+    }
+
+    @Bean("CommonAccessContractService")
+    @DependsOn("iamRestClientFactory")
+    @ConditionalOnMissingBean
+    public AccessContractService accessContractService(final IamExternalRestClientFactory factory) {
+        return new AccessContractService(factory.getAccessContractExternalRestClient());
+    }
 }
