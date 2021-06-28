@@ -128,7 +128,8 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_ruleInternalRestClient_return_ok() {
-        doNothing().when(ruleInternalRestClient).deleteRule(any(InternalHttpContext.class), any(String.class));
+        when(ruleInternalRestClient.deleteRule(any(InternalHttpContext.class), any(String.class)))
+            .thenReturn(true);
         String id = "1";
 
         assertThatCode(() -> {
@@ -145,20 +146,20 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
             ruleExternalService.export();
         }).doesNotThrowAnyException();
     }
-    
+
     @Test
     public void import_should_return_ok() throws IOException {
 	    File file = new File("src/test/resources/data/import_rules_valid.csv");
 	    FileInputStream input = new FileInputStream(file);
 	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
-	    
-	    String stringReponse = "{\"httpCode\":\"201\"}";	 
+
+	    String stringReponse = "{\"httpCode\":\"201\"}";
 	    ObjectMapper mapper = new ObjectMapper();
 	    JsonNode jsonResponse = mapper.readTree(stringReponse);
-	    
+
         when(ruleInternalWebClient.importRules(any(InternalHttpContext.class), any(String.class), any(MultipartFile.class)))
         	.thenReturn(jsonResponse);
-	 
+
         assertThatCode(() -> {
         	ruleExternalService.importRules(file.getName(), multipartFile);
         }).doesNotThrowAnyException();
