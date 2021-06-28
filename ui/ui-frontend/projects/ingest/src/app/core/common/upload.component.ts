@@ -45,7 +45,6 @@ import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
 
 const LAST_STEP_INDEX = 2;
-const action = 'RESUME';
 
 @Component({
   selector: 'app-upload',
@@ -73,7 +72,7 @@ export class UploadComponent implements OnInit {
   isDisabled = true;
   public stepIndex = 0;
   public stepCount = 2;
-  
+
 
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
@@ -99,7 +98,7 @@ export class UploadComponent implements OnInit {
     this.hasSip = this.sipForm.get('hasSip').value;
 
   }
- 
+
 
   onDragOver(inDropZone: boolean) {
     this.hasDropZoneOver = inDropZone;
@@ -145,16 +144,16 @@ export class UploadComponent implements OnInit {
   upload() {
     if (!this.isValidSIP) { return; }
 
-    this.uploadService.uploadFile(this.fileToUpload, this.contextId, action, this.tenantIdentifier)
-      .subscribe(
-        () => {
-          this.dialogRef.close();
-          this.displaySnackBar(true);
-        },
-        (error: any) => {
-          console.error(error);
-          this.message = error.message;
-        });
+    this.uploadService.uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name).subscribe(
+      () => {
+        this.dialogRef.close();
+        this.displaySnackBar(true);
+      },
+      (error: any) => {
+        console.error(error);
+        this.message = error.message;
+      }
+    );
   }
 
   displaySnackBar(uploadComplete: boolean) {

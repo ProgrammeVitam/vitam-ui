@@ -57,8 +57,6 @@ import fr.gouv.vitamui.ingest.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.ingest.common.dto.ArchiveUnitDto;
 import fr.gouv.vitamui.ingest.internal.server.rest.IngestInternalController;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import java.io.ByteArrayOutputStream;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
@@ -68,6 +66,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -77,8 +76,6 @@ import java.util.Optional;
 
 /**
  * Ingest Internal service communication with VITAM.
- *
- *
  */
 public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
@@ -103,8 +100,7 @@ public class IngestInternalService {
         final LogbookService logbookService, final ObjectMapper objectMapper,
         final IngestExternalClient ingestExternalClient, final IngestService ingestService,
         final CustomerInternalRestClient customerInternalRestClient,
-        final IngestODTGenerator ingestODTGenerator)
-    {
+        final IngestODTGenerator ingestODTGenerator) {
         this.internalSecurityService = internalSecurityService;
         this.ingestExternalClient = ingestExternalClient;
         this.logbookService = logbookService;
@@ -123,14 +119,13 @@ public class IngestInternalService {
 
         RequestResponse<Void> ingestResponse = null;
         try {
-            LOGGER.info("Upload EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Upload EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             ingestResponse = ingestService.ingest(vitamContext, path.getInputStream(), contextId, action);
             LOGGER.info("The recieved stream size : " + path.getInputStream().available() + " is sent to Vitam");
 
-            if(ingestResponse.isOk()) {
+            if (ingestResponse.isOk()) {
                 LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
-            }
-            else {
+            } else {
                 LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
             }
         } catch (IOException | IngestExternalException e) {
@@ -148,7 +143,7 @@ public class IngestInternalService {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
         try {
-            LOGGER.info(" All ingests EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info(" All ingests EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
                 };
@@ -173,13 +168,14 @@ public class IngestInternalService {
 
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            LOGGER.info("Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
             requestResponse = logbookService.selectOperationbyId(id, vitamContext);
 
             LOGGER.debug("One Ingest Response: {}: ", requestResponse);
 
-            final LogbookOperationsResponseDto logbookOperationDtos = objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+            final LogbookOperationsResponseDto logbookOperationDtos =
+                objectMapper.treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
             List<LogbookOperationDto> singleLogbookOperationDto =
                 IngestConverter.convertVitamsToDtos(logbookOperationDtos.getResults());
@@ -194,7 +190,7 @@ public class IngestInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            LOGGER.info("All Ingest EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("All Ingest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             LOGGER.debug("Response: {}: ", requestResponse);
@@ -246,7 +242,7 @@ public class IngestInternalService {
 
     public byte[] generateODTReport(VitamContext vitamContext, final String id) throws JSONException, IOException {
 
-        LogbookOperationDto selectedIngest = getOne(vitamContext, id) ;
+        LogbookOperationDto selectedIngest = getOne(vitamContext, id);
         JSONObject jsonObject = new JSONObject(selectedIngest.getAgIdExt());
         CustomerDto myCustomer = customerInternalRestClient.getMyCustomer(internalSecurityService.getHttpContext());
         Resource customerLogo = null;
@@ -256,37 +252,59 @@ public class IngestInternalService {
             Document manifest = ingestODTGenerator.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
 
             XWPFDocument document = new XWPFDocument();
-            if(myCustomer.isHasCustomGraphicIdentity()) {
-                customerLogo = customerInternalRestClient.getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER).getBody();
+            if (myCustomer.isHasCustomGraphicIdentity()) {
+                customerLogo = customerInternalRestClient
+                    .getLogo(internalSecurityService.getHttpContext(), myCustomer.getId(), AttachmentType.HEADER)
+                    .getBody();
             }
-            List<ArchiveUnitDto> archiveUnitDtoList = ingestODTGenerator.getValuesForDynamicTable(atr,manifest);
+            List<ArchiveUnitDto> archiveUnitDtoList = ingestODTGenerator.getValuesForDynamicTable(atr, manifest);
 
-            ingestODTGenerator.generateDocHeader(document,myCustomer,customerLogo);
+            ingestODTGenerator.generateDocHeader(document, myCustomer, customerLogo);
 
             ingestODTGenerator.generateFirstTitle(document);
 
-            ingestODTGenerator.generateTableOne(document,manifest,jsonObject);
+            ingestODTGenerator.generateTableOne(document, manifest, jsonObject);
 
-            ingestODTGenerator.generateTableTwo(document,manifest,archiveUnitDtoList);
+            ingestODTGenerator.generateTableTwo(document, manifest, archiveUnitDtoList);
 
-            ingestODTGenerator.generateTableThree(document,manifest,id);
+            ingestODTGenerator.generateTableThree(document, manifest, id);
 
             ingestODTGenerator.generateTableFour(document);
 
             ingestODTGenerator.generateSecondtTitle(document);
 
-            ingestODTGenerator.generateDynamicTable(document,archiveUnitDtoList);
+            ingestODTGenerator.generateDynamicTable(document, archiveUnitDtoList);
 
-            LOGGER.info("Generate ODT Report EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Generate ODT Report EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
             document.write(result);
             return result.toByteArray();
 
         } catch (IOException | JSONException e) {
-            LOGGER.error("Error with generating Report : {} " , e.getMessage());
+            LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IOException("Unable to generate the ingest report ", e);
 
         }
     }
 
+    public void streamingUpload(InputStream inputStream, String contextId, String action)
+        throws IngestExternalException {
+        RequestResponse<Void> ingestResponse;
+        try {
+            final VitamContext vitamContext =
+                internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
+            ingestResponse =
+                ingestExternalClient.ingest(vitamContext, inputStream, contextId, action);
+
+            if (ingestResponse.isOk()) {
+                LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
+            } else {
+                LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
+
+            }
+        } catch (Exception e) {
+            LOGGER.debug("Error sending upload to vitam ", e);
+            throw new IngestExternalException(e);
+        }
+    }
 }
