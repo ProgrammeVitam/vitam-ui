@@ -93,7 +93,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
 
 
   downloadReports() {
-    if (!this.tenantIdentifier || !this.eventId) {
+    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
       return;
     }
 
@@ -119,7 +119,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   }
 
   private refreshEvents() {
-    if (!this.tenantIdentifier || !this.eventId) {
+    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
       return;
     }
 
