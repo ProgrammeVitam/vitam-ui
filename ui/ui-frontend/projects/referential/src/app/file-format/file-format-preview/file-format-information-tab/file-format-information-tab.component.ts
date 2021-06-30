@@ -123,7 +123,13 @@ export class FileFormatInformationTabComponent {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
       map((formData) => extend({id: this.previousValue().id, puid: this.previousValue().puid}, formData)),
-      switchMap((formData: { id: string, [key: string]: any }) => this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))));
+      switchMap((formData: { id: string, [key: string]: any }) => {
+        if (formData.extensions) {
+          // The extensions property must be an array of string, not a string
+          formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
+        }
+        return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))
+    }));
   }
 
   onSubmit() {
