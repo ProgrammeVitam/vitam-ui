@@ -13,20 +13,39 @@
   background-color: #FFFFFF;
 }
 
+.vitamui-container {
+  padding-bottom: 0;
+}
 
+.row {
+  &:first-child {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+
+  &:nth-child(2) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
 
 .form_textarea {
-  width: 45%;
-  margin-right: 5%;
-
   label {
     font-weight: 500;
     margin-bottom: 10px;
     color: #474D4A;
   }
 
+  &:first-child {
+    margin-left: 5%;
+    margin-right: 2.5%;
+    width: 42.5%;
+  }
+
   &:nth-child(2) {
-    margin-right: 0;
+    margin-left: 2.5%;
+    margin-right: 5%;
+    width: 42.5%;
   }
 
   .textarea {
@@ -73,11 +92,19 @@
       background-color: transparent;
       color: var(--vitamui-secondary);
       border-color: var(--vitamui-secondary) !important;
+      &:first-child {
+        margin-right: 20px;
+      }
     }
   }
 
   .right {
     float: right;
+    .btn{
+      &:first-child {
+        margin-right: 20px;
+      }
+    }
   }
 }
 
