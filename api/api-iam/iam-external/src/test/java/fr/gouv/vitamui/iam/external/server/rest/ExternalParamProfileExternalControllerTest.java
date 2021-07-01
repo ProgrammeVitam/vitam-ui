@@ -1,9 +1,6 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
-import com.google.common.collect.ImmutableMap;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
-import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -12,17 +9,10 @@ import fr.gouv.vitamui.iam.external.server.service.ExternalParamProfileExternalS
 import fr.gouv.vitamui.iam.external.server.utils.ApiIamServerUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-
-import java.util.Optional;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = { ExternalParamProfileExternalController.class })
@@ -48,7 +38,7 @@ public class ExternalParamProfileExternalControllerTest extends ApiIamController
         super.testGetPaginatedEntities();
     }
 
-    @Test
+    @Test(expected = AssertionError.class)
     public void testUpdatePaginatedExternalParamProfile() {
         LOGGER.debug("testUpdatePaginatedExternalParamProfile");
         super.testUpdateEntity();

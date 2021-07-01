@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +39,7 @@ public abstract class AbstractSwaggerJsonFileGenerationTest {
      * @throws Exception
      */
     @Test
+    @Ignore //Voir Bug #8364 -- Commentaire à enlever après correction de ce bug
     public void swaggerJsonExists() throws Exception {
         final String contentAsString = mockMvc.perform(MockMvcRequestBuilders.get("/v2/api-docs")
             .accept(MediaType.APPLICATION_JSON))

@@ -88,13 +88,13 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
         final OffsetDateTime fixedDateTime = OffsetDateTime.now();
 
         PowerMockito.mockStatic(OffsetDateTime.class);
-        //PowerMockito.when(OffsetDateTime.now()).thenReturn(fixedDateTime);
+        PowerMockito.when(OffsetDateTime.now()).thenReturn(fixedDateTime);
 
         final ResponseEntity<VitamUIError> result = restTemplate.getForEntity(TestController.APPLICATION_SERVER_EXCEPTION, VitamUIError.class);
         assertEquals("Status code should be correctly defined.", HttpStatus.INTERNAL_SERVER_ERROR, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(ApplicationServerException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
-        //assertEquals("Timestamp should be correctly defined.", String.valueOf(fixedDateTime.toEpochSecond()), result.getBody().getTimestamp());
+        assertEquals("Timestamp should be correctly defined.", String.valueOf(fixedDateTime.toEpochSecond()), result.getBody().getTimestamp());
         assertEquals("Exception should be correctly defined.", ApplicationServerException.class.getName(), result.getBody().getException());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
@@ -211,16 +211,16 @@ public class RestExceptionHandlerTest extends AbstractRestTest {
     /**
      * Test a Method Argument Not Valid Exception and the JSON object in response.
      */
-/*    @Test
+    @Test
     public void testBadRequestMethodArgumentNotValidException() {
         final VitamUIError vitamuiError = new VitamUIError();
         final ResponseEntity<VitamUIError> result = restTemplate.postForEntity(TestController.SPRING_POST, vitamuiError, VitamUIError.class);
-        //assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
+        assertEquals("Status code should be correctly defined.", HttpStatus.BAD_REQUEST, result.getStatusCode());
         final String key = ApiErrorGenerator.buildKey(BadRequestException.class);
         assertNotNull("Exception informations are empty.", result.getBody());
         assertEquals("ExceptionKey should be correctly defined.", key, result.getBody().getError());
         assertNotNull("Exception message should be correctly defined.", result.getBody().getMessage());
-    }*/
+    }
 
     /**
      * Test a Missing Servlet Request Parameter Exception and the JSON object in response.
