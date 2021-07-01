@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "CANCEL": "Cancel",
-    "SUBMIT": "Submit",
+    "SUBMIT": "Confirm",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes"
   },
@@ -41,16 +41,42 @@
     "ADD_INTREVAL": "ADD INTERVAL",
     "DELETE_INTERVAL": "DELETE INTERVAL"
   },
-    "STATE_VALUE": {
-    "COMPLETED" :"Completed",
-    "PAUSE" : "On break",
-    "RUNNING" : "Running"
+  "STATE_VALUE": {
+    "COMPLETED": "Completed",
+    "PAUSE": "On break",
+    "RUNNING": "Running"
   },
-  "STATUS_VALUE":{
-    "KO" : "Error",
-    "OK" : "Success",
-    "FATAL" : "Technical error",
-    "WARNING" : "Warning"
+  "STATUS_VALUE": {
+    "KO": "Error",
+    "OK": "Success",
+    "FATAL": "Technical error",
+    "WARNING": "Warning"
+  },
+  "LOGBOOK_OPERATION_INFORMATIONS": {
+    "NEXT_STEP": "Go to the next step",
+    "RESUME_OPERATION": "Finalize the opération",
+    "REPLAY_STEP": "Replay the step",
+    "CANCEL_OPERATION": "Cancel the opération",
+    "INFORMATIONS": "Informations",
+    "TICKETS": "Tickets",
+    "DETAILS": "Details",
+    "OPERATION_ID": "Technical identifier of the operation",
+    "OPERATION_CATEGORY": "Category of the operation",
+    "LAST_STEP": "Last step played",
+    "NEXT_STEP_DETAILS": "Next step",
+    "MESSAGE": "Message",
+    "OPERATION_DATE": "Operation date",
+    "MORE_DETAILS": "Additional information on the transaction",
+    "FINAL_DATE": "End of the operation",
+    "STATE": "State",
+    "STATUS": "Status"
+  },
+  "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
+    "CANCEL_MESSAGE": " The request for a change of status has been taken into account",
+    "POP_UP_SECOND_TITLE": "Do you confirm that you want to apply for a change of status :",
+    "POP_UP_NEXT_MESSAGE": "Update the Operation ",
+    "POP_UP_CANCEL_MESSAGE": "Cancel the Operation ",
+    "POP_UP_REPLAY_MESSAGE": "Replay the Operation ",
+    "POP_UP_RESUME_MESSAGE": "Resume the Operation "
   }
-
 }

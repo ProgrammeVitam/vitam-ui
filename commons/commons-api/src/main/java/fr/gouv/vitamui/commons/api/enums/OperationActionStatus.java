@@ -25,40 +25,11 @@
  * accept its terms.
  */
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { OperationResponse } from '../../models/operation-response.interface';
+package fr.gouv.vitamui.commons.api.enums;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class LogbookManagementOperationApiService extends BaseHttpClient<any> {
-  baseUrl: string;
+public enum OperationActionStatus {
+    RESUME,
+    NEXT,
+    REPLAY,
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/logbook-management-operation');
-    this.baseUrl = baseUrl;
-  }
-
-  getBaseUrl() {
-    return this.baseUrl;
-  }
-
-  searchOperationsDetails(searchCriteria: any): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations`, searchCriteria);
-  }
-
-  cancelOperationProcessExecution(id: string): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/cancel/${id}`, id);
-  }
-
-  updateOperationProcessExecution(id: string, actionId: string): Observable<OperationResponse> {
-    return this.http.post<OperationResponse>(`${this.apiUrl}/operations/update/${id}`, actionId);
-  }
-
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
 }

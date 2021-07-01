@@ -1,0 +1,76 @@
+<br />
+<div class="row">
+  <div class="col-12 mb-3">
+    <label>{{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_ID' | translate }}</label>
+    <div>{{ operation?.operationId }}</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_CATEGORY' | translate }}</label>
+    <div>{{ operation?.processType }}</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_DATE' | translate }}</label>
+    <div>{{ operation?.processDate | date: 'dd/MM/yyyy' }}</div>
+    <span class="date">
+      {{ operation?.processDate | date: 'hh:mm:ss':'+0000' }}
+    </span>
+  </div>
+  <div class="col-6 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.FINAL_DATE' | translate }}</label>
+    <div>{{ getEventEndDate(event)?.dateTime | date: 'dd/MM/yyyy' }}</div>
+    <span class="date">
+      {{ getEventEndDate(event)?.dateTime | date: 'hh:mm:ss' }}
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.STATE' | translate }}</label>
+    <div>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</div>
+  </div>
+  <div class="col-6 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.STATUS' | translate }}</label>
+    <div>
+      {{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.LAST_STEP' | translate }}</label>
+    <div class="vitamui-cell-content">
+      <vitamui-common-event-type-label [key]="operation?.previousStep"> </vitamui-common-event-type-label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP_DETAILS' | translate }}</label>
+    <div class="vitamui-cell-content">
+      <vitamui-common-event-type-label [key]="operation?.nextStep"> </vitamui-common-event-type-label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label>{{ 'LOGBOOK_OPERATION_INFORMATIONS.MESSAGE' | translate }}</label>
+    <div>{{ getLastEvent(event)?.outMessage }}</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mb-3">
+    <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.MORE_DETAILS' | translate }}</label>
+    <div>{{ event?.data }}</div>
+  </div>
+</div>

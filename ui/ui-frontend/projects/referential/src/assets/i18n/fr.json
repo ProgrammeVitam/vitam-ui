@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "CANCEL": "Annuler",
-    "SUBMIT": "Terminer",
+    "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications "
   },
@@ -12,45 +12,71 @@
     "PREVIOUS" : "Précédent",
     "STATE" : "Etat",
     "STATUS": "Statut",
-    "RESULTS" : "Résultats",
-    "OPERATION_ID" : "Identifiant de l'opération",
-    "OPERATION_CATEGORY" : "Catégorie d'opération",
-    "START_DATE" : "Date de début",
-    "STEP_STATUS" : "Statut de l'étape",
-    "LAST_STEP" : "Dernière étape jouée",
+    "RESULTS": "Résultats",
+    "OPERATION_ID": "Identifiant de l'opération",
+    "OPERATION_CATEGORY": "Catégorie d'opération",
+    "START_DATE": "Date de début",
+    "STEP_STATUS": "Statut de l'étape",
+    "LAST_STEP": "Dernière étape jouée",
     "RESULT_STATUS": {
       "SUCCESS": "Succès",
       "WARNING": "Avertissement",
-      "ERROR" :"Erreur",
-      "FATAL" : "Erreur technique"
-    } ,
+      "ERROR": "Erreur",
+      "FATAL": "Erreur technique"
+    },
     "RESULT_STATE": {
       "FINISHED": "Terminé",
       "BREAK": "En pause",
-      "IN_PROGRESS" : "En cours"
-        }
+      "IN_PROGRESS": "En cours"
+    }
   },
   "LOGBOOK_OPERATION_PAGE": {
     "TITLE": "Gestion des opérations",
-    "SEARCH" : "Rechercher par identifiant d'opération",
-    "REFRESH" : "Rafraîchir",
-    "ToolTip_Refresh" : "Rafraîchir la liste des opérations",
-    "FILTER_BY_DATE" : "Filtrer par date de début d'opération entre le :",
-    "OPERATION_DATE" : "Date d'opération",
-    "AND" : "et le :",
-    "ADD_INTREVAL" : "AJOUTER UN INTERVALLE",
-    "DELETE_INTERVAL" : "SUPPRIMER L'INTERVALLE"
+    "SEARCH": "Rechercher par identifiant d'opération",
+    "REFRESH": "Rafraîchir",
+    "ToolTip_Refresh": "Rafraîchir la liste des opérations",
+    "FILTER_BY_DATE": "Filtrer par date de début d'opération entre le :",
+    "OPERATION_DATE": "Date d'opération",
+    "AND": "et le :",
+    "ADD_INTREVAL": "AJOUTER UN INTERVALLE",
+    "DELETE_INTERVAL": "SUPPRIMER L'INTERVALLE"
   },
   "STATE_VALUE": {
-    "COMPLETED" :"Terminé",
-    "PAUSE" : "En pause",
-    "RUNNING" : "En cours"
+    "COMPLETED": "Terminé",
+    "PAUSE": "En pause",
+    "RUNNING": "En cours"
   },
-  "STATUS_VALUE":{
-    "KO" : "Erreur",
-    "OK" : "Succès",
-    "FATAL" : "Erreur technique",
-    "WARNING" : "Avertissement"
+  "STATUS_VALUE": {
+    "KO": "Erreur",
+    "OK": "Succès",
+    "FATAL": "Erreur technique",
+    "WARNING": "Avertissement"
+  },
+  "LOGBOOK_OPERATION_INFORMATIONS": {
+    "NEXT_STEP": "Passer à l'étape suivante",
+    "RESUME_OPERATION": "Finaliser l'opération",
+    "REPLAY_STEP": "Rejouer l'étape",
+    "CANCEL_OPERATION": "Annuler l'opération",
+    "INFORMATIONS": "Informations",
+    "TICKETS": "Tickets",
+    "DETAILS": "Détails",
+    "OPERATION_ID": "Identifiant technique de l'opération",
+    "OPERATION_CATEGORY": "Catégorie de l'opération",
+    "LAST_STEP": "Dernière étape jouée",
+    "NEXT_STEP_DETAILS": "Prochaine étape",
+    "MESSAGE": "Message",
+    "OPERATION_DATE": "Date de l'opération",
+    "MORE_DETAILS": "Information complémentaire sur l'opération",
+    "FINAL_DATE": "Fin de l'opération",
+    "STATE": "Etat",
+    "STATUS": "Statut"
+  },
+  "LOGBOOK_MANAGEMENT_OPERATION_ACTIONS": {
+    "MESSAGE": "La demande de changement de statut à bien été pris en compte",
+    "POP_UP_SECOND_TITLE": "Confirmez-vous vouloir réaliser une demande de changement de statut :",
+    "POP_UP_NEXT_MESSAGE": "Modifier l'opération ",
+    "POP_UP_CANCEL_MESSAGE": "Annuler l'opération ",
+    "POP_UP_REPLAY_MESSAGE": "Rejouer l'opération ",
+    "POP_UP_RESUME_MESSAGE": "Finaliser l'opération "
   }
-
 }

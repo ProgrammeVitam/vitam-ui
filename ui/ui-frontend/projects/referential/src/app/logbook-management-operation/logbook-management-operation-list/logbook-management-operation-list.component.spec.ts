@@ -96,12 +96,7 @@ describe('LogbookManagementOperationListComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationListComponent, MockTruncatePipe],
       imports: [TranslateModule.forRoot(), HttpClientTestingModule],
-      providers: [
-        {
-          provide: LogbookManagementOperationService,
-          useValue: logbookManagementOperationServiceMock,
-        },
-      ],
+      providers: [{ provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 

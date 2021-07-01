@@ -25,41 +25,77 @@
  * accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
+import { BASE_URL, WINDOW_LOCATION } from 'ui-frontend-common';
+import { OperationsResults } from '../../models/operation-response.interface';
+import { LogbookManagementOperationService } from '../logbook-management-operation.service';
+import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview.component';
 
-describe('LogbookManagementOperationComponent', () => {
-  let component: LogbookManagementOperationComponent;
-  let fixture: ComponentFixture<LogbookManagementOperationComponent>;
+describe('LogbookManagementOperationPreviewComponent', () => {
+  let component: LogbookManagementOperationPreviewComponent;
+  let fixture: ComponentFixture<LogbookManagementOperationPreviewComponent>;
+  const operationsResults: OperationsResults = {
+    hits: [],
+    results: [],
+    facetResults: [],
+    context: [],
+  };
+
+  @Pipe({ name: 'truncate' })
+  class MockTruncatePipe implements PipeTransform {
+    transform(value: number): number {
+      return value;
+    }
+  }
+
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
+  const logbookManagementOperationServiceMock = {
+    listOperationsDetails: () => of(operationsResults),
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule, InjectorModule, TranslateModule.forRoot(), LoggerModule.forRoot()],
-      declarations: [LogbookManagementOperationComponent],
+      declarations: [LogbookManagementOperationPreviewComponent, MockTruncatePipe],
+      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'LOGBOOK_MANAGEMENT_OPERATION_APP' }) },
-        },
+        { provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock },
+        { provide: MatDialog, useValue: matDialogSpy },
         { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: BASE_URL, useValue: '/fake-api' },
       ],
-      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogbookManagementOperationComponent);
+    fixture = TestBed.createComponent(LogbookManagementOperationPreviewComponent);
     component = fixture.componentInstance;
+    component.operation = {
+      globalState: 'PAUSE',
+      nextStep: '',
+      operationId: 'aecaaereragfogjqbaai6malzquerteaaaq',
+      previousStep: '',
+      processDate: new Date(),
+      processType: 'TRACEABILITY',
+      stepByStep: false,
+      stepStatus: 'KO',
+    };
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should get the correct Operation status', () => {
+    expect(component.operationStatus(component.operation)).toEqual('KO');
+  });
+  it('should get the correct Operation status', () => {
+    expect(component.operation.globalState).toEqual('PAUSE');
   });
 });

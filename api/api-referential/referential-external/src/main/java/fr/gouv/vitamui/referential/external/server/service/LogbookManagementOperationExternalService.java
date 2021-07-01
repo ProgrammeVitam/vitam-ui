@@ -61,9 +61,20 @@ public class LogbookManagementOperationExternalService extends AbstractResourceC
         return logbookManagementOperationInternalRestClient;
     }
 
-    public ProcessDetailDto listOperationsDetails(ProcessQuery processQuery) {
+    public ProcessDetailDto searchOperationsDetails(ProcessQuery processQuery) {
         LOGGER.info("Get all Operations details with processQuery = {} ", processQuery);
-        return logbookManagementOperationInternalRestClient.listOperationsDetails(getInternalHttpContext(), processQuery);
+        return logbookManagementOperationInternalRestClient.searchOperationsDetails(getInternalHttpContext(), processQuery);
     }
+
+    public ProcessDetailDto cancelOperationProcessExecution(String operationId) {
+        LOGGER.info("Cancel the operation Id= {} ", operationId);
+        return logbookManagementOperationInternalRestClient.cancelOperationProcessExecution(getInternalHttpContext(), operationId);
+    }
+
+    public ProcessDetailDto updateOperationActionProcess(String operationId, String actionId) {
+        LOGGER.info("Update operation Id= {} with the action Id= {}",operationId, actionId);
+        return logbookManagementOperationInternalRestClient.updateOperationActionProcess(getInternalHttpContext(), actionId, operationId);
+    }
+
 
 }
