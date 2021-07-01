@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.internal.server.customer.service;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -190,6 +191,34 @@ public class InitCustomerService {
             createCustomGroups(customerDto, proofTenantDto, customProfiles);
         createCustomUsers(customerDto, customGroups);
 
+        Optional<Profile> accessProfile =
+            createdAdminProfiles.stream().filter(ac -> ac.getApplicationName().equals(CommonConstants.ACCESS_CONTRATCS_APPLICATIONS_NAME)).findFirst();
+        Optional<Profile> ingestProfile =
+            createdAdminProfiles.stream().filter(ac -> ac.getApplicationName().equals(CommonConstants.INGEST_CONTRATCS_APPLICATIONS_NAME)).findFirst();
+
+        if(accessProfile.isPresent() && ingestProfile.isPresent()) {
+            addAccessAndIngestContractsToAdmin(accessProfile.get(), ingestProfile.get());
+        }
+
+
+    }
+
+    private void addAccessAndIngestContractsToAdmin(Profile accessProfile, Profile ingestProfile) {
+        UserDto adminUser = internalUserService.getOne(CommonConstants.ADMIN_USER);
+        final GroupDto adminGroupDto = internalGroupService.getOne(adminUser.getGroupId());
+
+        if(adminGroupDto != null) {
+            adminGroupDto.getProfileIds().add(accessProfile.getId());
+            adminGroupDto.getProfileIds().add(ingestProfile.getId());
+
+            internalGroupService.updateProfilesById(adminGroupDto.getId(), adminGroupDto.getProfileIds());
+        } else {
+
+            LOGGER.warn("Le groupe d'administrateur n'existe pas, " +
+                    "pour la gestion des permissions des contrats d'accès et d'entrées des contextes applicatifs vitam pour le tenant {}" +
+                    "faudra associer les profils (les profils devront etre actifs) de ces applications [ contrat d'accès: {} et contrat d'entrée: {}].",
+                accessProfile.getTenantIdentifier(), accessProfile.getName(), ingestProfile.getName());
+        }
     }
 
     private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier) {

@@ -165,6 +165,7 @@ public class TenantInternalServiceTest {
 
         prepareServices();
         internalTenantService.create(tenantDto);
+        assertThat(profileRepository.findAll()).isNotNull();
     }
 
     @Test

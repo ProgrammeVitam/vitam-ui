@@ -172,8 +172,11 @@ export class ContextInformationTabComponent {
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
-          this.submited = false;
-          this.context = response;
+          this.submited = false;  
+          this.context = extend(this.context, response);
+          // Update the activation and deactivation dates
+          this.context.activationDate = response.activationDate ? response.activationDate : null;
+          this.context.deactivationDate = response.deactivationDate ? response.deactivationDate : null;
         }
       );
     }, () => {

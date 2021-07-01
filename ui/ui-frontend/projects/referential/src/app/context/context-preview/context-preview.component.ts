@@ -86,7 +86,6 @@ export class ContextPreviewComponent implements AfterViewInit {
   async checkBeforeExit() {
     if (await this.confirmAction()) {
       const submitAccessContractUpdate: Observable<Context> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
-
       submitAccessContractUpdate.subscribe(() => {
         this.contextService.get(this.context.identifier).subscribe(
           response => {
@@ -94,14 +93,17 @@ export class ContextPreviewComponent implements AfterViewInit {
           }
         );
       });
-    } else {
-      this.tabLinks[this.tabs.selectedIndex].resetForm(this.context);
     }
   }
 
   async interceptTabChange(tab: MatTab, tabHeader: MatTabHeader, idx: number) {
     if (this.tabUpdated[this.tabs.selectedIndex]) {
       await this.checkBeforeExit();
+    } else {
+      if (idx === 1) {
+        // Reset the permissions for if the context has changed
+        this.tabLinks[idx].resetForm(this.context);
+      }
     }
 
     const args = [tab, tabHeader, idx];

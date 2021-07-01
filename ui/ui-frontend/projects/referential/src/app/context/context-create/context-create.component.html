@@ -69,8 +69,14 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
+          <button *ngIf="form?.controls.enableControl?.value === true"
+                  type="button" class="btn primary" cdkStepperNext 
+                  [disabled]="firstStepInvalid()"
                   i18n="Next step button label@@contextCreateNextButton">Suivant</button>
+          <button *ngIf="form?.controls.enableControl?.value === false"
+                  type="submit" class="btn primary" 
+                  [disabled]="firstStepInvalid()"
+                  i18n="Finish context creation button@@contextCreateFinishButton">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()"
                   i18n="Cancel context creation@@contextCreateCancelButton">Annuler</button>
         </div>
@@ -97,13 +103,17 @@
           </ng-container>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
-                i18n="Finish context creation button@@contextCreateFinishButton">Terminer</button>
-        <button type="button" class="btn cancel" (click)="onCancel()"
-                i18n="Cancel context creation@@contextCreateCancelButton">Annuler</button>
+        <div class="actions">
+          <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
+            i18n="Finish context creation button@@contextCreateFinishButton">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()"
+            i18n="Cancel context creation@@contextCreateCancelButton">Annuler</button>
+        </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@contextCreateBackButton">Retour</ng-container>
+          <ng-container i18n="Previous step button label@@contextCreateBackButton">
+            <span class="underline">Retour</span>
+          </ng-container>
         </button>
       </div>
     </cdk-step>
