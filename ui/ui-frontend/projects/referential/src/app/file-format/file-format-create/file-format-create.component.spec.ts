@@ -58,7 +58,7 @@ const expectedFileFormat = {
   version: '1.0',
   name: 'Test',
   mimeType: 'application/test',
-  extensions: ['.test', '.tst'],
+  extensions: '.test, .tst',
 };
 
 let component: FileFormatCreateComponent;

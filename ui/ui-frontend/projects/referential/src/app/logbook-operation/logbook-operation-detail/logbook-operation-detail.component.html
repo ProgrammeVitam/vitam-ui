@@ -7,14 +7,17 @@
 
     <div class="header-container">
       <div class="title">
-        <div class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
+        <span class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
           <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon status-badge"></i>
-        </div>
+        </span>
         <h2>{{ event?.id }}</h2>
       </div>
-      <ng-container *ngIf="!hideDownload || canDownload">
-        <button mat-button class="btn btn-primary button-maring" (click)="downloadReports()" [disabled]="couldDownload && !canDownload">Télécharger le rapport</button>
-      </ng-container>
+      <button mat-button class="btn btn-primary button-maring"
+        *ngIf="!hideDownload || canDownload"
+        (click)="downloadReports()" 
+        [disabled]="couldDownload && !canDownload">
+        Télécharger le rapport
+      </button>
     </div>
   </div>
   <div class="vitamui-sidepanel-body">
