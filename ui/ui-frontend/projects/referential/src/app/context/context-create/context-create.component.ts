@@ -34,15 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import {Component,Inject,Input,OnDestroy,OnInit,ViewChild} from '@angular/core';
+import {FormBuilder,FormControl,FormGroup,Validators} from '@angular/forms';
+import {MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {ContextPermission} from 'projects/vitamui-library/src/public-api';
 import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option} from 'ui-frontend-common';
-
-import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {AuthService,ConfirmDialogService,Option} from 'ui-frontend-common';
+import {Context} from '../../../../../vitamui-library/src/lib/models/context';
 import {SecurityProfileService} from '../../security-profile/security-profile.service';
 import {ContextService} from '../context.service';
 import {ContextCreateValidators} from './context-create.validators';
+
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -74,7 +76,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   @ViewChild('fileSearch', {static: false}) fileSearch: any;
 
   securityProfiles: Option[] = [];
-
   constructor(
     public dialogRef: MatDialogRef<ContextCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -82,7 +83,8 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private contextService: ContextService,
     private contextCreateValidators: ContextCreateValidators,
-    private securityProfileService: SecurityProfileService
+    private securityProfileService: SecurityProfileService,
+    private authService: AuthService
   ) {
   }
 
@@ -93,7 +95,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       identifier: [null, Validators.required, this.contextCreateValidators.uniqueIdentifier()],
       securityProfile: [null, Validators.required],
       enableControl: [false],
-      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, this.contextCreateValidators.permissionInvalid()]
+      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, null]
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -106,10 +108,20 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
+    // Add or remove controls on the permissions
+    this.form.controls.enableControl.valueChanges.subscribe((value) => {
+      if (value) {
+        this.form.controls.permissions.setAsyncValidators([this.contextCreateValidators.permissionInvalid()]);
+      } else {
+        this.form.controls.permissions.clearAsyncValidators();
+      }
+      this.form.controls.permissions.updateValueAndValidity(this.form.controls.permissions.value);
+    });
+
     this.securityProfileService.getAll().subscribe(
       securityProfiles => {
         this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
-      });
+    });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -131,7 +143,15 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.contextService.create(this.form.value).subscribe(
+    let context = this.form.value as Context;
+    if(context.permissions.length == 1) {
+      if(context.permissions[0].tenant == null) {
+        this.fillContextPermissions(context);
+      }
+    }
+
+    context.status === 'ACTIVE' ? context.activationDate = new Date().toISOString() : context.deactivationDate = new Date().toISOString();
+    this.contextService.create(context).subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
       },
@@ -139,6 +159,18 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
         this.dialogRef.close({success: false, action: 'none'});
         console.error(error);
       });
+  }
+
+  fillContextPermissions(context: Context): Context {
+        const permission : ContextPermission = {
+          tenant: this.authService.user.proofTenantIdentifier,
+          accessContracts: [],
+          ingestContracts: []
+        }
+        context.permissions.pop();
+        context.permissions.push(permission);
+
+    return context;
   }
 
   firstStepInvalid() {
@@ -169,7 +201,14 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+    let stepProgress: number;
+    // For the first step, check if the controls are enabled and if the second step is available or not
+    if (this.stepIndex === 0 && this.form.controls.enableControl.value === true) {
+      stepProgress = ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+    } else {
+      stepProgress = PROGRESS_BAR_MULTIPLICATOR;
+    }
+    return stepProgress;
   }
 
 }
