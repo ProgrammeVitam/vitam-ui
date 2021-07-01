@@ -27,7 +27,7 @@
         !(
           operation?.stepByStep &&
           operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
         )
       "
     >
@@ -40,7 +40,7 @@
         !(
           operation?.stepByStep &&
           operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
         )
       "
     >
