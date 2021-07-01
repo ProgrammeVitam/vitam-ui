@@ -65,15 +65,15 @@ public class LogbookManagementOperationServiceTest {
     @Test
     public void list_operations_details_should_call_appropriate_rest_client_once() {
         // Given
-        Mockito.when(client.listOperationsDetails(isNull(), any(ProcessQuery.class)))
+        Mockito.when(client.searchOperationsDetails(isNull(), any(ProcessQuery.class)))
             .thenReturn(new ResponseEntity<>(new ProcessDetailDto(), HttpStatus.OK));
 
         // When
-        service.listOperationsDetails(null, new ProcessQuery());
+        service.searchOperationsDetails(null, new ProcessQuery());
 
         // Then
         verify(client, Mockito.times(1))
-            .listOperationsDetails(isNull(), any(ProcessQuery.class));
+            .searchOperationsDetails(isNull(), any(ProcessQuery.class));
 
     }
 }

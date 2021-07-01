@@ -1,14 +1,11 @@
 <div class="vitamui-snack-bar-container">
-
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
-
     <ng-container *ngSwitchCase="'accessContractCreate'" i18n="@@notificationAccessContractCreate">
       <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été créé
     </ng-container>
 
     <ng-container *ngSwitchCase="'accessContractUpdate'" i18n="@@notificationAccessContractUpdate">
-      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été mis à
-      jour.
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'accès {{ data?.name }} a bien été mis à jour.
     </ng-container>
 
     <ng-container *ngSwitchCase="'ingestContractCreate'" i18n="@@notificationIngestContractCreate">
@@ -16,8 +13,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'ingestContractUpdate'" i18n="@@notificationIngestContractUpdate">
-      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'entrée {{ data?.name }} a bien été mis à
-      jour.
+      <i class="vitamui-icon vitamui-icon-contrat"></i> Le contrat d'entrée {{ data?.name }} a bien été mis à jour.
     </ng-container>
 
     <ng-container *ngSwitchCase="'agencyCreate'" i18n="@@notificationAgencyCreate">
@@ -41,11 +37,13 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'agencyImportSuccessed'" i18n="@@notificationAgencyImportSuccessed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des services agent terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des services agent terminé. Veuillez-consulter le détail de l'import dans
+      le journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'agencyImportFailed'" i18n="@@notificationAgencyImportFailed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des services agent a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des services agent a échoué. Veuillez-consulter le détail des erreurs
+      dans le journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileFormatCreate'" i18n="@@notificationFileFormatCreate">
@@ -77,24 +75,25 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'ruleDeleteStart'" i18n="@@notificationRuleDeleteStart">
-      <i class="vitamui-icon vitamui-icon-admin-rules"></i> Suppression de la règle de gestion {{ data?.name }} en
-      cours...
+      <i class="vitamui-icon vitamui-icon-admin-rules"></i> Suppression de la règle de gestion {{ data?.name }} en cours...
     </ng-container>
 
     <ng-container *ngSwitchCase="'ruleExportAll'" i18n="@@notificationRuleCreate">
       <i class="vitamui-icon vitamui-icon-rules"></i> Export des règles de gestion en cours...
     </ng-container>
-    
+
     <ng-container *ngSwitchCase="'fileformatImportInProgress'" i18n="@@notificationFileFormatImportInProgress">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des formats de fichier en cours...
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileformatImportSuccessed'" i18n="@@notificationFileFormatImportSuccessed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des formats de fichier terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des formats de fichier terminé. Veuillez-consulter le détail de l'import
+      dans le journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'fileformatImportFailed'" i18n="@@notificationFileFormatImportFailed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des formats de fichier a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des formats de fichier a échoué. Veuillez-consulter le détail des erreurs
+      dans le journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'contextCreate'" i18n="@@notificationContextCreate">
@@ -121,11 +120,9 @@
       <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été créé
     </ng-container>
 
-
     <ng-container *ngSwitchCase="'ontologyUpdate'" i18n="@@notificationOntologyCreate">
       <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été mise à jour
     </ng-container>
-
 
     <ng-container *ngSwitchCase="'ontologyDelete'" i18n="@@notificationOntologyDelete">
       <i class="vitamui-icon vitamui-icon-ontologie"></i> L'ontologie {{ data?.name }} a bien été supprimé.
@@ -136,23 +133,25 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'ontologyImportSuccessed'" i18n="@@notificationOntologyImportSuccessed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des ontologies terminé. Veuillez-consulter le détail de l'import dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> Import des ontologies terminé. Veuillez-consulter le détail de l'import dans le
+      journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'ontologyImportFailed'" i18n="@@notificationOntologyImportFailed">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des ontologies a échoué. Veuillez-consulter le détail des erreurs dans le journal des opérations
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> L'import des ontologies a échoué. Veuillez-consulter le détail des erreurs dans le
+      journal des opérations
     </ng-container>
 
     <ng-container *ngSwitchCase="'auditRun'" i18n="@@notificationAuditRun">
-      <i class="vitamui-icon vitamui-icon-audit"></i> L'audit {{data?.id}} a bien été lancé.
+      <i class="vitamui-icon vitamui-icon-audit"></i> L'audit {{ data?.id }} a bien été lancé.
     </ng-container>
 
     <ng-container *ngSwitchCase="'probativeValueRun'" i18n="@@notificationProbativeValueRun">
       Le relevé de valeur probante a bien été lancé
     </ng-container>
 
+    <ng-container *ngSwitchCase="'updateOperation'"> {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.MESSAGE' | translate }} </ng-container>
   </span>
 
   <button class="close-btn" (click)="close()"><i class="material-icons">clear</i></button>
-
 </div>

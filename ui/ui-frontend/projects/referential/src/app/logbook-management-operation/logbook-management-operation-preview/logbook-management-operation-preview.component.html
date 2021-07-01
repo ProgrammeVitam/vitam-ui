@@ -1,0 +1,110 @@
+<vitamui-common-sidenav-header
+  [title]="operation?.operationId | truncate: 30"
+  [icon]="'vitamui-icon-info'"
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="operation?.operationId"
+  [toolTipTitleDuration]="600"
+  (onclose)="emitClose()"
+>
+  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+    <button
+      mat-menu-item
+      (click)="updateOperationStatus(operation, 'NEXT')"
+      [disabled]="
+        !(
+          operation?.stepByStep &&
+          operation?.globalState === 'PAUSE' &&
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+        )
+      "
+    >
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
+    </button>
+    <button
+      mat-menu-item
+      (click)="updateOperationStatus(operation, 'RESUME')"
+      [disabled]="
+        !(
+          operation?.stepByStep &&
+          operation?.globalState === 'PAUSE' &&
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+        )
+      "
+    >
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.RESUME_OPERATION' | translate }}
+    </button>
+    <button
+      mat-menu-item
+      (click)="updateOperationStatus(operation, 'REPLAY')"
+      [disabled]="
+        !(
+          operation?.stepByStep &&
+          operation?.globalState === 'PAUSE' &&
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
+        )
+      "
+    >
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.REPLAY_STEP' | translate }}
+    </button>
+    <button mat-menu-item (click)="cancelOperation(operation)" [disabled]="operation?.globalState === 'COMPLETED'">
+      {{ 'LOGBOOK_OPERATION_INFORMATIONS.CANCEL_OPERATION' | translate }}
+    </button>
+  </vitamui-common-menu-button>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group class="preview-tab-group">
+    <mat-tab label="{{ 'LOGBOOK_OPERATION_INFORMATIONS.INFORMATIONS' | translate }}">
+      <app-logbook-management-operation-information-tab
+        [operation]="operation"
+        [tenantIdentifier]="tenantIdentifier"
+        [tenant]="tenant"
+      ></app-logbook-management-operation-information-tab>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<ng-template #confirmUpdateOperationDialog>
+  <mat-dialog-content class="dialog-content">
+    <div class="text-title">{{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_MESSAGE' | translate }}</div>
+    <div class="text-action">
+      {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_SECOND_TITLE' | translate }}
+    </div>
+    <br />
+    <div>
+      {{ 'LOGBOOK_MANAGEMENT_OPERATION_ACTIONS.POP_UP_' + actionId + '_MESSAGE' | translate }} :
+      <strong>{{ operation?.operationId }}</strong>
+    </div>
+    <br />
+    <div class="row row-data">
+      <div class="col-3">
+        <div class="vitamui-cell-content">
+          <vitamui-common-event-type-label [key]="operation.processType"> </vitamui-common-event-type-label>
+        </div>
+      </div>
+      <div class="col-3">
+        <div>{{ operation?.processDate | date: 'dd/MM/yyyy' }}</div>
+        <span class="date">
+          {{ operation?.processDate | date: 'hh:mm:ss':'+0000' }}
+        </span>
+      </div>
+      <div class="col-6">
+        <div>{{ 'STATE_VALUE.' + operation?.globalState | translate }}</div>
+        <div
+          [ngClass]="{
+            'text-green': operationStatus(operation) === 'OK',
+            'text-red': operationStatus(operation) === 'KO',
+            'text-orange': operationStatus(operation) === 'WARNING',
+            'text-red-fatal': operationStatus(operation) === 'FATAL'
+          }"
+        >
+          <strong>{{ 'STATUS_VALUE.' + operation?.stepStatus | translate }}</strong>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions class="dialog-action">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog">{{ 'COMMON.SUBMIT' | translate }}</button>
+    <button matDialogClose class="btn cancel">{{ 'COMMON.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

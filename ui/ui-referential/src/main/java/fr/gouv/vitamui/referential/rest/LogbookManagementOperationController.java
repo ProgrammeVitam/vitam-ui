@@ -29,6 +29,8 @@ package fr.gouv.vitamui.referential.rest;
 
 
 import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -55,11 +57,11 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationController.class);
 
-    protected final LogbookManagementOperationService service;
+    protected final LogbookManagementOperationService logbookManagementOperationService;
 
     @Autowired
-    public LogbookManagementOperationController(final LogbookManagementOperationService service) {
-        this.service = service;
+    public LogbookManagementOperationController(final LogbookManagementOperationService logbookManagementOperationService) {
+        this.logbookManagementOperationService = logbookManagementOperationService;
     }
 
     @ApiOperation(value = "Get All Operations Details")
@@ -68,11 +70,36 @@ public class LogbookManagementOperationController extends AbstractUiRestControll
     public VitamUIProcessDetailResponseDto listOperationsDetails(@RequestBody final ProcessQuery processQuery) {
         LOGGER.debug("Get the operations details with criteria = {}", processQuery);
         VitamUIProcessDetailResponseDto operationResponseDto = new VitamUIProcessDetailResponseDto();
-        ResponseEntity<ProcessDetailDto> processDetailResponse = service.listOperationsDetails(buildUiHttpContext(), processQuery);
+        ResponseEntity<ProcessDetailDto> processDetailResponse = logbookManagementOperationService.searchOperationsDetails(buildUiHttpContext(), processQuery);
         if (processDetailResponse != null) {
             operationResponseDto = processDetailResponse.getBody().getOperations();
         }
         return operationResponseDto;
+    }
+
+
+    @ApiOperation(value = "Cancel the operation")
+    @PostMapping(RestApi.OPERATIONS_PATH+"/cancel"+ CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public VitamUIProcessDetailResponseDto cancelOperationProcessExecution(final @PathVariable("id") String operationId) {
+        LOGGER.debug("Cancel the operation id= {}", operationId);
+        ParameterChecker.checkParameter("operationId is mandatory : ", operationId);
+        return logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId) != null
+            ? logbookManagementOperationService.cancelOperationProcessExecution(buildUiHttpContext(), operationId).getBody().getOperations()
+            : null;
+
+    }
+
+    @ApiOperation(value = "Update the operation status")
+    @PostMapping(RestApi.OPERATIONS_PATH+"/update"+ CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public VitamUIProcessDetailResponseDto updateOperationActionProcess(final @PathVariable("id") String operationId, @RequestBody final String actionId) {
+        LOGGER.debug("Update Operation Id={} with ActionId = {}", operationId, actionId);
+        ParameterChecker.checkParameter("operationId and actionId are mandatories : ", operationId, actionId);
+        return logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId) != null
+            ? logbookManagementOperationService.updateOperationActionProcess(buildUiHttpContext(), actionId, operationId).getBody().getOperations() :
+            null;
+
     }
 
 }

@@ -91,6 +91,14 @@ public abstract class RestApi {
 
     public static final String OPERATIONS_PATH = "/operations";
 
+    /**
+     * Constants of Logbook Management Oerations Actions
+     */
+
+    public static final String UPDATE_OPERATION_PATH = "/operations/update";
+
+    public static final String CANCEL_OPERATION_PATH = "/operations/cancel";
+
     private RestApi() {
         // do nothing
     }

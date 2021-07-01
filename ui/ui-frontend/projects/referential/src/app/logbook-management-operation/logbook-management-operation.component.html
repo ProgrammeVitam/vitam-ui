@@ -1,5 +1,13 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <!-- add lateral panel componenet -->
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+    <app-logbook-management-operation-preview
+      *ngIf="openedItem"
+      (previewClose)="closePanel()"
+      [operation]="openedItem"
+      [tenantIdentifier]="tenantIdentifier"
+      [tenant]="tenant"
+    ></app-logbook-management-operation-preview>
+  </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
@@ -85,8 +93,8 @@
       </form>
     </div>
 
-    <div class="vitamui-content" [ngStyle]="{ 'margin-top': '-30px' }">
-      <app-logbook-management-operation-list></app-logbook-management-operation-list>
+    <div class="vitamui-content logbook-list">
+      <app-logbook-management-operation-list (operationClick)="showOperation($event)"></app-logbook-management-operation-list>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

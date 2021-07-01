@@ -34,11 +34,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ProcessQuery;
+import fr.gouv.vitamui.commons.api.enums.OperationActionStatus;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
 import fr.gouv.vitamui.referential.common.dto.ProcessDetailDto;
 import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +60,7 @@ public class LogbookManagementOperationInternalService {
         this.vitamOperationService = vitamOperationService;
     }
 
-    public ProcessDetailDto listOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery) throws VitamClientException, JsonProcessingException {
+    public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery) throws VitamClientException, JsonProcessingException {
         LOGGER.info("Get Operations Details with processQuery = {}",processQuery);
         JsonNode response = vitamOperationService.listOperationsDetails(vitamContext,processQuery).toJsonNode();
         final VitamUIProcessDetailResponseDto processDetailResponse =
@@ -71,5 +73,34 @@ public class LogbookManagementOperationInternalService {
         responseFilled.setHits(processDetailResponse.getHits());
         return new ProcessDetailDto(responseFilled);
 
+    }
+
+    public ProcessDetailDto updateOperationActionProcess(VitamContext vitamContext, String actionId, String operationId) throws VitamClientException, JsonProcessingException, InterruptedException {
+        ProcessDetailDto operation;
+        LOGGER.info("Update operation Id= {} with the action Id= {}",operationId, actionId);
+        if(!EnumUtils.isValidEnum(OperationActionStatus.class, actionId)) {
+            LOGGER.error(
+                "Cannot update  the operation, because the actionId= {} given is not correct ", actionId);
+            throw new VitamClientException(
+                "Cannot update  the operation, because the actionId given is not correct");
+        }
+        else {
+            vitamOperationService.updateOperationActionProcess(vitamContext,actionId,operationId);
+            ProcessQuery processQuery = new ProcessQuery();
+            processQuery.setId(operationId);
+            operation = searchOperationsDetails(vitamContext, processQuery);
+        }
+        return operation;
+
+    }
+
+    public ProcessDetailDto cancelOperationProcessExecution(VitamContext vitamContext,  String operationId) throws VitamClientException, JsonProcessingException {
+        ProcessDetailDto operation ;
+        LOGGER.info("Cancel the operation Id=  {}",operationId);
+        vitamOperationService.cancelOperationProcessExecution(vitamContext,operationId);
+        ProcessQuery processQuery = new ProcessQuery();
+        processQuery.setId(operationId);
+        operation = searchOperationsDetails(vitamContext, processQuery);
+        return operation;
     }
 }

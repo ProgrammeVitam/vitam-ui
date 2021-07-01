@@ -27,17 +27,25 @@
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { SearchService } from 'ui-frontend-common';
 import { LogbookManagementOperationApiService } from '../core/api/logbook-management-operation-api.service';
-import { OperationResponse, OperationsResults } from '../models/operation-response.interface';
+import { OperationDetails, OperationResponse, OperationsResults } from '../models/operation-response.interface';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LogbookManagementOperationService extends SearchService<any> {
-  constructor(private logbookManagementOperationApiService: LogbookManagementOperationApiService, http: HttpClient) {
+  operationUpdated = new Subject<OperationDetails>();
+
+  constructor(
+    private logbookManagementOperationApiService: LogbookManagementOperationApiService,
+    private snackBar: MatSnackBar,
+    http: HttpClient
+  ) {
     super(http, logbookManagementOperationApiService, 'ALL');
   }
 
@@ -46,21 +54,94 @@ export class LogbookManagementOperationService extends SearchService<any> {
   }
 
   private buildOperationsResults(response: OperationResponse): OperationsResults {
-    const operationResults: OperationsResults = {
-      hits: response.$hits,
-      results: response.$results,
-      facetResults: response.$facetResults,
-      context: response.$context,
-    };
+    let operationResults: OperationsResults;
+
+    if (response) {
+      operationResults = {
+        hits: response.$hits,
+        results: response.$results,
+        facetResults: response.$facetResults,
+        context: response.$context,
+      };
+    }
+
     return operationResults;
   }
 
   listOperationsDetails(searchCriteria: any): Observable<OperationsResults> {
-    return this.logbookManagementOperationApiService.listOperationsDetails(searchCriteria).pipe(
+    return this.logbookManagementOperationApiService.searchOperationsDetails(searchCriteria).pipe(
       catchError(() => {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => this.buildOperationsResults(response))
     );
+  }
+
+  cancelOperationProcessExecution(id: string): Observable<OperationsResults> {
+    return this.logbookManagementOperationApiService
+      .cancelOperationProcessExecution(id)
+      .pipe(
+        catchError(() => {
+          return of({ $hits: null, $results: [] });
+        }),
+        map((response) => this.buildOperationsResults(response))
+      )
+      .pipe(
+        tap((response) => {
+          if (response.results) {
+            this.operationUpdated.next(response.results[0]);
+          }
+        }),
+        tap(
+          () => {
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'updateOperation' },
+              duration: 10000,
+            });
+          },
+          (error) => {
+            console.error(error);
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+            });
+          }
+        )
+      );
+  }
+
+  updateOperationProcessExecution(id: string, actionId: string): Observable<OperationsResults> {
+    return this.logbookManagementOperationApiService
+      .updateOperationProcessExecution(id, actionId)
+      .pipe(
+        catchError(() => {
+          return of({ $hits: null, $results: [] });
+        }),
+        map((response) => this.buildOperationsResults(response))
+      )
+      .pipe(
+        tap((response) => {
+          if (response.results) {
+            this.operationUpdated.next(response.results[0]);
+          }
+        }),
+        tap(
+          () => {
+            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+              panelClass: 'vitamui-snack-bar',
+              data: { type: 'updateOperation' },
+              duration: 10000,
+            });
+          },
+          (error) => {
+            console.error(error);
+            this.snackBar.open(error.error.message, null, {
+              panelClass: 'vitamui-snack-bar',
+              duration: 10000,
+            });
+          }
+        )
+      );
   }
 }

@@ -64,4 +64,14 @@ public class VitamOperationService {
         throws VitamClientException {
         return adminExternalClient.listOperationsDetails(vitamContext, processQuery);
     }
+
+    public RequestResponse<ItemStatus> updateOperationActionProcess(VitamContext vitamContext, String actionId, String operationId)
+        throws VitamClientException {
+        return adminExternalClient.updateOperationActionProcess(vitamContext, actionId,operationId);
+    }
+
+    public RequestResponse<ItemStatus> cancelOperationProcessExecution(VitamContext vitamContext, String operationId)
+        throws VitamClientException, IllegalArgumentException {
+        return adminExternalClient.cancelOperationProcessExecution(vitamContext, operationId);
+    }
 }

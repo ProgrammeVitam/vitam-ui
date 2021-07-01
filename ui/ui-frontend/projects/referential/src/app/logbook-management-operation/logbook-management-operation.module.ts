@@ -29,17 +29,28 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list/logbook-management-operation-list.component';
+// tslint:disable-next-line: max-line-length
+import { LogbookManagementOperationInformationTabComponent } from './logbook-management-operation-preview/logbook-management-operation-information-tab/logbook-management-operation-information-tab.component';
+// tslint:disable-next-line: max-line-length
+import { LogbookManagementOperationPreviewComponent } from './logbook-management-operation-preview/logbook-management-operation-preview.component';
 import { LogbookManagementOperationRoutingModule } from './logbook-management-operation-routing.module';
 import { LogbookManagementOperationComponent } from './logbook-management-operation.component';
 
 @NgModule({
-  declarations: [LogbookManagementOperationComponent, LogbookManagementOperationListComponent],
+  declarations: [
+    LogbookManagementOperationComponent,
+    LogbookManagementOperationListComponent,
+    LogbookManagementOperationPreviewComponent,
+    LogbookManagementOperationInformationTabComponent,
+  ],
   imports: [
     CommonModule,
     LogbookManagementOperationRoutingModule,
@@ -52,7 +63,13 @@ import { LogbookManagementOperationComponent } from './logbook-management-operat
     MatFormFieldModule,
     TableFilterModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
+    MatDialogModule,
   ],
-  exports: [LogbookManagementOperationListComponent],
+  exports: [
+    LogbookManagementOperationListComponent,
+    LogbookManagementOperationPreviewComponent,
+    LogbookManagementOperationInformationTabComponent,
+  ],
 })
 export class LogbookManagementOperationModule {}

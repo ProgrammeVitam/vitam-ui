@@ -25,8 +25,9 @@
  * accept its terms.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { OperationCategory, OperationDetails, OperationsResults } from '../../models/operation-response.interface';
@@ -56,6 +57,9 @@ export class LogbookManagementOperationListComponent implements OnInit {
   statusFacetTitle: string;
   resultShowed: number;
   show = false;
+  updatedoperationSub: Subscription;
+
+  @Output() operationClick = new EventEmitter<OperationDetails>();
 
   OperationCategories: OperationCategory[] = [
     { key: 'TRACEABILITY', value: 'Sécurisation' },
@@ -83,7 +87,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
       this.filter = false;
       this.results = this.operationsList.results.slice(0, this.elementInPage);
       this.totalResults = this.operationsList.hits.total;
-      this.show = this.totalResults < 5 ? true : false;
+      this.show = this.totalResults < 20 ? true : false;
     });
   }
 
@@ -146,6 +150,19 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   ngOnInit() {
     this.searchOperationsList({});
+
+    if (this.logbookManagementOperationService.operationUpdated) {
+      this.updatedoperationSub = this.logbookManagementOperationService.operationUpdated.subscribe((operationUpdated: OperationDetails) => {
+        const operationIndex = this.results.findIndex((operation) => operationUpdated.operationId === operation.operationId);
+        if (operationIndex > -1) {
+          this.logbookManagementOperationService.listOperationsDetails({ id: operationUpdated.operationId }).subscribe((results) => {
+            if (results.results) {
+              this.results[operationIndex] = results.results[0];
+            }
+          });
+        }
+      });
+    }
   }
 
   filterByOerationCategory() {
@@ -155,8 +172,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
     if (this.filterMap.categories.length === 0) {
       this.resultsFiltred = this.operationsList.results;
     }
-    this.results = this.resultsFiltred.slice(0, 5);
-    this.show = this.resultsFiltred.length < 5 ? true : false;
+    this.results = this.resultsFiltred.slice(0, 20);
+    this.show = this.resultsFiltred.length < 20 ? true : false;
   }
 
   orderByParam(property: any, filtredElement: string) {
@@ -169,8 +186,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
       resultsToShow.sort((a, b) => (a[property] < b[property] ? 1 : -1));
       this.changeParamShow(filtredElement, false);
     }
-    this.results = resultsToShow.slice(0, 5);
-    this.show = this.results.length < 5 ? true : false;
+    this.results = resultsToShow.slice(0, 20);
+    this.show = this.results.length < 20 ? true : false;
   }
 
   getOperationsByGlobalState(state: string) {
@@ -178,8 +195,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.filterMap.categories = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
-    this.results = this.resultsFiltred.slice(0, 5);
-    this.show = this.results.length < 5 ? true : false;
+    this.results = this.resultsFiltred.slice(0, 20);
+    this.show = this.results.length < 20 ? true : false;
   }
 
   getOperationsByStatus(status: string) {
@@ -187,8 +204,8 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.filterMap.categories = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
-    this.results = this.resultsFiltred.slice(0, 5);
-    this.show = this.results.length < 5 ? true : false;
+    this.results = this.resultsFiltred.slice(0, 20);
+    this.show = this.results.length < 20 ? true : false;
   }
 
   getTotalResultsByStatus(operationsList: OperationsResults, status: string): number {
@@ -236,7 +253,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   private initializeParameters(filter: boolean) {
     this.filter = filter;
-    this.elementInPage = 5;
+    this.elementInPage = 20;
   }
 
   private getParamShow(parameter: string): boolean {
@@ -258,7 +275,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
 
   private scrollAction(operationsList: OperationDetails[]) {
     if (this.elementInPage < operationsList.length) {
-      this.elementInPage = this.elementInPage + 5;
+      this.elementInPage = this.elementInPage + 20;
       this.results = operationsList.slice(0, this.elementInPage);
     } else {
       this.show = true;
