@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {AccessContract, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
@@ -51,7 +51,7 @@ import {AccessContractWriteAccessTabComponent} from './access-contract-write-acc
   templateUrl: './access-contract-preview.component.html',
   styleUrls: ['./access-contract-preview.component.scss']
 })
-export class AccessContractPreviewComponent implements OnInit {
+export class AccessContractPreviewComponent implements AfterViewInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() accessContract: AccessContract;
   @Input() tenantIdentifier: number;
@@ -78,7 +78,7 @@ export class AccessContractPreviewComponent implements OnInit {
     }
   }
 
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
     this.tabLinks[1] = this.usageTab;
@@ -86,9 +86,6 @@ export class AccessContractPreviewComponent implements OnInit {
   }
 
   constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {
-  }
-
-  ngOnInit() {
   }
 
   filterEvents(event: any): boolean {

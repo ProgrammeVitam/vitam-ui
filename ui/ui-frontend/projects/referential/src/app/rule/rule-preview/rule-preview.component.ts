@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
@@ -48,7 +48,7 @@ import {RuleInformationTabComponent} from './rule-information-tab/rule-informati
   templateUrl: './rule-preview.component.html',
   styleUrls: ['./rule-preview.component.scss']
 })
-export class RulePreviewComponent implements OnInit {
+export class RulePreviewComponent implements AfterViewInit {
 
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() rule: Rule;
@@ -71,10 +71,7 @@ export class RulePreviewComponent implements OnInit {
   constructor(private matDialog: MatDialog, private ruleService: RuleService) {
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit = () => {
+  ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
     this.tabLinks[0] = this.infoTab;
   }
