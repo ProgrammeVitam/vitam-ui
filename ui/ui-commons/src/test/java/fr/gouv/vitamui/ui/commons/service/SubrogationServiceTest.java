@@ -10,20 +10,13 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.OffsetDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@Import(SubrogationServiceTest.UserConfiguration.class)
 public class SubrogationServiceTest extends ServiceTest<SubrogationDto> {
 
     @InjectMocks
@@ -104,14 +97,4 @@ public class SubrogationServiceTest extends ServiceTest<SubrogationDto> {
         return service;
     }
 
-//    @TestConfiguration
-//    static class UserConfiguration {
-//
-//        @Bean
-//        public Validator validator() {
-//            ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//            return factory.getValidator();
-//        }
-//
-//    }
 }

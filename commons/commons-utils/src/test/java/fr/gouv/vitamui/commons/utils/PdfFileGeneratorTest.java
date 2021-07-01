@@ -17,7 +17,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+@Ignore //Tests sur des fonctionnalités non utilisées de vitamui + erreur librairie interne "fr.opensagres.xdocreport"
+// => tests + fonctionnalités à supprimer?
 public class PdfFileGeneratorTest {
 
     public static final String GENERATED_PDF_NAME = "generated-pdf.pdf";

@@ -36,10 +36,14 @@
  */
 package fr.gouv.vitamui.referential.internal.server.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
-import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
+import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,13 +54,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitam.access.external.client.AccessExternalClient;
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -87,9 +85,6 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
 
     @Autowired
     private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
-
-    @MockBean
-    private VitamOperationService vitamOperationService;
 
     @Test
     public void testContext() {

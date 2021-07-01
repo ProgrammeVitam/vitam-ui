@@ -139,7 +139,6 @@
             <artifactId>opencsv</artifactId>
         </dependency>
 
-
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
@@ -147,7 +146,6 @@
 
 
         <!-- TESTS -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -180,10 +178,6 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
-<!--        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>org.junit.vintage</groupId>
             <artifactId>junit-vintage-engine</artifactId>
