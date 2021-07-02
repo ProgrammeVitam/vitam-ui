@@ -27,7 +27,7 @@
         !(
           operation?.stepByStep &&
           operation?.globalState === 'PAUSE' &&
-          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
+          (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK')
         )
       "
     >
@@ -38,7 +38,6 @@
       (click)="updateOperationStatus(operation, 'REPLAY')"
       [disabled]="
         !(
-          operation?.stepByStep &&
           operation?.globalState === 'PAUSE' &&
           (operation?.stepStatus === 'WARNING' || operation?.stepStatus === 'OK' || operation?.stepStatus === 'FATAL')
         )
