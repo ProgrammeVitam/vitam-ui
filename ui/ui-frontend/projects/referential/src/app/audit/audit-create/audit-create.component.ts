@@ -84,6 +84,7 @@ export class AuditCreateComponent implements OnInit {
     });
 
     this.form.controls.auditActions.valueChanges.subscribe(auditActions => {
+      // Update the validators
       if (auditActions === 'AUDIT_FILE_RECTIFICATION') {
         this.allServices.setValue(false);
         this.form.get('evidenceAudit').setValidators(Validators.required);
@@ -91,24 +92,27 @@ export class AuditCreateComponent implements OnInit {
         this.allServices.setValue(true);
         this.form.get('evidenceAudit').clearValidators();
       }
+      this.updateObjectIdValidators();
       this.form.updateValueAndValidity();
-    });
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-
-    this.form.controls.auditActions.valueChanges.subscribe(action => {
-      if (action === 'AUDIT_FILE_EXISTING' || action === 'AUDIT_FILE_INTEGRITY') {
+      // Update the audit type
+      if (auditActions === 'AUDIT_FILE_EXISTING' || auditActions === 'AUDIT_FILE_INTEGRITY') {
         this.form.controls.auditType.setValue(this.allServices.value ? 'tenant' : 'originatingagency');
       } else {
         this.form.controls.auditType.setValue('dsl');
       }
     });
 
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+
     this.allServices.valueChanges.subscribe((value) => {
       if (this.form.controls.auditActions.value !== 'AUDIT_FILE_RECTIFICATION') {
         this.form.controls.auditType.setValue((value) ? 'tenant' : 'originatingagency');
       }
       this.form.controls.objectId.setValue((value) ? this.startupService.getTenantIdentifier() : null);
+
+      this.updateObjectIdValidators();
+      this.form.updateValueAndValidity();
     });
 
     this.selectedNodes.valueChanges.subscribe(value => {
@@ -126,13 +130,26 @@ export class AuditCreateComponent implements OnInit {
     this.allNodes.valueChanges.subscribe((value) => this.stepCount = (value) ? 1 : 2);
   }
 
+  /**
+   * Add or remove the required validator on the filed 'objectId'
+   */
+  private updateObjectIdValidators() {
+    if (this.allServices.value && this.accessionRegisters && (
+      this.form.value.auditActions === 'AUDIT_FILE_EXISTING' ||
+      this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY'
+    )) {
+      this.form.get('objectId').setValidators(Validators.required);
+    } else {
+      this.form.get('objectId').clearValidators();
+    }
+  }
+
   isStepValid(): boolean {
     const isEvidenceAuditValid = this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' &&
       this.accessContractId != null;
     const isRectificationAuditValid = this.form.value.auditActions === 'AUDIT_FILE_RECTIFICATION' &&
       this.accessContractId != null &&
-      !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending &&
-      !this.form.get('objectId').invalid && !this.form.get('objectId').pending;
+      !this.form.get('evidenceAudit').invalid && !this.form.get('evidenceAudit').pending;
     const isOtherAuditValid = (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' ||
       this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
       this.accessContractId != null &&

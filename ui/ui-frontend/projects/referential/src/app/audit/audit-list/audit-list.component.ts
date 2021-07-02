@@ -67,7 +67,6 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
 
   @Input('filters')
   set filters(filters: AuditFilters) {
-    console.log('Filters: ', filters);
     this._filters = filters;
     this.filterChange.next(filters);
   }
@@ -123,10 +122,14 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
       if (this._filters.endDate) {
         criteria.evDateTime_End = this._filters.endDate;
       }
-
       if (this._filters.types && this._filters.types.length > 0) {
         criteria.evType = this._filters.types;
       }
+    }
+
+    // Default type filter used to exclude the other types
+    if (!criteria.evType) {
+      criteria.evType = ['PROCESS_AUDIT', 'EVIDENCE_AUDIT', 'RECTIFICATION_AUDIT'];
     }
 
     return criteria;
