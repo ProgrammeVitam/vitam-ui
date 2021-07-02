@@ -195,6 +195,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.filterMap.categories = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.globalState === state);
+    this.totalResults = this.resultsFiltred.length;
     this.results = this.resultsFiltred.slice(0, 20);
     this.show = this.results.length < 20 ? true : false;
   }
@@ -204,6 +205,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
     this.filterMap.categories = [];
     this.initializeParameters(true);
     this.resultsFiltred = this.operationsList.results.filter((element) => element.stepStatus === status);
+    this.totalResults = this.resultsFiltred.length;
     this.results = this.resultsFiltred.slice(0, 20);
     this.show = this.results.length < 20 ? true : false;
   }
