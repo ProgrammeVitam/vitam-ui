@@ -42,7 +42,8 @@
           </div>
         </div>
 
-        <div class="form-group" *ngIf="form.value.auditActions !== 'AUDIT_FILE_CONSISTENCY'">
+        <div class="form-group" 
+          *ngIf="form.value.auditActions !== 'AUDIT_FILE_CONSISTENCY' && form.value.auditActions !== 'AUDIT_FILE_RECTIFICATION'">
           <div class="row">
             <div class="col-8 form-control">
               <vitamui-common-slide-toggle [formControl]="allServices">Tous les services producteurs
@@ -51,10 +52,9 @@
 
             <div class="col-8 form-control">
               <mat-form-field class="vitamui-mat-select" 
-                *ngIf="allServices.value===false && accessionRegisters && (
+                *ngIf="allServices.value === false && accessionRegisters && (
                   form.value.auditActions === 'AUDIT_FILE_EXISTING' || 
-                  form.value.auditActions === 'AUDIT_FILE_INTEGRITY' || 
-                  form.value.auditActions === 'AUDIT_FILE_RECTIFICATION')">
+                  form.value.auditActions === 'AUDIT_FILE_INTEGRITY')">
                 <mat-select formControlName="objectId" placeholder="Selectionnez le service producteur"
                   panelclass="vitamui-mat-select" required>
                   <mat-option *ngFor='let accession of accessionRegisters' [value]="accession.originatingAgency">
