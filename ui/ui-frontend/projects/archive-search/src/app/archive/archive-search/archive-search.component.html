@@ -21,6 +21,26 @@
       </div>
     </div>
 
+    <!-- Example pour afficher un composant pour les users qui ont le role ROLE_SEARCH_WITH_RULES -->
+    <!-- <ng-template [vitamuiCommonHasRole]="dataToSearchWithRules">
+      <button>
+        <div class="btn-primary">click search with rules with object</div>
+      </button></ng-template
+    > -->
+
+    <!-- use this one on the DUA component -->
+    <!-- <ng-template
+      [vitamuiCommonHasRole]="{
+        appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+        tenantIdentifier: +tenantIdentifier,
+        role: 'ROLE_SEARCH_WITH_RULES'
+      }"
+    >
+      <button>
+        <div class="btn-primary">click search with rules without object</div>
+      </button></ng-template
+    > -->
+
     <div class="area-criteria">
       <ng-container *ngFor="let criteria of searchCriterias | keyvalue">
         <ng-container *ngIf="criteria.value.key === 'NODE'">

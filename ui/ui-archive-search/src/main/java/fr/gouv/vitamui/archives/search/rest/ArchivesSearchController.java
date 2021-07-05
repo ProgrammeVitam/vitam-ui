@@ -34,9 +34,13 @@ import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.VitamuiRoles;
+import fr.gouv.vitamui.commons.api.domain.Role;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
@@ -57,6 +61,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Api(tags = "archives Search")
@@ -80,10 +86,28 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public VitamUIArchiveUnitResponseDto searchArchiveUnits(@RequestBody final SearchCriteriaDto searchQuery) {
+        ArchiveUnitsDto archiveUnits = new ArchiveUnitsDto();
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        ArchiveUnitsDto archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
+        if(!searchQuery.getAppraisalMgtRulesCriteriaList().isEmpty() && searchQuery.getAppraisalMgtRulesCriteriaList() != null) {
+            final List<Role> listOfRoles = new ArrayList<>();
+            Role role = new Role(VitamuiRoles.ROLE_SEARCH_WITH_RULES);
+            final AuthUserDto authenticatedUser = getAuthenticatedUser();
+            authenticatedUser.getProfileGroup().getProfiles().forEach(profileDto -> {
+                if(profileDto != null) {
+                    listOfRoles.addAll(profileDto.getRoles());
+                }
+            });
+
+            if(!listOfRoles.contains(role)) {
+                LOGGER.info("You are not authorized to make a search with DUA criteria");
+                throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
+            }
+        }
+        else {
+             archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
+        }
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
         }

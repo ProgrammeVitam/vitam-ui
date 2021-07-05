@@ -127,14 +127,15 @@ customer-init:
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
 
-    - name: Profil pour l'accès et la recherche d'archives
-      description: Gestion d'accès et de recherche des archives dans Vitam
+    - name: Profil pour l'accès et la recherche d'archives avec mises à jour des règles
+      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
         - ROLE_CREATE_ARCHIVE_SEARCH
         - ROLE_GET_ARCHIVE_SEARCH
         - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
 
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
@@ -160,6 +161,15 @@ customer-init:
         - ROLE_CREATE_EXTERNAL_PARAM_PROFILE
         - ROLE_EDIT_EXTERNAL_PARAM_PROFILE
         - ROLE_SEARCH_EXTERNAL_PARAM_PROFILE
+
+    - name: Profil pour l'accès et la recherche d'archives sans mises à jour des règles
+      description: Gestion d'accès et de recherche des archives dans Vitam sans mises à jour des règles
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
 
   # Other Default profiles for admin group
   admin-profiles:

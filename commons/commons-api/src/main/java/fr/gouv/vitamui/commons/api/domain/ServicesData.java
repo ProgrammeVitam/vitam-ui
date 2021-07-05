@@ -362,7 +362,7 @@ public class ServicesData {
     public static final String ROLE_CREATE_ARCHIVE = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
-
+    public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -491,6 +491,7 @@ public class ServicesData {
             ROLE_GET_ALL_ARCHIVE,
             ROLE_GET_ARCHIVE,
             ROLE_CREATE_ARCHIVE,
+            ROLE_SEARCH_WITH_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -623,6 +624,7 @@ public class ServicesData {
             ROLE_GET_ALL_ARCHIVE,
             ROLE_GET_ARCHIVE,
             ROLE_CREATE_ARCHIVE,
+            ROLE_SEARCH_WITH_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
