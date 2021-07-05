@@ -3,15 +3,24 @@
   <div class="form-group">
     <div class="col-12 form-control">
       <mat-form-field class="vitamui-mat-select">
-        <mat-select formControlName="ruleType" placeholder="Type de règle" panelclass="vitamui-mat-select"
-          required="required" i18n-placeholder="Identifier@@rulePreviewRuleTypePlaceholder">
-          <mat-option *ngFor='let ruleType of ruleTypes' [value]="ruleType.key">{{ruleType.label}}</mat-option>
+        <mat-select formControlName="ruleType" placeholder="{{ getRuleTypeLabel() }}" panelclass="vitamui-mat-select"
+          required="required" [disabled]="true">
         </mat-select>
         <div class="select-arrow">
           <i class="material-icons">keyboard_arrow_up</i>
           <i class="material-icons">keyboard_arrow_down</i>
         </div>
       </mat-form-field>
+    </div>
+
+    <div class="col-12 form-control">
+      <vitamui-common-input formControlName="ruleValue" minlength="2" maxlength="100"
+      required placeholder="Intitulé de la règle" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
+      <ng-container *ngIf="form.get('ruleValue')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required"
+          i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+      </ng-container>
+    </vitamui-common-input>
     </div>
 
     <div class="col-12 form-control">

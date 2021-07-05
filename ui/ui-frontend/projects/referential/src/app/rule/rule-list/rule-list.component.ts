@@ -159,6 +159,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     const criteria: any = {};
     if (this._searchText.length > 0) {
       criteria.RuleValue = this._searchText;
+      criteria.RuleId = this._searchText;
     }
 
     if (this._filters && this._filters.length > 0) {
