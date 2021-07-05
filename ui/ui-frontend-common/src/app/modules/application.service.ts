@@ -106,7 +106,7 @@ export class ApplicationService {
     const params = new HttpParams().set('filterApp', 'true');
     const headers = new HttpHeaders({ 'X-Tenant-Id': this.authService.getAnyTenantIdentifier() });
     return this.applicationApi.getAllByParams(params, headers).pipe(
-      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: {} })),
+      catchError(() => of({ APPLICATION_CONFIGURATION: [], CATEGORY_CONFIGURATION: [] })),
       map((applicationInfo: ApplicationInfo) => {
         this._applications = applicationInfo.APPLICATION_CONFIGURATION;
         this._categories = this.sortCategories(applicationInfo.CATEGORY_CONFIGURATION);

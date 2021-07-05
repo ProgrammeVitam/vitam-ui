@@ -52,7 +52,6 @@ import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.ui.commons.config.AutoConfigurationVitam;
-import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +66,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -138,12 +138,17 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
         query.addCriterion(new Criterion("filterApp", filterApp, CriterionOperator.EQUALS));
 
         Collection<ApplicationDto> applications = client.getAll(context, Optional.of(query.toJson()));
-        Map<String, PortalCategoryConfig> categories = properties.getPortalCategories();
-        categories.keySet().forEach(category -> categories.get(category).setIdentifier(category));
+        Map<String, Map<String,Object>> categories = properties.getPortalCategories();
+        Collection<Map<String,Object>> listCategories = new ArrayList<>();
+        categories.keySet().forEach(category -> {
+            Map<String, Object> categoryProperties = new HashMap<>(categories.get(category));
+            categoryProperties.put("identifier", category);
+            listCategories.add(categoryProperties);
+        });
 
         Map<String, Object> portalConfig = new HashMap<>();
         portalConfig.put(CommonConstants.APPLICATION_CONFIGURATION, applications);
-        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, categories);
+        portalConfig.put(CommonConstants.CATEGORY_CONFIGURATION, listCategories);
 
         return portalConfig;
     }
