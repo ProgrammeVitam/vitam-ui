@@ -59,6 +59,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
     /* Operation types */
@@ -67,15 +68,15 @@ public class VitamQueryHelper {
     /* Query fields */
     private static final String ID = "#id";
     private static final String OB_ID_IN = "obIdIn";
-    private static final String TRANSFERRING_AGENCY = "agIdExt.TransferringAgency";
-    private static final String ORIGINATING_AGENCY = "agIdExt.originatingAgency";
-    private static final String ARCHIVAL_AGENCY = "agIdExt.ArchivalAgreement";
+    private static final String TRANSFERRING_AGENCY = "events.agIdExt.TransferringAgency";
+    private static final String ORIGINATING_AGENCY = "events.agIdExt.originatingAgency";
+    private static final String ARCHIVAL_AGENCY = "events.evDetData.ArchivalAgreement";
     private static final String EV_TYPE_PROC = "evTypeProc";
     private static final String STATUS = "Status";
     private static final String EV_TYPE = "evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
-    private static final String COMMENT = "evDetData.EvDetailReq";
+    private static final String COMMENT = "events.evDetData.EvDetailReq";
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -86,8 +87,8 @@ public class VitamQueryHelper {
      * @throws InvalidCreateOperationException
      */
     public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
-        final Integer size,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction)
+                                          final Integer size,
+                                          final Optional<String> orderBy, final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, InvalidCreateOperationException {
 
         final Select select = new Select();
@@ -117,21 +118,22 @@ public class VitamQueryHelper {
                 final String searchKey = entry.getKey();
 
                 switch (searchKey) {
-                    case ID:
+
                     case EV_TYPE_PROC:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
-                        queryOr.add(eq(searchKey, stringValue));
-                        haveOrParameters = true;
+                        query.add(eq(searchKey, stringValue));
+
                         break;
                     case OB_ID_IN:
                     case TRANSFERRING_AGENCY:
-                    case ORIGINATING_AGENCY:
                     case ARCHIVAL_AGENCY:
+                    case ORIGINATING_AGENCY:
+                    case ID:
                     case COMMENT:
-                        final String value = (String) entry.getValue();
-                        orGroup.add(eq(searchKey, value));
-                        haveOrGroup = true;
+                        final String searchValue = (String) entry.getValue();
+                        queryOr.add(eq(searchKey, searchValue));
+                        haveOrParameters = true;
                         break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]
