@@ -45,11 +45,9 @@ import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 
 /**
  * Test Rest Exception Handler.
- *
- *
  */
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({ "javax.management.*", "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "com.sun.org.apache.xalan.*" })
+@PowerMockIgnore({ "javax.management.*", "com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*", "com.sun.org.apache.xalan.*", "jdk.internal.reflect.*"})
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestTestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @EnableAutoConfiguration

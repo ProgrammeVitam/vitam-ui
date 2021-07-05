@@ -19,7 +19,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class LogbookSchedulingConfigurationTest {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withAllowBeanDefinitionOverriding(true)
             .withUserConfiguration(LogbookSchedulingConfiguration.class).withUserConfiguration(UserConfiguration.class);
 
     @BeforeClass

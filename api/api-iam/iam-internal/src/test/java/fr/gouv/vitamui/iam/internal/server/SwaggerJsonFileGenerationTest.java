@@ -1,5 +1,8 @@
 package fr.gouv.vitamui.iam.internal.server;
 
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
+import fr.gouv.vitamui.iam.internal.server.externalparamprofile.service.ExternalParamProfileInternalService;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -108,8 +111,17 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ApplicationInternalService applicationInternalService;
-    
+
     @MockBean
     private ExternalParametersInternalService externalParametersInternalService;
+
+    @MockBean
+    private AccessContractService accessContractService;
+
+    @MockBean
+    private AccessContractConverter accessContractConverter;
+
+    @MockBean
+    private ExternalParamProfileInternalService externalParamProfileInternalService;
 
 }

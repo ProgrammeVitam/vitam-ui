@@ -1,34 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.profile.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.google.common.collect.ImmutableMap;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -36,8 +8,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
@@ -47,6 +17,7 @@ import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.FieldUtils;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
@@ -64,7 +35,32 @@ import fr.gouv.vitamui.iam.internal.server.tenant.dao.TenantRepository;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
-import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Class for test InternalProfileService with a real repository
@@ -75,32 +71,11 @@ import junit.framework.Assert;
 @EnableMongoRepositories(basePackageClasses = { ProfileRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
-    private ProfileInternalService service;
-
     @Autowired
     private ProfileRepository repository;
 
-    @MockBean
-    private GroupRepository groupRepository;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalServiceIntegTest.class);
-
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
-
-    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-
-    @MockBean
-    private TenantRepository tenantRepository;
-
     @Autowired
     private EventRepository eventRepository;
-
-    private final InternalHttpContext internalHttpContext = mock(InternalHttpContext.class);
-
-    private static final Integer TENANT_IDENTIFIER = 10;
 
     @Autowired
     private IamLogbookService iamLogbookService;
@@ -109,10 +84,31 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     private ProfileConverter profileConverter;
 
     @MockBean
+    private GroupRepository groupRepository;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private TenantRepository tenantRepository;
+
+    @MockBean
     private OwnerRepository ownerRepository;
 
     @MockBean
     private SpMetadataGenerator spMetadataGenerator;
+
+    private final InternalHttpContext internalHttpContext = mock(InternalHttpContext.class);
+
+    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+
+    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
+
+    private static final Integer TENANT_IDENTIFIER = 10;
+
+    private ProfileInternalService service;
+
+    private DummyData dummyData;
 
     @Before
     public void setup() throws Exception {
@@ -122,15 +118,17 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
                 internalSecurityService, iamLogbookService, profileConverter, null);
         repository.deleteAll();
 
-        Mockito.when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(new Tenant()));
+        when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
+        when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(new Tenant()));
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setId(UUID.randomUUID().toString());
         customSequence.setSequence(1);
-        Mockito.when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
 
         FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
+
+        dummyData = new DummyData();
     }
 
     @After
@@ -156,9 +154,9 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         user.setLevel(userLevel);
         user.setGroupId(group.getId());
 
-        Mockito.when(internalSecurityService.getUser()).thenReturn(user);
-        Mockito.when(internalSecurityService.getLevel()).thenReturn(userLevel);
-        Mockito.when(groupRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(group));
+        when(internalSecurityService.getUser()).thenReturn(user);
+        when(internalSecurityService.getLevel()).thenReturn(userLevel);
+        when(groupRepository.findById(ArgumentMatchers.any())).thenReturn(Optional.of(group));
 
         QueryDto criteria = new QueryDto();
         criteria.addCriterion("name", "nametest", CriterionOperator.EQUALS);
@@ -204,8 +202,8 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         repository.save(IamServerUtilsTest.buildProfile("profileIdAdmin", "2", "nameadmin", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
                 ApiIamInternalConstants.ADMIN_LEVEL));
 
-        Mockito.when(internalSecurityService.getUser()).thenReturn(buildUserProfileDto("id", "customerIdTest", "groupTest"));
-        Mockito.when(internalSecurityService.getLevel()).thenReturn(ApiIamInternalConstants.ADMIN_LEVEL);
+        when(internalSecurityService.getUser()).thenReturn(dummyData.authUserDto());
+        when(internalSecurityService.getLevel()).thenReturn(ApiIamInternalConstants.ADMIN_LEVEL);
 
         QueryDto criteria = new QueryDto();
         criteria.addCriterion("name", "nametest", CriterionOperator.EQUALS);
@@ -262,7 +260,7 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
     @Test
     public void testCreateProfile() {
-        final ProfileDto profile = createProfile(Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS)));
+        final ProfileDto profile = createProfile(Collections.singletonList(new Role(ServicesData.ROLE_CREATE_USERS)));
         assertThat(profile.getIdentifier()).isNotBlank();
 
         final Criteria criteria = Criteria.where("obId").is(profile.getIdentifier()).and("obIdReq").is(MongoDbCollections.PROFILES).and("evType")
@@ -294,15 +292,15 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         authUserProfile.setTenantIdentifier(tenantIdentifier);
         authUserProfile.setEnabled(true);
         authUserProfile.setRoles(roles);
-        group.setProfiles(Arrays.asList(authUserProfile));
+        group.setProfiles(Collections.singletonList(authUserProfile));
 
-        Mockito.when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
-        Mockito.when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
-        Mockito.when(internalSecurityService.getTenantIdentifier()).thenReturn(tenantIdentifier);
-        Mockito.when(internalSecurityService.getUser()).thenReturn(authUser);
-        Mockito.when(internalSecurityService.getCustomerId()).thenReturn(customerId);
-        Mockito.when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
-        Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
+        when(customerRepository.findById(any())).thenReturn(Optional.of(customer));
+        when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
+        when(internalSecurityService.getTenantIdentifier()).thenReturn(tenantIdentifier);
+        when(internalSecurityService.getUser()).thenReturn(authUser);
+        when(internalSecurityService.getCustomerId()).thenReturn(customerId);
+        when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
+        when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         profile = service.create(profile);
         return profile;
     }
@@ -311,7 +309,7 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     public void testPatch() {
         final ProfileDto profile = createProfile(Arrays.asList(new Role(ServicesData.ROLE_CREATE_USERS), new Role(ServicesData.ROLE_GET_USERS)));
 
-        Mockito.when(internalSecurityService.getLevel()).thenReturn(ApiIamInternalConstants.ADMIN_LEVEL);
+        when(internalSecurityService.getLevel()).thenReturn(ApiIamInternalConstants.ADMIN_LEVEL);
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("customerId", profile.getCustomerId());
         partialDto.put("id", profile.getId());
@@ -343,29 +341,28 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
         assertThat(events).hasSize(5);
     }
 
-    private AuthUserDto buildUserProfileDto(final String id, final String customerId, final String groupId) {
-        final AuthUserDto u = new AuthUserDto();
-        u.setGroupId(groupId);
-        u.setId(id);
-        u.setCustomerId(customerId);
-        u.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
-        return u;
-    }
 
-    @Test
-    public void testCreateProfilesWithDuplicateIdentifier() {
-        final String identifier = "duplicateIdentifier";
-        try {
-            repository.save(IamServerUtilsTest.buildProfile("idSubTest1", identifier, "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
-                    "TEST"));
-            repository.save(IamServerUtilsTest.buildProfile("idSubTest2", identifier, "namesubtest", "customerId", 10, CommonConstants.USERS_APPLICATIONS_NAME,
-                    "SUPPORT"));
-        }
-        catch (final DuplicateKeyException e) {
-            assertThat(e.getMessage()).contains(identifier);
-            return;
-        }
-        Assert.fail("Excepted DuplicateKeyException to be thrown");
+
+    @Test(expected = IllegalArgumentException.class)
+    public void should_raised_exception_when_trying_to_create_two_same_profile() {
+
+        // Given
+        when(customerRepository.findById(any())).thenReturn(Optional.of(dummyData.customer()));
+        when(tenantRepository.findByIdentifier(any())).thenReturn(dummyData.tenant());
+        when(internalSecurityService.getTenantIdentifier()).thenReturn(TENANT_IDENTIFIER);
+        when(internalSecurityService.getUser()).thenReturn(dummyData.authUserWithCreateUsersRole());
+        when(internalSecurityService.getCustomerId()).thenReturn(IamServerUtilsTest.CUSTOMER_ID);
+        when(internalSecurityService.isLevelAllowed(any())).thenReturn(true);
+        when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
+        ProfileDto profileDto = dummyData.profileDto();
+        ProfileDto profileDto2 = VitamUIUtils.copyProperties(profileDto, new ProfileDto());
+
+        // When
+        service.create(profileDto);
+        service.create(profileDto2);
+
+        // Then : Exception is raised
+
     }
 
     @Test
@@ -379,6 +376,50 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
         final Collection<String> levels = service.getLevels(Optional.empty());
         assertThat(levels).containsExactlyInAnyOrder(profileLevel, profileSupportLevel);
+    }
+
+    private static class DummyData {
+        AuthUserDto authUserDto() {
+            final AuthUserDto u = new AuthUserDto();
+            u.setGroupId("groupTest");
+            u.setId("id");
+            u.setCustomerId("customerIdTest");
+            u.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
+            return u;
+        }
+
+        AuthUserDto authUserWithCreateUsersRole() {
+            final GroupDto group = new GroupDto();
+            final ProfileDto authUserProfile = new ProfileDto();
+            authUserProfile.setTenantIdentifier(TENANT_IDENTIFIER);
+            authUserProfile.setEnabled(true);
+            authUserProfile.setRoles(List.of(new Role(ServicesData.ROLE_CREATE_USERS)));
+            group.setProfiles(Collections.singletonList(authUserProfile));
+            final AuthUserDto authUser = new AuthUserDto();
+            authUser.setProfileGroup(group);
+            return authUser;
+        }
+
+        Customer customer() {
+            Customer customer = new Customer();
+            customer.setEnabled(true);
+            return customer;
+        }
+
+        Tenant tenant() {
+            Tenant tenant = new Tenant();
+            tenant.setIdentifier(TENANT_IDENTIFIER);
+            tenant.setCustomerId(IamServerUtilsTest.CUSTOMER_ID);
+            tenant.setEnabled(true);
+            return tenant;
+        }
+
+        ProfileDto profileDto() {
+            ProfileDto profileDto = IamServerUtilsTest.buildProfileDto();
+            profileDto.setId(null);
+            profileDto.setRoles(List.of(new Role(ServicesData.ROLE_CREATE_USERS)));
+            return profileDto;
+        }
     }
 
 }

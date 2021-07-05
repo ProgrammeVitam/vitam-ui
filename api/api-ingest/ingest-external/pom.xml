@@ -20,8 +20,6 @@
     </properties>
 
     <dependencies>
-
-
         <!-- VITAMUI -->
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
@@ -185,8 +183,9 @@
             <type>test-jar</type>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

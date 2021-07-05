@@ -1,5 +1,9 @@
 package fr.gouv.vitamui.commons.mongo.config;
 
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoClient;
+import com.mongodb.connection.ClusterSettings;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -7,13 +11,17 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
+import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
+import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Collections;
 
 
 @Configuration
@@ -26,7 +34,6 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
 
-    private final String MONGO_DB_NAME = "test";
     private final String MONGO_HOST = "localhost";
 
     private MongodExecutable _mongodExe;
@@ -55,8 +62,22 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @Override
+    protected void configureClientSettings(MongoClientSettings.Builder builder) {
+        ClusterSettings clusterSettings = ClusterSettings.builder()
+            .hosts(Collections.singletonList(new ServerAddress(MONGO_HOST, port)))
+            .build();
+        builder.applyToClusterSettings(b -> b.applySettings(clusterSettings));
+    }
+
+    @Override
     protected String getDatabaseName() {
-        return MONGO_DB_NAME;
+        return "test";
+    }
+
+    @Override
+    protected void configureConverters(MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+        converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
+        converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
 
     @Override

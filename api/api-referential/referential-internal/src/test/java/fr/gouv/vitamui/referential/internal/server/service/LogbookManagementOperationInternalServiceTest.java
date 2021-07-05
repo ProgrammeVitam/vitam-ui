@@ -27,75 +27,87 @@
 
 package fr.gouv.vitamui.referential.internal.server.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.ItemStatus;
+import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.processing.ProcessDetail;
+import fr.gouv.vitamui.commons.api.enums.OperationActionStatus;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamSearchRequestDto;
+import fr.gouv.vitamui.referential.common.dto.VitamUIProcessDetailResponseDto;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
-import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.core.Response;
 
-
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.easymock.EasyMock.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class LogbookManagementOperationInternalServiceTest {
 
+    @Mock
     private ObjectMapper objectMapper;
+
+    @Mock
     private VitamOperationService vitamOperationService;
+
+    @InjectMocks
     private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
+
+    private DummyData dummyData;
 
     @Before
     public void setUp() {
+        MockitoAnnotations.openMocks(this);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        objectMapper = mock(ObjectMapper.class);
-        vitamOperationService = mock(VitamOperationService.class);
+        dummyData = new DummyData();
         logbookManagementOperationInternalService = new LogbookManagementOperationInternalService(objectMapper, vitamOperationService);
     }
 
     @Test
-    public void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct() throws VitamClientException {
+    public void updateOperationActionProcess_should_not_throw_VitamClientException_when_actionId_is_correct() throws VitamClientException,
+        // Given
+        JsonProcessingException {
         VitamContext vitamContext = new VitamContext(0);
-        String actionId = "REPLAY";
+        OperationActionStatus replay = OperationActionStatus.REPLAY;
         String operationId = "id";
 
-        expect(vitamOperationService.updateOperationActionProcess(isA(VitamContext.class),isA(String.class), isA(String.class)))
-            .andReturn(new RequestResponse<ItemStatus>() {
-                @Override
-                public Response toResponse() {
-                    return null;
-                }
-            }.setHttpCode(200));
-        EasyMock.replay(vitamOperationService);
+        when(vitamOperationService.listOperationsDetails(any(VitamContext.class), any(ProcessQuery.class)))
+            .thenReturn(dummyData.listOperationsDetailsRequestResponse());
+        RequestResponse<ItemStatus> updateResponse = dummyData.updateOperationActionProcessRequestResponse();
+        when(vitamOperationService.updateOperationActionProcess(any(VitamContext.class), any(String.class), any(String.class)))
+            .thenReturn(updateResponse);
+        when(objectMapper.treeToValue(updateResponse.toJsonNode(), VitamUIProcessDetailResponseDto.class))
+            .thenReturn(dummyData.vitamUIProcessDetailResponseDto());
 
+        //When //Then
         assertThatCode(() -> {
-            logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, actionId, operationId);
+            logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, replay.toString(), operationId);
         }).doesNotThrowAnyException();
     }
 
     @Test
     public void updateOperationActionProcess_should_throw_VitamClientException_when_actionId_is_not_correct() throws VitamClientException {
+        //Given
         VitamContext vitamContext = new VitamContext(0);
         String actionId = "action";
         String operationId = "id";
 
-        expect(vitamOperationService.updateOperationActionProcess(isA(VitamContext.class),isA(String.class), isA(String.class)))
-            .andReturn(new RequestResponse<ItemStatus>() {
-                @Override
-                public Response toResponse() {
-                    return null;
-                }
-            }.setHttpCode(200));
+        when(vitamOperationService.updateOperationActionProcess(any(VitamContext.class), any(String.class), any(String.class)))
+            .thenReturn(dummyData.updateOperationActionProcessRequestResponse());
 
-        EasyMock.replay(vitamOperationService);
-
+        //When //Then
         assertThatCode(() -> {
             logbookManagementOperationInternalService.updateOperationActionProcess(vitamContext, actionId, operationId);
         }).hasMessage("Cannot update  the operation, because the actionId given is not correct");
@@ -103,15 +115,44 @@ public class LogbookManagementOperationInternalServiceTest {
 
     @Test
     public void cancelOperationProcessExecution_should_throw_VitamClientException_when_vitamclient_throw_VitamClientException() throws VitamClientException {
+        //Given
         VitamContext vitamContext = new VitamContext(0);
         String identifier = "identifier";
 
-        expect(vitamOperationService.cancelOperationProcessExecution(isA(VitamContext.class), isA(String.class)))
-            .andThrow(new VitamClientException("Exception thrown by vitam"));
-        EasyMock.replay(vitamOperationService);
+        when(vitamOperationService.cancelOperationProcessExecution(any(VitamContext.class), any(String.class)))
+            .thenThrow(new VitamClientException("Exception thrown by vitam"));
 
+        //When //Then
         assertThatCode(() -> {
             logbookManagementOperationInternalService.cancelOperationProcessExecution(vitamContext, identifier);
         }).isInstanceOf(VitamClientException.class);
+    }
+
+    private static class DummyData {
+
+        RequestResponse<ItemStatus> updateOperationActionProcessRequestResponse() {
+            return  new RequestResponse<ItemStatus>() {
+                @Override
+                public Response toResponse() {
+                    ProcessDetail processDetail = new ProcessDetail();
+                    return new RequestResponseOK().addResult(processDetail).toResponse();
+                }
+            }.setHttpCode(200);
+        }
+
+        RequestResponse<ProcessDetail> listOperationsDetailsRequestResponse() {
+            return new RequestResponse<ProcessDetail>() {
+                @Override
+                public Response toResponse() {
+                    return null;
+                }
+            }.setHttpCode(200);
+        }
+
+        VitamUIProcessDetailResponseDto vitamUIProcessDetailResponseDto() {
+            VitamUIProcessDetailResponseDto vitamUIProcessDetailResponseDto = new VitamUIProcessDetailResponseDto();
+            vitamUIProcessDetailResponseDto.setContext(new VitamSearchRequestDto());
+            return vitamUIProcessDetailResponseDto;
+        }
     }
 }

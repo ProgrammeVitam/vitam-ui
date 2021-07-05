@@ -49,6 +49,10 @@
 	    	<artifactId>spring-boot-starter-json</artifactId>
             <scope>provided</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
 
         <!-- SECURITY -->
         <dependency>
@@ -105,8 +109,13 @@
 
         <!-- TEST -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -130,8 +139,8 @@
 			<scope>test</scope>
 		</dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

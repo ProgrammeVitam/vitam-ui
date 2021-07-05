@@ -62,7 +62,7 @@ public class LogbookAutoConfiguration {
 
     @Bean("logbookService")
     @ConditionalOnMissingBean
-    public EventService logbookService(final EventRepository logbookRepository, final EventMessages messages) {
-        return new EventService(logbookRepository, messages);
+    public EventService logbookService(final EventRepository eventRepository, final EventMessages messages) {
+        return new EventService(eventRepository, messages);
     }
 }
