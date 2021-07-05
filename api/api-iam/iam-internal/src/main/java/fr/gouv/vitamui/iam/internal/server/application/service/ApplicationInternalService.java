@@ -56,6 +56,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CriteriaUtils;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
@@ -80,9 +81,9 @@ public class ApplicationInternalService extends VitamUICrudService<ApplicationDt
     private final InternalSecurityService internalSecurityService;
 
     @Autowired
-    public ApplicationInternalService(final CustomSequenceRepository sequenceRepository, final ApplicationRepository applicationRepository,
+    public ApplicationInternalService(final SequenceGeneratorService sequenceGeneratorService, final ApplicationRepository applicationRepository,
         final ApplicationConverter applicationConverter, final InternalSecurityService internalSecurityService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.applicationRepository = applicationRepository;
         this.applicationConverter = applicationConverter;
         this.internalSecurityService = internalSecurityService;

@@ -7,7 +7,7 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
@@ -90,7 +90,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
 
     private CustomerRepository customerRepository;
 
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private User user;
 
@@ -116,9 +116,9 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         userRepository = mock(UserRepository.class);
         mongoTemplate = mock(MongoTemplate.class);
         tokenRepository = mock(TokenRepository.class);
-        sequenceRepository = mock(CustomSequenceRepository.class);
-
         subrogationRepository = mock(SubrogationRepository.class);
+
+        sequenceGeneratorService = mock(SequenceGeneratorService.class);
         userInternalService = mock(UserInternalService.class);
         groupInternalService = mock(GroupInternalService.class);
         groupRepository = mock(GroupRepository.class);
@@ -128,7 +128,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         iamLogbookService = mock(IamLogbookService.class);
         passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
-        internalSubrogationService = new SubrogationInternalService(sequenceRepository, subrogationRepository, userRepository, userInternalService,
+        internalSubrogationService = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService,
                 groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
 
         casService = spy(CasInternalService.class);

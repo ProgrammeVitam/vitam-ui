@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,8 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -53,7 +53,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
     private CustomerRepository customerRepository;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private IamLogbookService iamLogbookService;
@@ -72,7 +72,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ownerService = new OwnerInternalService(sequenceRepository, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
+        ownerService = new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
                 internalSecurityService, ownerConverter, logbookService, tenantRepository);
     }
 
@@ -86,9 +86,7 @@ public class OwnerInternalServiceTest extends AbstractServerIdentityBuilder {
         when(ownerRepository.findById(any())).thenReturn(Optional.of(buildOwner()));
         when(ownerRepository.existsById(any())).thenReturn(true);
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setSequence(1);
-        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
 
     @Test

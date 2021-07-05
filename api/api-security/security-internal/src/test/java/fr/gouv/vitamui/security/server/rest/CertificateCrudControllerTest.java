@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.rest.AbstractCrudControllerTest;
 import fr.gouv.vitamui.security.common.dto.CertificateDto;
@@ -42,15 +43,14 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
     private ContextService contextService;
 
     @Mock
-    private CustomSequenceRepository customSequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Override
     @Before
     public void setup() {
         super.setup();
-        final CertificateCrudService service = new CertificateCrudService(customSequenceRepository, certificateRepository, contextService);
+        final CertificateCrudService service = new CertificateCrudService(sequenceGeneratorService, certificateRepository, contextService);
         controller.setCertificateCrudService(service);
-
     }
 
     @Test

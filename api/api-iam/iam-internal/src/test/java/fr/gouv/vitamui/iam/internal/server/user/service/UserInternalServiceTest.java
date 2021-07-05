@@ -15,7 +15,7 @@ import fr.gouv.vitamui.commons.api.domain.ResultsDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -108,7 +108,7 @@ public final class UserInternalServiceTest {
 
     private GroupRepository groupRepository;
 
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private ProfileRepository profileRepository;
 
@@ -122,9 +122,7 @@ public final class UserInternalServiceTest {
 
     @Before
     public void setUp() {
-
-        sequenceRepository = mock(CustomSequenceRepository.class);
-
+        sequenceGeneratorService = mock(SequenceGeneratorService.class);
         userRepository = mock(UserRepository.class);
         internalProfileService = mock(ProfileInternalService.class);
         internalSecurityService = mock(InternalSecurityService.class);
@@ -137,10 +135,9 @@ public final class UserInternalServiceTest {
         addressService = mock(AddressService.class);
         applicationInternalService = mock(ApplicationInternalService.class);
 
-        internalUserService =
-                new UserInternalService(sequenceRepository, userRepository, internalGroupService, internalProfileService, userEmailInternalService,
-                        tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository, mock(IamLogbookService.class),
-                        userConverter, null, null, addressService, applicationInternalService,  null);
+        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, internalGroupService, internalProfileService,
+                userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
+                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService,  null);
 
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);

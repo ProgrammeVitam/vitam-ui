@@ -41,12 +41,7 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.converter.Converter;
-import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.commons.api.domain.GroupDto;
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -54,7 +49,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.enums.Application;
@@ -147,7 +142,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(TenantInternalService.class);
 
     @Autowired
-    public TenantInternalService(final CustomSequenceRepository sequenceRepository,
+    public TenantInternalService(final SequenceGeneratorService sequenceGeneratorService,
         final TenantRepository tenantRepository,
         final CustomerRepository customerRepository, final OwnerRepository ownerRepository,
         final GroupRepository groupRepository,
@@ -161,7 +156,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         final CustomerInitConfig customerInitConfig, final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersInternalService externalParametersInternalService
     ) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.tenantRepository = tenantRepository;
         this.customerRepository = customerRepository;
         this.ownerRepository = ownerRepository;
@@ -540,8 +535,8 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             .toJsonNode();
     }
 
-    private synchronized int generateTenantIdentifier() {
-        return getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, 100);
+    private int generateTenantIdentifier() {
+        return getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE);
     }
 
     @Override
@@ -586,7 +581,7 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
             .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
                     tenantIdentifier,
                 String.valueOf(sequenceGeneratorService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER,
-                    CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE.intValue())),
+                    CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE)),
                 ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
                     tenantIdentifier,
                 true,

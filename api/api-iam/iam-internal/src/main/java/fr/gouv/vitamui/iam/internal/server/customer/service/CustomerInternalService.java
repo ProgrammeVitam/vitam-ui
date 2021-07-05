@@ -50,6 +50,7 @@ import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -124,13 +125,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     private LogbookService logbookService;
 
     @Autowired
-    public CustomerInternalService(final CustomSequenceRepository sequenceRepository,
+    public CustomerInternalService(final SequenceGeneratorService sequenceGeneratorService,
             final CustomerRepository customerRepository, final OwnerInternalService internalOwnerService,
             final UserInternalService userInternalService, final InternalSecurityService internalSecurityService,
             final AddressService addressService, final InitCustomerService initCustomerService,
             final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
             final LogbookService logbookService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.customerRepository = customerRepository;
         this.internalOwnerService = internalOwnerService;
         this.userInternalService = userInternalService;
