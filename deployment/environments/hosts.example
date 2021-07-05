@@ -69,6 +69,8 @@ portal
 [portal]
 # put list here
 
+[hosts_browse]
+# put list here
 
 [hosts:vars]
 dns_servers=["1.1.1.1","2.2.2.2"] # defines list of DNS recursors for consul
