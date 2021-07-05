@@ -93,10 +93,10 @@ export class UploadService {
     return this.httpClient.request(new HttpRequest('POST', this.ingestApiService.getBaseUrl() + '/ingest/upload-v2', file, options));
   }
 
-  public uploadIngestV2(tenantIdentifier: string, file: Blob, fileName: string): Observable<IngestList> {
+  public uploadIngestV2(tenantIdentifier: string, file: Blob, fileName: string, type: string): Observable<IngestList> {
     let progressPercent = 0;
     this.addNewUploadFile(fileName, new IngestInfo(fileName, file.size, 0, IngestStatus.WIP));
-    this.uploadStreaming(tenantIdentifier, 'DEFAULT_WORKFLOW', 'RESUME', file, fileName).subscribe(
+    this.uploadStreaming(tenantIdentifier, type, 'RESUME', file, fileName).subscribe(
       (data) => {
         if (data) {
           switch (data.type) {
