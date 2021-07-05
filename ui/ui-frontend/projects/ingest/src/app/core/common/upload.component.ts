@@ -139,7 +139,7 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    this.uploadService.uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name).subscribe(
+    this.uploadService.uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId).subscribe(
       () => {
         this.dialogRef.close();
         this.displaySnackBar(true);
