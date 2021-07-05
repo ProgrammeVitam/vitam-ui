@@ -102,7 +102,7 @@ public class ReferentialDtoBuilder {
         return securityProfileDto;
     }
 
-    private static Set<PermissionDto> buildPermissions() {
+    public static Set<PermissionDto> buildPermissions() {
         Set<String> contracts = new HashSet<String>();
         contracts.add("contract");
 
@@ -120,6 +120,25 @@ public class ReferentialDtoBuilder {
         permissions.add(permission1);
         permissions.add(permission2);
         return permissions;
+    }
+
+    public static ContextDto getContextDto() {
+        ContextDto ctxt = new ContextDto();
+        ctxt.setEnableControl(false);
+        ctxt.setName("Contexte Name");
+        ctxt.setActivationDate("05-07-2021");
+        ctxt.setSecurityProfile("vitam-security-profile");
+
+        Set<PermissionDto> permissionsDto = new HashSet<>();
+        PermissionDto permissionDto = new PermissionDto();
+
+        permissionDto.setTenant("1");
+        permissionDto.setAccessContracts(new HashSet<>());
+        permissionDto.setIngestContracts(new HashSet<>());
+        permissionsDto.add(permissionDto);
+
+        ctxt.setPermissions(permissionsDto);
+        return ctxt;
     }
 
 }
