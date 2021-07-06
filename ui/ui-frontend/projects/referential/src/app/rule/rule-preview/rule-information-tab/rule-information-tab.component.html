@@ -14,7 +14,7 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-input formControlName="ruleValue" minlength="2" maxlength="100"
+      <vitamui-common-input formControlName="ruleValue" minlength="2"
       required placeholder="Intitulé de la règle" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
       <ng-container *ngIf="form.get('ruleValue')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required"
@@ -24,8 +24,8 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*" maxlength="3"
-        required placeholder="Durée" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
+      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*" 
+        maxlenght="3" required placeholder="Durée" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
         <ng-container *ngIf="form.get('ruleDuration')?.touched">
           <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"
             i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>

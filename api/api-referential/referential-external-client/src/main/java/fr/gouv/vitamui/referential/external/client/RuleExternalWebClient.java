@@ -38,18 +38,17 @@ package fr.gouv.vitamui.referential.external.client;
 
 import java.util.AbstractMap;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -63,30 +62,27 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
  *
  *
  */
-public class AgencyExternalWebClient extends BaseWebClient<ExternalHttpContext>  {
+public class RuleExternalWebClient extends BaseWebClient<ExternalHttpContext>  {
 	
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AgencyExternalWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleExternalWebClient.class);
     
-    public AgencyExternalWebClient(final WebClient webClient, final String baseUrl) {
+    public RuleExternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
     
-    @SuppressWarnings("unchecked")
-    public ResponseEntity<Resource> checkReferential(ExternalHttpContext context, MultipartFile file) {
-    	LOGGER.debug("check file {}", file != null ? file.getOriginalFilename() : null);
+    public JsonNode importRules(ExternalHttpContext context, MultipartFile file) {
+    	LOGGER.debug("Import file {}", file != null ? file.getOriginalFilename() : null);
         if (file == null) {
             throw new BadRequestException("No file to check .");
         }
-
-        return multipartData(
-        	getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context, 
-        	Collections.singletonMap("filename", file.getOriginalFilename()),
-        	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), 
-        	ResponseEntity.class);
+ 
+        return multipartData(getUrl() + CommonConstants.PATH_IMPORT, HttpMethod.POST, context, 
+        	Collections.singletonMap("fileName", file.getOriginalFilename()),
+        	Optional.of(new AbstractMap.SimpleEntry<>("file", file)), JsonNode.class);
     }
-       
+    
     @Override
     public String getPathUrl() {
-        return  RestApi.AGENCIES_URL;
+        return  RestApi.RULES_URL;
     }
 }

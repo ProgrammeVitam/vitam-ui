@@ -31,7 +31,48 @@ db.profiles.insert({
         },
         {
             "name": "ROLE_DELETE_RULES"
-         }
+        },
+		{
+            "name": "ROLE_IMPORT_RULES"
+        },
+		         {
+            "name": "ROLE_EXPORT_RULES"
+        }
+	 ]
+});
+
+// ------------------------------------------- REFERENTIAL TENANT 2 --------------------------------
+
+db.profiles.insert({
+	"_id" : "auto_system_rules",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Auto Rules Profile",
+	"description" : "Auto Rules Profile",
+    "tenantIdentifier": NumberInt(2),
+	"applicationName" : "RULES_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        {
+            "name": "ROLE_GET_RULES"
+        },
+        {
+            "name": "ROLE_CREATE_RULES"
+        },
+        {
+            "name": "ROLE_UPDATE_RULES"
+        },
+        {
+            "name": "ROLE_DELETE_RULES"
+        },
+		{
+            "name": "ROLE_IMPORT_RULES"
+        },
+		{
+            "name": "ROLE_EXPORT_RULES"
+        }
 	 ]
 });
 
@@ -42,7 +83,6 @@ db.sequences.updateOne({
 		"sequence": NumberInt(maxIdProfile)
 	}
 });
-
 // ========================================= GROUPS =========================================
 
 // ----------------------------------------- LEVEL "0" -----------------------------------------

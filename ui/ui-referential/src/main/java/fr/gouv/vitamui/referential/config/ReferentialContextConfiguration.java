@@ -178,6 +178,11 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     }
 
     @Bean
+    public RuleExternalWebClient ruleExternalWebClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getRuleExternalWebClient();
+    }
+
+    @Bean
     public LogbookManagementOperationExternalRestClient logbookManagementOperationExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
         return referentialExternalRestClientFactory.getLogbookManagementOperationExternalRestClient();
     }
