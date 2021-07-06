@@ -64,8 +64,10 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
@@ -74,6 +76,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.apache.commons.io.IOUtils;
+import java.nio.charset.StandardCharsets;
 
 public class VitamRuleService {
 
@@ -118,7 +122,7 @@ public class VitamRuleService {
         
         final String ruleValue = fieldsToApply.getRuleValue();
         if (ruleValue != null) {
-            ruleToPatch.setRuleType(ruleValue);
+            ruleToPatch.setRuleValue(ruleValue);
         }
 
         final String ruleDuration = fieldsToApply.getRuleDuration();
@@ -137,7 +141,7 @@ public class VitamRuleService {
         }
     }
 
-    public RequestResponse<?> patchRule(final VitamContext vitamContext, final String ruleId, FileRulesModel patchRule)
+    public boolean patchRule(final VitamContext vitamContext, final String ruleId, FileRulesModel patchRule)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
@@ -156,23 +160,26 @@ public class VitamRuleService {
             }  );
 
         LOGGER.debug("Actual rules after patching : {}", actualRules);
-
-        return importRules(vitamContext, actualRules);
+        
+        RequestResponse response = importRules(vitamContext, actualRules);
+        // Check the import response. The response doesn't contain the patch rule
+        return checkImportRulesResponse(response);
     }
 
-    public RequestResponse<?> deleteRule(final VitamContext vitamContext, final String ruleId)
+    public boolean deleteRule(final VitamContext vitamContext, final String ruleId)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
         final List<FileRulesModel> actualRules = objectMapper
             .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
 
-        return importRules(vitamContext, actualRules.stream()
-            .filter( rule -> !ruleId.equals(rule.getRuleId()) )
-            .collect(Collectors.toList()));
+        List<FileRulesModel> newRulesList = actualRules.stream().filter( rule -> !ruleId.equals(rule.getRuleId()) ).collect(Collectors.toList());
+      
+        RequestResponse response = importRules(vitamContext, newRulesList);
+        return checkImportRulesResponse(response);
     }
 
-    public RequestResponse<?> createRule(final VitamContext vitamContext, FileRulesModel newRule)
+    public boolean createRule(final VitamContext vitamContext, FileRulesModel newRule)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
         RequestResponse<FileRulesModel> requestResponse = findRules(vitamContext, new Select().getFinalSelect());
@@ -185,13 +192,19 @@ public class VitamRuleService {
 
         LOGGER.debug("After Add List: {}", actualRules);
 
-        return importRules(vitamContext, actualRules);
+        RequestResponse response = importRules(vitamContext, actualRules);
+        // Check the import response. The response doesn't contain the new rule
+        return checkImportRulesResponse(response);
     }
 
     private RequestResponse importRules(final VitamContext vitamContext, final List<FileRulesModel> rulesModels)
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
-        try (ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels)) {
-            return adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
+        try (ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels);
+        	 ByteArrayInputStream debugStream = serializeRules(rulesModels)) {
+            // return adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
+            
+            final RequestResponse response = adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
+            return response;
         }
     }
 
@@ -290,5 +303,21 @@ public class VitamRuleService {
 
         return adminExternalClient.downloadRulesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
-
+    
+    public RequestResponse<?> importRules(VitamContext vitamContext, String fileName, MultipartFile file) 
+    		throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
+        LOGGER.debug("Import rule file {}", fileName);
+        return this.adminExternalClient.createRules(vitamContext, file.getInputStream(), fileName);
+    }	
+    
+    /**
+     * Check if a rule import has failed or not
+     * @param response: the response to check
+     * @return true if the import successed , false otherwise
+     */
+    private boolean checkImportRulesResponse(RequestResponse response) {
+        // Check the Vitam response (if status == 200, the rule has been deleted else if status == BAD_REQUEST, Vitam has not delete the rule else, a technical  exception occured)
+        VitamRestUtils.checkResponse(response, HttpStatus.OK.value(), HttpStatus.CREATED.value(), HttpStatus.ACCEPTED.value(), HttpStatus.BAD_REQUEST.value());
+        return response.getStatus() == HttpStatus.OK.value() || response.getStatus() ==  HttpStatus.CREATED.value() || response.getStatus() == HttpStatus.ACCEPTED.value();
+    }
 }

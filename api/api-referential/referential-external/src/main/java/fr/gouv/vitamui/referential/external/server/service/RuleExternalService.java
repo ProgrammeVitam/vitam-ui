@@ -41,12 +41,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -59,6 +59,7 @@ import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -68,11 +69,14 @@ import lombok.Setter;
 public class RuleExternalService extends AbstractResourceClientService<RuleDto, RuleDto> {
 
     private RuleInternalRestClient ruleInternalRestClient;
+    
+    private RuleInternalWebClient ruleInternalWebClient;
 
     @Autowired
-    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient) {
+    public RuleExternalService(ExternalSecurityService externalSecurityService, RuleInternalRestClient ruleInternalRestClient, RuleInternalWebClient ruleInternalWebClient) {
         super(externalSecurityService);
         this.ruleInternalRestClient = ruleInternalRestClient;
+        this.ruleInternalWebClient = ruleInternalWebClient;
     }
 
     public List<RuleDto> getAll(final Optional<String> criteria) {
@@ -94,13 +98,12 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
         return getClient().getOne(getInternalHttpContext(), id);
     }
 
-    @Override
-    public RuleDto patch(final Map<String, Object> partialDto) {
-        return super.patch(partialDto);
+    public boolean patchRule(final String id, final Map<String, Object> partialDto) {
+    	return ruleInternalRestClient.patchRule(getInternalHttpContext(), id, partialDto);
     }
 
-    public RuleDto create(final RuleDto ruleDto) {
-        return ruleInternalRestClient.create(getInternalHttpContext(), ruleDto);
+    public boolean createRule(final RuleDto ruleDto) {
+        return ruleInternalRestClient.createRule(getInternalHttpContext(), ruleDto);
     }
 
     @Override
@@ -117,12 +120,16 @@ public class RuleExternalService extends AbstractResourceClientService<RuleDto, 
         return ruleInternalRestClient.check(getInternalHttpContext(), accessContractDto);
     }
 
-    public void delete(final String id) {
-        ruleInternalRestClient.delete(getInternalHttpContext(), id);
+    public boolean deleteRule(final String id) {
+        return ruleInternalRestClient.deleteRule(getInternalHttpContext(), id);
     }
 
     public ResponseEntity<Resource> export() {
         return ruleInternalRestClient.export(getInternalHttpContext());
+    }
+    
+    public JsonNode importRules(String fileName, MultipartFile file) {
+        return ruleInternalWebClient.importRules(getInternalHttpContext(), fileName, file);
     }
 
 }
