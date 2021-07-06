@@ -13,8 +13,7 @@
             <vitamui-library-input formControlName="name" placeholder="Nom"
                 i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
                 <ng-container *ngIf="form.get('name')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
                     </vitamui-common-input-error>
                     <!-- FIXME: Must we validate existance ? -->
                     <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists"
@@ -27,8 +26,7 @@
             <vitamui-common-textarea formControlName="description" placeholder="Description"
                 i18n-placeholder="description@@ingestContractPreviewLabelName" [rows]="3">
                 <ng-container *ngIf="form.get('description')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
-                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
                     </vitamui-common-input-error>
                 </ng-container>
             </vitamui-common-textarea>

@@ -1,6 +1,8 @@
 @import '../../../../../../sass/variables/colors';
+@import '../../../../../../sass/mixins/elevation';
+
 :host {
-    color: #747272!important;
+    color: var(--vitamui-grey-600)!important;
 
     .app-icon {
         border-radius: 50%;
@@ -8,7 +10,8 @@
         width: 35px;
         height: 35px;
         padding: 5px;
-        box-shadow: 0px 0px 2px #888;
+        @include elevation-0;
+
     }
 
     .tooltip {
@@ -21,4 +24,11 @@
     .mandatory {
         max-width: 100%;
     }
+}
+
+a {
+    color: var(--vitamui-grey-600);
+    text-decoration: none;
+    padding: 0 24px;
+    height: 100%;
 }

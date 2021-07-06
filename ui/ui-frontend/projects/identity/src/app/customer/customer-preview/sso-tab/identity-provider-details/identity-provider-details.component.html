@@ -2,13 +2,13 @@
 
   <div class="row">
     <div class="col-5">
-      <vitamui-common-slide-toggle formControlName="enabled" i18n="IDP Active@@idpFormLabelEnabled">IDP Actif</vitamui-common-slide-toggle>
+      <vitamui-common-slide-toggle formControlName="enabled">{{'CUSTOMER.SSO.ACTIVE_SWITCH' | translate}}</vitamui-common-slide-toggle>
     </div>
     <div class="col-5">
         <vitamui-common-editable-input
         formControlName="identifier"
         maxlength="12"
-        label="Identifiant" i18n-label="IDP identifiant@@idpFormLabelIdentifier"
+        [label]="'COMMON.ID' |translate"
         [validator]="form?.get('identifier')?.validator"
         [asyncValidator]="form?.get('identifier')?.asyncValidator"
       >
@@ -21,23 +21,23 @@
       <vitamui-common-editable-input
         formControlName="name"
         maxlength="100"
-        label="Nom IDP" i18n-label="IDP name@@idpFormLabelName"
+        [label]="'CUSTOMER.SSO.ACTIVE_SWITCH' | translate"
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
 
     <div class="col-7 form-control">
       <vitamui-common-editable-toggle-group
         formControlName="internal"
-        label="Type" i18n-label="Type@@idpFormLabelType"
+        [label]="'CUSTOMER.SSO.TYPE' | translate"
         [validator]="form?.get('internal')?.validator"
         [asyncValidator]="form?.get('internal')?.asyncValidator"
       >
-        <vitamui-common-editable-button-toggle [value]="true" content="Interne" i18n-content="Internal@@idpFormTypeButtonInternal"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle [value]="false" content="Externe" i18n-content="External@@idpFormTypeButtonExternal"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle [value]="true" [content]="'CUSTOMER.SSO.TYPE_INTERNAL' | translate"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle [value]="false" [content]="'CUSTOMER.SSO.TYPE_EXTERNAL' | translate"></vitamui-common-editable-button-toggle>
       </vitamui-common-editable-toggle-group>
       </div>
   </div>
@@ -50,11 +50,11 @@
       <vitamui-common-editable-file
         [formControl]="idpMetadata"
         accept=".xml"
-        label="Metadata de l'IDP" i18n-label="Metadata@@idpFormLabelMetadata"
+        [label]="'CUSTOMER.SSO.IDP_METADATA' | translate"
         [validator]="idpMetadata?.validator"
         [asyncValidator]="idpMetadata?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-file>
     </div>
   </div>
@@ -63,12 +63,12 @@
     <div class="col-12">
       <app-editable-patterns
         formControlName="patterns"
-        label="Patterns" i18n-label="Patterns@@idpFormLabelPatterns"
+        [label]="'CUSTOMER.SSO.PATTERNS' | translate"
         [options]="domains"
         [validator]="form?.get('patterns')?.validator"
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
       </app-editable-patterns>
     </div>
   </div>
@@ -87,7 +87,7 @@
       <vitamui-common-editable-input
         formControlName="mailAttribute"
         maxlength="100"
-        label="Attribut mail" i18n-label="Mail attribute@@idpFormLabelMailAttribute"
+        [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
       >
       </vitamui-common-editable-input>
     </div>
@@ -97,14 +97,14 @@
     <div class="col-6 form-control">
       <vitamui-common-editable-toggle-group
       formControlName="authnRequestBinding"
-      label="Authentication Request Binding" i18n-label="AuthenticationRequestBinding@@idpFormLabelAuthenticationRequestBinding"
+      label="Authentication Request Binding"
       [validator]="form?.get('authnRequestBinding')?.validator"
       [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
     >
-      <vitamui-common-editable-button-toggle value="GET" content="GET" i18n-content="Authentication Request Binding Get button@@idpAuthenticationRequestBindingGetdButton"></vitamui-common-editable-button-toggle>
-      <vitamui-common-editable-button-toggle value="POST" content="POST" i18n-content="Authentication Request Binding Post button@@idpAuthenticationRequestBindingPostdButton"></vitamui-common-editable-button-toggle>
+      <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
+      <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
       
-      <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+      <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
     </vitamui-common-editable-toggle-group>
     </div>
   </div>

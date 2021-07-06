@@ -38,6 +38,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { VitamUICommonTestModule } from '../../../../../../testing/src';
 import { AuthService } from '../../../auth.service';
 import { LogbookService } from '../../logbook.service';
 import { OperationHistoryTabComponent } from './operation-history-tab.component';
@@ -48,6 +49,7 @@ describe('OperationHistoryTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [VitamUICommonTestModule],
       declarations: [ OperationHistoryTabComponent ],
       providers: [
         { provide: AuthService, useValue: {}},

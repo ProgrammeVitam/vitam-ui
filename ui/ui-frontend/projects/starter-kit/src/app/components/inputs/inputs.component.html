@@ -2,9 +2,9 @@
     <h4>Simple</h4>
     <div class="d-flex flex-column">
         <div class="row m-0 pl-3 pr-3 mt-4">
-            <vitamui-common-input [formControl]="streetEmpty" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input [formControl]="streetInvalid" placeholder="N° et nom de rue"></vitamui-common-input>
-            <vitamui-common-input disabled [formControl]="streetDisable" placeholder="N° et nom de rue"></vitamui-common-input>
+            <vitamui-common-input [formControl]="streetEmpty" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+            <vitamui-common-input [formControl]="streetInvalid" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
+            <vitamui-common-input disabled [formControl]="streetDisable" [placeholder]="'COMMON.ADRESS.STREET' | translate"></vitamui-common-input>
         </div>
         <div class="row m-0">
             <div class="col-8">
@@ -68,9 +68,9 @@
             <div class="col-8">
                 <mat-form-field class="mr-3 field-domain vitamui-mat-select">
                     <mat-select [formControl]="country" panelClass="vitamui-mat-select">
-                        <mat-option value="FR">France</mat-option>
-                        <mat-option value="GB">Royaume Uni</mat-option>
-                        <mat-option value="DE">Allemagne</mat-option>
+                      <mat-option *ngFor="let country of countries" [value]="country.key">
+                        {{country.label}}
+                      </mat-option>
                     </mat-select>
                     <div class="select-arrow">
                         <i class="material-icons">keyboard_arrow_up</i>
@@ -80,9 +80,9 @@
             </div>
             <mat-form-field class="mr-3 field-domain vitamui-mat-select">
                 <mat-select [formControl]="country" panelClass="vitamui-mat-select" disabled>
-                    <mat-option value="FR" [disabled]="true">France</mat-option>
-                    <mat-option value="GB" [disabled]="true">Royaume Uni</mat-option>
-                    <mat-option value="DE" [disabled]="true">Allemagne</mat-option>
+                  <mat-option *ngFor="let country of countries" [value]="country.key">
+                    {{country.label}}
+                  </mat-option>
                 </mat-select>
                 <div class="select-arrow">
                     <i class="material-icons">keyboard_arrow_up</i>
@@ -111,9 +111,9 @@
     <h4>Auto complete</h4>
 
     <div class="d-flex justify-content-around">
-        <vitamui-common-vitamui-autocomplete [options]="countries" placeholder="Pays">
+        <vitamui-common-vitamui-autocomplete [options]="countries" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate">
         </vitamui-common-vitamui-autocomplete>
-        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" placeholder="Pays" disable="true">
+        <vitamui-common-vitamui-autocomplete [options]="countries" [formControl]="autoCompletSelect" [placeholder]="'COMMON.ADRESS.COUNTRY' | translate" disable="true">
         </vitamui-common-vitamui-autocomplete>
     </div>
     <h4>Textarea</h4>
@@ -228,6 +228,12 @@
       <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd></mat-datepicker>
     </mat-form-field>
+
+    <mat-form-field class="col-3 vitamui-input vitamui-date mr-4" disabled>
+        <input [matDatepicker]="pickerStart"  matInput placeholder="Depuis" disabled>
+        <mat-datepicker-toggle [for]="pickerStart" matSuffix disabled></mat-datepicker-toggle>
+        <mat-datepicker #pickerStart disabled></mat-datepicker>
+      </mat-form-field>
   </div>
 
     <h4>Duration</h4>

@@ -1,3 +1,11 @@
+.mat-drawer, .mat-dialog-container {
+    .search  {
+        input[type=search], input[type=text] {
+        @include dialog-elevation-dark;
+      }
+    }
+  }
+
 .search {
     display: inline-block;
     position: relative;
@@ -16,7 +24,7 @@
         height: 50px;
         border-radius: 50px * 0.5;
         background-color: $white;
-        @include elevation-1;
+        @include input-elevation-dark;
         border: none;
         padding: 10px 90px 10px 28.5px;
         display: flex;

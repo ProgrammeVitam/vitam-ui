@@ -7,7 +7,7 @@
     <app-group-list [groups] = "activeGroups" (selectedGroupEvent)="updateGroup($event)" [userGroupName] = "userGroupName"></app-group-list>
   </div>
   <div class="actions">
-    <button type="button" class="btn primary" (click)="saveUserUpdate()" [disabled]="!selectedGroupName" i18n="group attribution edit@@groupAttributionEdit">Modifier</button>
-    <button type="button" class="btn cancel link" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">Annuler</button>
+    <button type="button" class="btn primary" (click)="saveUserUpdate()" [disabled]="!selectedGroupName">{{'COMMON.UPDATE' | translate}}</button>
+    <button type="button" class="btn cancel link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
   </div>
 </div>

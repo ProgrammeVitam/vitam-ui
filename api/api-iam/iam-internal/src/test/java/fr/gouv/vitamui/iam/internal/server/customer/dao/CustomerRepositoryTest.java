@@ -3,6 +3,7 @@ package fr.gouv.vitamui.iam.internal.server.customer.dao;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -74,11 +75,9 @@ public class CustomerRepositoryTest {
 
         final Customer julien = IamServerUtilsTest.buildCustomer("id1", "julien", Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
                 Arrays.asList("julien@vitamui.com", "pierre@vitamui.com"));
-        julien.setGraphicIdentity(null);
 
         final Customer moctar = IamServerUtilsTest.buildCustomer("id2", "moctar", Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 10000000)),
                 Arrays.asList("julien@vitamui.com", "pierre@vitamui.com"));
-        moctar.setGraphicIdentity(null);
 
         repository.save(julien);
         repository.save(moctar);
@@ -90,18 +89,21 @@ public class CustomerRepositoryTest {
         List<Customer> customersFound = repository.findAll(query);
         assertThat(customersFound).isNotEmpty();
         assertThat(customersFound.size() > 1).isTrue();
-        assertThat(customersFound).contains(julien, moctar);
+        assertThat(customersFound.stream().anyMatch(customer -> customer.getId().equals(julien.getId()))).isTrue();
+        assertThat(customersFound.stream().anyMatch(customer -> customer.getId().equals(moctar.getId()))).isTrue();
 
         term = "jul";
         query = Query.query(MongoUtils.buildOrOperator((Criteria) MongoUtils.buildCriteriaContainsIgnoreCase("code", term),
                 (Criteria) MongoUtils.buildCriteriaContainsIgnoreCase("name", term)));
         customersFound = repository.findAll(query);
-        assertThat(customersFound).containsExactly(julien);
+        assertThat(customersFound.size()).isEqualTo(1);
+        assertThat(customersFound.get(0)).usingRecursiveComparison().isEqualTo(julien);
 
         term = julien.getCode().substring(0, 4);
         query = Query.query(MongoUtils.buildOrOperator((Criteria) MongoUtils.buildCriteriaContainsIgnoreCase("code", term),
                 (Criteria) MongoUtils.buildCriteriaContainsIgnoreCase("name", term)));
         customersFound = repository.findAll(query);
-        assertThat(customersFound).containsExactly(julien);
+        assertThat(customersFound.size()).isEqualTo(1);
+        assertThat(customersFound.get(0)).usingRecursiveComparison().isEqualTo(julien);
     }
 }

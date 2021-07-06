@@ -1,9 +1,25 @@
+@import "../../../../../sass/mixins/elevation";
+
+:host::ng-deep {
+    .btn-circle {
+        &.small {
+            width: 24px;
+            height: 24px;
+
+            i {
+                font-size: 14px;
+            }
+        }
+    }
+}
+
 button {
     position: relative;
-    left: -2.5rem;
+    left: -2rem;
+    @include elevation-0;
 }
 
 vitamui-common-breadcrumb {
     position: relative;
-    left: -1.2rem;
+    left: -1rem;
 }

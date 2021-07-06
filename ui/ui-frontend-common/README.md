@@ -46,15 +46,17 @@ Once you've tested your library and everything works fine, you can publish the p
 
 ## Package & Publish a new version
 
-Run `npm version X.X.X` or `npm run version patch`
+Run `npm version X.X.X` or `npm version patch`
 
-Run `npm run build` to build the package.
+Run `npm run check` to check the lint and tests and build the package.
 
 Run `npm run packagr:tar` to build the package npm.
 
 Run `./install_local.sh` to install the local package to ui-frontend.
 
 Test your new version in all the apps and check that everything is okay. Make changes to the applications if necessary.
+
+Use the right npmrc for common publication.
 
 Run `npm publish dist` to publish on the nexus repository.
 
@@ -65,3 +67,5 @@ Run `./install_from_repo.sh <version>` to install your freshly published version
 Make another commit with the changes made to the apps as well as the incremented version number in the `package.json`.
 
 Push your commits and your tag.
+
+Reset the old npmrc if necessary.

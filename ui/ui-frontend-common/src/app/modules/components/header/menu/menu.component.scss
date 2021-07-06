@@ -1,13 +1,12 @@
 @import '../../../../../sass/variables/colors';
+@import '../../../../../sass/mixins/elevation';
 
 :host::ng-deep  {
   --width: 900px;
-  --boxShadow: 0 7px 8px -4px rgba(0, 0, 0, 0.2), 0 13px 19px 2px rgba(0, 0, 0, 0.14), 0 5px 24px 4px rgba(0, 0, 0, 0.12);
   color: #747272;
   --headerHeight: 72px;
   font-weight: 400;
   font-size: 16px;
-
 
   .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
     background: var(--vitamui-primary);
@@ -17,8 +16,9 @@
     display: none!important;
   }
 
-  .mat-list-item-content {
-    padding: 24px!important;
+  .mat-list-text {
+    height: 100%;
+    padding: 0!important;
   }
 
   mat-pseudo-checkbox.mat-pseudo-checkbox {
@@ -26,7 +26,7 @@
   }
 
   mat-list-option:focus, mat-list-option:hover {
-    background-color: #E8E8E8;
+    background-color: var(--vitamui-grey-300);
   }
 
   .mat-tab-body-content  {
@@ -43,6 +43,10 @@
     font-weight: bold;
   }
 
+  vitamui-common-menu-application-tile {
+    height: 100%;
+  }
+
   mat-list-option vitamui-common-menu-application-tile * {
     .hover-focus {
       visibility: hidden;
@@ -57,6 +61,10 @@
     max-height: 80vh;
     overflow-y: auto;
     overflow-x: hidden;
+  }
+
+  mat-list-option .mat-list-item-content {
+    padding: 0!important;
   }
 
   mat-list-option:focus{
@@ -106,7 +114,7 @@
     background: $white;
     width: var(--width);
     height: auto;
-    box-shadow: var(--boxShadow);
+    @include elevation-7-dark;
   }
 
   .header {

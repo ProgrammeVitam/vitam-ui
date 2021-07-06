@@ -39,7 +39,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { Customer, diff, OtpState } from 'ui-frontend-common';
+import { CountryOption,  CountryService, Customer, diff, OtpState } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { CustomerService } from '../../../core/customer.service';
@@ -114,10 +114,13 @@ export class InformationTabComponent implements OnInit, OnDestroy {
 
   private sub: Subscription;
 
+  public countries: CountryOption[];
+
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private customerCreateValidators: CustomerCreateValidators
+    private customerCreateValidators: CustomerCreateValidators,
+    private countryService: CountryService,
   ) {
     this.form = this.formBuilder.group({
       id: [null, Validators.required],
@@ -159,6 +162,11 @@ export class InformationTabComponent implements OnInit, OnDestroy {
       switchMap((formData) => this.customerService.patch(formData).pipe(catchError(() => of(null))))
     )
     .subscribe((customer: Customer) => this.resetForm(customer));
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
+    });
+
   }
 
 

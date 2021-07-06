@@ -38,6 +38,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { CustomerSelectContentModule } from '../customer-select-content/customer-select-content.module';
 import { NavbarModule } from '../navbar/navbar.module';
 import { VitamUICustomerSelectComponent } from './vitamui-customer-select.component';
@@ -49,6 +50,7 @@ import { VitamUICustomerSelectComponent } from './vitamui-customer-select.compon
     RouterModule,
     NavbarModule,
     CustomerSelectContentModule,
+    TranslateModule
   ],
   declarations: [VitamUICustomerSelectComponent],
   exports: [VitamUICustomerSelectComponent],

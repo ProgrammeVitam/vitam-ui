@@ -100,7 +100,6 @@ import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
 import fr.gouv.vitamui.cas.webflow.actions.I18NSendPasswordResetInstructionsAction;
 import fr.gouv.vitamui.cas.webflow.actions.NoOpAction;
-import fr.gouv.vitamui.cas.webflow.actions.SelectRedirectAction;
 import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -271,11 +270,6 @@ public class WebflowConfig {
     }
 
     @Bean
-    public SelectRedirectAction selectRedirectAction() {
-        return new SelectRedirectAction(centralAuthenticationService.getObject());
-    }
-
-    @Bean
     public TriggerChangePasswordAction triggerChangePasswordAction() {
         return new TriggerChangePasswordAction(ticketRegistrySupport, utils);
     }
@@ -324,13 +318,6 @@ public class WebflowConfig {
             ticketGrantingTicketCookieGenerator.getObject(),
             warnCookieGenerator.getObject(),
             casProperties.getLogout());
-    }
-
-    @Bean
-    @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public CasProtocolView casGetResponseView() {
-        return new CasProtocolView("protocol/casGetResponseView",
-            applicationContext, springTemplateEngine, thymeleafProperties);
     }
 
     @Bean

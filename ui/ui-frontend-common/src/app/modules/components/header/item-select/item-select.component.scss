@@ -1,3 +1,5 @@
+@import '../../../../../sass/mixins/elevation';
+
 :host::ng-deep {
     .selected-item-label,
     .unselected-item-label {
@@ -60,7 +62,7 @@
     }
 
     .mat-form-field:not(.mat-form-field-disabled) {
-        box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
+        @include input-elevation-dark;
 
         .mat-form-field-label {
             color: var(--vitamui-grey-600);

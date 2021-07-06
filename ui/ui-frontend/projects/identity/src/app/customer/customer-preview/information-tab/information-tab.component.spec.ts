@@ -39,9 +39,10 @@ import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AsyncValidator, ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validator } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY } from 'rxjs';
 import { of } from 'rxjs';
 
-import { Customer, OtpState } from 'ui-frontend-common';
+import {CountryService, Customer, OtpState} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../../core/customer.service';
 import { CustomerCreateValidators } from '../../customer-create/customer-create.validators';
@@ -182,6 +183,8 @@ describe('Customer InformationTabComponent', () => {
       providers: [
         { provide: CustomerService, useValue: customerServiceSpy },
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+
       ]
     })
     .compileComponents();

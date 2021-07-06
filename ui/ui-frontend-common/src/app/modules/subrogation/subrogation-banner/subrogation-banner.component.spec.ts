@@ -40,6 +40,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 
+import { VitamUICommonTestModule } from '../../../../../testing/src';
 import { AuthService } from '../../auth.service';
 import { SubrogationService } from '../subrogation.service';
 import { SubrogationBannerComponent } from './subrogation-banner.component';
@@ -50,7 +51,7 @@ describe('SubrogationBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [MatDialogModule],
+      imports: [MatDialogModule, VitamUICommonTestModule],
       declarations: [ SubrogationBannerComponent ],
       providers: [
         { provide: AuthService, useValue: { userLoaded: of(null) } },

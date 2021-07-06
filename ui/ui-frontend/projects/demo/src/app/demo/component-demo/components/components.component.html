@@ -139,8 +139,8 @@
     <ng-template #confirmDialogTemplate>
       <vitamui-common-confirm-dialog
         dialogTitle="Annuler la creation ?"
-        cancelLabel="Retour"
-        confirmLabel="Confirmer"
+        [cancelLabel]="'COMMON.BACK' | translate"
+        [confirmLabel]="'COMMON.CONFIRM' | translate"
       >
         Vous allez perdre votre saisie. Etes-vous sur de vouloir annuler et fermer le formulaire de creation ?
       </vitamui-common-confirm-dialog>

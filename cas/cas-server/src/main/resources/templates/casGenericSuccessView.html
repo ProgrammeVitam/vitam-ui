@@ -9,7 +9,7 @@
     <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
 
     <meta http-equiv="refresh" th:attr="content=${'1; url=' + portalUrl}" />
-    
+
     <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}"/>
 
     <link th:href="@{/css/cas.css}" rel="stylesheet"/>
@@ -19,16 +19,13 @@
     <script src="//www.google.com/recaptcha/api.js" async defer th:if="${recaptchaSiteKey}"></script>
 
 </head>
-<body class="login bg-portal" th:styleappend="${@environment.getProperty('theme.body.style')}">
+<body class="bg-portal" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div class="background bg-success"></div>
     <div class="flex-justify-content-center">
         <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
     </div>
-	<div class="login-box login-padding login-marging success">
-	  <div class="content">
-	    <h4 th:text="#{cas.authentication.connexion.success}">Connexion établie et sécurisée</h4>
-	    <i class="material-icons check-icon">check</i>
-	  </div>
+    <div class="fex-align-center flex-justify-content-center">
+            <div class="loader"></div>
     </div>
 
 </body>

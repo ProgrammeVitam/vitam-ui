@@ -13,8 +13,8 @@
 
         <vitamui-common-item-select
             class="col-3 p-0 ml-5"
-            [label]="'SELECT-TENANT.SELECT' | translate"
-            [selectedLabel]="'SELECT-TENANT.SELECTED' | translate"
+            [label]="'SELECT_TENANT.SELECT' | translate"
+            [selectedLabel]="'SELECT_TENANT.SELECTED' | translate"
             [items]="tenants"
             [selectedItem]="selectedTenant"
             (itemSelected)="updateApps($event)"
@@ -33,21 +33,27 @@
             <span class="px-3">{{'MENU.RESULT' | translate}}&nbsp;: </span>
             <hr class="mb-0">
             <mat-selection-list id="searchResults"
-                class="py-3 overflow"
-                (selectionChange)="openApplication($event.option.value)">
+                (selectionChange)="onClose($event)"
+                class="py-3 overflow">
                 <mat-list-option [value]="app" @slideAnimation *ngFor="let app of filteredApplications">
-                    <vitamui-common-menu-application-tile [application]="app" [hlCriteria]="criteria"></vitamui-common-menu-application-tile>
+                    <vitamui-common-menu-application-tile [application]="app"
+                    [applicationUrl]="getApplicationUrl(app)"
+                    [hlCriteria]="criteria"
+                    (openApplication)="openApplication(app)"
+                    ></vitamui-common-menu-application-tile>
                 </mat-list-option>
             </mat-selection-list>
         </ng-container>
         <ng-template #displayMats>
                 <mat-tab-group animationDuration="300ms" mat-align-tabs="start" [selectedIndex]="tabSelectedIndex" (selectedTabChange)="changeTabFocus($event)">
                     <mat-tab *ngFor="let element of appMap | keyvalue" [label]="'MENU.' + element.key.identifier | translate:{default:element.key.title}">
-                        <mat-selection-list
-                            class="py-3"
-                            (selectionChange)="openApplication($event.option.value);">
+                        <mat-selection-list (selectionChange)="onClose($event)" class="py-3">
                             <mat-list-option cdkTrapFocus cdkTrapFocusAutoChange [value]="app" *ngFor="let app of element.value">
-                                <vitamui-common-menu-application-tile [application]="app"></vitamui-common-menu-application-tile>
+                                <vitamui-common-menu-application-tile
+                                [application]="app"
+                                [applicationUrl]="getApplicationUrl(app)"
+                                (openApplication)="openApplication(app)"
+                                ></vitamui-common-menu-application-tile>
                             </mat-list-option>
                         </mat-selection-list>
                     </mat-tab>

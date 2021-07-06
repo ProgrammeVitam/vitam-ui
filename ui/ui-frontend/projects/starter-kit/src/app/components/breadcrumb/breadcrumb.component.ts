@@ -1,3 +1,4 @@
+import { ApplicationId } from 'ui-frontend-common';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BreadcrumbComponent implements OnInit {
 
-  public breadCrumbData = [{label: 'Portail'}, {label: 'Archive', identifier:'ARCHIVE_APP_ID'}, {label: 'Bordereau n°1'}];
+  public breadCrumbData = [{identifier: ApplicationId.PORTAL_APP}, {identifier: ApplicationId.CUSTOMERS_APP}, {label: 'Client n°1'}];
 
   constructor() { }
 

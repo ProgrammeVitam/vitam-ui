@@ -1,35 +1,85 @@
 {
-    "BUTTON": {
-        "Primary": "Primary default",
-        "Primary_outline": "Primary outline default",
-        "Primary_contrast": "Contrast Primary default",
-        "Primary_contrast_outline": "Contrast primary outline default",
-        "Secondary": "Secondary default",
-        "Secondary_outline": "Secondary outline default",
-        "Secondary_contrast": "Contrast Secondary default",
-        "Secondary_contrast_outline": "Contrast secondary outline default",
-        "Tertiary": "Tertiary default",
-        "Disabled_label": "disabled",
-        "Disabled_outline": "Outline disabled",
-        "Disabled_contrast": "Contrast disabled",
-        "Disabled_contrast_outline": "Contrast outline disabled",
-        "CANCEL":"Cancel"
-    },
-    "SAMPLE-DIALOG": {
-        "Open": "Open the sample dialog",
-        "Step-0": "First Step",
-        "Step-1": "Second Step"
-    },
-    "COLORS":{
-        "Primary": "Color primary",
-        "Secondary": "Color secondary",
-        "Grey": "Color grey",
-        "Red": "Color red",
-        "Orange": "Color orange",
-        "Green": "Color green"
-    },
-    "ICONS":{
-        "Title": "Vitam-UI icons list",
-        "Colors": "Available colors" 
+  "COMMON": {
+    "ID": "Id",
+    "ADRESS": {
+      "STREET": "Number and name of the street",
+      "ZIPCODE": "Zipcode",
+      "COUNTRY": "Country"
     }
+  },
+  "CUSTOMER": {
+    "HOME": {
+      "TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address..."
+    }
+  },
+  "BUTTON": {
+    "Primary": "Primary default",
+    "PRIMARY_OUTLINE": "Primary outline default",
+    "PRIMARY_CONTRAST": "Contrast Primary default",
+    "PRIMARY_CONTRAST_OUTLINE": "Contrast primary outline default",
+    "Secondary": "Secondary default",
+    "SECONDARY_OUTLINE": "Secondary outline default",
+    "SECONDARY_CONTRAST": "Contrast Secondary default",
+    "SECONDARY_CONTRAST_OUTLINE": "Contrast secondary outline default",
+    "Tertiary": "Tertiary default",
+    "DISABLED_LABEL": "Disabled",
+    "DISABLED_OUTLINE": "Outline disabled",
+    "DISABLED_CONTRAST": "Contrast disabled",
+    "DISABLED_CONTRAST_OUTLINE": "Contrast outline disabled",
+    "CANCEL": "Cancel"
+  },
+  "SAMPLE_DIALOG": {
+    "Open": "Open the sample dialog",
+    "Step-0": "First Step",
+    "Step-1": "Second Step"
+  },
+  "COLORS": {
+    "Primary": "Color primary",
+    "Secondary": "Color secondary",
+    "Grey": "Color grey",
+    "Red": "Color red",
+    "Orange": "Color orange",
+    "Green": "Color green"
+  },
+  "ICONS": {
+    "Title": "Vitam-UI icons list",
+    "Colors": "Available colors"
+  },
+  "ELEVATIONS": {
+    "Title": "Shadows & Elevations",
+    "Dark": "Black Shadows",
+    "Primary": "Primary Shadows",
+    "Secondary": "Secondaty Shadows",
+    "Tertiary": "Tertiary Shadows"
+  },
+  "TRANSLATION": {
+    "TITLE": "Translation",
+    "CONVENTION": "Convention",
+    "USAGE": "Usage",
+    "WITH_PIPE": "The translate pipe : to favor",
+    "DO_NOT_SPLIT_WORDS": "Do not split sentences in multiple words translated individually",
+    "TRANSLATE_SERVICE": "The TranslateService methods",
+    "TRANSLATE_PIPE": "Text translated with the translate pipe. This is dynamically translated on language changes.",
+    "TRANSLATE_INSTANT": "Text translated with the method translateService.instant(). This is not dynamicly translated on language changes.",
+    "TRANSLATE_GET": {
+      "TRANSLATE_GET_1": "First text translated with the method translateService.get().",
+      "TRANSLATE_GET_2": "Second text translated with the method translateService.get()."
+    },
+    "TRANSLATE_PARAMETERS": "Text translated with multiple parameters : my first is {{ param1 }}, my second is {{ param2 }}.",
+    "TRANSLATE_NUMBER": {
+      "ZERO": "Text translated in singular and plural: I don't have any apple.",
+      "SINGULAR": "Text translated in singular and plural: I have one apple.",
+      "PLURAL": "Text translated in singular and plural: I have {{ number }} apples."
+    },
+    "TRANSLATE_HTML": "This translated text contains <strong>html code</strong>.",
+    "NUMBER_OF_APPLE": "Number of apples",
+    "ALWAYS_TRANSLATE": "Always translate the new labels : do not leave any hardcoded text.",
+    "KEY_NAMING": "To name keys, use uppercase and underscore. Always start with the application name, and at least include the containing component. Ex: CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
+    "KEY_NAMING_COMMON": "For reccuring texts, put them in the COMMON category. Ex: COMMON.BACK",
+    "FIRST_INPUT": "First parameter",
+    "SECOND_INPUT": "Second parameter"
+  },
+  "MISCELLANEOUS": {
+    "INFINITE_SCROLL": "Infinite scroll"
+  }
 }

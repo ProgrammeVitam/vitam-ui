@@ -34,7 +34,7 @@
 }
 
 .tile {
-    @include elevation-1;
+    @include elevation-2-dark;
     width: 250px;
     height: 60px;
     background: $white;

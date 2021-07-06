@@ -142,7 +142,7 @@ describe('MultipleEmailInputComponent', () => {
       });
     }));
 
-    it('should display "(par défaut)" next to the selected domain', waitForAsync(() => {
+    it('should display "SHARED.DOMAIN_INPUT.DEFAULT_DOMAIN" next to the selected domain', waitForAsync(() => {
       testhost.value = ['test1.com', 'test2.com', 'test3.com', 'test4.com'];
       testhost.defaultValue = testhost.value[1];
       fixture.detectChanges();

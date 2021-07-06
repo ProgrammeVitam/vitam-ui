@@ -36,6 +36,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 
@@ -45,6 +46,7 @@ describe('VitamUISnackbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+      imports: [VitamUICommonTestModule],
       declarations: [ VitamUISnackBarComponent ],
       providers: [
         { provide: MAT_SNACK_BAR_DATA, useValue: {} },

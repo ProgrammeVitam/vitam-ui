@@ -1,27 +1,40 @@
 @import './mixins/breakpoints';
+@import './variables';
 
-$header-height: 72px !default;
-$footer-height: 100px !default;
+html {
+    // Hide scroll bars for our body container (but still scrollable)
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
 
 .vitamui-heading {
+    padding-top: $layout-margin-y;
     margin-bottom: 3rem;
 }
 
 // Defaut supported screen width is 1920px
 .vitamui-content, .vitamui-heading {
-    max-width: $large-widh;
+    max-width: $large-width;
+    min-width: $min-width;
     margin-left: auto;
     margin-right: auto;
     padding-left: 1rem;
     padding-right: 1rem;
 
     @include breakpoint(mediumScreen) {
-        max-width: $medium-widh;
+        max-width: $medium-width;
     }
 
     @include breakpoint(smallScreen) {
-        max-width: $small-widh;
+        max-width: $small-width;
     }
+}
+
+.mat-drawer-container {
+    height: calc(100vh - #{$header-height});
 }
 
 /**** DEPRECATED : REMOVE AT THE END OF THE REDESIGN **/

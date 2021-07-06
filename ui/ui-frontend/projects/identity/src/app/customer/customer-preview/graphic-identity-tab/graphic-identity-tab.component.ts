@@ -43,7 +43,6 @@ import { CustomerService } from '../../../core/customer.service';
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update/graphic-identity-update.component';
 import { LogosSafeResourceUrl } from './logos-safe-resource-url.interface';
 
-
 @Component({
   selector: 'app-graphic-identity-tab',
   templateUrl: './graphic-identity-tab.component.html',

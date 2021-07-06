@@ -39,8 +39,7 @@
         <div class="col-10 form-control">
             <vitamui-common-textarea formControlName="description" [disabled]="isInternal" placeholder="Description" [rows]="3">
                 <ng-container *ngIf="form.get('description')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required"
-                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
                     </vitamui-common-input-error>
                 </ng-container>
             </vitamui-common-textarea>

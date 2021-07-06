@@ -38,6 +38,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { VitamUICommonTestModule } from '../../../../testing/src';
 import { environment } from './../../../environments/environment';
 import { VitamUISnackBar } from './../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { ENVIRONMENT } from './../injection-tokens';
@@ -56,7 +57,8 @@ describe('SubrogationService', () => {
       imports: [
         HttpClientTestingModule,
         MatSnackBarModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       providers: [
         SubrogationService,

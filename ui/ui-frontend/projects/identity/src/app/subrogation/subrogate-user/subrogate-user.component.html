@@ -2,12 +2,12 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        Subroger un utilisateur
+        {{'SUBROGATION.HOME.TITLE' | translate}}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'Utilisateur, Admin'" (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'SUBROGATION.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <button class="btn primary ml-5" (click)="openUserSubrogationDialog()">
-          Subroger un Utilisateur
+          {{'SUBROGATION.HOME.ACTION_BUTTON' | translate}}
         </button>
     </vitamui-common-banner>
 </div>

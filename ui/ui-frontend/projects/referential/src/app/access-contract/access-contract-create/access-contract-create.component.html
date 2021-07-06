@@ -19,8 +19,8 @@
                                 i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
             <ng-container *ngIf="form.get('name')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-                                          i18n="Required field error hint@@formErrorRequiredField">Champ requis
-              </vitamui-common-input-error>
+                                          >{{'COMMON.REQUIRED' | translate}
+              }</vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists"
                                           i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé
               </vitamui-common-input-error>
@@ -82,10 +82,10 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
-                  i18n="Next step button label@@accessContractCreateNextButton">Suivant
+                  >{{'COMMON.NEXT' | translate}}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-                  i18n="Cancel accessContract creation@@accessContractCreateCancelButton">Annuler
+                  >{{'COMMON.UNDO' | translate}}
           </button>
         </div>
       </div>
@@ -153,16 +153,16 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
-                  i18n="Next step button label@@accessContractCreateNextButton">Suivant
+                  >{{'COMMON.NEXT' | translate}}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-                  i18n="Cancel accessContract creation@@accessContractCreateCancelButton">Annuler
+                  >{{'COMMON.UNDO' | translate}}
           </button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@accessContractCreateBackButton"><span
-            class="underline">Retour</span></ng-container>
+          <ng-container><span
+            class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
         </button>
       </div>
     </cdk-step>
@@ -188,16 +188,16 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
-                  i18n="Next step button label@@accessContractCreateNextButton">Suivant
+                  >{{'COMMON.NEXT' | translate}}
           </button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-                  i18n="Cancel accessContract creation@@accessContractCreateCancelButton">Annuler
+                  >{{'COMMON.UNDO' | translate}}
           </button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@accessContractCreateBackButton"><span
-            class="underline">Retour</span></ng-container>
+          <ng-container><span
+            class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
         </button>
       </div>
     </cdk-step>
@@ -222,14 +222,14 @@
         </div>
 
         <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
-                i18n="Finish accessContract creation button@@accessContractCreateFinishButton">Terminer
+                >{{'COMMON.SUBMIT' | translate}}
         </button>
         <button type="button" class="btn cancel" (click)="onCancel()"
-                i18n="Cancel accessContract creation@@accessContractCreateCancelButton">Annuler
+                >{{'COMMON.UNDO' | translate}}
         </button>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container i18n="Previous step button label@@accessContractCreateBackButton">Retour</ng-container>
+            <ng-container>{{'COMMON.BACK' | translate}}</ng-container>
         </button>
       </div>
     </cdk-step>

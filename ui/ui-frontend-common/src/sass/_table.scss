@@ -256,7 +256,7 @@ $row-padding: 0.8rem;
 
     i {
         color: var(--vitamui-grey-600);
-        font-size: 30px; 
+        font-size: 30px;
     }
 }
 
@@ -280,17 +280,25 @@ $row-padding: 0.8rem;
 
     i {
         color: var(--vitamui-grey-700);
-        font-size: 30px; 
+        font-size: 30px;
     }
 
     .vitamui-row {
         padding: $row-padding;
         margin-bottom: 0.3rem;
         background-color: white;
-
+        div, span  {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &:hover {
+                text-overflow: clip;
+                white-space: normal;
+                word-break: break-all;
+            }
+        }
         &:hover {
             background-color: transparent;
-            box-shadow: 0px 0px 8px rgba(var(--vitamui-grey-600-rgb), 0.24);
+            @include elevation-3-dark;
 
             .actions > div {
                 visibility: visible;
@@ -334,7 +342,7 @@ $row-padding: 0.8rem;
     background-color: var(--vitamui-background);
 
     .vitamui-table-head {
-        height: 55px;       
+        height: 55px;
     }
 
     .footer-action {
@@ -356,21 +364,19 @@ $row-padding: 0.8rem;
             background-color: transparent;
         }
 
-        &:last-of-type {
-        }
     }
 }
 
 // Profile list item css
 .vitamui-profile-list {
     background-color: var(--vitamui-grey-100);
-    
+
 
     .profile-label {
         font-size: 12px;
         color: var(--vitamui-grey-600);
     }
-    
+
     .profile-value {
         font-size: 16px;
         color: var(--vitamui-grey-900);

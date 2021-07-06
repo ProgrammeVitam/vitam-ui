@@ -110,8 +110,19 @@ export class LogbookService {
     );
   }
 
-  listHistoryForOwner(id: string, externalParamId: string, tenantIdentifier: number): Observable<Event[]> {
-    const ownerEventsObservable = this.listOperationByIdAndCollectionName(id, 'owners', tenantIdentifier);
+  listOperationByIdentifierAndCollectionName(id: string, identifier: string, collectionName: string, tenantIdentifier: number):
+    Observable<Event[]> {
+    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+
+    return this.logbookApi.findOperationByIdAndCollectionName(id, collectionName, headers).pipe(
+      catchError(() => of({ $results: [] as Event[] })),
+      map((response) => response.$results.reduce(flattenChildEvents, [])
+        .filter(e => e.obIdReq === collectionName && e.obId === identifier).sort(sortEventByDate))
+    );
+  }
+
+  listHistoryForOwner(id: string, identifier: string, externalParamId: string, tenantIdentifier: number): Observable<Event[]> {
+    const ownerEventsObservable = this.listOperationByIdentifierAndCollectionName(id, identifier, 'owners', tenantIdentifier);
     const tenantEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'tenants', tenantIdentifier);
 
     return forkJoin([ownerEventsObservable, tenantEventsObservable]).pipe(

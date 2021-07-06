@@ -1,34 +1,34 @@
 <form [formGroup]="form">
   <div clas="row">
-    <vitamui-common-slide-toggle formControlName="enabled" i18n="Enabled@@GroupprofileFormLabelEnabled"
-    matTooltip="Un utilisateur est affecté à ce groupe" i18n-matTooltip="@@CantModifyGroupEnabled" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form.get('enabled').enabled || readOnly">
-      Groupe de profils <span *ngIf="!form.get('enabled').value">in</span>actif
+    <vitamui-common-slide-toggle formControlName="enabled"
+    [matTooltip]="'GROUP.INFORMATIONS.ACTIVE_SWITCH_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form.get('enabled').enabled || readOnly">
+      <span *ngIf="!form?.get('enabled').value">{{'GROUP.INFORMATIONS.INACTIVE_SWITCH' | translate}}</span>
+      <span *ngIf="form?.get('enabled').value">{{'GROUP.INFORMATIONS.ACTIVE_SWITCH' | translate}}</span>
     </vitamui-common-slide-toggle>
   </div>
-
   <div class="row">
       <div class="col-8 form-control">
-        <vitamui-common-editable-input formControlName="identifier" label="Identifiant" i18n-label="Identifier@@profileGroupFormLabelIdentifier"
+        <vitamui-common-editable-input formControlName="identifier" [label]="'COMMON.ID' |translate"
           [validator]="form?.get('identifier')?.validator" [asyncValidator]="form?.get('identifier')?.asyncValidator">
         </vitamui-common-editable-input>
       </div>
     </div>
   <div class="row">
     <div class="col-8 form-control">
-      <vitamui-common-editable-input formControlName="name" minlength="2" maxlength="100" label="Nom" i18n-label="Name@@profileGroupFormLabelName"
+      <vitamui-common-editable-input formControlName="name" minlength="2" maxlength="100" [label]="'GROUP.INFORMATIONS.NAME' | translate"
         [validator]="form?.get('name')?.validator" [asyncValidator]="form?.get('name')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="nameExists" i18n="Name exists error hint@@formErrorNameExists">Nom déjà utilisé</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.EXISTING_NAME' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
   </div>
 
   <div class="row">
     <div class="col-12 form-control">
-      <vitamui-common-editable-textarea formControlName="description" maxlength="250" minlength="4" maxlength="100" label="Description"
-        i18n-label="Description@@profileGroupFormLabelDescription" [validator]="form?.get('description')?.validator"
+      <vitamui-common-editable-textarea formControlName="description" maxlength="250" minlength="4" maxlength="100" [label]="'GROUP.INFORMATIONS.DESCRIPTION' | translate"
+        [validator]="form?.get('description')?.validator"
         [asyncValidator]="form?.get('description')?.asyncValidator">
-        <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-textarea>
     </div>
   </div>
@@ -36,19 +36,19 @@
   <div class="row d-flex">
     <div class="col-5">
       <div class="read-only-field">
-          <label>Niveau</label>
+          <label>{{'GROUP.INFORMATIONS.LEVEL' | translate}}</label>
           <div>{{authService.user.level}}</div>
       </div>
     </div>
-    <div class="col-7" matTooltip="Ce groupe possède des profiles" i18n-matTooltip="@@CantModifyGroupLevel" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form?.get('level').enabled || readOnly">
+    <div class="col-7" [matTooltip]="'GROUP.INFORMATIONS.SUBLEVEL_TOOLTIP' | translate" matTooltipClass="vitamui-tooltip" [matTooltipDisabled]="form?.get('level').enabled || readOnly">
       <vitamui-common-editable-level-input
         formControlName="level"
         maxlength="250"
         [prefix]="authService.user.level"
-        label="Sous Niveau" i18n-label="Name@@profileDetailLabelLevel"
+        [label]="'GROUP.INFORMATIONS.SUBLEVEL' | translate"
         [validator]="form?.get('level')?.validator">
-          <vitamui-common-field-error errorKey="required" i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="nameExists" i18n="Pattern field error hint@@formErrorPatternField">Format incorrect (caractères alphanumériques séparés par le caractères .)</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="nameExists">{{'GROUP.INFORMATIONS.WRONG_FORMAT' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-level-input>
     </div>
   </div>

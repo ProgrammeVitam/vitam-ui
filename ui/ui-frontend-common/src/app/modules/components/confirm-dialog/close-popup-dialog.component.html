@@ -1,8 +1,7 @@
 <vitamui-common-confirm-dialog
-  i18n="@@closePopupConfirmDialogContent"
-  dialogTitle="Fermer la fenêtre ?" i18n-dialogTitle="@@closePopupConfirmDialogTitle"
-  confirmLabel="Fermer" i18n-confirmLabel="@@closePopupConfirmDialogConfirmLabel"
-  cancelLabel="Retour" i18n-cancelLabel="@@closePopupConfirmDialogCancelLabel"
+  [dialogTitle]="'COMMON.UNDO_MODAL.TITLE' | translate"
+  [confirmLabel]="'COMMON.CLOSE' | translate"
+  [cancelLabel]="'COMMON.BACK' | translate"
 >
-  Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?
+  {{'COMMON.UNDO_MODAL.UNDO_MESSAGE' | translate}}
 </vitamui-common-confirm-dialog>

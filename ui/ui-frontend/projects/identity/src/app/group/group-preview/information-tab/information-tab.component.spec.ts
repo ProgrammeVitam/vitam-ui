@@ -38,9 +38,10 @@
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { of } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 
 import { AuthService, Group } from 'ui-frontend-common';
+import { CountryService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { GroupService } from '../../group.service';
 import { GroupValidators } from '../../group.validators';
@@ -104,6 +105,7 @@ describe('Profile Group InformationTabComponent', () => {
         { provide: GroupService, useValue: groupServiceSpy },
         { provide: GroupValidators, useValue: groupValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock},
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
       ]
     })
     .compileComponents();

@@ -1,29 +1,28 @@
 <form [formGroup]="form" class="form-pad">
   <div class="row">
     <div class="col-2">
-      <label i18n-label="user info tab lastname@@UserInfoTabLastname">Nom</label>
+      <label>{{'ACCOUNT.LASTNAME' | translate}}</label>
       <span>{{form?.get('lastname')?.value}}</span>
     </div>
     <div class="col-2">
-      <label i18n-label="user info tab firstname@@UserInfoTabFirstname">Prénom</label>
+      <label>{{'ACCOUNT.FIRSTNAME' | translate}}</label>
       <span>{{form?.get('firstname')?.value}}</span>
     </div>
   </div>
   
   <div class="row">
     <div class="col-3">
-      <label i18n-label="user info tab email@@UserInfoTabEmail">Adresse E-mail</label>
+      <label>{{'ACCOUNT.MAIL' | translate}}</label>
       <span>{{form?.get('email')?.value}}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-2">
-      <vitamui-common-editable-select class="fields-padding" formControlName="language" label="Langue de l'interface"
-        i18n-label="user info tab language@@UserInfoTabLanguage">
-        <vitamui-common-editable-option value="ENGLISH" content="Anglais" i18n-content="@@languageEnglish">
+      <vitamui-common-editable-select class="fields-padding" formControlName="language" [label]="'ACCOUNT.DEFAULT_LANGUAGE' | translate">
+        <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
         </vitamui-common-editable-option>
-        <vitamui-common-editable-option value="FRENCH" content="Français" i18n-content="@@languageFrench">
+        <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
         </vitamui-common-editable-option>
       </vitamui-common-editable-select>
     </div>
@@ -31,27 +30,26 @@
 
   <div class="row">
     <div class="col-3">
-      <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below"
-        i18n="Two steps validation identity@@userTwoStepsValidation">Authentification OTP
+      <vitamui-common-slide-toggle class="fields-padding" formControlName="otp" matTooltipPosition="below">{{'ACCOUNT.OTP_AUTH' | translate}}
       </vitamui-common-slide-toggle>
     </div>
   </div>
 
   <div class="row">
     <div class="col-2">
-      <label i18n-label="user info tab mobile@@UserInfoTabMobile">Numéro de mobile</label>
+      <label>{{'ACCOUNT.PHONE.MOBILE' | translate}}</label>
       <span>{{form?.get('mobile')?.value}}</span>
     </div>
 
     <div class="col-2">
-      <label i18n-label="user info tab phone@@UserInfoTabPhone">Numéro de fix</label>
+      <label>{{'ACCOUNT.PHONE.FIX' | translate}}</label>
       <span>{{form?.get('phone')?.value}}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
-      <label i18n="@@UserInfoTabAddress">Adresse de livraison</label>
+      <label>{{'ACCOUNT.DELIVERY_ADRESS' | translate}}</label>
       <span *ngIf="form.get('address').value?.street">{{form.get('address').value?.street}}
         <span *ngIf="form.get('address').value?.city && form.get('address').value?.zipCode">,</span>
       </span>
@@ -63,14 +61,14 @@
 
   <div class="row">
     <div class="col-3">
-      <label i18n-label="user info tab email@@UserInfoTabLevel">Niveau</label>
+      <label>{{'ACCOUNT.LEVEL' | translate}}</label>
       <span>{{form?.get('level')?.value}}</span>
     </div>
   </div>
 
   <div class="row">
     <div class="col-4">
-      <label>Mon groupe de profils</label>
+      <label>{{'ACCOUNT.GROUP' | translate}}</label>
       <span>{{form.get('profileGroup').value?.name}}</span>
       <span>{{form.get('profileGroup').value?.description}}</span>
     </div>

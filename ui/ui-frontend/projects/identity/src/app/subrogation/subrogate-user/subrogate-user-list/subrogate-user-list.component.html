@@ -2,10 +2,10 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-user"></i></div>
-      <div class="col-2" i18n="Subrogation name column header@@subrogationListNameHeader">Nom / Prénom</div>
-      <div class="col-2" i18n="Subrogation id column header@@subrogationListIDHeader">Criticité</div>
-      <div class="col-2" i18n="Subrogation group column header@@subrogationListGroupHeader">Groupe</div>
-      <div class="col-1" i18n="Subrogation criticity column header@@subrogationListCriticityHeader">ID</div>
+      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.NAME' | translate}}</div>
+      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.CRITICITY' | translate}}</div>
+      <div class="col-2">{{'SUBROGATION.HOME.RESULTS_TABLE.GROUP' | translate}}</div>
+      <div class="col-1">ID</div>
       <div class="col-4"></div>
     </div>
 
@@ -43,10 +43,10 @@
           <div class="col-2 d-flex justify-content-end"> 
             <div *ngIf="subrogableUser.superUserEmail">
               <span *ngIf="subrogableUser.superUserEmail === currenteUser.email"
-                class="text normal bold danger" i18n="@@SubrogateCurrentUserInSubroLabel">En cours</span>
+                class="text normal bold danger">{{'SUBROGATION.HOME.SUBROGATION_WIP' | translate}}</span>
       
               <span *ngIf="subrogableUser.superUserEmail !== currenteUser.email"
-                class="text normal bold danger" i18n="@@SubrogateUserInSubroLabel">Subrogé par {{subrogableUser.superUserEmail}}</span>
+                class="text normal bold danger">{{'SUBROGATION.HOME.SUBROGATE_BY' | translate : {param1: subrogableUser.superUserEmail} }}</span>
             </div>
           </div>
 
@@ -54,10 +54,9 @@
             <button
               *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" 
               class="btn outline-primary"
-              i18n="Subrogate subrogate@@SubrogateButton"
               (click)="openUserSubrogationDialog(subrogableUser)"
               [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable">
-                Subroger
+                {{'SUBROGATION.HOME.RESULTS_TABLE.ACTION_BUTTON' | translate}}
             </button>
           </div>
         </div>
@@ -71,12 +70,12 @@
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
  </ng-template>
 
  <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="subrogationService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
   </div>
 </ng-template>
 

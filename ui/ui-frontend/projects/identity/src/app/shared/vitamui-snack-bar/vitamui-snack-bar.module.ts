@@ -36,9 +36,9 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { VitamUICommonModule } from 'ui-frontend-common';
 
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
-import {VitamUICommonModule} from "ui-frontend-common";
 
 @NgModule({
   imports: [

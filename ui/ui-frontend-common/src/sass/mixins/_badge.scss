@@ -2,7 +2,7 @@
     position: relative;
 
     &:after {
-        @include elevation-1;
+        @include elevation-2-dark;
         content: '';
         display: flex;
         align-items: center;

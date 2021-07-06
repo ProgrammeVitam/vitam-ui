@@ -36,8 +36,11 @@
  */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
 import { BreadCrumbData } from '../../../models/breadcrumb/breadcrumb.interface';
+
+const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
 @Component({
   selector: 'vitamui-common-breadcrumb',
@@ -60,7 +63,7 @@ export class VitamuiBreadcrumbComponent implements OnInit {
       if (appId) {
         this.data = [
           {
-            label: 'Portail'
+            identifier: ApplicationId.PORTAL_APP
           },
           {
             label: this.applicationService.getAppById(appId).name,

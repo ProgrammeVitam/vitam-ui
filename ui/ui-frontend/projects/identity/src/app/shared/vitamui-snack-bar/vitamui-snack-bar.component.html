@@ -2,90 +2,90 @@
 
   <span class="vitamui-snack-bar-content" [ngSwitch]="data?.type">
 
-    <ng-container *ngSwitchCase="'customerCreate'" i18n="@@notificationCustomerCreate">
-      <i class="vitamui-icon vitamui-icon-bank"></i> L'organisation {{ data?.code }} a bien été créé
+    <ng-container *ngSwitchCase="'customerCreate'">
+      <i class="vitamui-icon vitamui-icon-bank"></i> {{ "SHARED.SNACKBAR.CUSTOMER_CREATE" | translate : { param1: data?.code } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'customerCreateError'" i18n="@@notificationCustomerCreateError">
-      <i class="vitamui-icon vitamui-icon-danger"></i> L'organisation n'a pas pu être créé, veuillez contacter un administrateur
+    <ng-container *ngSwitchCase="'customerCreateError'">
+      <i class="vitamui-icon vitamui-icon-danger"></i> {{ "SHARED.SNACKBAR.CUSTOMER_CREATE_ERROR" | translate}}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'customerUpdate'" i18n="@@notificationCustomerUpdate">
-      <i class="vitamui-icon vitamui-icon-bank"></i> L'organisation {{ data?.code }} a bien été modifié
+    <ng-container *ngSwitchCase="'customerUpdate'">
+      <i class="vitamui-icon vitamui-icon-bank"></i> {{ "SHARED.SNACKBAR.CUSTOMER_UPDATE" | translate : { param1: data?.code } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'providerCreate'" i18n="@@notificationProviderCreate">
-      <i class="material-icons">lock_outline</i> L'IDP {{ data?.name }} a bien été créé
+    <ng-container *ngSwitchCase="'providerCreate'">
+      <i class="material-icons">lock_outline</i> {{ "SHARED.SNACKBAR.PROVIDER_CREATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'providerUpdate'" i18n="@@notificationProviderUpdate">
-      <i class="material-icons">lock_outline</i> L'IDP {{ data?.name }} a bien été modifié
+    <ng-container *ngSwitchCase="'providerUpdate'">
+      <i class="material-icons">lock_outline</i> {{ "SHARED.SNACKBAR.PROVIDER_UPDATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'ownerCreate'" i18n="@@notificationOwnerCreate">
-      <i class="vitamui-icon vitamui-icon-key"></i> Le propriétaire {{ data?.name }} a bien été créé
+    <ng-container *ngSwitchCase="'ownerCreate'">
+      <i class="vitamui-icon vitamui-icon-key"></i> {{ "SHARED.SNACKBAR.OWNER_CREATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'ownerUpdate'" i18n="@@notificationOwnerUpdate">
-      <i class="vitamui-icon vitamui-icon-key"></i> Le propriétaire {{ data?.name }} a bien été modifié
+    <ng-container *ngSwitchCase="'ownerUpdate'">
+      <i class="vitamui-icon vitamui-icon-key"></i> {{ "SHARED.SNACKBAR.OWNER_UPDATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'tenantCreate'" i18n="@@notificationTenantCreate">
-      <i class="vitamui-icon vitamui-icon-safe"></i> Le coffre {{ data?.tenantName }} du propriétaire {{ data?.ownerName }} a bien été créé
+    <ng-container *ngSwitchCase="'tenantCreate'">
+      <i class="vitamui-icon vitamui-icon-safe"></i> {{ "SHARED.SNACKBAR.SAFE_CREATE" | translate : { param1: data?.tenantName, param2: data?.ownerName } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'tenantCreateError'" i18n="@@notificationTenantCreateError">
-      <i class="vitamui-icon vitamui-icon-danger"></i> Le coffre n'a pas pu être créé, veuillez contacter un administrateur
+    <ng-container *ngSwitchCase="'tenantCreateError'">
+      <i class="vitamui-icon vitamui-icon-danger"></i> {{ "SHARED.SNACKBAR.SAFE_CREATE_ERROR" | translate}}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'tenantUpdate'" i18n="@@notificationTenantUpdate">
-      <i class="vitamui-icon vitamui-icon-safe"></i> Le coffre {{ data?.tenantName }} du propriétaire {{ data?.ownerName }} a bien été modifié
+    <ng-container *ngSwitchCase="'tenantUpdate'">
+      <i class="vitamui-icon vitamui-icon-safe"></i> {{ "SHARED.SNACKBAR.SAFE_UPDATE" | translate : { param1: data?.tenantName, param2: data?.ownerName } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'groupCreate'" i18n="@@notificationProfileGroupCreate">
-      <i class="vitamui-icon vitamui-icon-keys"></i> Le groupe "{{ data?.name }}" a bien été créé
+    <ng-container *ngSwitchCase="'groupCreate'">
+      <i class="vitamui-icon vitamui-icon-keys"></i> {{ "SHARED.SNACKBAR.GROUP_CREATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'groupUpdate'" i18n="@@notificationProfileGroupUpdate">
-      <i class="vitamui-icon vitamui-icon-keys"></i> Le groupe "{{ data?.name }}" a bien été modifié
+    <ng-container *ngSwitchCase="'groupUpdate'">
+      <i class="vitamui-icon vitamui-icon-keys"></i> {{ "SHARED.SNACKBAR.GROUP_UPDATE" | translate : { param1: data?.name } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'userCreate'" i18n="@@notificationUserCreate">
-      <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur {{ data?.firstname }} {{ data?.lastname }} a bien été créé
+    <ng-container *ngSwitchCase="'userCreate'">
+      <i class="vitamui-icon vitamui-icon-key"></i> {{ "SHARED.SNACKBAR.USER_CREATE" | translate : { param1: data?.firstname, param2: data?.lastname } }}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'userUpdate'" i18n="@@notificationUserUpdate">
-      <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur {{ data?.firstname }} {{ data?.lastname }} a bien été modifié
+    <ng-container *ngSwitchCase="'userUpdate'">
+      <i class="vitamui-icon vitamui-icon-key"></i> {{ "SHARED.SNACKBAR.USER_UPDATE" | translate : { param1: data?.firstname, param2: data?.lastname } }}
     </ng-container>
 
     <ng-container *ngSwitchCase="'userDelete'" i18n="@@notificationUserDelete">
       <i class="vitamui-icon vitamui-icon-key"></i> L'utilisateur {{ data?.firstname }} {{ data?.lastname }} a bien été supprimé
     </ng-container>
 
-    <ng-container *ngSwitchCase="'profileUpdate'" i18n="@@notificationProfileUpdate">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil "{{ data?.name }}" a bien été modifié
+    <ng-container *ngSwitchCase="'profileUpdate'">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ "SHARED.SNACKBAR.PROFILE_UPDATE" | translate : { param1: data?.name } }}
     </ng-container>
-    <ng-container *ngSwitchCase="'profileAdminCreate'" i18n="@@notificationAdminProfileCreate">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil administrateur {{ data?.name }} a bien été créé
+    <ng-container *ngSwitchCase="'profileAdminCreate'">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ "SHARED.SNACKBAR.PROFILE_CREATE_ERROR" | translate : { param1: data?.name } }}
     </ng-container>
-    <ng-container *ngSwitchCase="'profileCreate'" i18n="@@notificationAdminProfileCreate">
-      <i class="vitamui-icon vitamui-icon-admin-key"></i> Le profil {{ data?.name }} a bien été créé
+    <ng-container *ngSwitchCase="'profileCreate'" >
+      <i class="vitamui-icon vitamui-icon-admin-key"></i> {{ "SHARED.SNACKBAR.PROFILE_CREATE" | translate : { param1: data?.name } }}
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationAccept'" i18n="@@notificationSubrogationAccept">
-      <i class="vitamui-icon vitamui-icon-link"></i> Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous
+    <ng-container *ngSwitchCase="'subrogationAccept'">
+      <i class="vitamui-icon vitamui-icon-link"></i> {{ "SHARED.SNACKBAR.SUBROGATION_ACCEPT" | translate}}
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationCancel'" i18n="@@notificationSubrogationCancel">
-      <i class="vitamui-icon vitamui-icon-link"></i> Votre demande de subrogation a bien été annulée
+    <ng-container *ngSwitchCase="'subrogationCancel'">
+      <i class="vitamui-icon vitamui-icon-link"></i>  {{ "SHARED.SNACKBAR.SUBROGATION_CANCEL" | translate}}
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationDenied'" i18n="@@notificationSubrogationDenied">
-      <i class="vitamui-icon vitamui-icon-link"></i> Votre demande de subrogation a été refusée
+    <ng-container *ngSwitchCase="'subrogationDenied'">
+      <i class="vitamui-icon vitamui-icon-link"></i> {{ "SHARED.SNACKBAR.SUBROGATION_DENIED" | translate}}
     </ng-container>
-    <ng-container *ngSwitchCase="'subrogationUnavailable'" i18n="@@notificationSubrogationUnavailable">
-      <i class="vitamui-icon vitamui-icon-link"></i> La subrogation pour cet utilisateur est momentanément impossible
+    <ng-container *ngSwitchCase="'subrogationUnavailable'">
+      <i class="vitamui-icon vitamui-icon-link"></i> {{ "SHARED.SNACKBAR.SUBROGATION_UNAVAILABLE" | translate}}
     </ng-container>
 
-    <ng-container *ngSwitchCase="'accountUpdate'" i18n="@@notificationAccountUpdate">
-      <i class="vitamui-icon vitamui-icon-user"></i> Les informations ont été mises à jour
+    <ng-container *ngSwitchCase="'accountUpdate'">
+      <i class="vitamui-icon vitamui-icon-user"></i> {{ "SHARED.SNACKBAR.ACCOUNT_UPDATE" | translate}}
     </ng-container>
 
     <ng-container *ngSwitchCase="'useralreadyDeleted'" i18n="@@notificationUserAlreadyDelete">

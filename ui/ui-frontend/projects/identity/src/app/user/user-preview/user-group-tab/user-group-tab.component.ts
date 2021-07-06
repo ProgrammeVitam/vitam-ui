@@ -115,7 +115,7 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
       this.activeGroups = this.groups.map((group) => Object({ id: group.id, name: group.name,
                                                        description: group.description,
                                                        level: group.level,
-                                                       selected: false }));
+                                                       selected: false, profiles: group.profiles }));
       if (!isRootLevel(this.authService.user)) {
       this.activeGroups = this.activeGroups.filter((g) => g.id !== this.authService.user.groupId);
       }
@@ -128,8 +128,9 @@ export class UserGroupTabComponent implements OnInit, OnChanges, OnDestroy {
     if (this.userInfo.type === 'LIST') {
       this.activeGroups = [];
       this.userInfo.profilGroup.forEach((displayGroup) => {
+        const profilGroup = this.groups.find((group) => group.id === displayGroup.id);
         const simplifiedGroup = Object({ id: displayGroup.id, name: displayGroup.name,
-                                         description: displayGroup.description, selected: false });
+                                         description: displayGroup.description, selected: false, profiles: profilGroup?.profiles});
         this.activeGroups.push(simplifiedGroup);
       });
     }

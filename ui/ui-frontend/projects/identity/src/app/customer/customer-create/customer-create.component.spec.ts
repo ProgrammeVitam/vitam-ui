@@ -35,10 +35,11 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, OtpState } from 'ui-frontend-common';
+import { ConfirmDialogService, LoggerModule, OtpState } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import { Component, forwardRef, Input, NO_ERRORS_SCHEMA } from '@angular/core';
+/* tslint:disable: max-classes-per-file directive-selector */
+import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -48,9 +49,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
+import { CountryService } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
-import { DomainsInputModule } from '../../shared/domains-input';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
@@ -58,6 +58,26 @@ import { TenantService } from '../tenant.service';
 import { CustomerCreateComponent } from './customer-create.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 
+@Component({
+  selector: 'app-domains-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => DomainInputStubComponent),
+    multi: true
+  }]
+})
+class DomainInputStubComponent implements ControlValueAccessor {
+  @Input() placeholder: string;
+  @Input() selected: string;
+  @Input() spinnerDiameter = 25;
+
+  @Output() selectedChange = new EventEmitter<string>();
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
 @Component({
   selector: 'app-owner-form',
   template: '',
@@ -81,7 +101,8 @@ class OwnerFormStubComponent implements ControlValueAccessor {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => CustomerColorsInputStubComponent),
     multi: true,
-  }]
+  }
+]
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
     @Input() placeholder: string;
@@ -163,14 +184,15 @@ describe('CustomerCreateComponent', () => {
         MatButtonToggleModule,
         MatProgressBarModule,
         NoopAnimationsModule,
-        DomainsInputModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
+        LoggerModule.forRoot()
       ],
       declarations: [
         CustomerCreateComponent,
         OwnerFormStubComponent,
         CustomerColorsInputStubComponent,
+        DomainInputStubComponent
       ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
@@ -182,7 +204,8 @@ describe('CustomerCreateComponent', () => {
         { provide: TenantService, useValue: tenantServiceSpy },
         { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
         { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
-        {provide : MatDialog , useValue : {}}
+        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+        { provide : MatDialog , useValue : {} }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

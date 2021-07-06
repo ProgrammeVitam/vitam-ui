@@ -1,3 +1,4 @@
+import { TranslationModule } from './components/translation/translation.module';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -48,7 +49,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule,
+  VitamUICommonModule, WINDOW_LOCATION, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -56,6 +58,7 @@ import { ArraysModule } from './components/arrays/arrays.module';
 import { BreadcrumbModule } from './components/breadcrumb/breadcrumb.module';
 import { ButtonsModule } from './components/buttons/buttons.module';
 import { ColorsModule } from './components/colors/colors.module';
+import { ElevationModule } from './components/elevations/elevations.module';
 import { IconsModule } from './components/icons/icons.module';
 import { InputsModule } from './components/inputs/inputs.module';
 import { MiscellaneousModule } from './components/miscellaneous/miscellaneous.module';
@@ -100,6 +103,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     MatCardModule,
     MatSidenavModule,
     MatListModule,
+    ElevationModule,
+    TranslationModule,
     LoggerModule.forRoot(),
     TranslateModule.forRoot({
       missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },

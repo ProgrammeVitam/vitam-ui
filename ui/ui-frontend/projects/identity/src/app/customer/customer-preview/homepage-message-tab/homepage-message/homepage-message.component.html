@@ -12,7 +12,7 @@
             homepageMessageForm.get('portalTitle')?.touched &&
             !!homepageMessageForm.get('portalTitle')?.errors?.required
           ">
-          {{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error>
+          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
       </vitamui-common-input>
 
       <vitamui-common-textarea class="pb-2" formControlName="portalMessage" required [placeholder]="
@@ -22,7 +22,7 @@
             homepageMessageForm.get('portalMessage')?.touched &&
             !!homepageMessageForm.get('portalMessage')?.errors?.required
           ">
-          {{ "COMMON.REQUIRED" | translate }}</vitamui-common-input-error>
+          {{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error>
       </vitamui-common-textarea>
       <small class="d-flex justify-content-end">{{ homepageMessageForm.get("portalMessage")?.value?.length }}
         {{
@@ -35,7 +35,7 @@
       <app-homepage-message-translation [form]="item" [index]="index + 1" [languages]="getLanguages(index)" (formChange)="update()" (formRemove)="remove(index)">
       </app-homepage-message-translation>
     </div>
-    <button class="pl-4 btn link uppercase" [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length -1 && isLanguageSet())" (click)="onAdd()">
+    <button class="pl-4 btn link" [disabled]="!(homepageMessageForm.get('translations')?.value?.length < languages?.length -1 && isLanguageSet())" (click)="onAdd()">
       <span> {{ "CUSTOMER.HOMEPAGE_MESSAGE.ADD_LANGUAGE" | translate }}</span>
     </button>
   </div>

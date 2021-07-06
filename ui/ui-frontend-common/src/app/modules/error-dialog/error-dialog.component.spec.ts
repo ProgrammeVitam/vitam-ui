@@ -36,6 +36,8 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogRef } from '@angular/material/dialog';
+import { VitamUICommonTestModule } from '../../../../testing/src';
+
 import { LoggerModule } from './../logger/logger.module';
 import { StartupService } from './../startup.service';
 
@@ -50,7 +52,8 @@ describe('ErrorDialogComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       declarations: [ ErrorDialogComponent ],
       providers: [

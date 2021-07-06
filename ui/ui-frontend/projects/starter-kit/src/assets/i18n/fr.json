@@ -1,35 +1,86 @@
 {
-    "BUTTON": {
-        "Primary": "Primaire par défaut",
-        "Primary_outline": "Contour Primaire par défaut",
-        "Primary_contrast": "Contraste Primaire par défaut",
-        "Primary_contrast_outline": "Contour contrasté Primaire par défaut",
-        "Secondary": "Secondaire par défaut",
-        "Secondary_outline": "Contour Secondaire par défaut",
-        "Secondary_contrast": "Contraste Secondaire par défaut",
-        "Secondary_contrast_outline": "Contour contrasté secondaire  par défaut",
-        "Tertiary": "Tertiaire par défaut",
-        "Disabled_label": "désactivé",
-        "Disabled_outline": "Contour désactivé",
-        "Disabled_contrast": "Contraste désactivé",
-        "Disabled_contrast_outline": "Contour contrasté désactivé",
-        "CANCEL":"Annuler"
-    },
-    "SAMPLE-DIALOG": {
-        "Open": "Ouvrir la popup d'exemple",
-        "Step-0": "Première étape",
-        "Step-1": "Deuxième étape"
-    },
-    "COLORS":{
-        "Primary": "Couleur primaire",
-        "Secondary": "Couleur secondaire",
-        "Grey": "Couleur grise",
-        "Red": "Couleur rouge",
-        "Orange": "Couleur orange",
-        "Green": "Couleur verte"
-    },
-    "ICONS":{
-        "Title": "Liste des icônes de Vitam-UI",
-        "Colors": "Couleurs disponibles" 
+  "COMMON": {
+    "ID": "Identifiant",
+    "ADRESS": {
+      "STREET": "N° et nom de rue",
+      "ZIPCODE": "Code postal",
+      "COUNTRY": "Pays"
     }
+  },
+  "CUSTOMER": {
+    "HOME": {
+      "TITLE_PLACEHOLDER": "Nom, Raison sociale, Code organisation, Adresse..."
+    }
+  },
+  "BUTTON": {
+    "PRIMARY": "Primaire par défaut",
+    "PRIMARY_OUTLINE": "Contour Primaire par défaut",
+    "PRIMARY_CONTRAST": "Contraste Primaire par défaut",
+    "PRIMARY_CONTRAST_OUTLINE": "Contour contrasté Primaire par défaut",
+    "SECONDARY": "Secondaire par défaut",
+    "SECONDARY_OUTLINE": "Contour Secondaire par défaut",
+    "SECONDARY_CONTRAST": "Contraste Secondaire par défaut",
+    "SECONDARY_CONTRAST_OUTLINE": "Contour contrasté secondaire  par défaut",
+    "TERTIARY": "Tertiaire par défaut",
+    "DISABLED_LABEL": "Désactivé",
+    "DISABLED_OUTLINE": "Contour désactivé",
+    "DISABLED_CONTRAST": "Contraste désactivé",
+    "DISABLED_CONTRAST_OUTLINE": "Contour contrasté désactivé",
+    "CANCEL": "Annuler"
+  },
+  "SAMPLE_DIALOG": {
+    "OPEN": "Ouvrir la popup d'exemple",
+    "STEP_0": "Première étape",
+    "STEP_1": "Deuxième étape"
+  },
+  "COLORS": {
+    "PRIMARY": "Couleur primaire",
+    "SECONDARY": "Couleur secondaire",
+    "GREY": "Couleur grise",
+    "RED": "Couleur rouge",
+    "ORANGE": "Couleur orange",
+    "GREEN": "Couleur verte"
+  },
+  "ICONS": {
+    "TITLE": "Liste des icônes de Vitam-UI",
+    "Colors": "Couleurs disponibles"
+  },
+  "ELEVATIONS": {
+    "TITLE": "Ombres & Elevations",
+    "DARK": "Ombres foncées",
+    "PRIMARY": "Ombres primaires",
+    "SECONDARY": "Ombres secondaires",
+    "TERTIARY": "Ombres tertiaires"
+  },
+  "TRANSLATION": {
+    "TITLE": "Traduction",
+    "CONVENTION": "Convention",
+    "USAGE": "Utilisation",
+    "WITH_PIPE": "Le pipe translate : usage à privilégier",
+    "DO_NOT_SPLIT_WORDS": "Ne pas diviser les phrases en plusieurs mots chacun traduit unitairement",
+    "TRANSLATE_SERVICE": "Les méthodes du TranslateService",
+    "TRANSLATE_PIPE": "Texte traduit avec le pipe translate. Il est bien traduit dynamiquement au changement de langue.",
+    "TRANSLATE_INSTANT": "Texte traduit avec la méthode translateService.instant(). Il n'est pas traduit dynamiquement au changement de langue.",
+    "TRANSLATE_GET": {
+      "TRANSLATE_GET_1": "Premier texte traduit avec la méthode translateService.get().",
+      "TRANSLATE_GET_2": "Second texte traduit avec la méthode translateService.get()."
+    },
+    "TRANSLATE_PARAMETERS": "Texte traduit avec plusieurs paramètres : {{ param1 }} et {{ param2 }}.",
+    "TRANSLATE_NUMBER": {
+      "ZERO": "Texte traduit au singulier et pluriel: Je n'ai aucune pomme.",
+      "SINGULAR": "Texte traduit au singulier et pluriel: J'ai une pomme.",
+      "PLURAL": "Texte traduit au singulier et pluriel: J'ai {{ number }} pommes."
+    },
+    "TRANSLATE_HTML": "Texte traduit contenant du <strong>code html</strong>.",
+    "NUMBER_OF_APPLE": "Nombre de pommes",
+    "TRANSLATE_FRENCH_ONLY": "Texte uniquement traduit en français.",
+    "ALWAYS_TRANSLATE": "Toujours traduire les nouveaux libellés : ne laisser aucun texte en dur.",
+    "KEY_NAMING": "Pour le nommage des clés, utiliser des majuscules et underscores. Toujours commencer par le nom de l'app, et au minimum inclure le composant où il se situe. Ex: CUSTOMER.HOMEPAGE_MESSAGE.LANGUAGE_TITLE",
+    "KEY_NAMING_COMMON": "Pour les textes très récurrents, les mettre dans la catégorie COMMON. Ex: COMMON.BACK",
+    "FIRST_INPUT": "Premier paramètre",
+    "SECOND_INPUT": "Deuxième paramètre"
+  },
+  "MISCELLANEOUS": {
+    "INFINITE_SCROLL": "Scroll infini"
+  }
 }

@@ -10,30 +10,30 @@
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="filterMap['status']"
             (filterChange)="onFilterChange('status', $event)">
-            <vitamui-common-table-filter-option value="ENABLED" [separator]="true">
-              <div class="table-filter-icon" i18n="@@userStatusEnabled">
-                <span class="badge-state">Actif</span>
+            <vitamui-common-table-filter-option value="ENABLED">
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="BLOCKED" [separator]="true">
-              <div class="table-filter-icon" i18n="@@userStatusBlocked">
-                <span class="badge-state">Bloqué</span>
+            <vitamui-common-table-filter-option value="BLOCKED">
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.BLOCKED' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="DISABLED" [separator]="true">
-              <div class="table-filter-icon" i18n="@@userStatusDisabled">
-                <span class="badge-state">Désactivé</span>
+            <vitamui-common-table-filter-option value="DISABLED">
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="REMOVED" [separator]="true">
-              <div class="table-filter-icon" i18n="@@userStatusRemoved">
-                <span class="badge-state">Effacé</span>
+            <vitamui-common-table-filter-option value="REMOVED">
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.DELETED' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option *vitamuiCommonHasAnyRole="genericUserRole" value="GENERIC"
               [separator]="true">
-              <div class="table-filter-icon" i18n="@@userTypeGeneric">
-                <span class="badge-state">Générique</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'USER.HOME.RESULTS_TABLE.STATUS_FILTER.GENERIC' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -44,17 +44,16 @@
           (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
 
       </div>
-      <div class="col-2" i18n="User name column header@@userListUserNameHeader"><span>Nom / Prénom&nbsp;</span>
+      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.NAME' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="lastname" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="User id column header@@userListIDHeader"><span>Identifiant&nbsp;</span>
+      <div class="col-2"><span>{{'COMMON.ID' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="User lastConnexion name column header@@userListLastConnexionHeader"><span>Dernière
-          connexion&nbsp;</span>
+      <div class="col-2"><span>{{'USER.HOME.RESULTS_TABLE.LAST_CONNEXION' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="lastConnection" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
@@ -69,11 +68,11 @@
         <ng-template #levelFilterTemplate>
           <vitamui-common-table-filter-search [(filter)]="filterMap['level']" [options]="levelFilterOptions"
             (filterChange)="onFilterChange('level', $event)" (filterClose)="levelFilterTrigger?.close()"
-            emptyValueOption="-Niveau vide-" i18n-emptyValueOption="@@userListLevelFilterEmpty">
+            [emptyValueOption]="'USER.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Strong userGroup column header@@userListStrongAuthenticationHeader">Niveau du goupe&nbsp;</span>
+        <span>{{'USER.HOME.RESULTS_TABLE.GROUP_LEVEL' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction"
           (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
@@ -91,8 +90,7 @@
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Strong userProfileGroup column header@@userListStrongAuthenticationHeader">Groupe de
-          profils&nbsp;</span>
+        <span>{{'USER.HOME.RESULTS_TABLE.GROUP' | translate}}</span>
       </div>
 
 

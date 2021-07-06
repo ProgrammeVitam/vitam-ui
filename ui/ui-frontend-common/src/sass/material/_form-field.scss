@@ -9,7 +9,7 @@
 
     &.mat-focused {
         .mat-form-field-label {
-            color: $greyish-two;
+            color: var(--vitamui-grey);
         }
     }
 
@@ -22,7 +22,7 @@
     }
 
     .mat-form-field-label {
-        color: $greyish-two;
+        color: var(--vitamui-grey);
         font-weight: 400;
 
         .mat-form-field-required-marker {
@@ -45,9 +45,11 @@
     }
 
     .mat-form-field-flex {
+
+        @include input-elevation-dark;
+        
         vertical-align: top;
         border-radius: 25px;
-        @include elevation-1;
         transition: box-shadow 200ms ease-out;
         height: 50px;
         align-items: center;

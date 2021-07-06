@@ -36,15 +36,35 @@
  */
 
 import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelect } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { PatternModule } from '../../pattern';
 import { EditablePatternsComponent } from './editable-patterns.component';
+
+@Component({
+  selector: 'app-pattern',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PatternStubComponent),
+    multi: true
+  }]
+})
+class PatternStubComponent implements ControlValueAccessor {
+  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() vitamuiMiniMode = false;
+
+  @ViewChild('select', { static: true }) select: MatSelect;
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
 
 @Component({
   template: `
@@ -81,12 +101,12 @@ describe('EditablePatternsComponent', () => {
         OverlayModule,
         MatProgressSpinnerModule,
         NoopAnimationsModule,
-        PatternModule,
         VitamUICommonTestModule,
       ],
       declarations: [
         TesthostComponent,
         EditablePatternsComponent,
+        PatternStubComponent
       ]
     })
     .compileComponents();

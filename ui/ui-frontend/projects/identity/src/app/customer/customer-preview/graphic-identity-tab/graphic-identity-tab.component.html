@@ -41,7 +41,7 @@
 
 <div *ngFor="let colorName of [THEME_COLORS.VITAMUI_PRIMARY, THEME_COLORS.VITAMUI_SECONDARY]" class="col-12 d-flex mt-4">
   <div class="label-color p-0 col-4">
-    <label class="text normal light">{{COLOR_NAME[colorName]}}</label>
+    <label class="text normal light">{{COLOR_NAME[colorName] | translate}}</label>
     {{theme.colors[colorName]}}
   </div>
   <div class="pl-2">

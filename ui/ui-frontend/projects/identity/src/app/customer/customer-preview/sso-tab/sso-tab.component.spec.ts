@@ -38,17 +38,18 @@
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import { of ,  Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { Customer, IdentityProvider, OtpState } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { IdentityProviderService } from './identity-provider.service';
 import { SsoTabComponent } from './sso-tab.component';
 
 @Component({ selector: 'app-identity-provider-details', template: '' })
 class IdentityProviderDetailsStubComponent {
-    @Input() identityProvider: IdentityProvider;
-    @Input() domains: any;
-    @Input() readOnly: boolean;
+  @Input() identityProvider: IdentityProvider;
+  @Input() domains: any;
+  @Input() readOnly: boolean;
 }
 
 @Directive({ selector: '[matTooltip]' })
@@ -63,32 +64,32 @@ class MatTooltipStubDirective {
 })
 class TestHostComponent {
   customer: Customer = {
-    id : '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
-    identifier : '1',
-    code : '015000',
-    name : 'TeamVitamUI',
-    companyName : 'vitamui',
-    enabled : false,
+    id: '5ad5f14c894e6a414edc7b5ffd02766b442f4256b563a6e3909e05b9e3abf9ea',
+    identifier: '1',
+    code: '015000',
+    name: 'TeamVitamUI',
+    companyName: 'vitamui',
+    enabled: false,
     readonly: false,
     hasCustomGraphicIdentity: false,
-    language : 'FRENCH',
-    passwordRevocationDelay : 9,
-    otp : OtpState.OPTIONAL,
-    emailDomains : [
-        'vitamui.com',
-        '1test.com',
-        'test2.com',
-        'test3.com',
-        'test4.com',
-        'test5.com',
-        'test6.com',
+    language: 'FRENCH',
+    passwordRevocationDelay: 9,
+    otp: OtpState.OPTIONAL,
+    emailDomains: [
+      'vitamui.com',
+      '1test.com',
+      'test2.com',
+      'test3.com',
+      'test4.com',
+      'test5.com',
+      'test6.com',
     ],
-    defaultEmailDomain : '1test.com',
-    address : {
-        street : '73 rue du Faubourg Poissonnière ',
-        zipCode : '75009',
-        city : 'Paris',
-        country : 'DK'
+    defaultEmailDomain: '1test.com',
+    address: {
+      street: '73 rue du Faubourg Poissonnière ',
+      zipCode: '75009',
+      city: 'Paris',
+      country: 'DK'
     },
     owners: [],
     themeColors: {},
@@ -152,6 +153,7 @@ describe('SsoTabComponent', () => {
     matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
     TestBed.configureTestingModule({
+      imports: [VitamUICommonTestModule],
       declarations: [
         SsoTabComponent,
         IdentityProviderDetailsStubComponent,
@@ -160,14 +162,16 @@ describe('SsoTabComponent', () => {
       ],
       providers: [
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: IdentityProviderService, useValue: {
-          getAll: () => of(providers),
-          getDomainByCustomerId: () => of(['test1.com', 'test2.com']),
-          updated: new Subject()
-        } },
+        {
+          provide: IdentityProviderService, useValue: {
+            getAll: () => of(providers),
+            getDomainByCustomerId: () => of(['test1.com', 'test2.com']),
+            updated: new Subject()
+          }
+        },
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -197,7 +201,7 @@ describe('SsoTabComponent', () => {
       it('should exist', () => {
         const elButton = fixture.nativeElement.querySelector('button');
         expect(elButton).toBeTruthy();
-        expect(elButton.textContent).toContain('Créer un IDP');
+        expect(elButton.textContent).toContain('CUSTOMER.SSO.BUTTON');
       });
 
       it('should call openCreateIDPDialog()', () => {
@@ -233,8 +237,10 @@ describe('SsoTabComponent', () => {
         expect(elProviders.length).toBe(3);
         elProviders.forEach((elProvider: HTMLElement, index: number) => {
           expect(elProvider.textContent).toContain(providers[index].name);
-          expect(elProvider.textContent).toContain(providers[index].internal ? 'Interne' : 'Externe');
-          expect(elProvider.textContent).toContain(providers[index].enabled ? 'Actif' : 'Inactif');
+          expect(elProvider.textContent).toContain(providers[index].internal
+            ? 'CUSTOMER.SSO.TYPE_INTERNAL' : 'CUSTOMER.SSO.TYPE_EXTERNAL');
+          expect(elProvider.textContent).toContain(providers[index].enabled
+            ? 'CUSTOMER.SSO.STATUS_ACTIVE' : 'CUSTOMER.SSO.STATUS_INACTIVE');
         });
       });
 
@@ -266,7 +272,7 @@ describe('SsoTabComponent', () => {
 
         const elButton = fixture.nativeElement.querySelector('button');
         expect(elButton).toBeTruthy();
-        expect(elButton.textContent).toContain('Retourner à la liste des IDP');
+        expect(elButton.textContent).toContain('CUSTOMER.SSO.RETURN');
         elButton.click();
         expect(testhost.component.selectedIdentityProvider).toBeFalsy();
       });
