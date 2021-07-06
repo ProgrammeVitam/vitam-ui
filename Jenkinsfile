@@ -40,7 +40,7 @@ pipeline {
             agent none
             steps {
                 script {
-                    env.DO_TEST = 'false'
+                    env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
                     env.DO_CHECKMARX = 'false'
@@ -59,8 +59,11 @@ pipeline {
             }
             steps {
                 sh 'npmrc default'
+//                sh '''
+//                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+//                '''
                 sh '''
-                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND clean verify -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
             post {
