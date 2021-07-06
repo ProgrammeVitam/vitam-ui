@@ -1,5 +1,8 @@
-<div class="vitamui-content">
+<div class="vitamui-heading mb-0">
     <app-welcome-message [title]="welcomeTitle" [message]="welcomeMessage" [imgUrl]="customerLogoUrl"></app-welcome-message>
-    <app-application-list [appMap]="applications" (applicationClick)="openApplication($event)"></app-application-list>
+</div>
+
+<div class="vitamui-content">
+    <app-application-list [appMap]="applications"></app-application-list>
     <mat-spinner class="vitamui-spinner large my-4 mx-auto" *ngIf="loading"></mat-spinner>
 </div>

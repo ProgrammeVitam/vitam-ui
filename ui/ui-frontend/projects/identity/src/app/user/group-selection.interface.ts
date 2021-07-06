@@ -40,4 +40,5 @@ export interface GroupSelection {
   level: string;
   description: string;
   selected: boolean;
+  profiles: [];
 }

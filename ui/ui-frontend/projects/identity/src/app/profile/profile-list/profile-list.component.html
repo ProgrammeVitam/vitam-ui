@@ -2,11 +2,11 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-gestion-de-profil"></i></div>
-      <div class="col-3" i18n="Profile name@@profileListHeaderName">Nom du profil administrateur</div>
-      <div class="col-2" i18n="Identifier@@profileListHeaderIdentifier">Identifiant</div>
-      <div class="col-2" i18n="Description@@profileListHeaderDescription">Description</div>
-      <div class="col-2" i18n="Level@@profileListHeaderLevel">Niveau</div>
-      <div class="col-2" i18n="Users count@@profileListHeaderUsersCount">Nombre d'utilisateurs</div>
+      <div class="col-3">{{'USER_PROFILE.HOME.RESULTS_TABLE.NAME' | translate}}</div>
+      <div class="col-2">{{'COMMON.ID' | translate}}</div>
+      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.DESCRIPTION' | translate}}</div>
+      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.LEVEL' | translate}}</div>
+      <div class="col-2">{{'USER_PROFILE.HOME.RESULTS_TABLE.USERS_NUMBER' | translate}}</div>
     </div>
 
     <div class="vitamui-table-body">
@@ -33,12 +33,12 @@
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
  </ng-template>
 
  <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="rngProfileService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+    <span class="clickable">A{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
   </div>
 </ng-template>
 

@@ -36,6 +36,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 
@@ -47,6 +48,7 @@ describe('ConfirmDialogComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
+        VitamUICommonTestModule
       ],
       declarations: [ ConfirmDialogComponent ]
     })

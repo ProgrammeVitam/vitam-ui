@@ -97,14 +97,6 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         super(flowBuilderServices, flowDefinitionRegistry, applicationContext, casProperties);
     }
 
-    @Override
-    protected void createRedirectEndState(final Flow flow) {
-        final ActionState redirectState = createActionState(flow, CasWebflowConstants.STATE_ID_REDIRECT_VIEW, "selectRedirectAction");
-        createTransitionForState(redirectState, DIRECT_RESULT, DIRECT_ACTION);
-        createTransitionForState(redirectState, INDIRECT_RESULT, INDIRECT_ACTION);
-        createEndState(flow, DIRECT_ACTION, "requestScope.url", true);
-        createEndState(flow, INDIRECT_ACTION, "casGetResponseView");
-    }
 
     @Override
     protected void createTicketGrantingTicketCheckAction(final Flow flow) {

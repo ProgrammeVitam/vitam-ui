@@ -1,9 +1,9 @@
 <div class="vitamui-subtable p-0">
     <div class="vitamui-table-head">
       <div class="col-3"></div>
-      <div class="col-2">Code propriétaire</div>
-      <div class="col-3">Propriétaire</div>
-      <div class="col-2">Code coffre</div>
+      <div class="col-2">{{'CUSTOMER.OWNER.CODE' | translate}}</div>
+      <div class="col-3">{{'CUSTOMER.OWNER.NAME' | translate}}</div>
+      <div class="col-2">{{'CUSTOMER.OWNER.SAFE_CODE' | translate}}</div>
       <div class="col-4"></div>
     </div>
 
@@ -37,15 +37,15 @@
       </div>
 
     <div class="footer-action">
-        <div class="text normal link bold primary" i18n="Add owner@@OwnerListAddOwnerButton" (click)="openCreateOwnerDialog()">
-          Ajouter un propriétaire
+        <div class="text normal link bold primary" (click)="openCreateOwnerDialog()">
+          {{'CUSTOMER.HOME.RESULTS_TABLE.ADD_OWNER' | translate}}
         </div>
     </div>
   </div>
 </div>
 
 <ng-template #proofIcons>
-  <div matTooltip="Coffre des éléments de preuve" i18n-matTooltip="Proof safe info@@proofSafeInfo" matTooltipClass="vitamui-tooltip">
+  <div [matTooltip]="'CUSTOMER.OWNER.LIST.PROOF_ELEMENTS' | translate" matTooltipClass="vitamui-tooltip">
     <i class="vitamui-icon vitamui-icon-safe secondary mr-1" [style.fontSize.px]="25"></i>
     <i class="vitamui-icon vitamui-icon-key secondary" [style.fontSize.px]="15"></i>
   </div>

@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ClosePopupDialogComponent } from './close-popup-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
@@ -46,6 +47,7 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
   imports: [
     CommonModule,
     MatDialogModule,
+    TranslateModule
   ],
   exports: [ConfirmDialogComponent, ClosePopupDialogComponent],
   entryComponents: [ClosePopupDialogComponent]

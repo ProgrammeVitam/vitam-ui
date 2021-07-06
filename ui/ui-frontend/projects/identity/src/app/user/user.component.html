@@ -7,14 +7,13 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        Administrer mes utilisateurs
+        {{'USER.HOME.TITLE' | translate}}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'Nom, Prénom, Identifiant, Email'"
-        i18n-placeholder="@@userSearchPlaceholder" (search)="onSearchSubmit($event)">
+      <vitamui-common-banner [searchbarPlaceholder]="'USER.HOME.TITLE_PLACEHOLDER' | translate" (search)="onSearchSubmit($event)">
         <div *ngIf="groups">
           <button class="btn primary" (click)="openCreateUserDialog()" [disabled]="!connectedUserInfo.createUser">
-            <span>Créer un Utilisateur</span>
+            <span>{{'USER.HOME.ACTION_BUTTON' | translate}}</span>
           </button>
         </div>
       </vitamui-common-banner>

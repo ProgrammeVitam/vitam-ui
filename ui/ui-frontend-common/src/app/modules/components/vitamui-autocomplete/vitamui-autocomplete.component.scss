@@ -3,6 +3,14 @@
 
 $animation-time: 150ms;
 
+.mat-drawer, .mat-dialog-container {
+  .vitamui-autocomplete {
+    > input {
+      @include dialog-elevation-dark;
+    }
+  }
+}
+
 .vitamui-autocomplete {
   position: relative;
 
@@ -12,15 +20,20 @@ $animation-time: 150ms;
     border-radius: 4px;
     background-color: $white;
     border: none;
-    box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
     height: 60px;
     width: 100%;
     padding: 10px 40px 10px 29px;
     transition: padding $animation-time ease-out;
 
+    @include input-elevation-dark;
+
     &:focus {
       outline: none;
       border: solid 1px var(--vitamui-primary);
+    }
+
+    &.ng-invalid {
+      border: 1px solid $red;
     }
   }
 
@@ -46,7 +59,6 @@ $animation-time: 150ms;
   }
 
   .input-label {
-
     font-size: 14px;
     font-weight: 700;
     align-items: center;
@@ -59,6 +71,10 @@ $animation-time: 150ms;
     transform-origin: left;
     color: var(--vitamui-primary);
     transition: transform $animation-time ease-out, top $animation-time ease-out;
+
+    > .required-marker {
+      color: $red;
+    }
   }
 
   &.label-up {

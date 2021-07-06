@@ -36,10 +36,22 @@
 */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { ApplicationId, AuthService, GlobalEventService, StartupService, ThemeDataType, ThemeService } from 'ui-frontend-common';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Application, ApplicationService, Category } from 'ui-frontend-common';
+import {
+  ApplicationId,
+  AuthService,
+  BasicCustomer,
+  FullLangString,
+  GlobalEventService,
+  LanguageService,
+  MinLangString,
+  StartupService,
+  ThemeDataType,
+  ThemeService
+} from 'ui-frontend-common';
 
 @Component({
   selector: 'app-portal',
@@ -54,43 +66,50 @@ export class PortalComponent implements OnInit, OnDestroy {
   public customerLogoUrl: SafeResourceUrl;
   public loading = true;
 
-  private sub: Subscription;
+  private destroyer$ = new Subject();
 
   constructor(
+    private translateService: TranslateService,
     private applicationService: ApplicationService,
     private startupService: StartupService,
     private authService: AuthService,
     private themeService: ThemeService,
-    private router: Router,
+    private langagueService: LanguageService,
     private globalEventService: GlobalEventService) { }
 
   ngOnInit() {
-    this.sub = this.applicationService.getActiveTenantAppsMap().subscribe((appMap) => {
+    this.applicationService.getActiveTenantAppsMap().pipe(takeUntil(this.destroyer$)).subscribe((appMap) => {
       this.applications = appMap;
       this.loading = false;
     });
 
-    const basicCustomer = this.authService.user.basicCustomer;
-
-    const title = this.startupService.getDefaultPortalTitle();
-    const message = this.startupService.getDefaultPortalMessage();
-
-    this.welcomeTitle = (basicCustomer && basicCustomer.portalTitles && basicCustomer.portalTitles[this.authService.user.language]) ?
-    basicCustomer.portalTitles[this.authService.user.language] : title;
-    this.welcomeMessage = (basicCustomer && basicCustomer.portalMessages && basicCustomer.portalMessages[this.authService.user.language]) ?
-     basicCustomer.portalMessages[this.authService.user.language] : message;
+    this.translateService.onLangChange.pipe(takeUntil(this.destroyer$)).subscribe((event: LangChangeEvent) => {
+      this.initPortalTitleAndMessage(this.langagueService.getFullLangString(event.lang as MinLangString));
+    });
 
     this.customerLogoUrl = this.themeService.getData(this.authService.user, ThemeDataType.PORTAL_LOGO);
     this.globalEventService.pageEvent.next(ApplicationId.PORTAL_APP);
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.destroyer$.next();
+    this.destroyer$.complete();
   }
 
-  public openApplication(app: Application): void {
-    this.applicationService.openApplication(app, this.router, this.startupService.getConfigStringValue('UI_URL'));
+  private initPortalTitleAndMessage(lang: FullLangString): void {
+    const customer: BasicCustomer = this.authService.user.basicCustomer;
+    if (customer) {
+      if (customer.portalTitles && customer.portalTitles[lang]) {
+        this.welcomeTitle = customer.portalTitles[lang];
+      } else {
+        this.welcomeTitle = this.startupService.getDefaultPortalTitle();
+      }
+
+      if (customer.portalMessages && customer.portalMessages[lang]) {
+        this.welcomeMessage = customer.portalMessages[lang];
+      } else {
+        this.welcomeMessage = this.startupService.getDefaultPortalMessage();
+      }
+    }
   }
 }

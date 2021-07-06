@@ -4,7 +4,7 @@
       [disabled]="disabled"
       [colorInput]="formGroup.get(color)"
       [checkWarning]="true"
-      [placeholder]="baseColors[color]">
+      [placeholder]="baseColors[color] | translate">
     </app-input-color>
   </div>
 
@@ -20,20 +20,20 @@
     [disabled]="disabled"
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_TERTIARY)"
     [checkWarning]="true"
-    [placeholder]="baseColors[THEME_COLORS.VITAMUI_TERTIARY]">
+    [placeholder]="'COLOR.TERTIARY' | translate">
   </app-input-color>
 
   <app-input-color
     [colorInput]="formGroup.get(THEME_COLORS.VITAMUI_HEADER_FOOTER)"
     [disabled]="disabled"
-    [placeholder]="baseColors[THEME_COLORS.VITAMUI_HEADER_FOOTER]">
+    [placeholder]="'COLOR.HEADER_FOOTER' | translate">
   </app-input-color>
 
   <vitamui-common-select 
     class="mb-4"
     [disabled]="disabled" 
     [data]="backgroundColors"
-    [messages]="{'unselected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND], 'selected': baseColors[THEME_COLORS.VITAMUI_BACKGROUND]}"
+    [messages]="{'unselected': 'COLOR.BACKGROUND' | translate, 'selected': 'COLOR.BACKGROUND' | translate}"
     [selected]="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).value"
     (selectedChange)="formGroup.get(THEME_COLORS.VITAMUI_BACKGROUND).setValue($event)">
   </vitamui-common-select>

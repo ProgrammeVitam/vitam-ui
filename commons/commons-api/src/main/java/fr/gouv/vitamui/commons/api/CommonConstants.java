@@ -181,6 +181,8 @@ public class CommonConstants {
 
     public static final String SITE_CODE = "siteCode";
 
+    public static final String INTERNAL_CODE = "internalCode";
+
     public static final String CUSTOMER_ID_ATTRIBUTE = "customerId";
 
     public static final String CUSTOMER_IDENTIFIER_ATTRIBUTE = "customerIdentifier";

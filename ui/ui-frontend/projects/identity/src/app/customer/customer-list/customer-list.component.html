@@ -2,11 +2,11 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-1"><i class="vitamui-icon vitamui-icon-bank"></i></div>
-      <div class="col-2" i18n="Customer code@@customerListCustomerCodeHeader">Code organisation</div>
-      <div class="col-2" i18n="Customer name@@customerListNameHeader">Organisation</div>
-      <div class="col-3" i18n="Compagny name@@customerListCompanyNameHeader">Raison sociale</div>
-      <div class="col-2" i18n="SSO@@customerListSSOHeader">SSO</div>
-      <div class="col-2" i18n="Two factor validation@@customerListTwoStepsValidationHeader">Validation en deux étapes</div>
+      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.CODE' | translate}}</div>
+      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.NAME' | translate}}</div>
+      <div class="col-3">{{'CUSTOMER.HOME.RESULTS_TABLE.SOCIAL_REASON' | translate}}</div>
+      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.SSO' | translate}}</div>
+      <div class="col-2">{{'CUSTOMER.HOME.RESULTS_TABLE.VALIDATIONS' | translate}}</div>
     </div>
 
     <div class="vitamui-table-body">
@@ -52,12 +52,12 @@
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
  </ng-template>
 
  <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="customerListService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
   </div>
 </ng-template>
 

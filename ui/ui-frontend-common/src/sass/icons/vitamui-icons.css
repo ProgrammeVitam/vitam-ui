@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?7yonv4');
-  src:  url('fonts/vitamui-icon.eot?7yonv4#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?7yonv4') format('truetype'),
-    url('fonts/vitamui-icon.woff?7yonv4') format('woff'),
-    url('fonts/vitamui-icon.svg?7yonv4#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?tctv1u');
+  src:  url('fonts/vitamui-icon.eot?tctv1u#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?tctv1u') format('truetype'),
+    url('fonts/vitamui-icon.woff?tctv1u') format('woff'),
+    url('fonts/vitamui-icon.svg?tctv1u#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,1354 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-app-profile-user .path1:before {
+  content: "\eb99";
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path2:before {
+  content: "\eb9a";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-profile-user .path3:before {
+  content: "\eb9b";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-profile-user .path4:before {
+  content: "\eb9c";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-profile-user .path5:before {
+  content: "\eb9d";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-profile-user .path6:before {
+  content: "\eb9e";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-profile-user .path7:before {
+  content: "\eb9f";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-profile-user .path8:before {
+  content: "\eba0";
+  margin-left: -1em;
+  color: rgb(0, 0, 255);
+}
+.vitamui-icon-app-profile-user .path9:before {
+  content: "\eba1";
+  margin-left: -1em;
+  color: rgb(0, 0, 255);
+}
+.vitamui-icon-app-profile-user .path10:before {
+  content: "\eba2";
+  margin-left: -1em;
+  color: rgb(0, 255, 0);
+}
+.vitamui-icon-app-profile-user .path11:before {
+  content: "\eba3";
+  margin-left: -1em;
+  color: rgb(0, 255, 0);
+}
+.vitamui-icon-app-profile-user .path12:before {
+  content: "\eba4";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path13:before {
+  content: "\eba5";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-profile-user .path14:before {
+  content: "\eba6";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-profile-user .path15:before {
+  content: "\eba7";
+  margin-left: -1em;
+  color: rgb(152, 48, 177);
+}
+.vitamui-icon-app-profile-user .path16:before {
+  content: "\eba8";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-profile-user .path17:before {
+  content: "\eba9";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path18:before {
+  content: "\ebaa";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-profile-user .path19:before {
+  content: "\ebab";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-profile-user .path20:before {
+  content: "\ebac";
+  margin-left: -1em;
+  color: rgb(152, 48, 177);
+}
+.vitamui-icon-app-profile-user .path21:before {
+  content: "\ebad";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-profile-user .path22:before {
+  content: "\ebae";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path23:before {
+  content: "\ebaf";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-profile-user .path24:before {
+  content: "\ebb0";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-profile-user .path25:before {
+  content: "\ebb1";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-profile-user .path26:before {
+  content: "\ebb2";
+  margin-left: -1em;
+  color: rgb(255, 0, 0);
+}
+.vitamui-icon-app-profile-user .path27:before {
+  content: "\ebb3";
+  margin-left: -1em;
+  color: rgb(156, 76, 255);
+}
+.vitamui-icon-app-profile-user .path28:before {
+  content: "\ebb4";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path29:before {
+  content: "\ebb5";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path30:before {
+  content: "\ebb6";
+  margin-left: -1em;
+  color: rgb(255, 204, 0);
+}
+.vitamui-icon-app-profile-user .path31:before {
+  content: "\ebb7";
+  margin-left: -1em;
+  color: rgb(76, 184, 76);
+}
+.vitamui-icon-app-profile-user .path32:before {
+  content: "\ebb8";
+  margin-left: -1em;
+  color: rgb(101, 123, 150);
+}
+.vitamui-icon-app-profile-user .path33:before {
+  content: "\ebb9";
+  margin-left: -1em;
+  color: rgb(170, 68, 0);
+}
+.vitamui-icon-app-profile-user .path34:before {
+  content: "\ebba";
+  margin-left: -1em;
+  color: rgb(170, 68, 0);
+}
+.vitamui-icon-app-profile-user .path35:before {
+  content: "\ebbb";
+  margin-left: -1em;
+  color: rgb(122, 74, 245);
+  opacity: 0.75;
+}
+.vitamui-icon-app-profile-user .path36:before {
+  content: "\ebbc";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path37:before {
+  content: "\ebbd";
+  margin-left: -1em;
+  color: rgb(120, 68, 33);
+}
+.vitamui-icon-app-profile-user .path38:before {
+  content: "\ebbe";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.vitamui-icon-app-profile-user .path39:before {
+  content: "\ebbf";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-profile-user .path40:before {
+  content: "\ebc0";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-profile-user .path41:before {
+  content: "\ebc1";
+  margin-left: -1em;
+  color: rgb(172, 157, 147);
+}
+.vitamui-icon-app-profile-user .path42:before {
+  content: "\ebc2";
+  margin-left: -1em;
+  color: rgb(255, 212, 42);
+}
+.vitamui-icon-app-profile-user .path43:before {
+  content: "\ebc3";
+  margin-left: -1em;
+  color: rgb(255, 212, 42);
+}
+.vitamui-icon-app-profile-user .path44:before {
+  content: "\ebc4";
+  margin-left: -1em;
+  color: rgb(255, 212, 42);
+}
+.vitamui-icon-app-profile-user .path45:before {
+  content: "\ebc5";
+  margin-left: -1em;
+  color: rgb(255, 212, 42);
+}
+.vitamui-icon-app-profile-user .path46:before {
+  content: "\ebc6";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path47:before {
+  content: "\ebc7";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path48:before {
+  content: "\ebc8";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-profile-user .path49:before {
+  content: "\ebc9";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-profile-user .path50:before {
+  content: "\ebca";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-profile-user .path51:before {
+  content: "\ebcb";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.vitamui-icon-app-profile-user .path52:before {
+  content: "\ebcc";
+  margin-left: -1em;
+  color: rgb(245, 88, 63);
+}
+.vitamui-icon-app-profile-user .path53:before {
+  content: "\ebcd";
+  margin-left: -1em;
+  color: rgb(245, 88, 63);
+}
+.vitamui-icon-app-profile-user .path54:before {
+  content: "\ebce";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-customers .path1:before {
+  content: "\eb1e";
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path2:before {
+  content: "\eb21";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-customers .path3:before {
+  content: "\eb22";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-customers .path4:before {
+  content: "\eb23";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-customers .path5:before {
+  content: "\eb26";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path6:before {
+  content: "\eb27";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-customers .path7:before {
+  content: "\eb28";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path8:before {
+  content: "\eb29";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path9:before {
+  content: "\eb2a";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path10:before {
+  content: "\eb2b";
+  margin-left: -1em;
+  color: rgb(37, 99, 169);
+}
+.vitamui-icon-app-customers .path11:before {
+  content: "\eb2c";
+  margin-left: -1em;
+  color: rgb(71, 138, 215);
+}
+.vitamui-icon-app-customers .path12:before {
+  content: "\eb2d";
+  margin-left: -1em;
+  color: rgb(141, 182, 230);
+}
+.vitamui-icon-app-customers .path13:before {
+  content: "\eb2e";
+  margin-left: -1em;
+  color: rgb(37, 99, 169);
+}
+.vitamui-icon-app-customers .path14:before {
+  content: "\eb2f";
+  margin-left: -1em;
+  color: rgb(71, 138, 215);
+}
+.vitamui-icon-app-customers .path15:before {
+  content: "\eb30";
+  margin-left: -1em;
+  color: rgb(141, 182, 230);
+}
+.vitamui-icon-app-customers .path16:before {
+  content: "\eb31";
+  margin-left: -1em;
+  color: rgb(37, 99, 169);
+}
+.vitamui-icon-app-customers .path17:before {
+  content: "\eb32";
+  margin-left: -1em;
+  color: rgb(71, 138, 215);
+}
+.vitamui-icon-app-customers .path18:before {
+  content: "\eb33";
+  margin-left: -1em;
+  color: rgb(141, 182, 230);
+}
+.vitamui-icon-app-customers .path19:before {
+  content: "\eb34";
+  margin-left: -1em;
+  color: rgb(37, 99, 169);
+}
+.vitamui-icon-app-customers .path20:before {
+  content: "\eb35";
+  margin-left: -1em;
+  color: rgb(71, 138, 215);
+}
+.vitamui-icon-app-customers .path21:before {
+  content: "\eb36";
+  margin-left: -1em;
+  color: rgb(141, 182, 230);
+}
+.vitamui-icon-app-customers .path22:before {
+  content: "\eb37";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path23:before {
+  content: "\eb38";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path24:before {
+  content: "\eb39";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path25:before {
+  content: "\eb3a";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path26:before {
+  content: "\eb3b";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path27:before {
+  content: "\eb3c";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path28:before {
+  content: "\eb3d";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path29:before {
+  content: "\eb3e";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path30:before {
+  content: "\eb3f";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path31:before {
+  content: "\eb40";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path32:before {
+  content: "\eb41";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path33:before {
+  content: "\eb42";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path34:before {
+  content: "\eb43";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path35:before {
+  content: "\eb44";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path36:before {
+  content: "\eb45";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path37:before {
+  content: "\eb46";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path38:before {
+  content: "\eb47";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path39:before {
+  content: "\eb48";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path40:before {
+  content: "\eb49";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path41:before {
+  content: "\eb4a";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path42:before {
+  content: "\eb4b";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path43:before {
+  content: "\eb4c";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path44:before {
+  content: "\eb4d";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path45:before {
+  content: "\eb4e";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path46:before {
+  content: "\eb4f";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path47:before {
+  content: "\eb50";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path48:before {
+  content: "\eb51";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path49:before {
+  content: "\eb52";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path50:before {
+  content: "\eb53";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path51:before {
+  content: "\eb54";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path52:before {
+  content: "\eb55";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path53:before {
+  content: "\eb56";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path54:before {
+  content: "\eb57";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path55:before {
+  content: "\eb58";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path56:before {
+  content: "\eb59";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path57:before {
+  content: "\eb5a";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path58:before {
+  content: "\eb5b";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path59:before {
+  content: "\eb5c";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path60:before {
+  content: "\eb5d";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path61:before {
+  content: "\eb5e";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path62:before {
+  content: "\eb5f";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path63:before {
+  content: "\eb60";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path64:before {
+  content: "\eb61";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path65:before {
+  content: "\eb62";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path66:before {
+  content: "\eb63";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path67:before {
+  content: "\eb64";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path68:before {
+  content: "\eb65";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path69:before {
+  content: "\eb66";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path70:before {
+  content: "\eb67";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path71:before {
+  content: "\eb68";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path72:before {
+  content: "\eb69";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path73:before {
+  content: "\eb6a";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path74:before {
+  content: "\eb6b";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path75:before {
+  content: "\eb6c";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path76:before {
+  content: "\eb6d";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path77:before {
+  content: "\eb6e";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path78:before {
+  content: "\eb6f";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path79:before {
+  content: "\eb70";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path80:before {
+  content: "\eb71";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path81:before {
+  content: "\eb72";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path82:before {
+  content: "\eb73";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path83:before {
+  content: "\eb74";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path84:before {
+  content: "\eb75";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-customers .path85:before {
+  content: "\eb76";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path86:before {
+  content: "\eb77";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path87:before {
+  content: "\eb78";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path88:before {
+  content: "\eb79";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path89:before {
+  content: "\eb7a";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path90:before {
+  content: "\eb7b";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path91:before {
+  content: "\eb7c";
+  margin-left: -1em;
+  color: rgb(0, 245, 245);
+}
+.vitamui-icon-app-customers .path92:before {
+  content: "\eb7d";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-customers .path93:before {
+  content: "\eb7e";
+  margin-left: -1em;
+  color: rgb(155, 154, 155);
+}
+.vitamui-icon-app-customers .path94:before {
+  content: "\eb7f";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-customers .path95:before {
+  content: "\eb80";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-customers .path96:before {
+  content: "\eb81";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.vitamui-icon-app-customers .path97:before {
+  content: "\eb82";
+  margin-left: -1em;
+  color: rgb(23, 15, 30);
+}
+.vitamui-icon-app-customers .path98:before {
+  content: "\eb83";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-customers .path99:before {
+  content: "\eb84";
+  margin-left: -1em;
+  color: rgb(23, 15, 30);
+}
+.vitamui-icon-app-customers .path100:before {
+  content: "\eb85";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-customers .path101:before {
+  content: "\eb86";
+  margin-left: -1em;
+  color: rgb(23, 15, 30);
+}
+.vitamui-icon-app-customers .path102:before {
+  content: "\eb87";
+  margin-left: -1em;
+  color: rgb(145, 87, 158);
+}
+.vitamui-icon-app-customers .path103:before {
+  content: "\eb88";
+  margin-left: -1em;
+  color: rgb(152, 48, 177);
+}
+.vitamui-icon-app-customers .path104:before {
+  content: "\eb89";
+  margin-left: -1em;
+  color: rgb(145, 87, 158);
+}
+.vitamui-icon-app-customers .path105:before {
+  content: "\eb8a";
+  margin-left: -1em;
+  color: rgb(145, 87, 158);
+}
+.vitamui-icon-app-customers .path106:before {
+  content: "\eb8b";
+  margin-left: -1em;
+  color: rgb(145, 87, 158);
+}
+.vitamui-icon-app-customers .path107:before {
+  content: "\eb8c";
+  margin-left: -1em;
+  color: rgb(210, 173, 209);
+}
+.vitamui-icon-app-customers .path108:before {
+  content: "\eb8d";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-customers .path109:before {
+  content: "\eb8e";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-customers .path110:before {
+  content: "\eb8f";
+  margin-left: -1em;
+  color: rgb(210, 173, 209);
+}
+.vitamui-icon-app-customers .path111:before {
+  content: "\eb90";
+  margin-left: -1em;
+  color: rgb(110, 35, 128);
+}
+.vitamui-icon-app-customers .path112:before {
+  content: "\eb91";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-customers .path113:before {
+  content: "\eb92";
+  margin-left: -1em;
+  color: rgb(110, 35, 128);
+}
+.vitamui-icon-app-customers .path114:before {
+  content: "\eb93";
+  margin-left: -1em;
+  color: rgb(68, 31, 80);
+}
+.vitamui-icon-app-customers .path115:before {
+  content: "\eb94";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-customers .path116:before {
+  content: "\eb95";
+  margin-left: -1em;
+  color: rgb(68, 31, 80);
+}
+.vitamui-icon-app-customers .path117:before {
+  content: "\eb96";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-customers .path118:before {
+  content: "\eb97";
+  margin-left: -1em;
+  color: rgb(161, 161, 161);
+}
+.vitamui-icon-app-customers .path119:before {
+  content: "\eb98";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path1:before {
+  content: "\ea78";
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path2:before {
+  content: "\ea79";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-users .path3:before {
+  content: "\ea7a";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-users .path4:before {
+  content: "\ea80";
+  margin-left: -1em;
+  color: rgb(188, 185, 186);
+}
+.vitamui-icon-app-users .path5:before {
+  content: "\ea81";
+  margin-left: -1em;
+  color: rgb(229, 228, 228);
+}
+.vitamui-icon-app-users .path6:before {
+  content: "\ea84";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-users .path7:before {
+  content: "\ea85";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path8:before {
+  content: "\ea89";
+  margin-left: -1em;
+  color: rgb(76, 76, 253);
+}
+.vitamui-icon-app-users .path9:before {
+  content: "\ea8b";
+  margin-left: -1em;
+  color: rgb(76, 76, 253);
+}
+.vitamui-icon-app-users .path10:before {
+  content: "\ea8e";
+  margin-left: -1em;
+  color: rgb(76, 0, 173);
+}
+.vitamui-icon-app-users .path11:before {
+  content: "\ea8f";
+  margin-left: -1em;
+  color: rgb(76, 0, 173);
+}
+.vitamui-icon-app-users .path12:before {
+  content: "\ea90";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path13:before {
+  content: "\ea91";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-users .path14:before {
+  content: "\ea92";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-users .path15:before {
+  content: "\ea93";
+  margin-left: -1em;
+  color: rgb(152, 48, 177);
+}
+.vitamui-icon-app-users .path16:before {
+  content: "\ea94";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-users .path17:before {
+  content: "\ea96";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path18:before {
+  content: "\ea97";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-users .path19:before {
+  content: "\ea99";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-users .path20:before {
+  content: "\ea9a";
+  margin-left: -1em;
+  color: rgb(152, 48, 177);
+}
+.vitamui-icon-app-users .path21:before {
+  content: "\ea9b";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-users .path22:before {
+  content: "\ea9c";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path23:before {
+  content: "\ea9d";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-users .path24:before {
+  content: "\eaa3";
+  margin-left: -1em;
+  color: rgb(112, 35, 129);
+}
+.vitamui-icon-app-users .path25:before {
+  content: "\eaa4";
+  margin-left: -1em;
+  color: rgb(203, 126, 221);
+}
+.vitamui-icon-app-users .path26:before {
+  content: "\eaa5";
+  margin-left: -1em;
+  color: rgb(255, 0, 5);
+}
+.vitamui-icon-app-users .path27:before {
+  content: "\eaa7";
+  margin-left: -1em;
+  color: rgb(19, 0, 255);
+}
+.vitamui-icon-app-users .path28:before {
+  content: "\eaa8";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-users .path29:before {
+  content: "\eaa9";
+  margin-left: -1em;
+  color: rgb(19, 0, 5);
+}
+.vitamui-icon-app-users .path30:before {
+  content: "\eaaa";
+  margin-left: -1em;
+  color: rgb(19, 255, 242);
+}
+.vitamui-icon-app-users .path31:before {
+  content: "\eaab";
+  margin-left: -1em;
+  color: rgb(76, 255, 76);
+}
+.vitamui-icon-app-users .path32:before {
+  content: "\eaac";
+  margin-left: -1em;
+  color: rgb(245, 0, 245);
+}
+.vitamui-icon-app-users .path33:before {
+  content: "\eaad";
+  margin-left: -1em;
+  color: rgb(59, 181, 255);
+}
+.vitamui-icon-app-users .path34:before {
+  content: "\eaae";
+  margin-left: -1em;
+  color: rgb(59, 181, 255);
+}
+.vitamui-icon-app-users .path35:before {
+  content: "\eaaf";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path36:before {
+  content: "\eab5";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path37:before {
+  content: "\eab6";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path38:before {
+  content: "\eab7";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path39:before {
+  content: "\eab8";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path40:before {
+  content: "\eab9";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path41:before {
+  content: "\eac0";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path42:before {
+  content: "\eac3";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path43:before {
+  content: "\eac6";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path44:before {
+  content: "\eac7";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path45:before {
+  content: "\eac8";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path46:before {
+  content: "\eac9";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path47:before {
+  content: "\ead0";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path48:before {
+  content: "\ead2";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path49:before {
+  content: "\ead3";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path50:before {
+  content: "\ead4";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path51:before {
+  content: "\ead5";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path52:before {
+  content: "\ead6";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path53:before {
+  content: "\ead7";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path54:before {
+  content: "\eadb";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path55:before {
+  content: "\eadd";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path56:before {
+  content: "\eade";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path57:before {
+  content: "\eae0";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path58:before {
+  content: "\eae1";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path59:before {
+  content: "\eae2";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path60:before {
+  content: "\eae9";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path61:before {
+  content: "\eaea";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path62:before {
+  content: "\eaeb";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path63:before {
+  content: "\eaef";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path64:before {
+  content: "\eaf0";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path65:before {
+  content: "\eaf1";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
+.vitamui-icon-app-users .path66:before {
+  content: "\eaf6";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path67:before {
+  content: "\eaf7";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path68:before {
+  content: "\eaf8";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path69:before {
+  content: "\eafa";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path70:before {
+  content: "\eafc";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path71:before {
+  content: "\eafd";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path72:before {
+  content: "\eafe";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path73:before {
+  content: "\eaff";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path74:before {
+  content: "\eb00";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path75:before {
+  content: "\eb01";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path76:before {
+  content: "\eb05";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path77:before {
+  content: "\eb06";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path78:before {
+  content: "\eb07";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path79:before {
+  content: "\eb08";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path80:before {
+  content: "\eb0a";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path81:before {
+  content: "\eb0b";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path82:before {
+  content: "\eb0c";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path83:before {
+  content: "\eb0d";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+}
+.vitamui-icon-app-users .path84:before {
+  content: "\eb0e";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path85:before {
+  content: "\eb0f";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path86:before {
+  content: "\eb10";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path87:before {
+  content: "\eb11";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path88:before {
+  content: "\eb12";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path89:before {
+  content: "\eb13";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path90:before {
+  content: "\eb14";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path91:before {
+  content: "\eb15";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path92:before {
+  content: "\eb16";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path93:before {
+  content: "\eb17";
+  margin-left: -1em;
+  color: rgb(53, 53, 53);
+}
+.vitamui-icon-app-users .path94:before {
+  content: "\eb18";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path95:before {
+  content: "\eb1b";
+  margin-left: -1em;
+  color: rgb(255, 169, 19);
+}
+.vitamui-icon-app-users .path96:before {
+  content: "\eb1c";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+}
+.vitamui-icon-app-users .path97:before {
+  content: "\eb1d";
+  margin-left: -1em;
+  color: rgb(245, 245, 245);
+}
 .vitamui-icon-filing-plan:before {
   content: "\ea77";
 }

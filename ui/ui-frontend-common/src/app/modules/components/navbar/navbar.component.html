@@ -36,7 +36,7 @@
     <div class="account-menu">
       <mat-menu #accountMenu="matMenu" [overlapTrigger]="false" xPosition="before">
         <ng-container>
-          <button mat-menu-item [routerLink]="['/account']" *ngIf=hasAccountProfile>Mon compte</button>
+          <button mat-menu-item [routerLink]="['/account']" *ngIf=hasAccountProfile>{{'ACCOUNT.TITLE' | translate}}</button>
           <button mat-menu-item (click)="enabledSubrogation()" *ngIf=!!!authService?.user?.superUser>Activer le mode subrogation</button>
           <button mat-menu-item (click)="authService.logout()">Déconnexion</button>
         </ng-container>

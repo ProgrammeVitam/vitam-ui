@@ -28,13 +28,12 @@ export class ThemeService {
   ) { }
 
   private baseColors: {[colorId in ThemeColorType]?: string} = {
-    [ThemeColorType.VITAMUI_PRIMARY]: 'Couleur principale',
-    [ThemeColorType.VITAMUI_SECONDARY]: 'Couleur secondaire',
-    [ThemeColorType.VITAMUI_TERTIARY]: 'Couleur tertiaire',
-    [ThemeColorType.VITAMUI_HEADER_FOOTER]: 'Couleur header/footer',
-    [ThemeColorType.VITAMUI_BACKGROUND]: 'Couleur background'
+    [ThemeColorType.VITAMUI_PRIMARY]: 'COLOR.PRIMARY',
+    [ThemeColorType.VITAMUI_SECONDARY]: 'COLOR.SECONDARY',
+    [ThemeColorType.VITAMUI_TERTIARY]: 'COLOR.TERTIARY',
+    [ThemeColorType.VITAMUI_HEADER_FOOTER]: 'COLOR.HEADER_FOOTER',
+    [ThemeColorType.VITAMUI_BACKGROUND]: 'COLOR.BACKGROUND'
   };
-
 
   // tslint:disable-next-line: variable-name
   private _defaultTheme: Theme = {

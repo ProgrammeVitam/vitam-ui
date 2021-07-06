@@ -41,16 +41,36 @@ import { AuthnRequestBindingEnum, ConfirmDialogService, newFile } from 'ui-front
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { PatternModule } from '../../../../shared/pattern';
+import { Component, forwardRef, Input, ViewChild } from '@angular/core';
 import { IdentityProviderService } from '../identity-provider.service';
 import { IdentityProviderCreateComponent } from './identity-provider-create.component';
+@Component({
+  selector: 'app-pattern',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => PatternStubComponent),
+    multi: true
+  }]
+})
+class PatternStubComponent implements ControlValueAccessor {
+  @Input() options: Array<{ value: string, disabled?: boolean }>;
+  @Input() vitamuiMiniMode = false;
+
+  @ViewChild('select', { static: true }) select: MatSelect;
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
+
 
 describe('IdentityProviderCreateComponent', () => {
   let component: IdentityProviderCreateComponent;
@@ -71,10 +91,9 @@ describe('IdentityProviderCreateComponent', () => {
         MatButtonToggleModule,
         MatSelectModule,
         NoopAnimationsModule,
-        PatternModule,
         VitamUICommonTestModule,
       ],
-      declarations: [ IdentityProviderCreateComponent ],
+      declarations: [ IdentityProviderCreateComponent, PatternStubComponent ],
       providers: [
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MAT_DIALOG_DATA, useValue: { customer: { id: '42', name: 'OwnerName' } } },
@@ -173,22 +192,20 @@ describe('IdentityProviderCreateComponent', () => {
 
     it('should have a title', () => {
       const elTitle = fixture.nativeElement.querySelector('.large');
-      expect(elTitle.textContent).toContain('Création d\'un IDP pour "OwnerName"');
+      expect(elTitle.textContent).toContain('CUSTOMER.SSO.MODAL.TITLE "OwnerName"');
     });
 
     it('should have all the inputs', () => {
 
       const elEnabled = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=enabled]');
       expect(elEnabled).toBeTruthy();
-      expect(elEnabled.textContent).toContain('IDP Actif');
+      expect(elEnabled.textContent).toContain('CUSTOMER.SSO.ACTIVE_SWITCH');
 
       const elName = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=name]');
       expect(elName).toBeTruthy();
-      expect(elName.attributes.placeholder.value).toBe('Nom IDP');
 
       const elKeystorePassword = fixture.nativeElement.querySelector('vitamui-common-input[formControlName=keystorePassword]');
       expect(elKeystorePassword).toBeTruthy();
-      expect(elKeystorePassword.attributes.placeholder.value).toBe('Mot de passe du keystore');
 
       const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
       expect(elPatterns).toBeTruthy();
@@ -198,7 +215,7 @@ describe('IdentityProviderCreateComponent', () => {
     it('should have a submit button', () => {
       const elSubmit = fixture.nativeElement.querySelector('button[type=submit]');
       expect(elSubmit).toBeTruthy();
-      expect(elSubmit.textContent).toContain('Terminer');
+      expect(elSubmit.textContent).toContain('COMMON.SUBMIT');
       component.form.setValue({
         customerId: '1234',
         name: 'Test IDP',
@@ -220,7 +237,7 @@ describe('IdentityProviderCreateComponent', () => {
     it('should have a cancel button', () => {
       const elCancel = fixture.nativeElement.querySelector('button[type=button].btn.cancel');
       expect(elCancel).toBeTruthy();
-      expect(elCancel.textContent).toContain('Annuler');
+      expect(elCancel.textContent).toContain('COMMON.UNDO');
       spyOn(component, 'onCancel');
       elCancel.click();
       expect(component.onCancel).toHaveBeenCalledTimes(1);

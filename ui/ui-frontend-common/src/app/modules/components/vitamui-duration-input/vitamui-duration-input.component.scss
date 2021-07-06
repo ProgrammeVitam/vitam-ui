@@ -1,13 +1,18 @@
 @import '../../../../sass/variables/colors';
 @import '../../../../sass/mixins/elevation';
 
+.mat-drawer, .mat-dialog-container {
+    .vitamui-duration-input {
+    @include dialog-elevation-dark;
+    }
+}
+
 .vitamui-duration-input {
-    @include elevation-1;
+    @include input-elevation-dark;
     display:flex;
     justify-content: center; /* align horizontal */
     align-items: center;
     border-radius: 4px;
-    box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
     background-color: $white;
     border: none;
 }

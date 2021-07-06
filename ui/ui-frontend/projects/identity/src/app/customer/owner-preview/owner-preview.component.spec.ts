@@ -40,9 +40,13 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { environment } from './../../../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
+import { EMPTY } from 'rxjs';
 import { BASE_URL, ENVIRONMENT, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+
+import { environment } from './../../../environments/environment';
 import { OwnerPreviewComponent } from './owner-preview.component';
 
 @Component({ selector: 'app-information-tab', template: '' })
@@ -63,13 +67,15 @@ describe('OwnerPreviewComponent', () => {
         MatTabsModule,
         NoopAnimationsModule,
         HttpClientTestingModule,
-        LoggerModule.forRoot()
+        LoggerModule.forRoot(),
+        VitamUICommonTestModule
       ],
       declarations: [ OwnerPreviewComponent, InformationTabStubComponent ],
       providers: [
         { provide: WINDOW_LOCATION, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment }
+        { provide: ENVIRONMENT, useValue: environment },
+        { provide: TranslateService, useValue: { instant: () => EMPTY } }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

@@ -2,10 +2,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import {NO_ERRORS_SCHEMA} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService, ExternalParameters, ExternalParametersService} from 'ui-frontend-common';
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import {AccessContractService} from '../../access-contract/access-contract.service';
 import {ArchiveProfileApiService} from '../../core/api/archive-profile-api.service';
 import {ManagementContractApiService} from '../../core/api/management-contract-api.service';
 import {FileFormatService} from '../../file-format/file-format.service';
@@ -23,8 +25,11 @@ describe('IngestContractCreateComponent', () => {
       {
         uniqueName: () => of(null),
         uniqueIdentifier: () => of(null), identifierToIgnore: ''
-      }
-    );
+    });
+
+    const accessContractServiceMock = {
+      getAll: () => of([])
+    };
 
     const parameters: Map<string, string> = new Map<string, string>();
     parameters.set(ExternalParameters.PARAM_ACCESS_CONTRACT, '1');
@@ -45,10 +50,11 @@ describe('IngestContractCreateComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [IngestContractCreateComponent],
       imports: [
+        VitamUICommonTestModule,
         MatSnackBarModule
       ],
+      declarations: [IngestContractCreateComponent],
       providers: [
         FormBuilder,
         {provide: MatDialogRef, useValue: {}},
@@ -59,7 +65,8 @@ describe('IngestContractCreateComponent', () => {
         {provide: FileFormatService, useValue: fileFormatServiceMock},
         {provide: ManagementContractApiService, useValue: managementContractApiServiceMock},
         {provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock},
-        {provide: ExternalParametersService, useValue: externalParametersServiceMock}
+        {provide: ExternalParametersService, useValue: externalParametersServiceMock},
+        {provide: AccessContractService, useValue: accessContractServiceMock}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

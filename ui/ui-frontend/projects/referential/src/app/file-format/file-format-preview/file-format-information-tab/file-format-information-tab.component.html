@@ -5,8 +5,7 @@
             <vitamui-common-input formControlName="name" placeholder="Nom" disabled
                 i18n-placeholder="name@@fileFormatPreviewLabelName">
                 <ng-container *ngIf="form.get('name')?.touched">
-                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
-                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
                     </vitamui-common-input-error>
                 </ng-container>
             </vitamui-common-input>
@@ -26,8 +25,7 @@
       <vitamui-common-input formControlName="versionPronom" placeholder="VersionPronom" disabled="disabled"
                             i18n-placeholder="versionPronom@@fileFormatPreviewLabelVersionPronom">
         <ng-container *ngIf="form.get('versionPronom')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('versionPronom')?.errors?.required"
-                                      i18n="Required field error hint@@formErrorRequiredField">Champ requis
+          <vitamui-common-input-error *ngIf="!!form.get('versionPronom')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
@@ -39,8 +37,7 @@
       <vitamui-common-input formControlName="version" placeholder="Version"
                             i18n-placeholder="version@@fileFormatPreviewLabelVersion">
         <ng-container *ngIf="form.get('version')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required"
-                                      i18n="Required field error hint@@formErrorRequiredField">Champ requis
+          <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>
@@ -52,8 +49,7 @@
       <vitamui-common-input formControlName="extensions" placeholder="Extensions" disabled="{{isInternal() ? 'disabled': 'false'}}"
                             i18n-placeholder="extensions@@fileFormatPreviewLabelExtensions">
         <ng-container *ngIf="form.get('extensions')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required"
-                                      i18n="Required field error hint@@formErrorRequiredField">Champ requis
+          <vitamui-common-input-error *ngIf="!!form.get('extensions')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>
         </ng-container>
       </vitamui-common-input>

@@ -46,6 +46,7 @@ const EVENT_LIMIT = 100;
 export class OwnerOperationHistoryTabComponent implements OnChanges {
 
   @Input() id: string;
+  @Input() identifier: string;
   @Input() externalParamId: string;
   @Input() filter: (event: any) => boolean;
 
@@ -68,7 +69,7 @@ export class OwnerOperationHistoryTabComponent implements OnChanges {
 
     const tenantIdentifier = Number(this.authService.user.proofTenantIdentifier);
 
-    this.logbookService.listHistoryForOwner(this.id, this.externalParamId, tenantIdentifier).subscribe(
+    this.logbookService.listHistoryForOwner(this.id, this.identifier, this.externalParamId, tenantIdentifier).subscribe(
       (results) => {
         this.loading = false;
         this.events = results.filter((event) => this.filter ? this.filter(event) : true).slice(0, EVENT_LIMIT);

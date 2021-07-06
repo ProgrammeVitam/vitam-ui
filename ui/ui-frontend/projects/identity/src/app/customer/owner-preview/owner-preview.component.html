@@ -7,12 +7,12 @@
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="Propriétaire" i18n-label="Owner tab@@ownerPreviewTabOwner">
+    <mat-tab [label]="'CUSTOMER.TAB.OWNER' | translate">
       <app-information-tab [owner]="owner" [tenant]="tenant" [readOnly]="isPopup || tenant?.readonly || owner?.readonly"></app-information-tab>
     </mat-tab>
 
-    <mat-tab label="Historique" i18n-label="History tab@@ownerPreviewTabHistory">
-      <app-owner-operation-history-tab [id]="owner?.id" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
+    <mat-tab [label]="'CUSTOMER.TAB.HISTORY' | translate">
+      <app-owner-operation-history-tab [id]="owner?.id" [identifier]="owner?.identifier" [externalParamId]="tenant?.id" [filter]="filterEvents" ></app-owner-operation-history-tab>
     </mat-tab>
   </mat-tab-group>
 </div>

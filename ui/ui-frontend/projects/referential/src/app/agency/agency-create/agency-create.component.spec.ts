@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-classes-per-file directive-selector */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule} from '@angular/forms';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -48,11 +48,30 @@ import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {EMPTY, of} from 'rxjs';
 import {ConfirmDialogService} from 'ui-frontend-common';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-
-import {DomainsInputModule} from '../../../../../identity/src/app/shared/domains-input';
 import {AgencyService} from '../agency.service';
 import {AgencyCreateComponent} from './agency-create.component';
 import {AgencyCreateValidators} from './agency-create.validators';
+
+@Component({
+  selector: 'app-domains-input',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => DomainInputStubComponent),
+    multi: true
+  }]
+})
+class DomainInputStubComponent implements ControlValueAccessor {
+  @Input() placeholder: string;
+  @Input() selected: string;
+  @Input() spinnerDiameter = 25;
+
+  @Output() selectedChange = new EventEmitter<string>();
+
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
 
 const expectedAgency = {
   name: 'Random Agency',
@@ -95,12 +114,12 @@ describe('AgencyCreateComponent', () => {
         MatButtonToggleModule,
         MatProgressBarModule,
         NoopAnimationsModule,
-        DomainsInputModule,
         MatProgressSpinnerModule,
         VitamUICommonTestModule,
       ],
       declarations: [
-        AgencyCreateComponent
+        AgencyCreateComponent,
+        DomainInputStubComponent
       ],
       providers: [
         {provide: MatDialogRef, useValue: matDialogRefSpy},

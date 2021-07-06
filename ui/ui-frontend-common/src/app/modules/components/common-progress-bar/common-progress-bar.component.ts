@@ -54,10 +54,17 @@ export class CommonProgressBarComponent implements OnInit {
     this._index = val;
     this.progressValue = this.getProgressValue(this._index, this._count);
   }
+  get index(): number {
+    return this._index;
+  }
 
   @Input() set count(val: number) {
     this._count = val;
     this.progressValue = this.getProgressValue(this._index, this._count);
+  }
+
+  get count(): number {
+    return this._count;
   }
 
   public progressValue: number;

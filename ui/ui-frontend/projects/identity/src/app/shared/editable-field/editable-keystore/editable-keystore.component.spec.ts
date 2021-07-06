@@ -178,7 +178,7 @@ describe('EditableKeystoreComponent', () => {
       fixture.detectChanges();
       const elError = fixture.nativeElement.querySelector('vitamui-common-input-error');
       expect(elError).toBeTruthy();
-      expect(elError.textContent).toContain('Mot de passe incorrect');
+      expect(elError.textContent).toContain('SHARED.EDITABLE_FIELD.WRONG_PASSWORD');
     });
 
   });

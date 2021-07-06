@@ -9,13 +9,13 @@
         <ng-template #statusFilterTemplate>
           <vitamui-common-table-filter [(filter)]="this.filterMap['status']" (filterChange)="onFilterChange('status', $event)">
             <vitamui-common-table-filter-option value="ENABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusEnabled">
-                <span class="badge-state">Actif</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.ACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="DISABLED">
-              <div class="table-filter-icon" i18n="@@groupStatusDisabled">
-                <span class="badge-state">Désactivé</span>
+              <div class="table-filter-icon">
+                <span class="badge-state">{{'GROUP.HOME.RESULTS_TABLE.STATUS_FILTER.INACTIVE' | translate}}</span>
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -26,17 +26,17 @@
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span i18n="Group name@@profileGroupListHeaderName">Nom du groupe</span>
+        <span>{{'GROUP.HOME.RESULTS_TABLE.NAME' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="name" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
 
       <div class="col-2 d-flex align-items-center">
-        <span i18n="Group ID@@profileGroupListHeaderID">Identifiant</span>
+        <span>{{'COMMON.ID' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="identifier" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
 
       <div class="col-3 d-flex align-items-center">
-        <span i18n="Description@@profileGroupListHeaderDescription">Description</span>
+        <span>{{'GROUP.HOME.RESULTS_TABLE.DESCRIPTION' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="description" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
 
@@ -51,12 +51,11 @@
             [options]="levelFilterOptions"
             (filterChange)="onFilterChange('level', $event)"
             (filterClose)="levelFilterTrigger?.close()"
-            emptyValueOption="-Niveau vide-"
-            i18n-emptyValueOption="@@groupsListLevelFilterEmpty">
+            [emptyValueOption]="'GROUP.HOME.RESULTS_TABLE.EMPTY_LEVEL' | translate">
           </vitamui-common-table-filter-search>
         </ng-template>
 
-        <span i18n="Description@@profileGroupListHeaderLevel">Niveau</span>
+        <span>{{'GROUP.HOME.RESULTS_TABLE.LEVEL' | translate}}</span>
         <vitamui-common-order-by-button orderByKey="level" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
       </div>
     </div>
@@ -84,12 +83,12 @@
 </div>
 
 <ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  <div class="vitamui-min-content vitamui-table-message">{{'COMMON.NO_RESULT' | translate}}</div>
  </ng-template>
 
  <ng-template #loadMore>
   <div class="vitamui-min-content vitamui-table-message" (click)="groupService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+    <span class="clickable">{{'COMMON.SHOW_MORE_RESULTS' | translate}}</span>
   </div>
 </ng-template>
 

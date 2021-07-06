@@ -39,7 +39,7 @@ import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, } from '@angular/forms';
 import { of, Subject } from 'rxjs';
-
+import { CountryService } from 'ui-frontend-common';
 import { AuthService, BASE_URL, Profile } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { ProfileService } from '../../profile.service';
@@ -117,6 +117,7 @@ describe('Profile InformationTabComponent', () => {
         { provide: ProfileValidators, useValue: profileValidatorsSpy },
         { provide: AuthService, useValue: authServiceMock},
         { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: CountryService, useValue: {} },
       ],
     })
     .compileComponents();

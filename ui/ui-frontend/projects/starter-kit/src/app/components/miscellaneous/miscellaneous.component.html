@@ -1,6 +1,6 @@
 <div>
   <h4>Banner with searchbar & button</h4>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+  <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate"
     [disableSearchBar]="true">
     <button class="btn primary ml-5">
       <span>Action1</span>
@@ -10,7 +10,7 @@
 
 <div>
   <h4>Banner with searchbar & buttons</h4>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+  <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate"
     [disableSearchBar]="true">
     <button class="btn primary ml-5">
       <span>Action1</span>
@@ -26,7 +26,7 @@
 
 <div>
   <h4>Banner with searchbar only</h4>
-  <vitamui-common-banner [searchbarPlaceholder]="'Nom, raison sociale, code organisation, adresse...'"
+  <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.HOME.TITLE_PLACEHOLDER' | translate"
     [disableSearchBar]="true"></vitamui-common-banner>
 </div>
 
@@ -40,7 +40,7 @@
   
   <div class="d-flex">
     <div class="mr-2">
-      <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+      <vitamui-common-menu-button [overlayPos]="'start'" [icon]="'vitamui-icon-more-horiz'">
         <button mat-menu-item>Activer</button>
         <button mat-menu-item>Désactiver</button>
       </vitamui-common-menu-button>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="mr-2">
-      <vitamui-common-menu-button [overlayPos]="'start'" [label]="'With text only'">
+      <vitamui-common-menu-button [overlayPos]="'end'" [label]="'With text only'">
         <button mat-menu-item>Activer</button>
         <button mat-menu-item>Désactiver</button>
       </vitamui-common-menu-button>
@@ -70,6 +70,15 @@
 </div>
 
 <div>
-  <h4>{{'SAMPLE-DIALOG.Open' | translate}}</h4>
+  <h4>{{'SAMPLE_DIALOG.OPEN' | translate}}</h4>
   <button class="btn primary" (click)="openDialog()">Open sample dialog</button>
+</div>
+
+<div>
+  <h4>{{'MISCELLANEOUS.INFINITE_SCROLL' | translate}}</h4>
+  <div vitamuiCommonInfiniteScroll vitamuiCommonInfiniteScrollThreshold="0.5" [vitamuiCommonInfiniteScrollDisable]="infiniteScrollDisabled"
+    (vitamuiScroll)="onScroll()">
+    <div *ngFor="let value of infiniteValues">value {{value}}</div>
+    <mat-spinner *ngIf="infiniteScrollDisabled" class="vitamui-spinner medium"></mat-spinner>
+  </div>
 </div>

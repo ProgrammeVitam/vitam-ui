@@ -1,9 +1,8 @@
 <div class="d-flex mt-1 justify-content-between" [class.pattern-mini]="vitamuiMiniMode">
   <mat-form-field class="vitamui-mat-select d-flex align-items-center" [class.vitamui-mat-select-mini]="vitamuiMiniMode" [style.width.%]="50">
-    <mat-select [formControl]="control" required placeholder="Pattern"
-      i18n-placeholder="Pattern select placeholder@@patternSelectPlaceholder" panelClass="vitamui-mat-select" #select>
+    <mat-select [formControl]="control" required [placeholder]="'SHARED.PATTERN' | translate" panelClass="vitamui-mat-select" #select>
       <mat-option *ngFor="let option of availableOptions" [value]="option.value" [disabled]="option.disabled">
-        {{ option.value }} <span *ngIf="option?.disabled" i18n="Already in use@@patternOptionAlreadyInUse">(déjà utilisé)</span>
+        {{ option.value }} <span *ngIf="option?.disabled">{{'SHARED.PATTERN_ALREADY_USED' | translate}}</span>
       </mat-option>
     </mat-select>
 

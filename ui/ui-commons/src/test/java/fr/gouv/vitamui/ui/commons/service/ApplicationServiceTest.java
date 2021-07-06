@@ -31,7 +31,6 @@ import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
 import fr.gouv.vitamui.ui.commons.property.BaseUrl;
-import fr.gouv.vitamui.ui.commons.property.PortalCategoryConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = ServerIdentityAutoConfiguration.class)
@@ -45,9 +44,6 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
 
     @Mock
     private BaseUrl baseUrl;
-
-    @Mock
-    private Map<String, PortalCategoryConfig> categoriesConfig;
 
     @Mock
     private CasLogoutUrl casLogoutUrl;
@@ -64,8 +60,6 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
         Mockito.when(baseUrl.getPortal()).thenReturn("http://portal.vitamui.com");
         Mockito.when(baseUrl.getAdminIdentity()).thenReturn("http://identity.vitamui.com");
         Mockito.when(baseUrl.getIdentity()).thenReturn("http://identity.vitamui.com");
-        Mockito.when(properties.getPortalCategories()).thenReturn(categoriesConfig);
-        Mockito.when(categoriesConfig.size()).thenReturn(2);
         Mockito.when(casLogoutUrl.getValueWithRedirection(any())).thenReturn("http://identity.vitamui.com");
         Mockito.when(factory.getApplicationExternalRestClient()).thenReturn(client);
         service = new ApplicationService(properties, casLogoutUrl, factory, buildProperties);
@@ -80,6 +74,10 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
     public void testGetApplications() {
         final List<ApplicationDto> applicationsMock = buildCollectionDto("USERS", "CUSTOMERS");
         Mockito.when(client.getAll(isNull(), any(Optional.class))).thenReturn(applicationsMock);
+        Map<String, Map<String, Object>> categoriesConfig = new HashMap<>();
+        categoriesConfig.put("users", new HashMap<>());
+        categoriesConfig.put("management", new HashMap<>());
+        Mockito.when(properties.getPortalCategories()).thenReturn(categoriesConfig);
 
         Map<String, Object> config = service.getApplications(null, true);
         Assert.assertNotNull(config);
@@ -89,7 +87,7 @@ public class ApplicationServiceTest extends ServiceTest<ApplicationDto> {
         final Collection<String> applicationsId = applications.stream().map(a -> a.getId()).collect(Collectors.toList());
         assertThat(applicationsId).containsExactly("USERS", "CUSTOMERS");
 
-        final Map<String, PortalCategoryConfig> categories = (Map<String, PortalCategoryConfig>) config.get(CommonConstants.CATEGORY_CONFIGURATION);
+        final Collection<Map<String, Object>> categories = (Collection<Map<String, Object>>) config.get(CommonConstants.CATEGORY_CONFIGURATION);
         Assert.assertNotNull(categories);
         assertThat(categories.size()).isEqualTo(2);
     }

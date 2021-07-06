@@ -47,7 +47,7 @@
 <ng-template #confirmDialog>
   <vitamui-common-confirm-dialog
     [dialogTitle]="confirmDialogTitle"
-    cancelLabel="Annuler" i18n-cancelLabel="@@editableSelectConfirmDialogCancelLabel"
+    [cancelLabel]="'COMMON.UNDO' | translate"
   >
     <ng-container *ngIf="!confirmDialogMessage; else customContent" i18n="@@editableSelectConfirmDialogDefaultContent">Êtes-vous sûr de vouloir effectuer cette modification ?</ng-container>
     <ng-template #customContent>{{ confirmDialogMessage }}</ng-template>

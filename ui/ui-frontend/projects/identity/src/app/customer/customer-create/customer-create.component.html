@@ -6,85 +6,71 @@
   <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Create customer title@@customerCreateTitle1">Création d'une organisation
+        <div class="text large bold">{{'CUSTOMER.HOME.CREATE_TITLE' | translate}}
         </div>
 
         <vitamui-common-input class="col-6 pl-0" formControlName="code" maxlength="20" required
-                              placeholder="Code organisation (4 chiffres)"
-                              i18n-placeholder="Customer code@@customerCreateCustomerCodeInputPlaceholder">
+                              [placeholder]="'CUSTOMER.INFORMATIONS.CODE_CREATION' | translate"
+                              >
 
           <ng-container *ngIf="form.get('code')?.touched">
             <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.required"
-                                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                                        >{{'COMMON.REQUIRED' | translate}}
             </vitamui-common-input-error>
-            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern"
-                                        i18n="Wrong format (4 digits minimum) error hint@@formError6DigitsField">Format
-              incorrect (4 chiffres
-              minimum)
+            <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.pattern">
+                                        {{'CUSTOMER.INFORMATIONS.MODAL.WRONG_FORMAT' | translate}}
+
             </vitamui-common-input-error>
             <vitamui-common-input-error *ngIf="!!form?.get('code')?.errors?.uniqueCode"
-                                        i18n="Code exists error hint@@formErrorCodeExists">Code déjà existant
+                                        >{{'CUSTOMER.INFORMATIONS.MODAL.CODE_ALREADY_EXIST' | translate}}
             </vitamui-common-input-error>
           </ng-container>
         </vitamui-common-input>
 
         <div class="d-flex">
           <vitamui-common-input class="col-6 pl-0" formControlName="name" maxlength="100" required
-                                placeholder="Organisation"
-                                i18n-placeholder="Customer name input placeholder@@customerCreateNameInputPlaceholder">
+
+                                [placeholder]="'CUSTOMER.INFORMATIONS.NAME' | translate">
             <vitamui-common-input-error *ngIf="form.get('name')?.touched && !!form.get('name')?.errors?.required"
-                                        i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                                        >{{'COMMON.REQUIRED' | translate}}
             </vitamui-common-input-error>
           </vitamui-common-input>
           <vitamui-common-input class="col-6" formControlName="companyName" maxlength="250" required
-                                placeholder="Raison sociale"
-                                i18n-placeholder="Customer company name input placeholder@@customerCreateCompanyNameInputPlaceholder">
+            [placeholder]="'CUSTOMER.INFORMATIONS.SOCIAL_REASON' | translate">
             <vitamui-common-input-error
-              *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis
+              *ngIf="form.get('companyName')?.touched && !!form.get('companyName')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
             </vitamui-common-input-error>
           </vitamui-common-input>
         </div>
 
         <ng-container formGroupName="address">
           <vitamui-common-input class="col-12 pl-0" formControlName="street" maxlength="250" required
-                                placeholder="N° et nom de rue"
-                                i18n-placeholder="Customer street input placeholder@@customerCreateStreetInputPlaceholder">
+          [placeholder]="'COMMON.ADRESS.STREET' | translate">
             <vitamui-common-input-error
-              *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required"
-              i18n="Required field error hint@@formErrorRequiredField">Champ requis
+              *ngIf="form.get('address.street')?.touched && !!form.get('address.street')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
             </vitamui-common-input-error>
           </vitamui-common-input>
 
           <div class="d-flex">
             <vitamui-common-input class="col-4 pl-0" formControlName="zipCode" maxlength="10" required
-                                  placeholder="Code postal"
-                                  i18n-placeholder="Customer zip code input placeholder@@customerCreateZipCodeInputPlaceholder">
+              [placeholder]="'COMMON.ADRESS.ZIPCODE' | translate">
               <vitamui-common-input-error
-                *ngIf="form.get('address.zipCode')?.touched && !!form.get('address.zipCode')?.errors?.required"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                *ngIf="form.get('address.zipCode')?.touched && !!form.get('address.zipCode')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
               </vitamui-common-input-error>
             </vitamui-common-input>
 
-            <vitamui-common-input class="col-4" formControlName="city" maxlength="100" required placeholder="Ville"
-                                  i18n-placeholder="Customer city input placeholder@@customerCreateCityInputPlaceholder">
+            <vitamui-common-input class="col-4" formControlName="city" maxlength="100" required [placeholder]="'COMMON.ADRESS.CITY' | translate">
               <vitamui-common-input-error
-                *ngIf="form.get('address.city')?.touched && !!form.get('address.city')?.errors?.required"
-                i18n="Required field error hint@@formErrorRequiredField">Champ requis
+                *ngIf="form.get('address.city')?.touched && !!form.get('address.city')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
               </vitamui-common-input-error>
             </vitamui-common-input>
 
             <mat-form-field class="col-4" class="vitamui-mat-select">
-              <mat-select formControlName="country" required placeholder="Pays"
-                          i18n-placeholder="Customer country select placeholder@@customerCreateCountrySelectPlaceholder"
+              <mat-select formControlName="country" required [placeholder]="'COMMON.ADRESS.COUNTRY' | translate"
                           panelClass="vitamui-mat-select">
-                <!-- TODO Fetch those values from a referential -->
-                <mat-option value="FR">France</mat-option>
-                <mat-option value="GB">Royaume Uni</mat-option>
-                <mat-option value="DE">Allemagne</mat-option>
-                <mat-option value="DK">Danemark</mat-option>
-                <mat-option value="ES">Espagne</mat-option>
-                <mat-option value="IT">Italie</mat-option>
+                <mat-option *ngFor="let country of countries" [value]="country.code">
+                  {{country.name}}
+                </mat-option>
               </mat-select>
               <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_up</i>
@@ -95,8 +81,8 @@
         </ng-container>
 
         <vitamui-common-input class="col-12 pl-0" formControlName="internalCode" maxlength="20"
-                              placeholder="Code interne"
-                              i18n-placeholder="Internal code@@customerInternalCodePlaceholder">
+
+                              [placeholder]="'CUSTOMER.INFORMATIONS.INTERNAL_CODE' | translate">
         </vitamui-common-input>
 
         <div class="d-flex">
@@ -125,16 +111,15 @@
         </div>
 
         <div class="col-12 d-flex align-items-center">
-          <label for="language" class="mr-4 mb-0"
-                 i18n="Interface language (by default for the user)@@customerCreateLanguageInputLabel">
-            <div class="font-weight-bold">Langue de l'interface <span class="required-marker">*</span></div>
-            <div class="font-weight-bold"><small>(par défaut pour l'utilisateur)</small></div>
+          <label for="language" class="mr-4 mb-0">
+            <div class="font-weight-bold">{{'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE_1' | translate}} <span class="required-marker">*</span></div>
+            <div class="font-weight-bold"><small>{{'CUSTOMER.INFORMATIONS.DEFAULT_LANGUAGE_2' | translate}}</small></div>
           </label>
 
           <mat-form-field class="vitamui-mat-select">
             <mat-select formControlName="language" required panelClass="vitamui-mat-select">
-              <mat-option value="ENGLISH" i18n="@@languageEnglish">Anglais</mat-option>
-              <mat-option value="FRENCH" i18n="@@languageFrench">Français</mat-option>
+              <mat-option value="ENGLISH">{{'COMMON.LANGUAGE.ENGLISH' | translate}}</mat-option>
+              <mat-option value="FRENCH">{{'COMMON.LANGUAGE.FRENCH' | translate}}</mat-option>
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_up</i>
@@ -145,7 +130,7 @@
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
-                  i18n="Next step button label@@customerCreateNextButton">Suivant
+                  >{{'COMMON.NEXT' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -154,27 +139,25 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Customer access title@@customerCreateTitle2">Accès organisation</div>
+        <div class="text large bold">{{'CUSTOMER.INFORMATIONS.MODAL.ACCESS_TITLE' | translate}}</div>
 
         <div class="col-12 p-0 d-flex align-items-center">
           <div>
-            <div
-              class="text medium bold"
-              i18n="Duration until password revocation (since the last change)@@customerCreatePasswordRevocationInputLabel">
-              Durée de révocation du mot de passe
+            <div class="text medium bold">
+                {{'CUSTOMER.INFORMATIONS.PASSWORD_DURATION_1' | translate}}
             </div>
-            <div class="text normal bold light"><small>(depuis le dernier changement)</small></div>
+            <div class="text normal bold light"><small>{{'CUSTOMER.INFORMATIONS.PASSWORD_DURATION_2' | translate}}</small></div>
           </div>
 
           <mat-form-field class="vitamui-mat-select ml-5">
-            <mat-select formControlName="passwordRevocationDelay" placeholder="Durée de révocation des mots de passe"
-                        i18n-placeholder="Customer password revocation delay select placeholder@@customerCreatePasswordRevocationDelaySelectPlaceholder"
+            <mat-select formControlName="passwordRevocationDelay"
+            [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
                         panelClass="vitamui-mat-select">
-              <mat-option [value]="6" i18n="6 months@@customerCreatePasswordRevocationDelayOption6Months">6 mois
+              <mat-option [value]="6">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate}}
               </mat-option>
-              <mat-option [value]="9" i18n="9 months@@customerCreatePasswordRevocationDelayOption9Months">9 mois
+              <mat-option [value]="9">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate}}
               </mat-option>
-              <mat-option [value]="12" i18n="12 months@@customerCreatePasswordRevocationDelayOption12Months">12 mois
+              <mat-option [value]="12">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_TWELVE' | translate}}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
@@ -185,37 +168,36 @@
         </div>
 
         <div class="col-12 p-0 mt-3">
-          <div class="text medium bold" i18n="OTP label@@customerCreateOTPInputLabel">
-            Validation en deux étapes <span class="required-marker">*</span>
+          <div class="text medium bold">
+            {{'CUSTOMER.INFORMATIONS.VALIDATIONS' | translate}} <span class="text danger">*</span>
           </div>
           <mat-button-toggle-group formControlName="otp" #group="matButtonToggleGroup"
                                    class="vitamui-button-toggle-group mt-2">
-            <mat-button-toggle value="DISABLED" i18n="OTP deactivate button@@customerCreateOTPDeactivatedButton">
-              Désactivé
+            <mat-button-toggle value="DISABLED" >{{'CUSTOMER.INFORMATIONS.MODAL.OTP_DESACTIVATE' | translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="OPTIONAL" i18n="OTP optional button@@customerCreateOTPOptionalButton">Optionnelle
+            <mat-button-toggle value="OPTIONAL">{{'CUSTOMER.INFORMATIONS.MODAL.OTP_OPTIONNAL' | translate}}
             </mat-button-toggle>
-            <mat-button-toggle value="MANDATORY" i18n="OTP mandatory button@@customerCreateOTPMandatoryButton">
-              Obligatoire
+            <mat-button-toggle value="MANDATORY">
+              {{'CUSTOMER.INFORMATIONS.MODAL.OTP_MANDATORY' | translate}}
             </mat-button-toggle>
           </mat-button-toggle-group>
         </div>
 
         <div class="col-12 p-0 mt-4 mb-3">
-          <div class="text medium bold" i18n="Email domain input label@@customerCreateEmailDomainInputLabel">
-            Restriction de domaine e-mail
+          <div class="text medium bold">
+            {{'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_RESTRICTION' | translate}}
           </div>
-          <div class="mb-4 text normal bold light">(cliquer sur l'étiquette pour définir le domaine par défaut)</div>
+          <div class="mb-4 text normal bold light"> {{'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_RESTRICTION_DESC' | translate}}</div>
 
-          <app-domains-input formControlName="emailDomains" placeholder="domaine.xyz"
-                             i18n-placeholder="Email domain input placeholder@@customerCreateEmailDomainInputPlaceholder"
+          <app-domains-input formControlName="emailDomains"
+            [placeholder]="'CUSTOMER.INFORMATIONS.MODAL.DOMAINS_PLACEHOLDER' | translate"
                              [selected]="form.get('defaultEmailDomain').value"
                              (selectedChange)="form.get('defaultEmailDomain').setValue($event)"></app-domains-input>
         </div>
 
         <div class="actions">
           <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()"
-                  i18n="@@customerCreateNextButton">Suivant
+                  >{{'COMMON.NEXT' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -256,21 +238,19 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Create evidence owner title@@customerCreateTitle3">Création du propriétaire
-          des éléments de preuve
+        <div class="text large bold" >{{ 'CUSTOMER.OWNER.CREATE.TITLE' | translate }} "{{ customerInfo.name }}"
         </div>
         <div>
           <app-owner-form [formControl]="form.get(['owners', 0])" [customerInfo]="customerInfo"></app-owner-form>
 
-          <p class="hint" i18n="the evidence tenant is automatically created with the owner@@customerCreateHint">
-            Ce propriétaire détiendra les éléments de preuve de l'organisation.
+          <p class="hint" >
+            {{ 'CUSTOMER.OWNER.CREATE.PROOF_ELEMENTS' | translate }}
           </p>
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" i18n="Finish customer creation button@@customerCreateFinishButton"
-                  cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">Créer
-            un coffre
+          <button type="button" class="btn primary"
+                  cdkStepperNext [disabled]="form.get(['owners', 0]).pending || form.get(['owners', 0]).invalid">{{'CUSTOMER.OWNER.MODAL.ACTION_BUTTON' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -280,23 +260,22 @@
 
     <cdk-step>
       <div class="content">
-        <div class="text large bold" i18n="Create tenant for the owner@@tenantCreateTitle">Création du coffre pour "{{
+        <div class="text large bold">{{'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate}} "{{
           getOwnerName() }}"
         </div>
-        <vitamui-common-input formControlName="tenantName" required placeholder="Nom du coffre"
-                              i18n-placeholder="Name of the tenant@@tenantCreateNamePlaceholder">
+        <vitamui-common-input formControlName="tenantName" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
           <vitamui-common-input-error
             *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('required')"
-            i18n="Existing name error hint@@formErrorExistingName">Champ requis
+            >{{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>
           <vitamui-common-input-error
             *ngIf="form?.get('tenantName')?.touched && form?.get('tenantName')?.hasError('uniqueName')"
-            i18n="Existing name error hint@@formErrorExistingName">Nom déjà existant
+            >{{'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate}}
           </vitamui-common-input-error>
         </vitamui-common-input>
         <div class="actions">
           <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
-                  i18n="Finish owner creation button@@ownerCreateFinishButton">Terminer
+                  >{{'COMMON.SUBMIT' | translate}}
           </button>
           <ng-container *ngTemplateOutlet="cancel"></ng-container>
         </div>
@@ -306,14 +285,14 @@
 
     <ng-template #cancel>
       <button type="button" class="btn cancel link ml-3" (click)="onCancel()"
-              i18n="Cancel customer creation@@customerCreateCancelButton">Annuler
+              >{{'COMMON.UNDO' | translate}}
       </button>
     </ng-template>
 
     <ng-template #back>
       <button type="button" class="btn link mt-1 ml-1 primary" cdkStepperPrevious>
         <i class="vitamui-icon vitamui-icon-chevron-left"></i>
-        <span i18n="Previous step button label@@customerCreateBackButton" class="underline">Retour</span>
+        <span class="underline">{{'COMMON.BACK' | translate}}</span>
       </button>
     </ng-template>
   </vitamui-common-stepper>

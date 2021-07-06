@@ -36,16 +36,18 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamuiBreadcrumbComponent } from './vitamui-breadcrumb/vitamui-breadcrumb.component';
 import { VitamuiTitleBreadcrumbComponent } from './vitamui-title-breadcrumb/vitamui-title-breadcrumb.component';
 
 @NgModule({
   declarations: [
     VitamuiBreadcrumbComponent,
-    VitamuiTitleBreadcrumbComponent,
+    VitamuiTitleBreadcrumbComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    TranslateModule
   ],
   exports: [
     VitamuiBreadcrumbComponent,

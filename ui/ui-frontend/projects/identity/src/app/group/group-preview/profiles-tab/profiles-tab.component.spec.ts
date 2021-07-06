@@ -189,7 +189,7 @@ describe('ProfilesTabComponent', () => {
     const elButton = fixture.nativeElement.querySelector('button');
     const matDialog = TestBed.inject(MatDialog);
     expect(elButton).toBeTruthy();
-    expect(elButton.textContent).toContain('Modifier');
+    expect(elButton.textContent).toContain('COMMON.UPDATE');
     elButton.click();
     expect(matDialog.open).toHaveBeenCalledWith(ProfilesEditComponent, {
       data: {

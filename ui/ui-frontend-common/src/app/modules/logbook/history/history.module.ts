@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { CollapseModule } from '../../components/collapse/collapse.module';
 import { EventTypeLabelModule } from '../event-type-label/event-type-label.module';
@@ -51,6 +52,7 @@ import {
     CollapseModule,
     MatProgressSpinnerModule,
     EventTypeLabelModule,
+    TranslateModule
   ],
   declarations: [HistoryEventsComponent, OperationHistoryTabComponent],
   exports: [HistoryEventsComponent, OperationHistoryTabComponent]

@@ -13,9 +13,9 @@
         ></vitamui-library-filing-plan>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn primary" cdkStepperNext>{{'COMMON.NEXT' | translate}}</button>
           <button type="button" class="btn cancel" (click)="onCancel()"
-                  i18n="Cancel customer creation@@customerCreateCancelButton">Annuler
+                  >{{'COMMON.UNDO' | translate}}
           </button>
         </div>
       </div>
@@ -54,11 +54,11 @@
           <button type="button" class="btn primary" i18n="Update accessContract nodes@@updateAccessContractNodesButton"
                   (click)="updateIngestContractNodes()">Valider
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>Retour</ng-container>
+          <ng-container>{{'COMMON.BACK' | translate}}</ng-container>
         </button>
       </div>
     </cdk-step>

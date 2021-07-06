@@ -1,58 +1,312 @@
 {
-    "FOOTER": {
-        "HELP": "Aide",
-        "LEGAL_NOTICE": "Mentions légales",
-        "TECHNICAL_REFERENT": "Référent technique"
+  "COMMON": {
+    "ADD": "Ajouter",
+    "UNDO": "Annuler",
+    "BACK": "Retour",
+    "SUBMIT": "Terminer",
+    "UPDATE": "Modifier",
+    "NEXT": "Suivant",
+    "CONFIRM": "Confirmer",
+    "CLOSE": "Fermer",
+    "REQUIRED": "Champ requis",
+    "NO_RESULT": "Aucun résultat",
+    "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
+    "LANGUAGE": {
+      "TITLE": "Langue",
+      "ENGLISH": "Anglais",
+      "FRENCH": "Français",
+      "GERMAN": "Allemand"
     },
-    "HEADER": {
-        "LOGOUT": "Déconnexion",
-        "NAVIGATE_AS": "Activer le mode subrogation",
-        "MY_ACCOUNT": "Mon compte",
-        "PROFILE": "Profil"
-    },
-    "MENU" : {
-      "GRAB_APPLICATION": "Saisir le nom de l'application",
-      "MY_APPLICATIONS": "Mes applications",
-      "RESULT": "Résultat(s)",
-      "settings": "Paramétrage",
-      "administrators": "Management",
-      "users": "Utilisateur",
-      "referential": "Référentiels",
-      "opaudit": "Audits et opérations",
-      "techadmin": "Administration technique",
-      "lastusedapps": "Dernières utilisées",
-      "ingest_and_consultation": "Versement & consultation",
-      "supervision_and_audits": "Supervision & Audits",
-      "security_and_application_rights": "Sécurité & droits applicatifs",
-      "organization_and_user_rights": "Organisation & droits utilisateurs"
-    },
-    "MENU-APPLICATION-TILE": {
-        "ENTER_APPLICATION": "Entrée pour lancer l'application"
-    },
-    "SELECT-TENANT": {
-        "SELECTED": "Coffre sélectionné",
-        "SELECT" : "Sélectionner un coffre",
-        "DIALOG_TITLE" : "Bienvenue sur ",
-        "DIALOG_SUBTITLE" : "Le portail des applications de l'archivage",
-        "DIALOG_INSTRUCTIONS" : "Veuillez sélectionner votre coffre par défaut",
-        "DIALOG_MESSAGE" : "Votre coffre par défaut pourra être modifié depuis votre compte",
-        "DIALOG_BUTTON_LABEL" : "Accéder à "
-    },
-    "SELECT-CUSTOMER": {
-        "SELECTED": "Organisation sélectionnée",
-        "SELECT" : "Sélectionner une organisation"
-    },
-    "SELECT-LANGUAGE": {
-        "LANGUAGE": "Langue",
-        "ENGLISH" : "Anglais",
-        "FRENCH" : "Français"
-    },
-    "SLIDE-TOGGLE": {
-        "YES": "OUI",
-        "NO": "NON"
-    },
-    "LEVEL-INPUT": {
-        "SUBLEVEL": "Sous niveau"
+    "UNDO_MODAL": {
+      "TITLE": "Fermer la fenêtre",
+      "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
     }
-
+  },
+  "COLOR": {
+    "PRIMARY": "Couleur primaire",
+    "SECONDARY": "Couleur secondaire",
+    "TERTIARY": "Couleur tertiaire",
+    "HEADER_FOOTER": "Couleur d'entête",
+    "BACKGROUND": "Couleur de fond de page"
+  },
+  "ACCOUNT": {
+    "TITLE": "Mon compte",
+    "REFRESH_PASSWORD": "Changer de mot de passe",
+    "TAB": {
+      "INFORMATIONS": "Informations"
+    },
+    "LASTNAME": "Nom",
+    "FIRSTNAME": "Prénom",
+    "MAIL": "Adresse e-mail",
+    "DEFAULT_LANGUAGE": "Langue de l'interface",
+    "OTP_AUTH": "Authentification OTP",
+    "PHONE": {
+      "MOBILE": "Numéro de mobile",
+      "FIX": "Numéro de fix"
+    },
+    "DELIVERY_ADRESS": "Adresse de livraison",
+    "LEVEL": "Niveau",
+    "GROUP": "Mon groupe de profils"
+  },
+  "SUBROGATION": {
+    "PREHOME": {
+      "ORGANIZATIONS": "Mes Organisations"
+    },
+    "HOME": {
+      "RESULTS_TABLE": {
+        "MODAL": {
+          "IMPOSSIBLE_SUBROGATION": "La subrogation pour cet utilisateur est momentanément impossible",
+          "DENIED_SUBROGATION": "Votre demande de subrogation a été refusée",
+          "CANCEL_SUBROGATION": "Votre demande de subrogation a bien été annulée",
+          "ACTIVE_SUBROGATION": "Vous avez déjà une subrogation en cours avec l'utilisateur",
+          "WAITING_ACCEPTATION": "Attente de l'acceptation de l'utilisateur",
+          "ACCEPT_SUBROGATION": "Afin de vous aider le support dispose pour les prochaines 30 minutes des mêmes droits que vous",
+          "ASK_SUBROGATION": "Vous avez demandé à subroger l'utilisateur"
+        }
+      }
+    }
+  },
+  "APPLICATION": {
+    "PORTAL_APP": {
+      "NAME": "Portail"
+    },
+    "CUSTOMERS_APP": {
+      "NAME": "Organisations",
+      "TOOLTIP": "Paramétrer les organisations (clients, ...) et les coffres des organisations"
+    },
+    "USERS_APP": {
+      "NAME": "Utilisateurs",
+      "TOOLTIP": "Créer, Modifier et Gérer les utilisateurs..."
+    },
+    "GROUPS_APP": {
+      "NAME": "Groupes de profils",
+      "TOOLTIP": "Paramétrer les groupes de profil de droits qui seront affectés aux utilisateurs"
+    },
+    "PROFILES_APP": {
+      "NAME": "Profils APP Utilisateurs",
+      "TOOLTIP": "Paramétrer les profils de droits des administrateurs qui utilisent l'APP Utilisateurs"
+    },
+    "SUBROGATIONS_APP": {
+      "NAME": "Subrogation",
+      "TOOLTIP": "Subroger les droits d'un utilisateur par le support pour assistance ou pour assurer les prestations de paramètrage/administration pour un client"
+    },
+    "HIERARCHY_PROFILE_APP": {
+      "NAME": "Hiérarchisation des Profils",
+      "TOOLTIP": "Paramétrer les niveaux de privilèges des profils de droits pour une organisation. Organisation de la séparation des rôles selon la PSSI de l'organisation"
+    },
+    "ACCOUNTS_APP": {
+      "NAME": "Mon compte",
+      "TOOLTIP": "Consulter mes informations, Choisir la langue de l'interface"
+    },
+    "INGEST_APP": {
+      "NAME": "Contrats d'entrée",
+      "TOOLTIP": "Accéder, créer et modifier les contrats d'entrée"
+    },
+    "ACCESS_APP": {
+      "NAME": "Contrats d'accès",
+      "TOOLTIP": "Accéder, créer et modifier les contrats d'accès"
+    },
+    "AGENCIES_APP": {
+      "NAME": "Services Agent",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les services agents"
+    },
+    "CONTEXTS_APP": {
+      "NAME": "Contextes applicatifs",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les contextes applicatifs"
+    },
+    "SECURITY_PROFILES_APP": {
+      "NAME": "Profils de sécurité",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils de sécurité"
+    },
+    "ONTOLOGY_APP": {
+      "NAME": "Ontologie",
+      "TOOLTIP": "Accéder, Créer ou Supprimer les ontologies"
+    },
+    "AUDIT_APP": {
+      "NAME": "Audits",
+      "TOOLTIP": "Lancer des audits"
+    },
+    "SECURE_APP": {
+      "NAME": "Opération de sécurisations",
+      "TOOLTIP": "Opération de sécurisations"
+    },
+    "DSL_APP": {
+      "NAME": "Requêtes DSL",
+      "TOOLTIP": "Rechercher des UA à partir d'une requête DSL personnalisée"
+    },
+    "PROBATIVE_VALUE_APP": {
+      "NAME": "Relevé de valeur probante",
+      "TOOLTIP": "Exporter un relevé de valeur probante"
+    },
+    "LOGBOOK_OPERATION_APP": {
+      "NAME": "Journal des Opérations",
+      "TOOLTIP": "Consultation des journaux des opérations d'entrées, de bases, d'éliminations"
+    },
+    "API_SUPERVISION_APP": {
+      "NAME": "Supervision des API",
+      "TOOLTIP": "Supervision des API"
+    },
+    "ARCHIVE_APP": {
+      "NAME": "Archives",
+      "TOOLTIP": "Déposer, rechercher, consulter des documents dans un coffre"
+    },
+    "MANUAL_INGEST_APP": {
+      "NAME": "Dépôt SIP SEDA",
+      "TOOLTIP": "Déposer un lot de documents (SIP) au format SEDA dans un flux"
+    },
+    "ARCHIVE_BATCH_INGEST_APP": {
+      "NAME": "Dépôt par bordereau",
+      "TOOLTIP": "Déposer un lot de documents"
+    },
+    "MY_ACTIVITY_V2_APP": {
+      "NAME": "Mon Activité",
+      "TOOLTIP": "Consulter mes actions et ordres : versements, bordereaux de sorties..."
+    },
+    "MY_OPERATOR_ACTIVITY_APP": {
+      "NAME": "Mon Activité Opérateur",
+      "TOOLTIP": "Consulter mes actions concernant les bordereaux de toutes les organisations"
+    },
+    "FILE_INGEST_ITEM_CUSTOMER_SUPERVISION_APP": {
+      "NAME": "Supervision des versements",
+      "TOOLTIP": "Superviser les versements dans un coffre"
+    },
+    "ITEM_CUSTOMER_SUPERVISION_APP": {
+      "NAME": "Supervision des bordereaux",
+      "TOOLTIP": "Superviser et opérer les actions sur les bordereaux d'un coffre"
+    },
+    "FILE_INGEST_ITEM_ADMIN_SUPERVISION_APP": {
+      "NAME": "Versements des organisations",
+      "TOOLTIP": "Superviser les versements de toutes les organisations"
+    },
+    "ITEM_ADMIN_SUPERVISION_APP": {
+      "NAME": "Bordereaux des organisations",
+      "TOOLTIP": "Superviser et opérer les actions sur les bordereaux de toutes les organisations"
+    },
+    "INGEST_SUPERVISION_APP": {
+      "NAME": "Validation des versements",
+      "TOOLTIP": "Valider ou refuser les versements dans un coffre par les autorités désignées par l'organisation"
+    },
+    "RECORD_MANAGEMENT_APP": {
+      "NAME": "Référentiel Record Management",
+      "TOOLTIP": "Paramétrer le référentiel de règles de gestion du cycle de vie des archives pour un coffre"
+    },
+    "ARCHIVE_TYPE_APP": {
+      "NAME": "Types d'archives",
+      "TOOLTIP": "Paramétrer les types d'archives"
+    },
+    "TENANT_TREE_APP": {
+      "NAME": "Coffre",
+      "TOOLTIP": "Paramétrer les coffres d'une organisation : plan de classement, métadonnées d'indexation, autorités de validation..."
+    },
+    "ARCHIVE_PROFILE_APP": {
+      "NAME": "Profils APP Archives",
+      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour accéder aux archives dans un coffre et utiliser les fonctions de l'APP Archives (déposer, consulter, télécharger, ...)"
+    },
+    "ADMIN_FLOWS_APP": {
+      "NAME": "Flux",
+      "TOOLTIP": "Paramétrer les flux de versement des organisations"
+    },
+    "EXT_ALFRESCO_APP": {
+      "NAME": "Alfresco",
+      "TOOLTIP": "Accéder à Alfresco"
+    },
+    "EXT_DOCUWARE_APP": {
+      "NAME": "Docuware",
+      "TOOLTIP": "Accéder à Docuware"
+    },
+    "ARCHIVE_ROOM_APP": {
+      "NAME": "Salles d'archives",
+      "TOOLTIP": "Gestion des archives physiques"
+    },
+    "BARCODES_APP": {
+      "NAME": "Etiquettes",
+      "TOOLTIP": "Gestion des etiquettes"
+    },
+    "PHYSICAL_CUSTOMERS_APP": {
+      "NAME": "Organisations physiques",
+      "TOOLTIP": "Paramétrer les organisations physiques"
+    },
+    "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
+      "NAME": "Profils APP Dépôt par bordereau",
+      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour créer des bordereaux de dépôt"
+    },
+    "REPORTING_APP": {
+      "NAME": "Rapports",
+      "TOOLTIP": "Consulter les rapports et les statistiques"
+    }
+  },
+  "FOOTER": {
+    "HELP": "Aide",
+    "LEGAL_NOTICE": "Mentions légales",
+    "TECHNICAL_REFERENT": "Référent technique"
+  },
+  "HEADER": {
+    "LOGOUT": "Déconnexion",
+    "NAVIGATE_AS": "Activer le mode subrogation",
+    "MY_ACCOUNT": "Mon compte",
+    "PROFILE": "Profil"
+  },
+  "MENU": {
+    "GRAB_APPLICATION": "Saisir le nom de l'application",
+    "MY_APPLICATIONS": "Mes applications",
+    "RESULT": "Résultat(s)",
+    "settings": "Paramétrage",
+    "administrators": "Management",
+		  "users": "Utilisateurs",
+    "referential": "Référentiels",
+    "opaudit": "Audits et opérations",
+    "techadmin": "Administration technique",
+		  "ingests": "Suivi des versements",
+    "lastusedapps": "Dernières utilisées",
+    "ingest_and_consultation": "Versement & consultation",
+    "supervision_and_audits": "Supervision & Audits",
+    "security_and_application_rights": "Sécurité & droits applicatifs",
+    "organization_and_user_rights": "Organisation & droits utilisateurs"
+  },
+  "MENU_APPLICATION_TILE": {
+    "ENTER_APPLICATION": "Entrée pour lancer l'application"
+  },
+  "SELECT_TENANT": {
+    "SELECTED": "Coffre sélectionné",
+    "SELECT": "Sélectionner un coffre",
+    "DIALOG_TITLE": "Bienvenue sur ",
+    "DIALOG_SUBTITLE": "Le portail des applications de l'archivage",
+    "DIALOG_INSTRUCTIONS": "Veuillez sélectionner votre coffre par défaut",
+    "DIALOG_MESSAGE": "Votre coffre par défaut pourra être modifié depuis votre compte",
+    "DIALOG_BUTTON_LABEL": "Accéder à "
+  },
+  "SELECT_CUSTOMER": {
+    "SELECTED": "Organisation sélectionnée",
+    "SELECT": "Sélectionner une organisation"
+  },
+  "SELECT_LANGUAGE": {
+    "LANGUAGE": "Langue",
+    "ENGLISH": "Anglais",
+    "FRENCH": "Français"
+  },
+  "SLIDE_TOGGLE": {
+    "YES": "OUI",
+    "NO": "NON"
+  },
+  "LEVEL_INPUT": {
+    "SUBLEVEL": "Sous niveau"
+  },
+  "PROGRESS_BAR": {
+    "STEP": "Étape"
+  },
+  "LANGUAGE": {
+    "FRENCH": "Français",
+    "ENGLISH": "Anglais",
+    "GERMAN": "Allemand"
+  },
+  "COUNTRY": {
+    "FRANCE": "France",
+    "GERMANY": "Allemagne",
+    "ITALY": "Italie",
+    "UNITED_KINGDOM": "Royaume-Uni",
+    "DENMARK": "Danemark",
+    "SPAIN": "Espagne",
+    "BELGIUM": "Belgique",
+    "PORTUGAL": "Portugal"
+  }
 }

@@ -7,11 +7,11 @@
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="Informations" i18n-label="Information tab@@profileDetailTabInformation">
+    <mat-tab [label]="'USER_PROFILE.TAB.INFORMATIONS' | translate">
       <app-information-tab [profile]="profile" [readOnly]="isPopup || profile?.readonly || levelNotAllowed()"></app-information-tab>
     </mat-tab>
     
-    <mat-tab label="Historique" i18n-label="History tab@@profileDetailTabHistory">
+    <mat-tab [label]="'USER_PROFILE.TAB.HISTORY' | translate">
       <vitamui-common-operation-history-tab [id]="profile?.id" [identifier]="profile?.identifier"
         collectionName="profiles" [filter]="filterEvents"></vitamui-common-operation-history-tab>
     </mat-tab>

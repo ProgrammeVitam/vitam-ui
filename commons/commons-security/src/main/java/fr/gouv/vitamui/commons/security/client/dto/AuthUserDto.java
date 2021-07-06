@@ -119,6 +119,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setGroupId(user.getGroupId());
         setAnalytics(user.getAnalytics());
         setSiteCode(user.getSiteCode());
+        setInternalCode(user.getInternalCode());
     }
 
     public AuthUserDto(final String username, final Map<String, Object> attributes) {
@@ -255,6 +256,9 @@ public class AuthUserDto extends UserDto implements UserDetails {
                         break;
                     case SITE_CODE :
                         setSiteCode((String) value);
+                        break;
+                    case INTERNAL_CODE :
+                        setInternalCode((String) value);
                         break;
                 }
             }

@@ -36,10 +36,11 @@
  */
 
 
-import { Component, ViewChild } from '@angular/core';
+import { Component, NO_ERRORS_SCHEMA, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
 
 import { input } from 'ui-frontend-common/testing';
@@ -69,11 +70,13 @@ describe('DomainsInputComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         MatProgressSpinnerModule,
+        TranslateModule.forRoot()
       ],
       declarations: [ TestHostComponent, DomainsInputComponent ],
       providers: [
         { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));

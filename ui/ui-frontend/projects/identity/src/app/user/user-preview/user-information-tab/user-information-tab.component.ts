@@ -36,7 +36,7 @@
  */
 import { merge, of } from 'rxjs';
 import { catchError, debounceTime, filter, map, switchMap } from 'rxjs/operators';
-import { AdminUserProfile, Customer, diff, OtpState, User } from 'ui-frontend-common';
+import { AdminUserProfile, CountryOption, CountryService,  Customer, diff, OtpState, User } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
@@ -91,10 +91,14 @@ export class UserInfoTabComponent implements OnChanges {
     internalCode: string
   };
 
+  public countries: CountryOption[];
+
+
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder,
     private userCreateValidators: UserCreateValidators,
+    private countryService: CountryService,
   ) {
     this.form = this.formBuilder.group({
       id: [null],
@@ -138,6 +142,10 @@ export class UserInfoTabComponent implements OnChanges {
         switchMap((formData) => this.userService.patch(formData).pipe(catchError(() => of(null))))
       )
       .subscribe((user: User) => this.resetForm(this.form, user, this.customer, this.userInfo, this.readOnly));
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+        this.countries = values;
+      });
   }
 
   private updateOtpState(form: FormGroup, userInfo: AdminUserProfile, customer: Customer): void {

@@ -38,6 +38,7 @@
 import { Location } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApplicationId } from '../../../application-id.enum';
 import { ApplicationService } from '../../../application.service';
 import { Logger } from '../../../logger/logger';
 import { Application } from '../../../models/application/application.interface';
@@ -66,7 +67,7 @@ export class VitamuiTitleBreadcrumbComponent implements OnInit {
   }
 
   public redirectTo(identifier: string): void {
-    if (!identifier) {
+    if (!identifier || identifier === ApplicationId.PORTAL_APP) {
       this.router.navigate([this.startupService.getPortalUrl()]);
     } else {
       const app = this.applicationService.applications.find((application: Application) => application.identifier === identifier);

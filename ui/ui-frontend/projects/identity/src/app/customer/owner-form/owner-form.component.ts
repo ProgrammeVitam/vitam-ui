@@ -39,7 +39,7 @@ import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { Customer } from 'ui-frontend-common';
+import { CountryOption, CountryService, Customer } from 'ui-frontend-common';
 
 import { Owner } from 'ui-frontend-common';
 import { OwnerFormValidators } from './owner-form.validators';
@@ -61,6 +61,9 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
   form: FormGroup;
 
   private sub: any;
+
+  public countries: CountryOption[];
+
 
   @Input()
   set customerId(customerId: string) {
@@ -89,7 +92,7 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
 
   private _customerInfo: any;
 
-  constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators) {}
+  constructor(private formBuilder: FormBuilder, private ownerFormValidators: OwnerFormValidators, private countryService: CountryService) {}
 
   onChange = (_: any) => {};
 
@@ -118,6 +121,10 @@ export class OwnerFormComponent implements ControlValueAccessor, OnDestroy, OnIn
     });
 
     this.subscribeToValueChanges();
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
+    });
   }
 
   ngOnDestroy() {

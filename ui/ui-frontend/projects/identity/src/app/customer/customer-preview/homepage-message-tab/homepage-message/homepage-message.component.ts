@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -9,29 +9,18 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { LanguageService } from 'projects/identity/src/app/services/LaguageService.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { AuthService, Customer, Option, StartupService } from 'ui-frontend-common';
+import { take, takeUntil } from 'rxjs/operators';
+import { AuthService, Customer, LanguageService, Option, StartupService } from 'ui-frontend-common';
 
 @Component({
   selector: 'app-homepage-message',
   templateUrl: './homepage-message.component.html',
   styleUrls: ['./homepage-message.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [LanguageService]
 })
-export class HomepageMessageComponent implements OnInit, OnDestroy {
-  private destroy = new Subject();
-
-  @Input()
-  public homepageMessageForm: FormGroup;
-
-  @Input()
-  public customer?: Customer;
-
-  public defaultForm: FormGroup;
-  public customerForm: FormGroup;
+export class HomepageMessageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() homepageMessageForm: FormGroup;
+  @Input() customer?: Customer;
 
   @Output()
   public formToSend = new EventEmitter<{
@@ -44,17 +33,14 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     }
   }>();
 
-  private portalTitles: {
-    [language: string]: string;
-  } = {};
-
-  private portalMessages: {
-    [language: string]: string;
-  } = {};
-
   public languages: Option[];
+  public defaultForm: FormGroup;
+  public customerForm: FormGroup;
 
   private language = this.authService.user.language;
+  private portalTitles: { [language: string]: string; } = {};
+  private portalMessages: { [language: string]: string; } = {};
+  private destroy = new Subject();
 
   constructor(
     public dialogRef: MatDialogRef<HomepageMessageComponent>,
@@ -65,17 +51,17 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-
     this.homepageMessageForm = this.formBuilder.group({
       id: null,
       portalTitle: ['', [Validators.required]],
       portalMessage: ['', [Validators.required, Validators.maxLength(500)]],
       translations: this.formBuilder.array([])
     });
+  }
 
-    console.log('init');
-    this.languageService.getLanguages().then(languages => {
-      this.languages = languages;
+  ngAfterViewInit() {
+    this.languageService.getAvailableLanguagesOptions().pipe(take(1)).subscribe((options: Option[]) => {
+      this.languages = options;
       this.setMessages();
       this.formToSend.emit({ form: this.homepageMessageForm, portalTitles: this.portalTitles, portalMessages: this.portalMessages });
       this.homepageMessageForm.valueChanges.pipe(takeUntil(this.destroy)).subscribe(() => {
@@ -89,8 +75,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     this.destroy.complete();
   }
 
-  public setMessages() {
-
+  public setMessages(): void {
     let idCustomer = null;
     const title = this.startupService.getDefaultPortalTitle();
     const message = this.startupService.getDefaultPortalMessage();
@@ -119,7 +104,6 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
 
     this.languages.forEach(l => {
       if (this.portalTitles[l.key] && this.portalMessages[l.key] && this.language !== l.key) {
-
         const translation = this.formBuilder.group({
           language: [l.key, Validators.required],
           portalTitle: [this.portalTitles[l.key], [Validators.required]],
@@ -150,12 +134,12 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     this.sendForm();
   }
 
-  private sendForm() {
+  private sendForm(): void {
     this.getTranslations();
     this.formToSend.emit({ form: this.homepageMessageForm, portalTitles: this.portalTitles, portalMessages: this.portalMessages });
   }
 
-  private getTranslations() {
+  private getTranslations(): void {
     const titles: { [language: string]: any } = {};
     const messages: { [language: string]: any } = {};
 
@@ -177,7 +161,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     this.portalMessages = messages;
   }
 
-  getLanguages(index: number) {
+  public getLanguages(index: number): Option[] {
     const forms = [...this.homepageMessageForm.get('translations').value];
     forms.splice(index, 1);
 
@@ -188,8 +172,7 @@ export class HomepageMessageComponent implements OnInit, OnDestroy {
     });
   }
 
-
-  isLanguageSet(): boolean {
+  public isLanguageSet(): boolean {
     const forms = this.homepageMessageForm.get('translations').value;
     let isValid = true;
     forms.forEach(((f: FormGroup) => {

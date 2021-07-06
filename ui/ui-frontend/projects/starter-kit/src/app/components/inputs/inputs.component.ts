@@ -1,7 +1,7 @@
-import { CountryService } from './../../services/CountryService.service';
+import { extend } from 'underscore';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import {Option} from "ui-frontend-common";
+import { CountryOption, CountryService, Option} from 'ui-frontend-common';
 
 @Component({
   selector: 'starter-kit-inputs',
@@ -28,16 +28,14 @@ export class InputsComponent implements OnInit {
   public duration = new FormControl( {days: 5, hours: 10, minutes: 5});
   public file = new FormControl( new File(['test'], 'test', {type: 'text/plain'}));
 
-  countries: Option[];
+  public countries: Option[];
 
   autoCompletSelect = new FormControl();
-
 
   constructor(private countryService: CountryService) { }
 
   onChange = (_: any) => {};
   onTouched = () => {};
-
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -48,10 +46,12 @@ export class InputsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.countryService.getCountries().then(countries => {
-      this.countries = countries;
-  });
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values.map(value  =>extend( {
+        key: value.code,
+        label: value.name
+    }));
+    });
     this.autoCompletSelect.disable({ emitEvent: false });
   }
-
 }

@@ -24,8 +24,13 @@ $input-height: 70px;
     }
 }
 
+.mat-drawer, .mat-dialog-container {
+    .tenant-box {
+    @include dialog-elevation-dark;
+    }
+  }
+
 .tenant-box {
-    @include elevation-1;
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -39,9 +44,7 @@ $input-height: 70px;
     color: #474747;
     transition: box-shadow 240ms ease-out;
 
-    &:hover {
-        @include elevation-2;
-    }
+    @include input-elevation-dark;
 
     i {
         color: var(--vitamui-primary);

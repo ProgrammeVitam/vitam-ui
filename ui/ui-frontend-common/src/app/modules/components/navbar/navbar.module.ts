@@ -40,6 +40,7 @@ import { NgModule } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { ApplicationSelectContentModule } from '../application-select-content/application-select-content.module';
 import { CustomerSelectContentModule } from '../customer-select-content/customer-select-content.module';
@@ -60,6 +61,7 @@ import { TenantMenuComponent } from './tenant-menu/tenant-menu.component';
     CustomerSelectContentModule,
     TenantSelectContentModule,
     MatDialogModule,
+    TranslateModule
   ],
   declarations: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],
   exports: [NavbarComponent, ApplicationMenuComponent, TenantMenuComponent, CustomerMenuComponent, CommonMenuComponent],

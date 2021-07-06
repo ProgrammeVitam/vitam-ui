@@ -116,7 +116,7 @@ public class Customer extends IdDocument {
     private boolean subrogeable = false;
 
     @NotNull
-    private GraphicIdentity graphicIdentity;
+    private GraphicIdentity graphicIdentity = new GraphicIdentity();
 
     Map<String, String> portalTitles = new HashMap<>();
 

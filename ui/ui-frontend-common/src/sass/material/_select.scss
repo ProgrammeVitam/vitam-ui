@@ -2,6 +2,15 @@
     @include mat-select-panel;
 }
 
+.mat-drawer,
+.mat-dialog-container {
+  .vitamui-mat-select.mat-form-field {
+    .mat-form-field-flex {
+      @include dialog-elevation-dark;
+    }
+  }
+}
+
 .vitamui-mat-select.mat-form-field {
   
     font-size: 16px;
@@ -63,15 +72,6 @@
         }
     }
 
-    .mat-form-field-flex {
-        vertical-align: top;
-        border-radius: 4px;
-        transition: box-shadow 200ms ease-out;
-        height: 60px;
-        align-items: center;
-        padding: 0 30px;
-    }
-
     .mat-form-field-underline {
         display: none;
     }
@@ -85,7 +85,7 @@
             .mat-form-field-flex {
                 background-color: var(--vitamui-grey-300);
                 border: none;
-                box-shadow:none;
+                @include elevation-0;
 
                 .mat-select .mat-select-value {
                     font-weight: normal;
@@ -106,9 +106,16 @@
     }
 
     .mat-form-field-flex {
-        padding-right: 15px;
+        vertical-align: top;
+        border-radius: 4px;
+        transition: box-shadow 200ms ease-out;
+        height: 60px;
+        align-items: center;
+        
+        padding: 0 30px;
         border: none;
-        box-shadow: 0px 4px 24px rgba(var(--vitamui-grey-rgb), 0.6);
+
+        @include input-elevation-dark;
 
         .mat-form-field-infix {
             border-top-width: 0;
@@ -165,6 +172,7 @@
         padding: 0;
         border: none;
         box-shadow: none;
+        @include elevation-0;
     }
 
     .mat-form-field-infix {

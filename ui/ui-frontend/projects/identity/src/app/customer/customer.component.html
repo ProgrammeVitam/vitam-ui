@@ -8,12 +8,12 @@
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        Paramétrer les organisations
+        {{'CUSTOMER.HOME.TITLE' | translate}}
       </vitamui-common-title-breadcrumb>
 
-      <vitamui-common-banner [searchbarPlaceholder]="'Nom, Raison sociale, Code organisation, Adresse...'" [disableSearchBar]="true">
+      <vitamui-common-banner [searchbarPlaceholder]="'CUSTOMER.INFORMATIONS.CODE' | translate" [disableSearchBar]="true">
         <button class="btn primary ml-5" (click)="openCreateCustomerDialog()">
-          <span>Créer une organisation</span>
+          <span>{{'CUSTOMER.HOME.CREATE_TITLE' | translate}}</span>
         </button>
       </vitamui-common-banner>
     </div>

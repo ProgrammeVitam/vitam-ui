@@ -38,10 +38,11 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonProgressBarComponent } from './common-progress-bar.component';
 
 @NgModule({
-  imports: [CommonModule, MatProgressBarModule],
+  imports: [CommonModule, MatProgressBarModule, TranslateModule],
   declarations: [CommonProgressBarComponent],
   exports: [CommonProgressBarComponent, MatProgressBarModule],
 })

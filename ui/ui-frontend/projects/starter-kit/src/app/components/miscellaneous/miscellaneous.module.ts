@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { MiscellaneousComponent } from './miscellaneous.component';
 import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
@@ -9,6 +10,7 @@ import { SampleDialogModule } from './sample-dialog/sample-dialog.module';
   imports: [
     CommonModule,
     SampleDialogModule,
+    MatProgressSpinnerModule,
     VitamUICommonModule
   ],
   declarations: [MiscellaneousComponent],

@@ -36,6 +36,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { VitamUIDurationInputComponent } from './vitamui-duration-input.component';
 
@@ -48,6 +49,7 @@ describe('VitamUIDurationInputComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
+        VitamUICommonTestModule
       ],
       declarations: [ VitamUIDurationInputComponent ]
     })

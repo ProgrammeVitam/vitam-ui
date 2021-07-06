@@ -40,7 +40,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import {
-  AdminUserProfile, AuthService, ConfirmDialogService, Customer, Group, isRootLevel, OtpState
+  AdminUserProfile, AuthService, ConfirmDialogService, CountryOption, CountryService, Customer, Group, isRootLevel, OtpState
 } from 'ui-frontend-common';
 import { GroupSelection } from './../group-selection.interface';
 
@@ -72,6 +72,8 @@ export class UserCreateComponent implements OnInit, OnDestroy {
   public creating = false;
   public stepCount = 4;
   private keyPressSubscription: Subscription;
+  public countries: CountryOption[];
+
 
   constructor(
     public dialogRef: MatDialogRef<UserCreateComponent>,
@@ -80,13 +82,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private authService: AuthService,
     private userCreateValidators: UserCreateValidators,
-    private confirmDialogService: ConfirmDialogService
+    private confirmDialogService: ConfirmDialogService,
+    private countryService: CountryService,
   ) { }
 
   ngOnInit() {
 
     // tslint:disable-next-line: max-line-length
-    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+    this.groups = this.data.groups.map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false, profiles: group.profiles }));
     this.fullGroup = this.data.groups;
     if (!isRootLevel(this.authService.user)) {
       this.groups = this.groups.filter((g) => g.id !== this.authService.user.groupId);
@@ -156,6 +159,11 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       }
       this.form.get('address').updateValueAndValidity({ emitEvent: false });
     });
+
+
+    this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
+      this.countries = values;
+    });
   }
 
   ngOnDestroy() {
@@ -170,7 +178,14 @@ export class UserCreateComponent implements OnInit, OnDestroy {
       this.form.updateValueAndValidity({ emitEvent: false });
     } else if (this.connectedUserInfo.type === 'LIST') {
       this.groups = this.connectedUserInfo.profilGroup
-        .map((group) => Object({ id: group.id, name: group.name, description: group.description, selected: false }));
+        .map((group) => {
+          const profilGroup = this.groups.find((g) => g.id === group.id);
+          return Object({ id: group.id,
+            name: group.name,
+            description: group.description,
+            selected: false,
+            profiles: profilGroup?.profiles });
+        });
       this.groups.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
     }
 

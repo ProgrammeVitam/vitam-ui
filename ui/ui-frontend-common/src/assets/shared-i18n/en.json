@@ -1,57 +1,292 @@
 {
-    "FOOTER": {
-        "HELP": "Help",
-        "LEGAL_NOTICE": "Legal notice",
-        "TECHNICAL_REFERENT": "Technical referent"
+  "COMMON": {
+    "ADD": "Add",
+    "UNDO": "Cancel",
+    "BACK": "Back",
+    "SUBMIT": "Submit",
+    "UPDATE": "Update",
+    "NEXT": "Next",
+    "CONFIRM": "Confirm",
+    "CLOSE": "Close",
+    "REQUIRED": "Required param",
+    "NO_RESULT": "No result",
+    "SHOW_MORE_RESULTS": "Show more results",
+    "LANGUAGE": {
+      "TITLE": "Language",
+      "ENGLISH": "English",
+      "FRENCH": "French",
+      "GERMAN": "German"
     },
-    "HEADER": {
-        "LOGOUT": "Logout",
-        "NAVIGATE_AS": "Activate subrogation mode",
-        "MY_ACCOUNT": "My account",
-        "PROFILE": "Profile"
-    },
-    "MENU" : {
-      "GRAB_APPLICATION": "Grab application name",
-      "MY_APPLICATIONS": "My applications",
-      "RESULT": "Result",
-      "settings": "Settings",
-      "administrators": "Management",
-      "users": "User",
-      "referential": "Referential",
-      "opaudit": "Audits & operations",
-      "techadmin": "Technical administration",
-      "lastusedapps": "Lastly used",
-      "ingest_and_consultation": "Ingest & consultation",
-      "supervision_and_audits": "Supervision & Audits",
-      "security_and_application_rights": "Security & application rights",
-      "organization_and_user_rights": "Organization & user rights"
-    },
-    "MENU-APPLICATION-TILE": {
-        "ENTER_APPLICATION": "Enter to launch the application"
-    },
-    "SELECT-TENANT": {
-        "SELECTED": "Selected tenant",
-        "SELECT" : "Select a tenant",
-        "DIALOG_TITLE" : "Welcome to ",
-        "DIALOG_SUBTITLE" : "The archiving applications portal",
-        "DIALOG_INSTRUCTIONS" : "Please select your default safe",
-        "DIALOG_MESSAGE" : "Your default safe can be modified from your account",
-        "DIALOG_BUTTON_LABEL" : "Access to "
-    },
-    "SELECT-CUSTOMER": {
-        "SELECTED": "Selected customer",
-        "SELECT" : "Select a customer"
-    },
-    "SELECT-LANGUAGE": {
-        "LANGUAGE": "Language",
-        "ENGLISH" : "English",
-        "FRENCH" : "French"
-    },
-    "SLIDE-TOGGLE": {
-        "YES": "YES",
-        "NO": "NO"
-    },
-    "LEVEL-INPUT": {
-        "SUBLEVEL": "Sub level"
+    "UNDO_MODAL": {
+      "TITLE": "Close the window",
+      "UNDO_MESSAGE": "Modified data won't be saved. Are you sure you want to close the window ?"
     }
+  },
+  "COLOR": {
+    "PRIMARY": "Primary color",
+    "SECONDARY": "Secondary color",
+    "TERTIARY": "Tertiary color",
+    "HEADER_FOOTER": "Header color",
+    "BACKGROUND": "Background color"
+  },
+  "ACCOUNT": {
+    "TITLE": "My account",
+    "REFRESH_PASSWORD": "Change password",
+    "TAB": {
+      "INFORMATIONS": "Informations"
+    },
+    "LASTNAME": "Lastname",
+    "FIRSTNAME": "Firstname",
+    "MAIL": "Email",
+    "DEFAULT_LANGUAGE": "Interface language",
+    "OTP_AUTH": "OTP authentication",
+    "PHONE": {
+      "MOBILE": "Phone number",
+      "FIX": "Home phone number"
+    },
+    "DELIVERY_ADRESS": "Delivery address",
+    "LEVEL": "Level",
+    "GROUP": "My profile group"
+  },
+  "SUBROGATION": {
+    "PREHOME": {
+      "ORGANIZATIONS": "My Organizations"
+    },
+    "HOME": {
+      "RESULTS_TABLE": {
+        "MODAL": {
+          "IMPOSSIBLE_SUBROGATION": "Subragation for this user is temporarily impossible",
+          "DENIED_SUBROGATION": "Your subrogation request has been refused",
+          "CANCEL_SUBROGATION": "Your subragation request has been canceled",
+          "ACTIVE_SUBROGATION": "You already have a subrogation in progress with the user",
+          "WAITING_ACCEPTATION": "Waiting for user approval",
+          "ACCEPT_SUBROGATION": "In order to help you the support has for the next 30 minutes the same rights as you",
+          "ASK_SUBROGATION": "You ask a user to subrogate"
+        }
+      }
+    }
+  },
+  "APPLICATION": {
+    "PORTAL_APP": {
+      "NAME": "Portal"
+    },
+    "CUSTOMERS_APP": {
+      "NAME": "Clients organizations settings",
+      "TOOLTIP": "Set up a client organization, assign safes and configure user authentication security"
+    },
+    "USERS_APP": {
+      "NAME": "Users settings",
+      "TOOLTIP": "Create, modify or deactivate users. Assign rights to users"
+    },
+    "GROUPS_APP": {
+      "NAME": "Groups rights",
+      "TOOLTIP": "Configure groups of rights profiles, which will be assigned to users"
+    },
+    "PROFILES_APP": {
+      "NAME": "Administrator’s rights",
+      "TOOLTIP": "Set up rights profiles for administrators in an organization"
+    },
+    "SUBROGATIONS_APP": {
+      "NAME": "User support",
+      "TOOLTIP": "Temporarily subrogate the rights of a user in an organization"
+    },
+    "ACCOUNTS_APP": {
+      "NAME": "My account",
+      "TOOLTIP": "Find informations about my user"
+    },
+    "HIERARCHY_PROFILE_APP": {
+      "NAME": "Duplicate rights profiles",
+      "TOOLTIP": "Duplicate an existing rights profile to limit its scope or manage privilege"
+    },
+    "ARCHIVE_APP": {
+      "NAME": "Archives research and consultation",
+      "TOOLTIP": "Search and consult archives"
+    },
+    "ADMIN_FLOWS_APP": {
+      "NAME": "Flows",
+      "TOOLTIP": "Set up ingest flows for organizations"
+    },
+    "FILE_INGEST_ITEM_ADMIN_SUPERVISION_APP": {
+      "NAME": "File ingest organisations supervision",
+      "TOOLTIP": "Supervise file ingest of organizations"
+    },
+    "FILE_INGEST_ITEM_CUSTOMER_SUPERVISION_APP": {
+      "NAME": "Safe slips",
+      "TOOLTIP": "Supervise all slips of a safe"
+    },
+    "ITEM_ADMIN_SUPERVISION_APP": {
+      "NAME": "Organization slips",
+      "TOOLTIP": "Manage slips of the organizations assigned to the operator of the instance"
+    },
+    "ITEM_CUSTOMER_SUPERVISION_APP": {
+      "NAME": "Organisations item supervision",
+      "TOOLTIP": "Supervise organisations items"
+    },
+    "INGEST_SUPERVISION_APP": {
+      "NAME": "Ingest validation",
+      "TOOLTIP": "Validate or refuse ingests in a tenant by the authorities designated by the organization"
+    },
+    "MANUAL_INGEST_APP": {
+      "NAME": "Filing and monitoring of file transfers",
+      "TOOLTIP": "Submit an archive package (SIP) previously created in SEDA format"
+    },
+    "MY_ACTIVITY_V2_APP": {
+      "NAME": "My slips",
+      "TOOLTIP": "Manage slips I have issued and those assigned to me"
+    },
+    "MY_OPERATOR_ACTIVITY_APP": {
+      "NAME": "My Operator Activity",
+      "TOOLTIP": "Consult my actions concerning the slips of all organizations"
+    },
+    "ARCHIVE_PROFILE_APP": {
+      "NAME": "Rights in the \"Research\" APP",
+      "TOOLTIP": "Set up user rights profiles to access and deposit in a safe"
+    },
+    "TENANT_TREE_APP": {
+      "NAME": "Filing plan",
+      "TOOLTIP": "Configure the filing plan of a safe and the characteristics of each position in this plan"
+    },
+    "EXT_ALFRESCO_APP": {
+      "NAME": "Alfresco",
+      "TOOLTIP": "Access to Alfresco"
+    },
+    "EXT_DOCUWARE_APP": {
+      "NAME": "Docuware",
+      "TOOLTIP": "Access to Docuware"
+    },
+    "RECORD_MANAGEMENT_APP": {
+      "NAME": "Record Management",
+      "TOOLTIP": "Organize the repository of management rules and manage the archive life cycle"
+    },
+    "ARCHIVE_BATCH_INGEST_APP": {
+      "NAME": "Indexation",
+      "TOOLTIP": "Index and deposit batches of physical or electronic archives"
+    },
+    "API_SUPERVISION_APP": {
+      "NAME": "API Supervision",
+      "TOOLTIP": "Supervise APIs"
+    },
+    "ARCHIVE_TYPE_APP": {
+      "NAME": "Forms",
+      "TOOLTIP": "Configure indexing forms and metadata display rules for users when searching"
+    },
+    "ARCHIVE_ROOM_APP": {
+      "NAME": "Physical archives center",
+      "TOOLTIP": "Configure archive centers, sites, buildings and rooms. Monitor occupancy rates"
+    },
+    "BARCODES_APP": {
+      "NAME": "Barcode",
+      "TOOLTIP": "Reserve physical archive identifiers and print barcode labels"
+    },
+    "PHYSICAL_CUSTOMERS_APP": {
+      "NAME": "Physical archives Services",
+      "TOOLTIP": "Configure the physical archive services and the rights of the client organization"
+    },
+    "ARCHIVE_BATCH_INGEST_PROFILE_APP": {
+      "NAME": "Deposit by slip",
+      "TOOLTIP": "Configure user rights profiles to create deposit slips"
+    },
+    "REPORTING_APP": {
+      "NAME": "Reporting",
+      "TOOLTIP": "Access to dashboards of the archiving service"
+    },
+    "AGENCIES_APP": {
+      "NAME": "Agent services",
+      "TOOLTIP": "Declare the producer services and the authorized uploading services in the archiving system"
+    },
+    "CONTEXTS_APP": {
+      "NAME": "Application contexts",
+      "TOOLTIP": "Authenticate an application and assign rights to it"
+    },
+    "ONTOLOGY_APP": {
+      "NAME": "Ontology",
+      "TOOLTIP": "Configure the catalog of SEDA tags and VITAM fields authorized and indexed in the archiving system"
+    },
+    "SECURE_APP": {
+      "NAME": "Securing operation",
+      "TOOLTIP": "Securing operation"
+    },
+    "DSL_APP": {
+      "NAME": "DSL Query",
+      "TOOLTIP": "Find UAs from a Custom DSL Query"
+    },
+    "LOGBOOK_OPERATION_APP": {
+      "NAME": "Operations Log",
+      "TOOLTIP": "Consulting the logs of entry, base and elimination operations"
+    }
+  },
+  "FOOTER": {
+    "HELP": "Help",
+    "LEGAL_NOTICE": "Legal notice",
+    "TECHNICAL_REFERENT": "Technical referent"
+  },
+  "HEADER": {
+    "LOGOUT": "Logout",
+    "NAVIGATE_AS": "Activate subrogation mode",
+    "MY_ACCOUNT": "My account",
+    "PROFILE": "Profile"
+  },
+  "MENU": {
+    "GRAB_APPLICATION": "Grab application name",
+    "MY_APPLICATIONS": "My applications",
+    "RESULT": "Result",
+    "settings": "Settings",
+    "administrators": "Management",
+    "users": "User",
+    "referential": "Referential",
+    "opaudit": "Audits & operations",
+    "techadmin": "Technical administration",
+		  "ingests": "Ingests monitoring",
+    "lastusedapps": "Lastly used",
+    "ingest_and_consultation": "Ingest & consultation",
+    "supervision_and_audits": "Supervision & Audits",
+    "security_and_application_rights": "Security & application rights",
+    "organization_and_user_rights": "Organization & user rights"
+  },
+  "MENU_APPLICATION_TILE": {
+    "ENTER_APPLICATION": "Enter to launch the application"
+  },
+  "SELECT_TENANT": {
+    "SELECTED": "Selected tenant",
+    "SELECT": "Select a tenant",
+    "DIALOG_TITLE": "Welcome to ",
+    "DIALOG_SUBTITLE": "The archiving applications portal",
+    "DIALOG_INSTRUCTIONS": "Please select your default safe",
+    "DIALOG_MESSAGE": "Your default safe can be modified from your account",
+    "DIALOG_BUTTON_LABEL": "Access to "
+  },
+  "SELECT_CUSTOMER": {
+    "SELECTED": "Selected customer",
+    "SELECT": "Select a customer"
+  },
+  "SELECT_LANGUAGE": {
+    "LANGUAGE": "Language",
+    "ENGLISH": "English",
+    "FRENCH": "French"
+  },
+  "SLIDE_TOGGLE": {
+    "YES": "YES",
+    "NO": "NO"
+  },
+  "LEVEL_INPUT": {
+    "SUBLEVEL": "Sub level"
+  },
+  "PROGRESS_BAR": {
+    "STEP": "Step"
+  },
+  "LANGUAGE": {
+    "FRENCH": "French",
+    "ENGLISH": "English",
+    "GERMAN": "German"
+  },
+  "COUNTRY": {
+    "FRANCE": "France",
+    "GERMANY": "Germany",
+    "ITALY": "Italy",
+    "UNITED_KINGDOM": "United Kingdom",
+    "DENMARK": "Denmark",
+    "SPAIN": "Spain",
+    "BELGIUM": "Belgium",
+    "PORTUGAL": "Portugal"
+  }
 }

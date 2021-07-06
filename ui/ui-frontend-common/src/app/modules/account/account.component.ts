@@ -36,8 +36,10 @@
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppRootComponent } from '../app-root-component.class';
+import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
 import { BreadCrumbData } from '../models/breadcrumb/breadcrumb.interface';
 import { AccountService } from './account.service';
@@ -57,7 +59,7 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
 
   private sub: Subscription;
 
-  constructor(private accountService: AccountService, public route: ActivatedRoute) {
+  constructor(private translateService: TranslateService, private accountService: AccountService, public route: ActivatedRoute) {
     super(route);
   }
 
@@ -65,7 +67,10 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
     this.sub = this.accountService.getMyAccount().subscribe((account) => {
       this.account = account;
     });
-    this.dataBreadcrumb = [{ label: 'Portail' }, { label: 'Mon compte' }];
+    this.dataBreadcrumb = [
+      { identifier: ApplicationId.PORTAL_APP},
+      { identifier: ApplicationId.ACCOUNTS_APP}
+    ];
   }
 
   ngOnDestroy() {

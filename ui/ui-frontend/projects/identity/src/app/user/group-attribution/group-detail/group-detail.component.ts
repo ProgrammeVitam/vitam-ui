@@ -34,29 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Group } from 'ui-frontend-common';
-import { GroupService } from '../../../group/group.service';
 
 @Component({
   selector: 'app-group-detail',
   templateUrl: './group-detail.component.html',
   styleUrls: ['./group-detail.component.scss']
 })
-export class GroupDetailComponent implements OnInit {
+export class GroupDetailComponent {
 
   @Input() group: Group;
   public displayedGroup: Group;
 
-  constructor(private groupService: GroupService) { }
-
-  ngOnInit() {
-    if (this.group && this.group.identifier) {
-      this.displayedGroup = this.group;
-    } else {
-      this.groupService.get(this.group.id).subscribe((data: Group) => {
-        this.displayedGroup = data;
-      });
-    }
-  }
+  constructor() { }
 }

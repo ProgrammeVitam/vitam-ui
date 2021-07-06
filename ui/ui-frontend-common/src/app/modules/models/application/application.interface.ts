@@ -41,7 +41,7 @@ export interface Application extends Id {
   identifier: string;
   name: string;
   url: string;
-  serviceId : string;
+  serviceId: string;
   icon: string;
   category: string;
   position: number;
@@ -54,5 +54,5 @@ export interface Application extends Id {
 
 export interface ApplicationInfo {
   APPLICATION_CONFIGURATION: Application[];
-  CATEGORY_CONFIGURATION: { [key: string]: Category };
+  CATEGORY_CONFIGURATION: Category[];
 }
