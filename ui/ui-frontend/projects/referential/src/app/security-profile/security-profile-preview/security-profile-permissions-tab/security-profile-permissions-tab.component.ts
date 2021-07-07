@@ -79,7 +79,7 @@ export class SecurityProfilePermissionsTabComponent {
   unchanged(): boolean {
     let unchanged = true;
 
-    if (this.form.getRawValue().permissions != undefined) {
+    if (this.previousValue().permissions && this.previousValue().permissions) {
       if (this.form.getRawValue().permissions.length !== this.previousValue().permissions.length) {
         unchanged = false;
       } else {
@@ -92,6 +92,17 @@ export class SecurityProfilePermissionsTabComponent {
           unchanged = false;
         }
       }
+    } else if ((
+        !this.form.getRawValue().permissions &&
+        this.previousValue().permissions &&
+        this.previousValue().permissions.length > 0
+      ) || (
+        this.form.getRawValue().permissions &&
+        this.form.getRawValue().permissions.length > 0 &&
+        !this.previousValue().permissions
+      )
+    ) {
+      unchanged = false;
     }
 
     this.updated.emit(!unchanged);
