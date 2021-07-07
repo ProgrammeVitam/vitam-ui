@@ -1,19 +1,33 @@
 db = db.getSiblingDB('iam')
 
-print("START 307_iam_ref.js");
+print("START 25_update_iam_rules.js");
 
 // ========================================= PROFILES =========================================
 
-// ----------------------------------------- LEVEL "0" -----------------------------------------
+db.profiles.update( {
+	"_id": "system_rules"
+}, {
+    $addToSet: {
+        "roles":  {
+            $each: [
+                { "name": "ROLE_IMPORT_RULES" },
+                { "name": "ROLE_EXPORT_RULES" }
+        	]
+        }
+    }
+});
+
+// ------------------------------------------- REFERENTIAL TENANT 2 --------------------------------
+
 
 var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
 
 db.profiles.insert({
-	"_id" : "system_rules",
+	"_id" : "auto_system_rules",
 	"identifier" : NumberInt(maxIdProfile++),
-	"name" : "Rules Profile",
-	"description" : "Rules Profile",
-    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"name" : "Auto Rules Profile",
+	"description" : "Auto Rules Profile",
+    "tenantIdentifier": NumberInt(2),
 	"applicationName" : "RULES_APP",
 	"enabled" : true,
 	"readonly" : true,
@@ -31,10 +45,15 @@ db.profiles.insert({
         },
         {
             "name": "ROLE_DELETE_RULES"
+        },
+		{
+            "name": "ROLE_IMPORT_RULES"
+        },
+		{
+            "name": "ROLE_EXPORT_RULES"
         }
 	 ]
 });
-
 
 db.sequences.updateOne({
     "_id": "profile_identifier"
@@ -43,19 +62,5 @@ db.sequences.updateOne({
 		"sequence": NumberInt(maxIdProfile)
 	}
 });
-// ========================================= GROUPS =========================================
 
-// ----------------------------------------- LEVEL "0" -----------------------------------------
-db.groups.updateOne( {
-	"_id": "admin_group"
-}, {
-    $addToSet: {
-        "profileIds":  {
-            $each: [
-            	"system_rules"
-        	]
-        }
-    }
-});
-
-print("END 307_iam_ref.js");
+print("END 25_update_iam_rules.js");
