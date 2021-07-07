@@ -201,8 +201,6 @@ public class VitamRuleService {
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels);
         	 ByteArrayInputStream debugStream = serializeRules(rulesModels)) {
-            // return adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
-            
             final RequestResponse response = adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
             return response;
         }
