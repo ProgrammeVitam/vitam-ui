@@ -37,45 +37,38 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-
-import { VitamUITenantSelectComponent, TenantSelectionGuard, ActiveTenantGuard } from 'ui-frontend-common';
-import { ArchiveComponent } from './archive.component';
-import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
-
+import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { ArchiveComponent } from './archive.component';
 
 const routes: Route[] = [
   {
     path: '',
     redirectTo: 'tenant',
-    pathMatch: 'full'
-  }, {
+    pathMatch: 'full',
+  },
+  {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: ArchiveComponent,
-    canActivate: [ActiveTenantGuard]
+    canActivate: [ActiveTenantGuard],
   },
 
   {
     path: 'tenant/:tenantIdentifier/:accessContractId/id/:id',
     component: ArchiveSearchPopupComponent,
-    resolve : {archiveUnit : ArchiveSearchResolverService}
-  }
+    resolve: { archiveUnit: ArchiveSearchResolverService },
+  },
 ];
-
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class ArchiveRoutingModule { }
+export class ArchiveRoutingModule {}
