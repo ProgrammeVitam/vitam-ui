@@ -34,45 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTreeModule } from '@angular/material/tree';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ArchiveRoutingModule } from './archive-routing.module';
-import { SharedModule } from './shared/shared.module';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { ArchiveComponent } from './archive.component';
-import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
-import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
-import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
+import { TranslateService } from '@ngx-translate/core';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 import { AccessContractComponent } from './access-contract/access-contract.component';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
-import { TranslateService } from '@ngx-translate/core';
+import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
-import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
- 
+import { ArchiveComponent } from './archive.component';
+import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
+import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
+import { SharedModule } from './shared/shared.module';
+
 @NgModule({
   imports: [
     MatTooltipModule,
@@ -99,11 +98,16 @@ import { SearchCriteriaListComponent } from './archive-search/search-criteria-li
     TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
-    MatTabsModule
-    
+    MatTabsModule,
   ],
-  providers: [ArchiveApiService, ArchiveSharedDataServiceService, DatePipe, ArchiveSearchResolverService, TranslateService,
-              SearchCriteriaSaverService] ,
+  providers: [
+    ArchiveApiService,
+    ArchiveSharedDataServiceService,
+    DatePipe,
+    ArchiveSearchResolverService,
+    TranslateService,
+    SearchCriteriaSaverService,
+  ],
   declarations: [
     ArchiveComponent,
     FilingHoldingNodeComponent,
@@ -114,8 +118,7 @@ import { SearchCriteriaListComponent } from './archive-search/search-criteria-li
     ArchiveSearchPopupComponent,
     SearchCriteriaSaverComponent,
     SearchCriteriaListComponent,
-    
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ArchiveModule { }
+export class ArchiveModule {}

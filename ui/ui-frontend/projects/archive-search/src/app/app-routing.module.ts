@@ -35,47 +35,44 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, AppGuard, AuthGuard, AccountComponent, AnalyticsResolver } from 'ui-frontend-common';
+import { RouterModule, Routes } from '@angular/router';
+import { QuicklinkStrategy } from 'ngx-quicklink';
+import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
-
 const routes: Routes = [
-
   {
     path: '',
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PORTAL_APP' }
+    data: { appId: 'PORTAL_APP' },
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'ACCOUNTS_APP' }
+    data: { appId: 'ACCOUNTS_APP' },
   },
   {
     path: 'archive-search',
-    loadChildren: () => import('./archive/archive.module').then(m => m.ArchiveModule),
+    loadChildren: () => import('./archive/archive.module').then((m) => m.ArchiveModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }
+    data: { appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' },
   },
 
-  { path: '**', redirectTo: '' }
-
-
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)],
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: QuicklinkStrategy,
+    }),
+  ],
   exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
-  ]
+  providers: [ActiveTenantGuard, AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
