@@ -345,7 +345,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
                 + "\"OTP\":\"true\","
                 + "\"Date de désactivation\":\"\","
                 + "\"Date de suppression\":\"\","
-                + "\"Code du site\":\"\","
+                + "\"Code du site\":\"001\","
                 + "\"Code du centre\":\"002\","
                 + "\"Nom de la rue\":\"-\","
                 + "\"Code postal\":\"-\","
