@@ -77,7 +77,7 @@ class Page {
 
   get table() { return fixture.nativeElement.querySelector('.vitamui-table'); }
   get columns() { return fixture.nativeElement.querySelectorAll('.vitamui-table-head div'); }
-  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row'); }
+  get rows() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .align-items-center'); }
   get ownerBtn() { return fixture.nativeElement.querySelectorAll('.vitamui-table-rows .vitamui-row .btn.btn-circle.primary'); }
   get loadMoreButton() { return fixture.nativeElement.querySelectorAll('.vitamui-min-content.vitamui-table-message'); }
   get infiniteScroll() { return fixture.debugElement.query(By.directive(InfiniteScrollStubDirective)); }
@@ -411,10 +411,10 @@ describe('CustomerListComponent', () => {
   });
 
   function testRow(index: number) {
-    const cells = page.rows[index].querySelectorAll('.d-flex');
-    expect(cells.length).toBe(6);
-    expect(cells[2].textContent).toContain(customers[index].code);
-    expect(cells[3].textContent).toContain(customers[index].name);
-    expect(cells[4].textContent).toContain(customers[index].companyName);
+    const cells = page.rows[index].querySelectorAll('.d-flex div');
+    expect(cells.length).toBe(7);
+    expect(cells[1].textContent).toContain(customers[index].code);
+    expect(cells[2].textContent).toContain(customers[index].name);
+    expect(cells[3].textContent).toContain(customers[index].companyName);
   }
 });
