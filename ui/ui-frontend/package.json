@@ -109,7 +109,7 @@
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
     "tslib": "^2.0.3",
-    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.1.22.tgz",
+    "ui-frontend-common": "file:../ui-frontend-common/ui-frontend-common-2.1.29.tgz",
     "underscore": "^1.13.1",
     "utf-8-validate": "^5.0.2",
     "uuid": "^7.0.2",
