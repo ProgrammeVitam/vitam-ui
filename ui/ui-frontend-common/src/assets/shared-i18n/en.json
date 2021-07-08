@@ -190,6 +190,34 @@
       "NAME": "Reporting",
       "TOOLTIP": "Access to dashboards of the archiving service"
     },
+    "ARCHIVE_SEARCH_MANAGEMENT_APP": {
+      "NAME": "Archives Search Service",
+      "TOOLTIP": "Archives Search Service"
+    },
+    "INGEST_MANAGEMENT_APP": {
+      "NAME": "Ingest management",
+      "TOOLTIP": "Ingest management"
+    },
+    "RULES_APP": {
+      "NAME": "Management rules",
+      "TOOLTIP": "Management rules"
+    },
+    "FILE_FORMATS_APP": {
+      "NAME": "Files formats",
+      "TOOLTIP": "Files formats"
+    },
+    "HOLDING_FILLING_SCHEME_APP": {
+      "NAME": "Holding filling scheme",
+      "TOOLTIP": "Holding filling scheme"
+    },
+    "LOGBOOK_MANAGEMENT_OPERATION_APP": {
+      "NAME": "Logbook management operation",
+      "TOOLTIP": "Logbook management operation"
+    },
+    "EXTERNAL_PARAM_PROFILE_APP": {
+      "NAME": "External param profile APP",
+      "TOOLTIP": "External param profile APP"
+    },
     "AGENCIES_APP": {
       "NAME": "Agent services",
       "TOOLTIP": "Declare the producer services and the authorized uploading services in the archiving system"

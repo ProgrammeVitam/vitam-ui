@@ -36,9 +36,8 @@
  */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {
-  AccountComponent, ActiveTenantGuard, AppGuard, AuthGuard, AnalyticsResolver,
-} from 'ui-frontend-common';
+import { QuicklinkStrategy } from 'ngx-quicklink';
+import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
 
 const routes: Routes = [
@@ -49,24 +48,24 @@ const routes: Routes = [
     component: AppComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'PORTAL_APP' }
+    data: { appId: 'PORTAL_APP' },
   },
   {
     path: 'account',
     component: AccountComponent,
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'ACCOUNTS_APP' }
+    data: { appId: 'ACCOUNTS_APP' },
   },
   // =====================================================
   //                      Ingests
   // =====================================================
   {
     path: 'ingest',
-    loadChildren: () => import('./ingest/ingest.module').then(m => m.IngestModule),
+    loadChildren: () => import('./ingest/ingest.module').then((m) => m.IngestModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'INGEST_MANAGEMENT_APP' }
+    data: { appId: 'INGEST_MANAGEMENT_APP' },
   },
 
   // =====================================================
@@ -74,23 +73,24 @@ const routes: Routes = [
   // =====================================================
   {
     path: 'holding-filling-scheme',
-    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then(m => m.HoldingFillingSchemeModule),
+    loadChildren: () => import('./holding-filling-scheme/holding-filling-scheme.module').then((m) => m.HoldingFillingSchemeModule),
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
-    data: { appId: 'HOLDING_FILLING_SCHEME_APP' }
+    data: { appId: 'HOLDING_FILLING_SCHEME_APP' },
   },
   // =====================================================
   //                      unknown path
   // =====================================================
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, {
+      preloadingStrategy: QuicklinkStrategy,
+    }),
+  ],
   exports: [RouterModule],
-  providers: [
-    ActiveTenantGuard,
-    AuthGuard
-  ]
+  providers: [ActiveTenantGuard, AuthGuard],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
