@@ -43,6 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -61,6 +62,8 @@ import org.springframework.http.HttpStatus;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +123,15 @@ public class IngestContractService {
             ac.setFormatUnidentifiedAuthorized(acModel.isFormatUnidentifiedAuthorized());
             ac.setEveryFormatType(acModel.isEveryFormatType());
             ac.setEveryDataObjectVersion(acModel.isEveryDataObjectVersion());
+            ac.setComputeInheritedRulesAtIngest(acModel.isComputeInheritedRulesAtIngest());
+
+            if(acModel.getActivationdate() != null ) {
+                ac.setActivationdate(LocalDateUtil.getFormattedDateForMongo(acModel.getActivationdate()));
+            }
+
+            if(acModel.getDeactivationdate() != null ) {
+                ac.setDeactivationdate(LocalDateUtil.getFormattedDateForMongo(acModel.getDeactivationdate()));
+            }
 
             LOGGER.debug("outputIC: {}", ac);
             LOGGER.debug("output checkParentID: {}", ac.getCheckParentId());
@@ -133,7 +145,7 @@ public class IngestContractService {
         final List<IngestContractModel> listOfAC = convertIngestContractsToModelOfCreation(ingestContractModels);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfAC, JsonNode.class);
- 
+
         LOGGER.debug("The json for creation ingest contract, sent to Vitam {}", node);
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {

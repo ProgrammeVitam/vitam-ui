@@ -1,36 +1,43 @@
 import {NO_ERRORS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {of} from 'rxjs';
-
+import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
+import {of,Subject} from 'rxjs';
 import {IngestContractService} from '../ingest-contract.service';
 import {IngestContractListComponent} from './ingest-contract-list.component';
 
 
-describe('IngestContractListComponent', () => {
+describe('IngestContractListComponent',() => {
   let component: IngestContractListComponent;
   let fixture: ComponentFixture<IngestContractListComponent>;
 
-  beforeEach(waitForAsync(() => {
+  const ingestContractServiceSpy={
+    search: () => of([]),
+    canLoadMore: true,
+    loadMore: () => of([]),
+    updated: new Subject()
+  };
 
-    const ingestContractServiceMock = {
-      search: () => of(null)
-    };
+  beforeEach(
+    waitForAsync(() => {
+      const ingestContractServiceMock={
+        search: () => of(null),
+      };
 
-    TestBed.configureTestingModule({
-      declarations: [IngestContractListComponent],
-      providers: [{provide: IngestContractService, useValue: ingestContractServiceMock}],
-      schemas: [NO_ERRORS_SCHEMA]
+      TestBed.configureTestingModule({
+        declarations: [IngestContractListComponent],
+        providers: [{provide: IngestContractService,useValue: ingestContractServiceMock},
+        {provide: IngestContractService,useValue: ingestContractServiceSpy}],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestContractListComponent);
-    component = fixture.componentInstance;
+    fixture=TestBed.createComponent(IngestContractListComponent);
+    component=fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create',() => {
     expect(component).toBeTruthy();
   });
 });
