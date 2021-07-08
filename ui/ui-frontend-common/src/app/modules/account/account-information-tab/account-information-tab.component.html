@@ -19,12 +19,8 @@
 
   <div class="row">
     <div class="col-2">
-      <vitamui-common-editable-select class="fields-padding" formControlName="language" [label]="'ACCOUNT.DEFAULT_LANGUAGE' | translate">
-        <vitamui-common-editable-option value="ENGLISH" [content]="'COMMON.LANGUAGE.ENGLISH' | translate">
-        </vitamui-common-editable-option>
-        <vitamui-common-editable-option value="FRENCH" [content]="'COMMON.LANGUAGE.FRENCH' | translate">
-        </vitamui-common-editable-option>
-      </vitamui-common-editable-select>
+      <label>{{'ACCOUNT.DEFAULT_LANGUAGE' | translate}}</label>
+      <span>{{'COMMON.LANGUAGE.'+language | translate: { default:'-'} }}</span>
     </div>
   </div>
 

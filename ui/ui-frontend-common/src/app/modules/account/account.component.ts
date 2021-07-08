@@ -37,6 +37,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
 import { Account } from '../models/account/account.interface';
@@ -58,13 +59,19 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
 
   private sub: Subscription;
 
-  constructor(private accountService: AccountService, public route: ActivatedRoute) {
+  constructor(private accountService: AccountService,
+              private userInfoApiService: BaseUserInfoApiService,
+              public route: ActivatedRoute) {
     super(route);
   }
 
   ngOnInit() {
     this.sub = this.accountService.getMyAccount().subscribe((account) => {
-      this.account = account;
+        this.userInfoApiService.getMyUserInfo().subscribe((userInfo) => {
+          const accountWithUserInfos = account;
+          accountWithUserInfos.userInfo = userInfo;
+          this.account = accountWithUserInfos;
+        });
     });
     this.dataBreadcrumb = [
       { identifier: ApplicationId.PORTAL_APP},
