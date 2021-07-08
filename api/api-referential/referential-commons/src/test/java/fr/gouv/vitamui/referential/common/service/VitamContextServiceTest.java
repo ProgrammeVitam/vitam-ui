@@ -49,6 +49,12 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.ContextModel;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.dto.ContextVitamDto;
+import fr.gouv.vitamui.referential.common.dto.PermissionDto;
+import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
+import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
+import org.apache.commons.lang3.ArrayUtils;
 import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,6 +62,13 @@ import org.junit.runner.RunWith;
 import org.powermock.api.easymock.PowerMock;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.easymock.EasyMock.*;
 
@@ -225,5 +238,34 @@ public class VitamContextServiceTest {
         assertThatCode(() -> {
             vitamContextService.findContextById(vitamContext, contextId);
         }).isInstanceOf(VitamClientException.class);
+    }
+
+    @Test
+    public void should_convert_contextDto_to_vitamContextDto() {
+        ContextDto contextModels = ReferentialDtoBuilder.getContextDto();
+        List<ContextVitamDto> contextVitamDtos = ContextDtoConverterUtil.convertContextsToModelOfCreation(
+            Collections.singletonList(contextModels));
+        final JsonNode jsonNodeContextDto = objectMapper.convertValue(contextModels.getPermissions(), JsonNode.class);
+        final JsonNode jsonNodeContextVitamDto =
+            objectMapper.convertValue(contextVitamDtos.get(0).getPermissions(), JsonNode.class);
+
+        assertThat(jsonNodeContextDto).isEqualTo(jsonNodeContextVitamDto);
+    }
+
+    @Test
+    public void should_convert_contextDtos_to_vitamContextDtos() {
+        ContextDto contextModels = ReferentialDtoBuilder.buildContextDto(null);
+        Set<PermissionDto> permissionDtos = ReferentialDtoBuilder.buildPermissions();
+        contextModels.setPermissions(permissionDtos);
+
+        List<ContextVitamDto> contextVitamDtos = ContextDtoConverterUtil.convertContextsToModelOfCreation(
+            Collections.singletonList(contextModels));
+
+        final JsonNode jsonNodeContextDto = objectMapper.convertValue(contextModels.getPermissions(), JsonNode.class);
+        final JsonNode jsonNodeContextVitamDto =
+            objectMapper.convertValue(contextVitamDtos.get(0).getPermissions(), JsonNode.class);
+
+        assertThat(jsonNodeContextDto).hasSameElementsAs(jsonNodeContextVitamDto);
+
     }
 }
