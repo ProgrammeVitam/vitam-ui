@@ -1144,11 +1144,29 @@
         <source>Formats</source><target state="new"/>
 
         <note priority="1" from="description">Formats tab</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-preview.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="ingestContractPreviewTabObjects" datatype="html">
-        <source>Objets</source><target state="new"/>
+      <context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-preview.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit>
 
+      <trans-unit id="ingestContractPreviewTabObjects" datatype="html">
+        <source>Objets</source>
+        <target state="new"/>
         <note priority="1" from="description">Objets tab</note>
-      <context-group purpose="location"><context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-preview.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit><trans-unit id="ingestContractPreviewTabLink" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-preview.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+
+      <trans-unit id="ingestContractPreviewTabHeritage" datatype="html">
+        <source>Heritage</source>
+        <target state="final">Heritage</target>
+        <note priority="1" from="description">Heritage tab</note>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-preview.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+
+      <trans-unit id="ingestContractPreviewTabLink" datatype="html">
         <source>Rattachement</source><target state="new"/>
 
         <note priority="1" from="description">Rattachement tab</note>
@@ -1512,7 +1530,7 @@
         <note priority="1" from="description">Create context title</note>
       </trans-unit><trans-unit id="contextCreateNamePlaceholder" datatype="html">
         <source>Nom</source><target state="new"/>
-        
+
         <note priority="1" from="description">Name</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="contextCreateIdentifierPlaceholder" datatype="html">
         <source>Identifiant</source><target state="new"/>
@@ -1527,8 +1545,8 @@
         <note priority="1" from="description">Identifier</note>
       </trans-unit><trans-unit id="securityProfileFormApplicationPlaceholder" datatype="html">
         <source>Profil de sécurité</source><target state="new"/>
-        
-        
+
+
         <note priority="1" from="description">Application</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-preview/context-information-tab/context-information-tab.component.html</context><context context-type="linenumber">18</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">45</context></context-group></trans-unit><trans-unit id="contextEditTitle1" datatype="html">
         <source>Modification d'un contexte applicatif</source><target state="new"/>
@@ -1546,8 +1564,8 @@
         <note priority="1" from="description">Edit context title</note>
       </trans-unit><trans-unit id="formWarningMultipleOrganisations" datatype="html">
         <source>Attention vous avez renseigné deux organisations différentes</source><target state="new"/>
-        
-        
+
+
         <note priority="1" from="description">Multiple organisation warning hint</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-edit/context-edit.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">89</context></context-group></trans-unit><trans-unit id="contextEditFinishButton" datatype="html">
         <source>Terminer</source><target state="new"/>
@@ -1579,7 +1597,7 @@
         <note priority="1" from="description">Update context save permission button label</note>
       </trans-unit><trans-unit id="contextCreateNextButton" datatype="html">
         <source>Suivant</source><target state="new"/>
-        
+
         <note priority="1" from="description">Next step button label</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">73</context></context-group></trans-unit><trans-unit id="contextCreateCancelButton" datatype="html">
         <source>Annuler</source><target state="new"/>
@@ -1588,11 +1606,11 @@
         <note priority="1" from="description">Cancel context creation</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">75</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">103</context></context-group></trans-unit><trans-unit id="contextCreateTitle1" datatype="html">
         <source>Création d'un contexte applicatif</source><target state="new"/>
-        
+
         <note priority="1" from="description">Create context title</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">81</context></context-group></trans-unit><trans-unit id="contextCreateTitle2" datatype="html">
         <source>Permissions</source><target state="new"/>
-        
+
         <note priority="1" from="description">Create context title</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context-create/context-create.component.html</context><context context-type="linenumber">82</context></context-group></trans-unit><trans-unit id="contextCreateFinishButton" datatype="html">
         <source>Terminer</source><target state="new"/>
@@ -1623,8 +1641,8 @@
         <note priority="1" from="description">Search context</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">12</context></context-group></trans-unit><trans-unit id="contextSearchPlaceholder" datatype="html">
         <source>Nom, Identifiant</source><target state="new"/>
-        
-        
+
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile.component.html</context><context context-type="linenumber">21</context></context-group></trans-unit><trans-unit id="contextListCreateButton" datatype="html">
       <source>Créer un contexte</source><context-group purpose="location"><context context-type="sourcefile">src/app/context/context.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile.component.html</context><context context-type="linenumber">26</context></context-group><note from="description" priority="1">Create context button label</note></trans-unit><trans-unit id="contextSearchPlaceholder" datatype="html">
         <source>Nom, ID</source><target state="new"/>
@@ -1692,7 +1710,7 @@
         <note priority="1" from="description">Create securityProfile title</note>
       </trans-unit><trans-unit id="securityProfileCreateNextButton" datatype="html">
         <source>Suivant</source><target state="new"/>
-        
+
         <note priority="1" from="description">Next step button label</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/security-profile/security-profile-create/security-profile-create.component.html</context><context context-type="linenumber">44</context></context-group></trans-unit><trans-unit id="securityProfileCreateFinishButton" datatype="html">
         <source>Terminer</source><target state="new"/>
@@ -1800,8 +1818,8 @@
         <note priority="1" from="description">Import ontology button label</note>
       </trans-unit><trans-unit id="userPreviewTabHistory" datatype="html">
         <source>Détails</source><target state="new"/>
-        
-        
+
+
         <note priority="1" from="description">History tab</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/audit/audit-preview/audit-preview.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/securisation/securisation-preview/securisation-preview.component.html</context><context context-type="linenumber">34</context></context-group></trans-unit><trans-unit id="auditListIdentifierHeader" datatype="html">
         <source>Identifiant</source><target state="new"/>
@@ -1904,19 +1922,19 @@
         </context-group>
       </trans-unit><trans-unit id="logbookOperationListOperationHeader" datatype="html">
         <source>Catégorie d'opération</source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit><trans-unit id="logbookOperationListStartDateHeader" datatype="html">
         <source>Date de début</source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">44</context></context-group></trans-unit><trans-unit id="logbookOperationListEndDateHeader" datatype="html">
         <source>Date de fin</source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">50</context></context-group></trans-unit><trans-unit id="logbookOperationListStatusHeader" datatype="html">
         <source>Statut</source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">56</context></context-group></trans-unit><trans-unit id="logbookOperationListStepHeader" datatype="html">
         <source>Étape</source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-list/logbook-operation-list.component.html</context><context context-type="linenumber">62</context></context-group></trans-unit><trans-unit id="apiSupervisionPageTitle" datatype="html">
         <source>
           <x id="TAG_IMG" ctype="image" equiv-text="&lt;img/>"/><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>Journal des Opérations<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
@@ -1935,51 +1953,51 @@
         <source>
                 Bientôt
               </source><target state="new"/>
-        
+
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="logbookOperationCategory" datatype="html">
         <source>Catégorie d'opération</source><target state="new"/>
-        
+
         <note priority="1" from="description">Operation category</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">25</context></context-group></trans-unit><trans-unit id="logbookOperationAgIdExt" datatype="html">
         <source>Identifiants des agents externes</source><target state="new"/>
-        
+
         <note priority="1" from="description">External Agencies Identifiers</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit><trans-unit id="logbookOperationContract" datatype="html">
         <source>Contrat associé</source><target state="new"/>
-        
+
         <note priority="1" from="description">Associated Contract</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit><trans-unit id="logbookOperationApplicationId" datatype="html">
         <source>Identifiant de l'application</source><target state="new"/>
-        
+
         <note priority="1" from="description">Application Identifier</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">42</context></context-group></trans-unit><trans-unit id="logbookOperationTransactionNumber" datatype="html">
         <source>Numéro de transaction</source><target state="new"/>
-        
+
         <note priority="1" from="description">Transaction number</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit><trans-unit id="logbookOperationOPI" datatype="html">
         <source>Identification de l'opération</source><target state="new"/>
-        
+
         <note priority="1" from="description">Operation Identifier</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit><trans-unit id="logbookOperationAgId" datatype="html">
         <source>Acteur(s) interne(s)</source><target state="new"/>
-        
+
         <note priority="1" from="description">Agency identifier</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">57</context></context-group></trans-unit><trans-unit id="logbookOperationReport" datatype="html">
         <source>Rapport</source><target state="new"/>
-        
+
         <note priority="1" from="description">Report</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit><trans-unit id="logbookOperationAddInfos" datatype="html">
         <source>Informations complémentaires sur l'opération</source><target state="new"/>
-        
+
         <note priority="1" from="description">Additionnal Infos</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">68</context></context-group></trans-unit><trans-unit id="logbookOperationMessage" datatype="html">
         <source>Message</source><target state="new"/>
-        
+
         <note priority="1" from="description">Message</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">73</context></context-group></trans-unit><trans-unit id="eventDetailTabInformation" datatype="html">
         <source>Informations</source><target state="new"/>
-        
-        
+
+
         <note priority="1" from="description">Information tab</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/logbook-operation/logbook-operation-detail/logbook-operation-detail.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="eventDetailTabDetails" datatype="html">
         <source>Détails</source><target state="final">Details</target>

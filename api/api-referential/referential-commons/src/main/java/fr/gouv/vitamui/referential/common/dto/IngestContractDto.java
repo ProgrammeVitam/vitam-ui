@@ -94,4 +94,6 @@ public class IngestContractDto extends IdDto implements Serializable {
     private Set<String> archiveProfiles = new HashSet<>();
 
     private String managementContractId;
+
+    private boolean computeInheritedRulesAtIngest;
 }

@@ -34,35 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {AbstractControl, AsyncValidatorFn} from '@angular/forms';
-import {IngestContract} from 'projects/vitamui-library/src/public-api';
-import {of, timer} from 'rxjs';
-import {map, switchMap, take} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { IngestContract } from 'projects/vitamui-library/src/public-api';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
-import {IngestContractService} from '../ingest-contract.service';
+import { IngestContractService } from '../ingest-contract.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IngestContractCreateValidators {
-
   private debounceTime = 400;
 
-  constructor(private ingestContractService: IngestContractService) {
-  }
+  constructor(private ingestContractService: IngestContractService) {}
 
   uniqueName = (nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('name', 'nameExists', nameToIgnore);
-  }
+  };
 
   uniqueNameWhileEdit = (ingestContract: () => IngestContract, nameToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFieldsWhileEdit(ingestContract, 'name', 'nameExists', nameToIgnore);
-  }
+  };
 
   uniqueIdentifier = (identifierToIgnore?: string): AsyncValidatorFn => {
     return this.uniqueFields('identifier', 'identifierExists', identifierToIgnore);
-  }
+  };
 
   private uniqueFieldsWhileEdit(ingestContract: () => IngestContract, field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
@@ -75,9 +73,9 @@ export class IngestContractCreateValidators {
         return of(null);
       } else {
         return timer(this.debounceTime).pipe(
-          switchMap(() => control.value !== valueToIgnore ? this.ingestContractService.existsProperties(properties) : of(false)),
+          switchMap(() => (control.value !== valueToIgnore ? this.ingestContractService.existsProperties(properties) : of(false))),
           take(1),
-          map((exists: boolean) => exists ? existField : null)
+          map((exists: boolean) => (exists ? existField : null))
         );
       }
     };
@@ -91,11 +89,10 @@ export class IngestContractCreateValidators {
       existField[existTag] = true;
 
       return timer(this.debounceTime).pipe(
-        switchMap(() => control.value !== valueToIgnore ? this.ingestContractService.existsProperties(properties) : of(false)),
+        switchMap(() => (control.value !== valueToIgnore ? this.ingestContractService.existsProperties(properties) : of(false))),
         take(1),
-        map((exists: boolean) => exists ? existField : null)
+        map((exists: boolean) => (exists ? existField : null))
       );
     };
   }
-
 }

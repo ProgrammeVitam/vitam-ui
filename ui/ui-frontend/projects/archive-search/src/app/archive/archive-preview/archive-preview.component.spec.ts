@@ -34,70 +34,83 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
- import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
- 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
- 
+
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from '../../../environments/environment.prod';
-import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
- 
-import { BASE_URL, InjectorModule, LoggerModule } from 'ui-frontend-common'; 
+
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
 import { Unit } from '../models/unit.interface';
- 
+
 import { ArchivePreviewComponent } from './archive-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
- 
+import { ArchiveService } from '../archive.service';
 
- 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
- 
 
- 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        MatTreeModule,
-        MatProgressSpinnerModule,
-        MatSidenavModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-        RouterTestingModule,
-        VitamUILibraryModule,
-        MatIconModule,
-        BrowserAnimationsModule,
-        TranslateModule.forRoot()
-      ],
-      declarations: [
-        ArchivePreviewComponent
-      ],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) } },
-        { provide: environment, useValue: environment }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+  beforeEach(
+    waitForAsync(() => {
+      const activatedRouteMock = {
+        params: of({ tenantIdentifier: 1 }),
+        data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+      };
+
+      const archiveServiceMock = {
+        getBaseUrl: () => '/fake-api',
+      };
+
+      TestBed.configureTestingModule({
+        imports: [
+          MatMenuModule,
+          MatTreeModule,
+          MatProgressSpinnerModule,
+          MatSidenavModule,
+          InjectorModule,
+          LoggerModule.forRoot(),
+          RouterTestingModule,
+          MatIconModule,
+          BrowserAnimationsModule,
+          TranslateModule.forRoot(),
+        ],
+        declarations: [ArchivePreviewComponent],
+        providers: [
+          { provide: ArchiveService, useValue: archiveServiceMock },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: ActivatedRoute, useValue: activatedRouteMock },
+          { provide: ENVIRONMENT, useValue: environment },
+          { provide: WINDOW_LOCATION, useValue: window.location },
+          { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
     component = fixture.componentInstance;
-    let archiveUnit: Unit = { '#allunitups': [], '#id': 'id', '#object': '', '#unitType': '', '#unitups': [], "#opi": '', 'Title_': {'fr':'Teste', 'en':'Test'}};
+    let archiveUnit: Unit = {
+      '#allunitups': [],
+      '#id': 'id',
+      '#object': '',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      Title_: { fr: 'Teste', en: 'Test' },
+    };
     component.archiveUnit = archiveUnit;
     fixture.detectChanges();
   });
@@ -105,8 +118,4 @@ describe('ArchivePreviewComponent', () => {
   fit('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });
-
-
-

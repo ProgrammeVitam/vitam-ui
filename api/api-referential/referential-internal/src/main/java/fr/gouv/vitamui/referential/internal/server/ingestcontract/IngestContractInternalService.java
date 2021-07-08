@@ -68,6 +68,7 @@ import fr.gouv.vitamui.referential.common.service.IngestContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.*;
 
@@ -266,6 +267,9 @@ public class IngestContractInternalService {
             }
             propertiesToUpdate.set("DataObjectVersion", array);
         }
+        if (partialDto.get("computeInheritedRulesAtIngest") != null) {
+            propertiesToUpdate.put("ComputeInheritedRulesAtIngest", (boolean) partialDto.get("computeInheritedRulesAtIngest"));
+        }
         return propertiesToUpdate;
     }
 
@@ -294,11 +298,15 @@ public class IngestContractInternalService {
 
             LOGGER.debug("Send IngestContract update request: {}", query);
 
-            RequestResponse requestResponse = ingestContractService.patchIngestContract(vitamContext, id, query);
-            final IngestContractModel ingestContractVitamDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
-            return converter.convertVitamToDto(ingestContractVitamDto);
-        } catch (InvalidParseOperationException | AccessExternalClientException | JsonProcessingException e) {
+            RequestResponse<?> requestResponse = ingestContractService.patchIngestContract(vitamContext, id, query);
+
+            if(Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
+                throw new AccessExternalClientException("Can't patch ingest contract");
+            }
+
+            return getOne(vitamContext, id);
+
+        } catch (InvalidParseOperationException | AccessExternalClientException  e) {
             throw new InternalServerException("Can't patch ingest contract", e);
         }
     }

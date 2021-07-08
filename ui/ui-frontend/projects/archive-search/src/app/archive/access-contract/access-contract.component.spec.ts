@@ -41,6 +41,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 import { ArchiveService } from '../archive.service';
 import { FormBuilder } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('AccessContractComponent', () => {
   let component: AccessContractComponent;
@@ -48,22 +49,23 @@ describe('AccessContractComponent', () => {
 
   const archiveServiceStub = {
     getAllAccessContracts: () => of([]),
-    loadFilingHoldingSchemeTree: () => of([])
+    loadFilingHoldingSchemeTree: () => of([]),
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-      ],
-      declarations: [ AccessContractComponent ],
+      imports: [TranslateModule.forRoot()],
+      declarations: [AccessContractComponent],
       providers: [
         FormBuilder,
         { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) } }
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+        },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
