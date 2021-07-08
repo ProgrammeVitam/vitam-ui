@@ -1,19 +1,18 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
 import {ReactiveFormsModule} from '@angular/forms';
 import {of} from 'rxjs';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-
 import {FileFormatService} from '../../../file-format/file-format.service';
 import {IngestContractService} from '../../ingest-contract.service';
 import {IngestContractFormatTabComponent} from './ingest-contract-format-tab.component';
 
 
-describe('IngestContractFormatTabComponent', () => {
+describe('IngestContractFormatTabComponent',() => {
   let component: IngestContractFormatTabComponent;
   let fixture: ComponentFixture<IngestContractFormatTabComponent>;
 
-  const ingestContractValue = {
+  const ingestContractValue={
     tenant: 0,
     version: 1,
     description: 'desc',
@@ -35,37 +34,35 @@ describe('IngestContractFormatTabComponent', () => {
     everyFormatType: true,
     formatType: [''],
     archiveProfiles: [''],
-    managementContractId: 'MC-000001'
+    managementContractId: 'MC-000001',
+    computeInheritedRulesAtIngest: true
   };
 
-  beforeEach(waitForAsync(() => {
-    const fileFormatServiceMock = {
-      getAllForTenant: () => of([])
-    };
-    TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUICommonTestModule
+  beforeEach(
+    waitForAsync(() => {
+      const fileFormatServiceMock={
+        getAllForTenant: () => of([]),
+      };
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule,VitamUICommonTestModule],
+        declarations: [IngestContractFormatTabComponent],
+        providers: [
+          {provide: IngestContractService,useValue: {}},
+          {provide: FileFormatService,useValue: fileFormatServiceMock},
         ],
-      declarations: [IngestContractFormatTabComponent],
-      providers: [
-        {provide: IngestContractService, useValue: {}},
-        {provide: FileFormatService, useValue: fileFormatServiceMock}
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestContractFormatTabComponent);
-    component = fixture.componentInstance;
-    component.ingestContract = ingestContractValue;
+    fixture=TestBed.createComponent(IngestContractFormatTabComponent);
+    component=fixture.componentInstance;
+    component.ingestContract=ingestContractValue;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create',() => {
     expect(component).toBeTruthy();
   });
 });

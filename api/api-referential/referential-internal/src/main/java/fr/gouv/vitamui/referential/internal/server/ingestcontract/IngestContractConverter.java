@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class IngestContractConverter {
 
 	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
-	
+
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());
         if (dto.getCheckParentId() != null) {
@@ -64,7 +64,8 @@ public class IngestContractConverter {
         ingestContract.setLastupdate(dto.getLastUpdate());
         ingestContract.setActivationdate(dto.getActivationDate());
         ingestContract.setDeactivationdate(dto.getDeactivationDate());
-        
+        ingestContract.setComputeInheritedRulesAtIngest(dto.isComputeInheritedRulesAtIngest());
+
         return ingestContract;
     }
 
@@ -73,7 +74,7 @@ public class IngestContractConverter {
         if (ingestContract.getCheckParentLink() != null) {
             dto.setCheckParentLink(ingestContract.getCheckParentLink().name());
         }
-        
+
         // copyProperties() doesn't handle Boolean properties
         if (ingestContract.isMasterMandatory() != null) {
             dto.setMasterMandatory(ingestContract.isMasterMandatory());
@@ -87,12 +88,15 @@ public class IngestContractConverter {
         if (ingestContract.isEveryDataObjectVersion() != null) {
             dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
         }
-        
+        if (ingestContract.isComputeInheritedRulesAtIngest() != null) {
+            dto.setComputeInheritedRulesAtIngest(ingestContract.isComputeInheritedRulesAtIngest());
+        }
+
         dto.setCreationDate(ingestContract.getCreationdate());
         dto.setLastUpdate(ingestContract.getLastupdate());
         dto.setActivationDate(ingestContract.getActivationdate());
         dto.setDeactivationDate(ingestContract.getDeactivationdate());
-        
+
         return dto;
     }
 
