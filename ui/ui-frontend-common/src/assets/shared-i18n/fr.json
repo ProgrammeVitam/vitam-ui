@@ -233,6 +233,34 @@
     "REPORTING_APP": {
       "NAME": "Rapports",
       "TOOLTIP": "Consulter les rapports et les statistiques"
+    },
+    "ARCHIVE_SEARCH_MANAGEMENT_APP": {
+      "NAME": "Recherche et consultation des archives",
+      "TOOLTIP": "Rechercher et consulter les archives"
+    },
+    "INGEST_MANAGEMENT_APP": {
+      "NAME": "Dépôt et suivi des versements",
+      "TOOLTIP": "Consulter des versements ou créer un nouveau versement"
+    },
+    "RULES_APP": {
+      "NAME": "Règles de gestion",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les règles de gestion"
+    },
+    "FILE_FORMATS_APP": {
+      "NAME": "Formats de fichiers",
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les formats de fichiers"
+    },
+    "HOLDING_FILLING_SCHEME_APP": {
+      "NAME": "Arbres et Plans",
+      "TOOLTIP": "Importer un arbre de positionnement ou un plan de classement"
+    },
+    "LOGBOOK_MANAGEMENT_OPERATION_APP": {
+      "NAME": "Gestion des Opérations",
+      "TOOLTIP": "Consulter et gérer l'ensemble des opérations qui sont en cours"
+    },
+    "EXTERNAL_PARAM_PROFILE_APP": {
+      "NAME": "Profil APP Paramétrages externes",
+      "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes"
     }
   },
   "FOOTER": {
