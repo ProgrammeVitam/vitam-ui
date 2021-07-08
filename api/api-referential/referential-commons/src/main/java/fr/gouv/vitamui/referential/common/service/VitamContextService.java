@@ -46,6 +46,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import fr.gouv.vitamui.referential.common.dto.PermissionVitamDto;
+import fr.gouv.vitamui.referential.common.dto.converter.ContextDtoConverterUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -192,7 +194,7 @@ public class VitamContextService {
     }
 
     private ByteArrayInputStream serializeContexts(final List<ContextDto> contextDto) throws IOException {
-        final List<ContextVitamDto> listOfContexts = convertContextsToModelOfCreation(contextDto);
+        final List<ContextVitamDto> listOfContexts = ContextDtoConverterUtil.convertContextsToModelOfCreation(contextDto);
         final ObjectMapper mapper = new ObjectMapper();
         final JsonNode node = mapper.convertValue(listOfContexts, JsonNode.class);
 
@@ -219,14 +221,5 @@ public class VitamContextService {
             mapper.writeValue(byteArrayOutputStream, node);
             return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         }
-    }
-
-    private List<ContextVitamDto> convertContextsToModelOfCreation(final List<ContextDto> contextModels) {
-        final List<ContextVitamDto> listOfAC = new ArrayList<>();
-        for (final ContextDto contextDto : contextModels) {
-            final ContextVitamDto context = new ContextVitamDto();
-            listOfAC.add(VitamUIUtils.copyProperties(contextDto, context));
-        }
-        return listOfAC;
     }
 }
