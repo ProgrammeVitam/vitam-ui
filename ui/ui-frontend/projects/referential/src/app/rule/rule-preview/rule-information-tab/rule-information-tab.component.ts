@@ -97,6 +97,7 @@ export class RuleInformationTabComponent {
   ) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
+      ruleValue: [null, Validators.required],
       ruleDescription: [null],
       ruleDuration: [null, Validators.required],
       ruleMeasurement: [null, Validators.required]
@@ -114,6 +115,7 @@ export class RuleInformationTabComponent {
 
   isInvalid(): boolean {
     return this.form.get('ruleType').invalid || this.form.get('ruleType').pending ||
+      this.form.get('ruleValue').invalid || this.form.get('ruleValue').pending ||
       this.form.get('ruleDescription').invalid || this.form.get('ruleDescription').pending ||
       this.form.get('ruleDuration').invalid || this.form.get('ruleDuration').pending ||
       this.form.get('ruleMeasurement').invalid || this.form.get('ruleMeasurement').pending;
@@ -146,5 +148,16 @@ export class RuleInformationTabComponent {
 
   resetForm(rule: Rule) {
     this.form.reset(rule, {emitEvent: false});
+  }
+
+  getRuleTypeLabel(): string {
+    const formControl = this.form.get('ruleType');
+    if (formControl) {
+      const ruleType = this.ruleTypes.find(item => item.key === formControl.value);
+      if (ruleType) {
+        return ruleType.label;
+      }
+    }
+    return '';
   }
 }

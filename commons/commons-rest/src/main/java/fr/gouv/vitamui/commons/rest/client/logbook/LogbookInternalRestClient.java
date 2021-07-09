@@ -36,11 +36,17 @@
  */
 package fr.gouv.vitamui.commons.rest.client.logbook;
 
+import java.io.InputStream;
 import java.util.Collections;
+import java.util.Map;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -73,7 +79,7 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
      * Find unit life cycle by id.
      *
      * @param context
-     * @param unitId
+     * @param id
      * @return
      */
     public JsonNode findUnitLifeCyclesByUnitId(final C context, final String id) {
@@ -92,7 +98,7 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
      * Find object life cycle by id.
      *
      * @param context
-     * @param objectId
+     * @param id
      * @return
      */
     public JsonNode findObjectLifeCyclesByUnitId(final C context, final String id) {
@@ -112,7 +118,7 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
      * Find operation by id.
      *
      * @param context
-     * @param operationId
+     * @param id
      * @return
      */
     public JsonNode findOperationById(final C context, final String id) {
@@ -188,7 +194,7 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
      * @return
      */
     public ResponseEntity<Resource> downloadReport(final C context, final String id, final String downloadType) {
-        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final HttpEntity<Map<String, String>> request = new HttpEntity<>(buildHeaders(context));
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH);
