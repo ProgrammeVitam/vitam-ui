@@ -2,12 +2,10 @@
 # Makefile for packaging COTS component of vitamui solution
 #
 
-
 # Args parsing with default values
 NAME                := mongod
 VERSION             := 3.4.9
 DEPENDENCIES        := mongodb-org
-
 
 # Staging root configuration
 DESTDIR             := $(abspath ./package-stage/)
@@ -29,6 +27,7 @@ VITAMUI_DIRS           =  app bin lib script conf log data tmp run defaults
 PACKAGING_DIR       := $(dir $(lastword $(MAKEFILE_LIST)))
 TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).deb
 RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).rpm
 
 # fpm packaging default args
@@ -41,26 +40,11 @@ FPM_PACK_REMOVE_SCRIPTS     = --before-remove "$(TEMPLATE_TMP_DIR)/before-remove
 # Imports from packaging Makefiles
 #
 
-clean:
-	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) RPM_OUTPUT_PATH=$(RPM_OUTPUT_PATH) $@
-
 stage:
 	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) STAGING_ROOT=$(STAGING_ROOT) $@
 
 vitamui-dirs:
 	$(MAKE) -f $(PACKAGING_MAKEFILE) NAME=$(NAME) VERSION=$(VERSION) $@
-
-reset: clean
-	@rm -Rf src/
-
-
-#
-# COTS src fetching:
-#
-
-#
-# COTS stage install
-#
 
 template-files:
 	# Applying packaging/Makefile first:
@@ -89,14 +73,12 @@ install: stage vitamui-dirs template-files
 	@mkdir   -p -m 750 $(abspath $(STAGING_ROOT)/$(SYSTEMD_DIR)/)
 	@install -m 644 $(TEMPLATE_TMP_DIR)/vitamui-mongod.service $(abspath $(STAGING_ROOT)/$(SYSTEMD_DIR)/vitamui-mongod.service)
 
+
 rpm: install
 	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
-#
-# COTS Packaging
-#
 
-.PHONY: clean stage vitamui-dirs source template-files build install reset
+deb: install
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
-
-
+.PHONY: stage vitamui-dirs deb rpm source template-files build install reset

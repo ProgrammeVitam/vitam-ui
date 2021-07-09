@@ -86,7 +86,7 @@ pipeline {
             steps {
                 sh 'npmrc default'
                 sh '''
-                    $MVN_COMMAND deploy -Pvitam,rpm,webpack -DskipTests -DskipAllFrontend=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
         }
@@ -103,7 +103,7 @@ pipeline {
                 sh 'npmrc internet'
                 dir('cots/') {
                     sh '''
-                        $MVN_COMMAND deploy -Pvitam,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
+                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
                     '''
                 }
             }
@@ -125,7 +125,7 @@ pipeline {
             }
         }
 
-        stage("Publish rpm") {
+        stage("Publish rpm and deb") {
             when {
                 environment(name: 'DO_PUBLISH', value: 'true')
                 environment(name: 'DO_BUILD', value: 'true')
@@ -133,6 +133,7 @@ pipeline {
             steps {
                 sshagent (credentials: ['jenkins_sftp_to_repository']) {
                     sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL rpm'
+                    sh 'vitam-build.git/push_vitamui_repo.sh contrib $SERVICE_REPO_SSHURL deb'
                 }
             }
         }

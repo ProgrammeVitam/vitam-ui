@@ -24,6 +24,7 @@ TEMPLATE_TMP_DIR    := $(abspath ./package-templates/)
 TEMPLATE_SRC        = $(wildcard $(PACKAGING_DIR)/templates/*)
 TEMPLATE_SRC_OVERRIDE = $(wildcard $(shell pwd)/../packaging/*)
 RPM_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).rpm
+DEB_OUTPUT_PATH     := vitamui-$(NAME)-$(VERSION).deb
 
 # fpm packaging default args
 FPM_PACK_ARGS               = -f -d "$(DEPENDENCIES)" --description "$(DESCRIPTION)"
@@ -32,11 +33,10 @@ FPM_PACK_INSTALL_SCRIPTS    = --before-install "$(TEMPLATE_TMP_DIR)/before-insta
 FPM_PACK_REMOVE_SCRIPTS     = --before-remove "$(TEMPLATE_TMP_DIR)/before-remove.sh" --after-remove "$(TEMPLATE_TMP_DIR)/after-remove.sh"
 
 
+
 clean:
 	@rm -Rf $(TEMPLATE_TMP_DIR) $(STAGING_ROOT)
 	@rm -Rf $(TEST_DIR)
-	@rm -f  $(RPM_OUTPUT_PATH)
-
 
 $(STAGING_ROOT):
 	@mkdir -p $(STAGING_ROOT)
@@ -78,6 +78,7 @@ template-files:
 			$$fic >  $(TEMPLATE_TMP_DIR)/`basename $$fic`; \
 	done
 
+#clean
 install: clean stage vitamui-dirs template-files
 	@# install jar file in /vitamui/app/_NAME_/ with right mode
 	@mkdir   -p -m 750 $(abspath $(STAGING_ROOT)/vitamui/app/$(NAME)/)
@@ -91,9 +92,12 @@ install: clean stage vitamui-dirs template-files
 	@install -m 644 $(TEMPLATE_TMP_DIR)/vitamui.service $(abspath $(STAGING_ROOT)/$(SYSTEMD_DIR)/vitamui-$(NAME).service)
 
 
-
 rpm: install
 	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t rpm -p $(RPM_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
 
 
-.PHONY: install clean stage vitamui-dirs install-service rpm package template-files $(TEMPLATE_TMP_DIR)
+deb: install
+	@$(FPM) -s dir $(FPM_PACK_ARGS) $(FPM_PACK_META) $(FPM_PACK_INSTALL_SCRIPTS) $(FPM_PACK_REMOVE_SCRIPTS) -t deb -p $(DEB_OUTPUT_PATH)  "$(STAGING_ROOT)/=/"
+
+#clean
+.PHONY: clean install stage vitamui-dirs install-service rpm deb package template-files $(TEMPLATE_TMP_DIR)
