@@ -110,7 +110,8 @@ public class SecurityConfig extends BaseCasSecurityConfigurer {
             "/*.ttf*",
             "/ngsw*",
             "/*ngsw*",
-            "/assets/**/*.json"
+            "/assets/**/*.json",
+            "/assets/**/*.svg"
         };
         // @formatter:on
     }

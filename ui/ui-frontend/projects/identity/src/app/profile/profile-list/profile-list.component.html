@@ -17,11 +17,11 @@
               [ngClass]=" profile?.enabled ? 'status-badge-green' :'status-badge-grey'"
             ></i>
           </div>
-          <div class="col-3">{{ profile.name }}</div>
-          <div class="col-2">{{ profile.identifier }}</div>
-          <div class="col-2">{{ profile.description | truncate:50 }}</div>
-          <div class="col-2">{{ profile.level }}</div>
-          <div class="col-2">{{ profile.usersCount }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ profile.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.identifier }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.description | truncate:50 }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.level }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ profile.usersCount }}</div>
         </div>
       </div>
     </div>

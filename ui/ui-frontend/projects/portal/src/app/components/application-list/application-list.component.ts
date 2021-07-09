@@ -38,6 +38,8 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Application, ApplicationService, Category, StartupService } from 'ui-frontend-common';
 
+const UNKNOW_APP_FILE_NAME = 'UNKNOWN_APP';
+
 @Component({
   selector: 'app-application-list',
   templateUrl: './application-list.component.html',
@@ -47,18 +49,20 @@ export class ApplicationsListComponent {
 
   @Input() appMap: Map<Category, Application[]>;
 
+  public unknownAppName = UNKNOW_APP_FILE_NAME;
+
   constructor(
     private router: Router,
     private startupService: StartupService,
     private applicationService: ApplicationService
     ) { }
 
-  openApplication(application: Application): boolean {
+  public openApplication(application: Application): boolean {
     this.applicationService.openApplication(application, this.router, this.startupService.getConfigStringValue('UI_URL'));
     return false;
   }
 
-  getApplicationUrl(application: Application): string {
+  public getApplicationUrl(application: Application): string {
     return this.applicationService.getApplicationUrl(application);
   }
 

@@ -88,6 +88,7 @@ export class UserInfoTabComponent implements OnChanges {
       country: string,
     },
     siteCode: string,
+    centerCode: string,
     internalCode: string
   };
 
@@ -123,6 +124,7 @@ export class UserInfoTabComponent implements OnChanges {
         country: [null, Validators.required],
       }),
       siteCode: [null],
+      centerCode: [null],
       internalCode: [null],
     });
 

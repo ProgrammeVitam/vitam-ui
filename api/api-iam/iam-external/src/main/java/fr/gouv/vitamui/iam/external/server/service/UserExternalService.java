@@ -182,7 +182,7 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
     @Override
     protected Collection<String> getAllowedKeys() {
         return Arrays.asList("id", "lastname", "firstname", "identifier", "groupId", "language", "email", "otp",
-                "subrogeable", "phone", "mobile", "lastConnection", "status", "level", TYPE_KEY, CUSTOMER_ID_KEY, "siteCode");
+                "subrogeable", "phone", "mobile", "lastConnection", "status", "level", TYPE_KEY, CUSTOMER_ID_KEY, "siteCode", "centerCode");
     }
 
     @Override

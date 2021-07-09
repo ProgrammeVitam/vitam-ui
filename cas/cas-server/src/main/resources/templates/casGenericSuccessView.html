@@ -10,7 +10,7 @@
 
     <meta http-equiv="refresh" th:attr="content=${'1; url=' + portalUrl}" />
 
-    <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}"/>
+    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
 
     <link th:href="@{/css/cas.css}" rel="stylesheet"/>
 
@@ -22,9 +22,9 @@
 <body class="bg-portal" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div class="background bg-success"></div>
     <div class="flex-justify-content-center">
-        <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+        <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
     </div>
-    <div class="fex-align-center flex-justify-content-center">
+    <div class="fex-align-center flex-justify-content-center marging-top-form">
             <div class="loader"></div>
     </div>
 

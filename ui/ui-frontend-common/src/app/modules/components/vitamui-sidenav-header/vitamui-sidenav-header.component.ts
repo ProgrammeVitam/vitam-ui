@@ -27,6 +27,8 @@ export class VitamuiSidenavHeaderComponent {
   @Input() toolTipTitleDuration: number;
 
 
+  @Input() actionsBelowTitle = false;
+
   constructor() { }
 
 }

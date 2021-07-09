@@ -68,10 +68,10 @@
               [ngClass]=" group?.enabled ? 'status-badge-green' :'status-badge-grey'">
             </i>
           </div>
-          <div class="col-3">{{ group.name }}</div>
-          <div class="col-2">{{ group.identifier }}</div>
-          <div class="col-3">{{ group.description | truncate:50 }}</div>
-          <div class="col-2">{{ group.level }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ group.name }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ group.identifier }}</div>
+          <div class="col-3" vitamuiCommonEllipsis>{{ group.description | truncate:50 }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ group.level }}</div>
         </div>
       </div>
     </div>

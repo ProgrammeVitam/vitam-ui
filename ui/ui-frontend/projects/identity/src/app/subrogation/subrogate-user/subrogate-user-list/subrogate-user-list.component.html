@@ -18,7 +18,7 @@
               (subrogableUser?.status === 'DISABLED' || subrogableUser?.status === 'ANONYM' ? 'status-badge-grey' : 'status-badge-orange')"
             ></i>
           </div>
-          <div class="col-2">{{ subrogableUser?.lastname }} {{ subrogableUser?.firstname }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ subrogableUser?.lastname }} {{ subrogableUser?.firstname }}</div>
           <div class="col-2">
             <ng-container [ngSwitch]="subrogableUser?.criticality">
               <div *ngSwitchCase="0" class="d-flex">
@@ -38,21 +38,19 @@
               </div>
             </ng-container>
           </div>
-          <div class="col-2">{{ getGroup(subrogableUser)?.name }}</div>
-          <div class="col-1">{{ subrogableUser?.identifier }}</div>
+          <div class="col-2" vitamuiCommonEllipsis>{{ getGroup(subrogableUser)?.name }}</div>
+          <div class="col-1" vitamuiCommonEllipsis>{{ subrogableUser?.identifier }}</div>
           <div class="col-2 d-flex justify-content-end"> 
-            <div *ngIf="subrogableUser.superUserEmail">
-              <span *ngIf="subrogableUser.superUserEmail === currenteUser.email"
-                class="text normal bold danger">{{'SUBROGATION.HOME.SUBROGATION_WIP' | translate}}</span>
+              <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail === currenteUser.email"
+                class="text normal bold danger" vitamuiCommonEllipsis>{{'SUBROGATION.HOME.SUBROGATION_WIP' | translate}}</span>
       
-              <span *ngIf="subrogableUser.superUserEmail !== currenteUser.email"
-                class="text normal bold danger">{{'SUBROGATION.HOME.SUBROGATE_BY' | translate : {param1: subrogableUser.superUserEmail} }}</span>
-            </div>
+              <span *ngIf="subrogableUser.superUserEmail && subrogableUser.superUserEmail !== currenteUser.email"
+                class="text normal bold danger" vitamuiCommonEllipsis>{{'SUBROGATION.HOME.SUBROGATE_BY' | translate : {param1: subrogableUser.superUserEmail} }}</span>
           </div>
 
           <div class="col-2 d-flex justify-content-end">
             <button
-              *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail == currenteUser.email" 
+              *ngIf="!subrogableUser.superUserEmail || subrogableUser.superUserEmail === currenteUser.email" 
               class="btn outline-primary"
               (click)="openUserSubrogationDialog(subrogableUser)"
               [disabled]="subrogableUser.status !== 'ENABLED' || !subrogableUser.subrogeable">

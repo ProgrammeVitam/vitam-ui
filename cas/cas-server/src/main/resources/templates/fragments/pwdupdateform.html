@@ -54,6 +54,9 @@
 		</div>
 
         <br>
+        <div id="password-policy-text" class="error-field" hidden>
+            <span th:utext="#{screen.pm.init.security.policy}"></span>
+        </div>
         <div th:if="${#fields.hasErrors('*')}">
 			<span th:each="err : ${#fields.errors('*')}" th:utext="${err}">Error text</span>
         </div>

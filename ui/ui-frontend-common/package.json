@@ -1,6 +1,6 @@
 {
   "name": "ui-frontend-common",
-  "version": "2.1.20",
+  "version": "2.1.29",
   "main": "src/index.ts",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
@@ -8,6 +8,7 @@
   },
   "scripts": {
     "ng": "ng",
+    "postinstall": "ngcc",
     "start": "ng serve --aot --proxy-config proxy.conf.json --disable-host-check --ssl --ssl-key $npm_package_pki_path/$npm_package_pki_asset.key --ssl-cert $npm_package_pki_path/$npm_package_pki_asset.crt",
     "build": "ng build --prod --build-optimizer=false --optimization=false",
     "build:dev": "ng build --prod --sourceMap=false --build-optimizer=false --optimization=false",
@@ -93,7 +94,7 @@
     "jquery": "^3.5.1",
     "lodash-es": "^4.17.15",
     "moment": "^2.26.0",
-    "ngx-quicklink": "^0.2.1",
+    "ngx-quicklink": "0.2.1",
     "popper.js": "^1.16.1",
     "rxjs": "^6.5.5",
     "tslib": "^1.13.0",

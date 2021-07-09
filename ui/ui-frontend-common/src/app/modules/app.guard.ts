@@ -39,11 +39,13 @@ import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Title } from '@angular/platform-browser';
-import { ApplicationService } from './application.service';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './auth.service';
 import { GlobalEventService } from './global-event.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { StartupService } from './startup.service';
+
+const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
 @Injectable({
   providedIn: 'root'
@@ -51,12 +53,12 @@ import { StartupService } from './startup.service';
 export class AppGuard implements CanActivate {
 
   constructor(
-    private appService: ApplicationService,
     private authService: AuthService,
     private startupService: StartupService,
     private titleService: Title,
     private globalEventService: GlobalEventService,
-    @Inject(WINDOW_LOCATION) private location: any
+    @Inject(WINDOW_LOCATION) private location: any,
+    private translateService: TranslateService
     ) {}
 
   canActivate(
@@ -74,7 +76,11 @@ export class AppGuard implements CanActivate {
     }
 
     this.startupService.CURRENT_APP_ID = appId;
-    this.titleService.setTitle(this.appService.applications.find((appFromService) => appFromService.identifier === appId).name);
+
+    this.translateService.get(APPLICATION_TRANSLATE_PATH + '.' + appId + '.NAME').subscribe((translatedAppName: string) => {
+      this.titleService.setTitle(translatedAppName);
+    });
+
     // set user default tenant Identifier whenever we switch pages
     this.startupService.setTenantIdentifier();
     // emit page change event

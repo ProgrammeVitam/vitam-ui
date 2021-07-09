@@ -60,6 +60,7 @@ export interface User extends Id {
   internalCode?: string;
   analytics?: Analytics;
   siteCode: string;
+  centerCode: string;
   photo?: string;
   disablingDate : string;
 

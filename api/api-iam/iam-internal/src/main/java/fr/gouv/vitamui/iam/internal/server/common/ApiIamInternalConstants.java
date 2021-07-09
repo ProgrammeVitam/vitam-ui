@@ -64,7 +64,7 @@ public final class ApiIamInternalConstants {
             ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES, ServicesData.ROLE_GET_GROUPS);
 
     private static final List<String> HIERARCHY_ROLES = VitamUIUtils.listOf(ServicesData.ROLE_GET_PROFILES, ServicesData.ROLE_CREATE_PROFILES,
-            ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES);
+            ServicesData.ROLE_UPDATE_PROFILES, ServicesData.ROLE_DELETE_PROFILES, ServicesData.ROLE_UPDATE_ME_USERS);
 
     public static final String ADMIN_CLIENT_PREFIX_EMAIL = "admin";
 

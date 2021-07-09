@@ -20,7 +20,7 @@
           <div class="text medium bold">{{authService.user.level}}</div>
         </div>
 
-        <vitamui-common-level-input [prefix]="authService.user.level" [prefix]="'HIERARCHY.INFORMATIONS.LEVEL' | translate" formControlName="level">
+        <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
           <vitamui-common-input-error *ngIf="form?.get('level')?.touched && form?.get('level')?.hasError('required')">
             {{'COMMON.REQUIRED' | translate}}
           </vitamui-common-input-error>

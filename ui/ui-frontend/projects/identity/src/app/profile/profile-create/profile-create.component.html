@@ -25,7 +25,7 @@
         <div class="d-flex">
             <div class="mr-4 p-2">
                 <div class="text normal light">{{'USER_PROFILE.INFORMATIONS.LEVEL' | translate}}</div>
-                <div class="text medium bold">{{authService.user.level}}RH</div>
+                <div class="text medium bold">{{authService.user.level}}</div>
             </div>
             <vitamui-common-level-input [prefix]="authService.user.level" formControlName="level">
                 <vitamui-common-input-error *ngIf="adminProfileForm?.get('level')?.touched && adminProfileForm?.get('level')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>

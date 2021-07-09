@@ -70,3 +70,11 @@ h5 {
     
     @include text-colors;
 }
+
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    min-width: 0px;
+}

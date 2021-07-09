@@ -35,7 +35,7 @@
 * knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl, Title } from '@angular/platform-browser';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -52,6 +52,8 @@ import {
   ThemeDataType,
   ThemeService
 } from 'ui-frontend-common';
+
+const APPLICATION_TRANSLATE_PATH = 'APPLICATION';
 
 @Component({
   selector: 'app-portal',
@@ -75,6 +77,7 @@ export class PortalComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private themeService: ThemeService,
     private langagueService: LanguageService,
+    private titleService: Title,
     private globalEventService: GlobalEventService) { }
 
   ngOnInit() {
@@ -97,6 +100,9 @@ export class PortalComponent implements OnInit, OnDestroy {
   }
 
   private initPortalTitleAndMessage(lang: FullLangString): void {
+    const translatedAppName = this.translateService.instant(APPLICATION_TRANSLATE_PATH + '.' + ApplicationId.PORTAL_APP + '.NAME');
+    this.titleService.setTitle(translatedAppName);
+
     const customer: BasicCustomer = this.authService.user.basicCustomer;
     if (customer) {
       if (customer.portalTitles && customer.portalTitles[lang]) {

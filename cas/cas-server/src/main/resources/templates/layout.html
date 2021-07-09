@@ -12,7 +12,7 @@
     <!--/* Core CAS CSS */-->
     <link rel="stylesheet" type="text/css" th:href="@{/css/cas.css}"/>
 
-    <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}"/>
+    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
 
     <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
 
@@ -25,7 +25,7 @@
     </div>
     <div class="centered">
         <div class="flex-justify-content-center">
-            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+            <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding  step-email">
             <div layout:fragment="content" id="content">

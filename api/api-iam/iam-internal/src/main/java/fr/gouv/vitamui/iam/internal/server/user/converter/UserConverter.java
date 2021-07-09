@@ -102,6 +102,8 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String SITE_CODE = "Code du site";
 
+    public static final String CENTER_CODE = "Code du centre";
+
     private final GroupRepository groupRepository;
 
     private final AddressConverter addressConverter;
@@ -128,6 +130,7 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(DISABLING_DATE, LogbookUtils.getValue(user.getDisablingDate()));
         userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));
         userLogbookData.put(SITE_CODE, LogbookUtils.getValue(user.getSiteCode()));
+        userLogbookData.put(CENTER_CODE, LogbookUtils.getValue(user.getCenterCode()));
         AddressDto address = new AddressDto(GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE, GPDR_DEFAULT_VALUE);
         addressConverter.addAddress(address, userLogbookData);
         Optional<Group> group = groupRepository.findById(user.getGroupId());
