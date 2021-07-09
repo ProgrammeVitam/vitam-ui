@@ -3,20 +3,18 @@
   <div class="download-bar-content">
     <i class="vitamui-icon vitamui-icon-download"></i>
     <div *ngIf="isCompressed" class="download-label">
-      <ng-container *ngIf="count === total" i18n="@@downloadBarDownloadCount">
-        Compression du fichier : {count, plural, =1 {1 élément} other {{{count}} éléments}}
-      </ng-container>
-      <ng-container *ngIf="count !== total" i18n="@@downloadBarDownloadCountOverTotal">
-        Compression du fichier : {count, plural, =1 {1 élément} other {{{count}} éléments}} sur {{total}} ({notDownloadable, plural, =1 {1 élément non téléchargeable} other {{{notDownloadable}} éléments non téléchargeables}})
+      {{ count | i18nPlural: downloadCountMap | translate: { count: count } }}
+      <ng-container *ngIf="count !== total">
+        {{ notDownloadable | i18nPlural: downloadCountOverTotalMap | translate: { total: total, count: notDownloadable } }}
       </ng-container>
     </div>
-    <div *ngIf="!isCompressed" class="download-label" i18n="@@downloadBarLabel">
-      Génération du fichier
+    <div *ngIf="!isCompressed" class="download-label">
+      {{'DOWNLOAD.FILE_GENERATION' | translate}}
     </div>
     <div class="download-progress-bar-container">
       <mat-progress-bar class="download-progress-bar" mode="indeterminate"></mat-progress-bar>
     </div>
-    <button class="cancel-link" (click)="confirmClose()" i18n="@@downloadBarCancelButton">Annuler le téléchargement</button>
+    <button class="cancel-link" (click)="confirmClose()">{{'DOWNLOAD.CANCEL_ACTION' | translate}}</button>
   </div>
 
   <button class="close-btn" (click)="confirmClose()"><i class="material-icons">clear</i></button>
@@ -25,7 +23,7 @@
 
 <ng-template #confirmDialog>
   <mat-dialog-content>
-    <p i18n="@@downloadBarConfirmation">Êtes-vous sûr de vouloir annuler le téléchargement du fichier ?</p>
+    <p>{{'DOWNLOAD.CONFIRM_CANCEL_ACTION' | translate}}</p>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button [matDialogClose]="true" class="btn primary">{{'COMMON.CONFIRM' | translate}}</button>

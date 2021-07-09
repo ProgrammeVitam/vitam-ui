@@ -85,6 +85,7 @@ import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vi
 import { AutocompletePositionDirectiveModule } from './directives/autocomplete-position/autocomplete-position.directive.module';
 import { CollapseDirectiveModule } from './directives/collapse/collapse.directive.module';
 import { DragAndDropModule } from './directives/drag-and-drop/drag-and-drop.module';
+import { EllipsisDirectiveModule } from './directives/ellipsis/ellipsis.directive.module';
 import { InfiniteScrollModule } from './directives/infinite-scroll/infinite-scroll.module';
 import { ResizeSidebarModule } from './directives/resize-sidebar/resize-sidebar.module';
 import { RowCollapseModule } from './directives/row-collapse/row-collapse.module';
@@ -118,6 +119,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ApplicationSelectContentModule,
     CancelledSnackBarModule,
     CollapseDirectiveModule,
+    EllipsisDirectiveModule,
     ConfirmDialogModule,
     CustomerSelectContentModule,
     PipesModule,
@@ -176,6 +178,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ConfirmDialogModule,
     CollapseModule,
     CollapseDirectiveModule,
+    EllipsisDirectiveModule,
     VitamUICustomerSelectModule,
     VitamUIDisplayNodeModule,
     VitamUIDurationInputModule,

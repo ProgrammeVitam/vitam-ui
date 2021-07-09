@@ -3,7 +3,7 @@
     <mat-label *ngIf="!dataSelected" class="unselected-label">{{messages?.unselected}}</mat-label>
     <mat-select [value]="selected" [disabled]="disabled" (selectionChange)="onSelect($event.source.value)" panelClass="vitamui-mat-select">
         <mat-option *ngFor="let d of data" [value]="d.id">
-            <span *ngIf="d.isDefault" i18n="commonSelect@@default">(Défaut)&nbsp;</span>{{ d.label }}
+            <span *ngIf="d.isDefault">{{'COMMON_SELECT.DEFAULT_LABEL' | translate}}&nbsp;</span>{{ d.label }}
         </mat-option>
     </mat-select>
 </mat-form-field>

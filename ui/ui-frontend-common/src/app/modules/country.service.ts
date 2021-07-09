@@ -93,13 +93,13 @@ export class CountryService {
 
     const name = this.availableCountries.find(
       (value: CountryOption) => value.code === countryCode
-    ).name;
+    )?.name;
 
     if (name) {
       return this.translateService.instant(COUNTRY_TRANSLATION_PATH + '.' + name);
     }
 
-    return '';
+    return countryCode;
   }
 
   public getAvailableCountries(): Observable<CountryOption[]> {

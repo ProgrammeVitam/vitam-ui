@@ -8,7 +8,7 @@
     <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" th:href="${vitamuiFavicon} ? 'data:image/png;base64,' + ${vitamuiFavicon} : @{/images/favicon.ico}"/>
+    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
     <link th:href="@{/css/cas.css}" rel="stylesheet"/>
 
     <script type="text/javascript" th:src="@{#{webjars.zxcvbn.js}}"></script>
@@ -23,7 +23,7 @@
 
     <div class="centered">
         <div class="flex-justify-content-center">
-            <img th:src="${vitamuiLargeLogo} ? 'data:image/png;base64,' + ${vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+            <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
         </div>
         <div class="login-box login-padding step-password">
             <div>
@@ -43,7 +43,7 @@
                         <input type="hidden" name="_eventId" value="resetPassword"/>
                         <span class="fa fa-unlock"></span>
                         <div>
-                            <div class="text medium" th:text="#{cas.authentication.password.forgot}">Vous avez oubliez votre mot de passe ?
+                            <div class="text medium" th:text="#{cas.authentication.password.forgot}">Vous avez oublié votre mot de passe ?
                             </div>
                             <a class="flex-justify-content-center" href="javascript:void(0)"  onclick="$('#passwordManagementForm').submit();" th:text="#{cas.authentication.password.create}">
                                 CRÉER UN NOUVEAU MOT DE PASSE.</a>

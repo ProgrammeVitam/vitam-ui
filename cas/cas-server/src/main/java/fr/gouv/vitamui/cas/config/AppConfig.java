@@ -36,10 +36,6 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import fr.gouv.vitamui.cas.authentication.*;
-import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
-import lombok.SneakyThrows;
-import lombok.val;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -63,7 +59,6 @@ import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenGran
 import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketCatalog;
-import org.apereo.cas.ticket.TicketCatalogConfigurer;
 import org.apereo.cas.ticket.TicketDefinition;
 import org.apereo.cas.ticket.TicketGrantingTicketFactory;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
@@ -84,13 +79,25 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
+import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
+import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
+import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
+import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
+import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
@@ -104,16 +111,14 @@ import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.web.servlet.HandlerInterceptor;
+import lombok.SneakyThrows;
+import lombok.val;
 
 /**
  * Configure all beans to customize the CAS server.
- *
- *
  */
 @Configuration
-@EnableConfigurationProperties({ CasConfigurationProperties.class, IamClientConfigurationProperties.class })
+@EnableConfigurationProperties({CasConfigurationProperties.class, IamClientConfigurationProperties.class})
 @Import(ServerIdentityAutoConfiguration.class)
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
@@ -259,8 +264,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver() {
-        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
-            identityProviderHelper(), providersService());
+        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore, identityProviderHelper(),
+                providersService());
     }
 
     @Bean
@@ -279,7 +284,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public AuthenticationPostProcessor surrogateAuthenticationPostProcessor() {
         return new DelegatedSurrogateAuthenticationPostProcessor(surrogateAuthenticationService, servicesManager, eventPublisher,
-            registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
+                registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
     }
 
     @Bean
@@ -321,14 +326,13 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
         return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
-            protocolTicketCipherExecutor);
+                protocolTicketCipherExecutor);
     }
 
     @Bean
     @RefreshScope
     public OAuth20AccessTokenFactory defaultAccessTokenFactory() {
-        return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy,
-            accessTokenJwtBuilder, servicesManager);
+        return new CustomOAuth20DefaultAccessTokenFactory(accessTokenExpirationPolicy, accessTokenJwtBuilder, servicesManager);
     }
 
     @Override
@@ -349,8 +353,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @RefreshScope
     @Bean
     public PasswordManagementService passwordChangeService() {
-        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor,
-            casProperties.getServer().getPrefix(), passwordHistoryService, casRestClient(), providersService(),
-            identityProviderHelper(), centralAuthenticationService.getObject(), utils(), ticketRegistry);
+        return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor, casProperties.getServer().getPrefix(),
+                passwordHistoryService, casRestClient(), providersService(), identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
+                ticketRegistry);
     }
+
+    @Bean
+    public ServletContextInitializer servletContextInitializer() {
+        return new InitContextConfiguration();
+    }
+
 }

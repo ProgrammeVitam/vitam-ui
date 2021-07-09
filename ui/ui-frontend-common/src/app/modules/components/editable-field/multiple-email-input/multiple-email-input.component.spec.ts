@@ -158,7 +158,6 @@ describe('MultipleEmailInputComponent', () => {
     it('should have a vitamui-common-emails-input', () => {
       const elDomainInput = fixture.nativeElement.querySelector('.editable-field-control > vitamui-common-emails-input');
       expect(elDomainInput).toBeTruthy();
-      expect(elDomainInput.attributes.placeholder.textContent).toBe('nom@domaine.xyz');
     });
 
     it('should open then close the action buttons', () => {

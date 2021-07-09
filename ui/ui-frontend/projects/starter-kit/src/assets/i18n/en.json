@@ -12,6 +12,12 @@
       "TITLE_PLACEHOLDER": "Name, Company name, Organisazation code, Address..."
     }
   },
+  "ARRAY":{
+    "BASIC_TITLE" : "Basic array",
+    "FILTER_TITLE": "Array with filters",
+    "SUBTABLE_TITLE": "Array with subtable",
+    "DIALOG_TITLE" :"Dialog array"
+  },
   "BUTTON": {
     "Primary": "Primary default",
     "PRIMARY_OUTLINE": "Primary outline default",
@@ -78,6 +84,10 @@
     "KEY_NAMING_COMMON": "For reccuring texts, put them in the COMMON category. Ex: COMMON.BACK",
     "FIRST_INPUT": "First parameter",
     "SECOND_INPUT": "Second parameter"
+  },
+  "TYPOGRAPHY": {
+    "TEXT_ELLIPSIS_TITLE": "Text Ellipsis",
+    "TEXT_ELLIPSIS_CONTENT": "Long text ellipsis that is need on table when resizing so that it doesn't show on next column"
   },
   "MISCELLANEOUS": {
     "INFINITE_SCROLL": "Infinite scroll"

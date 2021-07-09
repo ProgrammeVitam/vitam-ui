@@ -192,6 +192,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
         attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
+        attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
             final UserDto superUser = casExternalRestClient.getUserByEmail(utils.buildContext(superUsername), superUsername, Optional.empty());

@@ -1,3 +1,4 @@
+import { AfterViewInit } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -51,7 +52,7 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
   styleUrls: ['./vitamui-input.component.scss'],
   providers: [VITAMUI_INPUT_VALUE_ACCESSOR]
 })
-export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
+export class VitamUIInputComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
   @Input() type = 'text';
   @Input() maxlength: number;
@@ -59,16 +60,21 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @Input() autofocus: boolean;
   @Input() value: string | number;
   @Input()
-  get required(): boolean { return this._required; }
-  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  get autoFocus(): boolean { return this._autoFocus; }
+  set autoFocus(value: boolean) { this._autoFocus = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
-  private _required = false;
+  private _autoFocus = false;
 
   @Input()
   get disabled(): boolean { return this._disabled; }
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;
+  @Input()
+  get required(): boolean { return this._required; }
+  set required(value: boolean) { this._required = coerceBooleanProperty(value); }
+  // tslint:disable-next-line:variable-name
+  private _required = false;
   @ViewChild('vitamUIInput') private input: ElementRef;
 
   @HostBinding('class.vitamui-focused') focused = false;
@@ -80,6 +86,14 @@ export class VitamUIInputComponent implements ControlValueAccessor, OnInit {
   @HostListener('click')
   onClick() {
     this.input.nativeElement.focus();
+  }
+
+  ngAfterViewInit(): void {
+    if (this.autoFocus) {
+      setTimeout(() => {
+        this.input.nativeElement.focus();
+      }, 200);
+    }
   }
 
   ngOnInit() {

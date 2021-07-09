@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.arcr0{fill-rule:evenodd;clip-rule:evenodd;}
+	.arcr1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.arcr2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.arcr3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.arcr4{fill:#BCB9BA;}
+	.arcr5{fill:#BBB8B9;}
+	.arcr6{fill:#BAB7B8;}
+	.arcr7{fill:#B9B6B7;}
+	.arcr8{fill:#B8B5B6;}
+	.arcr9{fill:#B7B4B5;}
+	.arcr10{fill:#B6B3B4;}
+	.arcr11{fill:#B5B2B3;}
+	.arcr12{fill:#B4B2B2;}
+	.arcr13{fill:#B3B1B1;}
+	.arcr14{fill:#B2B0B0;}
+	.arcr15{fill:#B1AFB0;}
+	.arcr16{fill:#B0AEAF;}
+	.arcr17{fill:#AFADAE;}
+	.arcr18{fill:#AEACAD;}
+	.arcr19{fill:#ADABAC;}
+	.arcr20{fill:#ACAAAB;}
+	.arcr21{fill:#ABA9AA;}
+	.arcr22{fill:#AAA8A9;}
+	.arcr23{fill:#A9A7A8;}
+	.arcr24{fill:#A8A6A7;}
+	.arcr25{fill:#A7A5A6;}
+	.arcr26{fill:#A6A4A5;}
+	.arcr27{fill:#A5A3A4;}
+	.arcr28{fill:#A4A2A3;}
+	.arcr29{fill:#A3A1A2;}
+	.arcr30{fill:#A2A0A1;}
+	.arcr31{fill:#A19FA0;}
+	.arcr32{fill:#A09E9F;}
+	.arcr33{fill:#9F9D9E;}
+	.arcr34{fill:#9E9C9D;}
+	.arcr35{fill:#9D9B9C;}
+	.arcr36{fill:#9C9A9B;}
+	.arcr37{fill:#9B999A;}
+	.arcr38{fill:#9A9899;}
+	.arcr39{fill:#999898;}
+	.arcr40{fill:#989797;}
+	.arcr41{fill:#979696;}
+	.arcr42{fill:#969595;}
+	.arcr43{fill:#959494;}
+	.arcr44{fill:#949393;}
+	.arcr45{fill:#939292;}
+	.arcr46{fill:#929191;}
+	.arcr47{fill:#919090;}
+	.arcr48{fill:#908F8F;}
+	.arcr49{fill:#8F8E8E;}
+	.arcr50{fill:#8E8D8E;}
+	.arcr51{fill:#8D8C8D;}
+	.arcr52{fill:#8C8B8C;}
+	.arcr53{fill:#8B8A8B;}
+	.arcr54{fill:#8A898A;}
+	.arcr55{fill:#898889;}
+	.arcr56{fill:#888788;}
+	.arcr57{fill:#878687;}
+	.arcr58{fill:#868586;}
+	.arcr59{fill:#858485;}
+	.arcr60{fill:#848384;}
+	.arcr61{fill:#838283;}
+	.arcr62{fill:#828182;}
+	.arcr63{fill:#818081;}
+	.arcr64{fill:#807F80;}
+	.arcr65{fill:#7F7E7F;}
+	.arcr66{fill:#7E7E7E;}
+	.arcr67{fill:#7D7D7D;}
+	.arcr68{fill:#7C7C7C;}
+	.arcr69{fill:#7B7B7B;}
+	.arcr70{fill:#7A7A7A;}
+	.arcr71{fill:#797979;}
+	.arcr72{fill:#787878;}
+	.arcr73{fill:#777777;}
+	.arcr74{fill:#767676;}
+	.arcr75{fill:#767575;}
+	.arcr76{fill:#757474;}
+	.arcr77{fill:#747373;}
+	.arcr78{fill:#737272;}
+	.arcr79{fill:#727171;}
+	.arcr80{fill:#717070;}
+	.arcr81{fill:#706F6F;}
+	.arcr82{fill:#6F6E6E;}
+	.arcr83{fill:#6E6D6D;}
+	.arcr84{fill:#6D6C6C;}
+	.arcr85{fill:#6C6B6B;}
+	.arcr86{fill:#6B6A6B;}
+	.arcr87{fill:#6A696A;}
+	.arcr88{fill:#696869;}
+	.arcr89{fill:#686768;}
+	.arcr90{fill:#676667;}
+	.arcr91{fill:#666566;}
+	.arcr92{fill:#656465;}
+	.arcr93{fill:#646364;}
+	.arcr94{fill:#636363;}
+	.arcr95{fill:#626262;}
+	.arcr96{fill:#616161;}
+	.arcr97{fill:#606060;}
+	.arcr98{fill:#5F5F5F;}
+	.arcr99{fill:#5E5E5E;}
+	.arcr100{fill:#5D5D5D;}
+	.arcr101{fill:#5C5C5C;}
+	.arcr102{fill:#5B5B5B;}
+	.arcr103{fill:#5A5A5A;}
+	.arcr104{fill:#595959;}
+	.arcr105{fill:#585858;}
+	.arcr106{fill:#575757;}
+	.arcr107{fill:#565656;}
+	.arcr108{fill:#555555;}
+	.arcr109{fill:#545454;}
+	.arcr110{fill:#535353;}
+	.arcr111{fill:#525252;}
+	.arcr112{fill:#515151;}
+	.arcr113{fill:#505050;}
+	.arcr114{fill:#4F4F4F;}
+	.arcr115{fill:#4E4E4E;}
+	.arcr116{fill:#4D4D4D;}
+	.arcr117{fill:#4C4C4C;}
+	.arcr118{fill:url(#ARCR_ID_1_);}
+	.arcr119{fill:url(#ARCR_ID_2_);}
+	.arcr120{fill:url(#ARCR_ID_3_);}
+	.arcr121{fill:url(#ARCR_ID_4_);}
+	.arcr122{fill:#E5E4E4;}
+	.arcr123{fill:url(#ARCR_ID_5_);}
+	.arcr124{fill:url(#ARCR_ID_6_);}
+	.arcr125{fill-rule:evenodd;clip-rule:evenodd;fill:#9B9A9B;}
+	.arcr126{fill:var(--vitamui-primary-800);}
+	.arcr127{fill:url(#ARCR_ID_7_);}
+	.arcr128{fill:url(#ARCR_ID_8_);}
+	.arcr129{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.arcr130{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-800);}
+	.arcr131{fill:url(#ARCR_ID_9_);}
+	.arcr132{fill:url(#ARCR_ID_10_);}
+	.arcr133{fill:url(#ARCR_ID_11_);}
+	.arcr134{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+	.arcr135{fill-rule:evenodd;clip-rule:evenodd;fill:#353535;}
+	.arcr136{fill:#F5F5F5;}
+	.arcr137{fill:#9B9A9B;}
+	.arcr138{fill:#353535;}
+	.arcr139{fill:url(#ARCR_ID_12_);}
+	.arcr140{fill:url(#ARCR_ID_13_);}
+	.arcr141{fill:url(#ARCR_ID_14_);}
+	.arcr142{fill:url(#ARCR_ID_15_);}
+	.arcr143{fill:url(#ARCR_ID_16_);}
+	.arcr144{fill:url(#ARCR_ID_17_);}
+	.arcr145{fill:url(#ARCR_ID_18_);}
+	.arcr146{fill:url(#ARCR_ID_19_);}
+	.arcr147{fill:url(#ARCR_ID_20_);}
+	.arcr148{fill:url(#ARCR_ID_21_);}
+	.arcr149{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-400);}
+	.arcr150{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCR_ID_22_);}
+	.arcr151{fill:url(#ARCR_ID_23_);}
+	.arcr152{fill:url(#ARCR_ID_24_);}
+	.arcr153{fill:url(#ARCR_ID_25_);}
+	.arcr154{fill:url(#ARCR_ID_26_);}
+	.arcr155{fill:url(#ARCR_ID_27_);}
+	.arcr156{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-300);}
+	.arcr157{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCR_ID_28_);}
+	.arcr158{fill:url(#ARCR_ID_29_);}
+	.arcr159{fill:url(#ARCR_ID_30_);}
+	.arcr160{fill:url(#ARCR_ID_31_);}
+	.arcr161{fill:url(#ARCR_ID_32_);}
+	.arcr162{fill:url(#ARCR_ID_33_);}
+	.arcr163{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCR_ID_34_);}
+	.arcr164{fill:url(#ARCR_ID_35_);}
+	.arcr165{fill:url(#ARCR_ID_36_);}
+	.arcr166{fill:url(#ARCR_ID_37_);}
+	.arcr167{fill:url(#ARCR_ID_38_);}
+	.arcr168{fill:url(#ARCR_ID_39_);}
+	.arcr169{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ARCR_ID_40_);}
+	.arcr170{fill:url(#ARCR_ID_41_);}
+	.arcr171{fill:url(#ARCR_ID_42_);}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="135.2" width="167" x="16.6" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<g>
+			<path class="arcr0" d="M100.1,141.1c46.1,0,83.5,8.6,83.5,19.2c0,10.6-37.4,20.4-83.5,20.4s-83.5-9.8-83.5-20.4
+				C16.5,149.7,53.9,141.1,100.1,141.1z"/>
+			<path class="arcr1" d="M100.1,141.5c44.1,0,79.8,8.5,79.8,19c0,10.5-35.7,19-79.8,19s-79.8-8.5-79.8-19
+				C20.3,149.8,56,141.5,100.1,141.5z"/>
+			<path class="arcr2" d="M100.1,139.2c44.1,0,79.8,8.5,79.8,19c0,10.5-35.7,19-79.8,19s-79.8-8.5-79.8-19
+				C20.3,147.6,56,139.2,100.1,139.2z"/>
+			<path class="arcr1" d="M100.1,138.1c44.1,0,79.8,8.5,79.8,19c0,10.5-35.7,19-79.8,19s-79.8-8.5-79.8-19
+				C20.3,146.4,56,138.1,100.1,138.1z"/>
+			<path class="arcr3" d="M100,138.1c23.2,0,43.9,2.4,58.5,6c-30.5-1.8-113.9,2.6-134.4,18.7c-2.5-1.8-3.8-3.8-3.8-5.8
+				C20.1,146.4,56,138.1,100,138.1z"/>
+			<path class="arcr2" d="M20.3,156.9c0-10.5,35.7-19,79.8-19s79.8,8.5,79.8,19c0,0.4,0,0.7-0.1,1c-2.2-9.9-37-17.9-79.7-17.9
+				s-77.5,8-79.7,17.9C20.3,157.6,20.3,157.3,20.3,156.9z"/>
+		</g>
+	</g>
+	<g>
+		<polygon class="arcr4" points="41.9,161.7 100.3,174 153.6,145.8 100.1,139.5 		"/>
+		<polygon class="arcr5" points="42.1,161.7 100.3,173.9 153.4,145.8 100.1,139.6 		"/>
+		<polygon class="arcr6" points="42.3,161.6 100.3,173.9 153.3,145.8 100.1,139.6 		"/>
+		<polygon class="arcr7" points="42.5,161.6 100.3,173.8 153.1,145.8 100.1,139.6 		"/>
+		<polygon class="arcr8" points="42.7,161.6 100.3,173.7 152.9,145.9 100.1,139.7 		"/>
+		<polygon class="arcr9" points="42.9,161.5 100.3,173.6 152.8,145.9 100.1,139.7 		"/>
+		<polygon class="arcr10" points="43,161.5 100.3,173.5 152.6,145.9 100.1,139.7 		"/>
+		<polygon class="arcr11" points="43.2,161.4 100.3,173.5 152.4,145.9 100.1,139.7 		"/>
+		<polygon class="arcr12" points="43.4,161.4 100.3,173.4 152.3,145.9 100.1,139.8 		"/>
+		<polygon class="arcr13" points="43.6,161.4 100.3,173.3 152.1,145.9 100.1,139.8 		"/>
+		<polygon class="arcr14" points="43.8,161.3 100.3,173.2 151.9,145.9 100.1,139.8 		"/>
+		<polygon class="arcr15" points="44,161.3 100.3,173.2 151.8,145.9 100.1,139.9 		"/>
+		<polygon class="arcr16" points="44.2,161.3 100.3,173.1 151.6,146 100.1,139.9 		"/>
+		<polygon class="arcr17" points="44.4,161.2 100.3,173 151.4,146 100.1,139.9 		"/>
+		<polygon class="arcr18" points="44.6,161.2 100.3,172.9 151.3,146 100.1,140 		"/>
+		<polygon class="arcr19" points="44.8,161.1 100.3,172.8 151.1,146 100.1,140 		"/>
+		<polygon class="arcr20" points="45,161.1 100.3,172.8 150.9,146 100.1,140 		"/>
+		<polygon class="arcr21" points="45.1,161.1 100.3,172.7 150.8,146 100.1,140.1 		"/>
+		<polygon class="arcr22" points="45.3,161 100.3,172.6 150.6,146 100.1,140.1 		"/>
+		<polygon class="arcr23" points="45.5,161 100.3,172.5 150.4,146 100.2,140.1 		"/>
+		<polygon class="arcr24" points="45.7,161 100.3,172.5 150.2,146.1 100.2,140.2 		"/>
+		<polygon class="arcr25" points="45.9,160.9 100.3,172.4 150.1,146.1 100.2,140.2 		"/>
+		<polygon class="arcr26" points="46.1,160.9 100.3,172.3 149.9,146.1 100.2,140.2 		"/>
+		<polygon class="arcr27" points="46.3,160.8 100.3,172.2 149.7,146.1 100.2,140.3 		"/>
+		<polygon class="arcr28" points="46.5,160.8 100.3,172.1 149.6,146.1 100.2,140.3 		"/>
+		<polygon class="arcr29" points="46.7,160.8 100.3,172.1 149.4,146.1 100.2,140.3 		"/>
+		<polygon class="arcr30" points="46.9,160.7 100.4,172 149.2,146.1 100.2,140.4 		"/>
+		<polygon class="arcr31" points="47,160.7 100.4,171.9 149.1,146.1 100.2,140.4 		"/>
+		<polygon class="arcr32" points="47.2,160.6 100.4,171.8 148.9,146.2 100.2,140.4 		"/>
+		<polygon class="arcr33" points="47.4,160.6 100.4,171.8 148.7,146.2 100.2,140.5 		"/>
+		<polygon class="arcr34" points="47.6,160.6 100.4,171.7 148.6,146.2 100.2,140.5 		"/>
+		<polygon class="arcr35" points="47.8,160.5 100.4,171.6 148.4,146.2 100.2,140.5 		"/>
+		<polygon class="arcr36" points="48,160.5 100.4,171.5 148.2,146.2 100.2,140.6 		"/>
+		<polygon class="arcr37" points="48.2,160.5 100.4,171.4 148.1,146.2 100.2,140.6 		"/>
+		<polygon class="arcr38" points="48.4,160.4 100.4,171.4 147.9,146.2 100.2,140.6 		"/>
+		<polygon class="arcr39" points="48.6,160.4 100.4,171.3 147.7,146.2 100.2,140.7 		"/>
+		<polygon class="arcr40" points="48.8,160.3 100.4,171.2 147.6,146.3 100.2,140.7 		"/>
+		<polygon class="arcr41" points="48.9,160.3 100.4,171.1 147.4,146.3 100.2,140.7 		"/>
+		<polygon class="arcr42" points="49.1,160.3 100.4,171.1 147.2,146.3 100.2,140.8 		"/>
+		<polygon class="arcr43" points="49.3,160.2 100.4,171 147.1,146.3 100.2,140.8 		"/>
+		<polygon class="arcr44" points="49.5,160.2 100.4,170.9 146.9,146.3 100.2,140.8 		"/>
+		<polygon class="arcr45" points="49.7,160.1 100.4,170.8 146.7,146.3 100.2,140.9 		"/>
+		<polygon class="arcr46" points="49.9,160.1 100.4,170.7 146.6,146.3 100.2,140.9 		"/>
+		<polygon class="arcr47" points="50.1,160.1 100.4,170.7 146.4,146.3 100.2,140.9 		"/>
+		<polygon class="arcr48" points="50.3,160 100.4,170.6 146.2,146.4 100.2,141 		"/>
+		<polygon class="arcr49" points="50.5,160 100.4,170.5 146.1,146.4 100.3,141 		"/>
+		<polygon class="arcr50" points="50.7,160 100.4,170.4 145.9,146.4 100.3,141 		"/>
+		<polygon class="arcr51" points="50.9,159.9 100.4,170.4 145.7,146.4 100.3,141.1 		"/>
+		<polygon class="arcr52" points="51,159.9 100.4,170.3 145.6,146.4 100.3,141.1 		"/>
+		<polygon class="arcr53" points="51.2,159.8 100.4,170.2 145.4,146.4 100.3,141.1 		"/>
+		<polygon class="arcr54" points="51.4,159.8 100.4,170.1 145.2,146.4 100.3,141.2 		"/>
+		<polygon class="arcr55" points="51.6,159.8 100.4,170 145,146.5 100.3,141.2 		"/>
+		<polygon class="arcr56" points="51.8,159.7 100.4,170 144.9,146.5 100.3,141.2 		"/>
+		<polygon class="arcr57" points="52,159.7 100.4,169.9 144.7,146.5 100.3,141.3 		"/>
+		<polygon class="arcr58" points="52.2,159.6 100.4,169.8 144.5,146.5 100.3,141.3 		"/>
+		<polygon class="arcr59" points="52.4,159.6 100.4,169.7 144.4,146.5 100.3,141.3 		"/>
+		<polygon class="arcr60" points="52.6,159.6 100.4,169.7 144.2,146.5 100.3,141.4 		"/>
+		<polygon class="arcr61" points="52.8,159.5 100.5,169.6 144,146.5 100.3,141.4 		"/>
+		<polygon class="arcr62" points="52.9,159.5 100.5,169.5 143.9,146.5 100.3,141.4 		"/>
+		<polygon class="arcr63" points="53.1,159.5 100.5,169.4 143.7,146.6 100.3,141.5 		"/>
+		<polygon class="arcr64" points="53.3,159.4 100.5,169.3 143.5,146.6 100.3,141.5 		"/>
+		<polygon class="arcr65" points="53.5,159.4 100.5,169.3 143.4,146.6 100.3,141.5 		"/>
+		<polygon class="arcr66" points="53.7,159.3 100.5,169.2 143.2,146.6 100.3,141.6 		"/>
+		<polygon class="arcr67" points="53.9,159.3 100.5,169.1 143,146.6 100.3,141.6 		"/>
+		<polygon class="arcr68" points="54.1,159.3 100.5,169 142.9,146.6 100.3,141.6 		"/>
+		<polygon class="arcr69" points="54.3,159.2 100.5,169 142.7,146.6 100.3,141.7 		"/>
+		<polygon class="arcr70" points="54.5,159.2 100.5,168.9 142.5,146.6 100.3,141.7 		"/>
+		<polygon class="arcr71" points="54.7,159.2 100.5,168.8 142.4,146.7 100.3,141.7 		"/>
+		<polygon class="arcr72" points="54.8,159.1 100.5,168.7 142.2,146.7 100.3,141.8 		"/>
+		<polygon class="arcr73" points="55,159.1 100.5,168.6 142,146.7 100.3,141.8 		"/>
+		<polygon class="arcr74" points="55.2,159 100.5,168.6 141.9,146.7 100.3,141.8 		"/>
+		<polygon class="arcr75" points="55.4,159 100.5,168.5 141.7,146.7 100.3,141.9 		"/>
+		<polygon class="arcr76" points="55.6,159 100.5,168.4 141.5,146.7 100.4,141.9 		"/>
+		<polygon class="arcr77" points="55.8,158.9 100.5,168.3 141.4,146.7 100.4,141.9 		"/>
+		<polygon class="arcr78" points="56,158.9 100.5,168.3 141.2,146.7 100.4,142 		"/>
+		<polygon class="arcr79" points="56.2,158.8 100.5,168.2 141,146.8 100.4,142 		"/>
+		<polygon class="arcr80" points="56.4,158.8 100.5,168.1 140.9,146.8 100.4,142 		"/>
+		<polygon class="arcr81" points="56.6,158.8 100.5,168 140.7,146.8 100.4,142 		"/>
+		<polygon class="arcr82" points="56.7,158.7 100.5,167.9 140.5,146.8 100.4,142.1 		"/>
+		<polygon class="arcr83" points="56.9,158.7 100.5,167.9 140.4,146.8 100.4,142.1 		"/>
+		<polygon class="arcr84" points="57.1,158.7 100.5,167.8 140.2,146.8 100.4,142.1 		"/>
+		<polygon class="arcr85" points="57.3,158.6 100.5,167.7 140,146.8 100.4,142.2 		"/>
+		<polygon class="arcr86" points="57.5,158.6 100.5,167.6 139.8,146.8 100.4,142.2 		"/>
+		<polygon class="arcr87" points="57.7,158.5 100.5,167.6 139.7,146.9 100.4,142.2 		"/>
+		<polygon class="arcr88" points="57.9,158.5 100.5,167.5 139.5,146.9 100.4,142.3 		"/>
+		<polygon class="arcr89" points="58.1,158.5 100.5,167.4 139.3,146.9 100.4,142.3 		"/>
+		<polygon class="arcr90" points="58.3,158.4 100.5,167.3 139.2,146.9 100.4,142.3 		"/>
+		<polygon class="arcr91" points="58.5,158.4 100.5,167.2 139,146.9 100.4,142.4 		"/>
+		<polygon class="arcr92" points="58.7,158.3 100.6,167.2 138.8,146.9 100.4,142.4 		"/>
+		<polygon class="arcr93" points="58.8,158.3 100.6,167.1 138.7,146.9 100.4,142.4 		"/>
+		<polygon class="arcr94" points="59,158.3 100.6,167 138.5,146.9 100.4,142.5 		"/>
+		<polygon class="arcr95" points="59.2,158.2 100.6,166.9 138.3,147 100.4,142.5 		"/>
+		<polygon class="arcr96" points="59.4,158.2 100.6,166.9 138.2,147 100.4,142.5 		"/>
+		<polygon class="arcr97" points="59.6,158.2 100.6,166.8 138,147 100.4,142.6 		"/>
+		<polygon class="arcr98" points="59.8,158.1 100.6,166.7 137.8,147 100.4,142.6 		"/>
+		<polygon class="arcr99" points="60,158.1 100.6,166.6 137.7,147 100.4,142.6 		"/>
+		<polygon class="arcr100" points="60.2,158 100.6,166.5 137.5,147 100.4,142.7 		"/>
+		<polygon class="arcr101" points="60.4,158 100.6,166.5 137.3,147 100.4,142.7 		"/>
+		<polygon class="arcr102" points="60.6,158 100.6,166.4 137.2,147 100.5,142.7 		"/>
+		<polygon class="arcr103" points="60.7,157.9 100.6,166.3 137,147.1 100.5,142.8 		"/>
+		<polygon class="arcr104" points="60.9,157.9 100.6,166.2 136.8,147.1 100.5,142.8 		"/>
+		<polygon class="arcr105" points="61.1,157.8 100.6,166.2 136.7,147.1 100.5,142.8 		"/>
+		<polygon class="arcr106" points="61.3,157.8 100.6,166.1 136.5,147.1 100.5,142.9 		"/>
+		<polygon class="arcr107" points="61.5,157.8 100.6,166 136.3,147.1 100.5,142.9 		"/>
+		<polygon class="arcr108" points="61.7,157.7 100.6,165.9 136.2,147.1 100.5,142.9 		"/>
+		<polygon class="arcr109" points="61.9,157.7 100.6,165.8 136,147.1 100.5,143 		"/>
+		<polygon class="arcr110" points="62.1,157.7 100.6,165.8 135.8,147.1 100.5,143 		"/>
+		<polygon class="arcr111" points="62.3,157.6 100.6,165.7 135.7,147.2 100.5,143 		"/>
+		<polygon class="arcr112" points="62.5,157.6 100.6,165.6 135.5,147.2 100.5,143.1 		"/>
+		<polygon class="arcr113" points="62.6,157.5 100.6,165.5 135.3,147.2 100.5,143.1 		"/>
+		<polygon class="arcr114" points="62.8,157.5 100.6,165.5 135.2,147.2 100.5,143.1 		"/>
+		<polygon class="arcr115" points="63,157.5 100.6,165.4 135,147.2 100.5,143.2 		"/>
+		<polygon class="arcr116" points="63.2,157.4 100.6,165.3 134.8,147.2 100.5,143.2 		"/>
+		<polygon class="arcr117" points="63.4,157.4 100.6,165.2 134.6,147.2 100.5,143.2 		"/>
+	</g>
+	<g>
+		<linearGradient id="ARCR_ID_1_" gradientUnits="userSpaceOnUse" x1="149.7766" y1="84.823" x2="149.7766" y2="152.8737">
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr118" points="150.8,149.4 148.8,149 148.8,71.4 150.8,71.7 		"/>
+		
+			<linearGradient id="ARCR_ID_2_" gradientUnits="userSpaceOnUse" x1="1900.5414" y1="74.2359" x2="1900.5414" y2="142.6789" gradientTransform="matrix(-1 0 0 1 2052.3511 0)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr119" points="150.8,149.4 152.8,148.2 152.8,71 150.8,71.7 		"/>
+	</g>
+	<g>
+		<linearGradient id="ARCR_ID_3_" gradientUnits="userSpaceOnUse" x1="47.1266" y1="92.7226" x2="47.1266" y2="166.5596">
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr120" points="48.1,162.8 46.1,162.4 46.1,78.2 48.1,78.4 		"/>
+		
+			<linearGradient id="ARCR_ID_4_" gradientUnits="userSpaceOnUse" x1="2003.1956" y1="81.2728" x2="2003.1956" y2="155.5013" gradientTransform="matrix(-1 0 0 1 2052.3511 0)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr121" points="48.1,162.8 50.2,161.6 50.2,77.7 48.1,78.4 		"/>
+	</g>
+	<polygon class="arcr122" points="46.1,78.2 48.1,78.4 50.2,77.7 48.1,77.4 	"/>
+	<g>
+		<linearGradient id="ARCR_ID_5_" gradientUnits="userSpaceOnUse" x1="105.8016" y1="78.8765" x2="105.8016" y2="142.7435">
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr123" points="106.7,139.5 104.9,139.1 104.9,66.3 106.7,66.5 		"/>
+		
+			<linearGradient id="ARCR_ID_6_" gradientUnits="userSpaceOnUse" x1="1944.6946" y1="68.9515" x2="1944.6946" y2="133.1766" gradientTransform="matrix(-1 0 0 1 2052.3511 0)">
+			<stop  offset="0" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+		<polygon class="arcr124" points="106.7,139.5 108.6,138.4 108.6,65.9 106.7,66.5 		"/>
+	</g>
+	<polygon class="arcr122" points="104.9,66.3 106.7,66.5 108.6,65.9 106.8,65.7 	"/>
+	<polygon class="arcr125" points="49.3,142.2 100.4,150.4 149.9,129.6 149.9,128.2 104.1,124.8 49.3,140.9 	"/>
+	<polygon class="arcr3" points="49.3,140.9 99.7,149.1 149.9,128.2 104.1,124.8 	"/>
+	<g>
+		<g>
+			<g>
+				<g>
+					<g>
+						<path class="arcr117" d="M139.9,127.8c0,0-7.6,3-7.6,3l-30.6-4.4l10.3-2.6L139.9,127.8z"/>
+					</g>
+					<path class="arcr126" d="M139.9,127.2c0,0-7.6,3-7.6,3l-30.6-4.4l10.3-2.6L139.9,127.2z"/>
+					<g>
+						<g>
+							<g>
+								
+									<linearGradient id="ARCR_ID_7_" gradientUnits="userSpaceOnUse" x1="-5392.8691" y1="136.8976" x2="-5420.5933" y2="104.1579" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+									<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+									<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+								</linearGradient>
+								<polygon class="arcr127" points="132.1,96 132.1,130 101.5,125.6 101.5,110.6 101.4,92.7 								"/>
+								
+									<linearGradient id="ARCR_ID_8_" gradientUnits="userSpaceOnUse" x1="-5439.7222" y1="117.5611" x2="-5415.4922" y2="93.4673" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+									<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+									<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+								</linearGradient>
+								<polygon class="arcr128" points="139.7,93 139.7,127.1 132.1,130 132.1,96 								"/>
+								<polygon class="arcr129" points="139.7,93 139.7,93.1 132.4,96.1 132.1,130 132.1,130 132,130 131.8,96.2 101.5,93 
+									101.5,110.8 101.5,110.6 101.4,92.7 101.6,92.6 132.1,95.8 139.7,93 								"/>
+							</g>
+							<polygon class="arcr130" points="139.7,116.8 132,119.6 101.5,115.2 101.5,116 132.1,120.5 139.7,117.7 							"/>
+							<g>
+								<linearGradient id="ARCR_ID_9_" gradientUnits="userSpaceOnUse" x1="89.2571" y1="91.1427" x2="147.158" y2="93.1661">
+									<stop  offset="0" style="stop-color:var(--vitamui-primary-600)"/>
+									<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+								</linearGradient>
+								<polygon class="arcr131" points="140.4,92.6 109.9,89.7 100.3,91.7 132.1,94.8 								"/>
+								
+									<linearGradient id="ARCR_ID_10_" gradientUnits="userSpaceOnUse" x1="-5395.6299" y1="127.4324" x2="-5419.1768" y2="99.626" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+									<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+									<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+								</linearGradient>
+								<polygon class="arcr132" points="132.1,95 132.1,120 100.4,115.4 100.4,99.8 100.3,91.7 								"/>
+								
+									<linearGradient id="ARCR_ID_11_" gradientUnits="userSpaceOnUse" x1="-5438.54" y1="110.8589" x2="-5419.645" y2="92.0701" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+									<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+									<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+								</linearGradient>
+								<polygon class="arcr133" points="140.4,92.6 140.4,116.9 132.1,120 132.1,95 								"/>
+								<polygon class="arcr129" points="140.4,92.6 140.4,92.7 132.4,95.2 132.1,120 132.1,120 132,120 131.9,95.2 100.5,92 
+									100.3,91.7 100.7,91.6 132.1,94.8 140.4,92.6 								"/>
+							</g>
+							<g>
+								
+									<ellipse transform="matrix(7.408515e-02 -0.9973 0.9973 7.408515e-02 2.7913 250.0632)" class="arcr134" cx="136.1" cy="123.5" rx="2.6" ry="1.6"/>
+								
+									<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 3.2227 250.2082)" class="arcr1" cx="136.2" cy="123.4" rx="2.4" ry="1.4"/>
+								
+									<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 3.4183 250.0496)" class="arcr135" cx="136.3" cy="123.2" rx="1.8" ry="1.1"/>
+								<g>
+									<path class="arcr136" d="M136.4,121.2c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.6,0,1,1,1,2.1c0,0.6-0.2,1.2-0.5,1.5
+										c0.2-0.4,0.3-0.8,0.4-1.3C137.5,122.2,137,121.3,136.4,121.2z"/>
+								</g>
+								<g>
+									<path class="arcr126" d="M136.2,121.8c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.2-0.1,0.3-0.1c0.5,0.1,0.8,0.9,0.6,1.7
+										c-0.1,0.5-0.3,0.9-0.5,1.2c0.2-0.3,0.3-0.6,0.4-1.1C137,122.7,136.7,121.9,136.2,121.8z"/>
+								</g>
+								<g>
+									<path class="arcr137" d="M136,125.2c0.1,0,0.1,0,0.2,0c-0.1,0.1-0.3,0.1-0.4,0.1c-0.6-0.1-1-1-0.8-2.1
+										c0.1-0.6,0.3-1.2,0.6-1.5c-0.2,0.4-0.4,0.8-0.4,1.3C135,124.2,135.4,125.2,136,125.2z"/>
+								</g>
+							</g>
+						</g>
+						<polygon points="119,118.4 119,128.2 114.5,127.6 114.5,117.8 						"/>
+						<polygon class="arcr138" points="118.4,118.4 118.4,128.2 114,127.6 114,117.8 						"/>
+						<polygon class="arcr134" points="117.4,93.7 117.4,117.8 113,117.2 113,93.3 						"/>
+						<polygon class="arcr125" points="117.8,93.4 125.5,91.2 120.9,90.7 113.3,92.9 						"/>
+						<polygon class="arcr125" points="117.8,93.4 117.4,93.5 117.4,93.7 113,93.3 113,93 113.3,92.9 						"/>
+					</g>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<g>
+					<path class="arcr117" d="M128.9,131.9c0,0-7.9,3.1-7.9,3.1l-31.6-4.5l10.6-2.7L128.9,131.9z"/>
+				</g>
+				<path class="arcr126" d="M128.9,131.3c0,0-7.9,3.1-7.9,3.1l-31.6-4.5l10.6-2.7L128.9,131.3z"/>
+				<g>
+					<g>
+						<g>
+							
+								<linearGradient id="ARCR_ID_12_" gradientUnits="userSpaceOnUse" x1="-5380.4004" y1="141.3451" x2="-5409.0508" y2="107.5116" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr139" points="120.9,99 120.9,134.2 89.3,129.7 89.3,114.2 89.2,95.7 							"/>
+							
+								<linearGradient id="ARCR_ID_13_" gradientUnits="userSpaceOnUse" x1="-5428.8188" y1="121.3625" x2="-5403.7793" y2="96.4637" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr140" points="128.7,96 128.7,131.2 120.9,134.2 120.9,99 							"/>
+							<polygon class="arcr129" points="128.7,96 128.7,96 121.2,99.2 120.9,134.2 120.9,134.2 120.8,134.2 120.6,99.2 89.2,96 
+								89.3,114.3 89.3,114.2 89.2,95.7 89.4,95.6 120.9,98.9 128.7,96 							"/>
+						</g>
+						<polygon class="arcr130" points="128.7,120.6 120.7,123.5 89.3,118.9 89.3,119.7 120.8,124.4 128.7,121.5 						"/>
+						<g>
+							<linearGradient id="ARCR_ID_14_" gradientUnits="userSpaceOnUse" x1="67.4875" y1="94.6634" x2="139.3967" y2="95.5973">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-600)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr141" points="129.4,95.6 97.9,92.5 88,94.6 120.8,97.9 							"/>
+							
+								<linearGradient id="ARCR_ID_15_" gradientUnits="userSpaceOnUse" x1="-5383.2534" y1="131.5637" x2="-5407.5864" y2="102.8283" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr142" points="120.8,98.1 120.8,123.9 88.1,119.2 88.1,103 88,94.6 							"/>
+							
+								<linearGradient id="ARCR_ID_16_" gradientUnits="userSpaceOnUse" x1="-5427.5967" y1="114.4365" x2="-5408.0703" y2="95.0198" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr143" points="129.4,95.6 129.4,120.7 120.8,123.9 120.8,98.1 							"/>
+							<polygon class="arcr129" points="129.4,95.6 129.4,95.7 121.2,98.3 120.9,123.9 120.8,123.9 120.8,123.9 120.6,98.3 88.2,94.9 
+								88,94.6 88.5,94.5 120.8,97.9 129.4,95.6 							"/>
+						</g>
+						<g>
+							
+								<ellipse transform="matrix(7.408515e-02 -0.9973 0.9973 7.408515e-02 -11.4778 242.6964)" class="arcr134" cx="125" cy="127.5" rx="2.7" ry="1.7"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -11.0454 242.8452)" class="arcr1" cx="125.1" cy="127.4" rx="2.5" ry="1.5"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -10.8433 242.6813)" class="arcr135" cx="125.2" cy="127.2" rx="1.8" ry="1.1"/>
+							<g>
+								<path class="arcr136" d="M125.3,125.1c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.6,0,1.1,1,1,2.2c0,0.7-0.2,1.2-0.5,1.6
+									c0.2-0.4,0.3-0.8,0.4-1.4C126.4,126.2,125.9,125.2,125.3,125.1z"/>
+							</g>
+							<g>
+								<path class="arcr126" d="M125.1,125.7c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.2-0.1,0.3-0.1c0.5,0.1,0.8,0.9,0.6,1.8
+									c-0.1,0.5-0.3,1-0.6,1.3c0.2-0.3,0.3-0.7,0.4-1.1C125.9,126.6,125.6,125.8,125.1,125.7z"/>
+							</g>
+							<g>
+								<path class="arcr137" d="M124.9,129.3c0.1,0,0.1,0,0.2,0c-0.1,0.1-0.3,0.1-0.4,0.1c-0.6-0.1-1-1.1-0.9-2.2
+									c0.1-0.7,0.3-1.2,0.6-1.6c-0.2,0.4-0.4,0.8-0.4,1.4C123.8,128.2,124.2,129.2,124.9,129.3z"/>
+							</g>
+						</g>
+					</g>
+					<polygon points="107.3,122.3 107.3,132.4 102.7,131.7 102.7,121.6 					"/>
+					<polygon class="arcr138" points="106.7,122.3 106.7,132.4 102.1,131.7 102.1,121.6 					"/>
+					<polygon class="arcr134" points="105.7,96.7 105.7,121.6 101.1,121 101.1,96.3 					"/>
+					<polygon class="arcr125" points="106.1,96.3 114.1,94.1 109.3,93.6 101.5,95.9 					"/>
+					<polygon class="arcr125" points="106.1,96.3 105.7,96.5 105.7,96.7 101.1,96.3 101.1,96 101.5,95.9 					"/>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<g>
+					<path class="arcr117" d="M117.5,136.9c0,0-8.4,3.3-8.4,3.3l-33.6-4.8l11.3-2.9L117.5,136.9z"/>
+				</g>
+				<path class="arcr126" d="M117.5,136.3c0,0-8.4,3.3-8.4,3.3l-33.6-4.8l11.3-2.9L117.5,136.3z"/>
+				<g>
+					<g>
+						<g>
+							
+								<linearGradient id="ARCR_ID_17_" gradientUnits="userSpaceOnUse" x1="-5366.0469" y1="146.9129" x2="-5396.5186" y2="110.9293" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr144" points="108.9,101.9 108.9,139.4 75.3,134.5 75.3,118.1 75.2,98.4 							"/>
+							
+								<linearGradient id="ARCR_ID_18_" gradientUnits="userSpaceOnUse" x1="-5417.5425" y1="125.6605" x2="-5390.9116" y2="99.1794" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr145" points="117.3,98.6 117.3,136.1 108.9,139.4 108.9,101.9 							"/>
+							<polygon class="arcr129" points="117.3,98.6 117.3,98.7 109.3,102.1 109,139.3 108.9,139.4 108.9,139.4 108.6,102.1 75.3,98.6 
+								75.3,118.2 75.3,118.1 75.2,98.4 75.5,98.3 108.9,101.7 117.3,98.6 							"/>
+						</g>
+						<polygon class="arcr130" points="117.3,124.9 108.8,127.9 75.3,123.1 75.3,123.9 108.9,128.8 117.3,125.8 						"/>
+						<g>
+							<linearGradient id="ARCR_ID_19_" gradientUnits="userSpaceOnUse" x1="72.789" y1="94.3906" x2="107.4026" y2="99.3569">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-600)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr146" points="118.1,98.3 84.5,95 74,97.2 108.9,100.7 							"/>
+							
+								<linearGradient id="ARCR_ID_20_" gradientUnits="userSpaceOnUse" x1="-5369.0811" y1="136.5099" x2="-5394.9609" y2="105.9483" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr147" points="108.9,100.9 108.9,128.3 74.1,123.3 74.1,106.2 74,97.2 							"/>
+							
+								<linearGradient id="ARCR_ID_21_" gradientUnits="userSpaceOnUse" x1="-5416.2432" y1="118.2943" x2="-5395.4756" y2="97.6437" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr148" points="118.1,98.3 118.1,124.9 108.9,128.3 108.9,100.9 							"/>
+							<polygon class="arcr149" points="118.1,98.3 118.1,98.3 109.3,101.1 109,128.3 108.9,128.3 108.8,128.3 108.7,101.1 74.2,97.5 
+								74,97.2 74.5,97.1 108.9,100.7 118,98.3 							"/>
+						</g>
+						<g>
+							
+								<ellipse transform="matrix(7.408515e-02 -0.9973 0.9973 7.408515e-02 -26.9565 235.4048)" class="arcr134" cx="113.3" cy="132.2" rx="2.8" ry="1.8"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -26.5133 235.5589)" class="arcr1" cx="113.5" cy="132" rx="2.7" ry="1.6"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -26.2983 235.3845)" class="arcr135" cx="113.5" cy="131.8" rx="1.9" ry="1.2"/>
+							<g>
+								<path class="arcr136" d="M113.6,129.7c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.7,0,1.1,1.1,1.1,2.3
+									c0,0.7-0.3,1.3-0.6,1.7c0.2-0.4,0.4-0.9,0.4-1.5C114.8,130.8,114.3,129.7,113.6,129.7z"/>
+							</g>
+							<g>
+								<path class="arcr126" d="M113.4,130.3c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.2-0.1,0.4-0.1c0.5,0.1,0.8,0.9,0.7,1.9
+									c-0.1,0.6-0.3,1-0.6,1.3c0.2-0.3,0.4-0.7,0.4-1.2C114.3,131.3,114,130.4,113.4,130.3z"/>
+							</g>
+							<g>
+								<path class="arcr137" d="M113.2,134.1c0.1,0,0.1,0,0.2,0c-0.1,0.1-0.3,0.1-0.4,0.1c-0.7-0.1-1.1-1.1-0.9-2.3
+									c0.1-0.7,0.3-1.3,0.7-1.7c-0.2,0.4-0.4,0.9-0.5,1.5C112.1,132.9,112.5,134,113.2,134.1z"/>
+							</g>
+						</g>
+					</g>
+					<polygon points="94.5,126.6 94.5,137.4 89.6,136.7 89.6,125.9 					"/>
+					<polygon class="arcr138" points="93.9,126.6 93.9,137.4 89,136.7 89,125.9 					"/>
+					
+						<linearGradient id="ARCR_ID_22_" gradientUnits="userSpaceOnUse" x1="-5394.106" y1="98.2942" x2="-5387.3711" y2="114.1494" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+						<stop  offset="0" style="stop-color:#BCB9BA"/>
+						<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+					<polygon class="arcr150" points="92.8,99.5 92.8,126 87.9,125.2 87.9,99 					"/>
+					<polygon class="arcr1" points="93.2,99.1 101.7,96.7 96.6,96.2 88.3,98.5 					"/>
+					<polygon class="arcr1" points="93.2,99.1 92.8,99.2 92.8,99.5 87.9,99 87.9,98.6 88.3,98.5 					"/>
+				</g>
+			</g>
+		</g>
+		<g>
+			<g>
+				<g>
+					<path class="arcr117" d="M104.9,142.1c0,0-8.9,3.5-8.9,3.5l-35.7-5.1l12-3L104.9,142.1z"/>
+				</g>
+				<path class="arcr126" d="M104.9,141.5c0,0-8.9,3.5-8.9,3.5l-35.7-5.1l12-3L104.9,141.5z"/>
+				<g>
+					<g>
+						<g>
+							
+								<linearGradient id="ARCR_ID_23_" gradientUnits="userSpaceOnUse" x1="-5350.3618" y1="152.8144" x2="-5382.769" y2="114.5441" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr151" points="95.8,105 95.8,144.8 60.1,139.7 60.1,122.1 60,101.2 							"/>
+							
+								<linearGradient id="ARCR_ID_24_" gradientUnits="userSpaceOnUse" x1="-5405.1294" y1="130.2114" x2="-5376.8066" y2="102.0474" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr152" points="104.7,101.5 104.7,141.3 95.8,144.8 95.8,105 							"/>
+							<polygon class="arcr129" points="104.7,101.5 104.7,101.6 96.2,105.2 95.9,144.8 95.8,144.8 95.7,144.8 95.5,105.2 60,101.5 
+								60.1,122.3 60.1,122.1 60,101.2 60.2,101.1 95.8,104.8 104.7,101.5 							"/>
+						</g>
+						<polygon class="arcr130" points="104.7,129.4 95.7,132.6 60.1,127.4 60.1,128.3 95.8,133.6 104.7,130.3 						"/>
+						<g>
+							
+								<linearGradient id="ARCR_ID_25_" gradientUnits="userSpaceOnUse" x1="-5335.7637" y1="102.867" x2="-5410.1978" y2="99.1453" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr153" points="105.5,101.1 69.9,97.6 58.7,99.9 95.8,103.7 							"/>
+							
+								<linearGradient id="ARCR_ID_26_" gradientUnits="userSpaceOnUse" x1="-5353.5884" y1="141.7503" x2="-5381.1133" y2="109.2466" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+							</linearGradient>
+							<polygon class="arcr154" points="95.8,103.9 95.8,133 58.8,127.7 58.8,109.5 58.7,99.9 							"/>
+							
+								<linearGradient id="ARCR_ID_27_" gradientUnits="userSpaceOnUse" x1="-5403.7476" y1="122.3771" x2="-5381.6606" y2="100.4142" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+								<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+								<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+							</linearGradient>
+							<polygon class="arcr155" points="105.5,101.1 105.5,129.4 95.8,133 95.8,103.9 							"/>
+							<polygon class="arcr156" points="105.5,101.1 105.5,101.2 96.2,104.1 95.9,133 95.8,133 95.7,133 95.6,104.1 58.9,100.3 
+								58.7,99.9 59.2,99.8 95.8,103.7 105.5,101.1 							"/>
+						</g>
+						<g>
+							
+								<ellipse transform="matrix(7.408515e-02 -0.9973 0.9973 7.408515e-02 -43.7878 227.2121)" class="arcr134" cx="100.5" cy="137.2" rx="3" ry="1.9"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -43.3333 227.3718)" class="arcr1" cx="100.7" cy="137" rx="2.8" ry="1.7"/>
+							
+								<ellipse transform="matrix(7.322805e-02 -0.9973 0.9973 7.322805e-02 -43.1047 227.1864)" class="arcr135" cx="100.7" cy="136.8" rx="2.1" ry="1.2"/>
+							<g>
+								<path class="arcr136" d="M100.8,134.5c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.5-0.1c0.7,0,1.2,1.1,1.1,2.4
+									c0,0.7-0.3,1.4-0.6,1.8c0.2-0.4,0.4-1,0.4-1.6C102.1,135.7,101.6,134.5,100.8,134.5z"/>
+							</g>
+							<g>
+								<path class="arcr126" d="M100.6,135.1c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.6,0.1,0.9,1,0.7,2
+									c-0.1,0.6-0.3,1.1-0.6,1.4c0.2-0.3,0.4-0.7,0.5-1.2C101.6,136.2,101.2,135.2,100.6,135.1z"/>
+							</g>
+							<g>
+								<path class="arcr137" d="M100.4,139.2c0.1,0,0.1,0,0.2,0c-0.2,0.1-0.3,0.1-0.5,0.1c-0.7-0.1-1.1-1.2-1-2.5
+									c0.1-0.7,0.4-1.4,0.7-1.8c-0.2,0.4-0.4,0.9-0.5,1.5C99.2,137.9,99.7,139.1,100.4,139.2z"/>
+							</g>
+						</g>
+					</g>
+					<polygon points="80.5,131.2 80.5,142.7 75.3,141.9 75.3,130.5 					"/>
+					<polygon class="arcr138" points="79.8,131.2 79.8,142.7 74.6,141.9 74.6,130.5 					"/>
+					
+						<linearGradient id="ARCR_ID_28_" gradientUnits="userSpaceOnUse" x1="-5380.2036" y1="101.106" x2="-5373.0405" y2="117.9688" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+						<stop  offset="0" style="stop-color:#BCB9BA"/>
+						<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+					<polygon class="arcr157" points="78.7,102.4 78.7,130.5 73.5,129.8 73.5,101.8 					"/>
+					<polygon class="arcr3" points="79.1,101.9 88.2,99.4 82.7,98.8 73.9,101.4 					"/>
+					<polygon class="arcr1" points="79.1,101.9 78.7,102.1 78.7,102.4 73.5,101.8 73.5,101.5 73.9,101.4 					"/>
+				</g>
+			</g>
+		</g>
+	</g>
+	<polygon class="arcr122" points="148.8,71.4 150.8,71.7 152.8,71 150.7,70.8 	"/>
+	<polygon class="arcr138" points="49.3,142.2 50.2,144.8 50.2,142.4 	"/>
+	<polygon class="arcr134" points="101.8,148.2 101.8,149.9 107.8,147.3 105.7,146.6 	"/>
+	<polygon class="arcr125" points="105.7,146.6 101.8,146.6 101.8,148.2 	"/>
+	<path class="arcr117" d="M148.8,135c0-0.2,0-4.9,0-4.9l1.1-0.5C149.9,129.6,148.8,135.2,148.8,135z"/>
+	<path class="arcr137" d="M49.2,91.2c-0.1-0.1,51.5,4.1,51.5,4.1l49.1-13.5v-1.6l-44.2-4.4L49.2,89.7V91.2z"/>
+	<path class="arcr122" d="M49.2,89.7c-0.1-0.1,51.5,4.1,51.5,4.1l49.1-13.5l-44.2-4.4L49.2,89.7z"/>
+	<g>
+		<g>
+			<g>
+				<path class="arcr117" d="M136.6,81.2c0,0-7.5,2.5-7.5,2.5l-30-3.7l10.1-2.2L136.6,81.2z"/>
+			</g>
+			<path class="arcr126" d="M136.6,80.7c0,0-7.5,2.5-7.5,2.5l-30-3.7l10.1-2.2L136.6,80.7z"/>
+			<g>
+				<g>
+					<g>
+						
+							<linearGradient id="ARCR_ID_29_" gradientUnits="userSpaceOnUse" x1="-5390.6152" y1="90.4108" x2="-5417.5039" y2="58.6582" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+						</linearGradient>
+						<polygon class="arcr158" points="128.9,50.9 128.9,83.1 98.9,79.4 98.9,66.7 98.8,48.1 						"/>
+						
+							<linearGradient id="ARCR_ID_30_" gradientUnits="userSpaceOnUse" x1="-5436.2432" y1="71.5409" x2="-5412.9785" y2="48.4071" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr159" points="136.4,48.4 136.4,80.6 128.9,83.1 128.9,50.9 						"/>
+						<polygon class="arcr129" points="136.4,48.4 136.4,48.4 129.2,51 129,83.1 128.9,83.1 128.9,83.1 128.7,51 98.9,48.4 98.9,66.8 
+							98.9,66.7 98.8,48.1 99.1,48.1 128.9,50.7 136.4,48.4 						"/>
+					</g>
+					<polygon class="arcr130" points="136.4,71.9 128.8,74.3 98.9,70.5 98.9,71.2 128.9,75 136.4,72.6 					"/>
+					<g>
+						
+							<linearGradient id="ARCR_ID_31_" gradientUnits="userSpaceOnUse" x1="-5378.1548" y1="49.6229" x2="-5440.6255" y2="46.4993" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr160" points="137.1,48.1 107.2,45.5 97.8,47.2 128.9,49.9 						"/>
+						
+							<linearGradient id="ARCR_ID_32_" gradientUnits="userSpaceOnUse" x1="-5392.8276" y1="82.4605" x2="-5416.2432" y2="54.8088" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+						</linearGradient>
+						<polygon class="arcr161" points="128.9,50.1 128.9,74.6 97.9,70.7 97.9,54.1 97.8,47.2 						"/>
+						
+							<linearGradient id="ARCR_ID_33_" gradientUnits="userSpaceOnUse" x1="-5435.3022" y1="65.8854" x2="-5416.4927" y2="47.1815" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr162" points="137.1,48.1 137.1,72 128.9,74.6 128.9,50.1 						"/>
+						<polygon class="arcr156" points="137.1,48.1 137.1,48.1 129.2,50.2 129,74.6 128.9,74.6 128.8,74.6 128.7,50.3 98,47.5 
+							97.8,47.2 98.2,47.2 128.9,49.9 137,48.1 						"/>
+					</g>
+					<g>
+						
+							<ellipse transform="matrix(0.1094 -0.994 0.994 0.1094 41.158 201.1253)" class="arcr134" cx="132.8" cy="77.6" rx="2.2" ry="1.6"/>
+						
+							<ellipse transform="matrix(0.1046 -0.9945 0.9945 0.1046 42.0502 201.624)" class="arcr1" cx="133" cy="77.5" rx="2.1" ry="1.4"/>
+						
+							<ellipse transform="matrix(0.1046 -0.9945 0.9945 0.1046 42.2164 201.4963)" class="arcr135" cx="133" cy="77.3" rx="1.5" ry="1"/>
+						<g>
+							<path class="arcr136" d="M133.1,75.6c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.6,0,1,0.8,0.9,1.8c0,0.5-0.2,1-0.5,1.3
+								c0.2-0.3,0.3-0.7,0.3-1.1C134.2,76.5,133.7,75.7,133.1,75.6z"/>
+						</g>
+						<g>
+							<path class="arcr126" d="M133,76.1c0,0-0.1,0-0.1,0c0.1,0,0.2-0.1,0.3-0.1c0.5,0.1,0.8,0.7,0.6,1.5c-0.1,0.4-0.3,0.8-0.5,1
+								c0.2-0.2,0.3-0.5,0.4-0.9C133.7,76.9,133.5,76.2,133,76.1z"/>
+						</g>
+						<g>
+							<path class="arcr137" d="M132.8,79c0.1,0,0.1,0,0.2,0c-0.1,0.1-0.3,0.1-0.4,0.1c-0.6-0.1-1-0.9-0.8-1.8c0.1-0.5,0.3-1,0.6-1.3
+								c-0.2,0.3-0.4,0.7-0.4,1.1C131.8,78.1,132.1,79,132.8,79z"/>
+						</g>
+					</g>
+				</g>
+				<polygon points="116.1,73.3 116.1,81.6 111.7,81 111.7,72.7 				"/>
+				<polygon class="arcr138" points="115.5,73.3 115.5,81.6 111.2,81 111.2,72.7 				"/>
+				
+					<linearGradient id="ARCR_ID_34_" gradientUnits="userSpaceOnUse" x1="-5415.4976" y1="47.9424" x2="-5409.4316" y2="62.2218" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+					<stop  offset="0" style="stop-color:#BCB9BA"/>
+					<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+				</linearGradient>
+				<polygon class="arcr163" points="114.5,49 114.5,72.8 110.2,72.2 110.2,48.6 				"/>
+				<polygon class="arcr3" points="114.9,48.7 122.5,46.8 117.9,46.5 110.5,48.3 				"/>
+				<polygon class="arcr1" points="114.9,48.7 114.5,48.8 114.5,49 110.2,48.6 110.2,48.4 110.5,48.3 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<g>
+				<path class="arcr117" d="M126.4,84.6c0,0-7.7,2.6-7.7,2.6L88,83.3l10.3-2.3L126.4,84.6z"/>
+			</g>
+			<path class="arcr126" d="M126.4,84.1c0,0-7.7,2.6-7.7,2.6L88,82.8l10.3-2.3L126.4,84.1z"/>
+			<g>
+				<g>
+					<g>
+						
+							<linearGradient id="ARCR_ID_35_" gradientUnits="userSpaceOnUse" x1="-5379.3931" y1="94.021" x2="-5406.9346" y2="61.497" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+						</linearGradient>
+						<polygon class="arcr164" points="118.6,53.5 118.6,86.5 87.9,82.7 87.9,69.7 87.8,50.7 						"/>
+						
+							<linearGradient id="ARCR_ID_36_" gradientUnits="userSpaceOnUse" x1="-5426.1294" y1="74.6927" x2="-5402.2998" y2="50.997" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr165" points="126.2,51 126.2,84 118.6,86.5 118.6,53.5 						"/>
+						<polygon class="arcr129" points="126.2,51 126.2,51 118.9,53.7 118.6,86.5 118.6,86.5 118.5,86.5 118.3,53.7 87.8,50.9 
+							87.9,69.8 87.9,69.7 87.8,50.7 88,50.6 118.6,53.4 126.2,50.9 						"/>
+					</g>
+					<polygon class="arcr130" points="126.2,75.1 118.4,77.5 87.9,73.7 87.9,74.3 118.6,78.2 126.2,75.8 					"/>
+					<g>
+						
+							<linearGradient id="ARCR_ID_37_" gradientUnits="userSpaceOnUse" x1="-5366.6299" y1="52.2422" x2="-5430.6187" y2="49.0428" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr166" points="126.9,50.6 96.3,48.1 86.7,49.8 118.6,52.6 						"/>
+						
+							<linearGradient id="ARCR_ID_38_" gradientUnits="userSpaceOnUse" x1="-5381.6592" y1="85.8776" x2="-5405.6436" y2="57.5541" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary-800)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+						</linearGradient>
+						<polygon class="arcr167" points="118.6,52.7 118.6,77.8 86.8,73.9 86.8,56.9 86.7,49.8 						"/>
+						
+							<linearGradient id="ARCR_ID_39_" gradientUnits="userSpaceOnUse" x1="-5425.1655" y1="68.8999" x2="-5405.8989" y2="49.7416" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+							<stop  offset="0" style="stop-color:var(--vitamui-primary)"/>
+							<stop  offset="1" style="stop-color:var(--vitamui-primary-300)"/>
+						</linearGradient>
+						<polygon class="arcr168" points="126.9,50.6 126.9,75.1 118.6,77.8 118.6,52.7 						"/>
+						<polygon class="arcr156" points="126.9,50.6 126.9,50.7 118.9,52.9 118.6,77.8 118.6,77.8 118.5,77.8 118.3,52.9 86.9,50.1 
+							86.7,49.8 87.1,49.7 118.6,52.6 126.9,50.6 						"/>
+					</g>
+					<g>
+						
+							<ellipse transform="matrix(0.1094 -0.994 0.994 0.1094 28.7488 193.8727)" class="arcr134" cx="122.6" cy="80.9" rx="2.2" ry="1.6"/>
+						
+							<ellipse transform="matrix(0.1046 -0.9945 0.9945 0.1046 29.5967 194.3833)" class="arcr1" cx="122.7" cy="80.8" rx="2.1" ry="1.5"/>
+						
+							<ellipse transform="matrix(0.1046 -0.9945 0.9945 0.1046 29.7669 194.2525)" class="arcr135" cx="122.8" cy="80.6" rx="1.5" ry="1.1"/>
+						<g>
+							<path class="arcr136" d="M122.9,78.9c-0.1,0-0.1,0-0.2,0c0.1-0.1,0.3-0.1,0.4-0.1c0.6,0,1,0.8,1,1.8c0,0.6-0.2,1-0.5,1.3
+								c0.2-0.3,0.3-0.7,0.4-1.2C124,79.8,123.5,78.9,122.9,78.9z"/>
+						</g>
+						<g>
+							<path class="arcr126" d="M122.7,79.4c-0.1,0-0.1,0-0.2,0c0.1,0,0.2-0.1,0.3-0.1c0.5,0.1,0.8,0.7,0.6,1.5
+								c-0.1,0.4-0.3,0.8-0.5,1c0.2-0.2,0.3-0.6,0.4-0.9C123.5,80.2,123.2,79.4,122.7,79.4z"/>
+						</g>
+						<g>
+							<path class="arcr137" d="M122.5,82.4c0.1,0,0.1,0,0.2,0c-0.1,0.1-0.3,0.1-0.4,0.1c-0.6-0.1-1-0.9-0.8-1.8
+								c0.1-0.6,0.3-1,0.6-1.3c-0.2,0.3-0.4,0.7-0.4,1.1C121.5,81.5,121.9,82.3,122.5,82.4z"/>
+						</g>
+					</g>
+				</g>
+				<polygon points="105.4,76.5 105.4,84.9 100.9,84.4 100.9,75.9 				"/>
+				<polygon class="arcr138" points="104.8,76.5 104.8,84.9 100.4,84.4 100.4,75.9 				"/>
+				
+					<linearGradient id="ARCR_ID_40_" gradientUnits="userSpaceOnUse" x1="-5404.8799" y1="50.5209" x2="-5398.667" y2="65.1472" gradientTransform="matrix(-1 0 0 1 -5297.7266 0)">
+					<stop  offset="0" style="stop-color:#BCB9BA"/>
+					<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+				</linearGradient>
+				<polygon class="arcr169" points="103.8,51.6 103.8,76 99.4,75.4 99.4,51.2 				"/>
+				<polygon class="arcr3" points="104.2,51.3 112,49.4 107.3,49 99.7,50.9 				"/>
+				<polygon class="arcr1" points="104.2,51.3 103.8,51.4 103.8,51.6 99.4,51.2 99.4,51 99.7,50.9 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<linearGradient id="ARCR_ID_41_" gradientUnits="userSpaceOnUse" x1="98.4566" y1="94.1553" x2="98.4566" y2="175.088">
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<polygon class="arcr170" points="99.6,171 97.3,170.5 97.3,78.2 99.6,78.5 			"/>
+			
+				<linearGradient id="ARCR_ID_42_" gradientUnits="userSpaceOnUse" x1="1951.6707" y1="81.6052" x2="1951.6707" y2="162.967" gradientTransform="matrix(-1 0 0 1 2052.3511 0)">
+				<stop  offset="0" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#4C4C4C"/>
+			</linearGradient>
+			<polygon class="arcr171" points="99.6,171 101.8,169.6 101.8,77.7 99.6,78.5 			"/>
+		</g>
+		<polygon class="arcr136" points="97.3,78.2 99.6,78.5 101.8,77.7 99.9,77.5 		"/>
+	</g>
+	<polygon class="arcr117" points="49.2,91.2 50.2,99.5 50.2,91.3 	"/>
+	<polygon class="arcr117" points="148.8,82.1 148.8,87.6 149.8,81.9 	"/>
+	<path class="arcr117" d="M102.1,93.6"/>
+	<polygon class="arcr117" points="101.8,93.4 107.3,91.9 109.2,93 101.8,95 	"/>
+	<polygon class="arcr137" points="107.3,91.9 101.8,91.8 101.8,93.4 	"/>
+</g>
+</svg>

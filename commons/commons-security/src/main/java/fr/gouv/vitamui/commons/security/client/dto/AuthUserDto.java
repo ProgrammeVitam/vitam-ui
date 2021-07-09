@@ -120,6 +120,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setAnalytics(user.getAnalytics());
         setSiteCode(user.getSiteCode());
         setInternalCode(user.getInternalCode());
+        setCenterCode(user.getCenterCode());
     }
 
     public AuthUserDto(final String username, final Map<String, Object> attributes) {

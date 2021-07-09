@@ -60,6 +60,12 @@
             width: auto;
         }
     }
+    .title-actions {
+        display: flex;
+        align-items: center;
+        padding: 0 30px;
+        margin-top: 30px;
+    }
 }
 
 .vitamui-sidepanel-body {

@@ -2,7 +2,7 @@
    (onclose)="emitClose()"></vitamui-common-sidenav-header>
 
   <div class="vitamui-sidepanel-body" >
-    <mat-tab-group class="preview-tab-group">
+    <mat-tab-group class="preview-tab-group show-pagination">
       <mat-tab [label]="'CUSTOMER.TAB.INFORMATION' | translate">
         <app-information-tab [customer]="customer" [readOnly]="isPopup || customer?.readonly" [gdprReadOnlyStatus]="gdprReadOnlyStatus"></app-information-tab>
       </mat-tab>

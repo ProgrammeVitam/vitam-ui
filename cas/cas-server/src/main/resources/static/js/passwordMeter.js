@@ -86,20 +86,23 @@ function jqueryReady() {
         var val = password.value;
         var cnf = confirmed.value;
         var responseText;
+        var passwordIsNotValid = !policyPatternRegex.test(val);
 
-        var disableSubmit = val == '' || cnf == '' || val != cnf || !policyPatternRegex.test(val) || !policyPatternRegex.test(cnf);
+        var disableSubmit = val == '' || cnf == '' || val != cnf || passwordIsNotValid || !policyPatternRegex.test(cnf);
         $('#submit').prop('disabled', disableSubmit);
 
         var result = zxcvbn(val);
         $('#strengthProgressBar').zxcvbnProgressBar({ passwordInput: '#password' });
 
+        if (passwordIsNotValid && $('#security-one.valid').length > 0 && $('#security-two.valid').length > 0
+          && $('#security-three.valid').length > 0 && $('#security-four.valid').length > 0) {
+          $('#password-policy-text').show();
+        } else {
+          $('#password-policy-text').hide();
+        }
+
         if (disableSubmit) {
-            $('#password-strength-text').show();
-            responseText = '<div class=\'alert alert-danger\' role=\'alert\'>' +
-                '<span class=\'glyphicon glyphicon-exclamation-sign\' aria-hidden=\'true\'></span>' +
-                '<strong>Password does not match the password policy requirement.</strong></div>';
-            $('#password-strength-text').html(responseText);
-            return;
+           return;
         }
 
         // Check strength, update the text indicator

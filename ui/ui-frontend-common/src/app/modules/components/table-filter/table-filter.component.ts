@@ -60,6 +60,7 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
   private _filter: any[];
 
   @Input() showSearchBar = false;
+  @Input() multiSelect = true;
 
   @Output() readonly filterChange = new EventEmitter<any[]>();
   @Output() readonly search = new EventEmitter<string>();
@@ -149,6 +150,15 @@ export class TableFilterComponent implements AfterContentInit, OnInit, OnDestroy
     const changedOrDestroyed = merge(this.options.changes, this.destroy);
 
     this.optionSelectionChanges.pipe(takeUntil(changedOrDestroyed)).subscribe((filterOption) => {
+
+      if (!this.multiSelect)
+      {
+        const options = this.options.forEach((option) => {
+          if (option.value !== filterOption.value && option.selected) {
+            this.selectionModel.deselect(option);
+          }
+        });
+      }
       filterOption.selected ? this.selectionModel.select(filterOption) : this.selectionModel.deselect(filterOption);
       this.filterChange.emit(this.selectionModel.selected.map((option) => option.value));
     });

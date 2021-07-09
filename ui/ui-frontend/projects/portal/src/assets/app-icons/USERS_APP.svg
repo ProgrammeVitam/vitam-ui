@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.usrs0{fill-rule:evenodd;clip-rule:evenodd;}
+	.usrs1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.usrs2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.usrs3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.usrs4{fill:#BCB9BA;}
+	.usrs5{fill:#BBB9BA;}
+	.usrs6{fill:#BBB8B9;}
+	.usrs7{fill:#BAB8B9;}
+	.usrs8{fill:#B9B7B8;}
+	.usrs9{fill:#B9B7B7;}
+	.usrs10{fill:#B8B6B7;}
+	.usrs11{fill:#B8B5B6;}
+	.usrs12{fill:#B7B5B6;}
+	.usrs13{fill:#B7B4B5;}
+	.usrs14{fill:#B6B4B5;}
+	.usrs15{fill:#B6B3B4;}
+	.usrs16{fill:#B5B3B4;}
+	.usrs17{fill:#B4B2B3;}
+	.usrs18{fill:#B3B1B2;}
+	.usrs19{fill:#B3B1B1;}
+	.usrs20{fill:#B2B0B1;}
+	.usrs21{fill:#B2AFB0;}
+	.usrs22{fill:#B1AFB0;}
+	.usrs23{fill:#B1AEAF;}
+	.usrs24{fill:#B0AEAF;}
+	.usrs25{fill:#AFADAE;}
+	.usrs26{fill:#AEACAD;}
+	.usrs27{fill:#ADABAC;}
+	.usrs28{fill:#ADABAB;}
+	.usrs29{fill:#ACAAAB;}
+	.usrs30{fill:#ACAAAA;}
+	.usrs31{fill:#ABA9AA;}
+	.usrs32{fill:#AAA8A9;}
+	.usrs33{fill:#A9A7A8;}
+	.usrs34{fill:#A8A6A7;}
+	.usrs35{fill:#A7A5A6;}
+	.usrs36{fill:#A7A5A5;}
+	.usrs37{fill:#A6A4A5;}
+	.usrs38{fill:#A5A4A4;}
+	.usrs39{fill:#A5A3A4;}
+	.usrs40{fill:#A4A2A3;}
+	.usrs41{fill:#A3A1A2;}
+	.usrs42{fill:#A2A0A1;}
+	.usrs43{fill:#A19FA0;}
+	.usrs44{fill:#A09F9F;}
+	.usrs45{fill:#A09E9F;}
+	.usrs46{fill:#9F9E9E;}
+	.usrs47{fill:#9F9D9E;}
+	.usrs48{fill:#9E9D9D;}
+	.usrs49{fill:#9E9C9D;}
+	.usrs50{fill:#9D9B9C;}
+	.usrs51{fill:#9C9A9B;}
+	.usrs52{fill:#9B9A9B;}
+	.usrs53{fill:#9B999A;}
+	.usrs54{fill:#9A9999;}
+	.usrs55{fill:#9A9899;}
+	.usrs56{fill:#999898;}
+	.usrs57{fill:#999798;}
+	.usrs58{fill:#989797;}
+	.usrs59{fill:#989697;}
+	.usrs60{fill:#979596;}
+	.usrs61{fill:#969596;}
+	.usrs62{fill:#969495;}
+	.usrs63{fill:#959495;}
+	.usrs64{fill:#959394;}
+	.usrs65{fill:#949393;}
+	.usrs66{fill:#949293;}
+	.usrs67{fill:#939292;}
+	.usrs68{fill:#939192;}
+	.usrs69{fill:#929191;}
+	.usrs70{fill:#919091;}
+	.usrs71{fill:#919090;}
+	.usrs72{fill:#908F90;}
+	.usrs73{fill:#908E8F;}
+	.usrs74{fill:#8F8E8F;}
+	.usrs75{fill:#8F8D8E;}
+	.usrs76{fill:#8E8D8D;}
+	.usrs77{fill:#8E8C8D;}
+	.usrs78{fill:#8D8C8C;}
+	.usrs79{fill:#8C8B8C;}
+	.usrs80{fill:#8C8B8B;}
+	.usrs81{fill:#8B8A8B;}
+	.usrs82{fill:#8B8A8A;}
+	.usrs83{fill:#8A898A;}
+	.usrs84{fill:#8A8889;}
+	.usrs85{fill:#898888;}
+	.usrs86{fill:#898788;}
+	.usrs87{fill:#888787;}
+	.usrs88{fill:#878687;}
+	.usrs89{fill:#878686;}
+	.usrs90{fill:#868586;}
+	.usrs91{fill:#868585;}
+	.usrs92{fill:#858485;}
+	.usrs93{fill:#858484;}
+	.usrs94{fill:#848384;}
+	.usrs95{fill:#848383;}
+	.usrs96{fill:#838282;}
+	.usrs97{fill:#828182;}
+	.usrs98{fill:#828181;}
+	.usrs99{fill:#818081;}
+	.usrs100{fill:#818080;}
+	.usrs101{fill:#807F80;}
+	.usrs102{fill:#807F7F;}
+	.usrs103{fill:#7F7E7F;}
+	.usrs104{fill:#7F7E7E;}
+	.usrs105{fill:#7E7D7E;}
+	.usrs106{fill:#7D7D7D;}
+	.usrs107{fill:#7D7C7C;}
+	.usrs108{fill:#7C7B7C;}
+	.usrs109{fill:#7C7B7B;}
+	.usrs110{fill:#7B7A7B;}
+	.usrs111{fill:#7B7A7A;}
+	.usrs112{fill:#7A797A;}
+	.usrs113{fill:#7A7979;}
+	.usrs114{fill:#797879;}
+	.usrs115{fill:#787878;}
+	.usrs116{fill:#787778;}
+	.usrs117{fill:#777777;}
+	.usrs118{fill:#777676;}
+	.usrs119{fill:#767676;}
+	.usrs120{fill:#767575;}
+	.usrs121{fill:#757475;}
+	.usrs122{fill:#757474;}
+	.usrs123{fill:#747374;}
+	.usrs124{fill:#737373;}
+	.usrs125{fill:#737273;}
+	.usrs126{fill:#727272;}
+	.usrs127{fill:#727172;}
+	.usrs128{fill:#717171;}
+	.usrs129{fill:#717070;}
+	.usrs130{fill:#707070;}
+	.usrs131{fill:#706F6F;}
+	.usrs132{fill:#6F6E6F;}
+	.usrs133{fill:#6E6E6E;}
+	.usrs134{fill:#6E6D6E;}
+	.usrs135{fill:#6D6D6D;}
+	.usrs136{fill:#6D6C6D;}
+	.usrs137{fill:#6C6C6C;}
+	.usrs138{fill:#6C6B6C;}
+	.usrs139{fill:#6B6B6B;}
+	.usrs140{fill:#6B6A6A;}
+	.usrs141{fill:#6A6A6A;}
+	.usrs142{fill:#696969;}
+	.usrs143{fill:#686868;}
+	.usrs144{fill:#686768;}
+	.usrs145{fill:#676767;}
+	.usrs146{fill:#676667;}
+	.usrs147{fill:#666666;}
+	.usrs148{fill:#666566;}
+	.usrs149{fill:#656565;}
+	.usrs150{fill:#646464;}
+	.usrs151{fill:#636363;}
+	.usrs152{fill:#626262;}
+	.usrs153{fill:#626162;}
+	.usrs154{fill:#616161;}
+	.usrs155{fill:#616061;}
+	.usrs156{fill:#606060;}
+	.usrs157{fill:#5F5F60;}
+	.usrs158{fill:#5F5F5F;}
+	.usrs159{fill:#5E5E5E;}
+	.usrs160{fill:#5D5D5D;}
+	.usrs161{fill:#5C5C5C;}
+	.usrs162{fill:#5B5B5B;}
+	.usrs163{fill:#5A5A5B;}
+	.usrs164{fill:#5A5A5A;}
+	.usrs165{fill:#59595A;}
+	.usrs166{fill:#595959;}
+	.usrs167{fill:#585858;}
+	.usrs168{fill:#575757;}
+	.usrs169{fill:#565656;}
+	.usrs170{fill:#555656;}
+	.usrs171{fill:#555555;}
+	.usrs172{fill:#545455;}
+	.usrs173{fill:#545454;}
+	.usrs174{fill:#535353;}
+	.usrs175{fill:#525252;}
+	.usrs176{fill:#515151;}
+	.usrs177{fill:#505151;}
+	.usrs178{fill:#505050;}
+	.usrs179{fill:#4F5050;}
+	.usrs180{fill:#4F4F4F;}
+	.usrs181{fill:#4E4F4F;}
+	.usrs182{fill:#4E4E4E;}
+	.usrs183{fill:#4D4D4D;}
+	.usrs184{fill:#4C4C4C;}
+	.usrs185{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_3_);}
+	.usrs186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_4_);}
+	.usrs187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_5_);}
+	.usrs188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_6_);}
+	.usrs189{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-900);}
+	.usrs190{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.usrs191{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.usrs192{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-400);}
+	.usrs193{fill:url(#USRS_ID_7_);}
+	.usrs194{fill:url(#USRS_ID_8_);}
+	.usrs195{fill:var(--vitamui-primary-900);}
+	.usrs196{fill:url(#USRS_ID_9_);}
+	.usrs197{fill:url(#USRS_ID_10_);}
+	.usrs198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_11_);}
+	.usrs199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_12_);}
+	.usrs200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_13_);}
+	.usrs201{opacity:0.75;fill:url(#USRS_ID_14_);enable-background:new    ;}
+	.usrs202{fill-rule:evenodd;clip-rule:evenodd;fill:#353535;}
+	.usrs203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_15_);}
+	.usrs204{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+	.usrs205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_16_);}
+	.usrs206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_17_);}
+	.usrs207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_18_);}
+	.usrs208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_19_);}
+	.usrs209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_20_);}
+	.usrs210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_21_);}
+	.usrs211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_22_);}
+	.usrs212{fill:#F5F5F5;}
+	.usrs213{fill:#353535;}
+	.usrs214{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_23_);}
+	.usrs215{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_24_);}
+	.usrs216{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_25_);}
+	.usrs217{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_26_);}
+	.usrs218{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_27_);}
+	.usrs219{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_28_);}
+	.usrs220{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_29_);}
+	.usrs221{fill-rule:evenodd;clip-rule:evenodd;fill:url(#USRS_ID_30_);}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="162.1" width="165.1" x="17.6" y="19.4"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="usrs0" d="M100.2,141.4c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.5,150,54.5,141.4,100.2,141.4z"/>
+		<path class="usrs1" d="M100.2,141.8c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.2,150.1,56.6,141.8,100.2,141.8z"/>
+		<path class="usrs2" d="M100.2,139.6c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.2,147.9,56.6,139.6,100.2,139.6z"/>
+		<path class="usrs1" d="M100.2,138.5c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.2,146.7,56.6,138.5,100.2,138.5z"/>
+		<path class="usrs3" d="M100,138.5c22.9,0,43.4,2.3,57.8,6C127.7,142.6,45.3,147,25,162.9c-2.5-1.8-3.8-3.8-3.8-5.7
+			C21.1,146.7,56.6,138.5,100,138.5z"/>
+		<path class="usrs2" d="M21.2,157.1c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C21.2,157.7,21.2,157.5,21.2,157.1z"/>
+	</g>
+	<g>
+		<ellipse class="usrs4" cx="100.2" cy="157.7" rx="50.7" ry="9.4"/>
+		<ellipse class="usrs5" cx="100.2" cy="157.7" rx="50.5" ry="9.4"/>
+		<ellipse class="usrs6" cx="100.2" cy="157.7" rx="50.3" ry="9.4"/>
+		<ellipse class="usrs7" cx="100.2" cy="157.7" rx="50.2" ry="9.3"/>
+		<ellipse class="usrs8" cx="100.2" cy="157.7" rx="50" ry="9.3"/>
+		<ellipse class="usrs9" cx="100.2" cy="157.7" rx="49.8" ry="9.3"/>
+		<ellipse class="usrs10" cx="100.2" cy="157.7" rx="49.6" ry="9.2"/>
+		<ellipse class="usrs11" cx="100.2" cy="157.7" rx="49.4" ry="9.2"/>
+		<ellipse class="usrs12" cx="100.2" cy="157.7" rx="49.3" ry="9.2"/>
+		<ellipse class="usrs13" cx="100.2" cy="157.7" rx="49.1" ry="9.1"/>
+		<ellipse class="usrs14" cx="100.2" cy="157.7" rx="48.9" ry="9.1"/>
+		<ellipse class="usrs15" cx="100.2" cy="157.7" rx="48.7" ry="9.1"/>
+		<ellipse class="usrs16" cx="100.2" cy="157.7" rx="48.6" ry="9"/>
+		<ellipse class="usrs17" cx="100.2" cy="157.7" rx="48.4" ry="9"/>
+		<ellipse class="usrs17" cx="100.2" cy="157.7" rx="48.2" ry="9"/>
+		<ellipse class="usrs18" cx="100.2" cy="157.7" rx="48" ry="8.9"/>
+		<ellipse class="usrs19" cx="100.2" cy="157.7" rx="47.8" ry="8.9"/>
+		<ellipse class="usrs20" cx="100.2" cy="157.7" rx="47.7" ry="8.9"/>
+		<ellipse class="usrs21" cx="100.2" cy="157.7" rx="47.5" ry="8.8"/>
+		<ellipse class="usrs22" cx="100.2" cy="157.7" rx="47.3" ry="8.8"/>
+		<ellipse class="usrs23" cx="100.2" cy="157.7" rx="47.1" ry="8.8"/>
+		<ellipse class="usrs24" cx="100.2" cy="157.7" rx="47" ry="8.7"/>
+		<ellipse class="usrs25" cx="100.2" cy="157.7" rx="46.8" ry="8.7"/>
+		<ellipse class="usrs25" cx="100.2" cy="157.7" rx="46.6" ry="8.7"/>
+		<ellipse class="usrs26" cx="100.2" cy="157.7" rx="46.4" ry="8.6"/>
+		<ellipse class="usrs26" cx="100.2" cy="157.7" rx="46.2" ry="8.6"/>
+		<ellipse class="usrs27" cx="100.2" cy="157.7" rx="46.1" ry="8.6"/>
+		<ellipse class="usrs28" cx="100.2" cy="157.7" rx="45.9" ry="8.5"/>
+		<ellipse class="usrs29" cx="100.2" cy="157.7" rx="45.7" ry="8.5"/>
+		<ellipse class="usrs30" cx="100.2" cy="157.7" rx="45.5" ry="8.5"/>
+		<ellipse class="usrs31" cx="100.2" cy="157.7" rx="45.4" ry="8.5"/>
+		<ellipse class="usrs32" cx="100.2" cy="157.7" rx="45.2" ry="8.4"/>
+		<ellipse class="usrs32" cx="100.2" cy="157.7" rx="45" ry="8.4"/>
+		<ellipse class="usrs33" cx="100.2" cy="157.7" rx="44.8" ry="8.4"/>
+		<ellipse class="usrs33" cx="100.2" cy="157.7" rx="44.6" ry="8.3"/>
+		<ellipse class="usrs34" cx="100.2" cy="157.7" rx="44.5" ry="8.3"/>
+		<ellipse class="usrs34" cx="100.2" cy="157.7" rx="44.3" ry="8.3"/>
+		<ellipse class="usrs35" cx="100.2" cy="157.7" rx="44.1" ry="8.2"/>
+		<ellipse class="usrs36" cx="100.2" cy="157.7" rx="43.9" ry="8.2"/>
+		<ellipse class="usrs37" cx="100.2" cy="157.7" rx="43.8" ry="8.2"/>
+		<ellipse class="usrs38" cx="100.2" cy="157.7" rx="43.6" ry="8.1"/>
+		<ellipse class="usrs39" cx="100.2" cy="157.7" rx="43.4" ry="8.1"/>
+		<ellipse class="usrs40" cx="100.2" cy="157.7" rx="43.2" ry="8.1"/>
+		<ellipse class="usrs40" cx="100.2" cy="157.7" rx="43" ry="8"/>
+		<ellipse class="usrs41" cx="100.2" cy="157.7" rx="42.9" ry="8"/>
+		<ellipse class="usrs41" cx="100.2" cy="157.7" rx="42.7" ry="8"/>
+		<ellipse class="usrs42" cx="100.2" cy="157.7" rx="42.5" ry="7.9"/>
+		<ellipse class="usrs42" cx="100.2" cy="157.7" rx="42.3" ry="7.9"/>
+		<ellipse class="usrs43" cx="100.2" cy="157.7" rx="42.2" ry="7.9"/>
+		<ellipse class="usrs44" cx="100.2" cy="157.7" rx="42" ry="7.8"/>
+		<ellipse class="usrs45" cx="100.2" cy="157.7" rx="41.8" ry="7.8"/>
+		<ellipse class="usrs46" cx="100.2" cy="157.7" rx="41.6" ry="7.8"/>
+		<ellipse class="usrs47" cx="100.2" cy="157.7" rx="41.4" ry="7.7"/>
+		<ellipse class="usrs48" cx="100.2" cy="157.7" rx="41.3" ry="7.7"/>
+		<ellipse class="usrs49" cx="100.2" cy="157.7" rx="41.1" ry="7.7"/>
+		<ellipse class="usrs50" cx="100.2" cy="157.7" rx="40.9" ry="7.6"/>
+		<ellipse class="usrs50" cx="100.2" cy="157.7" rx="40.7" ry="7.6"/>
+		<ellipse class="usrs51" cx="100.2" cy="157.7" rx="40.6" ry="7.6"/>
+		<ellipse class="usrs52" cx="100.2" cy="157.7" rx="40.4" ry="7.5"/>
+		<ellipse class="usrs53" cx="100.2" cy="157.7" rx="40.2" ry="7.5"/>
+		<ellipse class="usrs54" cx="100.2" cy="157.7" rx="40" ry="7.5"/>
+		<ellipse class="usrs55" cx="100.2" cy="157.7" rx="39.8" ry="7.4"/>
+		<ellipse class="usrs56" cx="100.2" cy="157.7" rx="39.7" ry="7.4"/>
+		<ellipse class="usrs57" cx="100.2" cy="157.7" rx="39.5" ry="7.4"/>
+		<ellipse class="usrs58" cx="100.2" cy="157.7" rx="39.3" ry="7.3"/>
+		<ellipse class="usrs59" cx="100.2" cy="157.7" rx="39.1" ry="7.3"/>
+		<ellipse class="usrs60" cx="100.2" cy="157.7" rx="38.9" ry="7.3"/>
+		<ellipse class="usrs61" cx="100.2" cy="157.7" rx="38.8" ry="7.2"/>
+		<ellipse class="usrs62" cx="100.2" cy="157.7" rx="38.6" ry="7.2"/>
+		<ellipse class="usrs63" cx="100.2" cy="157.7" rx="38.4" ry="7.2"/>
+		<ellipse class="usrs64" cx="100.2" cy="157.7" rx="38.2" ry="7.1"/>
+		<ellipse class="usrs65" cx="100.2" cy="157.7" rx="38.1" ry="7.1"/>
+		<ellipse class="usrs66" cx="100.2" cy="157.7" rx="37.9" ry="7.1"/>
+		<ellipse class="usrs67" cx="100.2" cy="157.7" rx="37.7" ry="7"/>
+		<ellipse class="usrs68" cx="100.2" cy="157.7" rx="37.5" ry="7"/>
+		<ellipse class="usrs69" cx="100.2" cy="157.7" rx="37.3" ry="7"/>
+		<ellipse class="usrs70" cx="100.2" cy="157.7" rx="37.2" ry="6.9"/>
+		<ellipse class="usrs71" cx="100.2" cy="157.7" rx="37" ry="6.9"/>
+		<ellipse class="usrs72" cx="100.2" cy="157.7" rx="36.8" ry="6.9"/>
+		<ellipse class="usrs73" cx="100.2" cy="157.7" rx="36.6" ry="6.8"/>
+		<ellipse class="usrs74" cx="100.2" cy="157.7" rx="36.5" ry="6.8"/>
+		<ellipse class="usrs75" cx="100.2" cy="157.7" rx="36.3" ry="6.8"/>
+		<ellipse class="usrs76" cx="100.2" cy="157.7" rx="36.1" ry="6.7"/>
+		<ellipse class="usrs77" cx="100.2" cy="157.7" rx="35.9" ry="6.7"/>
+		<ellipse class="usrs78" cx="100.2" cy="157.7" rx="35.7" ry="6.7"/>
+		<ellipse class="usrs79" cx="100.2" cy="157.7" rx="35.6" ry="6.6"/>
+		<ellipse class="usrs80" cx="100.2" cy="157.7" rx="35.4" ry="6.6"/>
+		<ellipse class="usrs81" cx="100.2" cy="157.7" rx="35.2" ry="6.6"/>
+		<ellipse class="usrs82" cx="100.2" cy="157.7" rx="35" ry="6.5"/>
+		<ellipse class="usrs83" cx="100.2" cy="157.7" rx="34.9" ry="6.5"/>
+		<ellipse class="usrs84" cx="100.2" cy="157.7" rx="34.7" ry="6.5"/>
+		<ellipse class="usrs85" cx="100.2" cy="157.7" rx="34.5" ry="6.4"/>
+		<ellipse class="usrs86" cx="100.2" cy="157.7" rx="34.3" ry="6.4"/>
+		<ellipse class="usrs87" cx="100.2" cy="157.7" rx="34.1" ry="6.4"/>
+		<ellipse class="usrs88" cx="100.2" cy="157.7" rx="34" ry="6.3"/>
+		<ellipse class="usrs89" cx="100.2" cy="157.7" rx="33.8" ry="6.3"/>
+		<ellipse class="usrs90" cx="100.2" cy="157.7" rx="33.6" ry="6.3"/>
+		<ellipse class="usrs91" cx="100.2" cy="157.7" rx="33.4" ry="6.2"/>
+		<ellipse class="usrs92" cx="100.2" cy="157.7" rx="33.3" ry="6.2"/>
+		<ellipse class="usrs93" cx="100.2" cy="157.7" rx="33.1" ry="6.2"/>
+		<ellipse class="usrs94" cx="100.2" cy="157.7" rx="32.9" ry="6.1"/>
+		<ellipse class="usrs95" cx="100.2" cy="157.7" rx="32.7" ry="6.1"/>
+		<ellipse class="usrs96" cx="100.2" cy="157.7" rx="32.5" ry="6.1"/>
+		<ellipse class="usrs97" cx="100.2" cy="157.7" rx="32.4" ry="6"/>
+		<ellipse class="usrs98" cx="100.2" cy="157.7" rx="32.2" ry="6"/>
+		<ellipse class="usrs99" cx="100.2" cy="157.7" rx="32" ry="6"/>
+		<ellipse class="usrs100" cx="100.2" cy="157.7" rx="31.8" ry="5.9"/>
+		<ellipse class="usrs101" cx="100.2" cy="157.7" rx="31.7" ry="5.9"/>
+		<ellipse class="usrs102" cx="100.2" cy="157.7" rx="31.5" ry="5.9"/>
+		<ellipse class="usrs103" cx="100.2" cy="157.7" rx="31.3" ry="5.8"/>
+		<ellipse class="usrs104" cx="100.2" cy="157.7" rx="31.1" ry="5.8"/>
+		<ellipse class="usrs105" cx="100.2" cy="157.7" rx="30.9" ry="5.8"/>
+		<ellipse class="usrs106" cx="100.2" cy="157.7" rx="30.8" ry="5.7"/>
+		<ellipse class="usrs107" cx="100.2" cy="157.7" rx="30.6" ry="5.7"/>
+		<ellipse class="usrs108" cx="100.2" cy="157.7" rx="30.4" ry="5.7"/>
+		<ellipse class="usrs109" cx="100.2" cy="157.7" rx="30.2" ry="5.6"/>
+		<ellipse class="usrs110" cx="100.2" cy="157.7" rx="30.1" ry="5.6"/>
+		<ellipse class="usrs111" cx="100.2" cy="157.7" rx="29.9" ry="5.6"/>
+		<ellipse class="usrs112" cx="100.2" cy="157.7" rx="29.7" ry="5.5"/>
+		<ellipse class="usrs113" cx="100.2" cy="157.7" rx="29.5" ry="5.5"/>
+		<ellipse class="usrs114" cx="100.2" cy="157.7" rx="29.3" ry="5.5"/>
+		<ellipse class="usrs115" cx="100.2" cy="157.7" rx="29.2" ry="5.4"/>
+		<ellipse class="usrs116" cx="100.2" cy="157.7" rx="29" ry="5.4"/>
+		<ellipse class="usrs117" cx="100.2" cy="157.7" rx="28.8" ry="5.4"/>
+		<ellipse class="usrs118" cx="100.2" cy="157.7" rx="28.6" ry="5.3"/>
+		<ellipse class="usrs119" cx="100.2" cy="157.7" rx="28.4" ry="5.3"/>
+		<ellipse class="usrs120" cx="100.2" cy="157.7" rx="28.3" ry="5.3"/>
+		<ellipse class="usrs121" cx="100.2" cy="157.7" rx="28.1" ry="5.2"/>
+		<ellipse class="usrs122" cx="100.2" cy="157.7" rx="27.9" ry="5.2"/>
+		<ellipse class="usrs123" cx="100.2" cy="157.7" rx="27.7" ry="5.2"/>
+		<ellipse class="usrs124" cx="100.2" cy="157.7" rx="27.6" ry="5.1"/>
+		<ellipse class="usrs125" cx="100.2" cy="157.7" rx="27.4" ry="5.1"/>
+		<ellipse class="usrs126" cx="100.2" cy="157.7" rx="27.2" ry="5.1"/>
+		<ellipse class="usrs127" cx="100.2" cy="157.7" rx="27" ry="5"/>
+		<ellipse class="usrs128" cx="100.2" cy="157.7" rx="26.8" ry="5"/>
+		<ellipse class="usrs129" cx="100.2" cy="157.7" rx="26.7" ry="5"/>
+		<ellipse class="usrs130" cx="100.2" cy="157.7" rx="26.5" ry="4.9"/>
+		<ellipse class="usrs131" cx="100.2" cy="157.7" rx="26.3" ry="4.9"/>
+		<ellipse class="usrs132" cx="100.2" cy="157.7" rx="26.1" ry="4.9"/>
+		<ellipse class="usrs133" cx="100.2" cy="157.7" rx="26" ry="4.8"/>
+		<ellipse class="usrs134" cx="100.2" cy="157.7" rx="25.8" ry="4.8"/>
+		<ellipse class="usrs135" cx="100.2" cy="157.7" rx="25.6" ry="4.8"/>
+		<ellipse class="usrs136" cx="100.2" cy="157.7" rx="25.4" ry="4.7"/>
+		<ellipse class="usrs137" cx="100.2" cy="157.7" rx="25.2" ry="4.7"/>
+		<ellipse class="usrs138" cx="100.2" cy="157.7" rx="25.1" ry="4.7"/>
+		<ellipse class="usrs139" cx="100.2" cy="157.7" rx="24.9" ry="4.6"/>
+		<ellipse class="usrs140" cx="100.2" cy="157.7" rx="24.7" ry="4.6"/>
+		<ellipse class="usrs141" cx="100.2" cy="157.7" rx="24.5" ry="4.6"/>
+		<ellipse class="usrs142" cx="100.2" cy="157.7" rx="24.4" ry="4.5"/>
+		<ellipse class="usrs142" cx="100.2" cy="157.7" rx="24.2" ry="4.5"/>
+		<ellipse class="usrs143" cx="100.2" cy="157.7" rx="24" ry="4.5"/>
+		<ellipse class="usrs144" cx="100.2" cy="157.7" rx="23.8" ry="4.4"/>
+		<ellipse class="usrs145" cx="100.2" cy="157.7" rx="23.6" ry="4.4"/>
+		<ellipse class="usrs146" cx="100.2" cy="157.7" rx="23.5" ry="4.4"/>
+		<ellipse class="usrs147" cx="100.2" cy="157.7" rx="23.3" ry="4.3"/>
+		<ellipse class="usrs148" cx="100.2" cy="157.7" rx="23.1" ry="4.3"/>
+		<ellipse class="usrs149" cx="100.2" cy="157.7" rx="22.9" ry="4.3"/>
+		<ellipse class="usrs150" cx="100.2" cy="157.7" rx="22.8" ry="4.2"/>
+		<ellipse class="usrs150" cx="100.2" cy="157.7" rx="22.6" ry="4.2"/>
+		<ellipse class="usrs151" cx="100.2" cy="157.7" rx="22.4" ry="4.2"/>
+		<ellipse class="usrs151" cx="100.2" cy="157.7" rx="22.2" ry="4.1"/>
+		<ellipse class="usrs152" cx="100.2" cy="157.7" rx="22" ry="4.1"/>
+		<ellipse class="usrs153" cx="100.2" cy="157.7" rx="21.9" ry="4.1"/>
+		<ellipse class="usrs154" cx="100.2" cy="157.7" rx="21.7" ry="4"/>
+		<ellipse class="usrs155" cx="100.2" cy="157.7" rx="21.5" ry="4"/>
+		<ellipse class="usrs156" cx="100.2" cy="157.7" rx="21.3" ry="4"/>
+		<ellipse class="usrs157" cx="100.2" cy="157.7" rx="21.2" ry="3.9"/>
+		<ellipse class="usrs158" cx="100.2" cy="157.7" rx="21" ry="3.9"/>
+		<ellipse class="usrs159" cx="100.2" cy="157.7" rx="20.8" ry="3.9"/>
+		<ellipse class="usrs159" cx="100.2" cy="157.7" rx="20.6" ry="3.8"/>
+		<ellipse class="usrs160" cx="100.2" cy="157.7" rx="20.4" ry="3.8"/>
+		<ellipse class="usrs160" cx="100.2" cy="157.7" rx="20.3" ry="3.8"/>
+		<ellipse class="usrs161" cx="100.2" cy="157.7" rx="20.1" ry="3.7"/>
+		<ellipse class="usrs161" cx="100.2" cy="157.7" rx="19.9" ry="3.7"/>
+		<ellipse class="usrs162" cx="100.2" cy="157.7" rx="19.7" ry="3.7"/>
+		<ellipse class="usrs163" cx="100.2" cy="157.7" rx="19.6" ry="3.6"/>
+		<ellipse class="usrs164" cx="100.2" cy="157.7" rx="19.4" ry="3.6"/>
+		<ellipse class="usrs165" cx="100.2" cy="157.7" rx="19.2" ry="3.6"/>
+		<ellipse class="usrs166" cx="100.2" cy="157.7" rx="19" ry="3.5"/>
+		<ellipse class="usrs167" cx="100.2" cy="157.7" rx="18.8" ry="3.5"/>
+		<ellipse class="usrs167" cx="100.2" cy="157.7" rx="18.7" ry="3.5"/>
+		<ellipse class="usrs168" cx="100.2" cy="157.7" rx="18.5" ry="3.4"/>
+		<ellipse class="usrs168" cx="100.2" cy="157.7" rx="18.3" ry="3.4"/>
+		<ellipse class="usrs169" cx="100.2" cy="157.7" rx="18.1" ry="3.4"/>
+		<ellipse class="usrs170" cx="100.2" cy="157.7" rx="17.9" ry="3.3"/>
+		<ellipse class="usrs171" cx="100.2" cy="157.7" rx="17.8" ry="3.3"/>
+		<ellipse class="usrs172" cx="100.2" cy="157.7" rx="17.6" ry="3.3"/>
+		<ellipse class="usrs173" cx="100.2" cy="157.7" rx="17.4" ry="3.2"/>
+		<ellipse class="usrs174" cx="100.2" cy="157.7" rx="17.2" ry="3.2"/>
+		<ellipse class="usrs174" cx="100.2" cy="157.7" rx="17.1" ry="3.2"/>
+		<ellipse class="usrs175" cx="100.2" cy="157.7" rx="16.9" ry="3.1"/>
+		<ellipse class="usrs175" cx="100.2" cy="157.7" rx="16.7" ry="3.1"/>
+		<ellipse class="usrs176" cx="100.2" cy="157.7" rx="16.5" ry="3.1"/>
+		<ellipse class="usrs177" cx="100.2" cy="157.7" rx="16.3" ry="3"/>
+		<ellipse class="usrs178" cx="100.2" cy="157.7" rx="16.2" ry="3"/>
+		<ellipse class="usrs179" cx="100.2" cy="157.7" rx="16" ry="3"/>
+		<ellipse class="usrs180" cx="100.2" cy="157.7" rx="15.8" ry="2.9"/>
+		<ellipse class="usrs181" cx="100.2" cy="157.7" rx="15.6" ry="2.9"/>
+		<ellipse class="usrs182" cx="100.2" cy="157.7" rx="15.5" ry="2.9"/>
+		<ellipse class="usrs183" cx="100.2" cy="157.7" rx="15.3" ry="2.8"/>
+		<ellipse class="usrs183" cx="100.2" cy="157.7" rx="15.1" ry="2.8"/>
+		<ellipse class="usrs184" cx="100.2" cy="157.7" rx="14.9" ry="2.8"/>
+	</g>
+	<linearGradient id="USRS_ID_3_" gradientUnits="userSpaceOnUse" x1="100.2528" y1="174.1387" x2="100.2528" y2="167.8352">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+		<stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+	<path class="usrs185" d="M75.4,170.2l-0.2,4.6h50.1l-0.8-5.1c-0.3-1.6-1.6-2.9-3.3-2.9H78.7C76.9,167,75.4,168.5,75.4,170.2z"/>
+	<linearGradient id="USRS_ID_4_" gradientUnits="userSpaceOnUse" x1="100.2528" y1="173.7457" x2="100.2528" y2="177.7871">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+		<stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+	<polygon class="usrs186" points="75.2,174.9 75.7,179.1 99.2,180.2 124.7,179.1 125.3,174.9 	"/>
+	<linearGradient id="USRS_ID_5_" gradientUnits="userSpaceOnUse" x1="87.2175" y1="173.6965" x2="87.2175" y2="162.5271">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+		<stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+	<path class="usrs187" d="M75.4,170.3l-0.2,4.6h18.2l5.8-8H78.8C76.9,166.9,75.4,168.5,75.4,170.3z"/>
+	
+		<linearGradient id="USRS_ID_6_" gradientUnits="userSpaceOnUse" x1="84.2335" y1="-565.5381" x2="84.2335" y2="-570.3887" gradientTransform="matrix(1 0 0 -1 0 -390.6143)">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+		<stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+	<polygon class="usrs188" points="75.2,174.9 75.7,179.1 84.5,179.6 91.5,175.8 93.3,174.9 	"/>
+	<path class="usrs0" d="M117.6,168.7c2,0,3.6,0.5,3.6,1.1c0,0.6-1.7,1.1-3.6,1.1s-3.6-0.5-3.6-1.1C114,169.2,115.6,168.7,117.6,168.7z
+		"/>
+	<path class="usrs189" d="M117.6,168.7c1.9,0,3.3,0.5,3.3,0.9s-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9S115.9,168.7,117.6,168.7z"/>
+	<path class="usrs190" d="M117.6,169.1c1.4,0,2.7,0.3,2.7,0.8s-1.3,0.8-2.7,0.8s-2.7-0.3-2.7-0.8C115.1,169.4,116.2,169.1,117.6,169.1
+		z"/>
+	<path class="usrs191" d="M117.6,169.2c0.9,0,1.7,0.3,1.7,0.6s-0.8,0.6-1.7,0.6s-1.7-0.3-1.7-0.6S116.7,169.2,117.6,169.2z"/>
+	<path class="usrs192" d="M117.6,169.2c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5s-1.6-0.2-1.6-0.5
+		C116,169.4,116.8,169.2,117.6,169.2z"/>
+	<path class="usrs0" d="M107.9,168.7c2,0,3.6,0.5,3.6,1.1c0,0.6-1.7,1.1-3.6,1.1c-1.9,0-3.6-0.5-3.6-1.1
+		C104.3,169.2,105.8,168.7,107.9,168.7z"/>
+	<path class="usrs189" d="M107.9,168.7c1.7,0,3.3,0.5,3.3,0.9s-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9
+		C104.7,169.2,106.1,168.7,107.9,168.7z"/>
+	<path class="usrs190" d="M107.9,169.1c1.4,0,2.7,0.3,2.7,0.8s-1.3,0.8-2.7,0.8c-1.4,0-2.7-0.3-2.7-0.8
+		C105.4,169.4,106.5,169.1,107.9,169.1z"/>
+	<path class="usrs191" d="M107.9,169.2c0.9,0,1.7,0.3,1.7,0.6s-0.8,0.6-1.7,0.6c-0.9,0-1.7-0.3-1.7-0.6S106.9,169.2,107.9,169.2z"/>
+	<path class="usrs192" d="M107.9,169.2c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5c-0.9,0-1.6-0.2-1.6-0.5
+		C106.3,169.4,107.1,169.2,107.9,169.2z"/>
+	<path class="usrs0" d="M81.6,178.3c2,0,3.6-0.6,3.6-1.4s-1.7-1.4-3.6-1.4c-2,0-3.6,0.6-3.6,1.4S79.6,178.3,81.6,178.3z"/>
+	<path class="usrs189" d="M81.6,178.2c1.9,0,3.3-0.5,3.3-1.3c0-0.6-1.4-1.3-3.3-1.3c-1.7,0-3.3,0.5-3.3,1.3
+		C78.3,177.5,79.8,178.2,81.6,178.2z"/>
+	<path class="usrs190" d="M81.6,177.9c1.4,0,2.7-0.5,2.7-0.9s-1.3-0.9-2.7-0.9s-2.7,0.5-2.7,0.9S80.2,177.9,81.6,177.9z"/>
+	<path class="usrs192" d="M81.6,177.5c0.9,0,1.6-0.3,1.6-0.6s-0.6-0.6-1.6-0.6c-0.9,0-1.6,0.3-1.6,0.6
+		C80.1,177.4,80.9,177.5,81.6,177.5z"/>
+</g>
+<g>
+	<linearGradient id="USRS_ID_7_" gradientUnits="userSpaceOnUse" x1="100.8019" y1="191.3807" x2="100.8019" y2="92.0237">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+	</linearGradient>
+	<path class="usrs193" d="M159.9,100.6c-2.3-3.1-6.5-4.3-9.9-5.9c-7-2.8-14-6-20.9-9.8v0c-1.1-0.6-2.2-1.2-3.3-1.8
+		c-4.6-2.6-9.9-8.8-11.4-12.1h-13.6H87.2c-1.5,3.3-6.8,9.5-11.4,12.1c-0.8,0.5-1.6,0.9-2.5,1.4l-2,1.1c-6.5,3.5-13.1,6.5-19.7,9.1
+		c-3.4,1.6-7.6,2.8-9.9,5.9c-1.8,4-3.2,10.4-3.9,18.4c2.8,10.2,9.9,19.2,19.8,26c0,0,0,0,0,0l1.8-32l0-0.3l1,12.5l0,0.2l0-0.2l0,0.5
+		l2.7,22.7c4.6,2.5,9.7,4.6,15.2,6.1c7,1.9,14.5,3,22.3,3c7.8,0,15.3-1.1,22.3-3c5.5-1.5,10.6-3.6,15.2-6.1l2.6-21.8l0-1.4l1-12.5
+		l0,0.3l1.8,32.1c0,0,0,0,0,0c10-6.7,17.1-15.8,19.9-26C163,111,161.7,104.6,159.9,100.6z"/>
+	<linearGradient id="USRS_ID_8_" gradientUnits="userSpaceOnUse" x1="100.8019" y1="60.2469" x2="100.8019" y2="125.255">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+	</linearGradient>
+	<path class="usrs194" d="M93.5,106c4.9,0.7,9.8,0.7,14.7,0c10-2.1,15.3-12.1,20.9-21.1c-1.1-0.6-2.2-1.2-3.3-1.8
+		c-4.6-2.6-9.9-8.8-11.4-12.1h-13.6H87.2c-1.5,3.3-6.8,9.5-11.4,12.1c-1.1,0.6-2.2,1.2-3.3,1.8C78.1,93.9,83.4,103.9,93.5,106z
+		 M87.8,71.8h3c6.8,2.7,13.4,2.5,20.1,0h2.9c0.9,2.1,3.3,5.3,6.1,8.1c-1.6,10.1-7.8,12.1-19.1,21.6c-11.8-9.8-17.2-11.8-18.8-21.6
+		C84.6,77,86.9,73.8,87.8,71.8z"/>
+	<g>
+		<path class="usrs195" d="M60.6,125.3l0-0.2l-1-12.2l-1.8,32c1.1,0.7,2.3,1.5,3.4,2.2l-0.6-21.5L60.6,125.3z"/>
+		<path class="usrs195" d="M143.8,145l-1.8-32.1l-1,12.2l0,1.4l0.2-1.4l-0.6,22C141.7,146.4,142.8,145.7,143.8,145z"/>
+	</g>
+	<linearGradient id="USRS_ID_9_" gradientUnits="userSpaceOnUse" x1="99.6686" y1="109.6118" x2="101.592" y2="58.9949">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+		<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
+	</linearGradient>
+	<path class="usrs196" d="M100.7,101.4c-11.8-9.8-17.2-11.8-18.8-21.6c2.7-2.7,5.1-5.9,6-8h3c6.8,2.7,13.4,2.5,20.1,0h2.9
+		c0.9,2.1,3.3,5.3,6.1,8.1C118.2,89.9,112,91.9,100.7,101.4z"/>
+	<linearGradient id="USRS_ID_10_" gradientUnits="userSpaceOnUse" x1="100.8019" y1="78.3125" x2="100.8019" y2="93.3002">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+		<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+	</linearGradient>
+	<path class="usrs197" d="M118.4,80c-2.6-2.5-4.8-5.4-5.6-7.2h-2.7c-6.1,2.2-12.3,2.4-18.6,0h-2.8c-0.8,1.9-3,4.7-5.6,7.2
+		c1.5,8.9,6.6,10.6,17.5,19.5C111.2,90.9,116.9,89.1,118.4,80z"/>
+	<g>
+		<linearGradient id="USRS_ID_11_" gradientUnits="userSpaceOnUse" x1="74.3046" y1="23.1533" x2="130.2565" y2="80.9564">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<path class="usrs198" d="M125.6,38.3c0-0.4,0-0.7-0.1-1.1c-0.9-10.4-11.6-18.7-24.6-18.7c-12.7,0-23.2,7.8-24.6,17.9
+			C76.1,37,76,37.6,76,38.3c-0.2,11.1-2.1,23.5,2.5,30.4c5.2,7.7,8.7,15.3,17.2,17c3.3,0.5,6.7,0.5,10,0c8.5-1.8,12-9.3,17.2-17
+			C127.7,61.8,125.7,49.5,125.6,38.3z"/>
+		<g>
+			
+				<linearGradient id="USRS_ID_12_" gradientUnits="userSpaceOnUse" x1="-20760.0332" y1="-3493.6172" x2="-20754.7441" y2="-3478.9739" gradientTransform="matrix(-1 0 0 -1 -20658 -3455.3984)">
+				<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+				<stop  offset="1" style="stop-color:#FFFFFF"/>
+			</linearGradient>
+			<ellipse class="usrs199" cx="100.8" cy="34.8" rx="19.9" ry="12"/>
+			<linearGradient id="USRS_ID_13_" gradientUnits="userSpaceOnUse" x1="100.0009" y1="47.518" x2="133.5309" y2="56.3633">
+				<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+				<stop  offset="1" style="stop-color:#FFFFFF"/>
+			</linearGradient>
+			<path class="usrs200" d="M117.2,28c6.9,5,3.3,19.7-6.7,31c-8.6,9.7-18.8,13.1-23.7,8.8c-4.8-4.2-3.6-15,3.3-25.4
+				C97.9,30.5,110.5,23.2,117.2,28z"/>
+		</g>
+	</g>
+	<linearGradient id="USRS_ID_14_" gradientUnits="userSpaceOnUse" x1="100.8568" y1="119.0353" x2="101.698" y2="85.9376">
+		<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+		<stop  offset="1" style="stop-color:#FFFFFF"/>
+	</linearGradient>
+	<path class="usrs201" d="M104.8,112.9c-20.3-0.9-38.5,2.8-37.6,8.2c0.9,5.2,19.3,8.9,38.4,8.5c16.6-0.4,28.7-3.8,28.8-7.8
+		C134.6,117.6,122.3,113.7,104.8,112.9z"/>
+</g>
+<g>
+	<g>
+		<g>
+			<path class="usrs202" d="M74.2,162.7h-5.3V160c-1.4-0.2-2.7-0.4-4-0.7l-1,2.6l-5.1-1.9l1-2.6c-1.2-0.6-2.4-1.2-3.5-2l-1.7,2.1
+				l-4.1-3.5l1.7-2.1c-1-1-1.9-2-2.6-3.1l-2.4,1.4l-2.7-4.7l2.4-1.4c-0.5-1.2-1-2.5-1.4-3.8l-2.7,0.5l-1-5.3l2.7-0.5
+				c-0.1-0.6-0.1-1.2-0.1-2c0-0.6,0.1-1.4,0.1-2l-2.7-0.5l1-5.3l2.7,0.5c0.4-1.4,0.9-2.6,1.4-3.8l-2.4-1.4l2.7-4.7l2.4,1.4
+				c0.9-1.1,1.6-2.1,2.6-3.1l-1.7-2.1l4.1-3.5l1.7,2.1c1.1-0.7,2.2-1.4,3.5-2l-1-2.6l5.1-1.9l1,2.6c1.2-0.4,2.6-0.6,4-0.7v-2.7h5.3
+				v2.7c1.4,0.2,2.7,0.4,4,0.7l1-2.6l5.1,1.9l-1,2.6c1.2,0.5,2.4,1.2,3.5,2l1.7-2.1l4.1,3.5l-1.7,2.1c1,1,1.9,2,2.6,3.1l2.4-1.4
+				l2.7,4.7l-2.4,1.4c0.5,1.2,1,2.5,1.4,3.8l2.7-0.5l1,5.3l-2.7,0.5c0.1,0.6,0.1,1.2,0.1,2c0,0.6-0.1,1.4-0.1,2l2.7,0.5l-1,5.3
+				l-2.7-0.5c-0.4,1.4-0.9,2.6-1.4,3.8l2.4,1.4l-2.7,4.7l-2.4-1.4c-0.9,1.1-1.6,2.1-2.6,3.1l1.7,2.1l-4.1,3.5l-1.7-2.1
+				c-1.1,0.7-2.2,1.4-3.5,2l1,2.6l-5.1,1.9l-1-2.6c-1.2,0.4-2.6,0.6-4,0.7V162.7L74.2,162.7z"/>
+		</g>
+		<g>
+			<g>
+				<polyline class="usrs0" points="95.8,146.8 93.3,145.5 93.3,148.9 95.8,150.3 95.8,146.8 				"/>
+			</g>
+			<g>
+				<polyline points="88.4,154.1 86.7,152 86.7,155.4 88.4,157.6 88.4,154.1 				"/>
+			</g>
+			<g>
+				<polygon points="79.1,161.8 78.1,159.3 78.1,155.9 79.1,158.5 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="64.9,159.3 63.9,161.8 63.9,158.5 64.9,155.9 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="56.3,152 56.3,155.4 54.6,157.6 54.6,154.1 56.3,152 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="49.6,145.5 49.6,148.9 47.1,150.3 47.1,146.8 49.6,145.5 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="45.5,137 45.5,140.5 42.8,140.9 42.8,137.5 45.5,137 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="44.5,127.6 44.5,131.1 41.9,130.6 41.9,127.3 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="46.9,118.6 45.8,121.4 44.5,120.7 44.5,117.2 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="52.2,110.9 50.6,112.5 50.4,112.3 50.4,108.8 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="98.4,127.6 98.4,131.1 101.2,130.6 101.2,127.3 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="98.4,120.7 97.2,121.4 96.1,118.6 98.4,117.2 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="90.7,110.9 92.4,112.5 92.6,112.3 92.6,108.8 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="100.2,137.5 100.2,140.9 97.4,140.5 97.4,137 100.2,137.5 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="83.2,105.3 83.9,105.8 84.2,102.9 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="59,105.7 59.8,105.3 58.8,102.9 				"/>
+			</g>
+		</g>
+		<g>
+			
+				<linearGradient id="USRS_ID_15_" gradientUnits="userSpaceOnUse" x1="6529.4512" y1="10618.7256" x2="6562.3828" y2="10667.1309" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="usrs203" d="M74.2,159.6h-5.3v-2.7c-1.4-0.2-2.7-0.4-4-0.7l-1,2.6l-5.1-1.9l1-2.6c-1.2-0.6-2.4-1.2-3.5-2l-1.7,2.1
+				l-4.1-3.5l1.7-2.1c-1-1-1.9-2-2.6-3.1l-2.4,1.4l-2.7-4.7l2.4-1.4c-0.5-1.2-1-2.5-1.4-3.8l-2.7,0.5l-1-5.3l2.7-0.5
+				c-0.1-0.6-0.1-1.2-0.1-2c0-0.6,0.1-1.4,0.1-2l-2.7-0.5l1-5.3l2.7,0.5c0.4-1.4,0.9-2.6,1.4-3.8l-2.4-1.4l2.7-4.7l2.4,1.4
+				c0.9-1.1,1.6-2.1,2.6-3.1l-1.7-2.1l4.1-3.5l1.7,2.1c1.1-0.7,2.2-1.4,3.5-2l-1-2.6l5.1-1.9l1,2.6c1.2-0.4,2.6-0.6,4-0.7v-2.7h5.3
+				v2.5c1.4,0.2,2.7,0.4,4,0.7l1-2.6l5.1,1.9l-1,2.6c1.2,0.5,2.4,1.2,3.5,2l1.7-2.1l4.1,3.5l-1.7,2.1c1,1,1.9,2,2.6,3.1l2.4-1.4
+				l2.7,4.7l-2.4,1.4c0.5,1.2,1,2.5,1.4,3.8l2.7-0.5l1,5.3l-2.7,0.5c0.1,0.6,0.1,1.2,0.1,2c0,0.6-0.1,1.4-0.1,2l2.7,0.5l-1,5.3
+				l-2.7-0.5c-0.4,1.4-0.9,2.6-1.4,3.8l2.4,1.4l-2.7,4.7l-2.4-1.4c-0.9,1.1-1.6,2.1-2.6,3.1l1.7,2.1l-4.1,3.5l-1.7-2.1
+				c-1.1,0.7-2.2,1.4-3.5,2l1,2.6l-5.1,1.9l-1-2.6c-1.2,0.4-2.6,0.6-4,0.7v2.7"/>
+		</g>
+		<ellipse class="usrs202" cx="71.5" cy="130" rx="24.3" ry="23.4"/>
+		<path class="usrs204" d="M92.5,129.9c0,11.1-9.4,20.2-20.9,20.2c-11.5,0-20.9-9-20.9-20.2s9.3-20.2,20.9-20.2
+			C83.1,109.7,92.5,118.8,92.5,129.9z"/>
+		
+			<linearGradient id="USRS_ID_16_" gradientUnits="userSpaceOnUse" x1="6537.9639" y1="10627.3877" x2="6550.3394" y2="10654.0322" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs205" d="M71.5,111.8c-10.4,0-18.8,8.2-18.8,18.2s8.4,18.2,18.8,18.2S90.4,140,90.4,130S82,111.8,71.5,111.8z"/>
+		
+			<linearGradient id="USRS_ID_17_" gradientUnits="userSpaceOnUse" x1="6538.7432" y1="10628.7988" x2="6549.7524" y2="10652.502" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs206" d="M71.4,113.8c-9.3,0-16.8,7.3-16.8,16.2s7.6,16.2,16.8,16.2c9.3,0,16.8-7.3,16.8-16.2S80.7,113.8,71.4,113.8
+			z"/>
+		
+			<linearGradient id="USRS_ID_18_" gradientUnits="userSpaceOnUse" x1="6539.4292" y1="10630.25" x2="6549.0737" y2="10651.0137" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs207" d="M71.4,115.7c-8.2,0-14.7,6.3-14.7,14.2s6.6,14.2,14.7,14.2s14.7-6.4,14.7-14.2
+			C86.2,122.2,79.6,115.7,71.4,115.7z"/>
+		
+			<linearGradient id="USRS_ID_19_" gradientUnits="userSpaceOnUse" x1="6539.9673" y1="10631.7734" x2="6548.2461" y2="10649.5977" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs208" d="M71.5,118c-6.9,0-12.6,5.4-12.6,12.1c0,6.7,5.7,12.1,12.6,12.1c6.9,0,12.6-5.6,12.6-12.3
+			C84.2,123.3,78.5,117.7,71.5,118z"/>
+		
+			<linearGradient id="USRS_ID_20_" gradientUnits="userSpaceOnUse" x1="6540.6724" y1="10633.2188" x2="6547.5859" y2="10648.1035" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs209" d="M71.5,119.8c-5.8,0-10.5,4.6-10.5,10.2c0,5.6,4.7,10.2,10.5,10.2s10.5-4.6,10.5-10.2
+			C82.1,124.3,77.4,119.8,71.5,119.8z"/>
+		
+			<linearGradient id="USRS_ID_21_" gradientUnits="userSpaceOnUse" x1="6541.3481" y1="10634.6748" x2="6546.8965" y2="10646.6191" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs210" d="M71.5,121.8c-4.6,0-8.4,3.7-8.4,8.2c0,4.5,3.7,8.2,8.4,8.2c4.6,0,8.4-3.7,8.4-8.2
+			C80,125.4,76.1,121.8,71.5,121.8z"/>
+		<path class="usrs202" d="M71.5,123.3c-3.7,0-6.7,3-6.7,6.4c0,3.6,3.1,6.4,6.7,6.4s6.6-3,6.6-6.4C78.1,126.1,75.1,123.3,71.5,123.3z"
+			/>
+		<path class="usrs204" d="M71.4,123.8c-3.6,0-6.4,2.7-6.4,6.2c0,3.5,2.8,6.2,6.4,6.2c3.6,0,6.4-2.8,6.4-6.2
+			C77.9,126.5,75,123.8,71.4,123.8z"/>
+		
+			<linearGradient id="USRS_ID_22_" gradientUnits="userSpaceOnUse" x1="6542.8032" y1="10637.541" x2="6545.6216" y2="10643.6074" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs211" d="M71.4,125.9c-2.4,0-4.3,1.9-4.3,4.1c0,2.2,2,4.1,4.3,4.1c2.4,0,4.3-1.9,4.3-4.1
+			C75.8,127.6,73.8,125.9,71.4,125.9z"/>
+		<path class="usrs204" d="M73.8,130c0,1.1-1,2.1-2.2,2.1c-1.2,0-2.2-1-2.2-2.1c0-1.1,1-2.1,2.2-2.1C72.7,127.9,73.7,128.7,73.8,130z"
+			/>
+		<g>
+			<g>
+				<g>
+					<path id="USRS_ID_2_" class="usrs212" d="M74.2,162.7h-5.3v-3.5h5.3V162.7L74.2,162.7z M79.1,161.8v-3.5l5.1-1.9v3.5L79.1,161.8
+						L79.1,161.8z M63.9,161.8l-5.1-1.9v-3.5l5.1,1.9V161.8L63.9,161.8z M88.4,157.6v-3.5l4.1-3.5v3.5L88.4,157.6L88.4,157.6z
+						 M54.6,157.6l-4.1-3.5v-3.5l4.1,3.5V157.6L54.6,157.6z M95.8,150.3v-3.5l2.7-4.7v3.5L95.8,150.3L95.8,150.3z M47.1,150.3
+						l-2.7-4.7v-3.5l2.7,4.7V150.3L47.1,150.3z M100.2,140.9v-3.5l1-5.3v3.5L100.2,140.9L100.2,140.9z M42.8,140.9l-1-5.3v-3.5
+						l1,5.3V140.9"/>
+				</g>
+			</g>
+		</g>
+	</g>
+	<path class="usrs213" d="M75.1,124.2L75.1,124.2l0.8-4.4v-0.1v0v-2.8v0l-2.2-0.4c0-0.1,0-0.2,0-0.3c0,0,0-0.1,0-0.1l2.2-0.4v-2.8
+		l-0.5,0.1l0-0.1l0.5-0.1l-0.8-4.4l-2.2,0.4c-0.1-0.3-0.2-0.6-0.3-0.9l0,0l0.1,0.2l1-0.6v-2.9l-1.2,0.7l0-0.1l1.2-0.7l-2.2-3.9
+		l-1.9,1.1c-0.2-0.3-0.4-0.5-0.6-0.8v1.8c-1.4,0.1-2.7,0.4-4,0.7l-1-2.6l-5.1,1.9l0.2,2.8l0.7-0.4l0,0.1c-0.3,0.1-0.5,0.3-0.8,0.4
+		l-0.2,0.1l0,0c-0.9,0.5-1.7,0.9-2.5,1.5l-1.7-2.1l-4.1,3.5l1.5,1.8l0,0l-1.6-1.8v3.5l0.2,0.2l0.2-0.2l0.1,0.1
+		c-0.4,0.5-0.8,1.1-1.3,1.6l-2.4-1.4l-2.7,4.6l-0.1,0v3.5l1.2,0.7l0.1-0.2l0.1,0c-0.1,0.4-0.3,0.8-0.4,1.3l-2.7-0.5l-1,5.3l0.1,0
+		v2.4l-0.1,0.7l0.1,0v0.1l2.5,0.5c0,0.2,0,0.3,0.1,0.5c0,0.1,0,0.2,0,0.3l-2.6,0.5l0-0.2v0.2v0v3.1v0v0.1l0.9,5l0,0.3l2.8-0.4
+		l0.1-0.2v-0.1c0,0,0,0,0,0.1l0.4-1v-0.1c1,0.3,2.1,0.4,3.3,0.6v2.2h4.4v-2.2c1.1-0.1,2.2-0.3,3.3-0.6v0v0.1l0.8,2l0,0l4.2-1.5v-2.6
+		c0.7-0.4,1.4-0.8,2-1.2l0,0l1.4,1.8l3.4-2.9v-2.9l-0.2-0.3c0.3-0.4,0.6-0.8,1-1.2v0.1l2,1.1v0l2.2-3.9v-2.9l-1.2,2.1l-0.1,0
+		l1.2-2.1l-1.1-0.6c0.1-0.3,0.2-0.6,0.3-0.9v0.2L75.1,124.2z"/>
+	<g>
+		<g>
+			<path class="usrs202" d="M50.2,140h-4.6v-2.4c-1.2-0.2-2.4-0.3-3.5-0.6l-0.9,2.3l-4.4-1.6l0.9-2.3c-1.1-0.5-2.1-1.1-3-1.7l-1.5,1.8
+				l-3.6-3l1.5-1.8c-0.9-0.9-1.6-1.7-2.3-2.7l-2.1,1.2l-2.4-4.1l2.1-1.2c-0.4-1.1-0.9-2.2-1.2-3.4l-2.4,0.4l-0.9-4.6l2.4-0.4
+				c-0.1-0.5-0.1-1.1-0.1-1.7c0-0.5,0.1-1.2,0.1-1.7l-2.4-0.4l0.9-4.6l2.4,0.4c0.3-1.2,0.8-2.3,1.2-3.4l-2.1-1.2l2.4-4.1l2.1,1.2
+				c0.8-1,1.4-1.8,2.3-2.7l-1.5-1.8l3.6-3l1.5,1.8c1-0.6,1.9-1.2,3-1.7l-0.9-2.3l4.4-1.6l0.9,2.3c1.1-0.3,2.3-0.5,3.5-0.6v-2.4h4.6
+				v2.4c1.2,0.2,2.4,0.3,3.5,0.6l0.9-2.3l4.4,1.6l-0.9,2.3c1.1,0.4,2.1,1.1,3,1.7l1.5-1.8l3.6,3l-1.5,1.8c0.9,0.9,1.6,1.7,2.3,2.7
+				L69,99l2.4,4.1l-2.1,1.2c0.4,1.1,0.9,2.2,1.2,3.4l2.4-0.4l0.9,4.6l-2.4,0.4c0.1,0.5,0.1,1.1,0.1,1.7c0,0.5-0.1,1.2-0.1,1.7
+				l2.4,0.4l-0.9,4.6l-2.4-0.4c-0.3,1.2-0.8,2.3-1.2,3.4l2.1,1.2L69,129l-2.1-1.2c-0.8,1-1.4,1.8-2.3,2.7l1.5,1.8l-3.6,3l-1.5-1.8
+				c-1,0.6-1.9,1.2-3,1.7l0.9,2.3l-4.4,1.6l-0.9-2.3c-1.1,0.3-2.3,0.5-3.5,0.6V140L50.2,140z"/>
+		</g>
+		<g>
+			<g>
+				<polyline class="usrs0" points="69.1,126.1 67,124.9 67,128 69.1,129.1 69.1,126.1 				"/>
+			</g>
+			<g>
+				<polyline points="62.6,132.5 61.1,130.7 61.1,133.6 62.6,135.5 62.6,132.5 				"/>
+			</g>
+			<g>
+				<polygon points="54.5,139.2 53.7,137 53.7,134 54.5,136.3 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="42.1,137 41.2,139.2 41.2,136.3 42.1,134 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="34.7,130.7 34.7,133.6 33.1,135.5 33.1,132.5 34.7,130.7 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="28.8,124.9 28.8,128 26.7,129.1 26.7,126.1 28.8,124.9 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="25.2,117.6 25.2,120.6 22.9,120.9 22.9,118 25.2,117.6 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="24.4,109.4 24.4,112.4 22.1,112 22.1,109 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="26.4,101.5 25.5,104 24.4,103.3 24.4,100.3 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="31.1,94.8 29.7,96.2 29.5,96 29.5,92.9 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="71.4,109.4 71.4,112.4 73.8,112 73.8,109 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="71.4,103.3 70.3,104 69.3,101.5 71.4,100.3 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="64.7,94.8 66.1,96.2 66.3,96 66.3,92.9 				"/>
+			</g>
+			<g>
+				<polyline class="usrs0" points="72.9,118 72.9,120.9 70.5,120.6 70.5,117.6 72.9,118 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="58.1,89.9 58.8,90.3 59,87.7 				"/>
+			</g>
+			<g>
+				<polygon class="usrs0" points="37,90.2 37.7,89.9 36.8,87.7 				"/>
+			</g>
+		</g>
+		<g>
+			
+				<linearGradient id="USRS_ID_23_" gradientUnits="userSpaceOnUse" x1="6554.9194" y1="10602.9531" x2="6583.6577" y2="10645.1943" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="usrs214" d="M50.2,137.3h-4.6v-2.4c-1.2-0.2-2.4-0.3-3.5-0.6l-0.9,2.3l-4.4-1.6l0.9-2.3c-1.1-0.5-2.1-1.1-3-1.7
+				l-1.5,1.8l-3.6-3l1.5-1.8c-0.9-0.9-1.6-1.7-2.3-2.7l-2.1,1.2l-2.4-4.1l2.1-1.2c-0.4-1.1-0.9-2.2-1.2-3.4l-2.4,0.4l-0.9-4.6
+				l2.4-0.4c-0.1-0.5-0.1-1.1-0.1-1.7c0-0.5,0.1-1.2,0.1-1.7l-2.4-0.4l0.9-4.6l2.4,0.4c0.3-1.2,0.8-2.3,1.2-3.4l-2.1-1.2l2.4-4.1
+				l2.1,1.2c0.8-1,1.4-1.8,2.3-2.7l-1.5-1.8l3.6-3l1.5,1.8c1-0.6,1.9-1.2,3-1.7l-0.9-2.3l4.4-1.6l0.9,2.3c1.1-0.3,2.3-0.5,3.5-0.6
+				v-2.4h4.6v2.2c1.2,0.2,2.4,0.3,3.5,0.6l0.9-2.3l4.4,1.6l-0.9,2.3c1.1,0.4,2.1,1.1,3,1.7l1.5-1.8l3.6,3l-1.5,1.8
+				c0.9,0.9,1.6,1.7,2.3,2.7l2.1-1.2l2.4,4.1l-2.1,1.2c0.4,1.1,0.9,2.2,1.2,3.4l2.4-0.4l0.9,4.6l-2.4,0.4c0.1,0.5,0.1,1.1,0.1,1.7
+				c0,0.5-0.1,1.2-0.1,1.7l2.4,0.4l-0.9,4.6l-2.4-0.4c-0.3,1.2-0.8,2.3-1.2,3.4l2.1,1.2l-2.4,4.1l-2.1-1.2c-0.8,1-1.4,1.8-2.3,2.7
+				l1.5,1.8l-3.6,3l-1.5-1.8c-1,0.6-1.9,1.2-3,1.7l0.9,2.3l-4.4,1.6l-0.9-2.3c-1.1,0.3-2.3,0.5-3.5,0.6v2.4"/>
+		</g>
+		<ellipse class="usrs202" cx="47.9" cy="111.4" rx="21.2" ry="20.4"/>
+		<path class="usrs204" d="M66.2,111.3c0,9.7-8.2,17.6-18.3,17.6c-10.1,0-18.3-7.9-18.3-17.6s8.1-17.6,18.3-17.6
+			C58,93.7,66.2,101.7,66.2,111.3z"/>
+		
+			<linearGradient id="USRS_ID_24_" gradientUnits="userSpaceOnUse" x1="6562.3486" y1="10610.5127" x2="6573.1475" y2="10633.7637" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs215" d="M47.9,95.5c-9.1,0-16.4,7.1-16.4,15.9s7.3,15.9,16.4,15.9s16.4-7.1,16.4-15.9S57,95.5,47.9,95.5z"/>
+		
+			<linearGradient id="USRS_ID_25_" gradientUnits="userSpaceOnUse" x1="6563.0283" y1="10611.7432" x2="6572.6357" y2="10632.4287" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs216" d="M47.8,97.3c-8.1,0-14.7,6.4-14.7,14.2s6.6,14.2,14.7,14.2c8.1,0,14.7-6.4,14.7-14.2S55.9,97.3,47.8,97.3z"
+			/>
+		
+			<linearGradient id="USRS_ID_26_" gradientUnits="userSpaceOnUse" x1="6563.6274" y1="10613.0098" x2="6572.043" y2="10631.1289" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs217" d="M47.8,99c-7.1,0-12.9,5.5-12.9,12.4s5.7,12.4,12.9,12.4c7.1,0,12.9-5.6,12.9-12.4C60.7,104.6,55,99,47.8,99
+			z"/>
+		
+			<linearGradient id="USRS_ID_27_" gradientUnits="userSpaceOnUse" x1="6564.0967" y1="10614.3398" x2="6571.3213" y2="10629.8945" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs218" d="M47.9,100.9c-6.1,0-11,4.8-11,10.6s5,10.6,11,10.6c6.1,0,11-4.9,11-10.7S54,100.7,47.9,100.9z"/>
+		
+			<linearGradient id="USRS_ID_28_" gradientUnits="userSpaceOnUse" x1="6564.7119" y1="10615.6006" x2="6570.7451" y2="10628.5898" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs219" d="M47.9,102.6c-5.1,0-9.2,4-9.2,8.9c0,4.9,4.1,8.9,9.2,8.9s9.2-4,9.2-8.9C57.1,106.4,53,102.6,47.9,102.6z"/>
+		
+			<linearGradient id="USRS_ID_29_" gradientUnits="userSpaceOnUse" x1="6565.3018" y1="10616.8711" x2="6570.1431" y2="10627.2949" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs220" d="M47.9,104.3c-4,0-7.3,3.2-7.3,7.1s3.2,7.1,7.3,7.1c4,0,7.3-3.2,7.3-7.1C55.3,107.4,51.9,104.3,47.9,104.3z"
+			/>
+		<path class="usrs202" d="M47.9,105.6c-3.2,0-5.8,2.6-5.8,5.6c0,3.1,2.7,5.6,5.8,5.6c3.1,0,5.7-2.6,5.7-5.6
+			C53.7,108.1,51.1,105.6,47.9,105.6z"/>
+		<path class="usrs204" d="M47.8,106c-3.1,0-5.6,2.4-5.6,5.4s2.5,5.4,5.6,5.4s5.6-2.5,5.6-5.4C53.5,108.4,51,106,47.8,106z"/>
+		
+			<linearGradient id="USRS_ID_30_" gradientUnits="userSpaceOnUse" x1="6566.5718" y1="10619.373" x2="6569.0308" y2="10624.666" gradientTransform="matrix(-1 0 0 1 6615.646 -10510.6143)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+			<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+			<stop  offset="1" style="stop-color:#F5F5F5"/>
+		</linearGradient>
+		<path class="usrs221" d="M47.8,107.9c-2.1,0-3.8,1.6-3.8,3.6c0,1.9,1.7,3.6,3.8,3.6s3.8-1.6,3.8-3.6
+			C51.6,109.4,49.9,107.9,47.8,107.9z"/>
+		<path class="usrs204" d="M49.9,111.4c0,1-0.9,1.8-1.9,1.8c-1.1,0-1.9-0.9-1.9-1.8c0-1,0.9-1.8,1.9-1.8
+			C48.9,109.6,49.8,110.3,49.9,111.4z"/>
+		<g>
+			<g>
+				<g>
+					<path id="USRS_ID_1_" class="usrs212" d="M50.2,140h-4.6v-3h4.6V140L50.2,140z M54.5,139.2v-3l4.4-1.6v3L54.5,139.2L54.5,139.2z
+						 M41.2,139.2l-4.4-1.6v-3l4.4,1.6V139.2L41.2,139.2z M62.6,135.5v-3l3.6-3v3L62.6,135.5L62.6,135.5z M33.1,135.5l-3.6-3v-3
+						l3.6,3V135.5L33.1,135.5z M69.1,129.1v-3l2.4-4.1v3L69.1,129.1L69.1,129.1z M26.7,129.1l-2.4-4.1v-3l2.4,4.1V129.1L26.7,129.1z
+						 M72.9,120.9v-3l0.9-4.6v3L72.9,120.9L72.9,120.9z M22.9,120.9l-0.9-4.6v-3l0.9,4.6V120.9"/>
+				</g>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

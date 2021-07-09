@@ -36,7 +36,6 @@
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { AppRootComponent } from '../app-root-component.class';
 import { ApplicationId } from '../application-id.enum';
@@ -59,7 +58,7 @@ export class AccountComponent extends AppRootComponent implements OnInit, OnDest
 
   private sub: Subscription;
 
-  constructor(private translateService: TranslateService, private accountService: AccountService, public route: ActivatedRoute) {
+  constructor(private accountService: AccountService, public route: ActivatedRoute) {
     super(route);
   }
 

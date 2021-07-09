@@ -1,13 +1,14 @@
 <div class="subrogation-banner">
   <div>
     <i class="vitamui-icon vitamui-icon-repeat mr-4"></i>
-    <span i18n="subrogationBannerAdmin@@subrogationBannerAdmin">L'utilisateur {{data?.subro?.superUser}} demande un accès temporaire à vos droits</span>
+    <span>{{'SNACKBAR.ASK_SUBROGATION' | translate : {user : data?.subro?.superUser} }}</span>
 
-    <button class="btn outline outline-primary ml-5" (click)="accept()" i18n="subrogation accept@@AcceptSubrogation">Accepter</button>
-    <button class="btn link ml-4" (click)="decline()" i18n="subrogation decline@@DeclineSubrogation">Refuser</button>
+    <button class="btn outline outline-primary ml-5" (click)="accept()">
+      {{'SNACKBAR.ACCEPT_SUBROGATION' | translate}}</button>
+    <button class="btn link ml-4" (click)="decline()"> {{'SNACKBAR.DECLINE_SUBROGATION' | translate}}</button>
   </div>
 
-  <div (click)="decline()" >
+  <div (click)="decline()">
     <i class="vitamui-icon vitamui-icon-close clickable"></i>
   </div>
 </div>

@@ -279,6 +279,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fix"
       },
+      "CENTER_CODE":"Code du centre",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",

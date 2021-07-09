@@ -11,6 +11,7 @@
             <directory>../deployment</directory>
             <outputDirectory>deployment</outputDirectory>
             <excludes>
+                <exclude>target/</exclude>
                 <exclude>**/*.retry</exclude>
                 <exclude>**/*.settings/**</exclude>
                 <exclude>**/*.project</exclude>

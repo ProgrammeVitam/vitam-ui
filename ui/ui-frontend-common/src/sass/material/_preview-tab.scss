@@ -3,6 +3,21 @@
     @include elevation-5-dark;
 }
 
+.preview-tab-group:not(.show-pagination).mat-tab-group {
+    .mat-tab-header {
+        .mat-tab-header-pagination {
+            display: none;
+        }
+    }
+}
+
+.preview-tab-group.show-pagination.mat-tab-group {
+    .mat-tab-header {
+        .mat-tab-header-pagination-disabled {
+            display: none;
+        }
+    }
+}
 .preview-tab-group.mat-tab-group {
     height: 100%;
     .mat-tab-header {
@@ -12,10 +27,6 @@
         position: fixed;
         width: 584px;
         z-index: 10;
-
-        .mat-tab-header-pagination {
-            display: none;
-        }
     }
 
     .mat-tab-label {

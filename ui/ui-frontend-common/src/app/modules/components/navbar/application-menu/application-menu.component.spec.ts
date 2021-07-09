@@ -36,6 +36,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { VitamUICommonTestModule } from '../../../../../../testing/src';
 
 import { ApplicationService } from '../../../application.service';
 import { ApplicationMenuComponent } from './application-menu.component';
@@ -48,6 +49,7 @@ describe('ApplicationMenuComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         MatDialogModule,
+        VitamUICommonTestModule
       ],
       declarations: [ ApplicationMenuComponent ],
       providers: [

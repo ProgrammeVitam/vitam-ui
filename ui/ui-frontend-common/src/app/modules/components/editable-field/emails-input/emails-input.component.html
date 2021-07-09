@@ -15,8 +15,8 @@
 </div>
 
 <div class="vitamui-input-errors">
-    <div *ngIf="control?.errors?.pattern" i18n="Wrong format (name@domain.xyz)@@emailInputErrorFormat">Format incorrect (nom@domaine.xyz)</div>
-    <div *ngIf="control?.errors?.unknownUser"  i18n="Unknow manager field error hint@@unknownManagerErrorRequiredField">Utilisateur non valide</div>
+    <div *ngIf="control?.errors?.pattern">{{'EMAILS_INPUT.WRONG_FORMAT' | translate}}</div>
+    <div *ngIf="control?.errors?.unknownUser">{{'EMAILS_INPUT.INVALID_USER' | translate}}</div>
 </div>
 
 <div class="vitamui-chip-list">

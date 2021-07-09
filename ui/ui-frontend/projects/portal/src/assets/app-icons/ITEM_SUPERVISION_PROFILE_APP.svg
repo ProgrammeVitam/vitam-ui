@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.istp0{fill-rule:evenodd;clip-rule:evenodd;}
+	.istp1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.istp2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.istp3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.istp4{fill:#BCB9BA;}
+	.istp5{fill:#BBB9BA;}
+	.istp6{fill:#BBB8B9;}
+	.istp7{fill:#BAB8B9;}
+	.istp8{fill:#B9B7B8;}
+	.istp9{fill:#B9B7B7;}
+	.istp10{fill:#B8B6B7;}
+	.istp11{fill:#B8B5B6;}
+	.istp12{fill:#B7B5B6;}
+	.istp13{fill:#B7B4B5;}
+	.istp14{fill:#B6B4B5;}
+	.istp15{fill:#B6B3B4;}
+	.istp16{fill:#B5B3B4;}
+	.istp17{fill:#B4B2B3;}
+	.istp18{fill:#B3B1B2;}
+	.istp19{fill:#B3B1B1;}
+	.istp20{fill:#B2B0B1;}
+	.istp21{fill:#B2AFB0;}
+	.istp22{fill:#B1AFB0;}
+	.istp23{fill:#B1AEAF;}
+	.istp24{fill:#B0AEAF;}
+	.istp25{fill:#AFADAE;}
+	.istp26{fill:#AEACAD;}
+	.istp27{fill:#ADABAC;}
+	.istp28{fill:#ADABAB;}
+	.istp29{fill:#ACAAAB;}
+	.istp30{fill:#ACAAAA;}
+	.istp31{fill:#ABA9AA;}
+	.istp32{fill:#AAA8A9;}
+	.istp33{fill:#A9A7A8;}
+	.istp34{fill:#A8A6A7;}
+	.istp35{fill:#A7A5A6;}
+	.istp36{fill:#A7A5A5;}
+	.istp37{fill:#A6A4A5;}
+	.istp38{fill:#A5A4A4;}
+	.istp39{fill:#A5A3A4;}
+	.istp40{fill:#A4A2A3;}
+	.istp41{fill:#A3A1A2;}
+	.istp42{fill:#A2A0A1;}
+	.istp43{fill:#A19FA0;}
+	.istp44{fill:#A09F9F;}
+	.istp45{fill:#A09E9F;}
+	.istp46{fill:#9F9E9E;}
+	.istp47{fill:#9F9D9E;}
+	.istp48{fill:#9E9D9D;}
+	.istp49{fill:#9E9C9D;}
+	.istp50{fill:#9D9B9C;}
+	.istp51{fill:#9C9A9B;}
+	.istp52{fill:#9B9A9B;}
+	.istp53{fill:#9B999A;}
+	.istp54{fill:#9A9999;}
+	.istp55{fill:#9A9899;}
+	.istp56{fill:#999898;}
+	.istp57{fill:#999798;}
+	.istp58{fill:#989797;}
+	.istp59{fill:#989697;}
+	.istp60{fill:#979596;}
+	.istp61{fill:#969596;}
+	.istp62{fill:#969495;}
+	.istp63{fill:#959495;}
+	.istp64{fill:#959394;}
+	.istp65{fill:#949393;}
+	.istp66{fill:#949293;}
+	.istp67{fill:#939292;}
+	.istp68{fill:#939192;}
+	.istp69{fill:#929191;}
+	.istp70{fill:#919091;}
+	.istp71{fill:#919090;}
+	.istp72{fill:#908F90;}
+	.istp73{fill:#908E8F;}
+	.istp74{fill:#8F8E8F;}
+	.istp75{fill:#8F8D8E;}
+	.istp76{fill:#8E8D8D;}
+	.istp77{fill:#8E8C8D;}
+	.istp78{fill:#8D8C8C;}
+	.istp79{fill:#8C8B8C;}
+	.istp80{fill:#8C8B8B;}
+	.istp81{fill:#8B8A8B;}
+	.istp82{fill:#8B8A8A;}
+	.istp83{fill:#8A898A;}
+	.istp84{fill:#8A8889;}
+	.istp85{fill:#898888;}
+	.istp86{fill:#898788;}
+	.istp87{fill:#888787;}
+	.istp88{fill:#878687;}
+	.istp89{fill:#878686;}
+	.istp90{fill:#868586;}
+	.istp91{fill:#868585;}
+	.istp92{fill:#858485;}
+	.istp93{fill:#858484;}
+	.istp94{fill:#848384;}
+	.istp95{fill:#848383;}
+	.istp96{fill:#838282;}
+	.istp97{fill:#828182;}
+	.istp98{fill:#828181;}
+	.istp99{fill:#818081;}
+	.istp100{fill:#818080;}
+	.istp101{fill:#807F80;}
+	.istp102{fill:#807F7F;}
+	.istp103{fill:#7F7E7F;}
+	.istp104{fill:#7F7E7E;}
+	.istp105{fill:#7E7D7E;}
+	.istp106{fill:#7D7D7D;}
+	.istp107{fill:#7D7C7C;}
+	.istp108{fill:#7C7B7C;}
+	.istp109{fill:#7C7B7B;}
+	.istp110{fill:#7B7A7B;}
+	.istp111{fill:#7B7A7A;}
+	.istp112{fill:#7A797A;}
+	.istp113{fill:#7A7979;}
+	.istp114{fill:#797879;}
+	.istp115{fill:#787878;}
+	.istp116{fill:#787778;}
+	.istp117{fill:#777777;}
+	.istp118{fill:#777676;}
+	.istp119{fill:#767676;}
+	.istp120{fill:#767575;}
+	.istp121{fill:#757475;}
+	.istp122{fill:#757474;}
+	.istp123{fill:#747374;}
+	.istp124{fill:#737373;}
+	.istp125{fill:#737273;}
+	.istp126{fill:#727272;}
+	.istp127{fill:#727172;}
+	.istp128{fill:#717171;}
+	.istp129{fill:#717070;}
+	.istp130{fill:#707070;}
+	.istp131{fill:#706F6F;}
+	.istp132{fill:#6F6E6F;}
+	.istp133{fill:#6E6E6E;}
+	.istp134{fill:#6E6D6E;}
+	.istp135{fill:#6D6D6D;}
+	.istp136{fill:#6D6C6D;}
+	.istp137{fill:#6C6C6C;}
+	.istp138{fill:#6C6B6C;}
+	.istp139{fill:#6B6B6B;}
+	.istp140{fill:#6B6A6A;}
+	.istp141{fill:#6A6A6A;}
+	.istp142{fill:#696969;}
+	.istp143{fill:#686868;}
+	.istp144{fill:#686768;}
+	.istp145{fill:#676767;}
+	.istp146{fill:#676667;}
+	.istp147{fill:#666666;}
+	.istp148{fill:#666566;}
+	.istp149{fill:#656565;}
+	.istp150{fill:#646464;}
+	.istp151{fill:#636363;}
+	.istp152{fill:#626262;}
+	.istp153{fill:#626162;}
+	.istp154{fill:#616161;}
+	.istp155{fill:#616061;}
+	.istp156{fill:#606060;}
+	.istp157{fill:#5F5F60;}
+	.istp158{fill:#5F5F5F;}
+	.istp159{fill:#5E5E5E;}
+	.istp160{fill:#5D5D5D;}
+	.istp161{fill:#5C5C5C;}
+	.istp162{fill:#5B5B5B;}
+	.istp163{fill:#5A5A5B;}
+	.istp164{fill:#5A5A5A;}
+	.istp165{fill:#59595A;}
+	.istp166{fill:#595959;}
+	.istp167{fill:#585858;}
+	.istp168{fill:#575757;}
+	.istp169{fill:#565656;}
+	.istp170{fill:#555656;}
+	.istp171{fill:#555555;}
+	.istp172{fill:#545455;}
+	.istp173{fill:#545454;}
+	.istp174{fill:#535353;}
+	.istp175{fill:#525252;}
+	.istp176{fill:#515151;}
+	.istp177{fill:#505151;}
+	.istp178{fill:#505050;}
+	.istp179{fill:#4F5050;}
+	.istp180{fill:#4F4F4F;}
+	.istp181{fill:#4E4F4F;}
+	.istp182{fill:#4E4E4E;}
+	.istp183{fill:#4D4D4D;}
+	.istp184{fill:#4C4C4C;}
+	.istp185{fill:url(#ITSP_ID_1_);}
+	.istp186{fill:url(#ITSP_ID_3_);}
+	.istp187{fill:url(#ITSP_ID_4_);}
+	.istp188{fill:url(#ITSP_ID_5_);}
+	.istp189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_6_);}
+	.istp190{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_7_);}
+	.istp191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_8_);}
+	.istp192{opacity:0.75;fill:url(#ITSP_ID_9_);enable-background:new    ;}
+	.istp193{fill-rule:evenodd;clip-rule:evenodd;fill:#353535;}
+	.istp194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_10_);}
+	.istp195{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
+	.istp196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_11_);}
+	.istp197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_12_);}
+	.istp198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_13_);}
+	.istp199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_14_);}
+	.istp200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_15_);}
+	.istp201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_16_);}
+	.istp202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITSP_ID_17_);}
+	.istp203{fill:#F5F5F5;}
+	.istp204{fill:url(#ITSP_ID_18_);}
+	.istp205{fill:url(#ITSP_ID_19_);}
+	.istp206{fill:url(#ITSP_ID_20_);}
+	.istp207{fill:#353535;}
+	.istp208{fill:var(--vitamui-primary);}
+	.istp209{fill:url(#ITSP_ID_21_);}
+	.istp210{fill:url(#ITSP_ID_22_);}
+	.istp211{fill:url(#ITSP_ID_23_);}
+	.istp212{fill:url(#ITSP_ID_24_);}
+	.istp213{fill:url(#ITSP_ID_25_);}
+	.istp214{fill:url(#ITSP_ID_26_);}
+	.istp215{fill:url(#ITSP_ID_27_);}
+	.istp216{fill:url(#ITSP_ID_28_);}
+	.istp217{fill:url(#ITSP_ID_29_);}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="160.7" width="163.7" x="18.2" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<g>
+			<path class="istp0" d="M100,141.8c45.2,0,81.8,8.5,81.8,18.9c0,10.4-36.7,20-81.8,20s-81.8-9.6-81.8-20
+				C18,150.3,54.7,141.8,100,141.8z"/>
+			<path class="istp1" d="M100,142.2c43.2,0,78.2,8.3,78.2,18.6c0,10.3-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6
+				C21.8,150.4,56.8,142.2,100,142.2z"/>
+			<path class="istp2" d="M100,140c43.2,0,78.2,8.3,78.2,18.6s-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6C21.8,148.2,56.8,140,100,140z"
+				/>
+			<path class="istp1" d="M100,138.9c43.2,0,78.2,8.3,78.2,18.6c0,10.3-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6
+				C21.8,147.1,56.8,138.9,100,138.9z"/>
+			<path class="istp3" d="M99.9,138.9c22.7,0,43,2.3,57.3,5.9c-29.9-1.8-111.6,2.6-131.7,18.3c-2.4-1.8-3.7-3.7-3.7-5.6
+				C21.6,147.1,56.8,138.9,99.9,138.9z"/>
+			<path class="istp2" d="M21.8,157.3c0-10.3,35-18.6,78.2-18.6s78.2,8.3,78.2,18.6c0,0.4,0,0.6-0.1,1c-2.2-9.7-36.3-17.6-78.1-17.6
+				s-75.9,7.8-78.1,17.6C21.8,158,21.8,157.7,21.8,157.3z"/>
+		</g>
+		<g>
+			<ellipse class="istp4" cx="100" cy="157.9" rx="50.3" ry="9.4"/>
+			<ellipse class="istp5" cx="100" cy="157.9" rx="50.1" ry="9.3"/>
+			<ellipse class="istp6" cx="100" cy="157.9" rx="49.9" ry="9.3"/>
+			<ellipse class="istp7" cx="100" cy="157.9" rx="49.7" ry="9.3"/>
+			<ellipse class="istp8" cx="100" cy="157.9" rx="49.5" ry="9.2"/>
+			<ellipse class="istp9" cx="100" cy="157.9" rx="49.4" ry="9.2"/>
+			<ellipse class="istp10" cx="100" cy="157.9" rx="49.2" ry="9.2"/>
+			<ellipse class="istp11" cx="100" cy="157.9" rx="49" ry="9.1"/>
+			<ellipse class="istp12" cx="100" cy="157.9" rx="48.8" ry="9.1"/>
+			<ellipse class="istp13" cx="100" cy="157.9" rx="48.7" ry="9.1"/>
+			<ellipse class="istp14" cx="100" cy="157.9" rx="48.5" ry="9"/>
+			<ellipse class="istp15" cx="100" cy="157.9" rx="48.3" ry="9"/>
+			<ellipse class="istp16" cx="100" cy="157.9" rx="48.1" ry="9"/>
+			<ellipse class="istp17" cx="100" cy="157.9" rx="48" ry="8.9"/>
+			<ellipse class="istp17" cx="100" cy="157.9" rx="47.8" ry="8.9"/>
+			<ellipse class="istp18" cx="100" cy="157.9" rx="47.6" ry="8.9"/>
+			<ellipse class="istp19" cx="100" cy="157.9" rx="47.4" ry="8.8"/>
+			<ellipse class="istp20" cx="100" cy="157.9" rx="47.3" ry="8.8"/>
+			<ellipse class="istp21" cx="100" cy="157.9" rx="47.1" ry="8.8"/>
+			<ellipse class="istp22" cx="100" cy="157.9" rx="46.9" ry="8.7"/>
+			<ellipse class="istp23" cx="100" cy="157.9" rx="46.7" ry="8.7"/>
+			<ellipse class="istp24" cx="100" cy="157.9" rx="46.5" ry="8.7"/>
+			<ellipse class="istp25" cx="100" cy="157.9" rx="46.4" ry="8.6"/>
+			<ellipse class="istp25" cx="100" cy="157.9" rx="46.2" ry="8.6"/>
+			<ellipse class="istp26" cx="100" cy="157.9" rx="46" ry="8.6"/>
+			<ellipse class="istp26" cx="100" cy="157.9" rx="45.8" ry="8.5"/>
+			<ellipse class="istp27" cx="100" cy="157.9" rx="45.7" ry="8.5"/>
+			<ellipse class="istp28" cx="100" cy="157.9" rx="45.5" ry="8.5"/>
+			<ellipse class="istp29" cx="100" cy="157.9" rx="45.3" ry="8.4"/>
+			<ellipse class="istp30" cx="100" cy="157.9" rx="45.1" ry="8.4"/>
+			<ellipse class="istp31" cx="100" cy="157.9" rx="45" ry="8.4"/>
+			<ellipse class="istp32" cx="100" cy="157.9" rx="44.8" ry="8.3"/>
+			<ellipse class="istp32" cx="100" cy="157.9" rx="44.6" ry="8.3"/>
+			<ellipse class="istp33" cx="100" cy="157.9" rx="44.4" ry="8.3"/>
+			<ellipse class="istp33" cx="100" cy="157.9" rx="44.3" ry="8.2"/>
+			<ellipse class="istp34" cx="100" cy="157.9" rx="44.1" ry="8.2"/>
+			<ellipse class="istp34" cx="100" cy="157.9" rx="43.9" ry="8.2"/>
+			<ellipse class="istp35" cx="100" cy="157.9" rx="43.7" ry="8.1"/>
+			<ellipse class="istp36" cx="100" cy="157.9" rx="43.5" ry="8.1"/>
+			<ellipse class="istp37" cx="100" cy="157.9" rx="43.4" ry="8.1"/>
+			<ellipse class="istp38" cx="100" cy="157.9" rx="43.2" ry="8"/>
+			<ellipse class="istp39" cx="100" cy="157.9" rx="43" ry="8"/>
+			<ellipse class="istp40" cx="100" cy="157.9" rx="42.8" ry="8"/>
+			<ellipse class="istp40" cx="100" cy="157.9" rx="42.7" ry="7.9"/>
+			<ellipse class="istp41" cx="100" cy="157.9" rx="42.5" ry="7.9"/>
+			<ellipse class="istp41" cx="100" cy="157.9" rx="42.3" ry="7.9"/>
+			<ellipse class="istp42" cx="100" cy="157.9" rx="42.1" ry="7.9"/>
+			<ellipse class="istp42" cx="100" cy="157.9" rx="42" ry="7.8"/>
+			<ellipse class="istp43" cx="100" cy="157.9" rx="41.8" ry="7.8"/>
+			<ellipse class="istp44" cx="100" cy="157.9" rx="41.6" ry="7.8"/>
+			<ellipse class="istp45" cx="100" cy="157.9" rx="41.4" ry="7.7"/>
+			<ellipse class="istp46" cx="100" cy="157.9" rx="41.3" ry="7.7"/>
+			<ellipse class="istp47" cx="100" cy="157.9" rx="41.1" ry="7.7"/>
+			<ellipse class="istp48" cx="100" cy="157.9" rx="40.9" ry="7.6"/>
+			<ellipse class="istp49" cx="100" cy="157.9" rx="40.7" ry="7.6"/>
+			<ellipse class="istp50" cx="100" cy="157.9" rx="40.5" ry="7.6"/>
+			<ellipse class="istp50" cx="100" cy="157.9" rx="40.4" ry="7.5"/>
+			<ellipse class="istp51" cx="100" cy="157.9" rx="40.2" ry="7.5"/>
+			<ellipse class="istp52" cx="100" cy="157.9" rx="40" ry="7.5"/>
+			<ellipse class="istp53" cx="100" cy="157.9" rx="39.8" ry="7.4"/>
+			<ellipse class="istp54" cx="100" cy="157.9" rx="39.7" ry="7.4"/>
+			<ellipse class="istp55" cx="100" cy="157.9" rx="39.5" ry="7.4"/>
+			<ellipse class="istp56" cx="100" cy="157.9" rx="39.3" ry="7.3"/>
+			<ellipse class="istp57" cx="100" cy="157.9" rx="39.1" ry="7.3"/>
+			<ellipse class="istp58" cx="100" cy="157.9" rx="39" ry="7.3"/>
+			<ellipse class="istp59" cx="100" cy="157.9" rx="38.8" ry="7.2"/>
+			<ellipse class="istp60" cx="100" cy="157.9" rx="38.6" ry="7.2"/>
+			<ellipse class="istp61" cx="100" cy="157.9" rx="38.4" ry="7.2"/>
+			<ellipse class="istp62" cx="100" cy="157.9" rx="38.3" ry="7.1"/>
+			<ellipse class="istp63" cx="100" cy="157.9" rx="38.1" ry="7.1"/>
+			<ellipse class="istp64" cx="100" cy="157.9" rx="37.9" ry="7.1"/>
+			<ellipse class="istp65" cx="100" cy="157.9" rx="37.7" ry="7"/>
+			<ellipse class="istp66" cx="100" cy="157.9" rx="37.5" ry="7"/>
+			<ellipse class="istp67" cx="100" cy="157.9" rx="37.4" ry="7"/>
+			<ellipse class="istp68" cx="100" cy="157.9" rx="37.2" ry="6.9"/>
+			<ellipse class="istp69" cx="100" cy="157.9" rx="37" ry="6.9"/>
+			<ellipse class="istp70" cx="100" cy="157.9" rx="36.8" ry="6.9"/>
+			<ellipse class="istp71" cx="100" cy="157.9" rx="36.7" ry="6.8"/>
+			<ellipse class="istp72" cx="100" cy="157.9" rx="36.5" ry="6.8"/>
+			<ellipse class="istp73" cx="100" cy="157.9" rx="36.3" ry="6.8"/>
+			<ellipse class="istp74" cx="100" cy="157.9" rx="36.1" ry="6.7"/>
+			<ellipse class="istp75" cx="100" cy="157.9" rx="36" ry="6.7"/>
+			<ellipse class="istp76" cx="100" cy="157.9" rx="35.8" ry="6.7"/>
+			<ellipse class="istp77" cx="100" cy="157.9" rx="35.6" ry="6.6"/>
+			<ellipse class="istp78" cx="100" cy="157.9" rx="35.4" ry="6.6"/>
+			<ellipse class="istp79" cx="100" cy="157.9" rx="35.3" ry="6.6"/>
+			<ellipse class="istp80" cx="100" cy="157.9" rx="35.1" ry="6.5"/>
+			<ellipse class="istp81" cx="100" cy="157.9" rx="34.9" ry="6.5"/>
+			<ellipse class="istp82" cx="100" cy="157.9" rx="34.7" ry="6.5"/>
+			<ellipse class="istp83" cx="100" cy="157.9" rx="34.6" ry="6.4"/>
+			<ellipse class="istp84" cx="100" cy="157.9" rx="34.4" ry="6.4"/>
+			<ellipse class="istp85" cx="100" cy="157.9" rx="34.2" ry="6.4"/>
+			<ellipse class="istp86" cx="100" cy="157.9" rx="34" ry="6.3"/>
+			<ellipse class="istp87" cx="100" cy="157.9" rx="33.8" ry="6.3"/>
+			<ellipse class="istp88" cx="100" cy="157.9" rx="33.7" ry="6.3"/>
+			<ellipse class="istp89" cx="100" cy="157.9" rx="33.5" ry="6.2"/>
+			<ellipse class="istp90" cx="100" cy="157.9" rx="33.3" ry="6.2"/>
+			<ellipse class="istp91" cx="100" cy="157.9" rx="33.1" ry="6.2"/>
+			<ellipse class="istp92" cx="100" cy="157.9" rx="33" ry="6.1"/>
+			<ellipse class="istp93" cx="100" cy="157.9" rx="32.8" ry="6.1"/>
+			<ellipse class="istp94" cx="100" cy="157.9" rx="32.6" ry="6.1"/>
+			<ellipse class="istp95" cx="100" cy="157.9" rx="32.4" ry="6"/>
+			<ellipse class="istp96" cx="100" cy="157.9" rx="32.3" ry="6"/>
+			<ellipse class="istp97" cx="100" cy="157.9" rx="32.1" ry="6"/>
+			<ellipse class="istp98" cx="100" cy="157.9" rx="31.9" ry="5.9"/>
+			<ellipse class="istp99" cx="100" cy="157.9" rx="31.7" ry="5.9"/>
+			<ellipse class="istp100" cx="100" cy="157.9" rx="31.6" ry="5.9"/>
+			<ellipse class="istp101" cx="100" cy="157.9" rx="31.4" ry="5.8"/>
+			<ellipse class="istp102" cx="100" cy="157.9" rx="31.2" ry="5.8"/>
+			<ellipse class="istp103" cx="100" cy="157.9" rx="31" ry="5.8"/>
+			<ellipse class="istp104" cx="100" cy="157.9" rx="30.8" ry="5.7"/>
+			<ellipse class="istp105" cx="100" cy="157.9" rx="30.7" ry="5.7"/>
+			<ellipse class="istp106" cx="100" cy="157.9" rx="30.5" ry="5.7"/>
+			<ellipse class="istp107" cx="100" cy="157.9" rx="30.3" ry="5.6"/>
+			<ellipse class="istp108" cx="100" cy="157.9" rx="30.1" ry="5.6"/>
+			<ellipse class="istp109" cx="100" cy="157.9" rx="30" ry="5.6"/>
+			<ellipse class="istp110" cx="100" cy="157.9" rx="29.8" ry="5.5"/>
+			<ellipse class="istp111" cx="100" cy="157.9" rx="29.6" ry="5.5"/>
+			<ellipse class="istp112" cx="100" cy="157.9" rx="29.4" ry="5.5"/>
+			<ellipse class="istp113" cx="100" cy="157.9" rx="29.3" ry="5.5"/>
+			<ellipse class="istp114" cx="100" cy="157.9" rx="29.1" ry="5.4"/>
+			<ellipse class="istp115" cx="100" cy="157.9" rx="28.9" ry="5.4"/>
+			<ellipse class="istp116" cx="100" cy="157.9" rx="28.7" ry="5.4"/>
+			<ellipse class="istp117" cx="100" cy="157.9" rx="28.6" ry="5.3"/>
+			<ellipse class="istp118" cx="100" cy="157.9" rx="28.4" ry="5.3"/>
+			<ellipse class="istp119" cx="100" cy="157.9" rx="28.2" ry="5.3"/>
+			<ellipse class="istp120" cx="100" cy="157.9" rx="28" ry="5.2"/>
+			<ellipse class="istp121" cx="100" cy="157.9" rx="27.8" ry="5.2"/>
+			<ellipse class="istp122" cx="100" cy="157.9" rx="27.7" ry="5.2"/>
+			<ellipse class="istp123" cx="100" cy="157.9" rx="27.5" ry="5.1"/>
+			<ellipse class="istp124" cx="100" cy="157.9" rx="27.3" ry="5.1"/>
+			<ellipse class="istp125" cx="100" cy="157.9" rx="27.1" ry="5.1"/>
+			<ellipse class="istp126" cx="100" cy="157.9" rx="27" ry="5"/>
+			<ellipse class="istp127" cx="100" cy="157.9" rx="26.8" ry="5"/>
+			<ellipse class="istp128" cx="100" cy="157.9" rx="26.6" ry="5"/>
+			<ellipse class="istp129" cx="100" cy="157.9" rx="26.4" ry="4.9"/>
+			<ellipse class="istp130" cx="100" cy="157.9" rx="26.3" ry="4.9"/>
+			<ellipse class="istp131" cx="100" cy="157.9" rx="26.1" ry="4.9"/>
+			<ellipse class="istp132" cx="100" cy="157.9" rx="25.9" ry="4.8"/>
+			<ellipse class="istp133" cx="100" cy="157.9" rx="25.7" ry="4.8"/>
+			<ellipse class="istp134" cx="100" cy="157.9" rx="25.6" ry="4.8"/>
+			<ellipse class="istp135" cx="100" cy="157.9" rx="25.4" ry="4.7"/>
+			<ellipse class="istp136" cx="100" cy="157.9" rx="25.2" ry="4.7"/>
+			<ellipse class="istp137" cx="100" cy="157.9" rx="25" ry="4.7"/>
+			<ellipse class="istp138" cx="100" cy="157.9" rx="24.8" ry="4.6"/>
+			<ellipse class="istp139" cx="100" cy="157.9" rx="24.7" ry="4.6"/>
+			<ellipse class="istp140" cx="100" cy="157.9" rx="24.5" ry="4.6"/>
+			<ellipse class="istp141" cx="100" cy="157.9" rx="24.3" ry="4.5"/>
+			<ellipse class="istp142" cx="100" cy="157.9" rx="24.1" ry="4.5"/>
+			<ellipse class="istp142" cx="100" cy="157.9" rx="24" ry="4.5"/>
+			<ellipse class="istp143" cx="100" cy="157.9" rx="23.8" ry="4.4"/>
+			<ellipse class="istp144" cx="100" cy="157.9" rx="23.6" ry="4.4"/>
+			<ellipse class="istp145" cx="100" cy="157.9" rx="23.4" ry="4.4"/>
+			<ellipse class="istp146" cx="100" cy="157.9" rx="23.3" ry="4.3"/>
+			<ellipse class="istp147" cx="100" cy="157.9" rx="23.1" ry="4.3"/>
+			<ellipse class="istp148" cx="100" cy="157.9" rx="22.9" ry="4.3"/>
+			<ellipse class="istp149" cx="100" cy="157.9" rx="22.7" ry="4.2"/>
+			<ellipse class="istp150" cx="100" cy="157.9" rx="22.6" ry="4.2"/>
+			<ellipse class="istp150" cx="100" cy="157.9" rx="22.4" ry="4.2"/>
+			<ellipse class="istp151" cx="100" cy="157.9" rx="22.2" ry="4.1"/>
+			<ellipse class="istp151" cx="100" cy="157.9" rx="22" ry="4.1"/>
+			<ellipse class="istp152" cx="100" cy="157.9" rx="21.8" ry="4.1"/>
+			<ellipse class="istp153" cx="100" cy="157.9" rx="21.7" ry="4"/>
+			<ellipse class="istp154" cx="100" cy="157.9" rx="21.5" ry="4"/>
+			<ellipse class="istp155" cx="100" cy="157.9" rx="21.3" ry="4"/>
+			<ellipse class="istp156" cx="100" cy="157.9" rx="21.1" ry="3.9"/>
+			<ellipse class="istp157" cx="100" cy="157.9" rx="21" ry="3.9"/>
+			<ellipse class="istp158" cx="100" cy="157.9" rx="20.8" ry="3.9"/>
+			<ellipse class="istp159" cx="100" cy="157.9" rx="20.6" ry="3.8"/>
+			<ellipse class="istp159" cx="100" cy="157.9" rx="20.4" ry="3.8"/>
+			<ellipse class="istp160" cx="100" cy="157.9" rx="20.3" ry="3.8"/>
+			<ellipse class="istp160" cx="100" cy="157.9" rx="20.1" ry="3.7"/>
+			<ellipse class="istp161" cx="100" cy="157.9" rx="19.9" ry="3.7"/>
+			<ellipse class="istp161" cx="100" cy="157.9" rx="19.7" ry="3.7"/>
+			<ellipse class="istp162" cx="100" cy="157.9" rx="19.6" ry="3.6"/>
+			<ellipse class="istp163" cx="100" cy="157.9" rx="19.4" ry="3.6"/>
+			<ellipse class="istp164" cx="100" cy="157.9" rx="19.2" ry="3.6"/>
+			<ellipse class="istp165" cx="100" cy="157.9" rx="19" ry="3.5"/>
+			<ellipse class="istp166" cx="100" cy="157.9" rx="18.9" ry="3.5"/>
+			<ellipse class="istp167" cx="100" cy="157.9" rx="18.7" ry="3.5"/>
+			<ellipse class="istp167" cx="100" cy="157.9" rx="18.5" ry="3.4"/>
+			<ellipse class="istp168" cx="100" cy="157.9" rx="18.3" ry="3.4"/>
+			<ellipse class="istp168" cx="100" cy="157.9" rx="18.1" ry="3.4"/>
+			<ellipse class="istp169" cx="100" cy="157.9" rx="18" ry="3.3"/>
+			<ellipse class="istp170" cx="100" cy="157.9" rx="17.8" ry="3.3"/>
+			<ellipse class="istp171" cx="100" cy="157.9" rx="17.6" ry="3.3"/>
+			<ellipse class="istp172" cx="100" cy="157.9" rx="17.4" ry="3.2"/>
+			<ellipse class="istp173" cx="100" cy="157.9" rx="17.3" ry="3.2"/>
+			<ellipse class="istp174" cx="100" cy="157.9" rx="17.1" ry="3.2"/>
+			<ellipse class="istp174" cx="100" cy="157.9" rx="16.9" ry="3.2"/>
+			<ellipse class="istp175" cx="100" cy="157.9" rx="16.7" ry="3.1"/>
+			<ellipse class="istp175" cx="100" cy="157.9" rx="16.6" ry="3.1"/>
+			<ellipse class="istp176" cx="100" cy="157.9" rx="16.4" ry="3.1"/>
+			<ellipse class="istp177" cx="100" cy="157.9" rx="16.2" ry="3"/>
+			<ellipse class="istp178" cx="100" cy="157.9" rx="16" ry="3"/>
+			<ellipse class="istp179" cx="100" cy="157.9" rx="15.9" ry="3"/>
+			<ellipse class="istp180" cx="100" cy="157.9" rx="15.7" ry="2.9"/>
+			<ellipse class="istp181" cx="100" cy="157.9" rx="15.5" ry="2.9"/>
+			<ellipse class="istp182" cx="100" cy="157.9" rx="15.3" ry="2.9"/>
+			<ellipse class="istp183" cx="100" cy="157.9" rx="15.1" ry="2.8"/>
+			<ellipse class="istp183" cx="100" cy="157.9" rx="15" ry="2.8"/>
+			<ellipse class="istp184" cx="100" cy="157.9" rx="14.8" ry="2.8"/>
+		</g>
+		<g>
+			<ellipse class="istp4" cx="119.5" cy="169.3" rx="25.3" ry="1.7"/>
+			<ellipse class="istp5" cx="119.5" cy="169.3" rx="25.2" ry="1.6"/>
+			<ellipse class="istp6" cx="119.5" cy="169.3" rx="25.1" ry="1.6"/>
+			<ellipse class="istp7" cx="119.5" cy="169.3" rx="25" ry="1.6"/>
+			<ellipse class="istp8" cx="119.5" cy="169.3" rx="24.9" ry="1.6"/>
+			<ellipse class="istp9" cx="119.5" cy="169.3" rx="24.8" ry="1.6"/>
+			<ellipse class="istp10" cx="119.5" cy="169.3" rx="24.7" ry="1.6"/>
+			<ellipse class="istp11" cx="119.5" cy="169.3" rx="24.6" ry="1.6"/>
+			<ellipse class="istp12" cx="119.5" cy="169.3" rx="24.6" ry="1.6"/>
+			<ellipse class="istp13" cx="119.5" cy="169.3" rx="24.5" ry="1.6"/>
+			<ellipse class="istp14" cx="119.5" cy="169.3" rx="24.4" ry="1.6"/>
+			<ellipse class="istp15" cx="119.5" cy="169.3" rx="24.3" ry="1.6"/>
+			<ellipse class="istp16" cx="119.5" cy="169.3" rx="24.2" ry="1.6"/>
+			<ellipse class="istp17" cx="119.5" cy="169.3" rx="24.1" ry="1.6"/>
+			<ellipse class="istp17" cx="119.5" cy="169.3" rx="24" ry="1.6"/>
+			<ellipse class="istp18" cx="119.5" cy="169.3" rx="23.9" ry="1.6"/>
+			<ellipse class="istp19" cx="119.5" cy="169.3" rx="23.9" ry="1.6"/>
+			<ellipse class="istp20" cx="119.5" cy="169.3" rx="23.8" ry="1.6"/>
+			<ellipse class="istp21" cx="119.5" cy="169.3" rx="23.7" ry="1.6"/>
+			<ellipse class="istp22" cx="119.5" cy="169.3" rx="23.6" ry="1.5"/>
+			<ellipse class="istp23" cx="119.5" cy="169.3" rx="23.5" ry="1.5"/>
+			<ellipse class="istp24" cx="119.5" cy="169.3" rx="23.4" ry="1.5"/>
+			<ellipse class="istp25" cx="119.5" cy="169.3" rx="23.3" ry="1.5"/>
+			<ellipse class="istp25" cx="119.5" cy="169.3" rx="23.2" ry="1.5"/>
+			<ellipse class="istp26" cx="119.5" cy="169.3" rx="23.1" ry="1.5"/>
+			<ellipse class="istp26" cx="119.5" cy="169.3" rx="23.1" ry="1.5"/>
+			<ellipse class="istp27" cx="119.5" cy="169.3" rx="23" ry="1.5"/>
+			<ellipse class="istp28" cx="119.5" cy="169.3" rx="22.9" ry="1.5"/>
+			<ellipse class="istp29" cx="119.5" cy="169.3" rx="22.8" ry="1.5"/>
+			<ellipse class="istp30" cx="119.5" cy="169.3" rx="22.7" ry="1.5"/>
+			<ellipse class="istp31" cx="119.5" cy="169.3" rx="22.6" ry="1.5"/>
+			<ellipse class="istp32" cx="119.5" cy="169.3" rx="22.5" ry="1.5"/>
+			<ellipse class="istp32" cx="119.5" cy="169.3" rx="22.4" ry="1.5"/>
+			<ellipse class="istp33" cx="119.5" cy="169.3" rx="22.3" ry="1.5"/>
+			<ellipse class="istp33" cx="119.5" cy="169.3" rx="22.3" ry="1.5"/>
+			<ellipse class="istp34" cx="119.5" cy="169.3" rx="22.2" ry="1.5"/>
+			<ellipse class="istp34" cx="119.5" cy="169.3" rx="22.1" ry="1.4"/>
+			<ellipse class="istp35" cx="119.5" cy="169.3" rx="22" ry="1.4"/>
+			<ellipse class="istp36" cx="119.5" cy="169.3" rx="21.9" ry="1.4"/>
+			<ellipse class="istp37" cx="119.5" cy="169.3" rx="21.8" ry="1.4"/>
+			<ellipse class="istp38" cx="119.5" cy="169.3" rx="21.7" ry="1.4"/>
+			<ellipse class="istp39" cx="119.5" cy="169.3" rx="21.6" ry="1.4"/>
+			<ellipse class="istp40" cx="119.5" cy="169.3" rx="21.5" ry="1.4"/>
+			<ellipse class="istp40" cx="119.5" cy="169.3" rx="21.5" ry="1.4"/>
+			<ellipse class="istp41" cx="119.5" cy="169.3" rx="21.4" ry="1.4"/>
+			<ellipse class="istp41" cx="119.5" cy="169.3" rx="21.3" ry="1.4"/>
+			<ellipse class="istp42" cx="119.5" cy="169.3" rx="21.2" ry="1.4"/>
+			<ellipse class="istp42" cx="119.5" cy="169.3" rx="21.1" ry="1.4"/>
+			<ellipse class="istp43" cx="119.5" cy="169.3" rx="21" ry="1.4"/>
+			<ellipse class="istp44" cx="119.5" cy="169.3" rx="20.9" ry="1.4"/>
+			<ellipse class="istp45" cx="119.5" cy="169.3" rx="20.8" ry="1.4"/>
+			<ellipse class="istp46" cx="119.5" cy="169.3" rx="20.7" ry="1.4"/>
+			<ellipse class="istp47" cx="119.5" cy="169.3" rx="20.7" ry="1.4"/>
+			<ellipse class="istp48" cx="119.5" cy="169.3" rx="20.6" ry="1.3"/>
+			<ellipse class="istp49" cx="119.5" cy="169.3" rx="20.5" ry="1.3"/>
+			<ellipse class="istp50" cx="119.5" cy="169.3" rx="20.4" ry="1.3"/>
+			<ellipse class="istp50" cx="119.5" cy="169.3" rx="20.3" ry="1.3"/>
+			<ellipse class="istp51" cx="119.5" cy="169.3" rx="20.2" ry="1.3"/>
+			<ellipse class="istp52" cx="119.5" cy="169.3" rx="20.1" ry="1.3"/>
+			<ellipse class="istp53" cx="119.5" cy="169.3" rx="20" ry="1.3"/>
+			<ellipse class="istp54" cx="119.5" cy="169.3" rx="19.9" ry="1.3"/>
+			<ellipse class="istp55" cx="119.5" cy="169.3" rx="19.9" ry="1.3"/>
+			<ellipse class="istp56" cx="119.5" cy="169.3" rx="19.8" ry="1.3"/>
+			<ellipse class="istp57" cx="119.5" cy="169.3" rx="19.7" ry="1.3"/>
+			<ellipse class="istp58" cx="119.5" cy="169.3" rx="19.6" ry="1.3"/>
+			<ellipse class="istp59" cx="119.5" cy="169.3" rx="19.5" ry="1.3"/>
+			<ellipse class="istp60" cx="119.5" cy="169.3" rx="19.4" ry="1.3"/>
+			<ellipse class="istp61" cx="119.5" cy="169.3" rx="19.3" ry="1.3"/>
+			<ellipse class="istp62" cx="119.5" cy="169.3" rx="19.2" ry="1.3"/>
+			<ellipse class="istp63" cx="119.5" cy="169.3" rx="19.1" ry="1.3"/>
+			<ellipse class="istp64" cx="119.5" cy="169.3" rx="19.1" ry="1.2"/>
+			<ellipse class="istp65" cx="119.5" cy="169.3" rx="19" ry="1.2"/>
+			<ellipse class="istp66" cx="119.5" cy="169.3" rx="18.9" ry="1.2"/>
+			<ellipse class="istp67" cx="119.5" cy="169.3" rx="18.8" ry="1.2"/>
+			<ellipse class="istp68" cx="119.5" cy="169.3" rx="18.7" ry="1.2"/>
+			<ellipse class="istp69" cx="119.5" cy="169.3" rx="18.6" ry="1.2"/>
+			<ellipse class="istp70" cx="119.5" cy="169.3" rx="18.5" ry="1.2"/>
+			<ellipse class="istp71" cx="119.5" cy="169.3" rx="18.4" ry="1.2"/>
+			<ellipse class="istp72" cx="119.5" cy="169.3" rx="18.4" ry="1.2"/>
+			<ellipse class="istp73" cx="119.5" cy="169.3" rx="18.3" ry="1.2"/>
+			<ellipse class="istp74" cx="119.5" cy="169.3" rx="18.2" ry="1.2"/>
+			<ellipse class="istp75" cx="119.5" cy="169.3" rx="18.1" ry="1.2"/>
+			<ellipse class="istp76" cx="119.5" cy="169.3" rx="18" ry="1.2"/>
+			<ellipse class="istp77" cx="119.5" cy="169.3" rx="17.9" ry="1.2"/>
+			<ellipse class="istp78" cx="119.5" cy="169.3" rx="17.8" ry="1.2"/>
+			<ellipse class="istp79" cx="119.5" cy="169.3" rx="17.7" ry="1.2"/>
+			<ellipse class="istp80" cx="119.5" cy="169.3" rx="17.6" ry="1.2"/>
+			<ellipse class="istp81" cx="119.5" cy="169.3" rx="17.6" ry="1.1"/>
+			<ellipse class="istp82" cx="119.5" cy="169.3" rx="17.5" ry="1.1"/>
+			<ellipse class="istp83" cx="119.5" cy="169.3" rx="17.4" ry="1.1"/>
+			<ellipse class="istp84" cx="119.5" cy="169.3" rx="17.3" ry="1.1"/>
+			<ellipse class="istp85" cx="119.5" cy="169.3" rx="17.2" ry="1.1"/>
+			<ellipse class="istp86" cx="119.5" cy="169.3" rx="17.1" ry="1.1"/>
+			<ellipse class="istp87" cx="119.5" cy="169.3" rx="17" ry="1.1"/>
+			<ellipse class="istp88" cx="119.5" cy="169.3" rx="16.9" ry="1.1"/>
+			<ellipse class="istp89" cx="119.5" cy="169.3" rx="16.8" ry="1.1"/>
+			<ellipse class="istp90" cx="119.5" cy="169.3" rx="16.8" ry="1.1"/>
+			<ellipse class="istp91" cx="119.5" cy="169.3" rx="16.7" ry="1.1"/>
+			<ellipse class="istp92" cx="119.5" cy="169.3" rx="16.6" ry="1.1"/>
+			<ellipse class="istp93" cx="119.5" cy="169.3" rx="16.5" ry="1.1"/>
+			<ellipse class="istp94" cx="119.5" cy="169.3" rx="16.4" ry="1.1"/>
+			<ellipse class="istp95" cx="119.5" cy="169.3" rx="16.3" ry="1.1"/>
+			<ellipse class="istp96" cx="119.5" cy="169.3" rx="16.2" ry="1.1"/>
+			<ellipse class="istp97" cx="119.5" cy="169.3" rx="16.1" ry="1.1"/>
+			<ellipse class="istp98" cx="119.5" cy="169.3" rx="16" ry="1.1"/>
+			<ellipse class="istp99" cx="119.5" cy="169.3" rx="16" ry="1"/>
+			<ellipse class="istp100" cx="119.5" cy="169.3" rx="15.9" ry="1"/>
+			<ellipse class="istp101" cx="119.5" cy="169.3" rx="15.8" ry="1"/>
+			<ellipse class="istp102" cx="119.5" cy="169.3" rx="15.7" ry="1"/>
+			<ellipse class="istp103" cx="119.5" cy="169.3" rx="15.6" ry="1"/>
+			<ellipse class="istp104" cx="119.5" cy="169.3" rx="15.5" ry="1"/>
+			<ellipse class="istp105" cx="119.5" cy="169.3" rx="15.4" ry="1"/>
+			<ellipse class="istp106" cx="119.5" cy="169.3" rx="15.3" ry="1"/>
+			<ellipse class="istp107" cx="119.5" cy="169.3" rx="15.2" ry="1"/>
+			<ellipse class="istp108" cx="119.5" cy="169.3" rx="15.2" ry="1"/>
+			<ellipse class="istp109" cx="119.5" cy="169.3" rx="15.1" ry="1"/>
+			<ellipse class="istp110" cx="119.5" cy="169.3" rx="15" ry="1"/>
+			<ellipse class="istp111" cx="119.5" cy="169.3" rx="14.9" ry="1"/>
+			<ellipse class="istp112" cx="119.5" cy="169.3" rx="14.8" ry="1"/>
+			<ellipse class="istp113" cx="119.5" cy="169.3" rx="14.7" ry="1"/>
+			<ellipse class="istp114" cx="119.5" cy="169.3" rx="14.6" ry="1"/>
+			<ellipse class="istp115" cx="119.5" cy="169.3" rx="14.5" ry="1"/>
+			<ellipse class="istp116" cx="119.5" cy="169.3" rx="14.4" ry="0.9"/>
+			<ellipse class="istp117" cx="119.5" cy="169.3" rx="14.4" ry="0.9"/>
+			<ellipse class="istp118" cx="119.5" cy="169.3" rx="14.3" ry="0.9"/>
+			<ellipse class="istp119" cx="119.5" cy="169.3" rx="14.2" ry="0.9"/>
+			<ellipse class="istp120" cx="119.5" cy="169.3" rx="14.1" ry="0.9"/>
+			<ellipse class="istp121" cx="119.5" cy="169.3" rx="14" ry="0.9"/>
+			<ellipse class="istp122" cx="119.5" cy="169.3" rx="13.9" ry="0.9"/>
+			<ellipse class="istp123" cx="119.5" cy="169.3" rx="13.8" ry="0.9"/>
+			<ellipse class="istp124" cx="119.5" cy="169.3" rx="13.7" ry="0.9"/>
+			<ellipse class="istp125" cx="119.5" cy="169.3" rx="13.6" ry="0.9"/>
+			<ellipse class="istp126" cx="119.5" cy="169.3" rx="13.6" ry="0.9"/>
+			<ellipse class="istp127" cx="119.5" cy="169.3" rx="13.5" ry="0.9"/>
+			<ellipse class="istp128" cx="119.5" cy="169.3" rx="13.4" ry="0.9"/>
+			<ellipse class="istp129" cx="119.5" cy="169.3" rx="13.3" ry="0.9"/>
+			<ellipse class="istp130" cx="119.5" cy="169.3" rx="13.2" ry="0.9"/>
+			<ellipse class="istp131" cx="119.5" cy="169.3" rx="13.1" ry="0.9"/>
+			<ellipse class="istp132" cx="119.5" cy="169.3" rx="13" ry="0.9"/>
+			<ellipse class="istp133" cx="119.5" cy="169.3" rx="12.9" ry="0.8"/>
+			<ellipse class="istp134" cx="119.5" cy="169.3" rx="12.9" ry="0.8"/>
+			<ellipse class="istp135" cx="119.5" cy="169.3" rx="12.8" ry="0.8"/>
+			<ellipse class="istp136" cx="119.5" cy="169.3" rx="12.7" ry="0.8"/>
+			<ellipse class="istp137" cx="119.5" cy="169.3" rx="12.6" ry="0.8"/>
+			<ellipse class="istp138" cx="119.5" cy="169.3" rx="12.5" ry="0.8"/>
+			<ellipse class="istp139" cx="119.5" cy="169.3" rx="12.4" ry="0.8"/>
+			<ellipse class="istp140" cx="119.5" cy="169.3" rx="12.3" ry="0.8"/>
+			<ellipse class="istp141" cx="119.5" cy="169.3" rx="12.2" ry="0.8"/>
+			<ellipse class="istp142" cx="119.5" cy="169.3" rx="12.1" ry="0.8"/>
+			<ellipse class="istp142" cx="119.5" cy="169.3" rx="12.1" ry="0.8"/>
+			<ellipse class="istp143" cx="119.5" cy="169.3" rx="12" ry="0.8"/>
+			<ellipse class="istp144" cx="119.5" cy="169.3" rx="11.9" ry="0.8"/>
+			<ellipse class="istp145" cx="119.5" cy="169.3" rx="11.8" ry="0.8"/>
+			<ellipse class="istp146" cx="119.5" cy="169.3" rx="11.7" ry="0.8"/>
+			<ellipse class="istp147" cx="119.5" cy="169.3" rx="11.6" ry="0.8"/>
+			<ellipse class="istp148" cx="119.5" cy="169.3" rx="11.5" ry="0.8"/>
+			<ellipse class="istp149" cx="119.5" cy="169.3" rx="11.4" ry="0.7"/>
+			<ellipse class="istp150" cx="119.5" cy="169.3" rx="11.3" ry="0.7"/>
+			<ellipse class="istp150" cx="119.5" cy="169.3" rx="11.3" ry="0.7"/>
+			<ellipse class="istp151" cx="119.5" cy="169.3" rx="11.2" ry="0.7"/>
+			<ellipse class="istp151" cx="119.5" cy="169.3" rx="11.1" ry="0.7"/>
+			<ellipse class="istp152" cx="119.5" cy="169.3" rx="11" ry="0.7"/>
+			<ellipse class="istp153" cx="119.5" cy="169.3" rx="10.9" ry="0.7"/>
+			<ellipse class="istp154" cx="119.5" cy="169.3" rx="10.8" ry="0.7"/>
+			<ellipse class="istp155" cx="119.5" cy="169.3" rx="10.7" ry="0.7"/>
+			<ellipse class="istp156" cx="119.5" cy="169.3" rx="10.6" ry="0.7"/>
+			<ellipse class="istp157" cx="119.5" cy="169.3" rx="10.5" ry="0.7"/>
+			<ellipse class="istp158" cx="119.5" cy="169.3" rx="10.5" ry="0.7"/>
+			<ellipse class="istp159" cx="119.5" cy="169.3" rx="10.4" ry="0.7"/>
+			<ellipse class="istp159" cx="119.5" cy="169.3" rx="10.3" ry="0.7"/>
+			<ellipse class="istp160" cx="119.5" cy="169.3" rx="10.2" ry="0.7"/>
+			<ellipse class="istp160" cx="119.5" cy="169.3" rx="10.1" ry="0.7"/>
+			<ellipse class="istp161" cx="119.5" cy="169.3" rx="10" ry="0.7"/>
+			<ellipse class="istp161" cx="119.5" cy="169.3" rx="9.9" ry="0.7"/>
+			<ellipse class="istp162" cx="119.5" cy="169.3" rx="9.8" ry="0.6"/>
+			<ellipse class="istp163" cx="119.5" cy="169.3" rx="9.7" ry="0.6"/>
+			<ellipse class="istp164" cx="119.5" cy="169.3" rx="9.7" ry="0.6"/>
+			<ellipse class="istp165" cx="119.5" cy="169.3" rx="9.6" ry="0.6"/>
+			<ellipse class="istp166" cx="119.5" cy="169.3" rx="9.5" ry="0.6"/>
+			<ellipse class="istp167" cx="119.5" cy="169.3" rx="9.4" ry="0.6"/>
+			<ellipse class="istp167" cx="119.5" cy="169.3" rx="9.3" ry="0.6"/>
+			<ellipse class="istp168" cx="119.5" cy="169.3" rx="9.2" ry="0.6"/>
+			<ellipse class="istp168" cx="119.5" cy="169.3" rx="9.1" ry="0.6"/>
+			<ellipse class="istp169" cx="119.5" cy="169.3" rx="9" ry="0.6"/>
+			<ellipse class="istp170" cx="119.5" cy="169.3" rx="8.9" ry="0.6"/>
+			<ellipse class="istp171" cx="119.5" cy="169.3" rx="8.9" ry="0.6"/>
+			<ellipse class="istp172" cx="119.5" cy="169.3" rx="8.8" ry="0.6"/>
+			<ellipse class="istp173" cx="119.5" cy="169.3" rx="8.7" ry="0.6"/>
+			<ellipse class="istp174" cx="119.5" cy="169.3" rx="8.6" ry="0.6"/>
+			<ellipse class="istp174" cx="119.5" cy="169.3" rx="8.5" ry="0.6"/>
+			<ellipse class="istp175" cx="119.5" cy="169.3" rx="8.4" ry="0.6"/>
+			<ellipse class="istp175" cx="119.5" cy="169.3" rx="8.3" ry="0.5"/>
+			<ellipse class="istp176" cx="119.5" cy="169.3" rx="8.2" ry="0.5"/>
+			<ellipse class="istp177" cx="119.5" cy="169.3" rx="8.1" ry="0.5"/>
+			<ellipse class="istp178" cx="119.5" cy="169.3" rx="8.1" ry="0.5"/>
+			<ellipse class="istp179" cx="119.5" cy="169.3" rx="8" ry="0.5"/>
+			<ellipse class="istp180" cx="119.5" cy="169.3" rx="7.9" ry="0.5"/>
+			<ellipse class="istp181" cx="119.5" cy="169.3" rx="7.8" ry="0.5"/>
+			<ellipse class="istp182" cx="119.5" cy="169.3" rx="7.7" ry="0.5"/>
+			<ellipse class="istp183" cx="119.5" cy="169.3" rx="7.6" ry="0.5"/>
+			<ellipse class="istp183" cx="119.5" cy="169.3" rx="7.5" ry="0.5"/>
+			<ellipse class="istp184" cx="119.5" cy="169.3" rx="7.4" ry="0.5"/>
+		</g>
+	</g>
+	<g>
+		<linearGradient id="ITSP_ID_1_" gradientUnits="userSpaceOnUse" x1="100.6334" y1="82.3277" x2="100.6334" y2="150.6671">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="istp185" d="M159.2,101.3c-2.3-3.1-6.4-4.3-9.8-5.9c-7-2.7-13.9-6-20.7-9.7v0c-1.1-0.6-2.2-1.2-3.2-1.8
+			c-4.6-2.6-9.9-8.7-11.3-12h-13.5H87.2c-1.5,3.3-6.8,9.4-11.3,12c-0.8,0.5-1.6,0.9-2.4,1.4l-2,1.1c-6.4,3.4-13,6.5-19.5,9
+			c-3.3,1.6-7.5,2.8-9.8,5.9c-1.8,4-3.1,10.3-3.8,18.2c2.8,10.1,9.8,19.1,19.7,25.8c0,0,0,0,0,0l1.8-31.7l0-0.3l1,12.4l0,0.2l0-0.2
+			l0,0.5l2.7,22.5c4.6,2.5,9.6,4.5,15,6c6.9,1.9,14.3,3,22.1,3c7.8,0,15.2-1,22.1-2.9c5.4-1.5,10.5-3.5,15.1-6l2.6-21.6l0-1.4
+			l1-12.4l0,0.3l1.8,31.8c0,0,0,0,0,0c9.9-6.7,16.9-15.6,19.7-25.8C162.3,111.7,161,105.3,159.2,101.3z"/>
+		<linearGradient id="ITSP_ID_3_" gradientUnits="userSpaceOnUse" x1="100.6334" y1="66.6396" x2="100.6334" y2="131.0782">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="istp186" d="M93.3,106.7c4.8,0.7,9.7,0.7,14.6,0c9.9-2,15.2-12,20.7-20.9c-1.1-0.6-2.2-1.2-3.2-1.8
+			c-4.6-2.6-9.9-8.7-11.3-12h-13.5H87.2c-1.5,3.3-6.8,9.4-11.3,12c-1.1,0.6-2.2,1.2-3.2,1.8C78.2,94.7,83.4,104.7,93.3,106.7z
+			 M87.8,72.8h2.9c6.7,2.6,13.3,2.4,19.9,0h2.8c0.9,2.1,3.3,5.3,6,8c-1.6,10-7.7,12-19,21.4c-11.7-9.7-17.1-11.7-18.7-21.4
+			C84.5,78,86.9,74.8,87.8,72.8z"/>
+		<g>
+			<path d="M60.8,125.9l0-0.2l-1-12.1L58,145.3c1.1,0.7,2.2,1.4,3.4,2.1l-0.6-21.3L60.8,125.9z"/>
+			<path d="M143.3,145.4l-1.8-31.8l-1,12.1l0,1.4l0.2-1.4l-0.6,21.8C141.1,146.7,142.2,146.1,143.3,145.4z"/>
+		</g>
+		<linearGradient id="ITSP_ID_4_" gradientUnits="userSpaceOnUse" x1="99.5101" y1="110.2864" x2="101.4167" y2="60.113">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="istp187" d="M100.5,102.1c-11.7-9.7-17.1-11.7-18.7-21.4c2.7-2.7,5.1-5.9,5.9-7.9h2.9c6.7,2.6,13.3,2.4,19.9,0h2.8
+			c0.9,2.1,3.3,5.3,6,8C117.8,90.8,111.7,92.7,100.5,102.1z"/>
+		<linearGradient id="ITSP_ID_5_" gradientUnits="userSpaceOnUse" x1="100.6334" y1="79.2614" x2="100.6334" y2="94.1178">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<path class="istp188" d="M118.1,81c-2.5-2.4-4.7-5.3-5.6-7.2h-2.6c-6.1,2.2-12.2,2.4-18.5,0h-2.7c-0.8,1.8-3,4.7-5.5,7.1
+			c1.5,8.8,6.5,10.6,17.3,19.3C110.9,91.8,116.6,90,118.1,81z"/>
+		<g>
+			<linearGradient id="ITSP_ID_6_" gradientUnits="userSpaceOnUse" x1="74.3683" y1="24.5854" x2="129.83" y2="81.8821">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp189" d="M125.2,39.6c0-0.4,0-0.7-0.1-1.1C124.2,28.2,113.6,20,100.7,20c-12.6,0-23,7.8-24.4,17.7
+				c-0.1,0.6-0.2,1.2-0.2,1.9c-0.2,11-2.1,23.3,2.5,30.1c5.1,7.7,8.6,15.1,17.1,16.9c3.3,0.5,6.6,0.5,10,0
+				c8.4-1.7,11.9-9.2,17.1-16.9C127.2,62.9,125.3,50.7,125.2,39.6z"/>
+			<g>
+				
+					<linearGradient id="ITSP_ID_7_" gradientUnits="userSpaceOnUse" x1="-20757.8535" y1="-3492.3662" x2="-20752.6113" y2="-3477.8513" gradientTransform="matrix(-1 0 0 -1 -20656 -3452.8472)">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="1" style="stop-color:#FFFFFF"/>
+				</linearGradient>
+				<ellipse class="istp190" cx="100.6" cy="36.1" rx="19.8" ry="11.9"/>
+				<linearGradient id="ITSP_ID_8_" gradientUnits="userSpaceOnUse" x1="99.8395" y1="48.7366" x2="133.0757" y2="57.5044">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="1" style="stop-color:#FFFFFF"/>
+				</linearGradient>
+				<path class="istp191" d="M116.9,29.4c6.8,5,3.3,19.6-6.6,30.8c-8.5,9.6-18.7,13-23.5,8.7c-4.7-4.2-3.6-14.9,3.2-25.2
+					C97.7,31.8,110.2,24.6,116.9,29.4z"/>
+			</g>
+		</g>
+		<linearGradient id="ITSP_ID_9_" gradientUnits="userSpaceOnUse" x1="100.6879" y1="119.6274" x2="101.5217" y2="86.8197">
+			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+			<stop  offset="1" style="stop-color:#FFFFFF"/>
+		</linearGradient>
+		<path class="istp192" d="M104.6,113.6c-20.1-0.9-38.2,2.8-37.3,8.1c0.9,5.2,19.1,8.8,38.1,8.4c16.5-0.4,28.4-3.8,28.6-7.8
+			C134.1,118.2,121.9,114.3,104.6,113.6z"/>
+	</g>
+	<g>
+		<g>
+			<g>
+				<path class="istp193" d="M144.3,141h-5.1v-2.6c-1.3-0.2-2.6-0.4-3.8-0.7l-1,2.5l-4.9-1.8l1-2.5c-1.2-0.6-2.3-1.2-3.3-1.9l-1.7,2
+					l-3.9-3.3l1.7-2c-1-1-1.8-1.9-2.5-3l-2.3,1.3l-2.6-4.5l2.3-1.3c-0.5-1.2-1-2.4-1.3-3.7l-2.6,0.5l-1-5.1l2.6-0.5
+					c-0.1-0.6-0.1-1.2-0.1-1.9c0-0.6,0.1-1.3,0.1-1.9l-2.6-0.5l1-5.1l2.6,0.5c0.4-1.3,0.8-2.5,1.3-3.7l-2.3-1.3l2.6-4.5l2.3,1.3
+					c0.8-1.1,1.5-2,2.5-3l-1.7-2l3.9-3.3l1.7,2c1.1-0.7,2.1-1.3,3.3-1.9l-1-2.5l4.9-1.8l1,2.5c1.2-0.4,2.5-0.6,3.8-0.7v-2.6h5.1v2.6
+					c1.3,0.2,2.6,0.4,3.8,0.7l1-2.5l4.9,1.8l-1,2.5c1.2,0.5,2.3,1.2,3.3,1.9l1.7-2l3.9,3.3l-1.7,2c1,1,1.8,1.9,2.5,3l2.3-1.3
+					l2.6,4.5l-2.3,1.3c0.5,1.2,1,2.4,1.3,3.7l2.6-0.5l1,5.1l-2.6,0.5c0.1,0.6,0.1,1.2,0.1,1.9c0,0.6-0.1,1.3-0.1,1.9l2.6,0.5l-1,5.1
+					l-2.6-0.5c-0.4,1.3-0.8,2.5-1.3,3.7l2.3,1.3L165,129l-2.3-1.3c-0.8,1.1-1.5,2-2.5,3l1.7,2L158,136l-1.7-2
+					c-1.1,0.7-2.1,1.3-3.3,1.9l1,2.5l-4.9,1.8l-1-2.5c-1.2,0.4-2.5,0.6-3.8,0.7V141L144.3,141z"/>
+			</g>
+			<g>
+				<g>
+					<polyline class="istp0" points="165.1,125.8 162.7,124.4 162.7,127.8 165.1,129.1 165.1,125.8 					"/>
+				</g>
+				<g>
+					<polyline points="158,132.8 156.3,130.8 156.3,134 158,136.1 158,132.8 					"/>
+				</g>
+				<g>
+					<polygon points="149,140.2 148.1,137.8 148.1,134.4 149,136.9 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="135.3,137.8 134.4,140.2 134.4,136.9 135.3,134.4 					"/>
+				</g>
+				<g>
+					<polyline class="istp0" points="127.1,130.8 127.1,134 125.4,136.1 125.4,132.8 127.1,130.8 					"/>
+				</g>
+				<g>
+					<polyline class="istp0" points="120.7,124.4 120.7,127.8 118.3,129.1 118.3,125.8 120.7,124.4 					"/>
+				</g>
+				<g>
+					<polyline class="istp0" points="116.7,116.3 116.7,119.7 114.1,120 114.1,116.8 116.7,116.3 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="115.8,107.3 115.8,110.6 113.3,110.1 113.3,106.9 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="118,98.6 117,101.3 115.8,100.6 115.8,97.3 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="123.2,91.2 121.6,92.8 121.4,92.5 121.4,89.2 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="167.6,107.3 167.6,110.6 170.2,110.1 170.2,106.9 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="167.6,100.6 166.4,101.3 165.3,98.6 167.6,97.3 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="160.2,91.2 161.8,92.8 162,92.5 162,89.2 					"/>
+				</g>
+				<g>
+					<polyline class="istp0" points="169.3,116.8 169.3,120 166.7,119.7 166.7,116.3 169.3,116.8 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="153,85.8 153.7,86.3 153.9,83.5 					"/>
+				</g>
+				<g>
+					<polygon class="istp0" points="129.7,86.2 130.4,85.8 129.5,83.5 					"/>
+				</g>
+			</g>
+			<g>
+				
+					<linearGradient id="ITSP_ID_10_" gradientUnits="userSpaceOnUse" x1="6461.8018" y1="10599.1309" x2="6493.4771" y2="10645.6895" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+					<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+					<stop  offset="1" style="stop-color:#F5F5F5"/>
+				</linearGradient>
+				<path class="istp194" d="M144.3,138h-5.1v-2.6c-1.3-0.2-2.6-0.4-3.8-0.7l-1,2.5l-4.9-1.8l1-2.5c-1.2-0.6-2.3-1.2-3.3-1.9l-1.7,2
+					l-3.9-3.3l1.7-2c-1-1-1.8-1.9-2.5-3l-2.3,1.3l-2.6-4.5l2.3-1.3c-0.5-1.2-1-2.4-1.3-3.7l-2.6,0.5l-1-5.1l2.6-0.5
+					c-0.1-0.6-0.1-1.2-0.1-1.9c0-0.6,0.1-1.3,0.1-1.9l-2.6-0.5l1-5.1l2.6,0.5c0.4-1.3,0.8-2.5,1.3-3.7l-2.3-1.3l2.6-4.5l2.3,1.3
+					c0.8-1.1,1.5-2,2.5-3l-1.7-2l3.9-3.3l1.7,2c1.1-0.7,2.1-1.3,3.3-1.9l-1-2.5l4.9-1.8l1,2.5c1.2-0.4,2.5-0.6,3.8-0.7v-2.6h5.1v2.4
+					c1.3,0.2,2.6,0.4,3.8,0.7l1-2.5l4.9,1.8l-1,2.5c1.2,0.5,2.3,1.2,3.3,1.9l1.7-2l3.9,3.3l-1.7,2c1,1,1.8,1.9,2.5,3l2.3-1.3
+					l2.6,4.5l-2.3,1.3c0.5,1.2,1,2.4,1.3,3.7l2.6-0.5l1,5.1l-2.6,0.5c0.1,0.6,0.1,1.2,0.1,1.9c0,0.6-0.1,1.3-0.1,1.9l2.6,0.5l-1,5.1
+					l-2.6-0.5c-0.4,1.3-0.8,2.5-1.3,3.7l2.3,1.3l-2.6,4.5l-2.3-1.3c-0.8,1.1-1.5,2-2.5,3l1.7,2l-3.9,3.3l-1.7-2
+					c-1.1,0.7-2.1,1.3-3.3,1.9l1,2.5l-4.9,1.8l-1-2.5c-1.2,0.4-2.5,0.6-3.8,0.7v2.6"/>
+			</g>
+			<ellipse class="istp193" cx="141.8" cy="109.5" rx="23.4" ry="22.5"/>
+			<path class="istp195" d="M161.9,109.7c0,10.7-9.1,19.4-20.1,19.4c-11.1,0-20.1-8.7-20.1-19.4s8.9-19.4,20.1-19.4
+				C152.8,90.2,161.9,99.1,161.9,109.7z"/>
+			
+				<linearGradient id="ITSP_ID_11_" gradientUnits="userSpaceOnUse" x1="6469.9902" y1="10607.4629" x2="6481.8931" y2="10633.0898" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp196" d="M141.8,92c-10,0-18.1,7.9-18.1,17.5s8.1,17.5,18.1,17.5s18.1-7.9,18.1-17.5S151.8,92,141.8,92z"/>
+			
+				<linearGradient id="ITSP_ID_12_" gradientUnits="userSpaceOnUse" x1="6470.7393" y1="10608.8193" x2="6481.3291" y2="10631.6182" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp197" d="M141.6,93.9c-8.9,0-16.2,7-16.2,15.6s7.3,15.6,16.2,15.6c8.9,0,16.2-7,16.2-15.6S150.6,93.9,141.6,93.9z"
+				/>
+			
+				<linearGradient id="ITSP_ID_13_" gradientUnits="userSpaceOnUse" x1="6471.3999" y1="10610.2158" x2="6480.6758" y2="10630.1865" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp198" d="M141.6,95.8c-7.9,0-14.2,6.1-14.2,13.7s6.3,13.7,14.2,13.7s14.2-6.2,14.2-13.7
+				C155.8,102,149.5,95.8,141.6,95.8z"/>
+			
+				<linearGradient id="ITSP_ID_14_" gradientUnits="userSpaceOnUse" x1="6471.917" y1="10611.6807" x2="6479.8804" y2="10628.8252" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp199" d="M141.8,98c-6.7,0-12.2,5.2-12.2,11.7c0,6.4,5.5,11.7,12.2,11.7c6.7,0,12.2-5.4,12.2-11.8
+				C153.9,103.1,148.4,97.8,141.8,98z"/>
+			
+				<linearGradient id="ITSP_ID_15_" gradientUnits="userSpaceOnUse" x1="6472.5952" y1="10613.0713" x2="6479.2446" y2="10627.3877" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp200" d="M141.8,99.8c-5.6,0-10.1,4.4-10.1,9.8c0,5.4,4.5,9.8,10.1,9.8s10.1-4.4,10.1-9.8
+				C151.9,104.1,147.4,99.8,141.8,99.8z"/>
+			
+				<linearGradient id="ITSP_ID_16_" gradientUnits="userSpaceOnUse" x1="6473.2451" y1="10614.4707" x2="6478.5815" y2="10625.96" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp201" d="M141.8,101.7c-4.4,0-8.1,3.6-8.1,7.9c0,4.3,3.6,7.9,8.1,7.9c4.4,0,8.1-3.6,8.1-7.9
+				C149.9,105.1,146.2,101.7,141.8,101.7z"/>
+			<path class="istp193" d="M141.8,103.1c-3.6,0-6.4,2.9-6.4,6.2c0,3.5,3,6.2,6.4,6.2c3.5,0,6.3-2.9,6.3-6.2
+				C148.1,105.9,145.2,103.1,141.8,103.1z"/>
+			<path class="istp195" d="M141.6,103.6c-3.5,0-6.2,2.6-6.2,6c0,3.3,2.7,6,6.2,6c3.5,0,6.2-2.7,6.2-6
+				C147.8,106.2,145.1,103.6,141.6,103.6z"/>
+			
+				<linearGradient id="ITSP_ID_17_" gradientUnits="userSpaceOnUse" x1="6474.645" y1="10617.2285" x2="6477.3555" y2="10623.0635" gradientTransform="matrix(-1 0 0 1 6617.646 -10510.6143)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.21" style="stop-color:#9B9A9B"/>
+				<stop  offset="0.46" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.74" style="stop-color:#BCB9BA"/>
+				<stop  offset="1" style="stop-color:#F5F5F5"/>
+			</linearGradient>
+			<path class="istp202" d="M141.6,105.6c-2.3,0-4.2,1.8-4.2,3.9c0,2.1,1.9,3.9,4.2,3.9s4.2-1.8,4.2-3.9
+				C145.8,107.3,143.9,105.6,141.6,105.6z"/>
+			<path class="istp195" d="M143.9,109.5c0,1.1-1,2-2.1,2c-1.2,0-2.1-1-2.1-2c0-1.1,1-2,2.1-2C142.8,107.5,143.8,108.4,143.9,109.5z"
+				/>
+			<g>
+				<g>
+					<g>
+						<path id="ITSP_ID_2_" class="istp203" d="M144.3,141h-5.1v-3.3h5.1V141L144.3,141z M149,140.2v-3.3l4.9-1.8v3.3L149,140.2
+							L149,140.2z M134.4,140.2l-4.9-1.8V135l4.9,1.8V140.2L134.4,140.2z M158,136.1v-3.3l3.9-3.3v3.3L158,136.1L158,136.1z
+							 M125.4,136.1l-3.9-3.3v-3.3l3.9,3.3V136.1L125.4,136.1z M165.1,129.1v-3.3l2.6-4.5v3.3L165.1,129.1L165.1,129.1z
+							 M118.3,129.1l-2.6-4.5v-3.3l2.6,4.5V129.1L118.3,129.1z M169.3,120v-3.3l1-5.1v3.3L169.3,120L169.3,120z M114.1,120l-1-5.1
+							v-3.3l1,5.1V120"/>
+					</g>
+				</g>
+			</g>
+		</g>
+		<g>
+			
+				<linearGradient id="ITSP_ID_18_" gradientUnits="userSpaceOnUse" x1="805.0845" y1="118.1852" x2="805.0845" y2="169.0578" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp204" d="M148.4,155l0-14.3c0-2.6-1.4-4.9-3.3-4.9c-1.9,0.1-3.6,2.4-3.6,4.9l0,19.5h2.5h5.7h2.3v-0.1
+				C149.9,159.9,148.4,157.6,148.4,155z"/>
+			
+				<linearGradient id="ITSP_ID_19_" gradientUnits="userSpaceOnUse" x1="814.2261" y1="118.1852" x2="814.2261" y2="169.0578" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp205" d="M144.8,135.5L144.8,135.5l0.2,0v0c2.2,0.1,3.9,2.4,3.9,5.3l0,14.3c0,2.5,1.4,4.8,3.3,5
+				c1.8-0.2,3.3-2.5,3.3-5l0-27.4c-3.9,2.8-8.7,4.4-13.9,4.4c-4.1,0-8-1-11.3-2.8h-4.1v-0.6h3.1c-2.2-1.4-4.2-3.1-5.9-5l-0.1,31.7
+				c0,2.8-1.7,5-3.8,5h9.9h11.4l0-19.5C140.9,137.9,142.6,135.6,144.8,135.5z M131.5,132.8h-5.3v-0.6h5.3V132.8z M135.8,132.2h16
+				v0.6h-16V132.2z"/>
+			
+				<linearGradient id="ITSP_ID_20_" gradientUnits="userSpaceOnUse" x1="799.0174" y1="118.1852" x2="799.0174" y2="169.0578" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp206" d="M152.9,160.1c-0.1,0-0.2,0.1-0.3,0.1C152.7,160.2,152.8,160.1,152.9,160.1z"/>
+			<path class="istp207" d="M129.3,128.6h2.3v0.6h-1.2c3.4,1.8,7.2,2.8,11.3,2.8c5.2,0,10-1.6,13.9-4.4l0-4c-2.6,2.4-6,4.2-9.7,4.9h6
+				v0.6h-16v-0.6h1.7c-2.6-0.5-5.1-1.6-7.2-3h-4V125h3.2c-2.6-1.9-4.6-4.3-6-7.2l0,5.7C125.1,125.6,127.1,127.3,129.3,128.6z"/>
+			<path class="istp52" d="M129.3,128.6h2.3v0.6h-1.2c3.4,1.8,7.2,2.8,11.3,2.8c5.2,0,10-1.6,13.9-4.4l0-4c-2.6,2.4-6,4.2-9.7,4.9h6
+				v0.6h-16v-0.6h1.7c-2.6-0.5-5.1-1.6-7.2-3h-4V125h3.2c-2.6-1.9-4.6-4.3-6-7.2l0,5.7C125.1,125.6,127.1,127.3,129.3,128.6z"/>
+			<path class="istp208" d="M126.2,125v0.6h4c-0.3-0.2-0.5-0.4-0.8-0.6H126.2z"/>
+			<path class="istp208" d="M137.5,128.6h-1.7v0.6h16v-0.6h-6c-1.4,0.3-2.8,0.4-4.2,0.4S138.8,128.9,137.5,128.6z"/>
+			<path class="istp208" d="M126.2,128.6v0.6h4.1c-0.3-0.2-0.7-0.4-1-0.6H126.2z"/>
+			<path class="istp208" d="M131.5,128.6h-2.3c0.3,0.2,0.7,0.4,1,0.6h1.2V128.6z"/>
+			<rect x="135.8" y="132.2" class="istp208" width="16" height="0.6"/>
+			<rect x="126.2" y="132.2" class="istp208" width="5.3" height="0.6"/>
+			
+				<linearGradient id="ITSP_ID_21_" gradientUnits="userSpaceOnUse" x1="813.8538" y1="173.8928" x2="769.0581" y2="131.3238" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp209" d="M152.5,160.3L152.5,160.3C152.5,160.2,152.5,160.2,152.5,160.3c-0.1,0-0.4,0-0.6,0H152.5z"/>
+			
+				<linearGradient id="ITSP_ID_22_" gradientUnits="userSpaceOnUse" x1="820.9756" y1="166.3984" x2="776.1799" y2="123.8294" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp210" d="M155.7,150.9L155.7,150.9L155.7,150.9l0.1,4.4c0,2.3-1.2,4.3-2.8,4.8c1.8-0.6,3.1-2.6,3.1-5.1l0-27.7
+				c-0.1,0.1-0.2,0.1-0.3,0.2L155.7,150.9z"/>
+			<path class="istp207" d="M155.7,123.5l0,4c0.1-0.1,0.2-0.1,0.3-0.2l0-4C155.9,123.3,155.8,123.4,155.7,123.5z"/>
+			
+				<linearGradient id="ITSP_ID_23_" gradientUnits="userSpaceOnUse" x1="829.5531" y1="157.3723" x2="784.7574" y2="114.8033" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp211" d="M155.7,123.5l0,4c0.1-0.1,0.2-0.1,0.3-0.2l0-4C155.9,123.3,155.8,123.4,155.7,123.5z"/>
+			
+				<linearGradient id="ITSP_ID_24_" gradientUnits="userSpaceOnUse" x1="803.4153" y1="118.1852" x2="803.4153" y2="169.0578" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp212" d="M155.7,155.3v-4.4l-0.1,0l0,0l0.1-23.4c-0.1,0.1-0.1,0.1-0.2,0.1l0,27.4c0,2.5-1.4,4.8-3.3,5
+				c-1.8-0.2-3.3-2.5-3.3-5l0-14.3c0-2.8-1.7-5.1-3.9-5.3v0h-0.2v0c-2.2,0.1-3.9,2.4-3.9,5.3l0,19.5h0.5l0-19.5
+				c0-2.6,1.7-4.9,3.6-4.9c1.9,0.1,3.3,2.4,3.3,4.9l0,14.3c0,2.6,1.5,4.8,3.5,5.2v0.1c0.2,0,0.4,0,0.7-0.1c0.1,0,0.2-0.1,0.3-0.1
+				C154.5,159.5,155.7,157.6,155.7,155.3z"/>
+			
+				<linearGradient id="ITSP_ID_25_" gradientUnits="userSpaceOnUse" x1="821.8498" y1="165.4785" x2="777.0541" y2="122.9096" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp213" d="M155.7,155.3v-4.4l-0.1,0l0,0l0.1-23.4c-0.1,0.1-0.1,0.1-0.2,0.1l0,27.4c0,2.5-1.4,4.8-3.3,5
+				c-1.8-0.2-3.3-2.5-3.3-5l0-14.3c0-2.8-1.7-5.1-3.9-5.3v0h-0.2v0c-2.2,0.1-3.9,2.4-3.9,5.3l0,19.5h0.5l0-19.5
+				c0-2.6,1.7-4.9,3.6-4.9c1.9,0.1,3.3,2.4,3.3,4.9l0,14.3c0,2.6,1.5,4.8,3.5,5.2v0.1c0.2,0,0.4,0,0.7-0.1c0.1,0,0.2-0.1,0.3-0.1
+				C154.5,159.5,155.7,157.6,155.7,155.3z"/>
+			<path class="istp207" d="M155.5,127.6c0.1,0,0.1-0.1,0.2-0.1l0-4c-0.1,0.1-0.1,0.1-0.2,0.2L155.5,127.6z"/>
+			
+				<linearGradient id="ITSP_ID_26_" gradientUnits="userSpaceOnUse" x1="796.1319" y1="118.1852" x2="796.1319" y2="169.0578" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp214" d="M155.5,127.6c0.1,0,0.1-0.1,0.2-0.1l0-4c-0.1,0.1-0.1,0.1-0.2,0.2L155.5,127.6z"/>
+			
+				<linearGradient id="ITSP_ID_27_" gradientUnits="userSpaceOnUse" x1="829.57" y1="157.3545" x2="784.7743" y2="114.7855" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="istp215" d="M155.5,127.6c0.1,0,0.1-0.1,0.2-0.1l0-4c-0.1,0.1-0.1,0.1-0.2,0.2L155.5,127.6z"/>
+		</g>
+		<g>
+			<g>
+				<g>
+					<g>
+						
+							<rect x="135.8" y="135.8" transform="matrix(-1 4.477473e-11 -4.477473e-11 -1 287.573 272.2467)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="126.2" y="135.8" transform="matrix(-1 4.480715e-11 -4.480715e-11 -1 257.7712 272.2467)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="135.8" y="139.4" transform="matrix(-1 4.488797e-11 -4.488797e-11 -1 287.573 279.4281)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="126.2" y="139.4" transform="matrix(-1 4.514910e-11 -4.514910e-11 -1 257.7712 279.4281)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="135.8" y="143" transform="matrix(-1 4.488797e-11 -4.488797e-11 -1 287.573 286.6095)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="126.2" y="143" transform="matrix(-1 4.446475e-11 -4.446475e-11 -1 257.7712 286.6095)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="135.8" y="146.6" transform="matrix(-1 4.500121e-11 -4.500121e-11 -1 287.573 293.7909)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="126.2" y="146.6" transform="matrix(-1 4.480715e-11 -4.480715e-11 -1 257.7712 293.7909)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="135.8" y="150.2" transform="matrix(-1 4.488797e-11 -4.488797e-11 -1 287.573 300.9723)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="126.2" y="150.2" transform="matrix(-1 4.446475e-11 -4.446475e-11 -1 257.7712 300.9723)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+				</g>
+				
+					<linearGradient id="ITSP_ID_28_" gradientUnits="userSpaceOnUse" x1="804.9966" y1="155.5242" x2="819.2225" y2="147.959" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+				<path class="istp216" d="M148.7,155.3l-0.1-10.4l0,0l0.1,0v-4.4c0-2.8-1.7-5-3.8-5h-32.4c2.1,0,3.8,2.3,3.8,5l0.1,10.4l0,0l-0.1,0
+					v4.4c0,2.8,1.7,5,3.8,5h2.3h5.7h14.4h9.9C150.4,160.3,148.7,158.1,148.7,155.3z"/>
+				
+					<linearGradient id="ITSP_ID_29_" gradientUnits="userSpaceOnUse" x1="817.483" y1="146.2181" x2="848.6909" y2="167.0854" gradientTransform="matrix(-1 0 0 1 951.74 0)">
+					<stop  offset="0" style="stop-color:#F5F5F5"/>
+					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+				</linearGradient>
+				<path class="istp217" d="M108.8,164.3l0.1-19.3l0,0l-0.1,0v-4.4c0-2.8,1.7-5,3.8-5h2.3h5.7h14.4h9.9c-2.1,0-3.8,2.3-3.8,5
+					l-0.1,19.3l0-8.9l0.1,0v13.3c0,2.8-1.7,5-3.8,5h-2.3h-5.7h-14.4H105C107.1,169.3,108.8,167,108.8,164.3z"/>
+				<g>
+					<g>
+						
+							<rect x="121.7" y="140.3" transform="matrix(-1 4.488797e-11 -4.488797e-11 -1 259.5098 281.1186)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="112.2" y="140.3" transform="matrix(-1 4.514910e-11 -4.514910e-11 -1 229.708 281.1186)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="121.7" y="143.9" transform="matrix(-1 4.477473e-11 -4.477473e-11 -1 259.5098 288.3)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="112.2" y="143.9" transform="matrix(-1 4.480715e-11 -4.480715e-11 -1 229.708 288.3)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="121.7" y="147.5" transform="matrix(-1 4.500121e-11 -4.500121e-11 -1 259.5098 295.4814)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="112.2" y="147.5" transform="matrix(-1 4.480715e-11 -4.480715e-11 -1 229.708 295.4814)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="121.7" y="151" transform="matrix(-1 4.488797e-11 -4.488797e-11 -1 259.5098 302.6627)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="112.2" y="151" transform="matrix(-1 4.446475e-11 -4.446475e-11 -1 229.708 302.6627)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+					<g>
+						
+							<rect x="121.7" y="154.6" transform="matrix(-1 4.500121e-11 -4.500121e-11 -1 259.5098 309.8441)" class="istp208" width="16" height="0.6"/>
+						
+							<rect x="112.2" y="154.6" transform="matrix(-1 4.480715e-11 -4.480715e-11 -1 229.708 309.8441)" class="istp208" width="5.3" height="0.6"/>
+					</g>
+				</g>
+			</g>
+			
+				<rect x="111.7" y="159.9" transform="matrix(-1 4.493060e-11 -4.493060e-11 -1 236.735 321.4186)" class="istp208" width="13.2" height="1.6"/>
+			
+				<rect x="111.7" y="163.3" transform="matrix(-1 4.488353e-11 -4.488353e-11 -1 228.0762 327.8475)" class="istp208" width="4.6" height="1.3"/>
+		</g>
+	</g>
+</g>
+</svg>

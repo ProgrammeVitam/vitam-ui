@@ -38,6 +38,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 
 import { ActivatedRouteSnapshot } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { EMPTY } from 'rxjs';
 import { AppGuard } from './app.guard';
 import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
@@ -80,7 +82,8 @@ describe('AppGuard', () => {
         { provide: AuthService, useValue: { user: { profileGroup: { profiles: [{ applicationName: 'USERS_APP' }] } } } },
         { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => { } } },
         { provide: ApplicationService, useValue: { applications: expectedApp } },
-        { provide: WINDOW_LOCATION, useValue: {} }
+        { provide: WINDOW_LOCATION, useValue: {} },
+        { provide: TranslateService, useValue: { get: () => EMPTY } }
       ]
     });
   });

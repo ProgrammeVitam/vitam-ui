@@ -38,6 +38,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { ApplicationsListComponent } from './application-list.component';
 
@@ -47,7 +48,8 @@ import { ApplicationsListComponent } from './application-list.component';
     CommonModule,
     MatCardModule,
     MatTabsModule,
-    VitamUICommonModule
+    VitamUICommonModule,
+    AngularSvgIconModule
   ],
   exports: [ApplicationsListComponent]
 })

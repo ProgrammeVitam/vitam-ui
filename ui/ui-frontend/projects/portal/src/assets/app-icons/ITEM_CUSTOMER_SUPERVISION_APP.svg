@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.itcs0{fill:url(#ITCS_ID_1_);}
+	.itcs1{fill-rule:evenodd;clip-rule:evenodd;}
+	.itcs2{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.itcs3{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.itcs4{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.itcs5{fill:#BCB9BA;}
+	.itcs6{fill:#BBB9BA;}
+	.itcs7{fill:#BBB8B9;}
+	.itcs8{fill:#BAB8B9;}
+	.itcs9{fill:#B9B7B8;}
+	.itcs10{fill:#B9B7B7;}
+	.itcs11{fill:#B8B6B7;}
+	.itcs12{fill:#B8B5B6;}
+	.itcs13{fill:#B7B5B6;}
+	.itcs14{fill:#B7B4B5;}
+	.itcs15{fill:#B6B4B5;}
+	.itcs16{fill:#B6B3B4;}
+	.itcs17{fill:#B5B3B4;}
+	.itcs18{fill:#B4B2B3;}
+	.itcs19{fill:#B3B1B2;}
+	.itcs20{fill:#B3B1B1;}
+	.itcs21{fill:#B2B0B1;}
+	.itcs22{fill:#B2AFB0;}
+	.itcs23{fill:#B1AFB0;}
+	.itcs24{fill:#B1AEAF;}
+	.itcs25{fill:#B0AEAF;}
+	.itcs26{fill:#AFADAE;}
+	.itcs27{fill:#AEACAD;}
+	.itcs28{fill:#ADABAC;}
+	.itcs29{fill:#ADABAB;}
+	.itcs30{fill:#ACAAAB;}
+	.itcs31{fill:#ACAAAA;}
+	.itcs32{fill:#ABA9AA;}
+	.itcs33{fill:#AAA8A9;}
+	.itcs34{fill:#A9A7A8;}
+	.itcs35{fill:#A8A6A7;}
+	.itcs36{fill:#A7A5A6;}
+	.itcs37{fill:#A7A5A5;}
+	.itcs38{fill:#A6A4A5;}
+	.itcs39{fill:#A5A4A4;}
+	.itcs40{fill:#A5A3A4;}
+	.itcs41{fill:#A4A2A3;}
+	.itcs42{fill:#A3A1A2;}
+	.itcs43{fill:#A2A0A1;}
+	.itcs44{fill:#A19FA0;}
+	.itcs45{fill:#A09F9F;}
+	.itcs46{fill:#A09E9F;}
+	.itcs47{fill:#9F9E9E;}
+	.itcs48{fill:#9F9D9E;}
+	.itcs49{fill:#9E9D9D;}
+	.itcs50{fill:#9E9C9D;}
+	.itcs51{fill:#9D9B9C;}
+	.itcs52{fill:#9C9A9B;}
+	.itcs53{fill:#9B9A9B;}
+	.itcs54{fill:#9B999A;}
+	.itcs55{fill:#9A9999;}
+	.itcs56{fill:#9A9899;}
+	.itcs57{fill:#999898;}
+	.itcs58{fill:#999798;}
+	.itcs59{fill:#989797;}
+	.itcs60{fill:#989697;}
+	.itcs61{fill:#979596;}
+	.itcs62{fill:#969596;}
+	.itcs63{fill:#969495;}
+	.itcs64{fill:#959495;}
+	.itcs65{fill:#959394;}
+	.itcs66{fill:#949393;}
+	.itcs67{fill:#949293;}
+	.itcs68{fill:#939292;}
+	.itcs69{fill:#939192;}
+	.itcs70{fill:#929191;}
+	.itcs71{fill:#919091;}
+	.itcs72{fill:#919090;}
+	.itcs73{fill:#908F90;}
+	.itcs74{fill:#908E8F;}
+	.itcs75{fill:#8F8E8F;}
+	.itcs76{fill:#8F8D8E;}
+	.itcs77{fill:#8E8D8D;}
+	.itcs78{fill:#8E8C8D;}
+	.itcs79{fill:#8D8C8C;}
+	.itcs80{fill:#8C8B8C;}
+	.itcs81{fill:#8C8B8B;}
+	.itcs82{fill:#8B8A8B;}
+	.itcs83{fill:#8B8A8A;}
+	.itcs84{fill:#8A898A;}
+	.itcs85{fill:#8A8889;}
+	.itcs86{fill:#898888;}
+	.itcs87{fill:#898788;}
+	.itcs88{fill:#888787;}
+	.itcs89{fill:#878687;}
+	.itcs90{fill:#878686;}
+	.itcs91{fill:#868586;}
+	.itcs92{fill:#868585;}
+	.itcs93{fill:#858485;}
+	.itcs94{fill:#858484;}
+	.itcs95{fill:#848384;}
+	.itcs96{fill:#848383;}
+	.itcs97{fill:#838282;}
+	.itcs98{fill:#828182;}
+	.itcs99{fill:#828181;}
+	.itcs100{fill:#818081;}
+	.itcs101{fill:#818080;}
+	.itcs102{fill:#807F80;}
+	.itcs103{fill:#807F7F;}
+	.itcs104{fill:#7F7E7F;}
+	.itcs105{fill:#7F7E7E;}
+	.itcs106{fill:#7E7D7E;}
+	.itcs107{fill:#7D7D7D;}
+	.itcs108{fill:#7D7C7C;}
+	.itcs109{fill:#7C7B7C;}
+	.itcs110{fill:#7C7B7B;}
+	.itcs111{fill:#7B7A7B;}
+	.itcs112{fill:#7B7A7A;}
+	.itcs113{fill:#7A797A;}
+	.itcs114{fill:#7A7979;}
+	.itcs115{fill:#797879;}
+	.itcs116{fill:#787878;}
+	.itcs117{fill:#787778;}
+	.itcs118{fill:#777777;}
+	.itcs119{fill:#777676;}
+	.itcs120{fill:#767676;}
+	.itcs121{fill:#767575;}
+	.itcs122{fill:#757475;}
+	.itcs123{fill:#757474;}
+	.itcs124{fill:#747374;}
+	.itcs125{fill:#737373;}
+	.itcs126{fill:#737273;}
+	.itcs127{fill:#727272;}
+	.itcs128{fill:#727172;}
+	.itcs129{fill:#717171;}
+	.itcs130{fill:#717070;}
+	.itcs131{fill:#707070;}
+	.itcs132{fill:#706F6F;}
+	.itcs133{fill:#6F6E6F;}
+	.itcs134{fill:#6E6E6E;}
+	.itcs135{fill:#6E6D6E;}
+	.itcs136{fill:#6D6D6D;}
+	.itcs137{fill:#6D6C6D;}
+	.itcs138{fill:#6C6C6C;}
+	.itcs139{fill:#6C6B6C;}
+	.itcs140{fill:#6B6B6B;}
+	.itcs141{fill:#6B6A6A;}
+	.itcs142{fill:#6A6A6A;}
+	.itcs143{fill:#696969;}
+	.itcs144{fill:#686868;}
+	.itcs145{fill:#686768;}
+	.itcs146{fill:#676767;}
+	.itcs147{fill:#676667;}
+	.itcs148{fill:#666666;}
+	.itcs149{fill:#666566;}
+	.itcs150{fill:#656565;}
+	.itcs151{fill:#646464;}
+	.itcs152{fill:#636363;}
+	.itcs153{fill:#626262;}
+	.itcs154{fill:#626162;}
+	.itcs155{fill:#616161;}
+	.itcs156{fill:#616061;}
+	.itcs157{fill:#606060;}
+	.itcs158{fill:#5F5F60;}
+	.itcs159{fill:#5F5F5F;}
+	.itcs160{fill:#5E5E5E;}
+	.itcs161{fill:#5D5D5D;}
+	.itcs162{fill:#5C5C5C;}
+	.itcs163{fill:#5B5B5B;}
+	.itcs164{fill:#5A5A5B;}
+	.itcs165{fill:#5A5A5A;}
+	.itcs166{fill:#59595A;}
+	.itcs167{fill:#595959;}
+	.itcs168{fill:#585858;}
+	.itcs169{fill:#575757;}
+	.itcs170{fill:#565656;}
+	.itcs171{fill:#555656;}
+	.itcs172{fill:#555555;}
+	.itcs173{fill:#545455;}
+	.itcs174{fill:#545454;}
+	.itcs175{fill:#535353;}
+	.itcs176{fill:#525252;}
+	.itcs177{fill:#515151;}
+	.itcs178{fill:#505151;}
+	.itcs179{fill:#505050;}
+	.itcs180{fill:#4F5050;}
+	.itcs181{fill:#4F4F4F;}
+	.itcs182{fill:#4E4F4F;}
+	.itcs183{fill:#4E4E4E;}
+	.itcs184{fill:#4D4D4D;}
+	.itcs185{fill:#4C4C4C;}
+	.itcs186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_2_);}
+	.itcs187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_3_);}
+	.itcs188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_4_);}
+	.itcs189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_5_);}
+	.itcs190{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-900);}
+	.itcs191{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.itcs192{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-400);}
+	.itcs193{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-300);}
+	.itcs194{fill:url(#ITCS_ID_6_);}
+	.itcs195{fill:url(#ITCS_ID_7_);}
+	.itcs196{fill:url(#ITCS_ID_8_);}
+	.itcs197{fill:url(#ITCS_ID_9_);}
+	.itcs198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_10_);}
+	.itcs199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_11_);}
+	.itcs200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#ITCS_ID_12_);}
+	.itcs201{opacity:0.75;fill:url(#ITCS_ID_13_);enable-background:new    ;}
+	.itcs202{fill:url(#ITCS_ID_14_);}
+	.itcs203{fill:var(--vitamui-primary-600);}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="160.7" width="164.6" x="17.7" y="19.3"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	
+		<linearGradient id="ITCS_ID_1_" gradientUnits="userSpaceOnUse" x1="1392.5957" y1="1853.8291" x2="1429.7454" y2="1878.6694" gradientTransform="matrix(1 0 0 -1 -1274.0602 1963.9237)">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+		<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+	</linearGradient>
+	<path class="itcs0" d="M171.7,81l-0.1,10.5l0,0.1l0.1-0.1l0,6c0,3.8-2.3,6.8-5.2,6.8l-3.1,0h-7.8l-19.6,0l-13.5,0
+		c2.9,0,5.2-3.1,5.2-6.8l0.1-10.5l-0.1-6c0-3.8,2.3-6.8,5.2-6.8h3.1h7.8l19.6,0h13.5C174.1,74.2,171.7,77.2,171.7,81z"/>
+	<g>
+		<g>
+			<path class="itcs1" d="M99.5,141.9c45.2,0,81.8,8.5,81.8,18.9c0,10.4-36.7,20-81.8,20s-81.8-9.6-81.8-20
+				C17.6,150.3,54.3,141.9,99.5,141.9z"/>
+			<path class="itcs2" d="M99.5,142.3c43.2,0,78.2,8.3,78.2,18.6c0,10.3-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6
+				C21.3,150.5,56.3,142.3,99.5,142.3z"/>
+			<path class="itcs3" d="M99.5,140.1c43.2,0,78.2,8.3,78.2,18.6s-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6
+				C21.3,148.3,56.3,140.1,99.5,140.1z"/>
+			<path class="itcs2" d="M99.5,138.9c43.2,0,78.2,8.3,78.2,18.6c0,10.3-35,18.6-78.2,18.6s-78.2-8.3-78.2-18.6
+				C21.3,147.1,56.3,138.9,99.5,138.9z"/>
+			<path class="itcs4" d="M99.4,138.9c22.7,0,43,2.3,57.3,5.9C126.9,143,45.1,147.4,25,163.2c-2.4-1.8-3.7-3.7-3.7-5.6
+				C21.2,147.1,56.3,138.9,99.4,138.9z"/>
+			<path class="itcs3" d="M21.3,157.4c0-10.3,35-18.6,78.2-18.6s78.2,8.3,78.2,18.6c0,0.4,0,0.6-0.1,1c-2.2-9.7-36.3-17.6-78.1-17.6
+				s-75.9,7.8-78.1,17.6C21.3,158,21.3,157.8,21.3,157.4z"/>
+		</g>
+		<g>
+			<ellipse class="itcs5" cx="99.5" cy="158" rx="50.3" ry="9.4"/>
+			<ellipse class="itcs6" cx="99.5" cy="158" rx="50.1" ry="9.3"/>
+			<ellipse class="itcs7" cx="99.5" cy="158" rx="49.9" ry="9.3"/>
+			<ellipse class="itcs8" cx="99.5" cy="158" rx="49.7" ry="9.3"/>
+			<ellipse class="itcs9" cx="99.5" cy="158" rx="49.5" ry="9.2"/>
+			<ellipse class="itcs10" cx="99.5" cy="158" rx="49.4" ry="9.2"/>
+			<ellipse class="itcs11" cx="99.5" cy="158" rx="49.2" ry="9.2"/>
+			<ellipse class="itcs12" cx="99.5" cy="158" rx="49" ry="9.1"/>
+			<ellipse class="itcs13" cx="99.5" cy="158" rx="48.8" ry="9.1"/>
+			<ellipse class="itcs14" cx="99.5" cy="158" rx="48.7" ry="9.1"/>
+			<ellipse class="itcs15" cx="99.5" cy="158" rx="48.5" ry="9"/>
+			<ellipse class="itcs16" cx="99.5" cy="158" rx="48.3" ry="9"/>
+			<ellipse class="itcs17" cx="99.5" cy="158" rx="48.1" ry="9"/>
+			<ellipse class="itcs18" cx="99.5" cy="158" rx="48" ry="8.9"/>
+			<ellipse class="itcs18" cx="99.5" cy="158" rx="47.8" ry="8.9"/>
+			<ellipse class="itcs19" cx="99.5" cy="158" rx="47.6" ry="8.9"/>
+			<ellipse class="itcs20" cx="99.5" cy="158" rx="47.4" ry="8.8"/>
+			<ellipse class="itcs21" cx="99.5" cy="158" rx="47.3" ry="8.8"/>
+			<ellipse class="itcs22" cx="99.5" cy="158" rx="47.1" ry="8.8"/>
+			<ellipse class="itcs23" cx="99.5" cy="158" rx="46.9" ry="8.7"/>
+			<ellipse class="itcs24" cx="99.5" cy="158" rx="46.7" ry="8.7"/>
+			<ellipse class="itcs25" cx="99.5" cy="158" rx="46.5" ry="8.7"/>
+			<ellipse class="itcs26" cx="99.5" cy="158" rx="46.4" ry="8.6"/>
+			<ellipse class="itcs26" cx="99.5" cy="158" rx="46.2" ry="8.6"/>
+			<ellipse class="itcs27" cx="99.5" cy="158" rx="46" ry="8.6"/>
+			<ellipse class="itcs27" cx="99.5" cy="158" rx="45.8" ry="8.5"/>
+			<ellipse class="itcs28" cx="99.5" cy="158" rx="45.7" ry="8.5"/>
+			<ellipse class="itcs29" cx="99.5" cy="158" rx="45.5" ry="8.5"/>
+			<ellipse class="itcs30" cx="99.5" cy="158" rx="45.3" ry="8.4"/>
+			<ellipse class="itcs31" cx="99.5" cy="158" rx="45.1" ry="8.4"/>
+			<ellipse class="itcs32" cx="99.5" cy="158" rx="45" ry="8.4"/>
+			<ellipse class="itcs33" cx="99.5" cy="158" rx="44.8" ry="8.3"/>
+			<ellipse class="itcs33" cx="99.5" cy="158" rx="44.6" ry="8.3"/>
+			<ellipse class="itcs34" cx="99.5" cy="158" rx="44.4" ry="8.3"/>
+			<ellipse class="itcs34" cx="99.5" cy="158" rx="44.3" ry="8.2"/>
+			<ellipse class="itcs35" cx="99.5" cy="158" rx="44.1" ry="8.2"/>
+			<ellipse class="itcs35" cx="99.5" cy="158" rx="43.9" ry="8.2"/>
+			<ellipse class="itcs36" cx="99.5" cy="158" rx="43.7" ry="8.1"/>
+			<ellipse class="itcs37" cx="99.5" cy="158" rx="43.5" ry="8.1"/>
+			<ellipse class="itcs38" cx="99.5" cy="158" rx="43.4" ry="8.1"/>
+			<ellipse class="itcs39" cx="99.5" cy="158" rx="43.2" ry="8"/>
+			<ellipse class="itcs40" cx="99.5" cy="158" rx="43" ry="8"/>
+			<ellipse class="itcs41" cx="99.5" cy="158" rx="42.8" ry="8"/>
+			<ellipse class="itcs41" cx="99.5" cy="158" rx="42.7" ry="7.9"/>
+			<ellipse class="itcs42" cx="99.5" cy="158" rx="42.5" ry="7.9"/>
+			<ellipse class="itcs42" cx="99.5" cy="158" rx="42.3" ry="7.9"/>
+			<ellipse class="itcs43" cx="99.5" cy="158" rx="42.1" ry="7.9"/>
+			<ellipse class="itcs43" cx="99.5" cy="158" rx="42" ry="7.8"/>
+			<ellipse class="itcs44" cx="99.5" cy="158" rx="41.8" ry="7.8"/>
+			<ellipse class="itcs45" cx="99.5" cy="158" rx="41.6" ry="7.8"/>
+			<ellipse class="itcs46" cx="99.5" cy="158" rx="41.4" ry="7.7"/>
+			<ellipse class="itcs47" cx="99.5" cy="158" rx="41.3" ry="7.7"/>
+			<ellipse class="itcs48" cx="99.5" cy="158" rx="41.1" ry="7.7"/>
+			<ellipse class="itcs49" cx="99.5" cy="158" rx="40.9" ry="7.6"/>
+			<ellipse class="itcs50" cx="99.5" cy="158" rx="40.7" ry="7.6"/>
+			<ellipse class="itcs51" cx="99.5" cy="158" rx="40.5" ry="7.6"/>
+			<ellipse class="itcs51" cx="99.5" cy="158" rx="40.4" ry="7.5"/>
+			<ellipse class="itcs52" cx="99.5" cy="158" rx="40.2" ry="7.5"/>
+			<ellipse class="itcs53" cx="99.5" cy="158" rx="40" ry="7.5"/>
+			<ellipse class="itcs54" cx="99.5" cy="158" rx="39.8" ry="7.4"/>
+			<ellipse class="itcs55" cx="99.5" cy="158" rx="39.7" ry="7.4"/>
+			<ellipse class="itcs56" cx="99.5" cy="158" rx="39.5" ry="7.4"/>
+			<ellipse class="itcs57" cx="99.5" cy="158" rx="39.3" ry="7.3"/>
+			<ellipse class="itcs58" cx="99.5" cy="158" rx="39.1" ry="7.3"/>
+			<ellipse class="itcs59" cx="99.5" cy="158" rx="39" ry="7.3"/>
+			<ellipse class="itcs60" cx="99.5" cy="158" rx="38.8" ry="7.2"/>
+			<ellipse class="itcs61" cx="99.5" cy="158" rx="38.6" ry="7.2"/>
+			<ellipse class="itcs62" cx="99.5" cy="158" rx="38.4" ry="7.2"/>
+			<ellipse class="itcs63" cx="99.5" cy="158" rx="38.3" ry="7.1"/>
+			<ellipse class="itcs64" cx="99.5" cy="158" rx="38.1" ry="7.1"/>
+			<ellipse class="itcs65" cx="99.5" cy="158" rx="37.9" ry="7.1"/>
+			<ellipse class="itcs66" cx="99.5" cy="158" rx="37.7" ry="7"/>
+			<ellipse class="itcs67" cx="99.5" cy="158" rx="37.5" ry="7"/>
+			<ellipse class="itcs68" cx="99.5" cy="158" rx="37.4" ry="7"/>
+			<ellipse class="itcs69" cx="99.5" cy="158" rx="37.2" ry="6.9"/>
+			<ellipse class="itcs70" cx="99.5" cy="158" rx="37" ry="6.9"/>
+			<ellipse class="itcs71" cx="99.5" cy="158" rx="36.8" ry="6.9"/>
+			<ellipse class="itcs72" cx="99.5" cy="158" rx="36.7" ry="6.8"/>
+			<ellipse class="itcs73" cx="99.5" cy="158" rx="36.5" ry="6.8"/>
+			<ellipse class="itcs74" cx="99.5" cy="158" rx="36.3" ry="6.8"/>
+			<ellipse class="itcs75" cx="99.5" cy="158" rx="36.1" ry="6.7"/>
+			<ellipse class="itcs76" cx="99.5" cy="158" rx="36" ry="6.7"/>
+			<ellipse class="itcs77" cx="99.5" cy="158" rx="35.8" ry="6.7"/>
+			<ellipse class="itcs78" cx="99.5" cy="158" rx="35.6" ry="6.6"/>
+			<ellipse class="itcs79" cx="99.5" cy="158" rx="35.4" ry="6.6"/>
+			<ellipse class="itcs80" cx="99.5" cy="158" rx="35.3" ry="6.6"/>
+			<ellipse class="itcs81" cx="99.5" cy="158" rx="35.1" ry="6.5"/>
+			<ellipse class="itcs82" cx="99.5" cy="158" rx="34.9" ry="6.5"/>
+			<ellipse class="itcs83" cx="99.5" cy="158" rx="34.7" ry="6.5"/>
+			<ellipse class="itcs84" cx="99.5" cy="158" rx="34.6" ry="6.4"/>
+			<ellipse class="itcs85" cx="99.5" cy="158" rx="34.4" ry="6.4"/>
+			<ellipse class="itcs86" cx="99.5" cy="158" rx="34.2" ry="6.4"/>
+			<ellipse class="itcs87" cx="99.5" cy="158" rx="34" ry="6.3"/>
+			<ellipse class="itcs88" cx="99.5" cy="158" rx="33.8" ry="6.3"/>
+			<ellipse class="itcs89" cx="99.5" cy="158" rx="33.7" ry="6.3"/>
+			<ellipse class="itcs90" cx="99.5" cy="158" rx="33.5" ry="6.2"/>
+			<ellipse class="itcs91" cx="99.5" cy="158" rx="33.3" ry="6.2"/>
+			<ellipse class="itcs92" cx="99.5" cy="158" rx="33.1" ry="6.2"/>
+			<ellipse class="itcs93" cx="99.5" cy="158" rx="33" ry="6.1"/>
+			<ellipse class="itcs94" cx="99.5" cy="158" rx="32.8" ry="6.1"/>
+			<ellipse class="itcs95" cx="99.5" cy="158" rx="32.6" ry="6.1"/>
+			<ellipse class="itcs96" cx="99.5" cy="158" rx="32.4" ry="6"/>
+			<ellipse class="itcs97" cx="99.5" cy="158" rx="32.3" ry="6"/>
+			<ellipse class="itcs98" cx="99.5" cy="158" rx="32.1" ry="6"/>
+			<ellipse class="itcs99" cx="99.5" cy="158" rx="31.9" ry="5.9"/>
+			<ellipse class="itcs100" cx="99.5" cy="158" rx="31.7" ry="5.9"/>
+			<ellipse class="itcs101" cx="99.5" cy="158" rx="31.6" ry="5.9"/>
+			<ellipse class="itcs102" cx="99.5" cy="158" rx="31.4" ry="5.8"/>
+			<ellipse class="itcs103" cx="99.5" cy="158" rx="31.2" ry="5.8"/>
+			<ellipse class="itcs104" cx="99.5" cy="158" rx="31" ry="5.8"/>
+			<ellipse class="itcs105" cx="99.5" cy="158" rx="30.8" ry="5.7"/>
+			<ellipse class="itcs106" cx="99.5" cy="158" rx="30.7" ry="5.7"/>
+			<ellipse class="itcs107" cx="99.5" cy="158" rx="30.5" ry="5.7"/>
+			<ellipse class="itcs108" cx="99.5" cy="158" rx="30.3" ry="5.6"/>
+			<ellipse class="itcs109" cx="99.5" cy="158" rx="30.1" ry="5.6"/>
+			<ellipse class="itcs110" cx="99.5" cy="158" rx="30" ry="5.6"/>
+			<ellipse class="itcs111" cx="99.5" cy="158" rx="29.8" ry="5.5"/>
+			<ellipse class="itcs112" cx="99.5" cy="158" rx="29.6" ry="5.5"/>
+			<ellipse class="itcs113" cx="99.5" cy="158" rx="29.4" ry="5.5"/>
+			<ellipse class="itcs114" cx="99.5" cy="158" rx="29.3" ry="5.5"/>
+			<ellipse class="itcs115" cx="99.5" cy="158" rx="29.1" ry="5.4"/>
+			<ellipse class="itcs116" cx="99.5" cy="158" rx="28.9" ry="5.4"/>
+			<ellipse class="itcs117" cx="99.5" cy="158" rx="28.7" ry="5.4"/>
+			<ellipse class="itcs118" cx="99.5" cy="158" rx="28.6" ry="5.3"/>
+			<ellipse class="itcs119" cx="99.5" cy="158" rx="28.4" ry="5.3"/>
+			<ellipse class="itcs120" cx="99.5" cy="158" rx="28.2" ry="5.3"/>
+			<ellipse class="itcs121" cx="99.5" cy="158" rx="28" ry="5.2"/>
+			<ellipse class="itcs122" cx="99.5" cy="158" rx="27.8" ry="5.2"/>
+			<ellipse class="itcs123" cx="99.5" cy="158" rx="27.7" ry="5.2"/>
+			<ellipse class="itcs124" cx="99.5" cy="158" rx="27.5" ry="5.1"/>
+			<ellipse class="itcs125" cx="99.5" cy="158" rx="27.3" ry="5.1"/>
+			<ellipse class="itcs126" cx="99.5" cy="158" rx="27.1" ry="5.1"/>
+			<ellipse class="itcs127" cx="99.5" cy="158" rx="27" ry="5"/>
+			<ellipse class="itcs128" cx="99.5" cy="158" rx="26.8" ry="5"/>
+			<ellipse class="itcs129" cx="99.5" cy="158" rx="26.6" ry="5"/>
+			<ellipse class="itcs130" cx="99.5" cy="158" rx="26.4" ry="4.9"/>
+			<ellipse class="itcs131" cx="99.5" cy="158" rx="26.3" ry="4.9"/>
+			<ellipse class="itcs132" cx="99.5" cy="158" rx="26.1" ry="4.9"/>
+			<ellipse class="itcs133" cx="99.5" cy="158" rx="25.9" ry="4.8"/>
+			<ellipse class="itcs134" cx="99.5" cy="158" rx="25.7" ry="4.8"/>
+			<ellipse class="itcs135" cx="99.5" cy="158" rx="25.6" ry="4.8"/>
+			<ellipse class="itcs136" cx="99.5" cy="158" rx="25.4" ry="4.7"/>
+			<ellipse class="itcs137" cx="99.5" cy="158" rx="25.2" ry="4.7"/>
+			<ellipse class="itcs138" cx="99.5" cy="158" rx="25" ry="4.7"/>
+			<ellipse class="itcs139" cx="99.5" cy="158" rx="24.8" ry="4.6"/>
+			<ellipse class="itcs140" cx="99.5" cy="158" rx="24.7" ry="4.6"/>
+			<ellipse class="itcs141" cx="99.5" cy="158" rx="24.5" ry="4.6"/>
+			<ellipse class="itcs142" cx="99.5" cy="158" rx="24.3" ry="4.5"/>
+			<ellipse class="itcs143" cx="99.5" cy="158" rx="24.1" ry="4.5"/>
+			<ellipse class="itcs143" cx="99.5" cy="158" rx="24" ry="4.5"/>
+			<ellipse class="itcs144" cx="99.5" cy="158" rx="23.8" ry="4.4"/>
+			<ellipse class="itcs145" cx="99.5" cy="158" rx="23.6" ry="4.4"/>
+			<ellipse class="itcs146" cx="99.5" cy="158" rx="23.4" ry="4.4"/>
+			<ellipse class="itcs147" cx="99.5" cy="158" rx="23.3" ry="4.3"/>
+			<ellipse class="itcs148" cx="99.5" cy="158" rx="23.1" ry="4.3"/>
+			<ellipse class="itcs149" cx="99.5" cy="158" rx="22.9" ry="4.3"/>
+			<ellipse class="itcs150" cx="99.5" cy="158" rx="22.7" ry="4.2"/>
+			<ellipse class="itcs151" cx="99.5" cy="158" rx="22.6" ry="4.2"/>
+			<ellipse class="itcs151" cx="99.5" cy="158" rx="22.4" ry="4.2"/>
+			<ellipse class="itcs152" cx="99.5" cy="158" rx="22.2" ry="4.1"/>
+			<ellipse class="itcs152" cx="99.5" cy="158" rx="22" ry="4.1"/>
+			<ellipse class="itcs153" cx="99.5" cy="158" rx="21.8" ry="4.1"/>
+			<ellipse class="itcs154" cx="99.5" cy="158" rx="21.7" ry="4"/>
+			<ellipse class="itcs155" cx="99.5" cy="158" rx="21.5" ry="4"/>
+			<ellipse class="itcs156" cx="99.5" cy="158" rx="21.3" ry="4"/>
+			<ellipse class="itcs157" cx="99.5" cy="158" rx="21.1" ry="3.9"/>
+			<ellipse class="itcs158" cx="99.5" cy="158" rx="21" ry="3.9"/>
+			<ellipse class="itcs159" cx="99.5" cy="158" rx="20.8" ry="3.9"/>
+			<ellipse class="itcs160" cx="99.5" cy="158" rx="20.6" ry="3.8"/>
+			<ellipse class="itcs160" cx="99.5" cy="158" rx="20.4" ry="3.8"/>
+			<ellipse class="itcs161" cx="99.5" cy="158" rx="20.3" ry="3.8"/>
+			<ellipse class="itcs161" cx="99.5" cy="158" rx="20.1" ry="3.7"/>
+			<ellipse class="itcs162" cx="99.5" cy="158" rx="19.9" ry="3.7"/>
+			<ellipse class="itcs162" cx="99.5" cy="158" rx="19.7" ry="3.7"/>
+			<ellipse class="itcs163" cx="99.5" cy="158" rx="19.6" ry="3.6"/>
+			<ellipse class="itcs164" cx="99.5" cy="158" rx="19.4" ry="3.6"/>
+			<ellipse class="itcs165" cx="99.5" cy="158" rx="19.2" ry="3.6"/>
+			<ellipse class="itcs166" cx="99.5" cy="158" rx="19" ry="3.5"/>
+			<ellipse class="itcs167" cx="99.5" cy="158" rx="18.9" ry="3.5"/>
+			<ellipse class="itcs168" cx="99.5" cy="158" rx="18.7" ry="3.5"/>
+			<ellipse class="itcs168" cx="99.5" cy="158" rx="18.5" ry="3.4"/>
+			<ellipse class="itcs169" cx="99.5" cy="158" rx="18.3" ry="3.4"/>
+			<ellipse class="itcs169" cx="99.5" cy="158" rx="18.1" ry="3.4"/>
+			<ellipse class="itcs170" cx="99.5" cy="158" rx="18" ry="3.3"/>
+			<ellipse class="itcs171" cx="99.5" cy="158" rx="17.8" ry="3.3"/>
+			<ellipse class="itcs172" cx="99.5" cy="158" rx="17.6" ry="3.3"/>
+			<ellipse class="itcs173" cx="99.5" cy="158" rx="17.4" ry="3.2"/>
+			<ellipse class="itcs174" cx="99.5" cy="158" rx="17.3" ry="3.2"/>
+			<ellipse class="itcs175" cx="99.5" cy="158" rx="17.1" ry="3.2"/>
+			<ellipse class="itcs175" cx="99.5" cy="158" rx="16.9" ry="3.2"/>
+			<ellipse class="itcs176" cx="99.5" cy="158" rx="16.7" ry="3.1"/>
+			<ellipse class="itcs176" cx="99.5" cy="158" rx="16.6" ry="3.1"/>
+			<ellipse class="itcs177" cx="99.5" cy="158" rx="16.4" ry="3.1"/>
+			<ellipse class="itcs178" cx="99.5" cy="158" rx="16.2" ry="3"/>
+			<ellipse class="itcs179" cx="99.5" cy="158" rx="16" ry="3"/>
+			<ellipse class="itcs180" cx="99.5" cy="158" rx="15.9" ry="3"/>
+			<ellipse class="itcs181" cx="99.5" cy="158" rx="15.7" ry="2.9"/>
+			<ellipse class="itcs182" cx="99.5" cy="158" rx="15.5" ry="2.9"/>
+			<ellipse class="itcs183" cx="99.5" cy="158" rx="15.3" ry="2.9"/>
+			<ellipse class="itcs184" cx="99.5" cy="158" rx="15.1" ry="2.8"/>
+			<ellipse class="itcs184" cx="99.5" cy="158" rx="15" ry="2.8"/>
+			<ellipse class="itcs185" cx="99.5" cy="158" rx="14.8" ry="2.8"/>
+		</g>
+		<linearGradient id="ITCS_ID_2_" gradientUnits="userSpaceOnUse" x1="99.6232" y1="174.2915" x2="99.6232" y2="168.0433">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="itcs186" d="M74.9,170.4l-0.2,4.6h49.7l-0.8-5.1c-0.3-1.6-1.6-2.9-3.3-2.9H78.2C76.5,167.2,74.9,168.7,74.9,170.4z"/>
+		<linearGradient id="ITCS_ID_3_" gradientUnits="userSpaceOnUse" x1="99.6232" y1="173.902" x2="99.6232" y2="177.9079">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<polygon class="itcs187" points="74.8,175 75.3,179.2 98.6,180.3 123.8,179.2 124.5,175 		"/>
+		<linearGradient id="ITCS_ID_4_" gradientUnits="userSpaceOnUse" x1="86.7021" y1="173.8532" x2="86.7021" y2="162.7816">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="itcs188" d="M74.9,170.5l-0.2,4.5h18l5.8-7.9H78.4C76.5,167.1,74.9,168.7,74.9,170.5z"/>
+		
+			<linearGradient id="ITCS_ID_5_" gradientUnits="userSpaceOnUse" x1="83.7442" y1="-563.1329" x2="83.7442" y2="-567.9409" gradientTransform="matrix(1 0 0 -1 0 -388.0631)">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<polygon class="itcs189" points="74.8,175 75.3,179.2 84,179.7 91,175.9 92.7,175 		"/>
+		<path class="itcs1" d="M116.8,168.9c2,0,3.6,0.5,3.6,1.1s-1.7,1.1-3.6,1.1s-3.6-0.5-3.6-1.1S114.8,168.9,116.8,168.9z"/>
+		<path class="itcs190" d="M116.8,168.9c1.9,0,3.3,0.5,3.3,0.9c0,0.5-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9
+			C113.6,169.4,115.1,168.9,116.8,168.9z"/>
+		<path class="itcs191" d="M116.8,169.3c1.4,0,2.6,0.3,2.6,0.8c0,0.5-1.2,0.8-2.6,0.8s-2.6-0.3-2.6-0.8
+			C114.3,169.6,115.4,169.3,116.8,169.3z"/>
+		<path class="itcs192" d="M116.8,169.4c0.9,0,1.7,0.3,1.7,0.6c0,0.3-0.8,0.6-1.7,0.6s-1.7-0.3-1.7-0.6
+			C115.1,169.7,115.9,169.4,116.8,169.4z"/>
+		<path class="itcs193" d="M116.8,169.4c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5s-1.6-0.2-1.6-0.5
+			C115.3,169.6,116,169.4,116.8,169.4z"/>
+		<path class="itcs1" d="M107.2,168.9c2,0,3.6,0.5,3.6,1.1s-1.7,1.1-3.6,1.1s-3.6-0.5-3.6-1.1C103.6,169.4,105.1,168.9,107.2,168.9z"
+			/>
+		<path class="itcs190" d="M107.2,168.9c1.7,0,3.3,0.5,3.3,0.9c0,0.5-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9
+			C104.1,169.4,105.5,168.9,107.2,168.9z"/>
+		<path class="itcs191" d="M107.2,169.3c1.4,0,2.6,0.3,2.6,0.8c0,0.5-1.2,0.8-2.6,0.8s-2.6-0.3-2.6-0.8
+			C104.7,169.6,105.8,169.3,107.2,169.3z"/>
+		<path class="itcs192" d="M107.2,169.4c0.9,0,1.7,0.3,1.7,0.6c0,0.3-0.8,0.6-1.7,0.6s-1.7-0.3-1.7-0.6
+			C105.5,169.7,106.2,169.4,107.2,169.4z"/>
+		<path class="itcs193" d="M107.2,169.4c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5s-1.6-0.2-1.6-0.5
+			C105.6,169.6,106.4,169.4,107.2,169.4z"/>
+		<path class="itcs1" d="M81.2,178.4c2,0,3.6-0.6,3.6-1.4s-1.7-1.4-3.6-1.4c-2,0-3.6,0.6-3.6,1.4S79.2,178.4,81.2,178.4z"/>
+		<path class="itcs190" d="M81.2,178.3c1.9,0,3.3-0.5,3.3-1.2c0-0.6-1.4-1.2-3.3-1.2c-1.7,0-3.3,0.5-3.3,1.2
+			C77.9,177.7,79.3,178.3,81.2,178.3z"/>
+		<path class="itcs191" d="M81.2,178c1.4,0,2.6-0.5,2.6-0.9s-1.2-0.9-2.6-0.9c-1.4,0-2.6,0.5-2.6,0.9S79.8,178,81.2,178z"/>
+		<path class="itcs193" d="M81.2,177.7c0.9,0,1.6-0.3,1.6-0.6c0-0.3-0.6-0.6-1.6-0.6c-0.9,0-1.6,0.3-1.6,0.6
+			C79.6,177.5,80.4,177.7,81.2,177.7z"/>
+	</g>
+	<g>
+		<linearGradient id="ITCS_ID_6_" gradientUnits="userSpaceOnUse" x1="100.1674" y1="82.3712" x2="100.1674" y2="150.7106">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="itcs194" d="M158.7,101.4c-2.3-3.1-6.4-4.3-9.8-5.9c-7-2.7-13.9-6-20.7-9.7v0c-1.1-0.6-2.2-1.2-3.2-1.8
+			c-4.6-2.6-9.9-8.7-11.3-12h-13.5H86.7c-1.5,3.3-6.8,9.4-11.3,12c-0.8,0.5-1.6,0.9-2.4,1.4l-2,1.1c-6.4,3.4-13,6.5-19.5,9
+			c-3.3,1.6-7.5,2.8-9.8,5.9c-1.8,4-3.1,10.3-3.8,18.2c2.8,10.1,9.8,19.1,19.7,25.8c0,0,0,0,0,0l1.8-31.7l0-0.3l1,12.4l0,0.2l0-0.2
+			l0,0.5l2.7,22.5c4.6,2.5,9.6,4.5,15,6c6.9,1.9,14.3,3,22.1,3c7.8,0,15.2-1,22.1-2.9c5.4-1.5,10.5-3.5,15.1-6l2.6-21.6l0-1.4
+			l1-12.4l0,0.3l1.8,31.8c0,0,0,0,0,0c9.9-6.7,16.9-15.6,19.7-25.8C161.9,111.7,160.5,105.3,158.7,101.4z"/>
+		<linearGradient id="ITCS_ID_7_" gradientUnits="userSpaceOnUse" x1="100.1674" y1="66.6831" x2="100.1674" y2="131.1216">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="itcs195" d="M92.9,106.8c4.8,0.7,9.7,0.7,14.6,0c9.9-2,15.2-12,20.7-20.9c-1.1-0.6-2.2-1.2-3.2-1.8
+			c-4.6-2.6-9.9-8.7-11.3-12h-13.5H86.7c-1.5,3.3-6.8,9.4-11.3,12c-1.1,0.6-2.2,1.2-3.2,1.8C77.7,94.8,83,104.7,92.9,106.8z
+			 M87.3,72.8h2.9c6.7,2.6,13.3,2.4,19.9,0h2.8c0.9,2.1,3.3,5.3,6,8c-1.6,10-7.7,12-19,21.4c-11.7-9.7-17.1-11.7-18.7-21.4
+			C84.1,78,86.4,74.9,87.3,72.8z"/>
+		<g>
+			<path d="M60.3,125.9l0-0.2l-1-12.1l-1.8,31.7c1.1,0.7,2.2,1.4,3.4,2.1l-0.6-21.3L60.3,125.9z"/>
+			<path d="M142.8,145.4l-1.8-31.8l-1,12.1l0,1.4l0.2-1.4l-0.6,21.8C140.7,146.8,141.8,146.1,142.8,145.4z"/>
+		</g>
+		<linearGradient id="ITCS_ID_8_" gradientUnits="userSpaceOnUse" x1="99.0441" y1="110.3299" x2="100.9507" y2="60.1565">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="1" style="stop-color:#000000"/>
+		</linearGradient>
+		<path class="itcs196" d="M100,102.2c-11.7-9.7-17.1-11.7-18.7-21.4c2.7-2.7,5.1-5.9,5.9-7.9h2.9c6.7,2.6,13.3,2.4,19.9,0h2.8
+			c0.9,2.1,3.3,5.3,6,8C117.4,90.8,111.2,92.8,100,102.2z"/>
+		<linearGradient id="ITCS_ID_9_" gradientUnits="userSpaceOnUse" x1="100.1674" y1="79.3049" x2="100.1674" y2="94.1613">
+			<stop  offset="0" style="stop-color:#4C4C4C"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+		<path class="itcs197" d="M117.6,81c-2.5-2.4-4.7-5.3-5.6-7.2h-2.6c-6.1,2.2-12.2,2.4-18.5,0h-2.7c-0.8,1.8-3,4.7-5.5,7.1
+			c1.5,8.8,6.5,10.6,17.3,19.3C110.5,91.8,116.1,90,117.6,81z"/>
+		<g>
+			<linearGradient id="ITCS_ID_10_" gradientUnits="userSpaceOnUse" x1="73.9023" y1="24.6289" x2="129.364" y2="81.9256">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="itcs198" d="M124.7,39.7c0-0.4,0-0.7-0.1-1.1c-0.9-10.3-11.5-18.5-24.4-18.5c-12.6,0-23,7.8-24.4,17.7
+				c-0.1,0.6-0.2,1.2-0.2,1.9c-0.2,11-2.1,23.3,2.5,30.1c5.1,7.7,8.6,15.1,17.1,16.9c3.3,0.5,6.6,0.5,10,0
+				c8.4-1.7,11.9-9.2,17.1-16.9C126.8,62.9,124.9,50.7,124.7,39.7z"/>
+			<g>
+				
+					<linearGradient id="ITCS_ID_11_" gradientUnits="userSpaceOnUse" x1="-20757.3867" y1="-3492.4097" x2="-20752.1465" y2="-3477.8948" gradientTransform="matrix(-1 0 0 -1 -20656 -3452.8472)">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="1" style="stop-color:#FFFFFF"/>
+				</linearGradient>
+				<ellipse class="itcs199" cx="100.2" cy="36.2" rx="19.8" ry="11.9"/>
+				<linearGradient id="ITCS_ID_12_" gradientUnits="userSpaceOnUse" x1="99.3735" y1="48.7801" x2="132.6097" y2="57.5479">
+					<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+					<stop  offset="1" style="stop-color:#FFFFFF"/>
+				</linearGradient>
+				<path class="itcs200" d="M116.4,29.5c6.8,5,3.3,19.6-6.6,30.8c-8.5,9.6-18.7,13-23.5,8.7c-4.7-4.2-3.6-14.9,3.2-25.2
+					C97.3,31.9,109.8,24.7,116.4,29.5z"/>
+			</g>
+		</g>
+		<linearGradient id="ITCS_ID_13_" gradientUnits="userSpaceOnUse" x1="100.2219" y1="119.6709" x2="101.0557" y2="86.8632">
+			<stop  offset="0" style="stop-color:#FFFFFF;stop-opacity:0"/>
+			<stop  offset="1" style="stop-color:#FFFFFF"/>
+		</linearGradient>
+		<path class="itcs201" d="M104.1,113.6c-20.1-0.9-38.2,2.8-37.3,8.1c0.9,5.2,19.1,8.8,38.1,8.4c16.5-0.4,28.4-3.8,28.6-7.8
+			C133.7,118.3,121.5,114.3,104.1,113.6z"/>
+	</g>
+	<g>
+		<g>
+			
+				<linearGradient id="ITCS_ID_14_" gradientUnits="userSpaceOnUse" x1="-628.2335" y1="380.2674" x2="-537.6562" y2="380.2674" gradientTransform="matrix(-1.097704e-07 1 1 2.029533e-07 -222.5388 715.4909)">
+				<stop  offset="0" style="stop-color:#F5F5F5"/>
+				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+			</linearGradient>
+			<path class="itcs202" d="M182.2,86.9L182.2,86.9L182.2,86.9l0.1-6c0-3.8-2.3-6.8-5.2-6.8H174l-7.8,0h-19.6h-13.5
+				c2.9,0,5.2,3.1,5.2,6.8l0.1,74.2h43.9L182.2,86.9z"/>
+		</g>
+		<g>
+			<g>
+				<rect x="143.7" y="122.3" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="122.3" class="itcs203" width="7.2" height="1"/>
+			</g>
+			<g>
+				<rect x="143.7" y="110" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="110" class="itcs203" width="7.2" height="1"/>
+			</g>
+			<g>
+				<rect x="143.7" y="134.3" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="134.3" class="itcs203" width="7.2" height="1"/>
+			</g>
+			<g>
+				<rect x="143.7" y="146" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="146" class="itcs203" width="7.2" height="1"/>
+			</g>
+			<g>
+				<rect x="143.7" y="97.7" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="97.7" class="itcs203" width="7.2" height="1"/>
+			</g>
+			<g>
+				<rect x="143.7" y="85.3" class="itcs203" width="21.8" height="1"/>
+				<rect x="171.2" y="85.3" class="itcs203" width="7.2" height="1"/>
+			</g>
+		</g>
+	</g>
+	<rect x="138.5" y="157.5" class="itcs53" width="39.1" height="1"/>
+	<polygon points="135.6,89.6 135.6,149.6 137.3,148.7 138.4,138.9 138.4,91 	"/>
+</g>
+</svg>

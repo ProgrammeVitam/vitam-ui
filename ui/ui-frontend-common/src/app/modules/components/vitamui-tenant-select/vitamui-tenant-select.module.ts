@@ -38,6 +38,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { NavbarModule } from '../navbar/navbar.module';
 import { TenantSelectContentModule } from '../tenant-select-content/tenant-select-content.module';
@@ -50,6 +51,7 @@ import { VitamUITenantSelectComponent } from './vitamui-tenant-select.component'
     RouterModule,
     NavbarModule,
     TenantSelectContentModule,
+    TranslateModule
   ],
   declarations: [VitamUITenantSelectComponent],
   exports: [VitamUITenantSelectComponent],

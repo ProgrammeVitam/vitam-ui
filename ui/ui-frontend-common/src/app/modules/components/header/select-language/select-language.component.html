@@ -1,7 +1,7 @@
 <div *ngIf="displayMode === 'select' then select else button"></div>
 
 <ng-template #button>
-  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu">
+  <button mat-mini-fab class="flag-button" [matMenuTriggerFor]="menu" aria-label="flag">
     <img [src]="'../../../assets/country/' + currentLang + '.svg'">
   </button>
 

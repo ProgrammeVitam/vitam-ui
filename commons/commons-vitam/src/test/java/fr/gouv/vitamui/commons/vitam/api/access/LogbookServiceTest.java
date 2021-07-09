@@ -15,6 +15,7 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AccessExternalClientFactory;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClientFactory;
+import fr.gouv.vitam.common.client.VitamClientFactoryInterface;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -40,9 +41,9 @@ public class LogbookServiceTest {
     public void setup() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
-        accessExternalClient = AccessExternalClientFactory.getInstance().getClient();
-        ingestExternalClient = IngestExternalClientFactory.getInstance().getClient();
-        adminExternalClient = AdminExternalClientFactory.getInstance().getClient();
+        accessExternalClient = AccessExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
+        ingestExternalClient = IngestExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
+        adminExternalClient = AdminExternalClientFactory.getInstance().setVitamClientType(VitamClientFactoryInterface.VitamClientType.MOCK).getClient();
         logbookService = new LogbookService(accessExternalClient, ingestExternalClient, adminExternalClient);
     }
 
