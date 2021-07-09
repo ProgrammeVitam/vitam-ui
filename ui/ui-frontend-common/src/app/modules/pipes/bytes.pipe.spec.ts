@@ -45,8 +45,8 @@ describe('BytesPipe', () => {
 
   it('should display human readable sizes', () => {
     const pipe = new BytesPipe(new LoggerService());
-    expect(pipe.transform('78800')).toBe('76.95 kB');
-    expect(pipe.transform('57489487')).toBe('54.83 MB');
-    expect(pipe.transform('45628658811')).toBe('42.50 GB');
+    expect(pipe.transform('78800')).toBe('76.95 ko');
+    expect(pipe.transform('57489487')).toBe('54.83 Mo');
+    expect(pipe.transform('45628658811')).toBe('42.50 Go');
   });
 });

@@ -42,6 +42,8 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
+import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.*;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -115,11 +117,11 @@ public class VitamRuleService {
      */
     private void patchFields(FileRulesModel ruleToPatch, FileRulesModel fieldsToApply) {
         LOGGER.debug("Patching rule {} with fields {}", ruleToPatch, fieldsToApply);
-        final String ruleType = fieldsToApply.getRuleType();
+        final RuleType ruleType = fieldsToApply.getRuleType();
         if (ruleType != null) {
             ruleToPatch.setRuleType(ruleType);
         }
-        
+
         final String ruleValue = fieldsToApply.getRuleValue();
         if (ruleValue != null) {
             ruleToPatch.setRuleValue(ruleValue);
@@ -130,7 +132,7 @@ public class VitamRuleService {
             ruleToPatch.setRuleDuration(ruleDuration);
         }
 
-        final String ruleMeasurement = fieldsToApply.getRuleMeasurement();
+        final RuleMeasurementEnum ruleMeasurement = fieldsToApply.getRuleMeasurement();
         if (ruleMeasurement != null) {
             ruleToPatch.setRuleMeasurement(ruleMeasurement);
         }
@@ -160,7 +162,7 @@ public class VitamRuleService {
             }  );
 
         LOGGER.debug("Actual rules after patching : {}", actualRules);
-        
+
         RequestResponse response = importRules(vitamContext, actualRules);
         // Check the import response. The response doesn't contain the patch rule
         return checkImportRulesResponse(response);
@@ -174,7 +176,7 @@ public class VitamRuleService {
             .treeToValue(requestResponse.toJsonNode(), RuleNodeResponseDto.class).getResults();
 
         List<FileRulesModel> newRulesList = actualRules.stream().filter( rule -> !ruleId.equals(rule.getRuleId()) ).collect(Collectors.toList());
-      
+
         RequestResponse response = importRules(vitamContext, newRulesList);
         return checkImportRulesResponse(response);
     }
@@ -227,11 +229,11 @@ public class VitamRuleService {
     private RuleCSVDto convertDtoToCsvDto(FileRulesModel rule) {
         RuleCSVDto csvDto = new RuleCSVDto();
         csvDto.setRuleId(rule.getRuleId());
-        csvDto.setRuleType(rule.getRuleType());
+        csvDto.setRuleType(rule.getRuleType().name());
         csvDto.setRuleValue(rule.getRuleValue());
         csvDto.setRuleDescription(rule.getRuleDescription());
         csvDto.setRuleDuration(rule.getRuleDuration());
-        csvDto.setRuleMeasurement(rule.getRuleMeasurement());
+        csvDto.setRuleMeasurement(rule.getRuleMeasurement().getType());
         return csvDto;
     }
 
@@ -301,13 +303,13 @@ public class VitamRuleService {
 
         return adminExternalClient.downloadRulesCsvAsStream(context, lastImportOperation.getResults().get(0).getEvId());
     }
-    
-    public RequestResponse<?> importRules(VitamContext vitamContext, String fileName, MultipartFile file) 
+
+    public RequestResponse<?> importRules(VitamContext vitamContext, String fileName, MultipartFile file)
     		throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         LOGGER.debug("Import rule file {}", fileName);
         return this.adminExternalClient.createRules(vitamContext, file.getInputStream(), fileName);
-    }	
-    
+    }
+
     /**
      * Check if a rule import has failed or not
      * @param response: the response to check

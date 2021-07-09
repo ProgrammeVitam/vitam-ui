@@ -41,12 +41,13 @@ import {of} from 'rxjs';
 
 import {SecurisationService} from '../../securisation.service';
 import {SecurisationInformationTabComponent} from './securisation-information-tab.component';
+import {Event} from "../../../../../../vitamui-library/src/lib/models/event";
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
   let fixture: ComponentFixture<SecurisationInformationTabComponent>;
 
-  const securisationValue = {
+  const securisationValue: Event = {
     id: 'id',
     idAppSession: 'idAppSession',
     idRequest: 'idRequest',
@@ -87,10 +88,10 @@ describe('SecurisationInformationTabComponent', () => {
       collectionName: 'collectionName',
       agId: 'agId',
       agIdApp: 'agIdApp',
-      obIdReq: 'obIdReq',
       agIdExt: 'agIdExt',
+      obIdReq: 'obIdReq',
       rightsStatementIdentifier: 'rightsStatementIdentifier'
-    }]
+    } as Event]
   };
 
   beforeEach(waitForAsync(() => {

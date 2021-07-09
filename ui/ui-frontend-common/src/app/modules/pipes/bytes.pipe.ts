@@ -34,30 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Pipe, PipeTransform } from '@angular/core';
-import { Logger } from '../logger/logger';
+import {Pipe, PipeTransform} from '@angular/core';
+import {Logger} from '../logger';
 
-const NUMBER_OF_BYTES_IN_ONE_KB = 1024;
-const DEFAULT_PRECISION = 2;
 
 @Pipe({ name: 'bytes' })
 export class BytesPipe implements PipeTransform {
 
+  private static NUMBER_OF_BYTES_IN_ONE_KB = 1024;
+  private static DEFAULT_PRECISION = 2;
+
   constructor(private logger: Logger) { }
 
-  transform(value: any, precision = DEFAULT_PRECISION): any {
-    if (isNaN(parseFloat(value)) || !isFinite(value)) {
+  transform(value: any, precision = BytesPipe.DEFAULT_PRECISION): any {
+    if (value === undefined || value === '' || isNaN(parseFloat(value)) || !isFinite(value)) {
       this.logger.log(this, 'BytesPipe: value [' + value + '] is not a number');
       return '';
     }
 
     // TODO internationalization of units
-    const units = ['bytes', 'kB', 'MB', 'GB', 'TB', 'PB'];
-    let power = Math.floor(Math.log(value) / Math.log(NUMBER_OF_BYTES_IN_ONE_KB));
+    const units = ['octets', 'ko', 'Mo', 'Go', 'To', 'Po'];
+    let power = Math.floor(Math.log(value) / Math.log(BytesPipe.NUMBER_OF_BYTES_IN_ONE_KB));
     if (power >= units.length) {
       power = units.length - 1;
     }
 
-    return (value / Math.pow(NUMBER_OF_BYTES_IN_ONE_KB, power)).toFixed(precision) + ' ' + units[power];
+    return (value / Math.pow(BytesPipe.NUMBER_OF_BYTES_IN_ONE_KB, power)).toFixed(precision) + ' ' + units[power];
   }
 }

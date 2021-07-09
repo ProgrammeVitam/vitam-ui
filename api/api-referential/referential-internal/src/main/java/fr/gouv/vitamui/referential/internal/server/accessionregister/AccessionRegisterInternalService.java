@@ -39,8 +39,6 @@ package fr.gouv.vitamui.referential.internal.server.accessionregister;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
@@ -74,12 +72,12 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.info("List of Access Register EvIdAppSession : {} " , context.getApplicationSessionId());
-            requestResponse = accessionRegisterService.findAccessionRegisterSymbolic(context);
+            LOGGER.info("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
             return AccessionRegisterConverter.convertVitamsToDtos(accessionRegisterSymbolicResponseDto.getResults());
-        } catch (JsonProcessingException | VitamClientException | InvalidCreateOperationException | InvalidParseOperationException e) {
+        } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }

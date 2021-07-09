@@ -49,6 +49,8 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
+import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
+import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitam.common.model.logbook.LogbookOperation;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ConflictException;
@@ -334,6 +336,8 @@ public class VitamRuleServiceTest {
     public void create_should_return_ok_when_findRules_ok() throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         VitamContext vitamContext = new VitamContext(1);
         FileRulesModel newRule = new FileRulesModel();
+        newRule.setRuleType(RuleType.AppraisalRule);
+        newRule.setRuleMeasurement(RuleMeasurementEnum.YEAR);
 
         expect(adminExternalClient.findRules(isA(VitamContext.class), isA(JsonNode.class)))
             .andReturn(new RequestResponseOK<FileRulesModel>().setHttpCode(200));

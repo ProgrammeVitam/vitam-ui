@@ -78,5 +78,25 @@
     "POP_UP_CANCEL_MESSAGE": "Cancel the Operation ",
     "POP_UP_REPLAY_MESSAGE": "Replay the Operation ",
     "POP_UP_RESUME_MESSAGE": "Resume the Operation "
+  },
+  "ACCESSION_REGISTER": {
+    "ACCESSION_REGISTER": "Accession Register",
+    "SEARCH_BAR_BUTTON_LABEL": "Search",
+    "SEARCH_BAR_PLACEHOLDER": "Search for a producer service or an entry identifier",
+    "LIST": {
+      "NB_ENTRIES": "{{nb}} entries",
+      "DATE": "Date",
+      "OPERATION_IDENTIFIER": "Operation identifier",
+      "ORIGINATING_AGENCY": "Originating Agency",
+      "ARCHIVAL_AGREEMENT": "Archival Agreement",
+      "ACQUISITION_INFORMATION": "Acquisition Information",
+      "TOTAL_UNITS": "Total Units",
+      "TOTAL_OBJECTS_GROUPS": "Total Obj groups",
+      "TOTAL_OBJECTS": "Total Obj",
+      "OBJECT_SIZE_INGESTED": "Size",
+      "STATUS": "Status",
+      "NO_RESULT": "No result",
+      "LOAD_MORE_RESULTS": "Load more results..."
+    }
   }
 }

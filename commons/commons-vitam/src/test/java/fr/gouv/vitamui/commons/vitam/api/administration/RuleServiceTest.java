@@ -29,21 +29,21 @@ public class RuleServiceTest {
 
 	@Mock
 	private AdminExternalClient adminExternalClient;
-	
+
 	@InjectMocks
 	private RuleService ruleService;
-	
+
 	private static final String RULE_ID = "FC-1";
-	
+
 	private static final int TENANT_IDENTIFIER = 9;
-	
+
 	private static final Long RULE_DURATION = 10L;
-	
+
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
-	
+
 	@Test
 	public void testfindRulesDurationByRuleId() throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
 		// Prepare
@@ -56,9 +56,9 @@ public class RuleServiceTest {
         Assertions.assertTrue(ruleDuration.isPresent(), "The rule duration should be present");
         Assertions.assertEquals(RULE_DURATION, ruleDuration.get(), "The rule duration value should match the duration");
 	}
-	
+
 	@Test
-	public void testfindRulesDurationByRuleId_with_rule_duration_in_months() 
+	public void testfindRulesDurationByRuleId_with_rule_duration_in_months()
 			throws VitamClientException, JsonProcessingException, InvalidCreateOperationException {
         // Prepare
 		final var fileRule = buildFileRuleModel(RuleMeasurementEnum.MONTH);
@@ -68,22 +68,22 @@ public class RuleServiceTest {
         var thrownException = Assertions.assertThrows(UnexpectedDataException.class, () -> {
         	ruleService.findRulesDurationByRuleId(new VitamContext(TENANT_IDENTIFIER), RULE_ID);
         });
-        Assertions.assertEquals("The rule duration measurement should be in years.", thrownException.getMessage(), 
+        Assertions.assertEquals("The rule duration measurement should be in years.", thrownException.getMessage(),
         		"The exception message should match");
 	}
-	
+
 	@After
 	public void destroy() {
 		ruleService = null;
 		adminExternalClient = null;
 	}
-	
+
 	private static FileRulesModel buildFileRuleModel(RuleMeasurementEnum ruleMeasurementEnum) {
         final var rule = new FileRulesModel();
         rule.setRuleId(RULE_ID);
         rule.setRuleDuration(RULE_DURATION.toString());
-        rule.setRuleMeasurement(ruleMeasurementEnum.getType());
+        rule.setRuleMeasurement(fr.gouv.vitam.common.model.administration.RuleMeasurementEnum.getEnumFromType(ruleMeasurementEnum.getType()));
         return rule;
 	}
-	
+
 }

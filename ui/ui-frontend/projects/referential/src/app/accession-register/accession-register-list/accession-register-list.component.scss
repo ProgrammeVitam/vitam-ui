@@ -1,0 +1,23 @@
+.title-text {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 22px;
+
+  letter-spacing: 0.1px;
+
+  color: #9c31b5;
+}
+
+.result-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  background: white;
+  padding: 0 15px;
+  border: 1px solid var(--vitamui-grey-400);
+  border-radius: 5px;
+}

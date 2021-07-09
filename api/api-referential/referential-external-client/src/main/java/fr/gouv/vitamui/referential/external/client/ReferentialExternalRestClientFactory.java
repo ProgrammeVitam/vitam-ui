@@ -96,6 +96,10 @@ public class ReferentialExternalRestClientFactory extends BaseRestClientFactory 
         return new AccessionRegisterExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
+    public AccessionRegisterDetailExternalRestClient getAccessionRegisterDetailExternalRestClient() {
+        return new AccessionRegisterDetailExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
     public UnitExternalRestClient getUnitExternalRestClient() {
         return new UnitExternalRestClient(getRestTemplate(), getBaseUrl());
     }

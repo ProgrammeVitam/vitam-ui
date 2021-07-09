@@ -38,7 +38,7 @@ import {TestBed} from '@angular/core/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {environment} from './../../../environments/environment';
+import {environment} from '../../../environments/environment';
 import {AccessionRegisterApiService} from './accession-register-api.service';
 
 describe('AccessionRegisterApiService', () => {

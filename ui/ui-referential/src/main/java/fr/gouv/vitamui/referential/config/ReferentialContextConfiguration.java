@@ -44,7 +44,27 @@ import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.*;
+import fr.gouv.vitamui.referential.external.client.AccessContractExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AccessionRegisterDetailExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AccessionRegisterExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.IngestContractExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.LogbookManagementOperationExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ManagementContractExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.OperationExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.RuleExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.SecurityProfileExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -186,4 +206,10 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public LogbookManagementOperationExternalRestClient logbookManagementOperationExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
         return referentialExternalRestClientFactory.getLogbookManagementOperationExternalRestClient();
     }
+
+    @Bean
+    public AccessionRegisterDetailExternalRestClient aaccessionRegisterDetailExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+        return referentialExternalRestClientFactory.getAccessionRegisterDetailExternalRestClient();
+    }
+
 }

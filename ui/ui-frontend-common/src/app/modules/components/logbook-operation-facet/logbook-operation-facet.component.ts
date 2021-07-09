@@ -63,6 +63,24 @@ export class LogbookOperationFacetComponent implements OnInit {
   @Input()
   facetDetails: FacetDetails[];
 
+  /**
+   * Style font size for the facet title. Default to 14, unit is pixel
+   */
+  @Input()
+  facetTitleSize: number = 16;
+
+  /**
+   * Style font size for the facet name. Default to 14, unit is pixel
+   */
+  @Input()
+  facetSize: number = 14;
+
+  /**
+   * Style font size for the facet result. Default to 14, unit is pixel
+   */
+  @Input()
+  facetResultSize: number = 20;
+
   constructor() {}
 
   ngOnInit(): void {}

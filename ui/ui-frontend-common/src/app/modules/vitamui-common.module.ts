@@ -99,6 +99,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
+import {SearchBarWithSiblingButtonModule} from "./components/search-bar-with-sibling-button/search-bar-with-sibling-button.module";
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -146,6 +147,7 @@ export function startupServiceFactory(startupService: StartupService) {
     OrderDropdownModule,
     RowCollapseModule,
     SearchBarModule,
+    SearchBarWithSiblingButtonModule,
     SecurityModule,
     SlideToggleModule,
     StepperModule,
@@ -200,6 +202,7 @@ export function startupServiceFactory(startupService: StartupService) {
     OrderDropdownModule,
     RowCollapseModule,
     SearchBarModule,
+    SearchBarWithSiblingButtonModule,
     SecurityModule,
     SlideToggleModule,
     StepperModule,

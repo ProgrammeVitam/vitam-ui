@@ -277,6 +277,10 @@
     "UNITS_APP": {
       "NAME": "Unités",
       "TOOLTIP": "Paramétrer les unités d'appartenance"
+    },
+    "ACCESSION_REGISTER_APP": {
+      "NAME": "Registre des fonds",
+      "TOOLTIP": "Visualiser l'ensemble des données du registre des fonds"
     }
   },
   "FOOTER": {

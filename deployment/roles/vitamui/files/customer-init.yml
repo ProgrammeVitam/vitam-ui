@@ -196,6 +196,12 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
 
+    - name: Registre des fonds
+      description: Visualisation de l'ensemble des données du registre des fonds
+      app-name: ACCESSION_REGISTER_APP
+      level:
+      roles:
+        - ROLE_GET_ACCESSION_REGISTER
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName

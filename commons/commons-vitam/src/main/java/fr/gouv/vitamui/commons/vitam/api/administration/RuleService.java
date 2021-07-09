@@ -63,9 +63,9 @@ import fr.gouv.vitamui.commons.vitam.api.model.RuleMeasurementEnum;
 public class RuleService {
 
     private final AdminExternalClient adminExternalClient;
-    
+
     private ObjectMapper objectMapper;
-    
+
     @Autowired
     public RuleService(final AdminExternalClient adminExternalClient) {
         this.adminExternalClient = adminExternalClient;
@@ -82,18 +82,18 @@ public class RuleService {
     public RequestResponse<FileRulesModel> findRules(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
         return adminExternalClient.findRules(vitamContext, select);
     }
-    
-    public Optional<Long> findRulesDurationByRuleId(final VitamContext vitamContext, final String ruleId) 
+
+    public Optional<Long> findRulesDurationByRuleId(final VitamContext vitamContext, final String ruleId)
     		throws VitamClientException, InvalidCreateOperationException, JsonProcessingException {
     	final Select select = new Select();
 		select.setQuery(QueryHelper.eq("RuleId", ruleId));
-		RequestResponse<FileRulesModel> rulesVitamResponse = 
+		RequestResponse<FileRulesModel> rulesVitamResponse =
 				this.findRules(vitamContext, select.getFinalSelect());
 		if (rulesVitamResponse.isOk()) {
 			RuleNodeResponseDto ruleNodeResponseDto = objectMapper
 					.treeToValue(rulesVitamResponse.toJsonNode(), RuleNodeResponseDto.class);
 			FileRulesModel rule = ruleNodeResponseDto.getResults().get(0);
-			if (RuleMeasurementEnum.YEAR.equals(RuleMeasurementEnum.getEnumFromType(rule.getRuleMeasurement()))) {
+			if (RuleMeasurementEnum.YEAR.equals(RuleMeasurementEnum.getEnumFromType(rule.getRuleMeasurement().getType()))) {
 				return Optional.of(Long.parseLong(rule.getRuleDuration()));
 			}
 			else {

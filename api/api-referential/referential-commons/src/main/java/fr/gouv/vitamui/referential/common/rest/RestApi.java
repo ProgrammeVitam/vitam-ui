@@ -73,6 +73,8 @@ public abstract class RestApi {
 
     public static final String ACCESSION_REGISTER_URL = PREFIX + "/accession-register";
 
+    public static final String ACCESSION_REGISTER_DETAIL_URL = PREFIX + "/accessionregisterdetails";
+
     public static final String PROFILES_URL = PREFIX + "/profile";
 
     public static final String SEARCH_PATH = "/search";
