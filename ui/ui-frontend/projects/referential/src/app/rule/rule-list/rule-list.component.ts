@@ -187,26 +187,25 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   }
 
   getRuleType(input: string) {
-    const result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
-    if (result) {
-      return result.label;
+    if (input) {
+      const result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
+      return result ? result.label : input;
     } else {
-      return input;
+      return '';
     }
   }
 
   getRuleMeasurement(input: string) {
-    const result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
-    if (result) {
-      return result.label;
+    if (input) {
+      const result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
+      return result ? result.label : input;
     } else {
-      return input;
+      return '';
     }
   }
 
   deleteRuleDialog(rule: Rule) {
     const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
-
     dialog.componentInstance.objectType = 'format de fichier';
     dialog.componentInstance.objectName = rule.ruleId;
 

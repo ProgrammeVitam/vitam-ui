@@ -40,6 +40,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
 import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
+import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import {RuleCreateComponent} from './rule-create/rule-create.component';
 import {RuleListComponent} from './rule-list/rule-list.component';
 import {RuleService} from './rule.service';
@@ -134,8 +136,18 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     this.ruleService.export();
   }
 
-  openImportRuleDialog() {
-    console.log('Not implemented yet');
+  openRuleImportDialog() {
+    const dialogRef = this.dialog.open(
+      VitamUIImportDialogComponent, {
+        panelClass: 'vitamui-modal',
+        data: Referential.RULE,
+        disableClose: true
+      });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.success) {
+        this.refreshList();
+      }
+    });
   }
 
 }

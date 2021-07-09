@@ -43,11 +43,14 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -124,18 +130,22 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Create rule")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RuleDto create(@Valid @RequestBody  RuleDto ruleDto) {
+    public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) {
         LOGGER.debug("create rule={}", ruleDto);
-        return service.create(buildUiHttpContext(), ruleDto);
+        return RestUtils.buildBooleanResponse(
+            service.createRule(buildUiHttpContext(), ruleDto)
+        );
     }
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
-        return service.patch(buildUiHttpContext(), partialDto, id);
+        return RestUtils.buildBooleanResponse(
+        	service.patchRule(buildUiHttpContext(), partialDto, id)
+        );
     }
 
     @ApiOperation(value = "get history by rule's id")
@@ -147,9 +157,12 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete rule")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
+    public ResponseEntity<Void> delete(final @PathVariable String id) {
         LOGGER.debug("delete rule with id :{}", id);
-        service.delete(buildUiHttpContext(), id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return RestUtils.buildBooleanResponse(
+        	service.deleteRule(buildUiHttpContext(), id)
+        );
     }
 
     @ApiOperation(value = "get exported csv for rules")
@@ -158,6 +171,19 @@ public class RuleController extends AbstractUiRestController {
     public ResponseEntity<Resource> export() {
         LOGGER.debug("export rules");
         return service.export(buildUiHttpContext());
+    }
+    
+    /***
+     * Import rules from a csv file
+     * @param request HTTP request
+     * @param input the rule csv file
+     * @return the Vitam response
+     */
+    @ApiOperation(value = "import a rule file")
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importRules(@Context HttpServletRequest request, MultipartFile file) {
+        LOGGER.debug("Import rule file {}", file != null ? file.getOriginalFilename() : null);
+        return service.importRules(buildUiHttpContext(), file);
     }
 
 }

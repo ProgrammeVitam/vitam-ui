@@ -40,6 +40,9 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.internal.client.RuleInternalRestClient;
+import fr.gouv.vitamui.referential.internal.client.RuleInternalWebClient;
+
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +51,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +75,8 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
     @Mock
     private RuleInternalRestClient ruleInternalRestClient;
     @Mock
+    private RuleInternalWebClient ruleInternalWebClient;
+    @Mock
     private ExternalSecurityService externalSecurityService;
 
     private RuleExternalService ruleExternalService;
@@ -72,7 +85,7 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
     public void init() {
         final String userCustomerId = "customerIdAllowed";
         mockSecurityContext(externalSecurityService, userCustomerId, 10);
-        ruleExternalService = new RuleExternalService(externalSecurityService, ruleInternalRestClient);
+        ruleExternalService = new RuleExternalService(externalSecurityService, ruleInternalRestClient, ruleInternalWebClient);
     }
 
     @Test
@@ -95,11 +108,11 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
         final RuleDto ruleDto = new RuleDto();
         ruleDto.setTenant(1);
 
-        when(ruleInternalRestClient.create(any(InternalHttpContext.class), any(RuleDto.class)))
-            .thenReturn(ruleDto);
+        when(ruleInternalRestClient.createRule(any(InternalHttpContext.class), any(RuleDto.class)))
+            .thenReturn(true);
 
         assertThatCode(() -> {
-            ruleExternalService.create(new RuleDto());
+            ruleExternalService.createRule(new RuleDto());
         }).doesNotThrowAnyException();
     }
 
@@ -115,11 +128,12 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
     @Test
     public void delete_should_return_ok_when_ruleInternalRestClient_return_ok() {
-        doNothing().when(ruleInternalRestClient).delete(any(InternalHttpContext.class), any(String.class));
+        when(ruleInternalRestClient.deleteRule(any(InternalHttpContext.class), any(String.class)))
+            .thenReturn(true);
         String id = "1";
 
         assertThatCode(() -> {
-            ruleExternalService.delete(id);
+            ruleExternalService.deleteRule(id);
         }).doesNotThrowAnyException();
     }
 
@@ -130,6 +144,24 @@ public class RuleExternalServiceTest extends ExternalServiceTest {
 
         assertThatCode(() -> {
             ruleExternalService.export();
+        }).doesNotThrowAnyException();
+    }
+
+    @Test
+    public void import_should_return_ok() throws IOException {
+	    File file = new File("src/test/resources/data/import_rules_valid.csv");
+	    FileInputStream input = new FileInputStream(file);
+	    MultipartFile multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/csv", IOUtils.toByteArray(input));
+
+	    String stringReponse = "{\"httpCode\":\"201\"}";
+	    ObjectMapper mapper = new ObjectMapper();
+	    JsonNode jsonResponse = mapper.readTree(stringReponse);
+
+        when(ruleInternalWebClient.importRules(any(InternalHttpContext.class), any(String.class), any(MultipartFile.class)))
+        	.thenReturn(jsonResponse);
+
+        assertThatCode(() -> {
+        	ruleExternalService.importRules(file.getName(), multipartFile);
         }).doesNotThrowAnyException();
     }
 }

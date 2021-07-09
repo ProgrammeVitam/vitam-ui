@@ -41,7 +41,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -58,7 +61,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.RuleExternalService;
 import lombok.Getter;
@@ -116,17 +118,21 @@ public class RuleExternalController {
     @Secured(ServicesData.ROLE_CREATE_RULES)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public RuleDto create(final @Valid @RequestBody RuleDto accessContractDto) {
+    public ResponseEntity<Void> create(final @Valid @RequestBody RuleDto accessContractDto) {
         LOGGER.debug("Create {}", accessContractDto);
-        return ruleExternalService.create(accessContractDto);
+        return RestUtils.buildBooleanResponse(
+        		ruleExternalService.createRule(accessContractDto)
+        );
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_RULES)
-    public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
-        return ruleExternalService.patch(partialDto);
+        return RestUtils.buildBooleanResponse(
+        		ruleExternalService.patchRule(id, partialDto)
+        );
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
@@ -138,14 +144,30 @@ public class RuleExternalController {
 
     @Secured(ServicesData.ROLE_DELETE_RULES)
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete fileFormat with id :{}", id);
-        ruleExternalService.delete(id);
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
+        LOGGER.debug("Delete rule with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return RestUtils.buildBooleanResponse(
+        	ruleExternalService.deleteRule(id)
+        );
     }
 
     @Secured(ServicesData.ROLE_GET_RULES)
     @GetMapping("/export")
     public ResponseEntity<Resource> export() {
         return ruleExternalService.export();
+    }
+    
+    /***
+     * Import agencies from a csv file
+     * @param fileName the file name
+     * @param file the agency csv file to import
+     * @return the vitam response
+     */
+    @Secured(ServicesData.ROLE_IMPORT_RULES)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importRules(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("Import agency file {}", fileName);
+        return ruleExternalService.importRules(fileName, file);
     }
 }

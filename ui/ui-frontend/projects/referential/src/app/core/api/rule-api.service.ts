@@ -64,21 +64,24 @@ export class RuleApiService extends BaseHttpClient<Rule> {
     return super.getOne(id, headers);
   }
 
-  patch(partialRule: {id: string, [key: string]: any}, headers?: HttpHeaders) {
-    return super.patch(partialRule, headers);
+  createRule(rule: Rule, headers?: HttpHeaders): Observable<boolean> {
+    return super.getHttp().post<any>(super.getApiUrl(), rule, {observe: 'response', headers})
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  create(rule: Rule, headers?: HttpHeaders): Observable<Rule> {
-    return super.getHttp().post<any>(super.getApiUrl(), rule, {headers});
+  patchRule(partialRule: {id: string, [key: string]: any}, headers?: HttpHeaders): Observable<boolean> {
+    return super.getHttp().patch<any>(super.getApiUrl() + '/' + partialRule.id, partialRule, {observe: 'response', headers})
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
+  }
+
+  deleteRule(id: string, headers?: HttpHeaders): Observable<boolean> {
+    return super.getHttp().delete<any>(super.getApiUrl() + '/' + id, {observe: 'response', headers})
+      .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   check(rule: Rule, headers?: HttpHeaders): Observable<boolean> {
     return super.getHttp().post<any>(super.getApiUrl() + '/check', rule, {observe: 'response', headers})
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
-  }
-
-  delete(id: string, headers?: HttpHeaders) {
-    return super.getHttp().delete(super.getApiUrl() + '/' + id, {headers});
   }
 
   export(headers?: HttpHeaders): Observable<any> {

@@ -170,4 +170,10 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     public OntologyExternalWebClient ontologyWebRestClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
     	return referentialExternalWebClientFactory.getOntologyExternalWebClient();
     }
+
+    @Bean
+    public RuleExternalWebClient ruleExternalWebClient(final ReferentialExternalWebClientFactory referentialExternalWebClientFactory) {
+    	return referentialExternalWebClientFactory.getRuleExternalWebClient();
+    }
+
 }

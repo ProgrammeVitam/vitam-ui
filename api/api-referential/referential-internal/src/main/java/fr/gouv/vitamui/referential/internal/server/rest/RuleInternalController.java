@@ -56,6 +56,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -121,18 +122,18 @@ public class RuleInternalController {
     }
 
     @PostMapping
-    public RuleDto create(@Valid @RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+    public ResponseEntity<Void> create(@Valid @RequestBody RuleDto ruleDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("create rule={}", ruleDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return ruleInternalService.create(vitamContext,ruleDto);
+        return RestUtils.buildBooleanResponse(ruleInternalService.create(vitamContext,ruleDto));
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public RuleDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
-        return ruleInternalService.patch(vitamContext, partialDto);
+        return RestUtils.buildBooleanResponse(ruleInternalService.patch(vitamContext, partialDto));
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
@@ -143,10 +144,10 @@ public class RuleInternalController {
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
+    public ResponseEntity<Void> delete(final @PathVariable("id") String id) {
         LOGGER.debug("Delete {}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        ruleInternalService.delete(vitamContext, id);
+        return RestUtils.buildBooleanResponse(ruleInternalService.delete(vitamContext, id));
     }
 
     @GetMapping("/export")
@@ -161,5 +162,12 @@ public class RuleInternalController {
             return new ResponseEntity<>(resource, HttpStatus.OK);
         }
         return null;
+    }
+    
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("import rule file {}", fileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        return ruleInternalService.importRules(vitamContext, fileName, file);
     }
 }
