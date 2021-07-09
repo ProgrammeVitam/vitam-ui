@@ -212,11 +212,6 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     public OntologyInternalWebClient ontologyInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
     	return referentialInternalWebClientFactory.getOntologyInternalWebClient();
     }
-
-    @Bean
-    public LogbookManagementOperationInternalRestClient logbookManagementOperationInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
-        return referentialInternalRestClientFactory.getLogbookManagementOperationInternalRestClient();
-    }
     
     @Bean
     public RuleInternalWebClient ruleInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
