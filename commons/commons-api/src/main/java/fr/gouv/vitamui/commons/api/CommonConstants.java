@@ -271,6 +271,8 @@ public class CommonConstants {
 
     public static final String EXTERNAL_PARAM_PROFILE_APP = "EXTERNAL_PARAM_PROFILE_APP";
 
+    public static final String EXTERNAL_PARAMS_APP = "EXTERNAL_PARAMS";
+
     public static final String DEFAULT_INGEST_CONTRACT_IDENTIFIER = "IC-000001";
 
     public static final String DEFAULT_HOLDING_ACCESS_CONTRACT_IDENTIFIER = "AC-000001";
