@@ -142,7 +142,7 @@ export class ArchiveSearchComponent implements OnInit {
         this.addCriteria('NODE', 'NODE', node.id, node.title, true, 'EQ', SearchCriteriaTypeEnum.NODES, false);
       } else {
         node.count = null;
-        this.removeCriteria('NODE', node.id);
+        this.removeCriteria('NODE', node.id, false);
       }
     });
 
@@ -162,10 +162,10 @@ export class ArchiveSearchComponent implements OnInit {
       }
     });
 
-    this.archiveExchangeDataService.receiveRemoveSearchCriteriaSubject().subscribe((criteria) => {
+    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
       if (criteria) {
-        console.log('remove criteria ', criteria.keyElt, criteria.valueElt);
-        this.removeCriteria(criteria.keyElt, criteria.valueElt);
+        console.log('remove criteria from child', criteria.keyElt, criteria.valueElt);
+        this.removeCriteria(criteria.keyElt, criteria.valueElt, false);
       }
     });
 
@@ -287,9 +287,9 @@ export class ArchiveSearchComponent implements OnInit {
   }
 
   removeCriteriaEvent(criteriaToRemove: any) {
-    this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt);
+    this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt, true);
   }
-  removeCriteria(keyElt: string, valueElt: string) {
+  removeCriteria(keyElt: string, valueElt: string, emit: boolean) {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
       this.searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
@@ -308,6 +308,11 @@ export class ArchiveSearchComponent implements OnInit {
         }
         if (key === 'NODE') {
           this.archiveExchangeDataService.emitNodeTarget(valueElt);
+        }
+
+        if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+          console.log('remove criteria in parent', keyElt, valueElt, 'populate = ', emit);
+          this.archiveExchangeDataService.sendRemoveAppraisalFromMainSearchCriteriaAction({ keyElt: keyElt, valueElt: valueElt });
         }
       });
     }

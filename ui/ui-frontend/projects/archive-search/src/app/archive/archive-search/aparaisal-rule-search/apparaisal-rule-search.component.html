@@ -88,7 +88,7 @@
       </div>
 
       <div class="row justify-content-around padding-bottom-medium">
-        <div class="col-4 form-control" formGroupName="appraisalRuleOrigin">
+        <div class="col-4 form-control">
           <div class="row criteria-choice">
             <p class="text medium text-primary bold">
               {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
@@ -99,8 +99,10 @@
             <input
               class="criteria-choice-input"
               type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE', $event)"
               id="HAS_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
-              formControlName="hasAtLeastOne"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE')"
+              formControlName="appraisalRuleOriginHasAtLeastOne"
             />
 
             <label for="HAS_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
@@ -111,8 +113,10 @@
             <input
               class="criteria-choice-input"
               type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
               id="INHERITE_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
-              formControlName="inheriteAtLeastOne"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE')"
+              formControlName="appraisalRuleOriginInheriteAtLeastOne"
             />
 
             <label for="INHERITE_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
@@ -121,7 +125,14 @@
           </div>
 
           <div class="row criteria-choice">
-            <input class="criteria-choice-input" id="HAS_NO_APPRAISAL_RULE_ORIGIN" type="checkbox" formControlName="hasNoOne" />
+            <input
+              class="criteria-choice-input"
+              id="HAS_NO_APPRAISAL_RULE_ORIGIN"
+              type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE')"
+              formControlName="appraisalRuleOriginHasNoOne"
+            />
 
             <label for="HAS_NO_APPRAISAL_RULE_ORIGIN" class="form-check-label">
               {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_APPRAISAL_RULE' | translate }}</label
@@ -132,14 +143,16 @@
               class="criteria-choice-input"
               id="WAITING_TO_RE_CALCULATE_APPRAISAL_RULE_ORIGIN"
               type="checkbox"
-              formControlName="waitingRecalculate"
+              (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE')"
+              formControlName="appraisalRuleOriginWaitingRecalculate"
             />
             <label for="WAITING_TO_RE_CALCULATE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
               {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_APPRAISAL_RULE' | translate }}</label
             >
           </div>
         </div>
-        <div class="col-4 form-control" formGroupName="appraisalRuleFinalAction">
+        <div class="col-4 form-control">
           <div class="row criteria-choice">
             <p class="text medium text-primary bold">
               {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
@@ -151,7 +164,9 @@
               class="criteria-choice-input"
               id="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE"
               type="checkbox"
-              formControlName="hasFinalAction"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION')"
+              formControlName="appraisalRuleFinalActionHasFinalAction"
             />
 
             <label for="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE" class="form-check-label">
@@ -163,7 +178,9 @@
               class="criteria-choice-input"
               type="checkbox"
               id="INHERITE_APPRAISAL_RULE_FINAL_ACTION_TYPE"
-              formControlName="inheriteFinalAction"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION')"
+              formControlName="appraisalRuleFinalActionInheriteFinalAction"
             />
 
             <label for="INHERITE_APPRAISAL_RULE_FINAL_ACTION_TYPE" class="form-check-label">
@@ -171,7 +188,7 @@
             >
           </div>
         </div>
-        <div class="col-3 form-control" formGroupName="appraisalRuleFinalActionType">
+        <div class="col-3 form-control">
           <div class="row criteria-choice">
             <p class="text medium text-primary bold">
               {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
@@ -182,20 +199,23 @@
             <input
               class="criteria-choice-input"
               type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION', $event)"
               id="ELIMINATION_APPRAISAL_RULE_FINAL_ACTION"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION')"
               formControlName="eliminationFinalActionType"
-              value="appraisalRuleFinalActionType.eliminationFinalActionType"
             />
 
             <label for="ELIMINATION_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
-              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.ELIMINATION_APPRAISAL_RULE' | translate }}</label
-            >
+              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.ELIMINATION_APPRAISAL_RULE' | translate }}
+            </label>
           </div>
           <div class="row criteria-choice sub-choice">
             <input
               class="criteria-choice-input"
               id="CONSERVATION_APPRAISAL_RULE_FINAL_ACTION"
               type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_CONSERVATION', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_CONSERVATION')"
               formControlName="conservationFinalActionType"
             />
 
@@ -208,8 +228,9 @@
               class="criteria-choice-input"
               id="NC_APPRAISAL_RULE_FINAL_ACTION"
               type="checkbox"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED')"
               formControlName="notSpecifiedFinalActionType"
-              value="notSpecifiedFinalActionType"
             />
 
             <label for="NC_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
