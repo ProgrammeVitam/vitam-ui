@@ -1,13 +1,12 @@
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {FormBuilder, ReactiveFormsModule} from '@angular/forms';
+import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
+import {FormBuilder,ReactiveFormsModule} from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {VitamUIInputModule} from 'projects/vitamui-library/src/lib/components/vitamui-input/vitamui-input.module';
 import {IngestContract} from 'projects/vitamui-library/src/public-api';
 import {of} from 'rxjs';
 import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-
 import {ArchiveProfileApiService} from '../../../core/api/archive-profile-api.service';
 import {ManagementContractApiService} from '../../../core/api/management-contract-api.service';
 import {IngestContractCreateValidators} from '../../ingest-contract-create/ingest-contract-create.validators';
@@ -15,20 +14,20 @@ import {IngestContractService} from '../../ingest-contract.service';
 import {IngestContractInformationTabComponent} from './ingest-contract-information-tab.component';
 
 
-describe('IngestContractInformationTabComponent', () => {
+describe('IngestContractInformationTabComponent',() => {
   let component: IngestContractInformationTabComponent;
   let fixture: ComponentFixture<IngestContractInformationTabComponent>;
 
-  const ingestContractValue = {
+  const ingestContractValue={
     identifier: 'identifier',
     status: 'ACTIVE',
     name: 'name',
     description: 'descripton',
     archiveProfiles: [new Array<string>()],
-    managementContractId: 'MC-000001'
+    managementContractId: 'MC-000001',
   };
 
-  const previousValue: IngestContract = {
+  const previousValue: IngestContract={
     tenant: 0,
     version: 1,
     description: 'desc',
@@ -50,63 +49,53 @@ describe('IngestContractInformationTabComponent', () => {
     everyFormatType: true,
     formatType: [''],
     archiveProfiles: [],
-    managementContractId: 'MC-000001'
+    managementContractId: 'MC-000001',
+    computeInheritedRulesAtIngest: false
   };
 
+  beforeEach(
+    waitForAsync(() => {
+      const ingestContractServiceMock={
+        create: of({}),
+        getAll: of([]),
+        // tslint:disable-next-line:variable-name
+        patch: (_data: any) => of(null),
+      };
+      const managementContractApiServiceMock={
+        getAllByParams: (_params: any) => of(null),
+      };
+      const archiveProfileApiServiceMock={
+        getAllByParams: (_params: any) => of(null),
+      };
+      const ingestContractCreateValidatorsMock={
+        uniqueName: () => () => of({}),
+        uniqueNameWhileEdit: () => () => of({}),
+      };
 
-  beforeEach(waitForAsync(() => {
-
-    const ingestContractServiceMock = {
-      create: of({}),
-      getAll: of([]),
-      // tslint:disable-next-line:variable-name
-      patch: (_data: any) => of(null)
-    };
-    const managementContractApiServiceMock = {
-      // tslint:disable-next-line:variable-name
-      getAllByParams: (_params: any) => of(null)
-    };
-    const archiveProfileApiServiceMock = {
-      // tslint:disable-next-line:variable-name
-      getAllByParams: (_params: any) => of(null)
-    };
-    const ingestContractCreateValidatorsMock = {
-      uniqueName: () => () => of({}),
-      uniqueNameWhileEdit: () => () => of({})
-    };
-
-
-    TestBed.configureTestingModule({
-      imports:
-        [
-          ReactiveFormsModule,
-          VitamUIInputModule,
-          VitamUICommonTestModule,
-          MatSelectModule,
-          NoopAnimationsModule
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule,VitamUIInputModule,VitamUICommonTestModule,MatSelectModule,NoopAnimationsModule],
+        declarations: [IngestContractInformationTabComponent],
+        providers: [
+          FormBuilder,
+          {provide: IngestContractService,useValue: ingestContractServiceMock},
+          {provide: ManagementContractApiService,useValue: managementContractApiServiceMock},
+          {provide: ArchiveProfileApiService,useValue: archiveProfileApiServiceMock},
+          {provide: IngestContractCreateValidators,useValue: ingestContractCreateValidatorsMock},
         ],
-      declarations: [IngestContractInformationTabComponent],
-      providers: [
-        FormBuilder,
-        {provide: IngestContractService, useValue: ingestContractServiceMock},
-        {provide: ManagementContractApiService, useValue: managementContractApiServiceMock},
-        {provide: ArchiveProfileApiService, useValue: archiveProfileApiServiceMock},
-        {provide: IngestContractCreateValidators, useValue: ingestContractCreateValidatorsMock}
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IngestContractInformationTabComponent);
-    component = fixture.componentInstance;
+    fixture=TestBed.createComponent(IngestContractInformationTabComponent);
+    component=fixture.componentInstance;
     component.form.setValue(ingestContractValue);
-    component.previousValue = (): IngestContract => previousValue;
+    component.previousValue=(): IngestContract => previousValue;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create',() => {
     expect(component).toBeTruthy();
   });
 });
