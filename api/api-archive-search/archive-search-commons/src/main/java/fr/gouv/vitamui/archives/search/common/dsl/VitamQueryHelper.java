@@ -177,7 +177,7 @@ public class VitamQueryHelper {
                     isValid = addParameterCriteria(query, criteriaOperators.valueOf(searchCriteria.getOperator()),
                         vitamFieldName, searchCriteria.getValues());
                 } else {
-                    
+
                 }
 
             }

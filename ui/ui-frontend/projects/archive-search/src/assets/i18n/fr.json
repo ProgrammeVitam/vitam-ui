@@ -53,7 +53,10 @@
         "TITLE_DUA": "Intitulé",
         "ID_DUA": "Identifiant",
         "START_DATE_DUA": "Date de début",
-        "END_DATE_DUA": "Date de fin",
+        "END_DATE_DUA": "Date de fin de la règle",
+        "END_DATE_DUA_EQUAL": "Date de fin",
+        "END_DATE_DUA_BEGIN": "Entre le ",
+        "END_DATE_DUA_END": "et le ",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",

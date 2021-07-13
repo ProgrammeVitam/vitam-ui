@@ -1,13 +1,13 @@
 <div class="archive-search-section">
   <form [formGroup]="appraisalRuleCriteriaForm">
     <div class="col-11">
-      <div class="row justify-content-around">
+      <div class="row justify-content-start">
         <div class="form-control">
           <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DUA_TITLE' | translate }}</h5>
         </div>
       </div>
 
-      <div class="row justify-content-around">
+      <div class="row justify-content-start">
         <div class="col-5 form-control">
           <vitamui-common-editable-input
             formControlName="appraisalRuleIdentifier"
@@ -28,14 +28,25 @@
         <div class="col-1 form-control"></div>
       </div>
 
-      <div class="row justify-content-around">
+      <div class="row justify-content-start">
+        <div class="col-11 form-control">
+          <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}</h5>
+        </div>
+      </div>
+
+      <div class="row justify-content-start">
         <div class="col-5 form-control">
           <div class="vitamui-input" (click)="pickerBeginDua.open()">
             <span
               *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value; else showBeginDtDua"
               (click)="pickerBeginDua.open()"
               class="search-date-label"
-              >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE_DUA' | translate }}</span
+              >{{
+                (showDuaEndDate
+                  ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
+                  : 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
+                ) | translate
+              }}</span
             >
             <ng-template #showBeginDtDua
               ><span (click)="pickerBeginDua.open()"
@@ -63,7 +74,7 @@
               *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value; else showEndDtDua"
               (click)="pickerEndDua.open()"
               class="search-date-label"
-              >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}</span
+              >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
             >
             <ng-template #showEndDtDua
               ><span (click)="pickerEndDua.open()"
@@ -87,7 +98,7 @@
         </div>
       </div>
 
-      <div class="row justify-content-around padding-bottom-medium">
+      <div class="row justify-content-start padding-bottom-medium">
         <div class="col-4 form-control">
           <div class="row criteria-choice">
             <p class="text medium text-primary bold">
@@ -240,7 +251,7 @@
         </div>
       </div>
 
-      <div class="row justify-content-around">
+      <div class="row justify-content-start">
         <div class="col-4 form-control">
           <vitamui-common-editable-input
             formControlName="appraisalRuleEliminationIdentifier"
