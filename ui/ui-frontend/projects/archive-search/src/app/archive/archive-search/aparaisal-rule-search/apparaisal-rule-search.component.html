@@ -212,15 +212,15 @@
           <div class="row criteria-choice sub-choice">
             <input
               class="criteria-choice-input"
-              id="CONSERVATION_APPRAISAL_RULE_FINAL_ACTION"
+              id="KEEP_APPRAISAL_RULE_FINAL_ACTION"
               type="checkbox"
-              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_CONSERVATION', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_CONSERVATION')"
-              formControlName="conservationFinalActionType"
+              (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP', $event)"
+              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP')"
+              formControlName="keepFinalActionType"
             />
 
-            <label for="CONSERVATION_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
-              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.CONSERVATION_APPRAISAL_RULE' | translate }}</label
+            <label for="KEEP_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
+              {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.KEEP_APPRAISAL_RULE' | translate }}</label
             >
           </div>
           <div class="row criteria-choice sub-choice">

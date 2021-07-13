@@ -269,8 +269,8 @@ export class ArchiveSearchComponent implements OnInit {
     this.filterChange.next(this.filterMapType);
   }
 
-  showHidePanel() {
-    this.showCriteriaPanel = !this.showCriteriaPanel;
+  showHidePanel(show: boolean) {
+    this.showCriteriaPanel = show;
   }
 
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
@@ -305,14 +305,13 @@ export class ArchiveSearchComponent implements OnInit {
             this.searchCriterias.set(keyElt, val);
           }
           this.nbQueryCriteria--;
-        }
-        if (key === 'NODE') {
-          this.archiveExchangeDataService.emitNodeTarget(valueElt);
-        }
+          if (key === 'NODE') {
+            this.archiveExchangeDataService.emitNodeTarget(valueElt);
+          }
 
-        if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          console.log('remove criteria in parent', keyElt, valueElt, 'populate = ', emit);
-          this.archiveExchangeDataService.sendRemoveAppraisalFromMainSearchCriteriaAction({ keyElt: keyElt, valueElt: valueElt });
+          if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+            this.archiveExchangeDataService.sendRemoveAppraisalFromMainSearchCriteriaAction({ keyElt: keyElt, valueElt: valueElt });
+          }
         }
       });
     }
@@ -323,6 +322,18 @@ export class ArchiveSearchComponent implements OnInit {
       this.showSearchCriteriaPanel = false;
       this.archiveUnits = [];
       this.archiveExchangeDataService.emitNodeTarget(null);
+    }
+  }
+
+  removeCriteriaByCategory(category: string) {
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      this.searchCriterias.forEach((val, key) => {
+        if (SearchCriteriaTypeEnum[val.category] === category) {
+          val.values.forEach((value) => {
+            this.removeCriteria(key, value.value, true);
+          });
+        }
+      });
     }
   }
 

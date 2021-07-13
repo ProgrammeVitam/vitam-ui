@@ -82,9 +82,10 @@ public class VitamQueryHelper {
 
 
     private static Map<String, String> APPRAISAL_MGT_RULES_FIELDS_MAPPING =
-        Map.of("AppraisalRuleIdentifier", "#management.AppraisalRule.Rules.Rule",
-            "AppraisalRuleStartDate", "#management.AppraisalRule.Rules.StartDate",
-            "AppraisalRuleEndDate", "#management.AppraisalRule.Rules.EndDate");
+        Map.of("APPRAISAL_RULE_IDENTIFIER", "#management.AppraisalRule.Rules.Rule",
+            "APPRAISAL_RULE_START_DATE", "#management.AppraisalRule.Rules.StartDate",
+            "APPRAISAL_RULE_END_DATE", "#management.AppraisalRule.Rules.EndDate"
+        );
 
     private static final int DEFAULT_DEPTH = 10;
     private static final int FACET_SIZE_MILTIPLIER = 100;
@@ -172,12 +173,13 @@ public class VitamQueryHelper {
         if (appraisalMgtRulesCriteriaList != null && !appraisalMgtRulesCriteriaList.isEmpty()) {
             for (SearchCriteriaEltDto searchCriteria : appraisalMgtRulesCriteriaList) {
                 String vitamFieldName = APPRAISAL_MGT_RULES_FIELDS_MAPPING.get(searchCriteria.getCriteria());
-                if (vitamFieldName == null) {
-                    LOGGER.error("Field not mapped correctly  ");
-                    throw new IllegalArgumentException("Field not mapped correctly  ");
+                if (vitamFieldName != null) {
+                    isValid = addParameterCriteria(query, criteriaOperators.valueOf(searchCriteria.getOperator()),
+                        vitamFieldName, searchCriteria.getValues());
+                } else {
+                    
                 }
-                isValid = addParameterCriteria(query, criteriaOperators.valueOf(searchCriteria.getOperator()),
-                    vitamFieldName, searchCriteria.getValues());
+
             }
             if (!isValid) {
                 LOGGER.error("Error on validation of criteria ");
