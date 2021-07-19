@@ -1,0 +1,50 @@
+@import '~ui-frontend-common/sass/variables/colors';
+
+.date-filter {
+  width: 100%;
+  height: 70px;
+  background-color: $white;
+  border: solid 1px var(--vitamui-secondary);
+  border-radius: 5px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  text-align: center;
+  color: var(--vitamui-secondary);
+  padding: 25px 12px 25px 13px;
+
+  position: relative;
+
+  > span {
+    vertical-align: middle;
+    font-family: Mulish;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    color: #9c31b5;
+  }
+
+  .clear-date-icon {
+    font-size: 15px;
+    font-weight: bold;
+    margin-left: 4px;
+  }
+}
+
+.filter-text {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 22px;
+
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.1px;
+
+  color: #000000;
+}
+
+.clickable {
+  cursor: pointer;
+}

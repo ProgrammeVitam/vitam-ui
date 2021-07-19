@@ -1,98 +1,140 @@
-  <div class="row row-data">
-  <div class="col">
-    <app-logbook-operation-facet
-      [facetDetails]="stateFacetDetails"
-      [facetTitle]="stateFacetTitle"
-    ></app-logbook-operation-facet>
-  </div>
-  <div class="col">
-    <app-logbook-operation-facet
-      [facetDetails]="statusFacetDetails"
-      [facetTitle]="statusFacetTitle"
-      (filter)="getOperationsByStatus($event)"
-    ></app-logbook-operation-facet>
-  </div>
-</div>
-
 <div>
-  <div class="row row-data">
-    <div class="col-12 title-text">
+  <div class="row">
+    <div class="col-12 title-text mb-2">
       <div class="result-layout">
-        <span class="result-number">LE MODE VACANCE EST SUPER BIEN ACTIVÉ !</span>
-      </div>
-    </div>
-  </div>
-<div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
-  <div class="vitamui-table">
-    <div class="vitamui-table-head">
-      <div class="col-1">
-        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-              [state]="checkboxState"
-              [disabled]="disabled"
-              [ngClass]="false ? 'bg-accent': ''">
-            </mat-pseudo-checkbox>
-      </div>
-      <div class="col-1">Date</div>
-      <div class="col-1">Identifiant du message</div>
-      <div class="col-1">Service producteur</div>
-      <div class="col-1">Contrat d'entrée</div>
-      <div class="col-1">Modalité d'entrée</div>
-      <div class="col-1">Nb d'UA</div>
-      <div class="col-1">Nb de GOT</div>
-      <div class="col-1">Nb d'Objets</div>
-      <div class="col-1">Volumétrie</div>
-      <div class="col-1">Statut</div>
-    </div>
-
-    <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource" (click)="profileClick.emit(profile)">
-        <div class="vitamui-row d-flex align-items-center clickable">
-          
-          <div class="col-1">
-            <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-              [state]="checkboxState"
-              [disabled]="disabled"
-              [ngClass]="false ? 'bg-accent': ''">
-            </mat-pseudo-checkbox>
-            <!--<i class="vitamui-icon vitamui-icon-gestion-de-profil"
-              [ngClass]=" accessionRegisterDetail?.enabled ? 'status-badge-green' :'status-badge-grey'"
-            ></i>-->
-          </div>
-
-
-          <div class="col-1">{{ accessionRegisterDetail.startDate | date:'dd/MM/yyyy' }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.opi }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.originatingAgencyLabel }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.archivalAgreement }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.opType }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.totalUnits?.ingested }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.totalObjects?.ingested }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.objectSize?.ingested }}</div>
-          <div class="col-1">{{ accessionRegisterDetail.status }}</div>
+        <div>938 entrées</div>
+        <div class="accession-register-actions">
+          <a class="export-csv">CSV
+            <i class="vitamui-icon vitamui-icon-download-basic vitamui-row-icon icon-download"></i>
+          </a>
+          <vitamui-common-menu-button [overlayPos]="'end'" icon="vitamui-icon-more-horiz primary">
+            <button mat-menu-item>
+              {{ 'LOGBOOK_OPERATION_INFORMATIONS.NEXT_STEP' | translate }}
+            </button>
+            <button mat-menu-item>
+              {{ 'LOGBOOK_OPERATION_INFORMATIONS.RESUME_OPERATION' | translate }}
+            </button>
+            <button mat-menu-item>
+              {{ 'LOGBOOK_OPERATION_INFORMATIONS.REPLAY_STEP' | translate }}
+            </button>
+            <button mat-menu-item>
+              {{ 'LOGBOOK_OPERATION_INFORMATIONS.CANCEL_OPERATION' | translate }}
+            </button>
+          </vitamui-common-menu-button>
         </div>
       </div>
     </div>
   </div>
+  <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
+    <div class="vitamui-table">
+      <div class="vitamui-table-head">
+        <div class="col-1">
+          <mat-pseudo-checkbox class="mat-option-pseudo-checkbox">
+          </mat-pseudo-checkbox>
+        </div>
+        <div class="col-1">
+          <span>Date</span>
+          <vitamui-common-order-by-button
+            orderByKey="startDate"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+        <div class="col-1"><span>Identifiant du message</span></div>
+        <div class="col-1">
+          <span>Service producteur</span>
+          <vitamui-common-order-by-button
+            orderByKey="originatingAgencyLabel"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+        <div class="col-1">
+          <span>Contrat d'entrée</span>
+          <vitamui-common-order-by-button
+            orderByKey="archivalAgreement"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+        <div class="col-1">
+          <span>Modalité d'entrée</span>
+          <vitamui-common-order-by-button
+            orderByKey="opType"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+        <div class="col-1"><span>Nb d'UA</span></div>
+        <div class="col-1"><span>Nb grpe objet</span></div>
+        <div class="col-1"><span>Nb d'Objets</span></div>
+        <div class="col-1"><span>Volumétrie</span></div>
+        <div class="col-2">
+          <span>Statut</span>
+          <button class="vitamui-filter-button ml-1" [vitamuiCommonTableFilter]="statusFilterTemplate"
+                  [class.active]="filterMap['status'] && filterMap['status'].length > 0"
+                  #statusFilterTrigger="vitamuiCommonTableFilter">
+            <em class="material-icons vitamui-row-icon">filter_list</em>
+          </button>
+          <ng-template #statusFilterTemplate>
+            <vitamui-common-table-filter-search
+              [(filter)]="filterMap['status']" [options]="statusFilterOptions$|async"
+              (filterChange)="onFilterChange('status', $event)" (filterClose)="statusFilterTrigger?.close()">
+            </vitamui-common-table-filter-search>
+          </ng-template>
+          <button class="ml-3 vitamui-filter-button">
+            <i class="material-icons vitamui-row-icon">add_circle_outline</i>
+          </button>
+        </div>
+      </div>
 
-  <div *ngIf="!dataSource || pending then loadingSpinner"></div>
-  <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
-  <div *ngIf="infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending then loadMore"></div>
-</div>
+      <div class="vitamui-table-body">
+        <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource"
+             (click)="accessionRegisterClick.emit(accessionRegisterDetail)">
+          <div class="vitamui-row d-flex align-items-center clickable">
 
-<ng-template #noResults>
-  <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
- </ng-template>
+            <div class="col-1">
+              <mat-pseudo-checkbox class="mat-option-pseudo-checkbox">
+              </mat-pseudo-checkbox>
+            </div>
 
- <ng-template #loadMore>
-  <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
-    <span class="clickable">Afficher plus de résultats...</span>
+            <div class="col-1">{{ accessionRegisterDetail.startDate | date:'dd/MM/yyyy' }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.opi }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.originatingAgencyLabel }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.archivalAgreement }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.opType }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.totalUnits?.ingested }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.totalObjectsGroups?.ingested }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.totalObjects?.ingested }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.objectSize?.ingested }}</div>
+            <div class="col-2">{{ accessionRegisterDetail.status }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!dataSource || pending then loadingSpinner"></div>
+    <div *ngIf="!pending && dataSource?.length ===  0 then noResults"></div>
+    <div *ngIf="infiniteScrollDisabled && accessionRegistersService.canLoadMore && !pending then loadMore"></div>
   </div>
-</ng-template>
 
-<ng-template #loadingSpinner>
-  <div class="vitamui-min-content">
-    <mat-spinner class="vitamui-spinner medium"></mat-spinner>
-  </div>
-</ng-template>
+  <ng-template #noResults>
+    <div class="vitamui-min-content vitamui-table-message">Aucun resultat</div>
+  </ng-template>
+
+  <ng-template #loadMore>
+    <div class="vitamui-min-content vitamui-table-message" (click)="accessionRegistersService.loadMore()">
+      <span class="clickable">Afficher plus de résultats...</span>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingSpinner>
+    <div class="vitamui-min-content">
+      <mat-spinner class="vitamui-spinner medium"></mat-spinner>
+    </div>
+  </ng-template>
 </div>

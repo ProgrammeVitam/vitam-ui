@@ -36,47 +36,36 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
-import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.internal.client.AccessionRegisterDetailInternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class AccessionRegisterDetailExternalService extends
     AbstractResourceClientService<AccessionRegisterDetailDto, AccessionRegisterDetailDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterDetailExternalService.class);
+    private final AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient;
 
     @Autowired
-    private AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient;
-
-    public AccessionRegisterDetailExternalService(@Autowired ExternalSecurityService externalSecurityService) {
+    public AccessionRegisterDetailExternalService(ExternalSecurityService externalSecurityService,
+        AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient) {
         super(externalSecurityService);
+        this.accessionRegisterDetailInternalRestClient = accessionRegisterDetailInternalRestClient;
     }
 
+    @Override
     public List<AccessionRegisterDetailDto> getAll(final Optional<String> criteria) {
         return accessionRegisterDetailInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }

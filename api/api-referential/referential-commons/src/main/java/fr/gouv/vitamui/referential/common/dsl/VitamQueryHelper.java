@@ -76,6 +76,8 @@ public class VitamQueryHelper {
     private static final String EV_TYPE ="evType";
     private static final String EV_DATE_TIME_START = "evDateTime_Start";
     private static final String EV_DATE_TIME_END = "evDateTime_End";
+    private static final String MESSAGE_IDENTIFIER = "messageIdentifier";
+    private static final String SUBMISSION_AGENCY = "submissionAgency";
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -122,6 +124,8 @@ public class VitamQueryHelper {
                     case RULE_ID:
                     case RULE_VALUE:
                     case RULE_TYPE:
+                    case MESSAGE_IDENTIFIER:
+                    case SUBMISSION_AGENCY:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         queryOr.add(eq(searchKey, stringValue));

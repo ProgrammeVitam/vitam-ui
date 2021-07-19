@@ -40,16 +40,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientNotFoundException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.query.CompareQuery;
-import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper;
-import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -57,11 +53,9 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.QueryProjection;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitam.common.model.administration.OntologyModel;
 import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -72,7 +66,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.referential.common.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
@@ -89,10 +82,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,22 +92,21 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class AccessionRegisterDetailInternalService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalService.class);
 
-    final private AccessionRegisterService accessionRegisterService;
+    private final AccessionRegisterService accessionRegisterService;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
-    private AccessionRegisterDetailConverter accessionRegisterDetailConverter;
+    private final AccessionRegisterDetailConverter accessionRegisterDetailConverter;
 
-    private AccessionRegisterSummaryConverter accessionRegisterSummaryConverter;
+    private final AccessionRegisterSummaryConverter accessionRegisterSummaryConverter;
 
-    final private AgencyService agencyService;
+    private final AgencyService agencyService;
 
     private static final String MOCKED_DATA = "accession-register-details-mocked.json";
 
@@ -133,20 +122,19 @@ public class AccessionRegisterDetailInternalService {
         this.agencyService = agencyService;
     }
 
+
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer pageNumber, final Integer size,
         final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
         Optional<String> criteria) {
         // FIXME get accessContract from vitamContext
-        vitamContext.setAccessContract("ContratTNR");
+//        vitamContext.setAccessContract("ContratTNR");
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
         try {
             LOGGER.info("List of Accession Registers EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
-                vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+                vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
             }
-
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
             LOGGER.debug("jsonQuery: {}", query);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
@@ -182,35 +170,11 @@ public class AccessionRegisterDetailInternalService {
         Map<String, String> agenciesMap =
             agencies.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, AgencyModelDto::getName));
 
-        /*
- {
-  "$query": {
-    "$in": {
-        "Identifier": [
-            "Identifier6",
-            "producteur1"
-              ]
-          }
-    },
-  "$filter": {
-    "$offset": 0,
-    "$limit": 100
-  },
-  "$projection": {
-    "$fields": {
-      "Identifier": 1,
-      "Name": 1
-    }
-  }
-}*/
-
         boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
 
-        final List<AccessionRegisterDetailDto> valuesDto = accessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
+        final List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
 
-        valuesDto.stream().forEach(value -> {
-            value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency()));
-        });
+        valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
 
         return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore);
 

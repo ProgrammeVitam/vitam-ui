@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -44,7 +43,6 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -61,7 +59,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -81,7 +78,7 @@ public class AccessionRegisterDetailExternalController {
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 

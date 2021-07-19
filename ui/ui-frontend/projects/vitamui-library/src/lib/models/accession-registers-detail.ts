@@ -7,6 +7,7 @@ export interface AccessionRegisterDetail extends AccessionRegisters {
 
   submissionAgency: string;
   archivalAgreement: string;
+  originatingAgencyLabel: string;
   startDate: string;
   endDate: string;
   lastUpdate: string;

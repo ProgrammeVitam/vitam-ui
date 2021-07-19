@@ -50,6 +50,9 @@ import {AccessionRegistersApiService} from '../core/api/accession-registers-api.
 })
 export class AccessionRegistersService extends SearchService<AccessionRegisterDetail> {
 
+  pageEvent = new Subject<string>();
+  tenantEvent = new Subject<string>();
+  customerEvent = new Subject<string>();
   updated=new Subject<AccessionRegisterDetail>();
 
   constructor(private accessionRegistersApiService: AccessionRegistersApiService,http: HttpClient) {

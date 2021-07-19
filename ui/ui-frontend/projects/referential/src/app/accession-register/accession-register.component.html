@@ -1,31 +1,30 @@
-<!--<p>accession-register works!</p>
-<div *ngFor="let accessionRegisterDetail of accessionRegisterDetails">
-    <div> {{ accessionRegisterDetail.archivalAgreement }}</div>
-</div>-->
-
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-   <!-- <app-external-param-profile-detail
-      (externalParamProfileClose)="closePanel()"
-      [externalParamProfile]="openedItem"
-      [tenantIdentifier]="tenantIdentifier"
-    >
-    </app-external-param-profile-detail>-->
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb> Registre des fonds </vitamui-common-title-breadcrumb>
-
-      <vitamui-common-banner [searchbarPlaceholder]="'chercher une entrée'" (search)="onSearchSubmit($event)">
-        <button class="btn primary ml-5" ><!--(click)="openExternalParamProfilCreateDialog()"-->
-          <span>stats</span>
+      <vitamui-common-banner searchbarPlaceholder="Rechercher un service producteur, un identifiant de message, un commentaire ..."
+                             (search)="onSearchSubmit($event)">
+        <button class="btn primary ml-5">
+          <span>Lancer une recherche</span>
         </button>
       </vitamui-common-banner>
+      <app-accession-register-advanced-search *ngIf="advancedSearchPanelOpenState$|async"></app-accession-register-advanced-search>
     </div>
-
-        <div class="vitamui-content">
-      <app-accession-register-list></app-accession-register-list>
+    <div class="vitamui-content">
+      <div>
+        <app-accession-register-summary-report
+          (showAdvancedSearchPanel)="openAdvancedSearchPanel($event)">
+        </app-accession-register-summary-report>
+      </div>
+      <div class="mt-3">
+        <app-accession-register-list
+          [search]="search"
+          (accessionRegisterClick)="openPanel($event)">
+        </app-accession-register-list>
+      </div>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

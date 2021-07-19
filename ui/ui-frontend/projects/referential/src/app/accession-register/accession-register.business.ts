@@ -34,29 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {CUSTOM_ELEMENTS_SCHEMA,NgModule} from '@angular/core';
-import {MatCardModule} from '@angular/material/card';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatPseudoCheckboxModule} from '@angular/material/core';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {SharedModule} from '../../shared/shared.module';
-import {AccessionRegisterListComponent} from './accession-register-list.component';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
+@Injectable()
+export class AccessionRegisterBusiness {
+  private accessionRegisterStatus: BehaviorSubject<any[]> = new BehaviorSubject<any>([]);
+  private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-@NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatProgressSpinnerModule,
-    VitamUICommonModule,
-    MatCheckboxModule,
-    MatCardModule,
-    MatPseudoCheckboxModule
-  ],
-  declarations: [AccessionRegisterListComponent],
-  exports: [AccessionRegisterListComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class AccessionRegisterListModule {}
+  getAccessionRegisterStatus(locale: string) {
+    const data = [
+      { value: 'STORED_AND_COMPLETED', label: 'En stock et complète' },
+      { value: 'STORED_AND_UPDATED', label: 'Partiellement éliminée' },
+      { value: 'UNSTORED', label: 'Totalement éliminée' },
+    ];
+    this.accessionRegisterStatus.next(data.sort(this.sortByLabel(locale)));
+    return this.accessionRegisterStatus.asObservable();
+  }
+
+  private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
+    return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
+  }
+
+  setOpenAdvancedSearchPanel(value: boolean) {
+    this.openAdvancedSearchPanel.next(value);
+  }
+
+  toggleOpenAdvancedSearchPanel() {
+    this.openAdvancedSearchPanel.next(!this.openAdvancedSearchPanel.getValue());
+  }
+
+  isOpenAdvancedSearchPanel(): Observable<boolean> {
+    return this.openAdvancedSearchPanel.asObservable();
+  }
+}

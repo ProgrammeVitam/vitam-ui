@@ -42,17 +42,11 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.detail.AccessionRegisterDetailInternalService;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,24 +55,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.ACCESSION_REGISTER_DETAIL_URL)
-@Getter
-@Setter
 public class AccessionRegisterDetailInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
         AccessionRegisterDetailInternalController.class);
 
-    @Autowired
-    private AccessionRegisterDetailInternalService accessionRegisterDetailInternalService;
+    private final AccessionRegisterDetailInternalService accessionRegisterDetailInternalService;
+
+    private final InternalSecurityService securityService;
 
     @Autowired
-    private InternalSecurityService securityService;
+    public AccessionRegisterDetailInternalController(
+        AccessionRegisterDetailInternalService accessionRegisterDetailInternalService,
+        InternalSecurityService securityService) {
+        this.accessionRegisterDetailInternalService = accessionRegisterDetailInternalService;
+        this.securityService = securityService;
+    }
 
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
@@ -96,8 +92,7 @@ public class AccessionRegisterDetailInternalController {
     }
 
     @GetMapping("/{id}")
-    public AccessionRegisterDetailDto getAccessionRegisterDetail(
-        @PathVariable String id,
+    public AccessionRegisterDetailDto getAccessionRegisterDetail(@PathVariable String id,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)  String accessContractId){
         LOGGER.debug("get accession register detail by id={}", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);

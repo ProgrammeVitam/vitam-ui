@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-8">
+    <div class="row">
+      <div class="col">
+        <p>
+          <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">Afficher les filtres de recherche</a>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <app-vitamui-interval-date-picker
+        label="Filter par date d'opération d'entrée entre le"
+        (criteriaChange)="onDateCriteriaChange($event)"
+      >
+      </app-vitamui-interval-date-picker>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-logbook-operation-facet
+          [facetDetails]="stateFacetDetails"
+          [facetTitle]="stateFacetTitle"
+          facetSize="12"
+        ></app-logbook-operation-facet>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-4 stats-border">
+    <app-accession-register-diagram-stats></app-accession-register-diagram-stats>
+  </div>
+</div>

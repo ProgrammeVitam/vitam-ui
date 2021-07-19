@@ -34,30 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {CUSTOM_ELEMENTS_SCHEMA,NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatCardModule} from '@angular/material/card';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatPseudoCheckboxModule} from '@angular/material/core';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatTabsModule} from '@angular/material/tabs';
-import {RouterModule} from '@angular/router';
-import {VitamUILibraryModule} from 'projects/vitamui-library/src/public-api';
-import {RoleToggleModule,TableFilterModule,VitamUICommonModule} from 'ui-frontend-common';
-import {GroupAttributionModule} from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
-import {SharedModule} from '../shared/shared.module';
-import {AccessionRegisterListComponent} from './accession-register-list/accession-register-list.component';
-import {AccessionRegisterRoutingModule} from './accession-register-routing.module';
-import {AccessionRegisterComponent} from './accession-register.component';
-
+import { CommonModule } from '@angular/common';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
+import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
+import { RoleToggleModule, TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { GroupAttributionModule } from '../../../../identity/src/app/user/group-attribution/group-attribution.module';
+import { SharedModule } from '../shared/shared.module';
+import { AccessionRegisterListComponent } from './accession-register-list/accession-register-list.component';
+import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
+import { AccessionRegisterComponent } from './accession-register.component';
+import { AccessionRegisterSummaryReportComponent } from './accession-register-summary-report/accession-register-summary-report.component';
+import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { VitamuiIntervalDatePickerComponent } from './accession-register-summary-report/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
+import { AccessionRegisterDiagramStatsComponent } from './accession-register-summary-report/accession-register-diagram-stats/accession-register-diagram-stats.component';
+import { AccessionRegisterBusiness } from './accession-register.business';
 
 @NgModule({
   imports: [
@@ -82,14 +87,18 @@ import {AccessionRegisterComponent} from './accession-register.component';
     RoleToggleModule,
     MatCheckboxModule,
     MatCardModule,
-    MatPseudoCheckboxModule
+    MatPseudoCheckboxModule,
+    MatDatepickerModule,
   ],
   declarations: [
     AccessionRegisterComponent,
-    AccessionRegisterListComponent
+    AccessionRegisterListComponent,
+    AccessionRegisterSummaryReportComponent,
+    AccessionRegisterAdvancedSearchComponent,
+    VitamuiIntervalDatePickerComponent,
+    AccessionRegisterDiagramStatsComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
+  providers: [AccessionRegisterBusiness],
 })
-export class AccessionRegisterModule {
-}
+export class AccessionRegisterModule {}
