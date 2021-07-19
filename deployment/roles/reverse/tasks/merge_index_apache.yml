@@ -1,0 +1,88 @@
+- name: set vitamui_consul_url
+  set_fact:
+    vitamui_consul_url: "/ui/{{ vitam_site_name }}-ui/services"
+    mongo_express_uri: "https://{{ vitam_reverse_external_dns }}/mongo-express"
+
+- name: save index.html
+  command: cp -p index.html index.html.{{ ansible_date_time.date }}-{{ ansible_date_time.time }}
+  args:
+    chdir: "/var/www/html-{{ vitam_site_name }}"
+
+- name: url vitam ui
+  blockinfile:
+    path: "/var/www/html-{{ vitam_site_name }}/index.html"
+    marker: "<!-- {mark} BEGIN ANSIBLE MANAGED BLOCK -->"
+    insertafter: <div class="col-md-2"><a href="/ihm-recette/" class="btn btn-primary btn-xs" target="_blank">IHM recette</a> </div>
+    block: | 
+                                 <div class="col-md-4"><a href="https://{{ vitam_reverse_external_dns }}" class="btn btn-primary btn-xs" target="_blank">VITAM UI</a> </div>
+
+- name: consul
+  lineinfile:
+    path: "/var/www/html-{{ vitam_site_name }}/index.html"
+    insertafter: ">Portail Consul</a>"
+    line: "                        <div class=\"col-md-4\"><a href=\"{{ vitamui_consul_url }}\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Portail Consul UI</a>&nbsp;<a href=\"https://{{ vitam_reverse_external_dns }}/v1/health/state/any?pretty\" class=\"btn btn-primary btn-xs\" target=\"_blank\">Services health</a></div>"
+
+- name: read index.html
+  command: cat "/var/www/html-{{ vitam_site_name }}/index.html"
+  register: index_content
+
+### block in the goal to be complient with idempotence
+- block: 
+  - name: Mongo express data
+    replace:
+      path: "/var/www/html-{{ vitam_site_name }}/index.html"
+      regexp: (mongo-express-offer-fs-[0-9]+.*\n.*</div>)
+      replace: |
+        \1
+        <div class="col-md-3">
+        {% for host in groups['hosts_vitamui_mongod'] %}
+        <a href="{{ mongo_express_uri }}" class="btn btn-primary btn-xs" target="_blank">Mongo express {{ hostvars[host]['mongo_cluster_name'] }}</a>
+        {% endfor %}
+        </div>
+  when: index_content.stdout is not search('Mongo express.*vitamui')
+
+
+
+
+
+### block in the goal to be complient with idempotence
+### Browser vm vitam-ui
+- block:
+  - name: debug vitam-ui
+    replace:
+      path: "/var/www/html-{{ vitam_site_name }}/index.html"
+      regexp: "(</div>\n.*</div>\n.*\n<!-- MAIN FOOTER -->)"
+      replace: |
+        <div class="panel panel-default col-md-12 container">
+        <a class="panel-header no-toggle" href="#">
+            <h2>Debug UI</h2>
+        </a>
+        <div class="panel-body">
+        {% for item in groups['hosts_vitamui'] %}
+                    <div class="row component-line">
+                        <div class="col-md-3">{{ item }}</div>
+                        <div class="col-md-2">
+                            {% for groupe in groups %}
+                                {% if item in groups[groupe] %}
+                                    {% if (groupe not in ('hosts','all','vitam','prometheus','reverse','elasticsearch','mongo_common')) and (not(groupe is search('^zone'))) %}
+                                        {{ groupe|regex_replace('hosts_', '')| replace('_','-') }}<br/>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-2">
+                            {% for groupe in groups %}
+                                {% if groupe is search('^zone') %}
+                                    {% if item in groups[groupe] %}{{ groupe| replace('_',' ') }}<br/>{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-2">
+                            <a href="https://{{ vitam_reverse_external_dns }}/nodes/{{ item }}/browse" class="btn btn-primary btn-xs" target="_blank">/vitam browser</a>
+                        </div>
+                    </div>
+         {% endfor %}
+            </div>
+         </div>
+         \1
+  when:  index_content.stdout is not search("vitamui-security-internal")
