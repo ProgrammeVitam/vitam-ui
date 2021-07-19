@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed,  waitForAsync  } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 // tslint:disable-next-line: max-line-length
@@ -55,33 +55,32 @@ describe('VitamUIImportDialogComponent', () => {
   let component: VitamUIImportDialogComponent;
   let fixture: ComponentFixture<VitamUIImportDialogComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        VitamUIImportDialogComponent
-      ],
-      imports: [
-        LoggerModule.forRoot(),
-        NoopAnimationsModule,
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        MatSidenavModule,
-        MatSnackBarModule,
-        MatDialogModule,
-        MatProgressBarModule,
-        MatMenuModule,
-        MatOptionModule,
-        CdkStepperModule
-      ],
-      providers: [
-        {provide: MatDialogRef, useValue: ''},
-        {provide: CdkStepper},
-        {provide: MAT_DIALOG_DATA, useValue: {}},
-        {provide: BASE_URL, useValue: ''}
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [VitamUIImportDialogComponent],
+        imports: [
+          LoggerModule.forRoot(),
+          NoopAnimationsModule,
+          HttpClientTestingModule,
+          VitamUICommonTestModule,
+          MatSidenavModule,
+          MatSnackBarModule,
+          MatDialogModule,
+          MatProgressBarModule,
+          MatMenuModule,
+          MatOptionModule,
+          CdkStepperModule,
+        ],
+        providers: [
+          { provide: MatDialogRef, useValue: '' },
+          { provide: CdkStepper },
+          { provide: MAT_DIALOG_DATA, useValue: {} },
+          { provide: BASE_URL, useValue: '' },
+        ],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VitamUIImportDialogComponent);

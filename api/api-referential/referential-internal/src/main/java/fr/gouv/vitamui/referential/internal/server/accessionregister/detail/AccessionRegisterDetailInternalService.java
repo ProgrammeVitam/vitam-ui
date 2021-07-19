@@ -40,6 +40,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientNotFoundException;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientServerException;
 import fr.gouv.vitam.common.PropertiesUtils;
@@ -60,7 +61,6 @@ import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -75,7 +75,6 @@ import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.converters.AccessionRegisterConverter;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.converters.AccessionRegisterDetailConverter;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.converters.AccessionRegisterSummaryConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +86,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -102,24 +100,20 @@ public class AccessionRegisterDetailInternalService {
 
     private final ObjectMapper objectMapper;
 
-    private final AccessionRegisterDetailConverter accessionRegisterDetailConverter;
-
-    private final AccessionRegisterSummaryConverter accessionRegisterSummaryConverter;
-
     private final AgencyService agencyService;
+
+    private final AdminExternalClient adminExternalClient;
 
     private static final String MOCKED_DATA = "accession-register-details-mocked.json";
 
     @Autowired
     AccessionRegisterDetailInternalService(AccessionRegisterService accessionRegisterService, ObjectMapper objectMapper,
-        AccessionRegisterDetailConverter accessionRegisterDetailConverter,
-        AccessionRegisterSummaryConverter accessionRegisterSummaryConverter,
+        AdminExternalClient adminExternalClient,
         AgencyService agencyService) {
         this.accessionRegisterService = accessionRegisterService;
         this.objectMapper = objectMapper;
-        this.accessionRegisterDetailConverter = accessionRegisterDetailConverter;
-        this.accessionRegisterSummaryConverter = accessionRegisterSummaryConverter;
         this.agencyService = agencyService;
+        this.adminExternalClient = adminExternalClient;
     }
 
 
@@ -128,9 +122,27 @@ public class AccessionRegisterDetailInternalService {
         Optional<String> criteria) {
         // FIXME get accessContract from vitamContext
 //        vitamContext.setAccessContract("ContratTNR");
-        Map<String, Object> vitamCriteria = new HashMap<>();
-        JsonNode query = null;
+        //Constructing json query for Vitam
+        JsonNode query = buildAllPaginatedJsonQuery(pageNumber, size, orderBy, direction, vitamContext, criteria);
+
+        //Fetching data from vitam
+        AccessionRegisterDetailResponseDto results = fetchingAllPaginatedDataFromVitam(vitamContext, query);
+
+        //Fetch agencies to complete return Dto 'originatingAgencyLabel' property
+        Map<String, String> agenciesMap = findAgencies(vitamContext, results);
+
+        boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
+        List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
+        valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
+
+        return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore);
+    }
+
+    private JsonNode buildAllPaginatedJsonQuery(Integer pageNumber, Integer size, Optional<String> orderBy,
+        Optional<DirectionDto> direction, VitamContext vitamContext, Optional<String> criteria) {
+        JsonNode query;
         try {
+            Map<String, Object> vitamCriteria = new HashMap<>();
             LOGGER.info("List of Accession Registers EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
@@ -142,61 +154,55 @@ public class AccessionRegisterDetailInternalService {
         } catch ( IOException e ) {
             throw new InternalServerException("Can't parse criteria as Vitam query", e);
         }
+        return query;
+    }
 
-        AccessionRegisterDetailResponseDto results = this.findAllDetails(vitamContext, query);
+    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext, JsonNode query) {
+        AccessionRegisterDetailResponseDto results;
+        // results = this.findAllDetails(vitamContext, query);
+        try {
+            RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
+            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Can't fetch data from VITAM ", e);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Can't VITAM ", e);
+        }
+        return results;
+    }
 
-        List<String> distinctOriginatingAgencies =
-            results
+    private Map<String, String> findAgencies(VitamContext vitamContext, AccessionRegisterDetailResponseDto results) {
+
+        JsonNode originatingAgencyQuery;
+        List<AgencyModelDto> agencies;
+        try {
+            originatingAgencyQuery = buildOriginatingAgencyProjectionQuery(results);
+            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, originatingAgencyQuery);
+            agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("Error parsing query ", e);
+        } catch (VitamClientException e) {
+            throw new InternalServerException("Error fetching agencies from vitam ", e);
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Invalid Select vitam query ", e);
+        }
+
+        return agencies.stream()
+            .collect(Collectors.toMap(AgencyModelDto::getIdentifier, AgencyModelDto::getName));
+    }
+
+    public JsonNode buildOriginatingAgencyProjectionQuery(AccessionRegisterDetailResponseDto results) throws InvalidCreateOperationException {
+
+        List<String> distinctOriginatingAgencies = new ArrayList<>();
+        if(results != null) {
+            distinctOriginatingAgencies = results
                 .getResults()
                 .stream()
                 .filter(distinctByKey(AccessionRegisterDetailModel::getOriginatingAgency))
                 .map(AccessionRegisterDetailModel::getOriginatingAgency)
                 .collect(Collectors.toList());
-
-
-        // TODO get list agencies label by projection
-        // send the 20 first OriginatingAgencies with distinct in a projection vitam query on Name and Identifier
-        JsonNode originatingAgencyQuery;
-        List<AgencyModelDto> agencies;
-        try {
-            originatingAgencyQuery = buildOriginatingAgencyProjectionQuery(distinctOriginatingAgencies);
-            agencies = findAgencies(vitamContext, originatingAgencyQuery);
-        } catch (InvalidCreateOperationException e) {
-            throw new InternalServerException("Can't parse criteria as Vitam query", e);
-        } catch (VitamClientException e) {
-            throw new InternalServerException("Can't find agencies with dsl query ",e);
         }
 
-        Map<String, String> agenciesMap =
-            agencies.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, AgencyModelDto::getName));
-
-        boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
-
-        final List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
-
-        valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
-
-        return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore);
-
-    }
-
-    private List<AgencyModelDto> findAgencies(VitamContext vitamContext, JsonNode originatingAgencyQuery)
-        throws VitamClientException {
-        List<AgencyModelDto> agencies = new ArrayList<>();
-        try {
-            RequestResponse<AgenciesModel> requestResponse =
-                agencyService.findAgencies(vitamContext, originatingAgencyQuery);
-            agencies = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
-        } catch (JsonProcessingException e1) {
-            throw new BadRequestException("Error parsing query ", e1);
-        } catch (VitamClientException e) {
-            throw new VitamClientException("Error parsing query ", e);
-        }
-        return agencies;
-    }
-
-    public JsonNode buildOriginatingAgencyProjectionQuery(List<String> distinctOriginatingAgencies) throws InvalidCreateOperationException {
         final Select select = new Select();
 
         select.setQuery(QueryHelper.in("Identifier", distinctOriginatingAgencies.toArray(new String[0])));
@@ -209,23 +215,21 @@ public class AccessionRegisterDetailInternalService {
         try {
             select.setProjection(JsonHandler.toJsonNode(queryProjection));
         } catch (InvalidParseOperationException e) {
-            LOGGER.info("Error constructing vitam query");
-            throw new InvalidCreateOperationException ("Error constructing vitam query", e);
+            LOGGER.error("Error constructing vitam query : {}", e);
+            throw new InvalidCreateOperationException ("Invalid vitam query", e);
         }
         LOGGER.debug("agencies query: {}", select.getFinalSelect());
         return select.getFinalSelect();
     }
 
     public static <T> Predicate<T> distinctByKey(Function<? super T, ?> originatingAgency) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(originatingAgency.apply(t));
+        return t -> ConcurrentHashMap.newKeySet().add(originatingAgency.apply(t));
     }
 
-    public AccessionRegisterDetailResponseDto findAllDetails(VitamContext vitamContext, JsonNode query) {
-        LOGGER.info("List of Accession Register Details EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        // FIXME to replace by the call to the new Vitam API
-        return getMockedDataFromFile();
-    }
+//    public AccessionRegisterDetailResponseDto findAllDetails(VitamContext vitamContext, JsonNode query) {
+//        LOGGER.info("List of Accession Register Details EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+//        return getMockedDataFromFile();
+//    }
 
     public AccessionRegisterStatsDto getStats(VitamContext vitamContext) {
 

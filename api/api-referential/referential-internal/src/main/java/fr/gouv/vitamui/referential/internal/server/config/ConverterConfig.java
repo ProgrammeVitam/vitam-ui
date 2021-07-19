@@ -37,14 +37,12 @@
 package fr.gouv.vitamui.referential.internal.server.config;
 
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.converters.AccessionRegisterDetailConverter;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.converters.AccessionRegisterSummaryConverter;
 import fr.gouv.vitamui.referential.internal.server.agency.AgencyConverter;
 import fr.gouv.vitamui.referential.internal.server.context.ContextConverter;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatConverter;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractConverter;
-import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractConverter;
+import fr.gouv.vitamui.referential.internal.server.ontology.OntologyConverter;
 import fr.gouv.vitamui.referential.internal.server.profile.ProfileConverter;
 import fr.gouv.vitamui.referential.internal.server.rule.RuleConverter;
 import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileConverter;
@@ -102,16 +100,6 @@ public class ConverterConfig {
     @Bean
     public RuleConverter ruleConverter() {
         return new RuleConverter();
-    }
-
-    @Bean
-    public AccessionRegisterDetailConverter accessionRegisterDetailConverter() {
-        return new AccessionRegisterDetailConverter();
-    }
-
-    @Bean
-    public AccessionRegisterSummaryConverter accessionRegisterSummaryConverter() {
-        return new AccessionRegisterSummaryConverter();
     }
 
 }

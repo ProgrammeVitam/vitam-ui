@@ -36,24 +36,20 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { ENVIRONMENT } from 'ui-frontend-common';
-import { environment } from './../../../environments/environment';
-
-import { BASE_URL, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment';
 import { CustomerApiService } from './customer-api.service';
 
-describe('CustomerApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      InjectorModule,
-      LoggerModule.forRoot()
-    ],
-    providers: [
-      { provide: BASE_URL, useValue: '/fake-api' },
-      { provide: ENVIRONMENT, useValue: environment }
-    ]
-  }));
+describe('CustomerApiService Identity', () => {
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    })
+  );
 
   it('should be created', () => {
     const service: CustomerApiService = TestBed.inject(CustomerApiService);

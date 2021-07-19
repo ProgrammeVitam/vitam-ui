@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccessionRegisterDiagramStatsComponent } from './accession-register-diagram-stats.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AccessionRegisterDiagramStatsComponent', () => {
   let component: AccessionRegisterDiagramStatsComponent;
@@ -8,9 +9,9 @@ describe('AccessionRegisterDiagramStatsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AccessionRegisterDiagramStatsComponent ]
-    })
-    .compileComponents();
+      declarations: [AccessionRegisterDiagramStatsComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {

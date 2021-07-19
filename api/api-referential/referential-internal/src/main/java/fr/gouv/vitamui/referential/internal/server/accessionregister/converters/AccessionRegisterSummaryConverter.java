@@ -36,16 +36,18 @@
  */
 package fr.gouv.vitamui.referential.internal.server.accessionregister.converters;
 
-import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccessionRegisterSummaryConverter {
+
+    private AccessionRegisterSummaryConverter() {
+        throw new UnsupportedOperationException("Utility class !");
+    }
 
     public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryDto accessionRegisterSummaryDto) {
         return VitamUIUtils.copyProperties(accessionRegisterSummaryDto, new AccessionRegisterSummaryDto());

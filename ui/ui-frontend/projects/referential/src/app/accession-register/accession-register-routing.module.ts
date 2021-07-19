@@ -34,13 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {Route,RouterModule} from '@angular/router';
-import {ActiveTenantGuard,TenantSelectionGuard,VitamUITenantSelectComponent} from 'ui-frontend-common';
-import {AccessionRegisterComponent} from './accession-register.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { AccessionRegisterComponent } from './accession-register.component';
 
-const routes: Route[]=[
+const routes: Route[] = [
   /*{
     path: '',
 
@@ -50,25 +50,22 @@ const routes: Route[]=[
   }*/
   {
     path: '',
-    redirectTo: 'tenant'
-  },{
+    redirectTo: 'tenant',
+    pathMatch: 'full',
+  },
+  {
     path: 'tenant',
     component: VitamUITenantSelectComponent,
-    canActivate: [TenantSelectionGuard]
+    canActivate: [TenantSelectionGuard],
   },
   {
     path: 'tenant/:tenantIdentifier',
     component: AccessionRegisterComponent,
-    canActivate: [ActiveTenantGuard]
-  }
+    canActivate: [ActiveTenantGuard],
+  },
 ];
 
-
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ]
+  imports: [CommonModule, RouterModule.forChild(routes)],
 })
-export class AccessionRegisterRoutingModule {
-}
+export class AccessionRegisterRoutingModule {}
