@@ -7,6 +7,10 @@ spring:
         preferIpAddress: true
         tags: {{ consul_tags }}
         instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 server:
   host: {{ vitamui.referential.host }}
@@ -35,6 +39,7 @@ server:
 
 {% endif %}
   tomcat:
+    connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
         enabled: "{{ vitamui_struct.jvm_log|lower }}"
         directory: "{{ vitamui_folder_log }}"
@@ -89,6 +94,10 @@ ui-referential:
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
+    connect-time-out: {{ vitamui.referential_external.connect_timeout }}
+    read-time-out: {{ vitamui.referential_external.read_timeout }}
+    write-time-out: {{ vitamui.referential_external.write_timeout }}
+
 {% if vitamui.referential_external.secure|lower == "true" %}
     secure: {{ vitamui.referential_external.secure|lower }}
     ssl-configuration:

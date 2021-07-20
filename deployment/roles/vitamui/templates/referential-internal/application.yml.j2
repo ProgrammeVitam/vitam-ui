@@ -7,6 +7,10 @@ spring:
         preferIpAddress: true
         tags: {{ consul_tags }}
         instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
@@ -28,6 +32,7 @@ server:
 
 {% endif %}
   tomcat:
+    connection-timeout: {{ vitamui_struct.server_connection_timeout }}
     accesslog:
       enabled: "{{ vitamui_struct.jvm_log|lower }}"
       directory: "{{ vitamui_folder_log }}"
