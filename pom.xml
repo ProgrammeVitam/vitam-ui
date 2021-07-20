@@ -80,7 +80,7 @@
         <commons.compress.version>1.20</commons.compress.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <commons.httpclient.version>3.1</commons.httpclient.version>
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.text.version>1.8</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
