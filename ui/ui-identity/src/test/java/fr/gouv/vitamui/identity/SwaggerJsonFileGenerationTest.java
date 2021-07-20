@@ -30,7 +30,6 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

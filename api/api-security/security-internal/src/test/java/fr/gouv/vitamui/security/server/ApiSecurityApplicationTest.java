@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.config.name=security-internal-application" })
 @ActiveProfiles("test")
 public class ApiSecurityApplicationTest {
 
@@ -23,7 +22,6 @@ public class ApiSecurityApplicationTest {
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name") ).isEqualTo("security-internal-application");
     }
 
 }

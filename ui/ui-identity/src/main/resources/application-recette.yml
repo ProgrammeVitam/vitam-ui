@@ -1,0 +1,16 @@
+spring:
+  profiles: recette
+
+ui-identity:
+  base-url:
+    portal: "https://dev.vitamui.com:9000"
+    admin-identity: "https://dev.vitamui.com:9001/identity"
+    identity: "https://dev.vitamui.com:9001/identity"
+
+server:
+  servlet.context-path: /identity
+  servlet.session.cookie.path: /identity
+
+ui:
+  url: "https://dev.vitamui.com:9001/identity"
+  redirect-url: ${ui.url}/${ui-prefix}

@@ -58,7 +58,6 @@ public class ReferentialApplication implements CommandLineRunner {
 
     public static void main(final String[] args) {
         SpringApplication app = new SpringApplicationBuilder(ReferentialApplication.class)
-            .properties("spring.config.name:ui-referential-application")
             .build();
         app.run(args);
     }
@@ -66,7 +65,6 @@ public class ReferentialApplication implements CommandLineRunner {
     @Override
     public void run(final String... args) throws Exception {
         LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 

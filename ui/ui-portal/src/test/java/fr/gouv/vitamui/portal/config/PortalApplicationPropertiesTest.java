@@ -13,7 +13,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = { "spring.config.name=ui-portal-application" })
 public class PortalApplicationPropertiesTest {
 
     @Autowired

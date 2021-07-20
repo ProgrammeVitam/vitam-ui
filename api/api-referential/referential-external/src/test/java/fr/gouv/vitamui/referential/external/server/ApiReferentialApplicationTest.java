@@ -50,7 +50,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.config.name=referential-external-application" })
 public class ApiReferentialApplicationTest {
 
     @Autowired
@@ -62,7 +61,6 @@ public class ApiReferentialApplicationTest {
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name") ).isEqualTo("referential-external-application");
 
         assertThat(referentialProperties).isNotNull();
         assertThat(referentialProperties.getIamInternalClient()).isNotNull();

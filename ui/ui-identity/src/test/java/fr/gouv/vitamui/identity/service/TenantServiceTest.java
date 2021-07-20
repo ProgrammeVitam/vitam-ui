@@ -17,7 +17,6 @@ import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class TenantServiceTest extends UIIdentityServiceTest<TenantDto> {
 
     private TenantService service;

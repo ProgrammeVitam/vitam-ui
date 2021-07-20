@@ -64,8 +64,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = {"spring.config.name=iam-internal-application"})
-@Import({TestMongoConfig.class})
+@Import({ TestMongoConfig.class })
 @ActiveProfiles(value = "test")
 public class InitCustomerServiceIntegrationTest {
 

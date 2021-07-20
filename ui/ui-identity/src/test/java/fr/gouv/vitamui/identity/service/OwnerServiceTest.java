@@ -13,7 +13,6 @@ import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class OwnerServiceTest extends UIIdentityServiceTest<OwnerDto> {
 
     private OwnerService service;

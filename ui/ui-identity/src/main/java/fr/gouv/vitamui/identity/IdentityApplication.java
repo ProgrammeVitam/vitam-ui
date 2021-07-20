@@ -58,7 +58,6 @@ public class IdentityApplication implements CommandLineRunner {
 
     public static void main(final String[] args) {
         SpringApplication app = new SpringApplicationBuilder(IdentityApplication.class)
-            .properties("spring.config.name:ui-identity-application")
             .build() ;
         app.run(args);
     }
@@ -67,7 +66,6 @@ public class IdentityApplication implements CommandLineRunner {
     public void run(final String... args) throws Exception {
 
         LOGGER.debug("VITAMUI SpringBoot Application started:");
-        LOGGER.debug("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 

@@ -12,7 +12,6 @@ import fr.gouv.vitamui.iam.internal.server.security.IamApiAuthenticationProvider
 import fr.gouv.vitamui.iam.internal.server.security.WebSecurityConfig;
 
 @Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=iam-internal-application" })
 public abstract class ApiIamControllerTest<T extends IdDto> extends ApiCrudControllerTest<T> {
 
     @MockBean

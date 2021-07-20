@@ -19,7 +19,6 @@ import fr.gouv.vitamui.commons.logbook.service.EventService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = {"spring.config.name=iam-internal-application"})
 @ActiveProfiles("test")
 public class ApiIamServerConfigTest {
     @MockBean

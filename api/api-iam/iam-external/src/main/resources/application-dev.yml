@@ -16,17 +16,17 @@ spring.servlet.multipart.max-request-size: -1
 
 server-identity:
   identityName: vitamui-dev
-  identityRole: referential-external
+  identityRole: iam-external
   identityServerId: 1
 
 server:
   host:
-  port: 8087
+  port: 8083
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_referential-external.jks
+    key-store: src/main/resources/dev/keystore_iam-external.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
@@ -35,11 +35,11 @@ server:
 management:
   server:
     address: localhost
-    port: 8187
+    port: 8183
     ssl:
       enabled: false
 
-referential-external:
+iam-external:
   security-client:
     server-host: localhost
     server-port: 8084
@@ -47,10 +47,6 @@ referential-external:
   iam-internal-client:
     server-host: localhost
     server-port: 7083
-    secure: false
-  referential-internal-client:
-    server-host: localhost
-    server-port: 7087
     secure: false
 
 # Jaeger

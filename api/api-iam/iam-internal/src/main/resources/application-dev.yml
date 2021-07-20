@@ -38,10 +38,10 @@ cas-client:
   secure: true
   ssl-configuration:
     truststore:
-      key-path: ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
+      key-path: src/main/resources/dev/keystore_iam-internal.jks
       key-password: changeme
     keystore:
-      key-path:  ../../../dev-deployment/environments/keystores/server/localhost/keystore_iam-internal.jks
+      key-path:  src/main/resources/dev/keystore_iam-internal.jks
       key-password: changeme
       type: JKS
     hostname-verification: false
@@ -62,7 +62,7 @@ logbook:
 
 vitam.tenant.init.mandatory: true
 
-customer.init.config.file: src/main/config/customer-init.yml
+customer.init.config.file: src/main/resources/dev/customer-init.yml
 
 # Jaeger
 opentracing:
@@ -83,3 +83,35 @@ logging:
     fr.gouv.vitamui.iam.security: INFO
 
 gdpr_alert_readonly: true
+
+provisioning-client:
+  identity-providers:
+    - idp-identifier: system_idp
+      uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+    - idp-identifier: 2
+      uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+

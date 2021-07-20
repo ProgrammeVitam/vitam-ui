@@ -47,7 +47,6 @@ import org.springframework.test.context.TestPropertySource;
 
 
 @Import(value = { WebSecurityConfig.class, ServerIdentityConfiguration.class, RestExceptionHandler.class })
-@TestPropertySource(properties = { "spring.config.name=referential-external-application" })
 public abstract class ApiReferentialControllerTest<T extends IdDto> extends ApiControllerTest<T> {
 
     @MockBean

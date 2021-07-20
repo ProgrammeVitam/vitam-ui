@@ -45,7 +45,6 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=iam-internal-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

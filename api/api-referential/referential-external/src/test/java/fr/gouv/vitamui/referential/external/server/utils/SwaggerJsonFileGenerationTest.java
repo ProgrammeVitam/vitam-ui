@@ -54,7 +54,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = { ServerIdentityConfiguration.class, SwaggerConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=referential-external-application" })
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

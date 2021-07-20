@@ -13,7 +13,6 @@ import fr.gouv.vitamui.identity.config.IdentityApplicationProperties;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class CommonServiceTest {
 
     private static IdentityApplicationProperties applicationProperties;

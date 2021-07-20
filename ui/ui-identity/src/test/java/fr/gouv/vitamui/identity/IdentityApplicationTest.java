@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = { "spring.config.name=ui-identity-application" })
 public class IdentityApplicationTest {
 
     @Autowired
@@ -31,7 +30,6 @@ public class IdentityApplicationTest {
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name") ).isEqualTo("ui-identity-application");
 
         assertThat(identityProperties).isNotNull();
         assertThat(identityProperties.getIamExternalClient()).isNotNull();

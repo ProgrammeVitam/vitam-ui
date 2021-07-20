@@ -151,15 +151,6 @@
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>target/www/</directory>
-                <targetPath>static/</targetPath>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -184,9 +175,7 @@
                     <mainClass>fr.gouv.vitamui.referential.ReferentialApplication</mainClass>
                    	<jvmArguments>-Xmx512m</jvmArguments>
                     <arguments>
-                        <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
-                        <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
-                        <argument>--spring.config.additional-location=file:${basedir}/src/main/config/ui-referential-application-dev.yml</argument>
+                        <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                 </configuration>
             </plugin>
