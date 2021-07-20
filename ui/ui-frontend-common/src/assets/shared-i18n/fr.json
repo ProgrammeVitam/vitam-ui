@@ -269,6 +269,10 @@
     "EXTERNAL_PARAM_PROFILE_APP": {
       "NAME": "Profil APP Paramétrages externes",
       "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes"
+    },
+    "UNITS_APP": {
+      "NAME": "Unités",
+      "TOOLTIP": "Paramétrer les unités d'appartenance"
     }
   },
   "FOOTER": {
@@ -291,11 +295,11 @@
     "RESULT": "Résultat(s)",
     "settings": "Paramétrage",
     "administrators": "Management",
-		  "users": "Utilisateurs",
+    "users": "Utilisateurs",
     "referential": "Référentiels",
     "opaudit": "Audits et opérations",
     "techadmin": "Administration technique",
-		  "ingests": "Suivi des versements",
+    "ingests": "Suivi des versements",
     "lastusedapps": "Dernières utilisées",
     "ingest_and_consultation": "Versement & consultation",
     "supervision_and_audits": "Supervision & Audits",
@@ -2964,3 +2968,4 @@
     "EXT_VITAMUI_UPDATE_USER": "Modification de l'utilisateur"
   }
 }
+
