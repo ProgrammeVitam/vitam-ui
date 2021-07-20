@@ -273,6 +273,10 @@
     "EXTERNAL_PARAM_PROFILE_APP": {
       "NAME": "Profil APP Paramétrages externes",
       "TOOLTIP": "Paramétrer les profils de droits des utilisateurs pour l'application des paramètres externes"
+    },
+    "UNITS_APP": {
+      "NAME": "Unités",
+      "TOOLTIP": "Paramétrer les unités d'appartenance"
     }
   },
   "FOOTER": {
