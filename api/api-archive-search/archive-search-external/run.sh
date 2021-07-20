@@ -7,4 +7,4 @@ cp -r src/main/config target/src/main/config
 #retrieve version
 version="$(grep -oP '(?<=>).*?(?=</version>)' pom.xml | grep -v 'version')"
 
-java -jar target/ingest-internal-$(echo $version).jar -Xms128m -Xmx512m
+./target/archive-search-external-$(echo $version).jar -Xms128m -Xmx512m --spring.profiles.active=dev

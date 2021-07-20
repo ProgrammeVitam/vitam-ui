@@ -34,13 +34,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = {"spring.config.name=archive-search-external-application"})
 public class ApiArchivesSearchExternalApplicationTest {
 
     @Autowired
@@ -53,7 +51,6 @@ public class ApiArchivesSearchExternalApplicationTest {
     public void testArchiveContextLoads() {
 
         Assert.assertNotNull(env);
-        Assert.assertEquals(env.getProperty("spring.config.name"), "archive-search-external-application");
         Assert.assertNotNull(apiArchiveExternalApplicationProperties);
         Assert.assertNotNull(apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
         Assert.assertNotNull(apiArchiveExternalApplicationProperties.getIamInternalClient());

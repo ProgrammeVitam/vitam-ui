@@ -11,44 +11,47 @@ spring:
         enabled: false
         register: false
 
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_archivesearch@localhost:27018/archivesearch?connectTimeoutMS=2000
+
+multipart:
+  enabled: true
+
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
 server-identity:
   identityName: vitamui-dev
-  identityRole: ingest-external
+  identityRole: archive-search-internal
   identityServerId: 1
 
 server:
   host:
-  port: 8088
+  port: 7089
   ssl:
-    key-store: ../../../dev-deployment/environments/keystores/server/localhost/keystore_ingest-external.jks
+    key-store: src/main/resources/dev/keystore_archive-search-internal.jks
     key-store-password: changeme
     key-password: changeme
-    trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
+    trust-store: src/main/resources/dev/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
+
 management:
   server:
     address: localhost
-    port: 8188
-    ssl:
-      enabled: false
+    port: 7189
 
-ingest-external:
-  security-client:
-    server-host: localhost
-    server-port: 8084
-    secure: false
-  iam-internal-client:
+clients:
+  iam-internal:
     server-host: localhost
     server-port: 7083
-    secure: false
-  ingest-internal-client:
-    server-host: localhost
-    server-port: 7088
-    secure: false
+
+swagger:
+  file-path: file:../../../tools/swagger/docs/api-internal/archive-search-internal/swagger.json
 
 # Jaeger
 opentracing:
@@ -62,6 +65,10 @@ opentracing:
 
 logging:
   level:
-    fr.gouv.vitamui: DEBUG
-    fr.gouv.vitamui.iam.security: DEBUG
-    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+    fr.gouv.vitamui.archive: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+    fr.gouv.vitam.archive: DEBUG
+    fr.gouv.vitam.archive.*: DEBUG
+    reactor.netty.*: DEBUG
+#    org.springframework.core.env: DEBUG
+

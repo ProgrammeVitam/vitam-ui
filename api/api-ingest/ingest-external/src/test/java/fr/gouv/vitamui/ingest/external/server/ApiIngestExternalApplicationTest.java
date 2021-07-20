@@ -42,7 +42,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@TestPropertySource(properties = { "spring.config.name=ingest-external-application" })
 public class ApiIngestExternalApplicationTest {
 
     @Autowired
@@ -63,8 +61,6 @@ public class ApiIngestExternalApplicationTest {
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name") ).isEqualTo("ingest-external-application");
-
         assertThat(apiIngestExternalApplicationProperties).isNotNull();
         assertThat(apiIngestExternalApplicationProperties.getIngestInternalClient()).isNotNull();
         assertThat(apiIngestExternalApplicationProperties.getIamInternalClient()).isNotNull();

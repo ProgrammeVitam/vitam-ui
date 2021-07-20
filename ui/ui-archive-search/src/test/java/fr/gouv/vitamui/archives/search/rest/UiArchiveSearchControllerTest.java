@@ -46,12 +46,10 @@ import fr.gouv.vitamui.ui.commons.rest.UIControllerTest;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
 
-@ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
+@ImportAutoConfiguration(classes = {UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class})
 @Import(value = {ArchiveSearchApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class,
-        RestExceptionHandler.class })
-@TestPropertySource(properties = { "spring.config.name=ui-archive-search-application" })
+    RestExceptionHandler.class})
 public abstract class UiArchiveSearchControllerTest<T extends IdDto> extends UIControllerTest<T> {
 
 }

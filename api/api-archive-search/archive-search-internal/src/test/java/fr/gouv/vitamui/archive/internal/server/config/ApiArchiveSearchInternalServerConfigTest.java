@@ -29,8 +29,6 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.archive.internal.server.TestMongoConfig;
-import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,13 +37,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
 @ActiveProfiles("test")
 public class ApiArchiveSearchInternalServerConfigTest {
 

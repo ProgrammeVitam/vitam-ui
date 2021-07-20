@@ -46,7 +46,6 @@ public class ArchiveSearchApplication implements CommandLineRunner {
 
     public static void main(final String[] args) {
         SpringApplication app = new SpringApplicationBuilder(ArchiveSearchApplication.class)
-            .properties("spring.config.name:ui-archive-search-application")
             .build();
         app.run(args);
 
@@ -55,7 +54,6 @@ public class ArchiveSearchApplication implements CommandLineRunner {
     @Override
     public void run(final String... args) throws Exception {
         LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 
