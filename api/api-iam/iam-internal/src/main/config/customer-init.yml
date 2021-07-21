@@ -148,7 +148,7 @@ customer-init:
 
     - name: Profil pour la création des profils paramétrage externe
       description: Gérer et consulter l'ensemble des profils paramétrage externe
-      app-name: ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE_APP
+      app-name: EXTERNAL_PARAM_PROFILE_APP
       level:
       roles:
         - ROLE_CREATE_EXTERNAL_PARAM_PROFILE
