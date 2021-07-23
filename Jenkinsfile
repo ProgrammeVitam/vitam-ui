@@ -55,6 +55,8 @@ pipeline {
             }
             environment {
                 NODE_JS_DOWNLOAD_URL="https://rpm.nodesource.com/setup_16.x"
+                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
             }
             steps {
                 sh 'sudo yum install -y gcc-c++ make'
