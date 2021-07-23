@@ -70,7 +70,7 @@
             <configuration>
               <skip>${skipAllFrontend}</skip>
               <!-- npm install - specifying ui-frontend-common ignore integrity hash -->
-              <arguments>install ui-frontend-common --loglevel warn</arguments>
+              <arguments>install ui-frontend-common --legacy-peer-deps --loglevel warn</arguments>
             </configuration>
           </execution>
           <execution>

@@ -11,5 +11,5 @@ echo -e "\n================="
 echo -e "Installing ui-frontend-commons@$PACKAGE_VERSION for ui-frontend"
 echo -e "=================\n"
 
-(cd ../ui-frontend && npm install ../ui-frontend-common/ui-frontend-common-$PACKAGE_VERSION.tgz --save)
+(cd ../ui-frontend && npm install ../ui-frontend-common/ui-frontend-common-$PACKAGE_VERSION.tgz --legacy-peer-deps --save)
 
