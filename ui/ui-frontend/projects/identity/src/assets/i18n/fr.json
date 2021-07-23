@@ -279,7 +279,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fix"
       },
-      "CENTER_CODE":"Code du centre",
+      "CENTER_CODE": "Code du centre",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",
@@ -418,24 +418,6 @@
         "SAFE": "Coffre",
         "PROFILE": "Profil"
       }
-  },
-  "EXTERNAL_PARAM_PROFILE": {
-    "CREATE_EXTERNAL_PARAM_PROFILE": "CREER UN PROFIL PARAMETRES EXTERNES",
-    "TITLE": "Paramétrer les droits des administrateurs",
-    "INPUT_REQUIRED": "Champ requis",
-    "NAME_ALREADY_USED": "Nom déjà utilisé",
-    "SELECT_ACCESSCONTRACT": "Sélectionner un contrat d'accès",
-    "EXTERNAL_PARAM_PROFILE_NAME": "Nom du profil paramètres externes",
-    "IDENTIFIER": "Identifiant du contrat d'accès",
-    "DESCRIPTION": "Description",
-    "NAME": "Nom",
-    "PROFILE": "Profil",
-    "DESCRIPTION_ADMIN_PROFILE": "Description du profil administateur",
-    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP": "Création d'un Profil Paramétrages Externes",
-    "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Nom du profil paramétrages externes",
-    "SELECT_ACCESS_CONTRACT": "Sélectionner un contrat d'accès",
-    "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "Le profil paramétrage externe {{ name }} a bien été créé",
-    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié"
     }
   },
   "HIERARCHY": {
@@ -475,6 +457,23 @@
         "WRONG_FORMAT": "Format incorrect (caractères alphanumériques en majuscule séparés par le caractères .)"
       }
     }
+  },
+  "EXTERNAL_PARAM_PROFILE": {
+    "CREATE_EXTERNAL_PARAM_PROFILE": "CREER UN PROFIL PARAMETRES EXTERNES",
+    "TITLE": "Paramétrer les droits des administrateurs",
+    "INPUT_REQUIRED": "Champ requis",
+    "NAME_ALREADY_USED": "Nom déjà utilisé",
+    "SELECT_ACCESSCONTRACT": "Sélectionner un contrat d'accès",
+    "EXTERNAL_PARAM_PROFILE_NAME": "Nom du profil paramètres externes",
+    "IDENTIFIER": "Identifiant du contrat d'accès",
+    "DESCRIPTION": "Description",
+    "NAME": "Nom",
+    "PROFILE": "Profil",
+    "DESCRIPTION_ADMIN_PROFILE": "Description du profil administateur",
+    "CREATE_EXTERNAL_PARAM_PROFILE_POPUP": "Création d'un Profil Paramétrages Externes",
+    "EXTERNAL_PARAM_PROFILE_NAME_POPUP": "Nom du profil paramétrages externes",
+    "SELECT_ACCESS_CONTRACT": "Sélectionner un contrat d'accès",
+    "NOTIF_EXTERNAL_PARAM_PROFILE_CREATED": "Le profil paramétrage externe {{ name }} a bien été créé",
+    "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "Le profil paramétrage externe {{ name }} a bien été modifié"
   }
 }
-
