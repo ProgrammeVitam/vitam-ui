@@ -110,6 +110,7 @@ vitamui:
     store_name: "ui-referential"
     port_service: 8005
     port_admin: 7005
+    server_connection_timeout: 60000
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -149,6 +150,10 @@ vitamui:
     service_name: "vitamui-referential-external"
     port_service: 8105
     port_admin: 7105
+    server_connection_timeout: 60000
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -167,6 +172,10 @@ vitamui:
     service_name: "vitamui-referential-internal"
     port_service: 8205
     port_admin: 7205
+    server_connection_timeout: 60000
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     secure: true
     jvm_log: false
     logging_level: "INFO"

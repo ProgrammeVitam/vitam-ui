@@ -10,9 +10,10 @@ spring:
       discovery:
         enabled: false
         register: false
-
-spring.servlet.multipart.max-file-size: -1
-spring.servlet.multipart.max-request-size: -1
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 server-identity:
   identityName: vitamui-dev
@@ -22,6 +23,7 @@ server-identity:
 server:
   host:
   port: 7087
+  tomcat.connection-timeout: 60000
 
 management:
   server:
