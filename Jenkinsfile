@@ -38,7 +38,7 @@ pipeline {
     stages {
         stage('Activate steps') {
             agent none
-            step {
+            steps {
                 script {
                     env.DO_MAJ_CONTEXT = 'false'
                     env.DO_TEST = 'true'
@@ -56,7 +56,7 @@ pipeline {
             environment {
                 NODE_JS_DOWNLOAD_URL="https://rpm.nodesource.com/setup_16.x"
             }
-            step {
+            steps {
                 sh 'sudo yum install -y gcc-c++ make'
                 sh 'sudo yum erase -y nodejs'
                 sh 'sudo curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -'
