@@ -40,7 +40,7 @@ pipeline {
             agent none
             steps {
                 script {
-                    env.DO_MAJ_CONTEXT = 'false'
+                    env.DO_MAJ_CONTEXT = 'true'
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
