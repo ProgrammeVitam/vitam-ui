@@ -215,7 +215,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>install --loglevel warn</arguments>
+                            <arguments>install --legacy-peer-deps --loglevel warn</arguments>
                         </configuration>
                     </execution>
                     <execution>

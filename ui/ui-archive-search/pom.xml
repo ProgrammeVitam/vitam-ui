@@ -219,7 +219,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <skip>${skipAllFrontend}</skip>
-                            <arguments>install --loglevel warn</arguments>
+                            <arguments>install --legacy-peer-deps --loglevel warn</arguments>
                         </configuration>
                     </execution>
                     <!-- copy scss from vitamui-library to other projects -->
