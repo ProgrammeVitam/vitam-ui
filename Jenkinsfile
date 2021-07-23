@@ -57,7 +57,6 @@ pipeline {
                 NODE_JS_DOWNLOAD_URL="https://rpm.nodesource.com/setup_16.x"
                 http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
                 https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                export PATH=/usr/bin:/usr/local/sbin:/usr/sbin:/home/centos/.local/bin:/home/centos/bin:/usr/local/bin
             }
             steps {
                 sh 'sudo yum install -y gcc-c++ make'
@@ -82,6 +81,7 @@ pipeline {
                 JAVA_TOOL_OPTIONS=""
             }
             steps {
+                sh 'node -v'
                 sh 'npmrc default'
 //                sh '''
 //                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
