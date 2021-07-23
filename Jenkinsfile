@@ -57,15 +57,19 @@ pipeline {
                 NODE_JS_DOWNLOAD_URL="https://rpm.nodesource.com/setup_16.x"
                 http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
                 https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                export PATH=/usr/bin:/usr/local/sbin:/usr/sbin:/home/centos/.local/bin:/home/centos/bin:/usr/local/bin
             }
             steps {
                 sh 'sudo yum install -y gcc-c++ make'
-                sh 'sudo yum erase -y nodejs'
+                sh 'sudo yum remove -y nodejs'
                 sh 'curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -'
                 sh 'sudo yum install -y nodejs'
                 sh 'node -v'
                 sh '/usr/bin/node -v'
                 sh 'npm -v'
+                sh 'sudo rm /usr/local/bin/node'
+                sh 'sudo rm /usr/local/bin/npm'
+                sh 'node -v;npm -v'
             }
         }
 
