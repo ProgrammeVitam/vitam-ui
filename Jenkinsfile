@@ -38,7 +38,7 @@ pipeline {
     stages {
         stage('Activate steps') {
             agent none
-            steps {
+            step {
                 script {
                     env.DO_MAJ_CONTEXT = 'false'
                     env.DO_TEST = 'true'
