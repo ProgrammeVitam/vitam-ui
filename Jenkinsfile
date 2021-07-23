@@ -40,6 +40,7 @@ pipeline {
             agent none
             steps {
                 script {
+                    env.DO_MAJ_CONTEXT = 'false'
                     env.DO_TEST = 'true'
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
@@ -47,7 +48,23 @@ pipeline {
                 }
             }
         }
-
+        
+        stage('Upgrade build context') {
+	    when {
+                environment(name: 'DO_MAJ_CONTEXT', value: 'true')
+            }
+            environment {
+                NODE_JS_DOWNLOAD_URL="https://rpm.nodesource.com/setup_16.x"
+            }
+            step {
+                sh 'sudo yum install -y gcc-c++ make'
+                sh 'sudo yum erase -y nodejs'
+                sh 'sudo curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -'
+                sh 'sudo yum install -y nodejs'
+                sh 'node -v'
+                sh 'npm -v'
+            }
+        }
 
         stage('Check vulnerabilities and tests.') {
             when {
