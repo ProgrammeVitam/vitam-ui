@@ -130,10 +130,10 @@ export class IngestContractInformationTabComponent implements OnInit {
         if (formData.status) {
           if (formData.status === 'ACTIVE') {
             formData.activationDate = new Date();
-            formData.deactivationDate = '';
+            formData.deactivationDate = null;
           } else {
             formData.status = 'INACTIVE';
-            formData.activationDate = '';
+            formData.activationDate = null;
             formData.deactivationDate = new Date();
           }
         }

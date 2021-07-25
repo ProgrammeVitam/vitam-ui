@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilingPlanMode } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
@@ -61,8 +61,6 @@ export class IngestContractNodeUpdateComponent implements OnInit {
 
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
-
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
