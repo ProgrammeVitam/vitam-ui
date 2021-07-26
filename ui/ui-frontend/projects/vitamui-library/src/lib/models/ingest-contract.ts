@@ -22,4 +22,5 @@ export interface IngestContract extends Id {
   formatType: Array<string>;
   archiveProfiles: Array<string>;
   managementContractId: string;
+  computeInheritedRulesAtIngest: boolean;
 }

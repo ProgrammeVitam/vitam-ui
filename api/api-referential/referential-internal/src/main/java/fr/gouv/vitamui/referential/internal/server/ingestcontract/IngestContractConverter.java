@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class IngestContractConverter {
 
 	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestContractConverter.class);
-	
+
     public IngestContractModel convertDtoToVitam(final IngestContractDto dto) {
         final IngestContractModel ingestContract = VitamUIUtils.copyProperties(dto, new IngestContractModel());
         if (dto.getCheckParentId() != null) {
@@ -60,6 +60,12 @@ public class IngestContractConverter {
             ingestContract.setCheckParentLink(IngestContractCheckState.valueOf(dto.getCheckParentLink()));
         }
 
+        ingestContract.setCreationdate(dto.getCreationdate());
+        ingestContract.setLastupdate(dto.getLastupdate());
+        ingestContract.setActivationdate(dto.getActivationdate());
+        ingestContract.setDeactivationdate(dto.getDeactivationdate());
+        ingestContract.setComputeInheritedRulesAtIngest(dto.isComputeInheritedRulesAtIngest());
+
         return ingestContract;
     }
 
@@ -68,7 +74,7 @@ public class IngestContractConverter {
         if (ingestContract.getCheckParentLink() != null) {
             dto.setCheckParentLink(ingestContract.getCheckParentLink().name());
         }
-        
+
         // copyProperties() doesn't handle Boolean properties
         if (ingestContract.isMasterMandatory() != null) {
             dto.setMasterMandatory(ingestContract.isMasterMandatory());
@@ -82,6 +88,14 @@ public class IngestContractConverter {
         if (ingestContract.isEveryDataObjectVersion() != null) {
             dto.setEveryDataObjectVersion(ingestContract.isEveryDataObjectVersion());
         }
+        if (ingestContract.isComputeInheritedRulesAtIngest() != null) {
+            dto.setComputeInheritedRulesAtIngest(ingestContract.isComputeInheritedRulesAtIngest());
+        }
+
+        dto.setCreationdate(ingestContract.getCreationdate());
+        dto.setLastupdate(ingestContract.getLastupdate());
+        dto.setActivationdate(ingestContract.getActivationdate());
+        dto.setDeactivationdate(ingestContract.getDeactivationdate());
 
         return dto;
     }
