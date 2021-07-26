@@ -20,6 +20,10 @@
     "UNDO_MODAL": {
       "TITLE": "Fermer la fenêtre",
       "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"
+    },
+    "HISTORY": {
+      "NO_HISTORY": "Aucun historique",
+      "OPERATIONS": "Journal des opérations"
     }
   },
   "COLOR": {

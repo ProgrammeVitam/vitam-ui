@@ -36,6 +36,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import {TranslateModule} from "@ngx-translate/core";
 
 import { EventTypeLabelModule } from './event-type-label/event-type-label.module';
 import { HistoryModule } from './history/history.module';
@@ -46,6 +47,7 @@ import { HistoryModule } from './history/history.module';
     CommonModule,
     HistoryModule,
     EventTypeLabelModule,
+    TranslateModule
   ],
   exports: [
     HistoryModule,

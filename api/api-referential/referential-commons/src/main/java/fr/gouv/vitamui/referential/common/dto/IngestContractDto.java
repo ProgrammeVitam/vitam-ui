@@ -65,13 +65,13 @@ public class IngestContractDto extends IdDto implements Serializable {
 
     private ActivationStatus status;
 
-    private String creationDate;
+    private String creationdate;
 
-    private String lastUpdate;
+    private String lastupdate;
 
-    private String activationDate;
+    private String activationdate;
 
-    private String deactivationDate;
+    private String deactivationdate;
 
     private String checkParentLink;
 
