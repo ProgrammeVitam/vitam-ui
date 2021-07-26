@@ -8,10 +8,15 @@ spring:
       discovery:
         enabled: false
         register: false
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 
 server:
   host: dev.vitamui.com
   port: 9002
+  tomcat.connection-timeout: 60000
   scheme: https
   ssl:
     key-store: ../../dev-deployment/environments/keystores/server/localhost/keystore_ui-referential.jks
@@ -55,6 +60,9 @@ ui-referential:
   referential-external-client:
     server-host: localhost
     server-port: 8087
+    connect-time-out: 30
+    read-time-out: 30
+    write-time-out: 30
     secure: true
     ssl-configuration:
       keystore:
