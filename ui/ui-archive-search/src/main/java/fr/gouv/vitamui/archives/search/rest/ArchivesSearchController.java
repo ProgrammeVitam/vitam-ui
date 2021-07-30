@@ -27,20 +27,18 @@
 package fr.gouv.vitamui.archives.search.rest;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.VitamuiRoles;
-import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
@@ -51,6 +49,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,8 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 
 @Api(tags = "archives Search")
@@ -90,23 +88,18 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        if(!searchQuery.getAppraisalMgtRulesCriteriaList().isEmpty() && searchQuery.getAppraisalMgtRulesCriteriaList() != null) {
-            final List<Role> listOfRoles = new ArrayList<>();
-            Role role = new Role(VitamuiRoles.ROLE_SEARCH_WITH_RULES);
-            final AuthUserDto authenticatedUser = getAuthenticatedUser();
-            authenticatedUser.getProfileGroup().getProfiles().forEach(profileDto -> {
-                if(profileDto != null) {
-                    listOfRoles.addAll(profileDto.getRoles());
-                }
-            });
-
-            if(!listOfRoles.contains(role)) {
+        if (searchQuery != null && !CollectionUtils.isEmpty(searchQuery.getAppraisalMgtRulesCriteriaList())) {
+            final boolean hasSearchByRuleRole = getAuthenticatedUser().getProfileGroup().getProfiles().stream()
+                .filter(Objects::nonNull)
+                .flatMap(profileDto -> profileDto.getRoles().stream())
+                .anyMatch(role -> VitamuiRoles.ROLE_SEARCH_WITH_RULES.equals(role.getName()));
+ 
+            if (!hasSearchByRuleRole) {
                 LOGGER.info("You are not authorized to make a search with DUA criteria");
                 throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
             }
-        }
-        else {
-             archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
+        } else {
+            archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
         }
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
@@ -127,7 +120,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Find the Archive Unit Details")
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id){
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
@@ -136,7 +129,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Find the Object Group by identifier")
     @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id){
+    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Find the Object Group with Identifier {}", id);
         return archivesSearchService.findObjectById(id, buildUiHttpContext());
@@ -149,8 +142,9 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Download the Archive Unit Object with ID {}", id);
         ObjectData objectData = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext());
-        String headerValues = StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
-            : "attachment";
+        String headerValues =
+            StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
+                : "attachment";
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", headerValues)
