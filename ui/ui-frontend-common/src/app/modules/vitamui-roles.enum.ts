@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2021)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -24,33 +25,9 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-@ToString
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Setter
-@Getter
-public class SearchCriteriaDto implements Serializable {
-    /**
-     * Criteria list for searching archive units
-     */
-
-    private List<String> nodes = new ArrayList<>();
-    private List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-    private List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList = new ArrayList<>();
-    private List<String> fieldsList = new ArrayList<>();
-    private SearchCriteriaSort sortingCriteria;
-    private Integer pageNumber;
-    private Integer size;
-    private String language = Locale.FRENCH.getLanguage();
+export enum VitamuiRoles {
+  ROLE_SEARCH_WITH_RULES = 'ROLE_SEARCH_WITH_RULES',
+  ROLE_CREATE_ARCHIVE_SEARCH = 'ROLE_CREATE_ARCHIVE_SEARCH',
+  ROLE_GET_ARCHIVE_SEARCH = 'ROLE_GET_ARCHIVE_SEARCH',
+  ROLE_GET_ALL_ARCHIVE_SEARCH = 'ROLE_GET_ALL_ARCHIVE_SEARCH',
 }

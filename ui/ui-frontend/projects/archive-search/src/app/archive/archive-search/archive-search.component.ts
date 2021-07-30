@@ -43,7 +43,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, Direction } from 'ui-frontend-common';
+import { diff, Direction, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
@@ -67,29 +67,31 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 export class ArchiveSearchComponent implements OnInit {
   @Output() archiveUnitClick = new EventEmitter<any>();
 
+  dataToSearchWithRules: any;
+
   private readonly orderChange = new Subject<string>();
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
   @Input()
   accessContract: string;
-  nbQueryCriteria: number = 0;
+  nbQueryCriteria = 0;
   subscriptionNodes: Subscription;
   subscriptionEntireNodes: Subscription;
   subscriptionFilingHoldingSchemeNodes: Subscription;
-  currentPage: number = 0;
-  pageNumbers: number = 0;
-  totalResults: number = 0;
-  pending: boolean = false;
-  included: boolean = false;
-  canLoadMore: boolean = false;
+  currentPage = 0;
+  pageNumbers = 0;
+  totalResults = 0;
+  pending = false;
+  included = false;
+  canLoadMore = false;
   tenantIdentifier: string;
   form: FormGroup;
-  submited: boolean = false;
+  submited = false;
   searchCriterias: Map<string, SearchCriteria>;
-  otherCriteriaValueEnabled: boolean = false;
-  otherCriteriaValueType: string = 'DATE';
-  showCriteriaPanel: boolean = true;
-  showSearchCriteriaPanel: boolean = false;
+  otherCriteriaValueEnabled = false;
+  otherCriteriaValueType = 'DATE';
+  showCriteriaPanel = true;
+  showSearchCriteriaPanel = false;
   selectedValueOntolonogy: any;
   archiveUnits: Unit[];
   ontologies: any;
@@ -171,8 +173,8 @@ export class ArchiveSearchComponent implements OnInit {
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
       this.ontologies.sort(function (a: any, b: any) {
-        var shortNameA = a.Label;
-        var shortNameB = b.Label;
+        const shortNameA = a.Label;
+        const shortNameB = b.Label;
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
     });
@@ -319,12 +321,17 @@ export class ArchiveSearchComponent implements OnInit {
     });
 
     this.searchCriterias = new Map();
-    this.filterMapType['Type'] = ['Folder', 'Document'];
+    this.filterMapType.Type = ['Folder', 'Document'];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
+    this.dataToSearchWithRules = {
+      appId: this.route.snapshot.data.appId,
+      tenantIdentifier: +this.tenantIdentifier,
+      role: VitamuiRoles.ROLE_SEARCH_WITH_RULES,
+    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -392,7 +399,7 @@ export class ArchiveSearchComponent implements OnInit {
       } else {
         this.form.controls.otherCriteriaValue.setValue('');
         this.otherCriteriaValueEnabled = true;
-        let selectedValueOntolonogyValue = this.form.get('otherCriteria').value;
+        const selectedValueOntolonogyValue = this.form.get('otherCriteria').value;
         const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === selectedValueOntolonogyValue);
         if (selectedValueOntolonogyElt) {
           this.selectedValueOntolonogy = selectedValueOntolonogyElt.Label;
@@ -413,28 +420,28 @@ export class ArchiveSearchComponent implements OnInit {
           if (!values || values.length === 0) {
             values = [];
           }
-          let filtredValues = values.filter((elt) => elt.value === valueElt);
+          const filtredValues = values.filter((elt) => elt.value === valueElt);
           if (filtredValues.length === 0) {
             values.push({
               value: valueElt,
               label: labelElt,
               valueShown: true,
               status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-              translated: translated,
+              translated,
             });
             criteria.values = values;
             this.searchCriterias.set(keyElt, criteria);
           }
         } else {
-          let values = [];
+          const values = [];
           values.push({
             value: valueElt,
             label: labelElt,
             valueShown: true,
             status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-            translated: translated,
+            translated,
           });
-          let criteria = { key: keyElt, label: keyLabel, values: values };
+          const criteria = { key: keyElt, label: keyLabel, values };
           this.searchCriterias.set(keyElt, criteria);
         }
       }
@@ -471,7 +478,7 @@ export class ArchiveSearchComponent implements OnInit {
   }
 
   buildNodesListForQUery(): string[] {
-    let nodesIdList: string[] = [];
+    const nodesIdList: string[] = [];
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.key === 'NODE') {
         criteria.values.forEach((elt) => {
@@ -484,9 +491,9 @@ export class ArchiveSearchComponent implements OnInit {
   }
 
   buildCriteriaListForQUery(): SearchCriteriaEltDto[] {
-    let criteriaList: SearchCriteriaEltDto[] = [];
+    const criteriaList: SearchCriteriaEltDto[] = [];
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
-      let strValues: string[] = [];
+      const strValues: string[] = [];
       this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
       if (criteria.key !== 'NODE') {
         criteria.values.forEach((elt) => {
@@ -496,8 +503,8 @@ export class ArchiveSearchComponent implements OnInit {
       }
     });
 
-    let typesFilterValues: string[] = [];
-    this.filterMapType['Type'].forEach((filter) => {
+    const typesFilterValues: string[] = [];
+    this.filterMapType.Type.forEach((filter) => {
       if (filter === 'Folder') {
         typesFilterValues.push('RecordGrp');
       }
@@ -515,13 +522,13 @@ export class ArchiveSearchComponent implements OnInit {
   private callVitamApiService() {
     this.pending = true;
 
-    let sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-    let searchCriteria = {
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const searchCriteria = {
       nodes: this.searchedCriteriaNodesList,
       criteriaList: this.searchedCriteriaList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
-      sortingCriteria: sortingCriteria,
+      sortingCriteria,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
@@ -755,13 +762,13 @@ export class ArchiveSearchComponent implements OnInit {
       (this.searchedCriteriaList && this.searchedCriteriaList.length > 0) ||
       (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)
     ) {
-      let sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-      let searchCriteria = {
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+      const searchCriteria = {
         nodes: this.searchedCriteriaNodesList,
         criteriaList: this.searchedCriteriaList,
         pageNumber: this.currentPage,
         size: PAGE_SIZE,
-        sortingCriteria: sortingCriteria,
+        sortingCriteria,
         language: this.translateService.currentLang,
       };
       this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);

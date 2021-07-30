@@ -1,0 +1,59 @@
+db = db.getSiblingDB('iam')
+
+print("START_25_update_and_create_profiles_archive_search.js");
+
+// -------- ARCHIVE_SEARCH PROFILE WITH RULES MANAGEMENT -----
+
+db.profiles.updateOne({
+   "_id":"system_archive_search_profile"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+            {
+               "name":"ROLE_SEARCH_WITH_RULES"
+            }
+         ]
+      }
+   }
+});
+
+db.profiles.update({
+   "_id":"system_archive_search_profile"
+},
+{
+   $set:{
+      "description":"Profil pour la recherche et consultation des archives avec mises à jour des règles",
+      "name":"Profil pour la recherche et consultation des archives avec mises à jour des règles"
+   }
+});
+
+// -------- ARCHIVE_SEARCH PROFILE WITHOUT RULES MANAGEMENT -----
+
+
+db.profiles.insert({
+   "_id":"system_archive_search_profile_without_rules",
+   "identifier":NumberInt(26),
+   "name":"Profil pour la recherche et consultation des archives sans mises à jour des règles",
+   "description":"Profil pour la recherche et consultation des archives sans mises à jour des règles",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+   "roles":[
+      {
+         "name":"ROLE_CREATE_ARCHIVE_SEARCH"
+      },
+      {
+         "name":"ROLE_GET_ARCHIVE_SEARCH"
+      },
+      {
+         "name":"ROLE_GET_ALL_ARCHIVE_SEARCH"
+      }
+   ]
+});
+
+print("END_25_update_and_create_profiles_archive_search.js");
