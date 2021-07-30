@@ -93,7 +93,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
                 .filter(Objects::nonNull)
                 .flatMap(profileDto -> profileDto.getRoles().stream())
                 .anyMatch(role -> VitamuiRoles.ROLE_SEARCH_WITH_RULES.equals(role.getName()));
- 
+
             if (!hasSearchByRuleRole) {
                 LOGGER.info("You are not authorized to make a search with DUA criteria");
                 throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
