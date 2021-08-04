@@ -14,7 +14,6 @@ hosts_elasticsearch_log
 hosts_functionnal_admin
 hosts_security_internal
 
-
 # SERVER LIST vitamui machines
 [hosts_vitamui:children]
 zone_vitamui_ui
@@ -24,9 +23,9 @@ zone_vitamui_data
 zone_vitamui_infra
 zone_vitamui_admin
 
-
 ########################################################
 # ZONE Infra
+
 [zone_vitamui_infra:children]
 hosts_vitamui_logstash
 hosts_vitamui_consul_server
@@ -177,14 +176,12 @@ vitam-env-vitamuifo-app-01.vitam-env
 # EDIT
 
 
-
 # SERVER LIST os_repository
 #
 # Servers hosting vitamui yum repository
 #
 [os_repository]
 # EDIT
-
 
 
 # SERVER LIST remote deployer
@@ -210,6 +207,8 @@ vitam-env-vitamuifo-app-01.vitam-env
 [backup]
 # EDIT
 
+[hosts_browse]
+# EDIT
 
 
 #
