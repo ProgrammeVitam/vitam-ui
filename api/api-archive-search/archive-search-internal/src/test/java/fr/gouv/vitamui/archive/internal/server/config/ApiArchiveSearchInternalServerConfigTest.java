@@ -29,25 +29,26 @@ package fr.gouv.vitamui.archive.internal.server.config;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.archive.internal.server.TestMongoConfig;
-import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
 @ActiveProfiles("test")
-public class ApiArchiveSearchInternalServerConfigTest {
+public class ApiArchiveSearchInternalServerConfigTest extends AbstractContextConfiguration {
 
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
@@ -58,11 +59,19 @@ public class ApiArchiveSearchInternalServerConfigTest {
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
 
+    @MockBean(name = "agencyService")
+    private AgencyService agencyService;
+
+
     @Autowired
     private ArchiveSearchInternalService archiveSearchInternalService;
 
+    @Autowired
+    private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
+
+
     @Test
     public void testArchiveInternalConf() {
-        Assert.assertNotNull(archiveSearchInternalService);
+        Assertions.assertNotNull(archiveSearchInternalService);
     }
 }

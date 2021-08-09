@@ -37,23 +37,29 @@
 import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
-import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff, Direction, VitamuiRoles } from 'ui-frontend-common';
+import { debounceTime } from 'rxjs/operators';
+import { Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory, SearchCriterias } from '../models/search-criteria-history.interface';
-import { PagedResult, SearchCriteria, SearchCriteriaEltDto, SearchCriteriaStatusEnum } from '../models/search.criteria';
+import {
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
-const UPDATE_DEBOUNCE_TIME = 200;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
@@ -67,31 +73,30 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 export class ArchiveSearchComponent implements OnInit {
   @Output() archiveUnitClick = new EventEmitter<any>();
 
-  dataToSearchWithRules: any;
-
   private readonly orderChange = new Subject<string>();
   orderBy = 'Title';
   direction = Direction.ASCENDANT;
   @Input()
   accessContract: string;
-  nbQueryCriteria = 0;
+  nbQueryCriteria: number = 0;
   subscriptionNodes: Subscription;
   subscriptionEntireNodes: Subscription;
   subscriptionFilingHoldingSchemeNodes: Subscription;
-  currentPage = 0;
-  pageNumbers = 0;
-  totalResults = 0;
-  pending = false;
-  included = false;
-  canLoadMore = false;
+  currentPage: number = 0;
+  pageNumbers: number = 0;
+  totalResults: number = 0;
+  pending: boolean = false;
+  included: boolean = false;
+  canLoadMore: boolean = false;
   tenantIdentifier: string;
-  form: FormGroup;
-  submited = false;
+  appraisalRuleCriteriaForm: FormGroup;
+  submited: boolean = false;
   searchCriterias: Map<string, SearchCriteria>;
-  otherCriteriaValueEnabled = false;
-  otherCriteriaValueType = 'DATE';
-  showCriteriaPanel = true;
-  showSearchCriteriaPanel = false;
+  searchCriteriaKeys: string[];
+  otherCriteriaValueEnabled: boolean = false;
+  otherCriteriaValueType: string = 'DATE';
+  showCriteriaPanel: boolean = true;
+  showSearchCriteriaPanel: boolean = false;
   selectedValueOntolonogy: any;
   archiveUnits: Unit[];
   ontologies: any;
@@ -99,47 +104,17 @@ export class ArchiveSearchComponent implements OnInit {
     status: ['Folder', 'Document'],
   };
   shouldShowPreviewArchiveUnit = false;
-  searchedCriteriaList: SearchCriteriaEltDto[] = [];
-  searchedCriteriaNodesList: string[] = [];
 
+  criteriaSearchList: SearchCriteriaEltDto[] = [];
+
+  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
+  additionalSearchCriteriaCategoryIndex = 0;
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-
+  showDuaEndDate = false;
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   searchCriteriaHistoryToSave: Map<string, SearchCriteriaHistory>;
   searchCriteriaHistoryLength: number = null;
   hasResults = false;
-  previousValue: {
-    archiveCriteria: '';
-    title: '';
-    identifier: '';
-    description: '';
-    guid: '';
-    uaid: '';
-    beginDt: '';
-    endDt: '';
-    serviceProdLabel: '';
-    serviceProdCode: '';
-    serviceProdCommunicability: '';
-    serviceProdCommunicabilityDt: '';
-    otherCriteria: '';
-    otherCriteriaValue: '';
-  };
-  emptyForm = {
-    archiveCriteria: '',
-    title: '',
-    identifier: '',
-    description: '',
-    guid: '',
-    uaid: '',
-    beginDt: '',
-    endDt: '',
-    serviceProdLabel: '',
-    serviceProdCode: '',
-    serviceProdCommunicability: '',
-    serviceProdCommunicabilityDt: '',
-    otherCriteria: '',
-    otherCriteriaValue: '',
-  };
 
   show = true;
   showUnitPreviewBlock = false;
@@ -149,7 +124,6 @@ export class ArchiveSearchComponent implements OnInit {
   entireNodesIds: string[];
 
   constructor(
-    private formBuilder: FormBuilder,
     private archiveService: ArchiveService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
@@ -163,175 +137,118 @@ export class ArchiveSearchComponent implements OnInit {
 
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe((node) => {
       if (node.checked) {
-        this.addCriteria('NODE', 'NODE', node.id, node.title, true);
+        this.addCriteria('NODE', 'NODE', node.id, node.title, true, 'EQ', SearchCriteriaTypeEnum.NODES, false);
       } else {
         node.count = null;
-        this.removeCriteria('NODE', node.id);
+        this.removeCriteria('NODE', node.id, false);
+      }
+    });
+
+    this.archiveExchangeDataService.receiveSimpleSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        this.addCriteria(
+          criteria.keyElt,
+          criteria.keyLabel,
+          criteria.valueElt,
+          criteria.labelElt,
+          criteria.keyTranslated,
+          criteria.operator,
+          criteria.category,
+          criteria.valueTranslated
+        );
+      }
+    });
+
+    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        this.removeCriteria(criteria.keyElt, criteria.valueElt, false);
+      }
+    });
+
+    this.archiveExchangeDataService.receiveAppraisalSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        this.addCriteria(
+          criteria.keyElt,
+          criteria.keyLabel,
+          criteria.valueElt,
+          criteria.labelElt,
+          criteria.keyTranslated,
+          criteria.operator,
+          criteria.category,
+          criteria.valueTranslated
+        );
       }
     });
 
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
       this.ontologies.sort(function (a: any, b: any) {
-        const shortNameA = a.Label;
-        const shortNameB = b.Label;
+        var shortNameA = a.Label;
+        var shortNameB = b.Label;
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
     });
-
-    this.previousValue = {
-      archiveCriteria: '',
-      title: '',
-      identifier: '',
-      description: '',
-      guid: '',
-      uaid: '',
-      beginDt: '',
-      endDt: '',
-      serviceProdLabel: '',
-      serviceProdCode: '',
-      serviceProdCommunicability: '',
-      serviceProdCommunicabilityDt: '',
-      otherCriteria: '',
-      otherCriteriaValue: '',
-    };
-
-    this.form = this.formBuilder.group({
-      archiveCriteria: ['', []],
-      title: ['', []],
-      description: ['', []],
-      guid: ['', []],
-      uaid: ['', []],
-      beginDt: ['', []],
-      endDt: ['', []],
-      serviceProdLabel: ['', []],
-      serviceProdCode: ['', []],
-      serviceProdCommunicability: ['', []],
-      serviceProdCommunicabilityDt: ['', []],
-      otherCriteria: ['', []],
-      otherCriteriaValue: ['', []],
-    });
-    merge(this.form.statusChanges, this.form.valueChanges)
-      .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
-        filter(() => this.form.valid),
-        map(() => this.form.value),
-        map(() => diff(this.form.value, this.previousValue)),
-        filter((formData) => this.isEmpty(formData))
-      )
-      .subscribe(() => {
-        this.resetForm();
-      });
   }
 
-  isEmpty(formData: any): boolean {
-    if (formData) {
-      if (formData.archiveCriteria) {
-        this.addCriteria(
-          'titleAndDescription',
-          'TITLE_OR_DESCRIPTION',
-          formData.archiveCriteria.trim(),
-          formData.archiveCriteria.trim(),
-          true
-        );
-        return true;
-      } else if (formData.title) {
-        this.addCriteria('Title', 'TITLE', formData.title.trim(), formData.title.trim(), true);
-        return true;
-      } else if (formData.description) {
-        this.addCriteria('Description', 'DESCRIPTION', formData.description.trim(), formData.description.trim(), true);
-        return true;
-      } else if (formData.beginDt) {
-        this.addCriteria(
-          'StartDate',
-          'START_DATE',
-          this.form.value.beginDt,
-          this.datePipe.transform(this.form.value.beginDt, 'dd/MM/yyyy'),
-          true
-        );
-        return true;
-      } else if (formData.endDt) {
-        this.addCriteria('EndDate', 'END_DATE', this.form.value.endDt, this.datePipe.transform(this.form.value.endDt, 'dd/MM/yyyy'), true);
-        return true;
-      } else if (formData.serviceProdCode) {
-        this.addCriteria('#originating_agency', 'SP_CODE', formData.serviceProdCode.trim(), formData.serviceProdCode.trim(), true);
-        return true;
-      } else if (formData.serviceProdLabel) {
-        this.addCriteria('originating_agency_label', 'SP_LABEL', formData.serviceProdLabel.trim(), formData.serviceProdLabel.trim(), true);
-        return true;
-      } else if (formData.uaid) {
-        this.addCriteria('#id', 'ID', formData.uaid, formData.uaid, true);
-        return true;
-      } else if (formData.guid) {
-        this.addCriteria('#opi', 'GUID', formData.guid, formData.guid, true);
-        return true;
-      } else if (formData.serviceProdCommunicability) {
-        this.addCriteria(
-          'serviceProdCommunicability',
-          'SP_COMM',
-          formData.serviceProdCommunicability,
-          formData.serviceProdCommunicability,
-          true
-        );
-        return true;
-      } else if (formData.serviceProdCommunicabilityDt) {
-        this.addCriteria(
-          'serviceProdCommunicabilityDt',
-          'SP_COMM_DT',
-          formData.serviceProdCommunicabilityDt,
-          formData.serviceProdCommunicabilityDt,
-          true
-        );
-        return true;
-      } else if (formData.otherCriteriaValue) {
-        const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
-        if (this.otherCriteriaValueType === 'DATE') {
-          this.addCriteria(
-            ontologyElt.Value,
-            ontologyElt.Label,
-            this.form.value.otherCriteriaValue,
-            this.datePipe.transform(this.form.value.otherCriteriaValue, 'dd/MM/yyyy'),
-            false
-          );
-        } else {
-          this.addCriteria(
-            ontologyElt.Value,
-            ontologyElt.Label,
-            formData.otherCriteriaValue.trim(),
-            formData.otherCriteriaValue.trim(),
-            false
-          );
-        }
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
+  selectedCategoryChange(selectedCategoryIndex: number) {
+    this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
+  }
+
+  addCriteriaCategory(categoryName: string) {
+    var indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
+    if (indexOfCategory === -1) {
+      this.additionalSearchCriteriaCategories.push({ name: categoryName, index: this.additionalSearchCriteriaCategories.length + 1 });
+      //make the selected tab
     }
+
+    this.additionalSearchCriteriaCategories.forEach((category, index) => {
+      category.index = index + 1;
+    });
+    this.additionalSearchCriteriaCategoryIndex = this.additionalSearchCriteriaCategories.length;
   }
 
-  private resetForm() {
-    this.form.reset(this.emptyForm);
+  isCategoryAdded(categoryName: string): boolean {
+    var indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
+    return indexOfCategory !== -1;
+  }
+
+  showHideDuaEndDate(status: boolean) {
+    this.showDuaEndDate = status;
+  }
+
+  removeCriteriaCategory(categoryName: string) {
+    this.additionalSearchCriteriaCategories.forEach((element, index) => {
+      if (element.name === categoryName) {
+        this.additionalSearchCriteriaCategories.splice(index, 1);
+        if (index === this.additionalSearchCriteriaCategoryIndex - 1) {
+          this.additionalSearchCriteriaCategoryIndex = 0;
+        } else {
+          if (this.additionalSearchCriteriaCategoryIndex > 0) {
+            this.additionalSearchCriteriaCategoryIndex = this.additionalSearchCriteriaCategoryIndex - 1;
+          }
+        }
+      }
+    });
+    this.additionalSearchCriteriaCategories.forEach((category, index) => {
+      category.index = index + 1;
+    });
   }
 
   ngOnInit() {
+    this.additionalSearchCriteriaCategoryIndex = 0;
+    this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
     this.searchCriterias = new Map();
-    this.filterMapType.Type = ['Folder', 'Document'];
+    this.searchCriteriaKeys = [];
+    this.filterMapType['Type'] = ['Folder', 'Document'];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
-    this.dataToSearchWithRules = {
-      appId: this.route.snapshot.data.appId,
-      tenantIdentifier: +this.tenantIdentifier,
-      role: VitamuiRoles.ROLE_SEARCH_WITH_RULES,
-    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -346,13 +263,14 @@ export class ArchiveSearchComponent implements OnInit {
     this.filterChange.next(this.filterMapType);
   }
 
-  showHidePanel() {
-    this.showCriteriaPanel = !this.showCriteriaPanel;
+  showHidePanel(show: boolean) {
+    this.showCriteriaPanel = show;
   }
 
   showStoredSearchCriteria(event: SearchCriteriaHistory) {
     if (this.searchCriterias.size > 0) {
       this.searchCriterias = new Map();
+      this.searchCriteriaKeys = [];
       this.included = false;
     }
     this.reMapSearchCriteriaFromSearchCriteriaHistory(event);
@@ -362,26 +280,36 @@ export class ArchiveSearchComponent implements OnInit {
     this.orderChange.next();
   }
 
-  removeCriteria(keyElt: string, valueElt: string) {
+  removeCriteriaEvent(criteriaToRemove: any) {
+    this.removeCriteria(criteriaToRemove.keyElt, criteriaToRemove.valueElt, true);
+  }
+  removeCriteria(keyElt: string, valueElt: string, emit: boolean) {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
       this.searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
           let values = val.values;
           values = values.filter((item) => item.value !== valueElt);
           if (values.length === 0) {
+            this.searchCriteriaKeys.forEach((element, index) => {
+              if (element == keyElt) this.searchCriteriaKeys.splice(index, 1);
+            });
             this.searchCriterias.delete(keyElt);
           } else {
             val.values = values;
             this.searchCriterias.set(keyElt, val);
           }
-
           this.nbQueryCriteria--;
-        }
-        if (key === 'NODE') {
-          this.archiveExchangeDataService.emitNodeTarget(valueElt);
+          if (emit === true && key === 'NODE') {
+            this.archiveExchangeDataService.emitNodeTarget(valueElt);
+          }
+
+          if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+            this.archiveExchangeDataService.sendRemoveAppraisalFromMainSearchCriteriaAction({ keyElt: keyElt, valueElt: valueElt });
+          }
         }
       });
     }
+
     if (this.searchCriterias && this.searchCriterias.size === 0) {
       this.submited = false;
       this.showCriteriaPanel = true;
@@ -391,25 +319,28 @@ export class ArchiveSearchComponent implements OnInit {
     }
   }
 
-  onSelectOtherCriteria() {
-    this.form.get('otherCriteria').valueChanges.subscribe((selectedcriteria) => {
-      if (selectedcriteria === '') {
-        this.otherCriteriaValueEnabled = false;
-        this.selectedValueOntolonogy = null;
-      } else {
-        this.form.controls.otherCriteriaValue.setValue('');
-        this.otherCriteriaValueEnabled = true;
-        const selectedValueOntolonogyValue = this.form.get('otherCriteria').value;
-        const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === selectedValueOntolonogyValue);
-        if (selectedValueOntolonogyElt) {
-          this.selectedValueOntolonogy = selectedValueOntolonogyElt.Label;
-          this.otherCriteriaValueType = selectedValueOntolonogyElt.Type;
+  removeCriteriaByCategory(category: string) {
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      this.searchCriterias.forEach((val, key) => {
+        if (SearchCriteriaTypeEnum[val.category] === category) {
+          val.values.forEach((value) => {
+            this.removeCriteria(key, value.value, true);
+          });
         }
-      }
-    });
+      });
+    }
   }
 
-  addCriteria(keyElt: string, keyLabel: string, valueElt: string, labelElt: string, translated: boolean) {
+  addCriteria(
+    keyElt: string,
+    keyLabel: string,
+    valueElt: string,
+    labelElt: string,
+    keyTranslated: boolean,
+    operator: string,
+    category: SearchCriteriaTypeEnum,
+    valueTranslated: boolean
+  ) {
     if (keyElt && valueElt) {
       if (this.searchCriterias) {
         this.nbQueryCriteria++;
@@ -420,28 +351,33 @@ export class ArchiveSearchComponent implements OnInit {
           if (!values || values.length === 0) {
             values = [];
           }
-          const filtredValues = values.filter((elt) => elt.value === valueElt);
+          let filtredValues = values.filter((elt) => elt.value === valueElt);
           if (filtredValues.length === 0) {
             values.push({
               value: valueElt,
               label: labelElt,
               valueShown: true,
               status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-              translated,
+              keyTranslated: keyTranslated,
+              valueTranslated: valueTranslated,
             });
             criteria.values = values;
             this.searchCriterias.set(keyElt, criteria);
           }
         } else {
-          const values = [];
+          if (this.searchCriteriaKeys.indexOf(keyElt) === -1) {
+            this.searchCriteriaKeys.push(keyElt);
+          }
+          let values = [];
           values.push({
             value: valueElt,
             label: labelElt,
             valueShown: true,
             status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-            translated,
+            keyTranslated: keyTranslated,
+            valueTranslated: valueTranslated,
           });
-          const criteria = { key: keyElt, label: keyLabel, values };
+          let criteria = { key: keyElt, label: keyLabel, values: values, operator: operator, category: category };
           this.searchCriterias.set(keyElt, criteria);
         }
       }
@@ -455,12 +391,11 @@ export class ArchiveSearchComponent implements OnInit {
     this.showSearchCriteriaPanel = false;
     this.currentPage = 0;
     this.archiveUnits = [];
-    this.searchedCriteriaList = this.buildCriteriaListForQUery();
-    this.searchedCriteriaNodesList = this.buildNodesListForQUery();
-    if (
-      (this.searchedCriteriaList && this.searchedCriteriaList.length > 0) ||
-      (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)
-    ) {
+    this.criteriaSearchList = [];
+    this.buildNodesListForQUery();
+    this.buildFieldsCriteriaListForQUery();
+    this.buildAppraisalCriteriaListForQUery();
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.callVitamApiService();
     }
   }
@@ -477,34 +412,43 @@ export class ArchiveSearchComponent implements OnInit {
     return nodesIdList;
   }
 
-  buildNodesListForQUery(): string[] {
-    const nodesIdList: string[] = [];
+  buildNodesListForQUery() {
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
-      if (criteria.key === 'NODE') {
-        criteria.values.forEach((elt) => {
-          nodesIdList.push(elt.value);
-        });
-      }
-    });
-
-    return nodesIdList;
-  }
-
-  buildCriteriaListForQUery(): SearchCriteriaEltDto[] {
-    const criteriaList: SearchCriteriaEltDto[] = [];
-    this.searchCriterias.forEach((criteria: SearchCriteria) => {
-      const strValues: string[] = [];
-      this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
-      if (criteria.key !== 'NODE') {
+      if (criteria.category === SearchCriteriaTypeEnum.NODES) {
+        let strValues: string[] = [];
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-        criteriaList.push({ criteria: criteria.key, values: strValues });
+
+        this.criteriaSearchList.push({
+          criteria: 'NODE',
+          values: strValues,
+          operator: criteria.operator,
+          category: 'NODES',
+        });
+      }
+    });
+  }
+
+  buildFieldsCriteriaListForQUery() {
+    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+      if (criteria.category === SearchCriteriaTypeEnum.FIELDS) {
+        let strValues: string[] = [];
+        this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
+        criteria.values.forEach((elt) => {
+          strValues.push(elt.value);
+        });
+        this.criteriaSearchList.push({
+          criteria: criteria.key,
+          values: strValues,
+          operator: criteria.operator,
+          category: 'FIELDS',
+        });
       }
     });
 
-    const typesFilterValues: string[] = [];
-    this.filterMapType.Type.forEach((filter) => {
+    let typesFilterValues: string[] = [];
+    this.filterMapType['Type'].forEach((filter) => {
       if (filter === 'Folder') {
         typesFilterValues.push('RecordGrp');
       }
@@ -514,21 +458,57 @@ export class ArchiveSearchComponent implements OnInit {
       }
     });
     if (typesFilterValues.length > 0) {
-      criteriaList.push({ criteria: 'DescriptionLevel', values: typesFilterValues });
+      this.criteriaSearchList.push({
+        criteria: 'DescriptionLevel',
+        values: typesFilterValues,
+        operator: 'EQ',
+        category: 'FIELDS',
+      });
     }
-    return criteriaList;
+  }
+
+  buildAppraisalCriteriaListForQUery() {
+    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+      if (criteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+        if (criteria.key === 'APPRAISAL_RULE_ORIGIN') {
+          let originRuleCriteria: Map<string, string> = new Map();
+          criteria.values.forEach((elt) => {
+            originRuleCriteria.set(elt.value, 'true');
+          });
+          originRuleCriteria.forEach((value: string, key: string) => {
+            this.criteriaSearchList.push({
+              criteria: key,
+              values: [...new Array(value)],
+              operator: 'EQ',
+              category: 'APPRAISAL_RULE',
+            });
+          });
+        } else {
+          let strValues: string[] = [];
+          criteria.values.forEach((elt) => {
+            strValues.push(elt.value);
+          });
+          this.criteriaSearchList.push({
+            criteria: criteria.key,
+            values: strValues,
+            operator: criteria.operator,
+            category: 'APPRAISAL_RULE',
+          });
+        }
+        this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
+      }
+    });
   }
 
   private callVitamApiService() {
     this.pending = true;
 
-    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-    const searchCriteria = {
-      nodes: this.searchedCriteriaNodesList,
-      criteriaList: this.searchedCriteriaList,
+    let sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    let searchCriteria = {
+      criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
-      sortingCriteria,
+      sortingCriteria: sortingCriteria,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
@@ -612,7 +592,7 @@ export class ArchiveSearchComponent implements OnInit {
       if (node.id === nodeId) {
         node.checked = true;
         node.hidden = false;
-        this.addCriteria('NODE', 'NODE', nodeId, node.title, true);
+        this.addCriteria('NODE', 'NODE', nodeId, node.title, true, 'EQ', SearchCriteriaTypeEnum.NODES, false);
       } else if (node.children.length > 0) {
         this.fillNodeTitle(node.children, nodeId);
       }
@@ -656,12 +636,21 @@ export class ArchiveSearchComponent implements OnInit {
               // Standard Filters other than ontology criteria
               if (keyLabel.includes('DATE')) {
                 const specifiDate = keyLabel === 'START_DATE' ? 'Date de début' : 'Date de fin';
-                this.addCriteria(c, specifiDate, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
+                this.addCriteria(
+                  c,
+                  specifiDate,
+                  value,
+                  this.datePipe.transform(value, 'dd/MM/yyyy'),
+                  false,
+                  'EQ', //TODO : check operator and category
+                  SearchCriteriaTypeEnum.FIELDS,
+                  false
+                );
               } else {
-                this.addCriteria(c, keyLabel, value, value, true);
+                this.addCriteria(c, keyLabel, value, value, true, 'EQ', SearchCriteriaTypeEnum.FIELDS, false); //TODO : check operator and category
               }
             } else {
-              this.addOntologyFilter(c, value);
+              this.addOntologyFilter(c, value, 'EQ', SearchCriteriaTypeEnum.FIELDS); //TODO : check operator and category
             }
           });
         });
@@ -669,12 +658,21 @@ export class ArchiveSearchComponent implements OnInit {
     });
   }
 
-  addOntologyFilter(criteriaValue: string, value: string): any {
+  addOntologyFilter(criteriaValue: string, value: string, operator: string, category: SearchCriteriaTypeEnum): any {
     const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === criteriaValue);
     if (ontologyElt.Type === 'DATE') {
-      this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, this.datePipe.transform(value, 'dd/MM/yyyy'), false);
+      this.addCriteria(
+        ontologyElt.Value,
+        ontologyElt.Label,
+        value,
+        this.datePipe.transform(value, 'dd/MM/yyyy'),
+        false,
+        operator,
+        category,
+        false
+      );
     } else {
-      this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, value, false);
+      this.addCriteria(ontologyElt.Value, ontologyElt.Label, value, value, false, operator, category, false);
     }
   }
 
@@ -737,12 +735,10 @@ export class ArchiveSearchComponent implements OnInit {
     if (this.canLoadMore && !this.pending) {
       this.submited = true;
       this.currentPage = this.currentPage + 1;
-      this.searchedCriteriaList = this.buildCriteriaListForQUery();
-      this.searchedCriteriaNodesList = this.buildNodesListForQUery();
-      if (
-        (this.searchedCriteriaList && this.searchedCriteriaList.length > 0) ||
-        (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)
-      ) {
+      this.buildFieldsCriteriaListForQUery();
+      this.buildAppraisalCriteriaListForQUery();
+      this.buildNodesListForQUery();
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.callVitamApiService();
       }
     }
@@ -758,17 +754,13 @@ export class ArchiveSearchComponent implements OnInit {
   }
 
   exportArchiveUnitsToCsvFile() {
-    if (
-      (this.searchedCriteriaList && this.searchedCriteriaList.length > 0) ||
-      (this.searchedCriteriaNodesList && this.searchedCriteriaNodesList.length > 0)
-    ) {
-      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-      const searchCriteria = {
-        nodes: this.searchedCriteriaNodesList,
-        criteriaList: this.searchedCriteriaList,
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      let sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+      let searchCriteria = {
+        criteriaList: this.criteriaSearchList,
         pageNumber: this.currentPage,
         size: PAGE_SIZE,
-        sortingCriteria,
+        sortingCriteria: sortingCriteria,
         language: this.translateService.currentLang,
       };
       this.archiveService.exportCsvSearchArchiveUnitsByCriteria(searchCriteria, this.accessContract);
@@ -776,51 +768,28 @@ export class ArchiveSearchComponent implements OnInit {
   }
 
   clearCriterias() {
+    const searchCriteriaKeysCloned = Object.assign([], this.searchCriteriaKeys);
+    searchCriteriaKeysCloned.forEach((criteriaKey) => {
+      if (this.searchCriterias.has(criteriaKey)) {
+        let criteria = this.searchCriterias.get(criteriaKey);
+        let values = criteria.values;
+
+        values.forEach((value) => {
+          this.removeCriteria(criteriaKey, value.value, true);
+        });
+      }
+    });
     this.searchCriterias = new Map();
+    this.searchCriteriaKeys = [];
     this.included = false;
     this.nbQueryCriteria = 0;
+
+    this.pageNumbers = 0;
+    this.totalResults = 0;
+    this.canLoadMore = false;
+
     this.setFilingHoldingScheme();
     this.archiveExchangeDataService.emitFilingHoldingNodes(this.nodeArray);
     this.checkAllNodes(false);
-  }
-
-  get uaid() {
-    return this.form.controls.uaid;
-  }
-  get archiveCriteria() {
-    return this.form.controls.archiveCriteria;
-  }
-  get title() {
-    return this.form.controls.title;
-  }
-  get description() {
-    return this.form.controls.description;
-  }
-  get guid() {
-    return this.form.controls.guid;
-  }
-  get beginDt() {
-    return this.form.controls.beginDt;
-  }
-  get endDt() {
-    return this.form.controls.endDt;
-  }
-  get serviceProdLabel() {
-    return this.form.controls.serviceProdLabel;
-  }
-  get serviceProdCommunicability() {
-    return this.form.controls.serviceProdCommunicability;
-  }
-  get serviceProdCode() {
-    return this.form.controls.serviceProdCode;
-  }
-  get serviceProdCommunicabilityDt() {
-    return this.form.controls.serviceProdCommunicabilityDt;
-  }
-  get otherCriteria() {
-    return this.form.controls.otherCriteria;
-  }
-  get otherCriteriaValue() {
-    return this.form.controls.otherCriteriaValue;
   }
 }

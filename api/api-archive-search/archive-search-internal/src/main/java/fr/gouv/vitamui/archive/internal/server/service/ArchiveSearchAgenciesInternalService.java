@@ -35,6 +35,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConst;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
@@ -49,6 +50,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +59,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -81,12 +82,14 @@ public class ArchiveSearchAgenciesInternalService {
 
     public void mapAgenciesNameToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
         throws VitamClientException {
+        LOGGER.debug("calling mapAgenciesNameToCodes  {} ", searchQuery.toString());
         Set<String> agencyOriginNamesCriteria = new HashSet<>();
         searchQuery.getCriteriaList().stream()
             .filter(criteriaElt -> criteriaElt.getCriteria().equals(ORIGINATING_AGENCY_LABEL_FIELD)).forEach(
             criteriaElt -> agencyOriginNamesCriteria.addAll(criteriaElt.getValues()));
         List<AgencyModelDto> agenciesOrigins;
         if (!agencyOriginNamesCriteria.isEmpty()) {
+            LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
             agenciesOrigins = findOriginAgenciesByNames(vitamContext, agencyOriginNamesCriteria);
             mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
         }
@@ -114,37 +117,39 @@ public class ArchiveSearchAgenciesInternalService {
 
     private void mapAgenciesNamesToAgenciesCodesInCriteria(SearchCriteriaDto searchQuery,
         List<AgencyModelDto> actualAgencies) {
+
         if (searchQuery != null && searchQuery.getCriteriaList() != null && !searchQuery.getCriteriaList().isEmpty()) {
-            List<String> originatingAgencyLabelList = searchQuery.getCriteriaList().stream()
-                .filter(criteria -> ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria()))
-                .map(criteria -> criteria.getValues()).flatMap(List::stream)
+            List<SearchCriteriaEltDto> mergedCriteriaList = searchQuery.getCriteriaList().stream().filter(
+                criteria -> (!ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria())
+                    && !ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria()))).collect(Collectors.toList());
+
+            List<String> filteredAgenciesId = actualAgencies.stream()
+                .map(agency -> agency.getIdentifier())
                 .collect(Collectors.toList());
 
-            if (!originatingAgencyLabelList.isEmpty()) {
-                List<String> filteredAgenciesId = actualAgencies.stream()
-                    .filter(agency -> originatingAgencyLabelList.contains(agency.getName()))
-                    .map(agency -> agency.getIdentifier())
-                    .collect(Collectors.toList());
-                AtomicInteger i = new AtomicInteger();
-                int indexOpt = searchQuery.getCriteriaList().stream().peek(v -> i.incrementAndGet())
-                    .anyMatch(criteria -> ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria())) ?
-                    i.get() - 1 : -1;
-                SearchCriteriaEltDto agencyCodeCriteria;
-                if (!filteredAgenciesId.isEmpty() && indexOpt != -1) {
-                    agencyCodeCriteria = searchQuery.getCriteriaList().get(indexOpt);
-                    filteredAgenciesId.addAll(agencyCodeCriteria.getValues());
-                    agencyCodeCriteria.setValues(filteredAgenciesId);
-                    searchQuery.getCriteriaList().set(indexOpt, agencyCodeCriteria);
-                } else {
-                    agencyCodeCriteria = new SearchCriteriaEltDto();
-                    agencyCodeCriteria.setCriteria(ORIGINATING_AGENCY_ID_FIELD);
-                    agencyCodeCriteria.setValues(filteredAgenciesId);
-                    searchQuery.getCriteriaList().add(agencyCodeCriteria);
-                }
-                searchQuery.setCriteriaList(searchQuery.getCriteriaList().stream()
-                    .filter(criteria -> !ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria())).collect(
-                        Collectors.toList()));
+            List<SearchCriteriaEltDto> idCriteriaList = searchQuery.getCriteriaList().stream()
+                .filter(criteria -> ORIGINATING_AGENCY_ID_FIELD.equals(criteria.getCriteria()))
+                .collect(Collectors.toList());
+            SearchCriteriaEltDto idCriteria;
+            if (CollectionUtils.isEmpty(idCriteriaList)) {
+                idCriteria = new SearchCriteriaEltDto();
+                idCriteria.setCriteria(ORIGINATING_AGENCY_ID_FIELD);
+                idCriteria.setValues(filteredAgenciesId);
+                idCriteria.setOperator(ArchiveSearchConst.CriteriaOperators.EQ.name());
+                idCriteria.setCategory(ArchiveSearchConst.CriteriaCategory.FIELDS);
+                mergedCriteriaList.add(idCriteria);
+            } else {
+                idCriteriaList.stream().forEach(criteria -> {
+                        if (!CollectionUtils.isEmpty(criteria.getValues())) {
+                            filteredAgenciesId.addAll(criteria.getValues());
+                        }
+                        criteria.setValues(filteredAgenciesId);
+                        mergedCriteriaList.add(criteria);
+                    }
+                );
             }
+
+            searchQuery.setCriteriaList(mergedCriteriaList);
         }
     }
 

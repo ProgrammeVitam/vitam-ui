@@ -26,6 +26,7 @@
 
 package fr.gouv.vitamui.archives.search.rest;
 
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConst;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
@@ -86,25 +87,31 @@ public class ArchivesSearchController extends AbstractUiRestController {
     public VitamUIArchiveUnitResponseDto searchArchiveUnits(@RequestBody final SearchCriteriaDto searchQuery) {
         ArchiveUnitsDto archiveUnits = new ArchiveUnitsDto();
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        if (searchQuery != null && !CollectionUtils.isEmpty(searchQuery.getAppraisalMgtRulesCriteriaList())) {
-            final boolean hasSearchByRuleRole = getAuthenticatedUser().getProfileGroup().getProfiles().stream()
-                .filter(Objects::nonNull)
-                .flatMap(profileDto -> profileDto.getRoles().stream())
-                .anyMatch(role -> VitamuiRoles.ROLE_SEARCH_WITH_RULES.equals(role.getName()));
+        if (searchQuery != null && !CollectionUtils.isEmpty(searchQuery.getCriteriaList())) {
+            final boolean containsCriteriaByRuleRole = searchQuery.getCriteriaList().stream().anyMatch(
+                criteria -> ArchiveSearchConst.CriteriaCategory.APPRAISAL_RULE.equals(criteria.getCategory()));
+            if (containsCriteriaByRuleRole) {
+                final boolean hasSearchByRuleRole = getAuthenticatedUser().getProfileGroup().getProfiles().stream()
+                    .filter(Objects::nonNull)
+                    .flatMap(profileDto -> profileDto.getRoles().stream())
+                    .anyMatch(role -> VitamuiRoles.ROLE_SEARCH_WITH_RULES.equals(role.getName()));
 
-            if (!hasSearchByRuleRole) {
-                LOGGER.info("You are not authorized to make a search with DUA criteria");
-                throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
+                if (!hasSearchByRuleRole) {
+                    LOGGER.info("You are not authorized to make a search with DUA criteria");
+                    throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
+                }
             }
-        } else {
-            archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
         }
+        archiveUnits = archivesSearchService.findArchiveUnits(searchQuery, buildUiHttpContext());
+
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
         }
         return archiveResponseDtos;
+
     }
 
 

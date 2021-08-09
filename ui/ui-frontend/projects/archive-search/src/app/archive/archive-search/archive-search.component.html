@@ -1,179 +1,34 @@
 <div class="archive-search-section">
-  <form [formGroup]="form">
-    <div class="row">
-      <h5>{{ 'ARCHIVE_SEARCH.TITLE_SEARCH' | translate }}</h5>
+  <div class="row">
+    <h5>{{ 'ARCHIVE_SEARCH.TITLE_SEARCH' | translate }}</h5>
+  </div>
+
+  <div class="row justify-content-around">
+    <div class="col-8 form-control">
+      <title-and-description-criteria-search></title-and-description-criteria-search>
     </div>
-
-    <div class="row justify-content-around">
-      <div class="col-8 form-control">
-        <vitamui-common-editable-input
-          formControlName="archiveCriteria"
-          [validator]="form?.get('archiveCriteria')?.validator"
-          label="{{ 'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate }}"
-        >
-        </vitamui-common-editable-input>
-      </div>
-      <div class="col-1 form-control"></div>
-      <div class="col-3 form-control text-right">
-        <button type="button" class="btn primary" [disabled]="nbQueryCriteria === 0" (click)="submit()">
-          {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
-        </button>
-      </div>
+    <div class="col-1 form-control"></div>
+    <div class="col-3 form-control text-right">
+      <button type="button" class="btn primary" [disabled]="searchCriteriaKeys.length === 0" (click)="submit()">
+        {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
+      </button>
     </div>
-
-    <div class="area-criteria">
-      <ng-container *ngFor="let criteria of searchCriterias | keyvalue">
-        <ng-container *ngIf="criteria.value.key === 'NODE'">
-          <div id="chip">
-            <ul class="vitamui-search-criteria-list">
-              <li class="vitamui-search-criteria">
-                <ng-container
-                  *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last"
-                >
-                  <div
-                    class="vitamui-search-criteria-content"
-                    matTooltip="{{
-                      (criteriaValue.translated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.label | translate)
-                        : criteria.value.label) +
-                        ' : ' +
-                        criteriaValue.label
-                    }}"
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltipShowDelay]="300"
-                    [ngClass]="[
-                      isFirst ? 'left-arround' : 'left-not-arround',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                    class="button-content right-button"
-                  >
-                    <ng-container *ngIf="isFirst">
-                      <i class="vitamui-icon vitamui-icon-target vitamui-row-icon"></i>
-                      {{
-                        (criteriaValue.translated
-                          ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.label | translate)
-                          : criteria.value.label) +
-                          ' : ' +
-                          criteriaValue.label | truncate: 45
-                      }}
-                    </ng-container>
-                    <ng-container *ngIf="!isFirst">
-                      {{ criteriaValue.label | truncate: 45 }}
-                    </ng-container>
-                  </div>
-                  <div
-                    class="vitamui-remove-search-criteria"
-                    *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-                    (click)="removeCriteria(criteria.key, criteriaValue.value)"
-                    [ngClass]="[
-                      isLast ? 'right-arround' : 'right-button',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                  >
-                    <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
-                  </div>
-
-                  <div
-                    *ngIf="criteriaValue.status === 'IN_PROGRESS'"
-                    class="vitamui-remove-search-criteria"
-                    [ngClass]="[
-                      isLast ? 'right-arround' : 'right-button',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                  >
-                    <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
-                  </div>
-
-                  <div
-                    class="vitamui-or-criteria-content"
-                    *ngIf="!isLast"
-                    [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
-                    class="button-or left-not-arround right-button"
-                  >
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate }}
-                  </div>
-                </ng-container>
-              </li>
-            </ul>
-          </div>
+  </div>
+  <div class="row justify-content-around">
+    <div class="col-11">
+      <div class="area-criteria">
+        <ng-container *ngFor="let criteriaKey of searchCriteriaKeys">
+          <ng-container *ngIf="searchCriterias.get(criteriaKey) as criteriaVal">
+            <app-criteria-search
+              [criteriaKey]="criteriaKey"
+              [criteriaVal]="criteriaVal"
+              (criteriaRemoveEvent)="removeCriteriaEvent($event)"
+            ></app-criteria-search>
+          </ng-container>
         </ng-container>
-        <ng-container *ngIf="criteria.value.key !== 'NODE'">
-          <div id="chip">
-            <ul class="vitamui-search-criteria-list">
-              <li class="vitamui-search-criteria">
-                <ng-container
-                  *ngFor="let criteriaValue of criteria.value.values; let index = index; let isFirst = first; let isLast = last"
-                >
-                  <div
-                    class="vitamui-search-criteria-content"
-                    matTooltip="{{
-                      (criteriaValue.translated
-                        ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.label | translate)
-                        : criteria.value.label) +
-                        ' : ' +
-                        criteriaValue.label
-                    }}"
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltipShowDelay]="300"
-                    [ngClass]="[
-                      isFirst ? 'left-arround' : 'left-not-arround',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                    class="button-content right-button"
-                  >
-                    <ng-container *ngIf="isFirst">
-                      {{
-                        (criteriaValue.translated
-                          ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.' + criteria.value.label | translate)
-                          : criteria.value.label) +
-                          ' : ' +
-                          criteriaValue.label | truncate: 45
-                      }}
-                    </ng-container>
-                    <ng-container *ngIf="!isFirst">
-                      {{ criteriaValue.label | truncate: 45 }}
-                    </ng-container>
-                  </div>
-                  <div
-                    class="vitamui-remove-search-criteria"
-                    *ngIf="criteriaValue.status !== 'IN_PROGRESS'"
-                    (click)="removeCriteria(criteria.key, criteriaValue.value)"
-                    [ngClass]="[
-                      isLast ? 'right-arround' : 'right-button',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                  >
-                    <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
-                  </div>
-
-                  <div
-                    *ngIf="criteriaValue.status === 'IN_PROGRESS'"
-                    class="vitamui-remove-search-criteria"
-                    [ngClass]="[
-                      isLast ? 'right-arround' : 'right-button',
-                      criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button'
-                    ]"
-                  >
-                    <i class="vitamui-icon vitamui-icon-loop2 vitamui-row-icon"></i>
-                  </div>
-
-                  <div
-                    class="vitamui-or-criteria-content"
-                    *ngIf="!isLast"
-                    [ngClass]="[criteriaValue.status === 'INCLUDED' ? 'after-search-launched-button' : 'before-search-launched-button']"
-                    class="button-or left-not-arround right-button"
-                  >
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_OR' | translate }}
-                  </div>
-                </ng-container>
-              </li>
-            </ul>
-          </div>
-        </ng-container>
-      </ng-container>
+      </div>
     </div>
-
-    <div class="row area-criteria">
+    <div class="col-1">
       <div class="d-flex justify-content-end button-space">
         <button [matMenuTriggerFor]="menu" class="mat-boutton">
           <button type="button" class="circle editable-field-cancel clickable">
@@ -193,210 +48,95 @@
           </button>
           <app-search-criteria-list (storedSearchCriteriaHistory)="showStoredSearchCriteria($event)"> </app-search-criteria-list>
         </mat-menu>
-      </div>
-
-      <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete button-space">
-        <button class="mat-boutton">
-          <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
-            <i class="material-icons primary-save-icon">delete</i>
+        <div *ngIf="searchCriterias && searchCriterias.size > 0" class="d-flex justify-content-end div-btn-delete">
+          <button class="mat-boutton">
+            <button type="button" class="circle editable-field-cancel clickable" (click)="clearCriterias()">
+              <i class="material-icons primary-save-icon">delete</i>
+            </button>
           </button>
-        </button>
-      </div>
-
-      <div class="row justify-content-around">
-        <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel()">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
-      </div>
-    </div>
-
-    <div class="card-criteria" *ngIf="showCriteriaPanel">
-      <div class="row">
-        <div class="col-11">
-          <div class="row justify-content-around">
-            <div class="col-11 form-control">
-              <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}</h5>
-            </div>
-          </div>
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <vitamui-common-editable-input
-                formControlName="title"
-                [validator]="form?.get('title')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-4 form-control">
-              <div class="vitamui-input" (click)="pickerBegin.open()">
-                <span *ngIf="!form.get('beginDt').value; else showBeginDt" (click)="pickerBegin.open()" class="search-date-label">{{
-                  'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE' | translate
-                }}</span>
-                <ng-template #showBeginDt
-                  ><span (click)="pickerBegin.open()">{{ form.get('beginDt').value | date: 'dd/MM/yyyy' }} </span>
-                </ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerBegin" formControlName="beginDt" [min]="form.get('beginDt').value" />
-                <mat-datepicker #pickerBegin></mat-datepicker>
-              </div>
-            </div>
-          </div>
-
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <vitamui-common-editable-input
-                formControlName="description"
-                [validator]="form?.get('description')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-4 form-control">
-              <div class="vitamui-input" (click)="pickerEnd.open()">
-                <span *ngIf="!form.get('endDt').value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
-                  'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE' | translate
-                }}</span>
-                <ng-template #showEndDt
-                  ><span (click)="pickerEnd.open()">{{ form.get('endDt').value | date: 'dd/MM/yyyy' }} </span>
-                </ng-template>
-                <input class="hidden" size="0" [matDatepicker]="pickerEnd" formControlName="endDt" [min]="form.get('endDt').value" />
-                <mat-datepicker #pickerEnd></mat-datepicker>
-              </div>
-            </div>
-          </div>
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <vitamui-common-editable-input
-                formControlName="guid"
-                [validator]="form?.get('guid')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-4 form-control"></div>
-          </div>
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <vitamui-common-editable-input
-                formControlName="uaid"
-                [validator]="form?.get('uaid')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-4 form-control"></div>
-          </div>
-
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}</h5>
-            </div>
-            <div class="col-4 form-control">
-              <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}</h5>
-            </div>
-          </div>
-
-          <div class="row justify-content-around">
-            <div class="col-3 form-control">
-              <vitamui-common-editable-input
-                formControlName="serviceProdCode"
-                [validator]="form?.get('serviceProdCode')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-2 form-control"></div>
-            <div class="col-4 form-control">
-              <mat-form-field class="vitamui-mat-select search-input-criteria">
-                <mat-select
-                  formControlName="otherCriteria"
-                  style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
-                  placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}"
-                  (valueChange)="onSelectOtherCriteria()"
-                >
-                  <mat-option value="" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' | translate }}
-                  </mat-option>
-                  <ng-container *ngFor="let ontology of this.ontologies">
-                    <mat-option
-                      style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
-                      value="{{ ontology.Value }}"
-                      matTooltip="{{ ontology?.Value }}"
-                      matTooltipClass="vitamui-tooltip"
-                      [matTooltipShowDelay]="300"
-                      >{{ ontology.Label }}
-                    </mat-option>
-                  </ng-container>
-                </mat-select>
-                <div class="select-arrow">
-                  <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
-                </div>
-                <div class="select-arrow">
-                  <i class="material-icons">keyboard_arrow_up</i>
-                  <i class="material-icons">keyboard_arrow_down</i>
-                </div>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row justify-content-around">
-            <div class="col-6 form-control">
-              <vitamui-common-editable-input
-                formControlName="serviceProdLabel"
-                [validator]="form?.get('serviceProdLabel')?.validator"
-                label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate }}"
-              >
-              </vitamui-common-editable-input>
-            </div>
-            <div class="col-4 form-control">
-              <vitamui-common-editable-input
-                formControlName="otherCriteriaValue"
-                *ngIf="
-                  otherCriteriaValueEnabled &&
-                  (otherCriteriaValueType === 'KEYWORD' ||
-                    otherCriteriaValueType === 'TEXT' ||
-                    otherCriteriaValueType === 'LONG' ||
-                    otherCriteriaValueType === 'DOUBLE' ||
-                    otherCriteriaValueType === 'BOOLEAN')
-                "
-                [validator]="form?.get('otherCriteriaValue')?.validator"
-                label="{{ selectedValueOntolonogy }}"
-              >
-              </vitamui-common-editable-input>
-
-              <div
-                class="vitamui-input"
-                (click)="pickerOtherCriteria.open()"
-                *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE'"
-              >
-                <span
-                  *ngIf="!form.get('otherCriteriaValue').value; else showOtherCriteria"
-                  (click)="pickerOtherCriteria.open()"
-                  class="search-date-label"
-                  >{{ selectedValueOntolonogy }}</span
-                >
-                <ng-template #showOtherCriteria
-                  ><span (click)="pickerOtherCriteria.open()">{{ form.get('otherCriteriaValue').value | date: 'dd/MM/yyyy' }} </span>
-                </ng-template>
-                <input
-                  class="hidden"
-                  size="0"
-                  [matDatepicker]="pickerOtherCriteria"
-                  formControlName="otherCriteriaValue"
-                  [min]="form.get('otherCriteriaValue').value"
-                />
-                <mat-datepicker #pickerOtherCriteria></mat-datepicker>
-              </div>
-            </div>
-          </div>
-
-          <div class="row justify-content-center hide-area-search">
-            <div class="col-7 form-control"></div>
-            <div class="col-4 form-control">
-              <a class="hide-ink" (click)="showHidePanel()">{{ 'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate }}</a>
-            </div>
-          </div>
-          <div class="row justify-content-center"></div>
         </div>
       </div>
     </div>
-  </form>
+  </div>
+
+  <div class="row" *ngIf="!showCriteriaPanel">
+    <a class="hide-ink" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
+  </div>
+
+  <div [hidden]="!showCriteriaPanel">
+    <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
+      <mat-tab label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
+        <div class="card-criteria">
+          <simple-criteria-search></simple-criteria-search>
+        </div>
+      </mat-tab>
+      <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
+        <ng-template mat-tab-label>
+          <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.' + category.name | translate }} </span>
+          <button class="mat-boutton clickable" (click)="removeCriteriaCategory(category.name)">
+            <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
+          </button>
+        </ng-template>
+        <ng-container *ngIf="category.name === 'DUA'">
+          <div class="card-criteria">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+
+            <apparaisal-rule-search></apparaisal-rule-search>
+          </div>
+        </ng-container>
+      </mat-tab>
+
+      <mat-tab disabled>
+        <ng-template mat-tab-label>
+          <button [matMenuTriggerFor]="menuTabs" class="mat-boutton clickable">
+            {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ADD' | translate }}
+            <i class="vitamui-icon vitamui-icon-plus vitamui-row-icon"></i>
+          </button>
+        </ng-template>
+      </mat-tab>
+
+      <mat-menu #menuTabs="matMenu" class="my-menu">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUA')" [disabled]="isCategoryAdded('DUA')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUA' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('COMMUNICABILITY')"
+          [disabled]="isCategoryAdded('COMMUNICABILITY')"
+        >
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.COMMUNICABILITY' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DIFFUSION')" [disabled]="isCategoryAdded('DIFFUSION')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
+        </button>
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('CLASSIFICATION')"
+          [disabled]="isCategoryAdded('CLASSIFICATION')"
+        >
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
+        </button>
+      </mat-menu>
+    </mat-tab-group>
+  </div>
+  <div class="row justify-content-end text-on-right-side" *ngIf="showCriteriaPanel">
+    <a class="hide-ink" (click)="showHidePanel(false)">{{ 'ARCHIVE_SEARCH.HIDE_SEARCH_CRITERIA' | translate }}</a>
+  </div>
 </div>
 
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">

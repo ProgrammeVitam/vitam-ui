@@ -42,7 +42,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
-
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'projects/archive-search/src/environments/environment';
@@ -50,8 +49,13 @@ import { of } from 'rxjs';
 import { InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
-import { SearchCriteria, SearchCriteriaValue, SearchCriteriaStatusEnum, PagedResult } from '../models/search.criteria';
-
+import {
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+} from '../models/search.criteria';
 import { ArchiveSearchComponent } from './archive-search.component';
 
 @Pipe({ name: 'truncate' })
@@ -63,15 +67,14 @@ class MockTruncatePipe implements PipeTransform {
 describe('ArchiveSearchComponent', () => {
   let component: ArchiveSearchComponent;
   let fixture: ComponentFixture<ArchiveSearchComponent>;
-  let pagedResult: PagedResult = {'pageNumbers':1, 'facets': [], 'results':[], 'totalResults': 1};
+  let pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
 
   const archiveServiceStub = {
-
     loadFilingHoldingSchemeTree: () => of([]),
 
     getOntologiesFromJson: () => of([]),
 
-    searchArchiveUnitsByCriteria: () => of(pagedResult)
+    searchArchiveUnitsByCriteria: () => of(pagedResult),
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -82,23 +85,22 @@ describe('ArchiveSearchComponent', () => {
         MatSidenavModule,
         InjectorModule,
         LoggerModule.forRoot(),
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      declarations: [
-        ArchiveSearchComponent,
-        MockTruncatePipe
-      ],
+      declarations: [ArchiveSearchComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
         ArchiveSharedDataServiceService,
-        DatePipe ,
+        DatePipe,
         { provide: ArchiveService, useValue: archiveServiceStub },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) } },
-        { provide: environment, useValue: environment }
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+        },
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -111,64 +113,66 @@ describe('ArchiveSearchComponent', () => {
     expect(component).toBeTruthy();
   });
 
-
-
-
   describe('Submit-Click', () => {
-    let searchCriteria: SearchCriteria =
-      {'key': 'Title',
-      'label': 'Titre1',
-      'values':
-        [
-          {
-            'value': 'Titre 1',
-            'label': 'Titre 1',
-            'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-            'valueShown': true,
-            'translated' : true
-          }
-        ]
+    let searchCriteria: SearchCriteria = {
+      key: 'Title',
+      label: 'Titre1',
+      values: [
+        {
+          value: 'Titre 1',
+          label: 'Titre 1',
+          status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+          valueShown: true,
+          valueTranslated: false,
+          keyTranslated: false,
+        },
+      ],
+      category: SearchCriteriaTypeEnum.FIELDS,
+      operator: 'EQ',
     };
 
     let searchCriteriaValues: SearchCriteriaValue[] = [
       {
-        'value': 'Titre 1',
-        'label': 'Titre 1',
-        'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-        'valueShown': true,
-        'translated' : true
+        value: 'Titre 1',
+        label: 'Titre 1',
+        status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+        valueTranslated: false,
+        keyTranslated: false,
       },
       {
-        'value': 'Titre2',
-        'label': 'Titre 2',
-        'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-        'valueShown': true,
-        'translated' : true
-      }
+        value: 'Titre2',
+        label: 'Titre 2',
+        status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+        valueShown: true,
+        valueTranslated: false,
+        keyTranslated: false,
+      },
     ];
 
     searchCriteriaValues.sort(function (a: any, b: any) {
       var valueA = a.value;
       var valueB = b.value;
-      return (valueA < valueB) ? -1 : (valueA > valueB) ? 1 : 0;
+      return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
     });
-
 
     beforeEach(() => {
       // Given
       let currentCriteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
-      currentCriteria.set("Title", {
-        'key':'Title',
-        'label':'Titre2',
-        'values':
-          [
-            {'value':'Titre2',
-            'label':'Titre 2',
-            'status': SearchCriteriaStatusEnum.NOT_INCLUDED,
-            'valueShown': true,
-            'translated' : true
-          }
-          ]
+      currentCriteria.set('Title', {
+        key: 'Title',
+        label: 'Titre2',
+        values: [
+          {
+            value: 'Titre2',
+            label: 'Titre 2',
+            status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+            valueShown: true,
+            valueTranslated: false,
+            keyTranslated: false,
+          },
+        ],
+        category: SearchCriteriaTypeEnum.FIELDS,
+        operator: 'EQ',
       });
 
       component.searchCriterias = currentCriteria;
@@ -177,7 +181,16 @@ describe('ArchiveSearchComponent', () => {
     describe('addCriteria', () => {
       it('should add the new criteria to the criteria list having same key', () => {
         // When: add a new criteria value
-        component.addCriteria(searchCriteria.key, searchCriteria.label, searchCriteria.values[0].value, searchCriteria.values[0].label, true);
+        component.addCriteria(
+          searchCriteria.key,
+          searchCriteria.label,
+          searchCriteria.values[0].value,
+          searchCriteria.values[0].label,
+          true,
+          'EQ',
+          SearchCriteriaTypeEnum.FIELDS,
+          false
+        );
 
         // Then: the new criteria should be added to the criteria list
         expect(component.searchCriterias.size).toEqual(1);
@@ -185,18 +198,17 @@ describe('ArchiveSearchComponent', () => {
         newCriteria.sort(function (a: any, b: any) {
           var valueA = a.value;
           var valueB = b.value;
-          return (valueA < valueB) ? -1 : (valueA > valueB) ? 1 : 0;
+          return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
         });
 
         expect(newCriteria).toEqual(searchCriteriaValues);
       });
-
     });
     describe('submit', () => {
       it('should check all criteria as included when submit', () => {
         component.submit();
-        component.searchCriterias.forEach(criteria => {
-          criteria.values.forEach(criteriaValue => {
+        component.searchCriterias.forEach((criteria) => {
+          criteria.values.forEach((criteriaValue) => {
             expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.INCLUDED);
           });
         });
@@ -209,10 +221,6 @@ describe('ArchiveSearchComponent', () => {
         expect(component.nbQueryCriteria).toEqual(0);
         expect(component.included).toBeFalsy();
       });
-
     });
   });
-
 });
-
-

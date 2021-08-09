@@ -26,18 +26,16 @@
 package fr.gouv.vitamui.archives.search.common.dsl;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
-import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConst;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.springframework.util.StringUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,189 +45,72 @@ import java.util.Set;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.missing;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
 
-    /*
-    Operators for criteria
-     */
-    private enum CRITERIA_OPERATORS {
-        EQ, MATCH, LT, GT, LE, GE
-    }
-
-
-    private static final int DEFAULT_DEPTH = 10;
-    private static final int FACET_SIZE_MILTIPLIER = 100;
-
-    /* Query fields */
-    private static final String IDENTIFIER = "Identifier";
-    private static final String UNIT_TYPE = "#unitType";
-    private static final String TITLE = "Title";
-    private static final String DESCRIPTION = "Description";
-    private static final String START_DATE = "StartDate";
-    private static final String PRODUCER_SERVICE = "#originating_agency";
-    private static final String GUID = "#id";
-    private static final String UNITS_UPS = "#allunitups";
-    private static final String END_DATE = "EndDate";
-    private static final String TITLE_OR_DESCRIPTION = "titleAndDescription";
-
-    /* Query fields */
-    private static final String ID = "#id";
-    private static final String NAME = "Name";
-    private static final String SHORT_NAME = "ShortName";
-    private static final String PUID = "PUID";
-    private static final String EV_TYPE_PROC = "evTypeProc";
-    private static final String STATUS = "Status";
-    private static final String EV_TYPE = "evType";
-    private static final String EV_DATE_TIME_START = "evDateTime_Start";
-    private static final String EV_DATE_TIME_END = "evDateTime_End";
-
-    /**
-     * create a valid VITAM DSL Query from a map of criteria
-     *
-     * @param searchCriteriaMap the input criteria. Should match pattern Map(FieldName, SearchValue)
-     * @return The JsonNode required by VITAM external API for a DSL query
-     * @throws InvalidParseOperationException
-     */
-    public static JsonNode createQueryDSL(List<String> unitTypes, List<String> nodes,
-        Map<String, List<String>> searchCriteriaMap,
-        final Integer pageNumber,
-        final Integer size, final Optional<String> orderBy, final Optional<DirectionDto> direction)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        boolean isValid = true;
-        final BooleanQuery query = and();
-        final SelectMultiQuery select = new SelectMultiQuery();
-        //Handle roots
-        if (nodes != null && !nodes.isEmpty()) {
-            select.addRoots(nodes.toArray(new String[nodes.size()]));
-            query.setDepthLimit(DEFAULT_DEPTH);
+    public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConst.CriteriaOperators operator,
+        String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
+        if (searchKey == null || "".equals(searchKey.trim())) {
+            throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
-
-        select.addFacets(
-            FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, (nodes.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
-
-        if (unitTypes == null || unitTypes.isEmpty()) {
-            LOGGER.error("Error on validation of criteria , units types is mandatory ");
-            throw new InvalidParseOperationException("Error on validation of criteria,  units types is mandatory ");
-        }
-        addParameterCriteria(query, CRITERIA_OPERATORS.EQ, UNIT_TYPE, unitTypes);
-        // Manage Filters
-        if (orderBy.isPresent()) {
-            if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
-                select.addOrderByDescFilter(orderBy.get());
-            } else {
-                select.addOrderByAscFilter(orderBy.get());
-            }
-        }
-        select.setLimitFilter(pageNumber * size, size);
-
-        // Manage Query
-        if (!searchCriteriaMap.isEmpty()) {
-            Set<Map.Entry<String, List<String>>> entrySet = searchCriteriaMap.entrySet();
-
-            for (final Map.Entry<String, List<String>> entry : entrySet) {
-                final String searchKey = entry.getKey();
-                if (searchKey.startsWith("_")) {
-                    LOGGER.error("Criteria with _ prefix is forbidden : {} ", searchKey);
-                    throw new InvalidParseOperationException("Criteria with _ prefix is forbidden : " + searchKey);
-                }
-                switch (searchKey) {
-                    case GUID:
-                    case IDENTIFIER:
-                    case PRODUCER_SERVICE:
-                    case TITLE:
-                    case DESCRIPTION:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
-                        break;
-                    case START_DATE:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.GE, searchKey, entry.getValue());
-                        break;
-                    case END_DATE:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.LE, searchKey, entry.getValue());
-                        break;
-                    case TITLE_OR_DESCRIPTION:
-                        query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
-                        break;
-                    default:
-                        LOGGER.info("adding other field from not listed fields for key: {},", searchKey);
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
-                        break;
-                }
-            }
-            if (!isValid) {
-                LOGGER.error("Error on validation of criteria ");
-                throw new InvalidParseOperationException("Error on validation of criteria ");
-            }
-        }
-        select.setQuery(query);
-        LOGGER.info("Final query: {}", select.getFinalSelect().toPrettyString());
-        return select.getFinalSelect();
-    }
-
-    private static boolean addParameterCriteria(BooleanQuery query, CRITERIA_OPERATORS operator, String searchKey,
-        final List<String> searchValues)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        boolean isValid = true;
-        if (StringUtils.isEmpty(searchValues)) {
-            isValid = false;
-        } else {
-            if (searchValues.size() > 1) {
-                BooleanQuery subQueryOr = or();
-                //The case of multiple values , => Or operator
-                for (String value : searchValues) {
-                    subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
-                }
-                query.add(subQueryOr);
-            } else {
-                //the case of one value
-                query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
-            }
-        }
-        return isValid;
-    }
-
-
-    private static Query buildTitleAndDescriptionQuery(final List<String> searchValues, CRITERIA_OPERATORS operator)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        BooleanQuery subQueryAnd = and();
-        if (searchValues != null && !searchValues.isEmpty()) {
+        if (CollectionUtils.isEmpty(searchValues)) {
+            //the case of empty list
+            query.add(buildSubQueryByOperator(searchKey, null, operator));
+        } else if (searchValues.size() > 1) {
+            BooleanQuery subQueryOr = or();
+            //The case of multiple values , => Or operator
             for (String value : searchValues) {
-                BooleanQuery subQueryOr = or();
-                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION, value, operator));
-                subQueryOr.add(buildSubQueryByOperator(TITLE, value, operator));
-                subQueryAnd.add(subQueryOr);
+                subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
             }
+            query.add(subQueryOr);
+        } else if (searchValues.size() == 1) {
+            //the case of one value
+            query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
         }
-        return subQueryAnd;
     }
 
-    private static Query buildSubQueryByOperator(String searchKey, String value, CRITERIA_OPERATORS operator)
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        Query criteriaSubQuery = eq(searchKey, value);
+
+    public static Query buildSubQueryByOperator(String searchKey, String value,
+        ArchiveSearchConst.CriteriaOperators operator)
+        throws InvalidCreateOperationException {
+        LOGGER.debug("buildSubQueryByOperator  searchKey{}  value {} operator {} ", searchKey, value, operator);
+        Query criteriaSubQuery;
         switch (operator) {
             case MATCH:
                 criteriaSubQuery = match(searchKey, value);
                 break;
-            case GE:
+            case GTE:
                 criteriaSubQuery = gte(searchKey, value);
                 break;
             case GT:
                 criteriaSubQuery = gt(searchKey, value);
                 break;
-            case LE:
+            case LTE:
                 criteriaSubQuery = lte(searchKey, value);
                 break;
             case LT:
                 criteriaSubQuery = lt(searchKey, value);
+                break;
+            case NOT_EQ:
+                criteriaSubQuery = ne(searchKey, value);
+                break;
+            case EXISTS:
+                criteriaSubQuery = exists(searchKey);
+                break;
+            case MISSING:
+                criteriaSubQuery = missing(searchKey);
                 break;
             default:
                 criteriaSubQuery = eq(searchKey, value);
@@ -275,12 +156,12 @@ public class VitamQueryHelper {
                 final String searchKey = entry.getKey();
 
                 switch (searchKey) {
-                    case NAME:
-                    case SHORT_NAME:
-                    case IDENTIFIER:
-                    case ID:
-                    case PUID:
-                    case EV_TYPE_PROC:
+                    case ArchiveSearchConst.NAME:
+                    case ArchiveSearchConst.SHORT_NAME:
+                    case ArchiveSearchConst.IDENTIFIER:
+                    case ArchiveSearchConst.ID:
+                    case ArchiveSearchConst.PUID:
+                    case ArchiveSearchConst.EV_TYPE_PROC:
                         if (entry.getValue() instanceof ArrayList) {
                             final List<String> stringsValues = (ArrayList) entry.getValue();
                             for (String elt : stringsValues) {
@@ -295,23 +176,23 @@ public class VitamQueryHelper {
                         }
 
                         break;
-                    case EV_TYPE:
+                    case ArchiveSearchConst.EV_TYPE:
                         // Special case EvType can be String or String[]
                         if (entry.getValue() instanceof String) {
                             final String evType = (String) entry.getValue();
                             query.add(eq(searchKey, evType));
                             break;
                         }
-                    case STATUS:
+                    case ArchiveSearchConst.STATUS:
                         // in list of string operation
                         final List<String> stringValues = (ArrayList<String>) entry.getValue();
                         query.add(in(searchKey, stringValues.toArray(new String[] {})));
                         break;
-                    case EV_DATE_TIME_START:
-                        query.add(gt("evDateTime", (String) entry.getValue()));
+                    case ArchiveSearchConst.EV_DATE_TIME_START:
+                        query.add(gt(ArchiveSearchConst.EV_DATE_TIME, (String) entry.getValue()));
                         break;
-                    case EV_DATE_TIME_END:
-                        query.add(lt("evDateTime", (String) entry.getValue()));
+                    case ArchiveSearchConst.EV_DATE_TIME_END:
+                        query.add(lt(ArchiveSearchConst.EV_DATE_TIME, (String) entry.getValue()));
                         break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);

@@ -12,6 +12,7 @@
     "NO_MORE_RESULTS": "No more results",
     "SEARCH_CRITERIA_FILTER": {
       "TITLE": "Search filters",
+      "DUA_TITLE": "Durée d'utilité administrative",         
       "OTHER_FILED_SELECTION": "Select another criteria",
       "FIELDS": {
         "ID": "ID",
@@ -27,7 +28,18 @@
         "SP_CODE": "Originating agency code",
         "SP_LABEL": "Originating agency name",
         "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria"
+        "SELECT_OTHER_FIELD": "Select another criteria",
+        "TITLE_DUA": "Intitulé",
+        "ID_DUA": "Identifiant",
+        "START_DATE_DUA": "Date de début",
+        "END_DATE_DUA": "Date de fin",
+        "ORIGIN": {
+          "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE":"Hérite d'au moins une règle DUA",
+          "HAS_AT_LEAST_ONE_APPRAISAL_RULE":"Porte au moins une règle DUA",
+          "HAS_NO_APPRAISAL_RULE":"N'a pas de règle DUA définie ",
+          "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE":"Est en attente de recalcul de règle",
+          "SELECT_ALL_APPRAISAL_RULE":"Sélectionne tout"
+        }
       }
     },
     "ARCHIVE_UNIT": {
@@ -106,6 +118,16 @@
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "OBJECT_TYPE": "Saved Criterias Searches"
+    },
+    "CRITERIA_CATEGORY":{
+      "ADD":"Add filters",
+      "DUA":"Durée d’utilité administrative",
+      "DUC":"DUC",
+      "COMMUNICABILITY":"Communicabilité",
+      "REUSING":"Réutilisation",
+      "DIFFUSION":"Diffusion",
+      "CLASSIFICATION":"Classification",
+      "GEL":"Gel"
     }
   }
 }

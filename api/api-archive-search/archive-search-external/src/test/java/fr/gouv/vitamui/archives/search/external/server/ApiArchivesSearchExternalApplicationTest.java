@@ -28,17 +28,17 @@ package fr.gouv.vitamui.archives.search.external.server;
 
 
 import fr.gouv.vitamui.archives.search.external.server.config.ApiArchiveExternalApplicationProperties;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(properties = {"spring.config.name=archive-search-external-application"})
 public class ApiArchivesSearchExternalApplicationTest {
@@ -52,11 +52,11 @@ public class ApiArchivesSearchExternalApplicationTest {
     @Test
     public void testArchiveContextLoads() {
 
-        Assert.assertNotNull(env);
-        Assert.assertEquals(env.getProperty("spring.config.name"), "archive-search-external-application");
-        Assert.assertNotNull(apiArchiveExternalApplicationProperties);
-        Assert.assertNotNull(apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
-        Assert.assertNotNull(apiArchiveExternalApplicationProperties.getIamInternalClient());
-        Assert.assertNotNull(apiArchiveExternalApplicationProperties.getSecurityClient());
+        Assertions.assertNotNull(env);
+        Assertions.assertEquals(env.getProperty("spring.config.name"), "archive-search-external-application");
+        Assertions.assertNotNull(apiArchiveExternalApplicationProperties);
+        Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
+        Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getIamInternalClient());
+        Assertions.assertNotNull(apiArchiveExternalApplicationProperties.getSecurityClient());
     }
 }

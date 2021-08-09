@@ -1,0 +1,199 @@
+<div class="archive-search-section">
+  <form [formGroup]="simpleCriteriaForm">
+    <div class="row">
+      <div class="col-11">
+        <div class="row justify-content-around">
+          <div class="col-11 form-control">
+            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}</h5>
+          </div>
+        </div>
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="title"
+              [validator]="simpleCriteriaForm?.get('title')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-4 form-control">
+            <div class="vitamui-input" (click)="pickerBegin.open()">
+              <span
+                *ngIf="!simpleCriteriaForm.get('beginDt').value; else showBeginDt"
+                (click)="pickerBegin.open()"
+                class="search-date-label"
+                >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE' | translate }}</span
+              >
+              <ng-template #showBeginDt
+                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | date: 'dd/MM/yyyy' }} </span>
+              </ng-template>
+              <input
+                class="hidden"
+                size="0"
+                [matDatepicker]="pickerBegin"
+                formControlName="beginDt"
+                [min]="simpleCriteriaForm.get('beginDt').value"
+              />
+              <mat-datepicker #pickerBegin></mat-datepicker>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="description"
+              [validator]="simpleCriteriaForm?.get('description')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-4 form-control">
+            <div class="vitamui-input" (click)="pickerEnd.open()">
+              <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
+                'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE' | translate
+              }}</span>
+              <ng-template #showEndDt
+                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | date: 'dd/MM/yyyy' }} </span>
+              </ng-template>
+              <input
+                class="hidden"
+                size="0"
+                [matDatepicker]="pickerEnd"
+                formControlName="endDt"
+                [min]="simpleCriteriaForm.get('endDt').value"
+              />
+              <mat-datepicker #pickerEnd></mat-datepicker>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="guid"
+              [validator]="simpleCriteriaForm?.get('guid')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-4 form-control"></div>
+        </div>
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="uaid"
+              [validator]="simpleCriteriaForm?.get('uaid')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-4 form-control"></div>
+        </div>
+
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}</h5>
+          </div>
+          <div class="col-4 form-control">
+            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}</h5>
+          </div>
+        </div>
+
+        <div class="row justify-content-around">
+          <div class="col-3 form-control">
+            <vitamui-common-editable-input
+              formControlName="serviceProdCode"
+              [validator]="simpleCriteriaForm?.get('serviceProdCode')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-2 form-control"></div>
+          <div class="col-4 form-control">
+            <mat-form-field class="vitamui-mat-select search-input-criteria">
+              <mat-select
+                formControlName="otherCriteria"
+                style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
+                placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}"
+                (valueChange)="onSelectOtherCriteria()"
+              >
+                <mat-option value="" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)">
+                  {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' | translate }}
+                </mat-option>
+                <ng-container *ngFor="let ontology of this.ontologies">
+                  <mat-option
+                    style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary)"
+                    value="{{ ontology.Value }}"
+                    matTooltip="{{ ontology?.Value }}"
+                    matTooltipClass="vitamui-tooltip"
+                    [matTooltipShowDelay]="300"
+                    >{{ ontology.Label }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+              <div class="select-arrow">
+                <i class="vitamui-icon vitamui-icon-search vitamui-row-icon"></i>
+              </div>
+              <div class="select-arrow">
+                <i class="material-icons">keyboard_arrow_up</i>
+                <i class="material-icons">keyboard_arrow_down</i>
+              </div>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row justify-content-around">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="serviceProdLabel"
+              [validator]="simpleCriteriaForm?.get('serviceProdLabel')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+          <div class="col-4 form-control">
+            <vitamui-common-editable-input
+              formControlName="otherCriteriaValue"
+              *ngIf="
+                otherCriteriaValueEnabled &&
+                (otherCriteriaValueType === 'KEYWORD' ||
+                  otherCriteriaValueType === 'TEXT' ||
+                  otherCriteriaValueType === 'LONG' ||
+                  otherCriteriaValueType === 'DOUBLE' ||
+                  otherCriteriaValueType === 'BOOLEAN')
+              "
+              [validator]="simpleCriteriaForm?.get('otherCriteriaValue')?.validator"
+              label="{{ selectedValueOntolonogy }}"
+            >
+            </vitamui-common-editable-input>
+
+            <div
+              class="vitamui-input"
+              (click)="pickerOtherCriteria.open()"
+              *ngIf="otherCriteriaValueEnabled && otherCriteriaValueType === 'DATE'"
+            >
+              <span
+                *ngIf="!simpleCriteriaForm.get('otherCriteriaValue').value; else showOtherCriteria"
+                (click)="pickerOtherCriteria.open()"
+                class="search-date-label"
+                >{{ selectedValueOntolonogy }}</span
+              >
+              <ng-template #showOtherCriteria
+                ><span (click)="pickerOtherCriteria.open()"
+                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | date: 'dd/MM/yyyy' }}
+                </span>
+              </ng-template>
+              <input
+                class="hidden"
+                size="0"
+                [matDatepicker]="pickerOtherCriteria"
+                formControlName="otherCriteriaValue"
+                [min]="simpleCriteriaForm.get('otherCriteriaValue').value"
+              />
+              <mat-datepicker #pickerOtherCriteria></mat-datepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

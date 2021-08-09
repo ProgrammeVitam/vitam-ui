@@ -35,53 +35,88 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 export enum SearchCriteriaStatusEnum {
-    NOT_INCLUDED ='NOT_INCLUDED',
-    INCLUDED= 'INCLUDED',
-    IN_PROGRESS = 'IN_PROGRESS'
-  }
+  NOT_INCLUDED = 'NOT_INCLUDED',
+  INCLUDED = 'INCLUDED',
+  IN_PROGRESS = 'IN_PROGRESS',
+}
+
+export enum SearchCriteriaTypeEnum {
+  FIELDS,
+  APPRAISAL_RULE,
+  ACCESS_RULE,
+  CLASSIFICATION_RULE,
+  DISSEMINATION_RULE,
+  REUSE_RULE,
+  STORAGE_RULE,
+  HOLD_RULE,
+  NODES,
+}
 
 export interface SearchCriteriaValue {
-    value?: string;
-    label?: string;
-    valueShown?: boolean;
-    status: SearchCriteriaStatusEnum;
-    translated: boolean;
-};
+  value?: string;
+  label?: string;
+  valueShown?: boolean;
+  status: SearchCriteriaStatusEnum;
+  keyTranslated: boolean;
+  valueTranslated: boolean;
+}
+
+export interface SearchCriteriaAddAction {
+  keyElt: string;
+  keyLabel: string;
+  valueElt: string;
+  labelElt: string;
+  keyTranslated: boolean;
+  operator: string;
+  category: SearchCriteriaTypeEnum;
+  valueTranslated: boolean;
+}
+
+export interface SearchCriteriaRemoveAction {
+  keyElt: string;
+  valueElt: string;
+}
 
 export interface SearchCriteria {
-    key: string;
-    label: string;
-    values?: SearchCriteriaValue[];
-};
-
-
-export interface SearchCriteriaEltDto{
-    criteria: string;
-    values: string[];
-}
-export interface SearchCriteriaDto{
-    criteriaList: SearchCriteriaEltDto[];
-    pageNumber: number;
-    size: number;
-    nodes?: String[];
-    sortingCriteria?: SearchCriteriaSort;
-    language?: string;
+  key: string;
+  label: string;
+  operator: string;
+  category: SearchCriteriaTypeEnum;
+  values?: SearchCriteriaValue[];
 }
 
+export interface SearchCriteriaEltDto {
+  criteria: string;
+  operator: string;
+  category: String;
+  values: string[];
+}
+export interface SearchCriteriaDto {
+  criteriaList: SearchCriteriaEltDto[];
+  pageNumber: number;
+  size: number;
+  sortingCriteria?: SearchCriteriaSort;
+  language?: string;
+}
 
 export interface PagedResult {
-    results: any[];
-    pageNumbers: number;    
-    totalResults: number;
-    facets?: ResultFacet[];
+  results: any[];
+  pageNumbers: number;
+  totalResults: number;
+  facets?: ResultFacet[];
 }
 
 export interface ResultFacet {
-    node: string;
-    count: number;
+  node: string;
+  count: number;
 }
 
 export interface SearchCriteriaSort {
-    criteria: string;
-    sorting: "ASC"|"DESC";
+  criteria: string;
+  sorting: 'ASC' | 'DESC';
+}
+
+export interface SearchCriteriaCategory {
+  name: string;
+  index: number;
 }

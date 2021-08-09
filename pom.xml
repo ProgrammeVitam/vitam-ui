@@ -1032,6 +1032,13 @@
                 <scope>test</scope>
             </dependency>
             <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.jupiter.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-launcher</artifactId>
                 <version>${junit.jupiter.platform.version}</version>
@@ -1327,6 +1334,7 @@
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
+                        <forceJavacCompilerUse>true</forceJavacCompilerUse>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>

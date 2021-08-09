@@ -39,10 +39,13 @@ package fr.gouv.vitamui.archive.internal.server.searchcriteria.converter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archive.internal.server.utils.Utils;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(SpringExtension.class)
 public class SearchCriteriaHistoryConverterTest {
 
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter = new SearchCriteriaHistoryConverter();
@@ -51,7 +54,8 @@ public class SearchCriteriaHistoryConverterTest {
     public void testConvertEntityToDto() {
         SearchCriteriaHistory searchCriteriaHistory = Utils.buildSearchCriteriaHistory();
         SearchCriteriaHistoryDto result = searchCriteriaHistoryConverter.convertEntityToDto(searchCriteriaHistory);
-        assertThat(result).isEqualToComparingOnlyGivenFields(searchCriteriaHistory, "name", "savingDate", "searchCriteriaList");
+        assertThat(result)
+            .isEqualToComparingOnlyGivenFields(searchCriteriaHistory, "name", "savingDate", "searchCriteriaList");
 
     }
 }

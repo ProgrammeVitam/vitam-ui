@@ -51,11 +51,11 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,15 +63,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 
-@RunWith(SpringRunner.class)
-@Import({ TestMongoConfig.class, ConverterConfig.class })
-@EnableMongoRepositories(basePackageClasses = { SearchCriteriaHistoryRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@ExtendWith(SpringExtension.class)
+@Import({TestMongoConfig.class, ConverterConfig.class})
+@EnableMongoRepositories(basePackageClasses = {
+    SearchCriteriaHistoryRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class SearchCriteriaHistoryServiceIntegTest {
 
     private SearchCriteriaHistoryInternalService service;
@@ -82,7 +83,8 @@ public class SearchCriteriaHistoryServiceIntegTest {
     @Autowired
     private SearchCriteriaHistoryRepository rrepository;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceIntegTest.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceIntegTest.class);
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
@@ -94,16 +96,18 @@ public class SearchCriteriaHistoryServiceIntegTest {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @BeforeClass
+    @BeforeAll
     public static void beforeClass() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        service = new SearchCriteriaHistoryInternalService(sequenceRepository, rrepository, searchCriteriaHistoryConverter, internalSecurityService);
+        service =
+            new SearchCriteriaHistoryInternalService(sequenceRepository, rrepository, searchCriteriaHistoryConverter,
+                internalSecurityService);
         rrepository.deleteAll();
 
 
@@ -113,7 +117,7 @@ public class SearchCriteriaHistoryServiceIntegTest {
 
     }
 
-    @After
+    @AfterEach
     public void cleanUp() {
         rrepository.deleteAll();
     }

@@ -9,10 +9,34 @@
     "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
     "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
+    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règles",
     "NO_MORE_RESULTS": "Fin des résultats",
     "SEARCH_CRITERIA_FILTER": {
       "TITLE": "Filtre de recherche",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
+      "DUA_TITLE": "Durée d'utilité administrative",
+      "APPRAISAL_RULE": {
+        "APPRAISAL_RULE_END_DATE_END": "DUA: Fin Date de fin",
+        "APPRAISAL_RULE_END_DATE_BEGIN": "DUA: Début Date de fin",
+        "CREATE_INTERVAL": "Créer un intervale",
+        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "APPRAISAL_RULE_FINAL_ACTION": "Sort final DUA",
+        "APPRAISAL_RULE_TITLE": "Intitulé règle DUA",
+        "APPRAISAL_RULE_IDENTIFIER": "Identifiant  règle DUA",
+        "APPRAISAL_RULE_START_DATE": "Date de début règle DUA",
+        "APPRAISAL_RULE_END_DATE": "Date de fin règle DUA",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE": "Type Sort final ",
+        "APPRAISAL_RULE_ORIGIN": "Origine règle",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP": "Conservation",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED": "Non déclarée",
+        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION": "Porte le sort final DUA",
+        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérite du sort final DUA",
+        "APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE": "Porte au moins une règle DUA",
+        "APPRAISAL_RULE_ORIGIN_HAS_NO_ONE": "N'a pas de règle DUA définie",
+        "APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE": "Est en attente de recalcul de règme",
+        "APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE": "Hérite au moins une règle DUA"
+      },
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
@@ -27,7 +51,41 @@
         "SP_CODE": "Identifiant",
         "SP_LABEL": "Nom",
         "OTHER_FIELD": "Autre critère",
-        "SELECT_OTHER_FIELD": "Sélection d'un autre critère"
+        "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
+        "TITLE_DUA": "Intitulé",
+        "ID_DUA": "Identifiant",
+        "START_DATE_DUA": "Date de début",
+        "END_DATE_DUA": "Date de fin de la règle",
+        "END_DATE_DUA_EQUAL": "Date de fin",
+        "END_DATE_DUA_BEGIN": "Entre le ",
+        "END_DATE_DUA_END": "et le ",
+        "ORIGIN": {
+          "TITLE": "L'unité archivistique",
+          "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
+          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Porte au moins une règle DUA",
+          "HAS_NO_APPRAISAL_RULE": "N'a pas de règle DUA définie ",
+          "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Est en attente de recalcul de règle",
+          "SELECT_ALL_APPRAISAL_RULE": "Sélectionne tout"
+        },
+        "FINAL_ACTION_TYPE": {
+          "TITLE": "L'unité archivistique",
+          "SELECT_ALL_APPRAISAL_RULE": "Tout sélectionner",
+          "HAS_APPRAISAL_RULE": "Porte le sort final DUA ",
+          "INHERITE_APPRAISAL_RULE": "Hérite du sort final DUA"
+        },
+        "FINAL_ACTION": {
+          "TITLE": "Sort final DUA",
+          "SELECT_ALL_APPRAISAL_RULE": "Tout sélectionner",
+          "ELIMINATION_APPRAISAL_RULE": "Elimination",
+          "KEEP_APPRAISAL_RULE": "Conservation",
+          "NC_APPRAISAL_RULE": "Non déclaré"
+        },
+        "HOLD": {
+          "TITLE": "Archives gélées",
+          "INCLUDE": "Inclure",
+          "EXCLUDE": "Exclure"
+        },
+        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
       }
     },
     "ARCHIVE_UNIT": {
@@ -71,9 +129,9 @@
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
       "SHOW_TREE_PARENT": "Réduire l'arborescence"
     },
-    "EXPORT_CSV":{
-     "EXPORT_SEARCHS": "Exporter les résultats",
-     "EXPORT_CSV_LIMIT_REACHED":"Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
+    "EXPORT_CSV": {
+      "EXPORT_SEARCHS": "Exporter les résultats",
+      "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
     },
     "RESULTS": "résultats",
     "RESULT": "résultat",
@@ -106,6 +164,16 @@
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Limite de caractères atteinte",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "Vous avez atteint le nombre de caractère maximal autorisé.",
       "OBJECT_TYPE": "recherche sauvegardée"
+    },
+    "CRITERIA_CATEGORY": {
+      "ADD": "Ajouter des filters",
+      "DUA": "Durée d’utilité administrative",
+      "DUC": "DUC",
+      "COMMUNICABILITY": "Communicabilité",
+      "REUSING": "Réutilisation",
+      "DIFFUSION": "Diffusion",
+      "CLASSIFICATION": "Classification",
+      "GEL": "Gel"
     }
   }
 }

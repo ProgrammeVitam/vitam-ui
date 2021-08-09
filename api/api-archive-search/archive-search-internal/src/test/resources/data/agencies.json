@@ -1,0 +1,45 @@
+{
+  "httpCode": 0,
+  "$hits": {
+    "total": 3,
+    "offset": 0,
+    "limit": 10000,
+    "size": 3
+  },
+  "$results": [
+    {
+      "Identifier": "producteur1",
+      "Name": "Service producteur1",
+      "_tenant": 0
+    },
+    {
+      "Identifier": "Service_producteur",
+      "Name": "Service producteur1",
+      "_tenant": 0
+    },
+    {
+      "Identifier": "producteur2",
+      "Name": "Service producteur2",
+      "_tenant": 0
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$query": {
+      "$or": [
+        {
+          "$eq": {
+            "Name": "producteur"
+          }
+        }
+      ]
+    },
+    "$filter": {},
+    "$projection": {
+      "$fields": {
+        "Name": 1,
+        "Identifier": 1
+      }
+    }
+  }
+}

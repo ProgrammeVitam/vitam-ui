@@ -178,11 +178,6 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <scope>test</scope>
-        </dependency>
 
 
     </dependencies>
@@ -210,7 +205,8 @@
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.archive.internal.server.ApiArchiveInternalServerApplication</mainClass>
                     <jvmArguments>
-                        -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam -Xms1024m -Xmx1024m
+                        -Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam -Xdebug
+                        -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
                     </jvmArguments>
                     <arguments>
                         <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
