@@ -47,6 +47,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
+import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupCreateComponent } from './group-create.component';
 
 @NgModule({
@@ -62,6 +63,7 @@ import { GroupCreateComponent } from './group-create.component';
     ReactiveFormsModule,
     MatDialogModule,
     VitamUICommonModule,
+    UnitsFormModule,
   ],
   declarations: [
     GroupCreateComponent,

@@ -40,14 +40,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +79,7 @@ import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
+import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.common.dto.common.EmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.IamUtils;
@@ -171,6 +176,7 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
         checkSetReadonly(dto.isReadonly(), message);
         checkCustomer(dto.getCustomerId(), message);
         checkNameExist(null, dto.getName(), dto.getCustomerId(), message);
+        checkUnitsExist(null, dto.getUnits(),dto.getCustomerId(), message);
         checkLevel(dto.getLevel(), message);
         checkProfiles(dto.getLevel(), dto.getCustomerId(), dto.getProfileIds(), message);
         super.checkIdentifier(dto.getIdentifier(), message);
@@ -264,6 +270,13 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
                     logbooks.add(new EventDiffDto(GroupConverter.PROFILE_IDS_KEY, groupConverter.convertProfileIdsToLogbook(group.getProfileIds()),
                             groupConverter.convertProfileIdsToLogbook(profileIds)));
                     group.setProfileIds(profileIds);
+                    break;
+                case "units" :
+                    final Collection<String> unitsDto = CollectionUtils.emptyIfNull(CastUtils.toList(entry.getValue()));
+                    final Set<String> units = new HashSet<String>(unitsDto);
+                    logbooks.add(new EventDiffDto(GroupConverter.UNITS_KEY, groupConverter.convertUnitsToLogbook(group.getUnits()),
+                            groupConverter.convertUnitsToLogbook(units)));
+                    group.setUnits(units);
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch group " + group.getId() + ": key " + entry.getKey() + " is not allowed");
@@ -381,6 +394,20 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
             Assert.isTrue(!getRepository().exists(criteria), message + ": group already exists");
         }
     }
+
+    protected void checkUnitsExist(final Set<String> oldUnits, final Set<String> newUnits, final String customerId, final String message) {
+        if (!Objects.deepEquals(oldUnits, newUnits) && CollectionUtils.isNotEmpty(newUnits)) {
+                newUnits.stream()
+                    .filter(unit -> !CollectionUtils.emptyIfNull(oldUnits).contains(unit))
+                    .forEach(unit -> {
+                    List<CriteriaDefinition> criteria = new ArrayList<>();
+                    criteria.add(Criteria.where("customerId").is(customerId));
+                    MongoUtils.addCriteriaIgnoreCase("units", Optional.of(unit),criteria);
+                    Assert.isTrue(!getRepository().exists(criteria), String.format(message + ": unit already exists", unit));
+                });
+        }
+    }
+
 
     /**
      * {@inheritDoc}

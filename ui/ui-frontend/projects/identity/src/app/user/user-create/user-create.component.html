@@ -78,6 +78,11 @@
   </vitamui-common-slide-toggle>
 </div>
 
+<div class="mt-4">
+  <vitamui-common-slide-toggle formControlName="autoProvisioningEnabled">{{'USER.INFORMATIONS.ACTIVATE_AUTO_PROVISIONING' | translate}}
+  </vitamui-common-slide-toggle>
+</div>
+
 <div class="row actions">
   <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()"
     *ngIf="connectedUserInfo.type !== 'NONE';else noGroup">
@@ -98,7 +103,7 @@
 <cdk-step>
   <div class="mt-3 content">
     <div>
-      <app-group-list [groups]="groups" (selectedGroupEvent)="updateGroup($event)" [searchActiv]="true">
+      <app-group-list [groups]="groups" (selectedGroupEvent)="updateGroup($event)">
       </app-group-list>
     </div>
     <div class="actions">

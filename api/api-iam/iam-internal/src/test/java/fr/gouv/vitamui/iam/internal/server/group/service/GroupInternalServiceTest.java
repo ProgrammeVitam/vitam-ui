@@ -26,8 +26,10 @@ import org.bson.Document;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -38,8 +40,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class GroupInternalServiceTest {
 
@@ -127,6 +128,7 @@ public class GroupInternalServiceTest {
         final Group other = IamServerUtilsTest.buildGroup();
 
         final Map<String, Object> partialDto = TestUtils.getMapFromObject(other);
+        partialDto.put("units", new ArrayList(other.getUnits()));
 
         internalGroupService.processPatch(entity, partialDto);
 
@@ -317,5 +319,45 @@ public class GroupInternalServiceTest {
         when(groupRepository.aggregate(any(TypedAggregation.class), ArgumentMatchers.eq(Document.class))).thenReturn(value);
         List<String> levels = internalGroupService.getLevels(criteria);
         assertThat(levels.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void checkUnitsExist_whenGroupIsCreated_thenCheckAllUnits() {
+        Set<String> newUnits = Set.of("units1", "units2");
+        final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);
+
+        internalGroupService.checkUnitsExist(null, newUnits,"customerId", "");
+
+        Mockito.verify(groupRepository, times(2)).exists(criteriaCaptor.capture());
+
+        List<List<CriteriaDefinition>> criteria = criteriaCaptor.getAllValues();
+        assertThat(criteria).hasSize(2);
+        criteria.forEach(crit -> {
+            assertThat(crit).anyMatch(c -> c.getKey().equals("units"));
+        });
+    }
+
+    @Test
+    public void checkUnitsExist_whenGroupIsCreatedWithZeroUnits_thenCheckZeroUnits() {
+        internalGroupService.checkUnitsExist(null, null,"customerId", "");
+
+        Mockito.verify(groupRepository, times(0)).exists(ArgumentMatchers.any(List.class));
+    }
+
+    @Test
+    public void checkUnitsExist_whenGroupIsPatched_thenCheckOnlyNewUnits() {
+        Set<String> newUnits = Set.of("units1", "units2");
+        Set<String> oldUnits = Set.of("units2");
+        final ArgumentCaptor<List<CriteriaDefinition>> criteriaCaptor = ArgumentCaptor.forClass(List.class);
+
+        internalGroupService.checkUnitsExist(oldUnits, newUnits,"customerId", "");
+
+        Mockito.verify(groupRepository, times(1)).exists(criteriaCaptor.capture());
+
+        List<List<CriteriaDefinition>> criteria = criteriaCaptor.getAllValues();
+        assertThat(criteria).hasSize(1);
+        criteria.forEach(crit -> {
+            assertThat(crit).anyMatch(c -> c.getKey().equals("units"));
+        });
     }
 }

@@ -46,9 +46,11 @@ import { RouterModule } from '@angular/router';
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { SharedModule } from '../../shared/shared.module';
 import { GroupValidators } from '../group.validators';
+import { UnitsFormModule } from '../units-form/units-form.module';
 import { GroupPopupComponent } from './group-popup.component';
 import { GroupPreviewComponent } from './group-preview.component';
 import { InformationTabComponent } from './information-tab/information-tab.component';
+import { UnitsEditComponent } from './information-tab/units-edit/units-edit.component';
 import { ProfilesEditComponent } from './profiles-tab/profiles-edit/profiles-edit.component';
 import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
 
@@ -63,6 +65,7 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     MatProgressBarModule,
     ReactiveFormsModule,
     VitamUICommonModule,
+    UnitsFormModule
   ],
   declarations: [
     GroupPopupComponent,
@@ -70,6 +73,7 @@ import { ProfilesTabComponent } from './profiles-tab/profiles-tab.component';
     InformationTabComponent,
     ProfilesTabComponent,
     ProfilesEditComponent,
+    UnitsEditComponent,
   ],
   exports: [GroupPreviewComponent],
   providers: [GroupValidators],

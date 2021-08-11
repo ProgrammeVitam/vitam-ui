@@ -129,6 +129,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
 
         if (Boolean.TRUE.equals(dto.getInternal())) {
             checkIdendityProviderInternUniqueByCustomer(dto.getCustomerId(), message);
+            checkAutoUpdateUsersDisabledForInternalProvider(dto.isAutoProvisioningEnabled());
         }
 
         dto.setIdentifier(getNextSequenceId(SequencesConstants.IDP_IDENTIFIER));
@@ -149,6 +150,7 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
 
         if (Boolean.TRUE.equals(dto.getInternal())) {
             checkIdendityProviderInternUniqueByCustomer(dto.getCustomerId(), message);
+            checkAutoUpdateUsersDisabledForInternalProvider(dto.isAutoProvisioningEnabled());
         }
 
         if (StringUtils.isBlank(dto.getTechnicalName())) {
@@ -178,9 +180,14 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
             checkSetReadonly(readonly, message);
         }
 
+        boolean autoProvisioningEnabled = false;
         final Boolean internal = (Boolean) partialDto.get("internal");
+        if (partialDto.get("autoProvisioningEnabled") != null) {
+            autoProvisioningEnabled = (boolean) partialDto.get("autoProvisioningEnabled");
+        }
         if (Boolean.TRUE.equals(internal)) {
             checkIdendityProviderInternUniqueByCustomer(idp.getCustomerId(), message);
+            checkAutoUpdateUsersDisabledForInternalProvider(autoProvisioningEnabled);
         }
 
         return idp;
@@ -267,11 +274,19 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
                     entity.setMailAttribute(CastUtils.toString(entry.getValue()));
                     break;
+                case "identifierAttribute" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
+                    break;
                 case "authnRequestBinding" :
                     final String authnRequestBindingAsString = CastUtils.toString(entry.getValue());
                     final AuthnRequestBindingEnum newAuthnRequestBinding = EnumUtils.stringToEnum(AuthnRequestBindingEnum.class, authnRequestBindingAsString);
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTHENTICATION_REQUEST_BINDING_KEY, entity.getAuthnRequestBinding(), newAuthnRequestBinding));
                     entity.setAuthnRequestBinding(newAuthnRequestBinding);
+                    break;
+                case "autoProvisioningEnabled" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTO_PROVISIONING_ENABLED_KEY, entity.isAutoProvisioningEnabled(), entry.getValue()));
+                    entity.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");
@@ -302,6 +317,12 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
         final Example<IdentityProvider> idp = Example.of(example, ExampleMatcher.matching().withIgnoreNullValues());
         final boolean exists = identityProviderRepository.exists(idp);
         Assert.isTrue(!exists, message + ": the customer: " + customerId + " has already an identityProvider internal.");
+    }
+
+    private void checkAutoUpdateUsersDisabledForInternalProvider(final boolean autoProvisioningEnabled) {
+        if (autoProvisioningEnabled) {
+            throw new IllegalArgumentException("autoProvisioningEnabled cannot be true for an internal provider");
+        }
     }
 
     private void checkCustomer(final String customerId, final String message) {

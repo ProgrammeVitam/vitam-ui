@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -156,6 +157,26 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     }
 
     @Test
+    public void testCreatedFailsAsInternalAndAutoProvisioningEnabledAreTrue() {
+        // Prepare
+        prepareServices();
+        final IdentityProviderDto dto = buildIdentityProviderDto();
+        dto.setId(null);
+        dto.setInternal(true);
+        dto.setAutoProvisioningEnabled(true);
+
+        // Do
+        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            service.create(dto);
+        });
+
+        // Verify
+        final String expectedMessage = "autoProvisioningEnabled cannot be true for an internal provider";
+        final String actualMessage = thrownException.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
     public void testUpdateOK() {
         prepareServices();
 
@@ -253,11 +274,32 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     }
 
     @Test
+    public void testUpdateFailsAsInternalAndAutoUpdateUsersAreTrue() {
+        // Prepare
+        prepareServices();
+        final IdentityProviderDto dto = buildIdentityProviderDto();
+        dto.setId(null);
+        dto.setAutoProvisioningEnabled(true);
+        dto.setInternal(true);
+
+        // Do
+        var thrownException = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            service.create(dto);
+        });
+
+        //Verify
+        final String expectedMessage = "autoProvisioningEnabled cannot be true for an internal provider";
+        final String actualMessage = thrownException.getMessage();
+        Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
     public void testProcessPatch() {
         prepareServices();
 
         final IdentityProvider idp = buildIdentityProvider();
         idp.setInternal(false);
+        idp.setAutoProvisioningEnabled(false);
 
         final Map<String, Object> partialDto = new HashMap<>();
         partialDto.put("name", "nameTest");
@@ -266,6 +308,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         partialDto.put("patterns", Arrays.asList("vitamui.com", "vitamui.com"));
         partialDto.put("keystorePassword", "keyspwd");
         partialDto.put("idpMetadata", "<xml></xml>");
+        partialDto.put("autoProvisioningEnabled", true);
 
         service.processPatch(idp, partialDto);
         assertThat(idp.getName()).isEqualTo("nameTest");
@@ -275,6 +318,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         assertThat(idp.getPrivateKeyPassword()).isEqualTo("keyspwd");
         assertThat(idp.getIdpMetadata()).isEqualTo("<xml></xml>");
         assertThat(idp.getPatterns()).isEqualTo(Arrays.asList(".*@vitamui.com", ".*@vitamui.com"));
+        assertThat(idp.isAutoProvisioningEnabled()).isTrue();
     }
 
     @Test

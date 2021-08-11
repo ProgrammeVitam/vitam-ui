@@ -70,12 +70,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(I18NSendPasswordResetInstructionsAction.class);
 
-    private final CasConfigurationProperties casProperties;
-
-    private final CommunicationsManager communicationsManager;
-
-    private final PasswordManagementService passwordManagementService;
-
     private final HierarchicalMessageSource messageSource;
 
     private final ProvidersService providersService;
@@ -97,9 +91,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                                                    final IdentityProviderHelper identityProviderHelper,
                                                    final Utils utils) {
         super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory);
-        this.casProperties = casProperties;
-        this.communicationsManager = communicationsManager;
-        this.passwordManagementService = passwordManagementService;
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
@@ -119,7 +110,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         // added from CAS:
         if (StringUtils.isBlank(username)) {
             // try to get the username from the credentials also (after a password expiration)
-            final MutableAttributeMap flowScope = requestContext.getFlowScope();
+            final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
             final Object credential = flowScope.get("credential");
             if (credential instanceof UsernamePasswordCredential) {
                 final UsernamePasswordCredential usernamePasswordCredential = (UsernamePasswordCredential) credential;
@@ -159,8 +150,9 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     @Override
     protected boolean sendPasswordResetEmailToAccount(final String to, final String url) {
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "", "10", url, vitamuiPlatformName,
-                LocaleContextHolder.getLocale());
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
+            String.valueOf(casProperties.getAuthn().getPm().getReset().getExpirationMinutes()), url, vitamuiPlatformName,
+            LocaleContextHolder.getLocale());
         return utils.htmlEmail(messageToSend.getText(), casProperties.getAuthn().getPm().getReset().getMail().getFrom(), messageToSend.getSubject(), to, null,
                 null);
     }

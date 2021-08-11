@@ -38,6 +38,7 @@ package fr.gouv.vitamui.iam.internal.server.group.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -91,4 +92,6 @@ public class Group extends CustomerIdDocument implements BaseIdentifierDocument 
 
     @Length(max = 250)
     private String level;
+
+    private Set<String> units;
 }

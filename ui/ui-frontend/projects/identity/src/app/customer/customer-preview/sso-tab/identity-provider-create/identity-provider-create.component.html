@@ -22,9 +22,8 @@
       >
     </div>
 
-    <div class="mt-4">
+    <div class="mt-4 d-flex align-items-start justify-content-between">
       <vitamui-common-input
-        class="col-4 p-0"
         formControlName="name"
         maxlength="100"
         required
@@ -37,11 +36,41 @@
           >
         </ng-container>
       </vitamui-common-input>
+      <mat-button-toggle-group
+        formControlName="authnRequestBinding"
+        #group="matButtonToggleGroup"
+        class="vitamui-button-toggle-group"
+      >
+        <mat-button-toggle
+          value="GET"
+          >GET
+        </mat-button-toggle>
+        <mat-button-toggle
+          value="POST"
+          >POST
+        </mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
 
-    <div>
+    <div class="row mt-3 align-items-center">
+      <div class="col-6 vitamui-input-file">
+        <label for="keystore">
+          <span
+            class="text link bold primary"
+            >{{'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate}}</span
+          >
+          <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
+        </label>
+        <input
+          id="keystore"
+          type="file"
+          accept=".jks"
+          (change)="setKeystore($event.target.files)"
+        />
+      </div>
+
       <vitamui-common-input
-        class="col-4 p-0"
+        class="col-6"
         formControlName="keystorePassword"
         type="password"
         required
@@ -59,25 +88,9 @@
           >
         </ng-container>
       </vitamui-common-input>
-    </div>
+  </div>
 
-    <div class="col-5 p-0 mt-3 vitamui-input-file">
-      <label for="keystore">
-        <span
-          class="text link bold primary"
-          >{{'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate}}</span
-        >
-        <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
-      </label>
-      <input
-        id="keystore"
-        type="file"
-        accept=".jks"
-        (change)="setKeystore($event.target.files)"
-      />
-    </div>
-
-    <div class="col-5 p-0 mt-4 vitamui-input-file">
+    <div class="mt-3 vitamui-input-file">
       <label for="idpMetadata">
         <span
           class="text link bold primary"
@@ -93,61 +106,44 @@
       />
     </div>
 
-    <div class="mt-4">
-      <vitamui-common-input
-        class="col-5 p-0"
-        formControlName="mailAttribute"
-        [placeholder]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
-      >
-      </vitamui-common-input>
+    <div class="row mt-3">
+        <vitamui-common-input
+          class="col-6"
+          formControlName="mailAttribute"
+          [placeholder]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
+        >
+        </vitamui-common-input>
+  
+        <vitamui-common-input
+          class="col-6"
+          formControlName="identifierAttribute"
+          [placeholder]="'CUSTOMER.SSO.IDENTIFIER_ATTRIBUTE' | translate"
+        >
+        </vitamui-common-input>
     </div>
 
     <div class="mt-2">
-      <div class="form-group">
-        <label
-          class="text medium bold mb-3"
-          for="authnRequestBinding"
-        >
-          Authentication Request Binding <span class="text danger">*</span>
-        </label>
-        <div class="my-2">
-          <mat-button-toggle-group
-            formControlName="authnRequestBinding"
-            #group="matButtonToggleGroup"
-            class="vitamui-button-toggle-group"
-          >
-            <mat-button-toggle
-              value="GET"
-              >GET
-            </mat-button-toggle>
-            <mat-button-toggle
-              value="POST"
-              >POST
-            </mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
-      </div>
+      <app-pattern
+        formControlName="patterns"
+        [options]="data?.domains"
+      ></app-pattern>
+    </div>
 
-      <div class="form-group">
-        <label
-          class="text medium bold mb-3"
-          for="patterns"
-          >{{'CUSTOMER.SSO.PATTERNS' | translate}}</label
-        >
-        <app-pattern
-          formControlName="patterns"
-          [options]="data?.domains"
-        ></app-pattern>
-      </div>
+    <div class="mt-3">
+      <vitamui-common-slide-toggle
+        class="p-0"
+        formControlName="autoProvisioningEnabled"
+        >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
+      >
+    </div>
 
-      <div class="actions mt-4">
-        <button type="submit" class="btn primary" [disabled]="!isFormValid">
-          {{ "COMMON.SUBMIT" | translate }}
-        </button>
-        <button type="button" class="btn cancel link" (click)="onCancel()">
-          {{ "COMMON.UNDO" | translate }}
-        </button>
-      </div>
+    <div class="actions mt-4">
+      <button type="submit" class="btn primary" [disabled]="!isFormValid">
+        {{ "COMMON.SUBMIT" | translate }}
+      </button>
+      <button type="button" class="btn cancel link" (click)="onCancel()">
+        {{ "COMMON.UNDO" | translate }}
+      </button>
     </div>
   </div>
 </form>

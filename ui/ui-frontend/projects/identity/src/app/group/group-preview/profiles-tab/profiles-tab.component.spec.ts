@@ -69,6 +69,7 @@ class TesthostComponent {
     usersCount : 0,
     description: 'Profile Group Description',
     profileIds: [],
+    units: [],
     profiles: [
       {
         id: '1',
@@ -217,6 +218,7 @@ describe('ProfilesTabComponent', () => {
       level: 'level',
       description: 'Profile Group Description',
       profileIds: [],
+      units: [],
       profiles: [
         {
           id: '1',

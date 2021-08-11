@@ -77,6 +77,8 @@ public abstract class RestApi {
 
     public static final String CAS_USERS_PATH = "/users";
 
+    public static final String USERS_PROVISIONING = "/provisioning";
+
     public static final String CAS_SUBROGATIONS_PATH = "/subrogations";
 
     public static final String V1_IAM_URL = "/iam/v1";

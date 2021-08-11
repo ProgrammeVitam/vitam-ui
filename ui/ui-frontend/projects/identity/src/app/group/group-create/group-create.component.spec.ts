@@ -66,6 +66,21 @@ class ProfilesFormStubComponent implements ControlValueAccessor {
   registerOnTouched() {}
 }
 
+@Component({
+  selector: 'app-units-form',
+  template: '',
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => UnitsFormStubComponent),
+    multi: true,
+  }]
+})
+class UnitsFormStubComponent implements ControlValueAccessor {
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
+}
+
 const expectedGroup: Group = {
   id: '1',
   customerId: '4242442',
@@ -76,6 +91,7 @@ const expectedGroup: Group = {
   usersCount: 0,
   profileIds: ['profile1', 'profile2'],
   profiles: [],
+  units: [],
   readonly : false,
 };
 
@@ -109,6 +125,7 @@ describe('GroupCreateComponent', () => {
       ],
       declarations: [
         ProfilesFormStubComponent,
+        UnitsFormStubComponent,
         GroupCreateComponent,
       ],
       providers: [
@@ -152,7 +169,8 @@ describe('GroupCreateComponent', () => {
         level: '',
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
-        profileIds: expectedGroup.profileIds
+        profileIds: expectedGroup.profileIds,
+        units: expectedGroup.units
       });
       fixture.detectChanges();
       expect(page.submit.attributes.disabled).toBeFalsy();
@@ -171,7 +189,8 @@ describe('GroupCreateComponent', () => {
         level: '',
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
-        profileIds: expectedGroup.profileIds
+        profileIds: expectedGroup.profileIds,
+        units: expectedGroup.units
       });
       expect(component.form.valid).toBeTruthy();
     });
@@ -224,7 +243,8 @@ describe('GroupCreateComponent', () => {
         level: '',
         enabled: expectedGroup.enabled,
         description: expectedGroup.description,
-        profileIds: expectedGroup.profileIds
+        profileIds: expectedGroup.profileIds,
+        units: expectedGroup.units
       });
       component.onSubmit();
       expect(groupService.create).toHaveBeenCalledTimes(1);

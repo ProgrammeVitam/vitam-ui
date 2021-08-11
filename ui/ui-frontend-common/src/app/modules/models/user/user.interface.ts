@@ -62,6 +62,6 @@ export interface User extends Id {
   siteCode: string;
   centerCode: string;
   photo?: string;
-  disablingDate : string;
-
+  disablingDate: string;
+  autoProvisioningEnabled: boolean;
 }

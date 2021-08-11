@@ -121,6 +121,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setSiteCode(user.getSiteCode());
         setInternalCode(user.getInternalCode());
         setCenterCode(user.getCenterCode());
+        setAutoProvisioningEnabled(user.isAutoProvisioningEnabled());
     }
 
     public AuthUserDto(final String username, final Map<String, Object> attributes) {
@@ -315,6 +316,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setGroupId(getGroupId());
         user.setAnalytics(getAnalytics());
         user.setSiteCode(getSiteCode());
+        user.setAutoProvisioningEnabled(isAutoProvisioningEnabled());
         return user;
     }
 }

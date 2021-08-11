@@ -102,6 +102,8 @@ public class UserConverter implements Converter<UserDto, User> {
 
     public static final String SITE_CODE = "Code du site";
 
+    public static final String AUTO_PROVISIONING_ENABLED_KEY = "Mise à jour automatique";
+
     public static final String CENTER_CODE = "Code du centre";
 
     private final GroupRepository groupRepository;
@@ -126,6 +128,7 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(STATUS_KEY, LogbookUtils.getValue(user.getStatus().toString()));
         userLogbookData.put(SUBROGEABLE_KEY, LogbookUtils.getValue(user.isSubrogeable()));
         userLogbookData.put(INTERNAL_CODE_KEY, LogbookUtils.getValue(user.getInternalCode()));
+        userLogbookData.put(AUTO_PROVISIONING_ENABLED_KEY, LogbookUtils.getValue(user.isAutoProvisioningEnabled()));
         userLogbookData.put(OTP_KEY, LogbookUtils.getValue(user.isOtp()));
         userLogbookData.put(DISABLING_DATE, LogbookUtils.getValue(user.getDisablingDate()));
         userLogbookData.put(REMOVING_DATE, LogbookUtils.getValue(user.getRemovingDate()));

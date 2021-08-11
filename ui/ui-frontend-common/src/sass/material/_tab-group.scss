@@ -1,56 +1,58 @@
-/** TODO DEPRECATED : THIS CODE SEEMS TO BE UNSED, REMOVE IT AT THE END OF THE REDESIGN **/
+.vitamui-tab-group.mat-tab-group {
+  height: 100%;
 
-.account-tab-group.mat-tab-group {
-    .mat-tab-header {
-        border-bottom: none;
-        margin-left: 0px;
-        margin-top: -70px;
+  .mat-tab-header {
+    border-bottom: none;
+    height: 56px;
+  }
+
+  .mat-tab-body {
+    height: 100%;
+  }
+
+  .mat-tab-label {
+    background-color: white;
+    color: var(--vitamui-grey-600);
+    min-width: 130px;
+    opacity: 1;
+    height: 56px;
+    font-size: 16px;
+    &:hover {
+      background-color: var(--vitamui-grey-300);
     }
 
-    .mat-tab-label {
-        opacity: 1;
-        min-width: 200px;
-        height: 45px;
-        background-color: rgba(255, 255, 255, 0.85);
-        margin: 0 1px;
-        padding: 0 14px;
-        font-size: 14px;
-        font-weight: normal;
-        color: rgba(72, 80, 83, 0.3);
-        text-transform: uppercase;
-        transition: background-color 200ms ease-out, color 200ms ease-out;
-
-        &:hover {
-            color: var(--vitamui-primary);
-            background-color: rgba(255, 255, 255, 0.8);
-        }
-
-        &:first-child {
-            margin-left: 0;
-        }
-
-        &:last-child {
-            margin-right: 0;
-        }
-
-        &:not(.mat-tab-disabled):focus {
-            background-color: rgba(255, 255, 255, 0.56);
-        }
-
-        &.mat-tab-label-active,
-        &.mat-tab-label-active:not(.mat-tab-disabled):focus {
-            background-color: $white;
-            font-weight: bold;
-            color: #5e5d5d;
-        }
+    &:not(.mat-tab-disabled):focus {
+      background-color: var(--vitamui-grey-300);
     }
+  }
 
-    .mat-ink-bar {
-        opacity: 0;
+  .mat-tab-label-active {
+    .mat-tab-label-content {
+      color: var(--vitamui-primary);
+      font-weight: 700;
     }
+  }
 
-    .mat-tab-body-content {
-        padding: 0px;
-        overflow: none;
+  .mat-tab-body-content {
+    margin-top: 20px;
+    height: calc(100% - 40px);
+    overflow: hidden;
+  }
+
+  .mat-ink-bar {
+    background-color: transparent !important;
+    height: 3px;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 40%;
+      background-color: var(--vitamui-primary);
+      height: 6px;
+      border-bottom-right-radius: 70px;
+      border-bottom-left-radius: 70px;
+      left: 30%;
+      position: relative;
     }
+  }
 }

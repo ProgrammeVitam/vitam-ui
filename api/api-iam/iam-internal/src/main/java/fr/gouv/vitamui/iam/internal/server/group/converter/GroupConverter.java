@@ -37,10 +37,12 @@
 package fr.gouv.vitamui.iam.internal.server.group.converter;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -69,6 +71,8 @@ public class GroupConverter implements Converter<GroupDto, Group> {
 
     public static final String PROFILE_IDS_KEY = "Liste des profils";
 
+    public static final String UNITS_KEY = "Liste des unités d'appartenance";
+
     private final ProfileRepository profileRepository;
 
     public GroupConverter(final ProfileRepository profileRepository) {
@@ -83,6 +87,7 @@ public class GroupConverter implements Converter<GroupDto, Group> {
         logbookData.put(LEVEL_KEY, LogbookUtils.getValue(dto.getLevel()));
         logbookData.put(ENABLED_KEY, LogbookUtils.getValue(dto.isEnabled()));
         logbookData.put(PROFILE_IDS_KEY, convertProfileIdsToLogbook(dto.getProfileIds()));
+        logbookData.put(UNITS_KEY, convertUnitsToLogbook(dto.getUnits()));
         return ApiUtils.toJson(logbookData);
     }
 
@@ -102,5 +107,9 @@ public class GroupConverter implements Converter<GroupDto, Group> {
                 .map(p -> Integer.parseInt(p.getIdentifier())).collect(Collectors.toList());
         ids.sort(Comparator.naturalOrder());
         return ids.toString();
+    }
+
+    public String convertUnitsToLogbook(final Set<String> units) {
+        return units != null ? units.toString() : Collections.emptySet().toString();
     }
 }

@@ -77,7 +77,8 @@ export class GroupListComponent extends InfiniteScrollTable<Group> implements On
     'identifier',
     'name',
     'level',
-    'description'
+    'description',
+    'units'
   ];
 
   filterMap: { [key: string]: any[] } = {

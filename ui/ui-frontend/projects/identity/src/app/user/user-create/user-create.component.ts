@@ -137,6 +137,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
         internalCode: [null],
         siteCode: [null],
         centerCode: [null],
+        autoProvisioningEnabled: false
       },
       { validator: UserValidators.missingPhoneNumber }
     );

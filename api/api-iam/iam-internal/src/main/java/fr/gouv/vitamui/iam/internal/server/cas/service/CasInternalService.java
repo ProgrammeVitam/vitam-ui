@@ -40,17 +40,17 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.apereo.cas.ticket.UniqueTicketIdGenerator;
+import org.apereo.cas.util.DefaultUniqueTicketIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -59,8 +59,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
+
+import javax.validation.constraints.NotNull;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
+import fr.gouv.vitamui.commons.api.domain.GroupDto;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
@@ -74,11 +81,15 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.rest.ApiErrorGenerator;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
+import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
+import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.logbook.service.IamLogbookService;
+import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
 import fr.gouv.vitamui.iam.internal.server.subrogation.dao.SubrogationRepository;
 import fr.gouv.vitamui.iam.internal.server.subrogation.domain.Subrogation;
 import fr.gouv.vitamui.iam.internal.server.subrogation.service.SubrogationInternalService;
@@ -138,6 +149,15 @@ public class CasInternalService {
 
     @Autowired
     private IamLogbookService iamLogbookService;
+
+    @Autowired
+    private IdentityProviderInternalService identityProviderInternalService;
+
+    @Autowired
+    private GroupInternalService groupInternalService;
+
+    @Autowired
+    private ProvisioningInternalService provisioningInternalService;
 
     @Value("${token.ttl}")
     @NotNull
@@ -270,6 +290,153 @@ public class CasInternalService {
         }
         else {
             return userDto;
+        }
+    }
+
+    /**
+     * Method to retrieve the user informations
+     * @param email email of the user
+     * @param idp can be null
+     * @param userIdentifier can be null
+     * @param optEmbedded
+     * @return
+     */
+    @Transactional
+    public UserDto getUser(final String email, final String idp, final String userIdentifier, final String optEmbedded) {
+       // if the user depends on an external idp
+        if(StringUtils.isNotBlank(idp)) {
+            this.provisionUser(email, idp, userIdentifier);
+        }
+
+        return getUserByEmail(email, Optional.ofNullable(optEmbedded));
+    }
+
+    /**
+     * Method to perform auto provisioning
+     * @param email
+     * @param idp
+     * @param userIdentifier
+     */
+    public void provisionUser(final String email, final String idp, final String userIdentifier) {
+        final IdentityProviderDto identityProvider = identityProviderInternalService.getOne(idp);
+
+        // Do nothing is autoProvisioning is disabled
+        if(!identityProvider.isAutoProvisioningEnabled()) {
+            return;
+        }
+
+        final boolean userExist = userRepository.existsByEmail(email);
+        // Try to update user
+        if(userExist) {
+            final UserDto user = internalUserService.findUserByEmail(email);
+            if(user.isAutoProvisioningEnabled()) {
+                updateUser(user, provisioningInternalService.getUserInformation(idp, email, user.getGroupId(), null, userIdentifier));
+            }
+        }
+        // Try to create a new user
+        else {
+            createNewUser(provisioningInternalService.getUserInformation(idp, email, null, null, userIdentifier));
+        }
+    }
+
+
+    private void createNewUser(final ProvidedUserDto providedUserInfo) {
+        final UserDto user = new UserDto();
+        user.setType(UserTypeEnum.NOMINATIVE);
+        user.setSubrogeable(true);
+        user.setAutoProvisioningEnabled(true);
+
+        user.setFirstname(providedUserInfo.getFirstname());
+        user.setLastname(providedUserInfo.getLastname());
+        user.setEmail(providedUserInfo.getEmail());
+        user.setAddress(providedUserInfo.getAddress());
+        user.setInternalCode(providedUserInfo.getInternalCode());
+        user.setSiteCode(providedUserInfo.getSiteCode());
+        GroupDto groupDto = getGroupByUnit(providedUserInfo.getUnit());
+        user.setGroupId(groupDto.getId());
+        user.setCustomerId(groupDto.getCustomerId());
+
+        final Customer customer = customerRepository.findById(user.getCustomerId())
+            .orElseThrow(() -> new NotFoundException(String.format("Cannot find customer : %s", user.getCustomerId())));
+        user.setLanguage(customer.getLanguage());
+
+        internalUserService.create(user);
+    }
+
+    private GroupDto getGroupByUnit(final String unit) {
+        QueryDto criteria = QueryDto.criteria("units", List.of(unit), CriterionOperator.IN);
+        final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+        Assert.notEmpty(groups, String.format("No group found for the given unit : %s", unit));
+        return groups.get(0);
+    }
+
+    private void updateUser(final UserDto userDto, final ProvidedUserDto userProvidedInfo) {
+        final Map<String, Object> userUpdate = new HashMap<>();
+        updateUserMandatoryInformation(userDto, userProvidedInfo, userUpdate);
+        updateUserOptionalInformation(userDto, userProvidedInfo, userUpdate);
+        if (!userUpdate.isEmpty()) {
+            userUpdate.put("id", userDto.getId());
+            userUpdate.put("customerId", userDto.getCustomerId());
+            internalUserService.patch(userUpdate);
+        }
+    }
+
+    private void updateUserOptionalInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+        if (userInfo.getInternalCode() != null && !StringUtils.equals(userInfo.getInternalCode(), userDto.getInternalCode())) {
+            userUpdate.put("internalCode", userInfo.getInternalCode());
+        }
+        if (userInfo.getSiteCode() != null && !StringUtils.equals(userInfo.getSiteCode(), userDto.getSiteCode())) {
+            userUpdate.put("siteCode", userInfo.getSiteCode());
+        }
+        updateUserAddress(userDto, userInfo, userUpdate);
+    }
+
+    private void updateUserMandatoryInformation(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+        if (!StringUtils.equals(userDto.getFirstname(), userInfo.getFirstname())) {
+            userUpdate.put("firstname", userInfo.getFirstname());
+        }
+        if (!StringUtils.equals(userDto.getLastname(), userInfo.getLastname())) {
+            userUpdate.put("lastname", userInfo.getLastname());
+        }
+        if (!StringUtils.equals(userDto.getEmail(), userInfo.getEmail())) {
+            userUpdate.put("email", userInfo.getEmail());
+        }
+        updateUserGroup(userDto, userInfo, userUpdate);
+    }
+
+    private void updateUserGroup(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+        QueryDto criteria = QueryDto.criteria("units", List.of(userInfo.getUnit()), CriterionOperator.IN);
+        final List<GroupDto> groups = groupInternalService.getAll(Optional.of(criteria.toJson()), Optional.empty());
+        Assert.notEmpty(groups, String.format("No group found for the given unit : %s", userInfo.getUnit()));
+        if (!StringUtils.equals(userDto.getGroupId(), groups.get(0).getId())) {
+            userUpdate.put("groupId", groups.get(0).getId());
+        }
+    }
+
+    private void updateUserAddress(final UserDto userDto, final ProvidedUserDto userInfo, final Map<String, Object> userUpdate) {
+        if (userInfo.getAddress() != null) {
+            final Map<String, Object> updatedAddress = new HashMap<>();
+            if (userInfo.getAddress().getStreet() != null && (userDto.getAddress() == null
+                    || !StringUtils.equals(userInfo.getAddress().getStreet(), userDto.getAddress().getStreet()))) {
+                updatedAddress.put("street", userInfo.getAddress().getStreet());
+            }
+            if (userInfo.getAddress().getZipCode() != null && (userDto.getAddress() == null
+                    || !StringUtils.equals(userInfo.getAddress().getZipCode(), userDto.getAddress().getZipCode()))) {
+                updatedAddress.put("zipCode", userInfo.getAddress().getZipCode());
+            }
+            if (userInfo.getAddress().getCity() != null && (userDto.getAddress() == null
+                    || !StringUtils.equals(userInfo.getAddress().getCity(), userDto.getAddress().getCity()))) {
+                updatedAddress.put("city", userInfo.getAddress().getCity());
+            }
+
+            if (userInfo.getAddress().getCountry() != null && (userDto.getAddress() == null
+                    || !StringUtils.equals(userInfo.getAddress().getCountry(), userDto.getAddress().getCountry()))) {
+                updatedAddress.put("country", userInfo.getAddress().getCountry());
+            }
+
+            if (!updatedAddress.isEmpty()) {
+                userUpdate.put("address", updatedAddress);
+            }
         }
     }
 

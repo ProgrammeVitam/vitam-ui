@@ -32,7 +32,9 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 
@@ -129,6 +131,7 @@ public final class IamServerUtilsTest {
         user.setPhone("+33134237766");
         user.setPasswordExpirationDate(OffsetDateTime.now().plusDays(1));
         user.setAddress(buildAddress());
+        user.setAutoProvisioningEnabled(false);
         return user;
     }
 
@@ -260,6 +263,7 @@ public final class IamServerUtilsTest {
         group.setIdentifier(identifier);
         group.setEnabled(true);
         group.setLevel(level);
+        group.setUnits(Set.of("unit1"));
         return group;
     }
 
@@ -385,7 +389,7 @@ public final class IamServerUtilsTest {
      * IdentityProviderDto
      */
     public static IdentityProviderDto buildIdentityProviderDto() {
-        return IamDtoBuilder.buildIdentityProviderDto(IDP_ID, IDP_NAME, CUSTOMER_ID, EMAIL_DOMAINS, true);
+        return IamDtoBuilder.buildIdentityProviderDto(IDP_ID, IDP_NAME, CUSTOMER_ID, EMAIL_DOMAINS, false, true);
     }
 
     public static IdentityProvider buildIdentityProvider() {
@@ -396,6 +400,7 @@ public final class IamServerUtilsTest {
         idp.setEnabled(true);
         idp.setInternal(true);
         idp.setIdentifier(String.valueOf(IDP_IDENTIFIER));
+        idp.setAutoProvisioningEnabled(true);
         return idp;
     }
 

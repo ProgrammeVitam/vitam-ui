@@ -52,4 +52,17 @@
       </vitamui-common-editable-level-input>
     </div>
   </div>
+
+  <div class="vitamui-separator"></div>
+
+  <!-- Units -->
+  <div>
+    <button *ngIf="!readOnly" class="btn primary mb-3" (click)="openEditUnitsDialog()">
+      {{'GROUP.INFORMATIONS.MODIF_UNITS_BUTTON' | translate}}
+    </button>
+    <div class="align-items-center "> 
+      <div class="text small primary mb-2">{{'GROUP.INFORMATIONS.UNITS_TABLE_TITLE' | translate}}</div>
+      <div *ngFor="let unit of getUnits(group)" class="text medium">{{ unit}}</div>
+    </div>
+  </div>
 </form>

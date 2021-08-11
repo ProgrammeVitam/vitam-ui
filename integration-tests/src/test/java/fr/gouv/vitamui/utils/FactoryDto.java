@@ -95,7 +95,7 @@ public class FactoryDto {
     }
 
     private static IdentityProviderDto buildIdentityProviderDto() {
-        return IamDtoBuilder.buildIdentityProviderDto(null, "idp-" + randomString(), SYSTEM_CUSTOMER_ID, Arrays.asList(randomString()), false);
+        return IamDtoBuilder.buildIdentityProviderDto(null, "idp-" + randomString(), SYSTEM_CUSTOMER_ID, Arrays.asList(randomString()), false, false);
     }
 
     private static GroupDto buildGroupDto() {

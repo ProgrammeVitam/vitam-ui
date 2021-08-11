@@ -1,35 +1,29 @@
 <form [formGroup]="form">
 
-  <div class="row">
-    <div class="col-5">
-      <vitamui-common-slide-toggle formControlName="enabled">{{'CUSTOMER.SSO.ACTIVE_SWITCH' | translate}}</vitamui-common-slide-toggle>
-    </div>
-    <div class="col-5">
-        <vitamui-common-editable-input
-        formControlName="identifier"
-        maxlength="12"
-        [label]="'COMMON.ID' |translate"
-        [validator]="form?.get('identifier')?.validator"
-        [asyncValidator]="form?.get('identifier')?.asyncValidator"
-      >
-      </vitamui-common-editable-input>
+  <div class="row align-items-center">
+      <div class="col-6">
+        <vitamui-common-slide-toggle formControlName="enabled">{{'CUSTOMER.SSO.ACTIVE_SWITCH' | translate}}</vitamui-common-slide-toggle>
+      </div>
+      <div class="col-6">
+        <div class="read-only-field">
+          <label>Identifiant SSO</label>
+          <div>{{identityProvider.technicalName}}</div>
+        </div>
     </div>
   </div>
 
   <div class="row">
-    <div class="col-5 form-control">
+    <div class="col-6">
       <vitamui-common-editable-input
-        formControlName="name"
-        maxlength="100"
-        [label]="'CUSTOMER.SSO.ACTIVE_SWITCH' | translate"
-        [validator]="form?.get('name')?.validator"
-        [asyncValidator]="form?.get('name')?.asyncValidator"
+      formControlName="identifier"
+      maxlength="12"
+      [label]="'COMMON.ID' |translate"
+      [validator]="form?.get('identifier')?.validator"
+      [asyncValidator]="form?.get('identifier')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
-
-    <div class="col-7 form-control">
+    <div class="col-6">
       <vitamui-common-editable-toggle-group
         formControlName="internal"
         [label]="'CUSTOMER.SSO.TYPE' | translate"
@@ -39,7 +33,34 @@
         <vitamui-common-editable-button-toggle [value]="true" [content]="'CUSTOMER.SSO.TYPE_INTERNAL' | translate"></vitamui-common-editable-button-toggle>
         <vitamui-common-editable-button-toggle [value]="false" [content]="'CUSTOMER.SSO.TYPE_EXTERNAL' | translate"></vitamui-common-editable-button-toggle>
       </vitamui-common-editable-toggle-group>
-      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-6">
+      <vitamui-common-editable-input
+        formControlName="name"
+        maxlength="100"
+        [label]="'CUSTOMER.SSO.IDP_NAME' | translate"
+        [validator]="form?.get('name')?.validator"
+        [asyncValidator]="form?.get('name')?.asyncValidator"
+      >
+        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6">
+      <vitamui-common-editable-toggle-group
+      formControlName="authnRequestBinding"
+      label="Request Binding"
+      [validator]="form?.get('authnRequestBinding')?.validator"
+      [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
+    >
+      <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
+      <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
+      
+      <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+    </vitamui-common-editable-toggle-group>
+    </div>
   </div>
 
   <div class="row">
@@ -59,6 +80,25 @@
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-6">
+      <vitamui-common-editable-input
+        formControlName="mailAttribute"
+        maxlength="100"
+        [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
+      >
+      </vitamui-common-editable-input>
+    </div>
+    <div class="col-6">
+      <vitamui-common-editable-input
+        formControlName="identifierAttribute"
+        maxlength="100"
+        [label]="'CUSTOMER.SSO.IDENTIFIER_ATTRIBUTE' | translate"
+      >
+      </vitamui-common-editable-input>
+    </div>
+  </div>
+
   <div class="row pattern-row">
     <div class="col-12">
       <app-editable-patterns
@@ -73,40 +113,12 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="identityProvider.technicalName">
-    <div class="col-12">
-        <div class="read-only-field">
-          <label>Identifiant SSO</label>
-          <div>{{identityProvider.technicalName}}</div>
-        </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 form-control">
-      <vitamui-common-editable-input
-        formControlName="mailAttribute"
-        maxlength="100"
-        [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
-      >
-      </vitamui-common-editable-input>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6 form-control">
-      <vitamui-common-editable-toggle-group
-      formControlName="authnRequestBinding"
-      label="Authentication Request Binding"
-      [validator]="form?.get('authnRequestBinding')?.validator"
-      [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
+  <div class="row mt-2" *ngIf="!identityProvider.internal">
+    <vitamui-common-slide-toggle
+      class="col-4"
+      formControlName="autoProvisioningEnabled"
+      >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
     >
-      <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
-      <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
-      
-      <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-    </vitamui-common-editable-toggle-group>
-    </div>
   </div>
 
 </form>

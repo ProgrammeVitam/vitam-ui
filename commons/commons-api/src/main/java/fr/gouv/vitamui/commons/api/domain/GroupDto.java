@@ -38,6 +38,7 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -91,4 +92,7 @@ public class GroupDto extends CustomerIdDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long usersCount;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Set<String> units;
 }

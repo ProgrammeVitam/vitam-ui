@@ -109,7 +109,9 @@ class TestHostComponent {
     idpMetadata: null,
     readonly : false,
     mailAttribute: 'mailAttribute',
-    authnRequestBinding: AuthnRequestBindingEnum.POST
+    identifierAttribute: 'identifierAttribute',
+    authnRequestBinding: AuthnRequestBindingEnum.POST,
+    autoProvisioningEnabled: false
   };
   domains = [
     { value: 'test1.com', disabled: true },
@@ -166,7 +168,9 @@ describe('IdentityProviderDetailsComponent', () => {
         name: testhost.provider.name,
         patterns: testhost.provider.patterns,
         mailAttribute: testhost.provider.mailAttribute,
+        identifierAttribute: testhost.provider.identifierAttribute,
         authnRequestBinding: testhost.provider.authnRequestBinding,
+        autoProvisioningEnabled: testhost.provider.autoProvisioningEnabled
       });
     });
 
@@ -188,7 +192,9 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('internal')).not.toBeNull();
       expect(testhost.component.form.get('patterns')).not.toBeNull();
       expect(testhost.component.form.get('mailAttribute')).not.toBeNull();
+      expect(testhost.component.form.get('identifierAttribute')).not.toBeNull();
       expect(testhost.component.form.get('authnRequestBinding')).not.toBeNull();
+      expect(testhost.component.form.get('autoProvisioningEnabled')).not.toBeNull();
     });
 
     it('should have the required validator', () => {
@@ -200,7 +206,9 @@ describe('IdentityProviderDetailsComponent', () => {
         internal: null,
         patterns: null,
         mailAttribute: null,
-        authnRequestBinding: null
+        identifierAttribute: null,
+        authnRequestBinding: null,
+        autoProvisioningEnabled: null
       });
       expect(testhost.component.form.get('id').valid).toBeFalsy('id');
       expect(testhost.component.form.get('enabled').valid).toBeFalsy('enabled');
@@ -210,6 +218,7 @@ describe('IdentityProviderDetailsComponent', () => {
       expect(testhost.component.form.get('patterns').valid).toBeFalsy('patterns');
       expect(testhost.component.form.get('mailAttribute').valid).toBeTruthy('mailAttribute');
       expect(testhost.component.form.get('authnRequestBinding').valid).toBeFalsy('authnRequestBinding');
+      expect(testhost.component.form.get('autoProvisioningEnabled').valid).toBeFalsy('autoProvisioningEnabled');
     });
 
     it('should be valid and call patch()', waitForAsync(() => {
@@ -223,7 +232,9 @@ describe('IdentityProviderDetailsComponent', () => {
         internal: testhost.provider.internal,
         patterns: testhost.provider.patterns,
         mailAttribute: testhost.provider.mailAttribute,
-        authnRequestBinding: testhost.provider.authnRequestBinding
+        identifierAttribute: testhost.provider.identifierAttribute,
+        authnRequestBinding: testhost.provider.authnRequestBinding,
+        autoProvisioningEnabled: false
       });
       expect(testhost.component.form.valid).toBeTruthy();
 

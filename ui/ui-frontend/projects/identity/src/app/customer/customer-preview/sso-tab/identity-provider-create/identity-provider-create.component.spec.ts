@@ -139,7 +139,9 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST
+        identifierAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST,
+        autoProvisioningEnabled: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -177,7 +179,9 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST
+        identifierAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST,
+        autoProvisioningEnabled: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -210,6 +214,10 @@ describe('IdentityProviderCreateComponent', () => {
       const elPatterns = fixture.nativeElement.querySelector('app-pattern[formControlName=patterns]');
       expect(elPatterns).toBeTruthy();
 
+      const elAutoProvision = fixture.nativeElement.querySelector('vitamui-common-slide-toggle[formControlName=autoProvisioningEnabled]');
+      expect(elAutoProvision).toBeTruthy();
+      expect(elAutoProvision.textContent).toContain('CUSTOMER.SSO.AUTO_PROVISIONING');
+
     });
 
     it('should have a submit button', () => {
@@ -224,7 +232,9 @@ describe('IdentityProviderCreateComponent', () => {
         patterns: ['test.com', 'test.fr'],
         enabled: true,
         mailAttribute: '',
-        authnRequestBinding: AuthnRequestBindingEnum.POST
+        identifierAttribute: '',
+        authnRequestBinding: AuthnRequestBindingEnum.POST,
+        autoProvisioningEnabled: true
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

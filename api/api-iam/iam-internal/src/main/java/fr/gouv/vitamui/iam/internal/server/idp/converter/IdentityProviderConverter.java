@@ -65,17 +65,19 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     public static final String KEYSTORE_PASSWORD_KEY = "Mot de passe du keystore";
 
-    public static final String PRIVATE_KEY_PASSWORD_KEY = "Mot de passe de la clé privé";
-
     public static final String IDP_METADATA_KEY = "Idp Metadata";
 
     public static final String SP_METADATA_KEY = "Sp metadata";
 
     public static final String MAIL_ATTRIBUTE_KEY = "Attribut mail";
 
+    public static final String IDENTIFIER_ATTRIBUTE_KEY = "Attribut identifier";
+
     public static final String AUTHENTICATION_REQUEST_BINDING_KEY = "Authentication request binding";
 
     public static final String MAXIMUM_AUTHENTICATION_LIFE_TIME = "Temps maximum de connexion";
+
+    public static final String AUTO_PROVISIONING_ENABLED_KEY = "Mise à jour automatique des utilisateurs";
 
     private final SpMetadataGenerator spMetadataGenerator;
 
@@ -92,8 +94,10 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         logbookData.put(ENABLED_KEY, String.valueOf(dto.getEnabled()));
         logbookData.put(PATTERNS_KEY, dto.getPatterns().toString());
         logbookData.put(MAIL_ATTRIBUTE_KEY, String.valueOf(dto.getMailAttribute()));
+        logbookData.put(IDENTIFIER_ATTRIBUTE_KEY, String.valueOf(dto.getIdentifierAttribute()));
         logbookData.put(AUTHENTICATION_REQUEST_BINDING_KEY, String.valueOf(dto.getAuthnRequestBinding()));
         logbookData.put(MAXIMUM_AUTHENTICATION_LIFE_TIME, String.valueOf(dto.getMaximumAuthenticationLifetime()));
+        logbookData.put(AUTO_PROVISIONING_ENABLED_KEY, String.valueOf(dto.isAutoProvisioningEnabled()));
         return ApiUtils.toJson(logbookData);
     }
 
@@ -113,12 +117,14 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         dto.setPrivateKeyPassword(dto.getKeystorePassword());
         provider.setIdpMetadata(dto.getIdpMetadata());
         provider.setMailAttribute(dto.getMailAttribute());
+        provider.setIdentifierAttribute(dto.getIdentifierAttribute());
         provider.setAuthnRequestBinding(dto.getAuthnRequestBinding());
         final String spMetadata = spMetadataGenerator.generate(dto);
         provider.setSpMetadata(spMetadata);
         provider.setCustomerId(dto.getCustomerId());
         provider.setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
         provider.setReadonly(dto.isReadonly());
+        provider.setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
         return provider;
     }
 

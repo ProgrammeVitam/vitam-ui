@@ -142,7 +142,7 @@ public class ProviderController extends AbstractUiRestController {
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'keystore' must not be blank
     public IdentityProviderDto create(@RequestPart final String provider, @RequestPart("keystore") final MultipartFile keystore,
             @RequestPart("idpMetadata") final MultipartFile idpMetadata) throws Exception {
-        LOGGER.debug("Create provider");
+        LOGGER.debug("Create provider: {}", provider);
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, idpMetadata);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());

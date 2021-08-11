@@ -143,6 +143,9 @@ public class PersonRepositoryTests {
         exists = repository.exists(Criteria.where("emails").in("makhtar@vitamui.com", "moctar@vitamui.com"));
         assertTrue("Entity should be find by emails criteria", exists);
 
+        exists = repository.exists(Criteria.where("emails").regex("^" + Pattern.quote("Mocta") + ".*$", "i"));
+        assertTrue("Entity should be find by emails criteria", exists);
+
         exists = repository.exists(Criteria.where("emails").in("unknow@vitamui.com"));
         assertFalse("Entity should not be find by emails criteria", exists);
     }

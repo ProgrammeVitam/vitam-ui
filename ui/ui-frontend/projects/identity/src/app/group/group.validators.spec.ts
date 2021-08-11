@@ -51,7 +51,7 @@ function toObservable(r: any): Observable<any> {
   return obs;
 }
 
-describe('ProfileGroupValidators', () => {
+describe('ProfileGroupValidators nameExist', () => {
 
   it('should return null', fakeAsync(() => {
     const groupServiceSpy = jasmine.createSpyObj('GroupService', ['exists']);
@@ -96,5 +96,51 @@ describe('ProfileGroupValidators', () => {
     tick(400);
     expect(groupServiceSpy.exists).toHaveBeenCalledWith('42', '111111');
   }));
+});
 
+describe('ProfileGroupValidators unitExists', () => {
+
+  it('should return null', fakeAsync(() => {
+    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
+    groupServiceSpy.unitExists.and.returnValue(of(false));
+    const groupValidators = new GroupValidators(groupServiceSpy);
+    toObservable(groupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
+      expect(result).toBeNull();
+    });
+    tick(400);
+    expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
+  }));
+
+  it('should return { unitExists: true }', fakeAsync(() => {
+    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
+    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const profileGroupValidators = new GroupValidators(groupServiceSpy);
+    toObservable(profileGroupValidators.unitExists('customerId')(new FormControl('unite1'))).subscribe((result) => {
+      expect(result).toEqual({ unitExists: true });
+    });
+    tick(400);
+    expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite1');
+  }));
+
+  it('should not call the service', fakeAsync(() => {
+    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
+    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const profileGroupValidators = new GroupValidators(groupServiceSpy);
+    toObservable(profileGroupValidators.unitExists('customerId', ['unite2'])(new FormControl('unite2'))).subscribe((result) => {
+      expect(result).toEqual(null);
+    });
+    tick(400);
+    expect(groupServiceSpy.unitExists).not.toHaveBeenCalled();
+  }));
+
+  it('should call the service', fakeAsync(() => {
+    const groupServiceSpy = jasmine.createSpyObj('GroupService', ['unitExists']);
+    groupServiceSpy.unitExists.and.returnValue(of(true));
+    const profileGroupValidators = new GroupValidators(groupServiceSpy);
+    toObservable(profileGroupValidators.unitExists('customerId')(new FormControl('unite2'))).subscribe((result) => {
+      expect(result).toEqual({ unitExists: true });
+    });
+    tick(400);
+    expect(groupServiceSpy.unitExists).toHaveBeenCalledWith('customerId', 'unite2');
+  }));
 });

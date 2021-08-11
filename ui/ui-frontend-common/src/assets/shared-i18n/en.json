@@ -253,6 +253,10 @@
     "ITEM_SUPERVISION_PROFILE_APP": {
       "NAME": "Rights in the \"Item supervision\" APP",
       "TOOLTIP": "Set up supervision profiles for the \"Item supervision\" APP"
+    },
+    "UNITS_APP": {
+      "NAME": "Units",
+      "TOOLTIP": "Set up membership units"
     }
   },
   "FOOTER": {

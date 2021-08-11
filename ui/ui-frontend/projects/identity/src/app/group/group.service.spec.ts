@@ -150,6 +150,7 @@ describe('GroupService', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
+        units: [],
         readonly : false,
     };
     groupService.create(expectedGroup).subscribe(
@@ -180,7 +181,8 @@ describe('GroupService', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
-        readonly : false
+        units: [],
+        readonly : false,
     };
     groupService.create(expectedProfileGroup).subscribe(
       fail,
@@ -204,7 +206,8 @@ describe('GroupService', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
-        readonly : false
+        units: [],
+        readonly : false,
     };
     groupService.get('42').subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
     const req = httpTestingController.expectOne('/fake-api/groups/42?embedded=ALL');
@@ -243,6 +246,41 @@ describe('GroupService', () => {
     req.flush('', { status: 204, statusText: 'No Content' });
   });
 
+  it('should return true if the group exists', () => {
+    groupService.unitExists('customerId', 'unit1').subscribe(
+      (found) => {
+        expect(found).toBeTruthy();
+      },
+      fail
+    );
+
+    const criterionArray: any[] = [
+      { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
+      { key: 'customerId', value: 'customerId', operator: Operators.equals }
+    ];
+    const query: SearchQuery = { criteria: criterionArray };
+    const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
+    expect(req.request.method).toEqual('HEAD');
+    req.flush('');
+  });
+
+  it('should return false if the group does not exist', () => {
+    groupService.unitExists('customerId', 'unit1').subscribe(
+      (found) => {
+        expect(found).toBeFalsy();
+      },
+      fail
+    );
+    const criterionArray: any[] = [
+      { key: 'units', value: 'unit1', operator: Operators.equalsIgnoreCase },
+      { key: 'customerId', value: 'customerId', operator: Operators.equals }
+  ];
+    const query: SearchQuery = { criteria: criterionArray };
+    const req = httpTestingController.expectOne('/fake-api/groups/check?criteria=' + encodeURI(JSON.stringify(query)));
+    expect(req.request.method).toEqual('HEAD');
+    req.flush('', { status: 204, statusText: 'No Content' });
+  });
+
   it('should call PATCH /fake-api/groups/42', () => {
     const snackBar = TestBed.inject(VitamUISnackBar);
     const expectedProfileGroup: Group = {
@@ -254,6 +292,7 @@ describe('GroupService', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
+        units: [],
         readonly : false
     };
     groupService.updated.subscribe((profileGroup) => expect(profileGroup).toEqual(expectedProfileGroup), fail);
@@ -286,6 +325,7 @@ describe('GroupService', () => {
         usersCount: 0,
         profileIds: [],
         profiles: [],
+        units: [],
         readonly : false
     };
     groupService.patch({ id: '42', name: expectedGroup.name }).subscribe(

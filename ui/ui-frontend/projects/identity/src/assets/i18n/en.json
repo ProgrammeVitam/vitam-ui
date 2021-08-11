@@ -149,16 +149,19 @@
       "METADATA": "Metadata CAS",
       "RETURN": "Return to the IDP list",
       "ACTIVE_SWITCH": "Active IDP",
+      "IDP_NAME": "IDP name",
       "KEYSTORE": "Keystore of CAS",
       "IDP_METADATA": "IDP Metadata",
-      "MAIL_ATTRIBUTE": "Mail attribute",
+      "MAIL_ATTRIBUTE": "Attribute of the email",
+      "IDENTIFIER_ATTRIBUTE": "Attribute of the identifier",
       "MODAL": {
         "TITLE": "IDP Creation for",
         "KEYSTORE_PWD": "Keystore password",
         "WRONG_PASSWORD": "Wrong password",
         "UPLOAD_KEYSTORE": "Upload the CAS keystore file",
         "UPLOAD_METADATA": "Upload the IDP metadata file"
-      }
+      },
+      "AUTO_PROVISIONING": "Automatic user update"
     },
     "GRAPHIC_IDENTITY": {
       "TOGGLE_TITLE": "Personalized graphic identity",
@@ -279,7 +282,7 @@
         "MOBILE": "Phone number",
         "FIX": "Home phone number"
       },
-      "CENTER_CODE": "Center code",
+      "CENTER_CODE":"Center code",
       "SITE_CODE": "Site code",
       "INTERNAL_CODE": "Internal code",
       "DEFAULT_LANGUAGE": "Interface language",
@@ -304,7 +307,8 @@
           "TITLE": "Security",
           "PHONE_FIELD_FORMAT": "International format required"
         }
-      }
+      },
+      "ACTIVATE_AUTO_PROVISIONING": "Automatic update via SSO"
     },
     "GROUP": {
       "GROUP": "Assigned group",
@@ -315,9 +319,9 @@
         "AUTORISATION_STEP": {
           "ATTRIBUATE_GROUP": "Assigned group",
           "TITLE": "Permissions",
-          "INPUT_PLACEHOLDER": "Filter by Name, Id...",
+          "INPUT_PLACEHOLDER": "Filter by name or description",
           "RESULTS_TABLE": {
-            "GROUP_LABEL": "Profile group",
+            "GROUP_LABEL": "Available groups",
             "MORE_DETAIL": "Show detail",
             "LESS_DETAIL": "Hide detail",
             "PROFILE": "Profiles"
@@ -375,7 +379,7 @@
   "GROUP": {
     "HOME": {
       "TITLE": "Set up profile groups",
-      "TITLE_PLACEHOLDER": "Group name, Id",
+      "TITLE_PLACEHOLDER": "Group name, Id, Description, Membership unit",
       "ACTION_BUTTON": "Create a Group",
       "RESULTS_TABLE": {
         "NAME": "Group name",
@@ -402,13 +406,17 @@
       "LEVEL": "Level",
       "SUBLEVEL": "Sub level",
       "SUBLEVEL_TOOLTIP": "This group has profiles",
+      "MODIF_UNITS_BUTTON": "Change membership units",
+      "UNITS_TABLE_TITLE": "Home units",
       "EXISTING_NAME": "Name already exists",
       "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
       "MODAL": {
         "TITLE": "Create profile groups",
         "EXISTING_NAME": "Name already exists",
         "WRONG_FORMAT": "Wrong format (alphanumeric characters separated by characters .)",
-        "PROVISIONNING_GROUP": "Group Provisioning"
+        "PROVISIONNING_GROUP": "Group Provisioning",
+        "UNITS_INFORMATION": "Entering the membership units",
+        "UPDATE_UNITS": "Editing membership units of"
       }
     },
     "PROFILE": {
@@ -418,6 +426,11 @@
         "SAFE": "Safe",
         "PROFILE": "Profile"
       }
+  },
+    "UNITS_FORM": {
+      "INPUT_PLACEHOLDER": "Unit of belonging",
+      "UNIT_ALREADY_EXIST": "Unit already associated with a group",
+      "UNIT_ALREADY_ADDED": "Unit already added"
     }
   },
   "HIERARCHY": {
@@ -477,3 +490,4 @@
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External parameters profile {{ name }} has been updated"
   }
 }
+
