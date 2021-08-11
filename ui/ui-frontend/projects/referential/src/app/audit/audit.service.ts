@@ -34,31 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {AccessionRegister, Event} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
-import {DEFAULT_PAGE_SIZE, Direction, PageRequest, SearchService, LogbookApiService} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { AccessionRegisterSummary, DEFAULT_PAGE_SIZE, Direction, PageRequest, SearchService, LogbookApiService } from 'ui-frontend-common';
 
-import {AccessionRegisterApiService} from '../core/api/accession-register-api.service';
-import {OperationApiService} from '../core/api/operation-api.service';
-import {VitamUISnackBar, VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
+import { AccessionRegisterSummaryApiService } from '../core/api/accession-register-summary-api.service';
+import { OperationApiService } from '../core/api/operation-api.service';
+import { VitamUISnackBar, VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuditService extends SearchService<Event> {
-
   constructor(
     private operationApiService: OperationApiService,
     private logbookApiService: LogbookApiService,
-    private accessionRegisterApiService: AccessionRegisterApiService,
+    private accessionRegisterApiService: AccessionRegisterSummaryApiService,
     private snackBar: VitamUISnackBar,
-    http: HttpClient) {
+    http: HttpClient
+  ) {
     super(http, operationApiService, 'ALL');
   }
-
 
   create(audit: any, headers: HttpHeaders) {
     for (const header in this.headers) {
@@ -66,33 +65,32 @@ export class AuditService extends SearchService<Event> {
         headers.set(header, this.headers.get(header));
       }
     }
-    return this.operationApiService.runAudit(audit, headers)
-      .pipe(
-        tap(
-          () => {
-            console.log('Audit: ', audit);
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: {type: 'auditRun', id: audit.identifier},
-              duration: 10000
-            });
-          },
-          (error: any) => {
-            console.log('error: ', error);
-            if (!error || !error.error) {
-              return;
-            }
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
+    return this.operationApiService.runAudit(audit, headers).pipe(
+      tap(
+        () => {
+          console.log('Audit: ', audit);
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'auditRun', id: audit.identifier },
+            duration: 10000,
+          });
+        },
+        (error: any) => {
+          console.log('error: ', error);
+          if (!error || !error.error) {
+            return;
           }
-        )
-      );
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
+      )
+    );
   }
 
   download(id: string, eventType: string, accessContractId: string) {
-    const headers:HttpHeaders = new HttpHeaders({'X-Access-Contract-Id': accessContractId});
+    const headers: HttpHeaders = new HttpHeaders({ 'X-Access-Contract-Id': accessContractId });
     let downloadObservable: Observable<HttpResponse<Blob> | Blob>;
     let fileName: string;
     let downloadType: string;
@@ -104,40 +102,43 @@ export class AuditService extends SearchService<Event> {
     } else if (eventType === 'EVIDENCE_AUDIT' || eventType === 'PROCESS_AUDIT') {
       fileName = id + '.jsonl';
       downloadType = 'batchreport';
-      downloadObservable = this.logbookApiService.downloadReport(id, downloadType, headers)
+      downloadObservable = this.logbookApiService.downloadReport(id, downloadType, headers);
     } else {
       fileName = id + '.json';
       downloadType = 'AUDIT';
       downloadObservable = this.operationApiService.downloadOperation(id, downloadType, headers);
     }
 
-    downloadObservable.subscribe(response => {
-      const element = document.createElement('a');
+    downloadObservable.subscribe(
+      (response) => {
+        const element = document.createElement('a');
 
-      let blob: Blob;
-      if (response instanceof HttpResponse) {
-        blob = new Blob([response.body], {type: 'octet/stream'})
-      } else {
-        blob = response;
+        let blob: Blob;
+        if (response instanceof HttpResponse) {
+          blob = new Blob([response.body], { type: 'octet/stream' });
+        } else {
+          blob = response;
+        }
+        const url = window.URL.createObjectURL(blob);
+        element.href = url;
+
+        element.download = fileName;
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      (error) => {
+        this.snackBar.open(error.error.message, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
       }
-      const url = window.URL.createObjectURL(blob);
-      element.href = url;
-
-      element.download = fileName;
-      element.style.visibility = 'hidden';
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
-    }, error => {
-      this.snackBar.open(error.error.message, null, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 10000
-      });
-    });
+    );
   }
 
-  getAllAccessionRegister(accessContractId: string): Observable<AccessionRegister[]> {
-    return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({'X-Access-Contract-Id': accessContractId}));
+  getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {
+    return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }));
   }
 
   checkEvidenceAuditExistence(evidenceAuditId: string): Observable<boolean> {
@@ -148,8 +149,6 @@ export class AuditService extends SearchService<Event> {
 
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, '#id', Direction.ASCENDANT, JSON.stringify(criteria));
 
-    return this.search(pageRequest).pipe(
-      map(res => res.length === 0)
-    );
+    return this.search(pageRequest).pipe(map((res) => res.length === 0));
   }
 }

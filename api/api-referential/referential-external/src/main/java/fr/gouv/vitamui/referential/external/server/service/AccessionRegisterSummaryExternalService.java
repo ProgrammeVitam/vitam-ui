@@ -34,34 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.external.client;
+package fr.gouv.vitamui.referential.external.server.service;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
+import fr.gouv.vitamui.referential.internal.client.AccessionRegisterSummaryInternalRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-public class AccessionRegisterExternalRestClient extends BaseCrudRestClient<AccessionRegisterSummaryDto, ExternalHttpContext> {
+@Service
+public class AccessionRegisterSummaryExternalService extends AbstractInternalClientService {
 
-    public AccessionRegisterExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
-        super(restTemplate, baseUrl);
+    private final AccessionRegisterSummaryInternalRestClient accessionRegisterSummaryInternalRestClient;
+
+    @Autowired
+    public AccessionRegisterSummaryExternalService(ExternalSecurityService externalSecurityService,
+        AccessionRegisterSummaryInternalRestClient accessionRegisterSummaryInternalRestClient) {
+        super(externalSecurityService);
+        this.accessionRegisterSummaryInternalRestClient = accessionRegisterSummaryInternalRestClient;
+    }
+
+    public List<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
+        return accessionRegisterSummaryInternalRestClient.getAll(getInternalHttpContext(), criteria);
     }
 
     @Override
-    public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL;
-    }
-
-    @Override protected Class<AccessionRegisterSummaryDto> getDtoClass() {
-        return AccessionRegisterSummaryDto.class;
-    }
-
-    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessionRegisterSummaryDto>>() { };
+    protected BaseRestClient<InternalHttpContext> getClient() {
+        return accessionRegisterSummaryInternalRestClient;
     }
 
 }

@@ -405,9 +405,9 @@ public class ServicesData {
     public static final String ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE = "ROLE_SEARCH_" + ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE;
 
 
-    public static final String ACCESSION_REGISTER = "ACCESSION_REGISTER";
+    public static final String ACCESSION_REGISTER_DETAIL = "ACCESSION_REGISTER_DETAIL";
 
-    public static final String ROLE_GET_ACCESSION_REGISTER = GET_ROLE_PREFIX + ACCESSION_REGISTER;
+    public static final String ROLE_GET_ACCESSION_REGISTER_DETAIL = GET_ROLE_PREFIX + ACCESSION_REGISTER_DETAIL;
 
     //@formatter:off
 
@@ -522,7 +522,7 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER
+            ROLE_GET_ACCESSION_REGISTER_DETAIL
 
             );
 
@@ -660,7 +660,7 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER
+            ROLE_GET_ACCESSION_REGISTER_DETAIL
             );
     //@formatter:on
 

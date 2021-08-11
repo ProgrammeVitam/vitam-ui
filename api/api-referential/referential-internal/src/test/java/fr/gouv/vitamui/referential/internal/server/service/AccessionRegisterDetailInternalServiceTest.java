@@ -52,7 +52,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterDetailInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -46,7 +46,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AccessContractExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AccessionRegisterDetailExternalRestClient;
-import fr.gouv.vitamui.referential.external.client.AccessionRegisterExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AccessionRegisterSummaryExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
@@ -153,7 +153,7 @@ public class ReferentialContextConfiguration extends AbstractContextConfiguratio
     }
 
     @Bean
-    public AccessionRegisterExternalRestClient accessionRegisterExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
+    public AccessionRegisterSummaryExternalRestClient accessionRegisterExternalRestClient(final ReferentialExternalRestClientFactory referentialExternalRestClientFactory) {
         return referentialExternalRestClientFactory.getAccessionRegisterExternalRestClient();
     }
 

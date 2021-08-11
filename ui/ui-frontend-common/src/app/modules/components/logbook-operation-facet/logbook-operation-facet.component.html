@@ -1,14 +1,10 @@
-<div>
-  <span class="title-text" [ngStyle]="{'font-size': facetTitleSize + 'px'}">{{ facetTitle }}</span>
-  <div class="row row-data">
-    <div class="col title-text" *ngFor="let facet of facetDetails">
-      <div class="layout-data" [ngClass]="{ clickable: facet.clickable }" (click)="onFilter(facet)">
-        <div class="mb-2">
-          <span class="status-text" [ngStyle]="{ color: facet.color, 'font-size': facetSize + 'px' }">{{ facet.title }}</span>
-        </div>
-        <div class="result-text">
-          <span [ngStyle]="{'font-size': facetResultSize + 'px'}">{{ facet.totalResults }}</span>
-        </div>
+<span class="title-text">{{ facetTitle }}</span>
+<div class="row row-data">
+  <div class="col title-text" *ngFor="let facet of facetDetails">
+    <div class="layout-data" [ngClass]="{ clickable: facet.clickable }" (click)="onFilter(facet)">
+      <span class="status-text" [ngStyle]="{ color: facet.color }">{{ facet.title }}</span>
+      <div class="result-text">
+        {{ facet.totalResults }}
       </div>
     </div>
   </div>

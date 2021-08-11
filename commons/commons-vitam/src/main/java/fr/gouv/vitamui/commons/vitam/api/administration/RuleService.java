@@ -36,16 +36,10 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.administration;
 
-import java.io.InputStream;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -56,9 +50,13 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
+import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.RuleMeasurementEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.InputStream;
+import java.util.Optional;
 
 public class RuleService {
 
@@ -75,31 +73,31 @@ public class RuleService {
 
     @SuppressWarnings("rawtypes")
     public RequestResponse uploadRules(final VitamContext vitamContext, final InputStream rules, final String filename)
-            throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
+        throws VitamClientException, AccessExternalClientException, InvalidParseOperationException {
         return adminExternalClient.createRules(vitamContext, rules, filename);
     }
 
-    public RequestResponse<FileRulesModel> findRules(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
+    public RequestResponse<FileRulesModel> findRules(final VitamContext vitamContext, final JsonNode select)
+        throws VitamClientException {
         return adminExternalClient.findRules(vitamContext, select);
     }
 
     public Optional<Long> findRulesDurationByRuleId(final VitamContext vitamContext, final String ruleId)
-    		throws VitamClientException, InvalidCreateOperationException, JsonProcessingException {
-    	final Select select = new Select();
-		select.setQuery(QueryHelper.eq("RuleId", ruleId));
-		RequestResponse<FileRulesModel> rulesVitamResponse =
-				this.findRules(vitamContext, select.getFinalSelect());
-		if (rulesVitamResponse.isOk()) {
-			RuleNodeResponseDto ruleNodeResponseDto = objectMapper
-					.treeToValue(rulesVitamResponse.toJsonNode(), RuleNodeResponseDto.class);
-			FileRulesModel rule = ruleNodeResponseDto.getResults().get(0);
-			if (RuleMeasurementEnum.YEAR.equals(RuleMeasurementEnum.getEnumFromType(rule.getRuleMeasurement().getType()))) {
-				return Optional.of(Long.parseLong(rule.getRuleDuration()));
-			}
-			else {
-				throw new UnexpectedDataException("The rule duration measurement should be in years.");
-			}
-		}
-		return Optional.empty();
+        throws VitamClientException, InvalidCreateOperationException, JsonProcessingException {
+        final Select select = new Select();
+        select.setQuery(QueryHelper.eq("RuleId", ruleId));
+        RequestResponse<FileRulesModel> rulesVitamResponse =
+            this.findRules(vitamContext, select.getFinalSelect());
+        if (rulesVitamResponse.isOk()) {
+            RuleNodeResponseDto ruleNodeResponseDto = objectMapper
+                .treeToValue(rulesVitamResponse.toJsonNode(), RuleNodeResponseDto.class);
+            FileRulesModel rule = ruleNodeResponseDto.getResults().get(0);
+            if (RuleMeasurementEnum.YEAR.equals(rule.getRuleMeasurement())) {
+                return Optional.of(Long.parseLong(rule.getRuleDuration()));
+            } else {
+                throw new UnexpectedDataException("The rule duration measurement should be in years.");
+            }
+        }
+        return Optional.empty();
     }
 }

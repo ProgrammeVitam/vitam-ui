@@ -97,6 +97,11 @@
       "STATUS": "Statut",
       "NO_RESULT": "Aucun résultat",
       "LOAD_MORE_RESULTS": "Afficher plus de résultats..."
+    },
+    "STATUS": {
+      "STORED_AND_UPDATED": "Partiellement éliminée ou transférée",
+      "STORED_AND_COMPLETED": "En stock et complète",
+      "UNSTORED": "Totalement éliminée ou transférée"
     }
   }
 }

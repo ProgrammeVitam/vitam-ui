@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,28 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {TestBed} from '@angular/core/testing';
+package fr.gouv.vitamui.referential.external.client;
 
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {environment} from '../../../environments/environment';
-import {AccessionRegisterApiService} from './accession-register-api.service';
+import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
 
-describe('AccessionRegisterApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      InjectorModule,
-      LoggerModule.forRoot()
-    ],
-    providers: [
-      {provide: BASE_URL, useValue: '/fake-api'},
-      {provide: ENVIRONMENT, useValue: environment}
-    ]
-  }));
+import java.util.List;
 
-  it('should be created', () => {
-    const service: AccessionRegisterApiService = TestBed.inject(AccessionRegisterApiService);
-    expect(service).toBeTruthy();
-  });
-});
+public class AccessionRegisterSummaryExternalRestClient
+    extends BaseCrudRestClient<AccessionRegisterSummaryDto, ExternalHttpContext> {
+
+    public AccessionRegisterSummaryExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
+        super(restTemplate, baseUrl);
+    }
+
+    @Override
+    public String getPathUrl() {
+        return RestApi.ACCESSION_REGISTER_URL + "/summary";
+    }
+
+    @Override
+    protected Class<AccessionRegisterSummaryDto> getDtoClass() {
+        return AccessionRegisterSummaryDto.class;
+    }
+
+    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<>() {
+        };
+    }
+
+}

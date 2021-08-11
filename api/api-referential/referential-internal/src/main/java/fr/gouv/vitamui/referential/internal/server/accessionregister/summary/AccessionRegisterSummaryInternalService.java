@@ -34,47 +34,53 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.external.server.rest;
+package fr.gouv.vitamui.referential.internal.server.accessionregister.summary;
 
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterDetailExternalService;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
+import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
-@RestController
-@RequestMapping(RestApi.ACCESSION_REGISTER_DETAIL_URL)
-public class AccessionRegisterDetailExternalController {
+@Service
+public class AccessionRegisterSummaryInternalService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
-        AccessionRegisterDetailExternalController.class);
+        AccessionRegisterSummaryInternalService.class);
 
-    private final AccessionRegisterDetailExternalService accessionRegisterDetailExternalService;
+    final private AccessionRegisterService accessionRegisterService;
+
+    private ObjectMapper objectMapper;
 
     @Autowired
-    public AccessionRegisterDetailExternalController(
-        AccessionRegisterDetailExternalService accessionRegisterDetailExternalService) {
-        this.accessionRegisterDetailExternalService = accessionRegisterDetailExternalService;
+    AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService, ObjectMapper objectMapper) {
+        this.accessionRegisterService = accessionRegisterService;
+        this.objectMapper = objectMapper;
     }
 
-    @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
-        return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+
+    public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
+        RequestResponse<AccessionRegisterSummaryModel> requestResponse;
+        try {
+            LOGGER.info("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
+            final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
+            return AccessionRegisterSummaryConverter.convertVitamsToDtos(accessionRegisterSymbolicResponseDto.getResults());
+        } catch (JsonProcessingException | VitamClientException e) {
+            throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
+        }
     }
 
 }

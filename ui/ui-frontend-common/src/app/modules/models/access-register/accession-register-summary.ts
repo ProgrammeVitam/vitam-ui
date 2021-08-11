@@ -1,5 +1,5 @@
-import {Id} from 'ui-frontend-common';
-import {AccessionRegisterDetail} from './accession-registers-detail';
+import { AccessionRegisterDetail } from './accession-register-detail';
+import {Id} from "../id.interface";
 
 export interface AccessionRegisterSummary extends Id {
   tenant: number;

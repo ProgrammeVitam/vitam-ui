@@ -70,7 +70,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private AccessContractService accessContractService;
 
     @MockBean
-    private AccessionRegisterService accessionRegisterService;
+    private AccessionRegisterSummaryService accessionRegisterSummaryService;
 
     @MockBean
     private AgencyService agencyService;

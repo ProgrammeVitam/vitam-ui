@@ -35,8 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import {Pipe, PipeTransform} from '@angular/core';
-import {Logger} from '../logger';
-
+import {Logger} from '../logger/logger';
 
 @Pipe({ name: 'bytes' })
 export class BytesPipe implements PipeTransform {
@@ -52,11 +51,23 @@ export class BytesPipe implements PipeTransform {
       return '';
     }
 
+    if (parseFloat(value) < 0 ) {
+      this.logger.log(this, `BytesPipe: value [${value}] can't be negative`);
+      // return value there because next operation return Nan with negative value
+      return value;
+    }
+
+    if (parseFloat(value) === 0) {
+      // return 0 there because next operation return -Infinity with "0"
+      return '0 octet';
+    }
+
     // TODO internationalization of units
     const units = ['octets', 'ko', 'Mo', 'Go', 'To', 'Po'];
     let power = Math.floor(Math.log(value) / Math.log(BytesPipe.NUMBER_OF_BYTES_IN_ONE_KB));
-    if (power >= units.length) {
-      power = units.length - 1;
+
+    while(power >= units.length) {
+      power = power - 1;
     }
 
     return (value / Math.pow(BytesPipe.NUMBER_OF_BYTES_IN_ONE_KB, power)).toFixed(precision) + ' ' + units[power];

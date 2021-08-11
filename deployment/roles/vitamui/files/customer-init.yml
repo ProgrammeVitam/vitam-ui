@@ -201,7 +201,7 @@ customer-init:
       app-name: ACCESSION_REGISTER_APP
       level:
       roles:
-        - ROLE_GET_ACCESSION_REGISTER
+        - ROLE_GET_ACCESSION_REGISTER_DETAIL
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName

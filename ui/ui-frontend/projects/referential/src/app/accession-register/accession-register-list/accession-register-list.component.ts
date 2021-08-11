@@ -37,10 +37,8 @@
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-import { AccessionRegisterDetail } from '../../../../../vitamui-library/src/lib/models/accession-registers-detail';
+import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 import { AccessionRegistersService } from '../accession-register.service';
-import { AccessionRegisterBusiness } from '../accession-register.business';
 
 @Component({
   selector: 'app-accession-register-list',
@@ -72,11 +70,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   searchSub: Subscription;
 
-  constructor(
-    public accessionRegistersService: AccessionRegistersService,
-    public accessionRegisterBusiness: AccessionRegisterBusiness,
-    @Inject(LOCALE_ID) private locale: string
-  ) {
+  constructor(public accessionRegistersService: AccessionRegistersService, @Inject(LOCALE_ID) private locale: string) {
     super(accessionRegistersService);
   }
 
@@ -84,7 +78,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     this.searchSub = merge(this.searchChange, this.filterChange, this.orderChange)
       .pipe(startWith(null), debounceTime(this.filterDebounceTimeMs))
       .subscribe(() => this.search());
-    this.statusFilterOptions$ = this.accessionRegisterBusiness.getAccessionRegisterStatus(this.locale);
+    this.statusFilterOptions$ = this.accessionRegistersService.getAccessionRegisterStatus(this.locale);
   }
 
   ngOnDestroy() {

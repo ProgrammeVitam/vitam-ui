@@ -34,34 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.client;
+package fr.gouv.vitamui.referential.internal.server.accessionregister.summary;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class AccessionRegisterInternalRestClient  extends BaseCrudRestClient<AccessionRegisterSummaryDto, InternalHttpContext> {
-
-    public AccessionRegisterInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
-        super(restTemplate, baseUrl);
+public class AccessionRegisterSummaryConverter {
+    public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
+        return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
     }
 
-    @Override
-    public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL;
+    public static List<AccessionRegisterSummaryDto> convertVitamsToDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
+        return accessionRegisterSummaryModels.stream().map(AccessionRegisterSummaryConverter::convertVitamToDto).collect(Collectors.toList());
     }
-
-    @Override protected Class<AccessionRegisterSummaryDto> getDtoClass() {
-        return AccessionRegisterSummaryDto.class;
-    }
-
-    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessionRegisterSummaryDto>>() { };
-    }
-
 }

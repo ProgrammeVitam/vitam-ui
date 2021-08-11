@@ -34,25 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component} from '@angular/core';
-import {AccessionRegisterSummary} from '../../../../vitamui-library/src/lib/models/accession-registe-summary';
-import {AccessionRegistersService} from './accession-register.service';
-import {SidenavPage} from 'ui-frontend-common';
-import {AccessionRegisterDetail} from '../../../../vitamui-library/src/lib/models/accession-registers-detail';
-import {ActivatedRoute} from '@angular/router';
+import { Component } from '@angular/core';
+import { AccessionRegisterSummary, AccessionRegisterDetail, SidenavPage } from 'ui-frontend-common';
+import { AccessionRegistersService } from './accession-register.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
-  styleUrls: ['./accession-register.component.scss'],
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> {
   accessionRegisterSummary: AccessionRegisterSummary[] = [];
   public search: string;
 
-  constructor(
-    accessionRegisterService: AccessionRegistersService,
-    route: ActivatedRoute) {
+  constructor(accessionRegisterService: AccessionRegistersService, route: ActivatedRoute) {
     super(route, accessionRegisterService);
   }
 

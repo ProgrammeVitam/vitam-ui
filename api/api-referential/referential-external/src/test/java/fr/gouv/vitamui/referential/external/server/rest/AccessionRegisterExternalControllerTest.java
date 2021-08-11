@@ -43,6 +43,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterDetailExternalService;
+import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterSummaryExternalService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -57,20 +58,23 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = { AccessionRegisterDetailExternalController.class })
-class AccessionRegisterDetailExternalControllerTest extends ApiReferentialControllerTest<AccessionRegisterDetailDto> {
+@WebMvcTest(controllers = { AccessionRegisterExternalController.class })
+class AccessionRegisterExternalControllerTest extends ApiReferentialControllerTest<AccessionRegisterDetailDto> {
 
     @MockBean
-    private AccessionRegisterDetailExternalService accessionRegisterDetailExternalService;
+    private AccessionRegisterDetailExternalService detailExternalService;
+
+    @MockBean
+    private AccessionRegisterSummaryExternalService summaryExternalService;
 
     @Test
     void should_call_the_corresponding_service_once_when_paginated_api_is_called() throws Exception {
-        //Given //When
-        ResultActions resultActions = super.testGetPaginatedEntities();
+        //Given // When
+        ResultActions resultActions = testGetPaginatedEntities("/details", getHeaders());
 
         //Then
         resultActions.andExpect(status().isOk());
-        verify(accessionRegisterDetailExternalService, times(1)).getAllPaginated(any(), any(), any(), any(), any());
+        verify(detailExternalService, times(1)).getAllPaginated(any(), any(), any(), any(), any());
     }
 
     @Override
@@ -80,23 +84,23 @@ class AccessionRegisterDetailExternalControllerTest extends ApiReferentialContro
 
     @Override
     protected VitamUILogger getLog() {
-        return VitamUILoggerFactory.getInstance(AccessionRegisterDetailExternalController.class);
+        return VitamUILoggerFactory.getInstance(AccessionRegisterExternalController.class);
     }
 
     @Override
     protected void preparedServices() {
         PaginatedValuesDto<AccessionRegisterDetailDto> response = new PaginatedValuesDto<>();
-        doReturn(response).when(accessionRegisterDetailExternalService).getAllPaginated(any(), any(), any(), any(), any());
+        doReturn(response).when(detailExternalService).getAllPaginated(any(), any(), any(), any(), any());
     }
 
     @Override
     protected String getRessourcePrefix() {
-        return RestApi.ACCESSION_REGISTER_DETAIL_URL;
+        return RestApi.ACCESSION_REGISTER_URL;
     }
 
     @Override
     protected String[] getServices() {
-        return new String[] { ServicesData.ROLE_GET_ACCESSION_REGISTER };
+        return new String[] { ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL};
     }
 
     @Override

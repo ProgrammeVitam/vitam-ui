@@ -174,7 +174,7 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public AccessionRegisterInternalRestClient accessionRegisterInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
+    public AccessionRegisterSummaryInternalRestClient accessionRegisterInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getAccessionRegisterInternalRestClient();
     }
 

@@ -1,6 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
-  </mat-sidenav>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"> </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
@@ -14,10 +13,7 @@
     </div>
     <div class="vitamui-content">
       <div class="mt-3">
-        <app-accession-register-list
-          [search]="search"
-          (accessionRegisterClick)="openPanel($event)">
-        </app-accession-register-list>
+        <app-accession-register-list [search]="search" (accessionRegisterClick)="openPanel($event)"> </app-accession-register-list>
       </div>
     </div>
   </mat-sidenav-content>

@@ -64,13 +64,15 @@ public class AccessionRegisterDetailExternalService extends
     }
 
     @Override
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer page, final Integer size, final Optional<String> criteria,
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteria,
         final Optional<String> orderBy, final Optional<DirectionDto> direction) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
     }
 
-    @Override protected BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> getClient() {
+    @Override
+    protected BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> getClient() {
         return accessionRegisterDetailInternalRestClient;
     }
 

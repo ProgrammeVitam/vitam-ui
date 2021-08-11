@@ -34,26 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister;
+package fr.gouv.vitamui.referential.service;
 
-import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
+import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.referential.external.client.AccessionRegisterSummaryExternalRestClient;
+import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Optional;
 
-public class AccessionRegisterDetailConverter {
+@Service
+public class AccessionRegisterSummaryService extends AbstractCrudService<AccessionRegisterSummaryDto> {
 
-    private AccessionRegisterDetailConverter() {
-        throw new UnsupportedOperationException("Utility class !");
+    private final AccessionRegisterSummaryExternalRestClient client;
+
+    @Autowired
+    public AccessionRegisterSummaryService(final AccessionRegisterSummaryExternalRestClient client) {
+        this.client = client;
     }
 
-    public static AccessionRegisterDetailDto convertVitamToDto(final AccessionRegisterDetailModel accessionRegisterDetailModel) {
-        return VitamUIUtils.copyProperties(accessionRegisterDetailModel, new AccessionRegisterDetailDto());
+    @Override
+    public BaseCrudRestClient<AccessionRegisterSummaryDto, ExternalHttpContext> getClient() {
+        return client;
     }
 
-    public static List<AccessionRegisterDetailDto> convertVitamsToDtos(final List<AccessionRegisterDetailModel> accessionRegisterDetailModels) {
-        return accessionRegisterDetailModels.stream().map(AccessionRegisterDetailConverter::convertVitamToDto).collect(Collectors.toList());
+    public Collection<AccessionRegisterSummaryDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
+        return super.getAll(context, criteria);
     }
 }

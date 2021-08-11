@@ -90,8 +90,8 @@ public class ReferentialInternalRestClientFactory extends BaseRestClientFactory 
         return new OperationInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public AccessionRegisterInternalRestClient getAccessionRegisterInternalRestClient() {
-        return new AccessionRegisterInternalRestClient(getRestTemplate(), getBaseUrl());
+    public AccessionRegisterSummaryInternalRestClient getAccessionRegisterInternalRestClient() {
+        return new AccessionRegisterSummaryInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
     public UnitInternalRestClient getUnitInternalRestClient() {

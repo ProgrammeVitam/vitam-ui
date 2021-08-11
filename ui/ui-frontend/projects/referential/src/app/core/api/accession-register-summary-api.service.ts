@@ -34,22 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {AccessionRegisterDetail} from '../../../../../vitamui-library/src/lib/models/accession-registers-detail';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccessionRegisterSummary, BASE_URL, BaseHttpClient } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AccessionRegisterDetailsApiService extends BaseHttpClient<AccessionRegisterDetail> {
-
-  constructor(http: HttpClient,@Inject(BASE_URL) baseUrl: string) {
-    super(http,baseUrl+'/accessionregisterdetails');
+export class AccessionRegisterSummaryApiService extends BaseHttpClient<AccessionRegisterSummary> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/accession-register/summary');
   }
 
-  getAllPaginated(pageRequest: PageRequest,embedded?: string,headers?: HttpHeaders): Observable<PaginatedResponse<AccessionRegisterDetail>> {
-    return super.getAllPaginated(pageRequest,embedded,headers);
+  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<AccessionRegisterSummary[]> {
+    return super.getAllByParams(params, headers);
   }
 }

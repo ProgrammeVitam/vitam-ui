@@ -34,24 +34,54 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
-import {SearchService} from 'ui-frontend-common';
-import {AccessionRegisterDetail} from '../../../../vitamui-library/src/lib/models/accession-registers-detail';
-import {AccessionRegisterDetailsApiService} from '../core/api/accession-register-details-api.service';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { of, Subject } from 'rxjs';
+import { AccessionRegisterDetail, AccessionRegisterStatus, SearchService } from 'ui-frontend-common';
+import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
+import { catchError, map, withLatestFrom } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AccessionRegistersService extends SearchService<AccessionRegisterDetail> {
-
   pageEvent = new Subject<string>();
   tenantEvent = new Subject<string>();
   customerEvent = new Subject<string>();
-  updated=new Subject<AccessionRegisterDetail>();
+  updated = new Subject<AccessionRegisterDetail>();
 
-  constructor(accessionRegistersApiService: AccessionRegisterDetailsApiService, http: HttpClient) {
-    super(http,accessionRegistersApiService,'ALL');
+  constructor(
+    accessionRegisterApiService: AccessionRegisterDetailApiService,
+    http: HttpClient,
+    private translateService: TranslateService
+  ) {
+    super(http, accessionRegisterApiService, 'ALL');
+  }
+
+  getAccessionRegisterStatus(locale: string) {
+    const prefix = 'ACCESSION_REGISTER.STATUS.';
+    return this.translateService.get(prefix + AccessionRegisterStatus.STORED_AND_COMPLETED).pipe(
+      withLatestFrom(
+        this.translateService.get(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
+        this.translateService.get(prefix + AccessionRegisterStatus.UNSTORED)
+      ),
+      map(([storedAndCompleted, storedAndUpdated, unstored]) => {
+        const data = [
+          { value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: storedAndCompleted },
+          { value: AccessionRegisterStatus.STORED_AND_UPDATED, label: storedAndUpdated },
+          { value: AccessionRegisterStatus.UNSTORED, label: unstored },
+        ];
+        return data.sort(this.sortByLabel(locale));
+      }),
+      catchError((error) => {
+        console.error(error);
+        return of(error);
+      })
+    );
+  }
+
+  private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
+    return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
   }
 }

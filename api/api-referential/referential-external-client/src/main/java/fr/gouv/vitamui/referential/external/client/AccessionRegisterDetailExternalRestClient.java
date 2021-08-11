@@ -53,21 +53,25 @@ public class AccessionRegisterDetailExternalRestClient extends
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
     public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_DETAIL_URL;
+        return RestApi.ACCESSION_REGISTER_URL + "/details";
     }
 
-    @Override protected Class<AccessionRegisterDetailDto> getDtoClass() {
+    @Override
+    protected Class<AccessionRegisterDetailDto> getDtoClass() {
         return AccessionRegisterDetailDto.class;
     }
 
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() { };
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
 }

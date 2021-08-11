@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,26 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-import {AccessionRegisterStatus} from "../../../../vitamui-library/src/lib/models/accession-registers-status";
+package fr.gouv.vitamui.referential.internal.client;
 
-@Injectable()
-export class AccessionRegisterBusiness {
-  private accessionRegisterStatus: BehaviorSubject<any[]> = new BehaviorSubject<any>([]);
+import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
 
-  getAccessionRegisterStatus(locale: string) {
-    const data = [
-      { value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: 'En stock et complète' },
-      { value: AccessionRegisterStatus.STORED_AND_UPDATED, label: 'Partiellement éliminée' },
-      { value: AccessionRegisterStatus.UNSTORED, label: 'Totalement éliminée' },
-    ];
-    this.accessionRegisterStatus.next(data.sort(this.sortByLabel(locale)));
-    return this.accessionRegisterStatus.asObservable();
-  }
+import java.util.List;
 
-  private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
-    return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
-  }
+public class AccessionRegisterSummaryInternalRestClient
+    extends BaseCrudRestClient<AccessionRegisterSummaryDto, InternalHttpContext> {
+
+    public AccessionRegisterSummaryInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
+        super(restTemplate, baseUrl);
+    }
+
+    @Override
+    public String getPathUrl() {
+        return RestApi.ACCESSION_REGISTER_URL;
+    }
+
+    @Override
+    protected Class<AccessionRegisterSummaryDto> getDtoClass() {
+        return AccessionRegisterSummaryDto.class;
+    }
+
+    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<>() {
+        };
+    }
 
 }

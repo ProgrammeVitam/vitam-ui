@@ -58,7 +58,7 @@ public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAnd
 
     @Override
     public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_DETAIL_URL;
+        return RestApi.ACCESSION_REGISTER_URL + "/details";
     }
 
     @Override protected Class<AccessionRegisterDetailDto> getDtoClass() {

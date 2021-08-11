@@ -39,7 +39,6 @@ import {Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewCh
 @Component({
   selector: 'search-bar-with-sibling-button',
   templateUrl: './search-bar-with-sibling-button.component.html',
-  styleUrls: ['./search-bar-with-sibling-button.component.scss']
 })
 export class SearchBarWithSiblingButtonComponent {
 

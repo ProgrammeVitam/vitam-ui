@@ -67,5 +67,4 @@ public class AccessionRegisterDetailService extends AbstractPaginateService<Acce
     public BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, ExternalHttpContext> getClient() {
         return client;
     }
-
 }

@@ -68,7 +68,7 @@ public class AccessionRegisterDetailDto extends AccessionRegisterDto {
 
     private String opType;
 
-    private String AcquisitionInformation;
+    private String acquisitionInformation;
 
     private List<RegisterValueEventModel> events;
 

@@ -331,6 +331,16 @@ public abstract class AbstractMockMvcCrudControllerTest<T extends IdDto> extends
         return testGetPaginatedEntities(httpHeaders,builder);
     }
 
+    public ResultActions testGetPaginatedEntities(String path, HttpHeaders httpHeaders) {
+        getLog().debug("test get paginated entities class ={}", getDtoClass().getName());
+        preparedServices();
+        final UriComponentsBuilder builder = getUriBuilder();
+        builder.queryParam("page", 0);
+        builder.queryParam("size", "20");
+        builder.path(path);
+        return testGetPaginatedEntities(httpHeaders,builder);
+    }
+
     public ResultActions testGetPaginatedEntities(final HttpHeaders httpHeaders,final QueryDto criteria) {
         getLog().debug("test get paginated entities class ={}", getDtoClass().getName());
         preparedServices();

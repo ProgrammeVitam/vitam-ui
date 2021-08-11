@@ -42,7 +42,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterDetailInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,11 +59,14 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = { AccessionRegisterDetailInternalController.class })
+@WebMvcTest(controllers = { AccessionRegisterInternalController.class })
 class AccessionRegisterDetailInternalControllerTest extends ApiReferentialControllerTest<AccessionRegisterDetailDto> {
 
     @MockBean
-    AccessionRegisterDetailInternalService accessionRegisterDetailInternalService;
+    AccessionRegisterSummaryInternalService summaryInternalService;
+
+    @MockBean
+    AccessionRegisterDetailInternalService detailInternalService;
 
     @MockBean
     public InternalSecurityService securityService;
@@ -70,11 +74,11 @@ class AccessionRegisterDetailInternalControllerTest extends ApiReferentialContro
     @Test
     void should_call_the_corresponding_service_once_when_paginated_api_is_called() throws Exception {
         //Given //When
-        ResultActions resultActions = super.testGetPaginatedEntities();
+        ResultActions resultActions = super.testGetPaginatedEntities("/details", getHeaders());
 
         //Then
         resultActions.andExpect(status().isOk());
-        verify(accessionRegisterDetailInternalService, times(1)).getAllPaginated(any(), any(), any(), any(), any(), any());
+        verify(detailInternalService, times(1)).getAllPaginated(any(), any(), any(), any(), any(), any());
     }
 
     @Override
@@ -100,11 +104,11 @@ class AccessionRegisterDetailInternalControllerTest extends ApiReferentialContro
     @Override
     protected void preparedServices() {
         PaginatedValuesDto<AccessionRegisterDetailDto> response = new PaginatedValuesDto<>();
-        doReturn(response).when(accessionRegisterDetailInternalService).getAllPaginated(any(), any(), any(), any(), any(), any());
+        doReturn(response).when(detailInternalService).getAllPaginated(any(), any(), any(), any(), any(), any());
     }
 
     @Override
     protected String getRessourcePrefix() {
-        return RestApi.ACCESSION_REGISTER_DETAIL_URL;
+        return RestApi.ACCESSION_REGISTER_URL;
     }
 }

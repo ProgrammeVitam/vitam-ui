@@ -7,9 +7,9 @@ print("START 318_application_ref.js");
 db.applications.insert({
     "identifier" : "ACCESSION_REGISTER_APP",
 {% if vitamui.referential.base_url is defined %}
-    "url": "{{ vitamui.referential.base_url }}/accessionregisterdetails",
+    "url": "{{ vitamui.referential.base_url }}/accession-register",
 {% else %}
-    "url": "{{ url_prefix }}/referential/accessionregisterdetails",
+    "url": "{{ url_prefix }}/referential/accession-register",
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-rules",
     "name" : "Registre des fonds",
