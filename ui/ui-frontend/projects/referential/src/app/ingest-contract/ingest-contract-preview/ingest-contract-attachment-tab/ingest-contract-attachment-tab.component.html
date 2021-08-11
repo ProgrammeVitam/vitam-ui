@@ -10,7 +10,7 @@
 
   <p>Veuillez sélectionner un contrat d'accès pour afficher le nom des unités archivistiques et modifier les noeuds:</p>
   <mat-form-field class="vitamui-mat-select">
-    <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="initTitles($event)">
+    <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="initTitles()">
       <mat-option *ngFor='let accessContract of accessContracts'
                   [value]="accessContract.identifier">{{accessContract.name}}
       </mat-option>
