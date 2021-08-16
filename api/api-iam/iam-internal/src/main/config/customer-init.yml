@@ -128,16 +128,6 @@ customer-init:
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
 
-    - name: Profil pour l'accès et la recherche d'archives avec mises à jour des règles
-      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles
-      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
-      level:
-      roles:
-        - ROLE_CREATE_ARCHIVE_SEARCH
-        - ROLE_GET_ARCHIVE_SEARCH
-        - ROLE_GET_ALL_ARCHIVE_SEARCH
-        - ROLE_SEARCH_WITH_RULES
-
     - name: Profil pour la gestion des opérations
       description: Gérer et consulter l'ensemble des opérations d'entrées qui sont en cours
       app-name: LOGBOOK_MANAGEMENT_OPERATION_APP
@@ -156,14 +146,45 @@ customer-init:
         - ROLE_EDIT_EXTERNAL_PARAM_PROFILE
         - ROLE_SEARCH_EXTERNAL_PARAM_PROFILE
 
-    - name: Profil pour l'accès et la recherche d'archives sans mises à jour des règles
-      description: Gestion d'accès et de recherche des archives dans Vitam sans mises à jour des règles
+    - name: Profil pour l'accès et la recherche d'archives avec mises à jour des règles et avec export DIP
+      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles et avec export DIP
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
         - ROLE_CREATE_ARCHIVE_SEARCH
         - ROLE_GET_ARCHIVE_SEARCH
         - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_EXPORT_DIP
+
+    - name: Profil pour l'accès et la recherche d'archives sans mises à jour des règles et sans export DIP
+      description: Gestion d'accès et de recherche des archives dans Vitam sans mises à jour des règles et sans export DIP
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+
+    - name: Profil pour la recherche et consultation des archives avec export DIP et sans mises à jour des règles
+      description: Gestion d'accès et de recherche des archives dans Vitam avec export DIP et sans mises à jour des règles
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_EXPORT_DIP
+
+    - name: Profil pour la recherche et consultation des archives avec mises à jour des règles et sans export DIP
+      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles et sans export DIP
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
 
   #- name: profileName
   #  description: desc

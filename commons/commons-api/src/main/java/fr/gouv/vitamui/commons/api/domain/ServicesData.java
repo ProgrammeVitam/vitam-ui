@@ -304,7 +304,7 @@ public class ServicesData {
     public static final String ROLE_DELETE_RULES = DELETE_ROLE_PREFIX + SERVICE_RULES;
 
     public static final String ROLE_IMPORT_RULES = IMPORT_ROLE_PREFIX + SERVICE_RULES;
-    
+
     //------------------------------------ ONTOLOGIES -----------------------------------------
 
     public static final String SERVICE_ONTOLOGIES = "ONTOLOGIES";
@@ -363,6 +363,7 @@ public class ServicesData {
     public static final String ROLE_GET_ARCHIVE = GET_ROLE_PREFIX + SERVICE_ARCHIVE;
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
     public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
+    public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT-DIP";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -492,6 +493,7 @@ public class ServicesData {
             ROLE_GET_ARCHIVE,
             ROLE_CREATE_ARCHIVE,
             ROLE_SEARCH_WITH_RULES,
+            ROLE_EXPORT_DIP,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -625,6 +627,7 @@ public class ServicesData {
             ROLE_GET_ARCHIVE,
             ROLE_CREATE_ARCHIVE,
             ROLE_SEARCH_WITH_RULES,
+            ROLE_EXPORT_DIP,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
