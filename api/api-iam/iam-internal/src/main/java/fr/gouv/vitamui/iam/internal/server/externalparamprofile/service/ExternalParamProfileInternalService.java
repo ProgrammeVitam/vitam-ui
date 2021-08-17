@@ -139,10 +139,11 @@ public class ExternalParamProfileInternalService {
             List.of(
                 ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
                 ServicesData.ROLE_EDIT_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
-                ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE
+                ServicesData.ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
+                ServicesData.ROLE_GET_EXTERNAL_PARAMS
             ),
             authUserDto.getCustomerId(),
-            savedExternalParametersDto.getIdentifier()
+            savedExternalParametersDto.getId()
         );
 
         ProfileDto savedProfileDto = profileInternalService.create(profileDto);

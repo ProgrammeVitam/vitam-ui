@@ -65,8 +65,8 @@ public class ExternalParamProfileCustomRepositoryTest {
         profile.setExternalParamId("externalparamidentifier");
         profileRepository.save(profile);
         final ExternalParameters parameters = new ExternalParameters();
-        parameters.setId("EXTERNAL_PARAMETERS_ID");
-        parameters.setIdentifier("externalparamidentifier");
+        parameters.setId("externalparamidentifier");
+        parameters.setIdentifier("EXTERNAL_PARAMETERS_IDENTIFIANT");
         parameters.setParameters(List.of(new Parameter("PARAM_ACCESS_CONTRACT", "ContratTNR")));
         externalParametersRepository.save(parameters);
     }
@@ -75,7 +75,8 @@ public class ExternalParamProfileCustomRepositoryTest {
     public void testFindExternalParamProfile() {
         final ExternalParamProfileDto externalParamProfileDto = externalParamProfileRepository.findByIdProfile("id");
         assertThat(externalParamProfileDto.getId()).isEqualTo("id");
-        assertThat(externalParamProfileDto.getExternalParamIdentifier()).isEqualTo("externalparamidentifier");
+        assertThat(externalParamProfileDto.getIdExternalParam()).isEqualTo("externalparamidentifier");
+        assertThat(externalParamProfileDto.getExternalParamIdentifier()).isEqualTo("EXTERNAL_PARAMETERS_IDENTIFIANT");
     }
 
     @Test

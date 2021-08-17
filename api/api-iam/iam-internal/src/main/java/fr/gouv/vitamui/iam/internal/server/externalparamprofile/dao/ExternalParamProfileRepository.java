@@ -120,7 +120,7 @@ public class ExternalParamProfileRepository {
         }
 
         LookupOperation lookupOperation = Aggregation.lookup(MongoDbCollections.EXTERNAL_PARAMETERS, EXTERNAL_PARAM_ID,
-            IDENTIFIER, EXTERNAL);
+            ID, EXTERNAL);
         operations.add(lookupOperation);
 
         UnwindOperation externalUnwindOperation = Aggregation.unwind(EXTERNAL, false);
