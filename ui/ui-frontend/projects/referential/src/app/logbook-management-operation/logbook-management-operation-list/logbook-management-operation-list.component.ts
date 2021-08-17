@@ -172,6 +172,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
     if (this.filterMap.categories.length === 0) {
       this.resultsFiltred = this.operationsList.results;
     }
+    this.totalResults = this.resultsFiltred.length;
     this.results = this.resultsFiltred.slice(0, 20);
     this.show = this.resultsFiltred.length < 20 ? true : false;
   }
