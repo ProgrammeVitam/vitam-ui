@@ -19,26 +19,26 @@
   
 .ko-icon {
   color: red;
-  position: absolute;
   right: 5px;
 }
 
 .ok-icon {
   color: green;
-  position: absolute;
   right: 5px;
 }
 
 .warning-icon {
   color: #FFA610;
-  position: absolute;
   right: 5px;
 }
 
 .fatal-icon {
   color: grey;
-  position: absolute;
   right: 5px;
+}
+
+.top-right {
+ margin-right: auto;
 }
 
 .ingest-message-text {
