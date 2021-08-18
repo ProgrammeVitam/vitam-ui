@@ -25,7 +25,6 @@
  */
 package fr.gouv.vitamui.archives.search.external.server.doc;
 
-import fr.gouv.vitamui.archives.search.external.server.rest.AccessContractTempExternalController;
 import fr.gouv.vitamui.archives.search.external.server.rest.ArchivesSearchExternalController;
 import fr.gouv.vitamui.archives.search.external.server.rest.SearchCriteriaHistoryExternalController;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
@@ -49,7 +48,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 
-
     @MockBean
     private ExternalApiAuthenticationProvider externalApiAuthenticationProvider;
 
@@ -58,9 +56,6 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private ArchivesSearchExternalController archivesSearchExternalController;
-
-    @MockBean
-    private AccessContractTempExternalController accessContractTempExternalController;
 
     @MockBean
     private SearchCriteriaHistoryExternalController searchCriteriaHistoryExternalController;

@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, LOCALE_ID, Inject } from '@angular/core';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { SearchService } from 'ui-frontend-common';
@@ -48,41 +48,28 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
-
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar
   ) {
     super(http, archiveApiService, 'ALL');
   }
 
   headers = new HttpHeaders();
 
-  getBaseUrl() {
-    return this.archiveApiService.getBaseUrl();
-  }
-
-  public getAllAccessContracts(tenantId: string): Observable<any[]> {
-    const params = new HttpParams().set('embedded', 'ALL');
-    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
-    return this.archiveApiService.getAllAccessContracts(params, headers);
-  }
-
   public getOntologiesFromJson(): Observable<any> {
-    return this.http.get("assets/ontologies/ontologies.json")
-      .pipe(map(resp => resp));
+    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
   }
-
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -90,9 +77,8 @@ export class ArchiveService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => response.$results),
-      tap(() => {
-      }),
-      map(results => this.buildNestedTreeLevels(results))
+      tap(() => {}),
+      map((results) => this.buildNestedTreeLevels(results))
     );
   }
 
@@ -106,13 +92,13 @@ export class ArchiveService extends SearchService<any> {
       ) {
         const outNode: FilingHoldingSchemeNode = {
           id: unit['#id'],
-          title: unit.Title ? unit.Title : ((unit.Title_) ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en),
+          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
           children: [],
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -127,7 +113,7 @@ export class ArchiveService extends SearchService<any> {
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
     return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
-      file => {
+      (file) => {
         const element = document.createElement('a');
         element.href = window.URL.createObjectURL(file);
         element.download = 'export-archive-units.csv';
@@ -137,48 +123,52 @@ export class ArchiveService extends SearchService<any> {
         document.body.removeChild(element);
       },
       (errors: HttpErrorResponse) => {
-        if(errors.status === 413){
-          console.log("Please update filter to reduce size of response" + errors.message);
+        if (errors.status === 413) {
+          console.log('Please update filter to reduce size of response' + errors.message);
 
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
-            data: { type: 'exportCsvLimitReached'},
-            duration: 10000
+            data: { type: 'exportCsvLimitReached' },
+            duration: 10000,
           });
         }
       }
     );
   }
 
-
-
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<PagedResult> {
-
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
-   //   timeout(TIMEOUT_SEC),
+      //   timeout(TIMEOUT_SEC),
       catchError((error) => {
-        if(error instanceof TimeoutError) {
+        if (error instanceof TimeoutError) {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map(results => this.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = { results: response.$results, totalResults: response.$hits.total, pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0: 1) : 0 };
+    let pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
     let resultFacets: ResultFacet[] = [];
-    if(response.$facetResults && response.$facetResults){
-      for(let facet of response.$facetResults){
-        if(facet.name === 'COUNT_BY_NODE'){
+    if (response.$facetResults && response.$facetResults) {
+      for (let facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
           let buckets = facet.buckets;
-          for(let bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count});
+          for (let bucket of buckets) {
+            resultFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
       }
@@ -188,15 +178,13 @@ export class ArchiveService extends SearchService<any> {
   }
 
   downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
-
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-
-      response => {
+      (response) => {
         let filename = null;
         if (response.headers.get('content-disposition').includes('filename')) {
           filename = response.headers.get('content-disposition').split('=')[1];
         } else {
-          filename = this.normalizeTitle(title ? title : ((title_) ? (title_.fr ? title_.fr : title_.en) : title_.en));
+          filename = this.normalizeTitle(title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en);
         }
 
         const element = document.createElement('a');
@@ -207,7 +195,7 @@ export class ArchiveService extends SearchService<any> {
         element.click();
         document.body.removeChild(element);
       },
-      errors => {
+      (errors) => {
         console.log('Error message : ', errors);
       }
     );
@@ -219,15 +207,13 @@ export class ArchiveService extends SearchService<any> {
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders) {
-      return this.archiveApiService.findArchiveUnit(id, headers);
-    }
-
-  getObjectById(id: string,headers?: HttpHeaders) {
-    return this.archiveApiService.getObjectById(id,headers);
+    return this.archiveApiService.findArchiveUnit(id, headers);
   }
 
+  getObjectById(id: string, headers?: HttpHeaders) {
+    return this.archiveApiService.getObjectById(id, headers);
   }
-
+}
 
 function idExists(units: Unit[], id: string): boolean {
   return !!units.find((unit) => unit['#id'] === id);

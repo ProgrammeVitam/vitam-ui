@@ -48,10 +48,6 @@ public class ArchiveInternalRestClientFactory extends BaseRestClientFactory {
         return new ArchiveInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
-    public AccessContractTempInternalRestClient getAccessContractTempInternalRestClient() {
-        return new AccessContractTempInternalRestClient(getRestTemplate(), getBaseUrl());
-    }
-
     public SearchCriteriaHistoryInternalRestClient getSearchCriteriaHistoryInternalRestClient() {
         return new SearchCriteriaHistoryInternalRestClient(getRestTemplate(), getBaseUrl());
     }

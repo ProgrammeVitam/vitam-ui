@@ -56,7 +56,6 @@ import java.util.Map;
 @Api(tags = "externalparameters")
 @RequestMapping("${ui-prefix}/externalparameters")
 @RestController
-@ResponseBody
 public class ExternalParametersController extends AbstractUiRestController {
 
     protected final ExternalParametersService service;

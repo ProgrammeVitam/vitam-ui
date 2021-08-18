@@ -58,7 +58,6 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
-import { AccessContractComponent } from './access-contract/access-contract.component';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
@@ -113,7 +112,6 @@ import { SharedModule } from './shared/shared.module';
     FilingHoldingNodeComponent,
     FilingHoldingSchemeComponent,
     ArchiveSearchComponent,
-    AccessContractComponent,
     ArchivePreviewComponent,
     ArchiveSearchPopupComponent,
     SearchCriteriaSaverComponent,
