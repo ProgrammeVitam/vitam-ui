@@ -49,6 +49,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitamui.commons.api.domain.IdDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -63,6 +66,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,7 +83,6 @@ import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.service.FileFormatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -118,12 +121,23 @@ public class FileFormatController extends AbstractUiRestController {
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
-    @ApiOperation(value = "Get file format by ID")
-    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
+    @ApiOperation(value = "Get file format by ID or history by file format's id if path ends by /history")
+    @RequestMapping(value = "/**", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public FileFormatDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, InvalidParseOperationException {
+        LOGGER.debug("getByIdOrHistory ");
+        String requestURL = request.getRequestURL().toString();
+        String path = StringUtils.substringAfter(requestURL,"/fileformat/");
+        if (StringUtils.endsWith("/history", path)) {
+            return findHistoryById(StringUtils.substringBefore(path,"/history"));
+        } else {
+            return getById(StringUtils.removeEndIgnoreCase(path,"/"));
+        }
+    }
+
+    private FileFormatDto getById(final String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
-        return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+        return service.getOne(buildUiHttpContext(), identifier);
     }
 
     /**
@@ -158,9 +172,7 @@ public class FileFormatController extends AbstractUiRestController {
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
-    @ApiOperation(value = "get history by file format's id")
-    @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    private LogbookOperationsResponseDto findHistoryById(String id) {
         LOGGER.debug("get logbook for file format with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
@@ -179,11 +191,11 @@ public class FileFormatController extends AbstractUiRestController {
         LOGGER.debug("export file formats");
         return service.export(buildUiHttpContext());
     }
-    
+
     /***
      * Import file format from a csv file
      * @param request HTTP request
-     * @param input the agency csv file
+     * @param file the format xml file
      * @return the Vitam response
      */
     @ApiOperation(value = "import a file format xml file")

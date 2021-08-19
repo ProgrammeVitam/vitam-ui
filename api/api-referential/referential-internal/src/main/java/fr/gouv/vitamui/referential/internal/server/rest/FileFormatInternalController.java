@@ -44,11 +44,15 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -56,6 +60,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,6 +70,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -119,8 +125,19 @@ public class FileFormatInternalController {
         return fileFormatInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
-    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public FileFormatDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    @RequestMapping(value = "/**", method = RequestMethod.GET)
+    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, VitamClientException {
+        LOGGER.debug("getByIdOrHistory ");
+        String requestURL = request.getRequestURL().toString();
+        String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
+        if (StringUtils.endsWith("/history", path)) {
+            return findHistoryById(StringUtils.substringBefore(path,"/history"));
+        } else {
+            return getOne(StringUtils.removeEndIgnoreCase(path,"/"));
+        }
+    }
+
+    private FileFormatDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("get file format identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return fileFormatInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
@@ -170,19 +187,19 @@ public class FileFormatInternalController {
         return null;
     }
 
-    @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    private JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("get logbook for file format with id :{}", id);
         return fileFormatInternalService.findHistoryByIdentifier(vitamContext, id);
     }
-    
+
     @PostMapping(CommonConstants.PATH_IMPORT)
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("import file format file {}", fileName);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return fileFormatInternalService.importFileFormats(vitamContext, fileName, file);
     }
 }

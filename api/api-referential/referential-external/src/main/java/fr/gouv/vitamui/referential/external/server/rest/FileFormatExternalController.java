@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -50,6 +51,7 @@ import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.FileFormatExternalService;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -68,12 +70,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -107,8 +112,19 @@ public class FileFormatExternalController {
     }
 
     @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
-    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public FileFormatDto getOne(final @PathVariable("identifier") String identifier) {
+    @RequestMapping(value = "/**", method = RequestMethod.GET)
+    public Object getByIdOrHistory(HttpServletRequest request) throws UnsupportedEncodingException, InvalidParseOperationException {
+        LOGGER.debug("getByIdOrHistory ");
+        String requestURL = request.getRequestURL().toString();
+        String path = StringUtils.substringAfter(requestURL,RestApi.FILE_FORMATS_URL + "/");
+        if (StringUtils.endsWith("/history", path)) {
+            return findHistoryById(StringUtils.substringBefore(path,"/history"));
+        } else {
+            return getOne(StringUtils.removeEndIgnoreCase(path,"/"));
+        }
+    }
+
+    private FileFormatDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get file format identifier={}");
         ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
         return fileFormatExternalService.getOne(identifier);
@@ -140,9 +156,7 @@ public class FileFormatExternalController {
         return fileFormatExternalService.patch(partialDto);
     }
 
-    @Secured(ServicesData.ROLE_GET_FILE_FORMATS)
-    @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    private JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return fileFormatExternalService.findHistoryById(id);
