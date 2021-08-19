@@ -424,15 +424,71 @@
 
         <ng-template #typeFilterTemplate>
           <vitamui-common-table-filter [(filter)]="filterMapType['Type']" (filterChange)="onFilterChange('Type', $event)">
-            <vitamui-common-table-filter-option value="Folder">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> {{ 'ARCHIVE_SEARCH.FOLDER' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
             <vitamui-common-table-filter-option value="Document">
               <div class="table-filter-icon">
                 <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
                 {{ 'ARCHIVE_SEARCH.DOCUMENT' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Folder">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.FOLDER' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Subgrp">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.SUBGRP' | translate }}
+              </div> </vitamui-common-table-filter-option
+            ><vitamui-common-table-filter-option value="RecordGrp">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.RECORDGRP' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Subseries">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.SUBSERIES' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Series">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.SERIES' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Collection">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.COLLECTION' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Class">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.CLASS' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+
+            <vitamui-common-table-filter-option value="Subfonds">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.SUBFONDS' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+
+            <vitamui-common-table-filter-option value="Fonds">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.FONDS' | translate }}
+              </div>
+            </vitamui-common-table-filter-option>
+            <vitamui-common-table-filter-option value="Otherlevel">
+              <div class="table-filter-icon">
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                {{ 'ARCHIVE_SEARCH.OTHERLEVEL' | translate }}
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -505,6 +561,9 @@
               </ng-container>
               <ng-container *ngSwitchCase="'Item'">
                 <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+              </ng-container>
+              <ng-container *NgSwitchDefault>
+                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
               </ng-container>
             </span>
           </div>
