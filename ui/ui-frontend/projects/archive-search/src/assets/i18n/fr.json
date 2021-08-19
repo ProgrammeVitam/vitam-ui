@@ -1,6 +1,6 @@
 {
   "ARCHIVE_SEARCH": {
-    "ACCESS_CONTRACT_SELECT": "Sélectionner un contrat d'accès",
+    "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
     "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s)",

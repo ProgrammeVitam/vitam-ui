@@ -1,6 +1,6 @@
 {
   "ARCHIVE_SEARCH": {
-    "ACCESS_CONTRACT_SELECT": "Select an access contract",
+    "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
     "TITLE_SEARCH_AREA": "Searching an archive",

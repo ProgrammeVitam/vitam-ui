@@ -35,20 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import {  SearchCriteriaDto } from '../../archive/models/search.criteria';
+import { SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveApiService extends BaseHttpClient<any> {
-
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -61,9 +59,9 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
-    return super.getAllPaginated(pageRequest, embedded, headers).pipe(
-      tap(result => result.values.map(ev => ev.parsedData = (ev.data != null) ? JSON.parse(ev.data) : null))
-    );
+    return super
+      .getAllPaginated(pageRequest, embedded, headers)
+      .pipe(tap((result) => result.values.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));
   }
 
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
@@ -75,29 +73,23 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>( `${this.apiUrl}/search`, criteriaDto, {headers});
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
-  return  this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
+    return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
-      headers: headers
+      headers: headers,
     });
-  }
-
-
-// Its a temporary api => to be removed when access contracts bill be delivered
-  getAllAccessContracts(params: HttpParams, headers?: HttpHeaders): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/accesscontracts`, { params, headers });
   }
 
   downloadObjectFromUnit(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`,{headers: headers, observe: 'response', responseType: 'blob' });
+    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`, { headers: headers, observe: 'response', responseType: 'blob' });
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-      return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' });
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' });
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -115,7 +107,7 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
-  getObjectById(id: string,headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`,{headers: headers,responseType: 'text'});
+  getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
+    return this.http.get(`${this.apiUrl}/object/${id}`, { headers: headers, responseType: 'text' });
   }
 }

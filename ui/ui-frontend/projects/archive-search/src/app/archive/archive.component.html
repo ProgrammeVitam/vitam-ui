@@ -2,12 +2,11 @@
   <mat-sidenav
     mode="side"
     [fixedInViewport]="true"
-    opened="{{ show }}"
+    [opened]="show"
     *ngIf="foundAccessContract"
     vitamuiCommonResizeSidebar="left"
   >
     <app-filing-holding-scheme
-      (fillingSchemaClose)="closePanel()"
       [accessContract]="accessContract"
     ></app-filing-holding-scheme>
   </mat-sidenav>
@@ -26,12 +25,6 @@
       <vitamui-common-title-breadcrumb>
         {{ "ARCHIVE_SEARCH.TITLE_SEARCH_AREA" | translate }}
       </vitamui-common-title-breadcrumb>
-      <div class="marge">
-        <app-access-contract
-          (selectedAccessContract)="onSelectAccessContract($event)"
-        >
-        </app-access-contract>
-      </div>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
       <div class="row">
