@@ -57,7 +57,7 @@
         <div id="password-policy-text" class="error-field" hidden>
             <span th:utext="#{screen.pm.init.security.policy}"></span>
         </div>
-        <div th:if="${#fields.hasErrors('*')}">
+        <div th:if="${#fields.hasErrors('*')}" class="error-field">
 			<span th:each="err : ${#fields.errors('*')}" th:utext="${err}">Error text</span>
         </div>
 
@@ -71,52 +71,188 @@
 
 	</form>
 
-	<div class="helper password-helper">
+<div class="helper password-helper">
+    <span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
+    <ul>
+        <li id="security-valid-password">
+            <span th:utext="#{screen.pm.init.security.valid.password}"></span>
+            <i class="material-icons">check</i>
+        </li>
+        <li id="security-four">
+            <span th:utext="#{screen.pm.init.security.four}"></span>
+            <i class="material-icons">check</i>
+        </li>
+    </ul>
+</div>
+
+<span class="collapsible" style="color: #aab0b3;">
+    <span th:utext="#{screen.pm.init.security.password.constraints}" class="collapsible">Password constraints validity</span>
+    <i class="material-icons " style="font-size: 14px;">remove</i>
+</span>
+
+<div class="content">
+    <ul id="collapsible" style="color:#aab0b3">
+        <li id="security-pssi-one">
+            <span th:utext="#{screen.pm.init.pssi.security.one}"></span>
+        </li>
+        <li id="security-pssi-two">
+            <span th:utext="#{screen.pm.init.pssi.security.two}"></span>
+        </li>
+        <li id="security-pssi-three">
+            <span th:utext="#{screen.pm.init.pssi.security.three}"></span>
+        </li>
+        <li id="security-pssi-four">
+            <span th:utext="#{screen.pm.init.pssi.security.four}"></span>
+
+            <ul>
+                <li id="security-pssi-five-one">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.one}"></span>
+                </li>
+                <li id="security-pssi-five-two">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.two}"></span>
+                </li>
+                <li id="security-pssi-five-three">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.three}"></span>
+                </li>
+                <li id="security-pssi-five-four">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.four}"></span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<br/>
+<br/>
+<br/>
+<!--<div>
+    <span th:utext="#{screen.pm.init.security.title}">Password Constraints :</span>
+    <ul id="collapsible" style="color:#aab0b3">
+        <li id="security-pssi-one">
+            <span th:utext="#{screen.pm.init.pssi.security.one}"></span>
+            <i class="material-icons">check</i>
+        </li>
+        <li id="security-pssi-two">
+            <span th:utext="#{screen.pm.init.pssi.security.two}"></span>
+            <i class="material-icons">check</i>
+        </li>
+        <li id="security-pssi-three">
+            <span th:utext="#{screen.pm.init.pssi.security.three}"></span>
+            <i class="material-icons">check</i>
+        </li>
+        <li id="security-pssi-four">
+            <span th:utext="#{screen.pm.init.pssi.security.four}"></span>
+            <i class="material-icons">check</i>
+        </li>
+
+        <li id="security-pssi-five">
+            <ul>
+                <li id="security-pssi-five-one">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.one}"></span>
+                    <i class="material-icons">check</i>
+                </li>
+                <li id="security-pssi-five-two">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.two}"></span>
+                    <i class="material-icons">check</i>
+                </li>
+                <li id="security-pssi-five-three">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.three}"></span>
+                    <i class="material-icons">check</i>
+                </li>
+                <li id="security-pssi-five-four">
+                    <span th:utext="#{screen.pm.init.pssi.security.five.four}"></span>
+                    <i class="material-icons">check</i>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>-->
+	<!--<div class="helper password-helper" id="password-helper" hidden>
 		<span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
 		<ul>
-			<li id="security-one">
-				<span th:utext="#{screen.pm.init.security.one}"></span>
-				<i class="material-icons">check</i>
-			</li>
-			<li id="security-two">
-				<span th:utext="#{screen.pm.init.security.two}"></span>
-				<i class="material-icons">check</i>
-			</li>
-			<li id="security-three">
-				<span th:utext="#{screen.pm.init.security.three}"></span>
-				<i class="material-icons">check</i>
-			</li>
-			<li id="security-four">
-				<span th:utext="#{screen.pm.init.security.four}"></span>
-				<i class="material-icons">check</i>
-			</li>
+            <li id="security-pssi-one">
+                <span th:utext="#{screen.pm.init.pssi.security.one}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-pssi-two">
+                <span th:utext="#{screen.pm.init.pssi.security.two}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-pssi-three">
+                <span th:utext="#{screen.pm.init.pssi.security.three}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-pssi-four">
+                <span th:utext="#{screen.pm.init.pssi.security.four}"></span>
+                <i class="material-icons">check</i>
+            </li>
+
+            <li id="security-pssi-five">
+                <ul>
+                    <li id="security-pssi-five-one">
+                        <span th:utext="#{screen.pm.init.pssi.security.five.one}"></span>
+                        <i class="material-icons">check</i>
+                    </li>
+                    <li id="security-pssi-five-two">
+                        <span th:utext="#{screen.pm.init.pssi.security.five.two}"></span>
+                        <i class="material-icons">check</i>
+                    </li>
+                    <li id="security-pssi-five-three">
+                        <span th:utext="#{screen.pm.init.pssi.security.five.three}"></span>
+                        <i class="material-icons">check</i>
+                    </li>
+                    <li id="security-pssi-five-four">
+                        <span th:utext="#{screen.pm.init.pssi.security.five.four}"></span>
+                        <i class="material-icons">check</i>
+                    </li>
+                </ul>
+            </li>
+            <li id="security-five">
+                <span th:utext="#{screen.pm.init.security.four}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-four">
+                <span th:utext="#{screen.pm.init.security.four}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-valid-password">
+                <span th:utext="#{screen.pm.init.security.valid.password}"></span>
+                <i class="material-icons">check</i>
+            </li>
+            <li id="security-invalid-password">
+                <span th:utext="#{screen.pm.init.security.invalid.password}"></span>
+                <i class="material-icons">check</i>
+            </li>
 		</ul>
-	</div>
+	</div>-->
 
 <script>
+var coll = document.getElementsByClassName("collapsible");
+  coll[0].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var i = this.lastElementChild;
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+      i.innerHTML='add'
+    } else {
+      content.style.display = "block";
+      i.innerHTML='remove'
+    }
+  });
+
         function checkRules() {
 
         	var password = $("#password").val();
         	var confirmPassword = $("#confirmedPassword").val();
 
-			checkLength(password);
-			checkLowerAndUpperCase(password);
-			checkContainsDigitsOrSpecialCharacters(password);
+            checkValidity(password);
 			checkPasswordAndConfirmPasswordMatches(password,confirmPassword);
         }
 
-        function checkLength(password) {
-        	checkRule(password.length > 7, "#security-one");
-        }
-
-        function checkLowerAndUpperCase(password) {
-			checkRule(password.toUpperCase() != password && password.toLowerCase() != password,"#security-two");
-        }
-
-        function checkContainsDigitsOrSpecialCharacters(password) {
-       		var format = /[$@!%*#?&=\-\/:;\(\)"\.,\?!'\[\]{}^\+\=_\\\|~<>`]/;
-        	var valid = hasNumber(password) && format.test(password);
-        	checkRule(valid, "#security-three");
+        function checkValidity(password) {
+            var policyPatternRegex = new RegExp(policyPattern);
+        	var valid = policyPatternRegex.test(password);
+        	checkRule(valid, "#security-valid-password");
         }
 
         function checkPasswordAndConfirmPasswordMatches(password, confirmPassword) {
@@ -126,13 +262,14 @@
         function checkRule(valid, liToVerify) {
         	if(valid) {
         		$(liToVerify).addClass("valid");
+        		//if(liToVerify === '#security-valid-password' && valid) {
+        		//$('#security-valid-password-constraints').addClass("valid");
+        		//$('#security-pssi-one').addClass("valid");
+        		//$('#security-valid-password-constraints').show();
+        		//}
         	} else {
         		$(liToVerify).removeClass("valid");
         	}
-        }
-
-        function hasNumber(myString) {
-        	return /\d/.test(myString);
         }
 
 </script>

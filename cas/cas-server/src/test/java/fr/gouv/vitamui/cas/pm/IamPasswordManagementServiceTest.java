@@ -1,14 +1,17 @@
 package fr.gouv.vitamui.cas.pm;
 
-import java.time.ZonedDateTime;
-import java.util.*;
-
+import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
 import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
@@ -16,24 +19,36 @@ import org.apereo.cas.authentication.DefaultAuthentication;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
+import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.PasswordChangeRequest;
 import org.junit.Before;
 import org.junit.Test;
-
-import fr.gouv.vitamui.commons.api.exception.BadRequestException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -60,7 +75,14 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private IdentityProviderHelper identityProviderHelper;
 
+    private PasswordValidator passwordValidator;
+
     private Principal principal;
+
+    private PasswordManagementProperties passwordManagementProperties;
+
+    @Value("${cas.authn.pm.policyPattern}")
+    private String policyPattern;
 
     @Before
     public void setUp() {
@@ -68,12 +90,15 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
         casExternalRestClient = mock(CasExternalRestClient.class);
         providersService = mock(ProvidersService.class);
+        passwordValidator = mock(PasswordValidator.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
+        passwordManagementProperties = new PasswordManagementProperties();
+        passwordManagementProperties.setPolicyPattern(encode(policyPattern));
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.of(identityProviderDto));
         val utils = new Utils(null, 0, null, null);
-        service = new IamPasswordManagementService(null, null, null, null, casExternalRestClient, providersService, identityProviderHelper, null, utils, null);
+        service = new IamPasswordManagementService(passwordManagementProperties, null, null, null, casExternalRestClient, providersService, identityProviderHelper, null, utils, null, passwordValidator);
         final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
         successes.put("fake", null);
         authAttributes = new HashMap<>();
@@ -89,7 +114,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     @Test
     public void testChangePasswordSuccessfully() {
-        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest()));
+        assertTrue(service.change(new UsernamePasswordCredential(EMAIL, "Change-itChange-it0!0!"), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!")));
     }
 
     @Test
@@ -97,7 +122,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         authAttributes.put(SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL, Collections.singletonList("fakeSuperUser"));
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest());
+            service.change(new UsernamePasswordCredential(EMAIL, "Change-itChange-it0!0!"), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!"));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -112,7 +137,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(principal.getAttributes()).thenReturn(attributes);
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest());
+            service.change(new UsernamePasswordCredential(EMAIL, "Change-itChange-it0!0!"), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!"));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -125,7 +150,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderDto.setInternal(null);
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest());
+            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!"));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -138,7 +163,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(identityProviderHelper.findByUserIdentifier(any(List.class), eq(EMAIL))).thenReturn(Optional.empty());
 
         try {
-            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest());
+            service.change(new UsernamePasswordCredential(EMAIL, null), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!"));
             fail("should fail");
         }
         catch (final IllegalArgumentException e) {
@@ -151,7 +176,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         doThrow(new InvalidAuthenticationException("")).when(casExternalRestClient)
                 .changePassword(any(ExternalHttpContext.class), any(String.class), any(String.class));
 
-        assertFalse(service.change(new UsernamePasswordCredential(EMAIL, "password"), new PasswordChangeRequest()));
+        assertFalse(service.change(new UsernamePasswordCredential(EMAIL, "Change-itChange-it0!0!"), new PasswordChangeRequest(EMAIL, "Change-itChange-it0!0!", "Change-itChange-it0!0!")));
     }
 
     @Test
@@ -200,4 +225,11 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         user.setEmail(EMAIL);
         return user;
     }
+
+    /*
+    * application properties are by default encod with */
+    private String encode(String policyPattern) {
+        return new String(policyPattern.getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
+    }
+
 }

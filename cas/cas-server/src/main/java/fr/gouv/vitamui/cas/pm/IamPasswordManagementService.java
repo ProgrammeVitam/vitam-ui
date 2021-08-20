@@ -36,10 +36,19 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Optional;
-
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.Credential;
@@ -57,17 +66,10 @@ import org.springframework.util.Assert;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
@@ -94,16 +96,19 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final TicketRegistry ticketRegistry;
 
+    private final PasswordValidator passwordValidator;
+
     public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
-                                        final CipherExecutor<Serializable, String> cipherExecutor,
-                                        final String issuer,
-                                        final PasswordHistoryService passwordHistoryService,
-                                        final CasExternalRestClient casExternalRestClient,
-                                        final ProvidersService providersService,
-                                        final IdentityProviderHelper identityProviderHelper,
-                                        final CentralAuthenticationService centralAuthenticationService,
-                                        final Utils utils,
-                                        final TicketRegistry ticketRegistry) {
+        final CipherExecutor<Serializable, String> cipherExecutor,
+        final String issuer,
+        final PasswordHistoryService passwordHistoryService,
+        final CasExternalRestClient casExternalRestClient,
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper,
+        final CentralAuthenticationService centralAuthenticationService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final PasswordValidator passwordValidator) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
@@ -111,6 +116,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.centralAuthenticationService = centralAuthenticationService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
+        this.passwordValidator = passwordValidator;
     }
 
     protected RequestContext blockIfSubrogation() {
@@ -136,25 +142,38 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             flowScope.put("passwordHasBeenChanged", true);
         }
 
+        //TODO Implement here different backend checks and throw customized exception based on potential failures!
+        // the two passwords should be equal
+
+        if (!bean.getPassword().equals(bean.getConfirmedPassword())) {
+            throw new PasswordConfirmException();
+        }
+        if (!Pattern.matches(getProperties().getPolicyPattern(), bean.getPassword())) {
+            throw new PasswordNotMatchRegexException();
+        }
         val upc = (UsernamePasswordCredential) c;
         val username = upc.getUsername();
         Assert.notNull(username, "username can not be null");
         // username to lowercase
         val usernameLowercase = username.toLowerCase().trim();
         LOGGER.debug("username: {}", usernameLowercase);
-        val identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
-        Assert.isTrue(identityProvider.isPresent(), "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
+        val identityProvider =
+            identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
+        Assert.isTrue(identityProvider.isPresent(),
+            "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
         Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
                 "only an internal user [" + usernameLowercase + "] can change his password");
 
         try {
             casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
             return true;
-        }
-        catch (final ConflictException e) {
+        } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
-        }
-        catch (final VitamUIException e) {
+        } catch (final PasswordNotMatchRegexException e) {
+            throw new PasswordNotMatchRegexException();
+        }  catch (final ForbiddenException e) {
+            throw new PasswordContainsUserDictionaryException("You cannot set again one of your twelve latest passwords");
+        } catch (final VitamUIException e) {
             LOGGER.error("Cannot change password", e);
             return false;
         }
@@ -195,6 +214,55 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         @Override
         public String getMessage() {
             return "password already used";
+        }
+    }
+
+
+    protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = -8981663363751187076L;
+
+        public PasswordNotMatchRegexException() {
+            super(".invalidPassword", null, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "password not match global regex";
+        }
+    }
+
+    protected static class PasswordConfirmException extends InvalidPasswordException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = -8981663363751187076L;
+
+        public PasswordConfirmException() {
+            super(".pwdNotConfirm", null, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "password confirm error";
+        }
+    }
+
+    private static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
+        /**
+         *
+         */
+        private static final long serialVersionUID = -8981663363751187075L;
+
+        public PasswordContainsUserDictionaryException(String message) {
+            super(".invalidPwdDictionary", message, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "Password can not contains 2 characters ";
         }
     }
 }

@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -132,6 +133,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public MultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
     }
+
+
+    @Bean
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidator();
+    }
+
 
     @SuppressWarnings("rawtypes")
     @Bean
@@ -366,7 +374,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public CasInternalService casService() {
-        return new CasInternalService();
+        return new CasInternalService(passwordValidator());
     }
 
     @Bean

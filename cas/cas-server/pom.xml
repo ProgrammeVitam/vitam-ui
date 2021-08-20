@@ -462,6 +462,9 @@
 					<arguments>
 						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
 					</arguments>
+                    <jvmArguments>
+                        -Xmx512m -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8080
+                    </jvmArguments>
                 </configuration>
                 <executions>
                     <execution>
