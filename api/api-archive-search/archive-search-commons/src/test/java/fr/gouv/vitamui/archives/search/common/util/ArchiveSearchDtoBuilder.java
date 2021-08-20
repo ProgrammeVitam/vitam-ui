@@ -36,9 +36,10 @@
  */
 package fr.gouv.vitamui.archives.search.common.util;
 
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriasDto;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -53,20 +54,29 @@ public class ArchiveSearchDtoBuilder {
         searchCriteriaHistoryDto.setUserId("999");
         searchCriteriaHistoryDto.setSavingDate(OffsetDateTime.now());
 
-        SearchCriteriasDto searchCriterias = new SearchCriteriasDto();
-        searchCriterias.setNodes(Arrays.asList("node1", "node2", "node3"));
-
         SearchCriteriaElementsDto searchCriteriaElements1 = new SearchCriteriaElementsDto();
         searchCriteriaElements1.setCriteria("some_criteria 1");
-        searchCriteriaElements1.setValues(Arrays.asList("value11", "value12", "value13"));
+        searchCriteriaElements1.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaElements1
+            .setValues(Arrays.asList(new CriteriaValue("value11", "value12"), new CriteriaValue("value13")));
 
         SearchCriteriaElementsDto searchCriteriaElements2 = new SearchCriteriaElementsDto();
         searchCriteriaElements2.setCriteria("some_criteria 2");
-        searchCriteriaElements2.setValues(Arrays.asList("value21", "value22", "value23"));
+        searchCriteriaElements2.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
 
-        searchCriterias.setCriteriaList(Arrays.asList(searchCriteriaElements1, searchCriteriaElements2));
+        searchCriteriaElements2.setValues(
+            Arrays.asList(new CriteriaValue("value21"), new CriteriaValue("value22"), new CriteriaValue("value23")));
 
-        searchCriteriaHistoryDto.setSearchCriteriaList(Arrays.asList(searchCriterias, searchCriterias));
+        SearchCriteriaElementsDto searchCriteriaElementsNodes = new SearchCriteriaElementsDto();
+        searchCriteriaElementsNodes.setCriteria("NODE");
+        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        searchCriteriaElementsNodes.setValues(
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+
+
+
+        searchCriteriaHistoryDto.setSearchCriteriaList(
+            Arrays.asList(searchCriteriaElements1, searchCriteriaElements2, searchCriteriaElementsNodes));
         return searchCriteriaHistoryDto;
     }
 }

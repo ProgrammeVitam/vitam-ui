@@ -37,8 +37,9 @@
 package fr.gouv.vitamui.archive.internal.server.utils;
 
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriasDto;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -58,29 +59,40 @@ public class Utils {
         searchCriteriaHistory.setUserId("999");
         searchCriteriaHistory.setSavingDate(OffsetDateTime.now());
 
-        SearchCriteriasDto searchCriterias = new SearchCriteriasDto();
-        searchCriterias.setNodes(Arrays.asList("node1", "node2", "node3"));
 
         SearchCriteriaElementsDto searchCriteriaElements1 = new SearchCriteriaElementsDto();
         searchCriteriaElements1.setCriteria("some_criteria 1");
-        searchCriteriaElements1.setValues(Arrays.asList("value11", "value12", "value13"));
+        searchCriteriaElements1.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+
+        searchCriteriaElements1.setValues(
+            Arrays.asList(new CriteriaValue("value11"), new CriteriaValue("value12"), new CriteriaValue("value13")));
 
         SearchCriteriaElementsDto searchCriteriaElements2 = new SearchCriteriaElementsDto();
         searchCriteriaElements2.setCriteria("some_criteria 2");
-        searchCriteriaElements2.setValues(Arrays.asList("value21", "value22", "value23"));
+        searchCriteriaElements2.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
 
-        searchCriterias.setCriteriaList(Arrays.asList(searchCriteriaElements1, searchCriteriaElements2));
+        searchCriteriaElements2.setValues(
+            Arrays.asList(new CriteriaValue("value21"), new CriteriaValue("value22"), new CriteriaValue("value23")));
 
-        searchCriteriaHistory.setSearchCriteriaList(Arrays.asList(searchCriterias, searchCriterias));
+        SearchCriteriaElementsDto searchCriteriaElementsNodes = new SearchCriteriaElementsDto();
+        searchCriteriaElementsNodes.setCriteria("NODE");
+        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        searchCriteriaElementsNodes.setValues(
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+
+        searchCriteriaHistory.setSearchCriteriaList(
+            Arrays.asList(searchCriteriaElements1, searchCriteriaElements2, searchCriteriaElementsNodes));
         return searchCriteriaHistory;
     }
 
     public static AuthUserDto buildAuthUserDto() {
-        final AuthUserDto extUserDto = new AuthUserDto(buildUserDto("1","eee@eee.fr","groupId","customerId","Level"));
+        final AuthUserDto extUserDto =
+            new AuthUserDto(buildUserDto("1", "eee@eee.fr", "groupId", "customerId", "Level"));
         return extUserDto;
     }
 
-    public static UserDto buildUserDto(final String id, final String email, final String groupId, final String customerId, final String level) {
+    public static UserDto buildUserDto(final String id, final String email, final String groupId,
+        final String customerId, final String level) {
         final UserDto userDto = new UserDto();
         userDto.setId(id);
         userDto.setEmail(email);

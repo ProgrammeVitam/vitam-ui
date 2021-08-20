@@ -40,20 +40,19 @@ import fr.gouv.vitamui.archive.internal.server.TestMongoConfig;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
 import fr.gouv.vitamui.archive.internal.server.utils.Utils;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @Import({TestMongoConfig.class})
 @EnableMongoRepositories(basePackageClasses = SearchCriteriaHistoryRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class SearchCriteriaHistoryRepositoryTest {
@@ -61,7 +60,7 @@ public class SearchCriteriaHistoryRepositoryTest {
     @Autowired
     private SearchCriteriaHistoryRepository repository;
 
-    @After
+    @AfterEach
     public void cleanUp() {
         repository.deleteAll();
     }

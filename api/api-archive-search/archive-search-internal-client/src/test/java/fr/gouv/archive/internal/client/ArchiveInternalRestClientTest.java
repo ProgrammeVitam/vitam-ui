@@ -30,14 +30,14 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
+import fr.gouv.vitamui.commons.test.extension.ServerIdentityExtension;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -53,8 +53,8 @@ import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.Silent.class)
-public class ArchiveInternalRestClientTest extends AbstractServerIdentityBuilder {
+@ExtendWith(MockitoExtension.class)
+public class ArchiveInternalRestClientTest extends ServerIdentityExtension {
 
     private ArchiveInternalRestClient archivesSearchExternalRestClient;
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
@@ -63,15 +63,15 @@ public class ArchiveInternalRestClientTest extends AbstractServerIdentityBuilder
     @Mock
     private RestTemplate restTemplate;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         archivesSearchExternalRestClient = new ArchiveInternalRestClient(restTemplate, RestApi.ARCHIVE_SEARCH_PATH);
     }
 
     @Test
     public void sampleArchiveTest() {
-        Assert.assertNotNull(archivesSearchExternalRestClient);
-        Assert.assertEquals(archivesSearchExternalRestClient.getPathUrl(), RestApi.ARCHIVE_SEARCH_PATH);
+        Assertions.assertNotNull(archivesSearchExternalRestClient);
+        Assertions.assertEquals(archivesSearchExternalRestClient.getPathUrl(), RestApi.ARCHIVE_SEARCH_PATH);
     }
 
 
@@ -91,7 +91,7 @@ public class ArchiveInternalRestClientTest extends AbstractServerIdentityBuilder
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         ArchiveUnitsDto response =
             archivesSearchExternalRestClient.searchArchiveUnitsByCriteria(context, query);
-        Assert.assertEquals(response, responseEntity);
+        Assertions.assertEquals(response, responseEntity);
     }
 
     @Test
@@ -106,7 +106,7 @@ public class ArchiveInternalRestClientTest extends AbstractServerIdentityBuilder
             .thenReturn(new ResponseEntity<>(responseEntity, HttpStatus.OK));
         VitamUISearchResponseDto response =
             archivesSearchExternalRestClient.getFilingHoldingScheme(context);
-        Assert.assertEquals(response, responseEntity);
+        Assertions.assertEquals(response, responseEntity);
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ArchiveInternalRestClientTest extends AbstractServerIdentityBuilder
             archivesSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(query, context);
 
 
-        Assert.assertEquals(response, resource);
+        Assertions.assertEquals(response, resource);
     }
 
 }

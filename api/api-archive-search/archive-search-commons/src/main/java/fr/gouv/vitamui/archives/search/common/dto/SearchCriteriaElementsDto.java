@@ -38,6 +38,7 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -51,5 +52,10 @@ import java.util.List;
 @Getter
 public class SearchCriteriaElementsDto implements Serializable {
     private String criteria;
-    private List<String> values;
+    private String operator;
+    private String dataType;
+    private boolean keyTranslated;
+    private boolean valueTranslated;
+    private List<CriteriaValue> values;
+    private ArchiveSearchConsts.CriteriaCategory category;
 }

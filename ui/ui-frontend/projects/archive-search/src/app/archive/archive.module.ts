@@ -62,11 +62,15 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
+import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
+import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
 import { ArchiveComponent } from './archive.component';
+import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
 import { SharedModule } from './shared/shared.module';
@@ -116,6 +120,10 @@ import { SharedModule } from './shared/shared.module';
     ArchiveSearchPopupComponent,
     SearchCriteriaSaverComponent,
     SearchCriteriaListComponent,
+    CriteriaSearchComponent,
+    AppraisalRuleSearchComponent,
+    SimpleCriteriaSearchComponent,
+    TitleAndDescriptionCriteriaSearchComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
