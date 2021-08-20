@@ -88,7 +88,7 @@
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
                 'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
-              }}</a>
+                }}</a>
             </div>
             <appraisal-rule-search></appraisal-rule-search>
           </div>
@@ -161,7 +161,7 @@
       <div class="col-8" *ngIf="totalResults === 1">{{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }}</div>
       <div class="col-4 area-download">
         <a class="hide-ink" (click)="exportArchiveUnitsToCsvFile()" *ngIf="totalResults > 0"
-          >{{ 'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_SEARCHS' | translate }}
+        >{{ 'ARCHIVE_SEARCH.EXPORT_CSV.EXPORT_SEARCHS' | translate }}
           <i class="vitamui-icon vitamui-icon-download-basic vitamui-row-icon icon-download"></i>
         </a>
       </div>
@@ -254,7 +254,7 @@
 
       <div class="col-5 d-flex align-items-center">
         <span
-          >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{
+        >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.NAME' | translate }} <br />{{
             'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.DESCRIPTION' | translate
           }}</span
         >
@@ -324,11 +324,11 @@
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
               ><ng-container *ngSwitchCase="'Otherlevel'">
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Series'">
+            ><ng-container *ngSwitchCase="'Series'">
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Subseries'">
+            ><ng-container *ngSwitchCase="'Subseries'">
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Fonds'">
+            ><ng-container *ngSwitchCase="'Fonds'">
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
               </ng-container>
               <ng-container *NgSwitchDefault>
