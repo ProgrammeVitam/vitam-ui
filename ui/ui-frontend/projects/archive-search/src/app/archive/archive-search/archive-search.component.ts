@@ -96,7 +96,7 @@ export class ArchiveSearchComponent implements OnInit {
   archiveUnits: Unit[];
   ontologies: any;
   filterMapType: { [key: string]: string[] } = {
-    status: ['Folder', 'Document'],
+    status: ['Folder', 'Document', 'Subfonds', 'Class', 'Subgrp', 'Otherlevel', 'Series', 'Subseries', 'Collection', 'Fonds'],
   };
   shouldShowPreviewArchiveUnit = false;
   searchedCriteriaList: SearchCriteriaEltDto[] = [];
@@ -321,7 +321,18 @@ export class ArchiveSearchComponent implements OnInit {
     });
 
     this.searchCriterias = new Map();
-    this.filterMapType.Type = ['Folder', 'Document'];
+    this.filterMapType.Type = [
+      'Folder',
+      'Document',
+      'Subfonds',
+      'Class',
+      'Subgrp',
+      'Otherlevel',
+      'Series',
+      'Subseries',
+      'Collection',
+      'Fonds',
+    ];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
@@ -505,12 +516,13 @@ export class ArchiveSearchComponent implements OnInit {
 
     const typesFilterValues: string[] = [];
     this.filterMapType.Type.forEach((filter) => {
-      if (filter === 'Folder') {
-        typesFilterValues.push('RecordGrp');
-      }
       if (filter === 'Document') {
         typesFilterValues.push('File');
         typesFilterValues.push('Item');
+      } else if (filter === 'Folder') {
+        typesFilterValues.push('RecordGrp');
+      } else {
+        typesFilterValues.push(filter);
       }
     });
     if (typesFilterValues.length > 0) {

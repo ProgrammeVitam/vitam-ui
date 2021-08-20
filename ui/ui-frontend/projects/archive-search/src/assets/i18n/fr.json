@@ -71,14 +71,22 @@
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
       "SHOW_TREE_PARENT": "Réduire l'arborescence"
     },
-    "EXPORT_CSV":{
-     "EXPORT_SEARCHS": "Exporter les résultats",
-     "EXPORT_CSV_LIMIT_REACHED":"Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
+    "EXPORT_CSV": {
+      "EXPORT_SEARCHS": "Exporter les résultats",
+      "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
     },
     "RESULTS": "résultats",
     "RESULT": "résultat",
     "FOLDER": "Dossier",
     "DOCUMENT": "Document",
+    "SUBFONDS": "Sous-fonds",
+    "CLASS": "Classe",
+    "SUBGRP": "Sous-groupe de documents",
+    "OTHERLEVEL": "Autre niveau",
+    "SERIES": "Série",
+    "SUBSERIES": "Sous-série",
+    "COLLECTION": "Collection",
+    "FONDS": "Fonds",
     "ARCHIVE_PREVIEW": {
       "INFORMATION": "Informations"
     },

@@ -79,6 +79,14 @@
     "RESULT": "Result",
     "FOLDER": "Folder",
     "DOCUMENT": "Document",
+    "SUBFONDS": "Sub fonds",
+    "CLASS": "Class",
+    "SUBGRP": "Sub groups",
+    "OTHERLEVEL": "Other level",
+    "SERIES": "Serie",
+    "SUBSERIES": "Sub-series",
+    "COLLECTION": "Collection",
+    "FONDS": "Fonds",
     "ARCHIVE_PREVIEW": {
       "INFORMATION": "Informations"
     },
