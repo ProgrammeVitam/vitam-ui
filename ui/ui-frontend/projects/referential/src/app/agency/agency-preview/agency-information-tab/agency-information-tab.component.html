@@ -5,9 +5,12 @@
       <vitamui-common-input 
         formControlName="name" 
         placeholder="Nom" 
-        i18n-placeholder="Name@@profileGroupCreateNamePlaceholder"
-        disabled>
+        i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
       </vitamui-common-input>
+      <ng-container *ngIf="form.get('name')?.touched">
+        <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
+        </vitamui-common-input-error>
+      </ng-container>
     </div>
   </div>
 
@@ -15,10 +18,6 @@
     <div class="col-10 form-control">
       <vitamui-common-input formControlName="description" placeholder="Description"
                             i18n-placeholder="description@@agencyPreviewLabelName">
-        <ng-container *ngIf="form.get('description')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
-          </vitamui-common-input-error>
-        </ng-container>
       </vitamui-common-input>
     </div>
   </div>
