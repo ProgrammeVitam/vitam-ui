@@ -34,44 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Event} from 'projects/vitamui-library/src/public-api';
-import {GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
-
-import {ProbativeValueCreateComponent} from './probative-value-create/probative-value-create.component';
-import {ProbativeValueListComponent} from './probative-value-list/probative-value-list.component';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Event } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
+import { ProbativeValueCreateComponent } from './probative-value-create/probative-value-create.component';
+import { ProbativeValueListComponent } from './probative-value-list/probative-value-list.component';
 
 @Component({
   selector: 'app-probative-value',
   templateUrl: './probative-value.component.html',
-  styleUrls: ['./probative-value.component.scss']
+  styleUrls: ['./probative-value.component.scss'],
 })
-export class ProbativeValueComponent extends SidenavPage<Event> implements OnInit {
-
+export class ProbativeValueComponent extends SidenavPage<Event> implements OnInit, OnDestroy {
   search: string;
   dateRangeFilterForm: FormGroup;
   filters: any = {};
 
-  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
-  @ViewChild(ProbativeValueListComponent, {static: true}) probativeValueListComponent: ProbativeValueListComponent;
+  accessContractSub: Subscription;
+  errorMessageSub: Subscription;
+  foundAccessContract = false;
+  accessContract: string;
+
+  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
+  @ViewChild(ProbativeValueListComponent, { static: true }) probativeValueListComponent: ProbativeValueListComponent;
 
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder
+  ) {
     super(route, globalEventService);
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
-      endDate: null
+      endDate: null,
     });
 
-    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe(value => {
+    this.dateRangeFilterForm.controls.startDate.valueChanges.subscribe((value) => {
       this.filters.startDate = value;
       this.probativeValueListComponent.filters = this.filters;
     });
@@ -87,7 +92,7 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
   openCreateProbativeValueDialog() {
     const dialogRef = this.dialog.open(ProbativeValueCreateComponent, {
       panelClass: 'vitamui-modal',
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result !== undefined && result.success) {
@@ -109,9 +114,9 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
+      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
@@ -122,14 +127,13 @@ export class ProbativeValueComponent extends SidenavPage<Event> implements OnIni
     this.searchBar.reset();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   showProbativeValue(item: Event) {
     this.openPanel(item);
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 }
