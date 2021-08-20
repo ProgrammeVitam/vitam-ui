@@ -119,12 +119,26 @@ public class VitamQueryHelper {
                     case IDENTIFIER:
                     case ID:
                     case PUID:
-                    case RULE_ID:
-                    case RULE_VALUE:
-                    case RULE_TYPE:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         queryOr.add(eq(searchKey, stringValue));
+                        haveOrParameters = true;
+                        break;
+                    case RULE_TYPE:
+                        // string equals operation filter as a and
+                        final String ruleType = (String) entry.getValue();
+                        query.add(eq(searchKey, ruleType));
+                        break;
+                    case RULE_ID:
+                        // string wildward operation
+                        final String ruleId = (String) entry.getValue();
+                        queryOr.add(wildcard(searchKey, "*"+ruleId+"*"));
+                        haveOrParameters = true;
+                        break;
+                    case RULE_VALUE:
+                        // string match phrase prefix operation
+                        final String ruleValue = (String) entry.getValue();
+                        queryOr.add(matchPhrasePrefix(searchKey, ruleValue));
                         haveOrParameters = true;
                         break;
                     case EV_TYPE_PROC:
