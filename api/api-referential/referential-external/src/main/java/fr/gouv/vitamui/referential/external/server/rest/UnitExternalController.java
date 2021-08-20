@@ -85,10 +85,10 @@ public class UnitExternalController {
         SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitExternalService.findUnitByDsl(id, dsl);
     }
-    
+
     @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
     @Secured(ServicesData.ROLE_GET_UNITS)
-    public JsonNode findObjectMetadataById(            
+    public JsonNode findObjectMetadataById(
             @PathVariable final String id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
@@ -96,7 +96,8 @@ public class UnitExternalController {
         return unitExternalService.findObjectMetadataById(id, dsl);
     }
 
-    // TODO: Must Secure ? Multiple (OR) CREATE_APPNAME_ROLE ? Unique FILLING_PLAN_ACCESS ?
+
+    @Secured(ServicesData.ROLE_GET_FILLING_PLAN_ACCESS)
     @GetMapping(RestApi.FILING_PLAN_PATH)
     public VitamUISearchResponseDto getFillingPlan() {
         return unitExternalService.getFilingPlan();
