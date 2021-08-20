@@ -1,6 +1,6 @@
 <vitamui-common-sidenav-header
   [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en "
-  [icon]="archiveUnit?.DescriptionLevel === 'RecordGrp' ?  'vitamui-icon-folder' : 'vitamui-icon-file'"
+  [icon]="(archiveUnit?.DescriptionLevel === 'File' ||  archiveUnit?.DescriptionLevel === 'Item' )?  'vitamui-icon-file': 'vitamui-icon-folder' "
   (onclose)="emitClose()">
 </vitamui-common-sidenav-header>
 
