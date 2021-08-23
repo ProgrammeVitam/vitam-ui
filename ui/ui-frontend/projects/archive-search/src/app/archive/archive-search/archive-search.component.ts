@@ -121,7 +121,6 @@ export class ArchiveSearchComponent implements OnInit {
   showUnitPreviewBlock = false;
   nodeArray: FilingHoldingSchemeNode[] = [];
   nodeData: NodeData;
-
   entireNodesIds: string[];
 
   constructor(
@@ -274,6 +273,7 @@ export class ArchiveSearchComponent implements OnInit {
       'Collection',
       'Fonds',
     ];
+
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {

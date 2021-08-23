@@ -77,14 +77,19 @@
             <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
           </button>
         </ng-template>
-        <ng-container *ngIf="category.name === 'APPRAISAL_RULE'">
-          <div class="card-criteria">
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'APPRAISAL_RULE'">
             <div class="row justify-content-end text-on-right-side">
               <a class="hide-ink" (click)="removeCriteriaByCategory('APPRAISAL_RULE')">{{
                 'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
               }}</a>
             </div>
-
             <appraisal-rule-search></appraisal-rule-search>
           </div>
         </ng-container>
@@ -101,6 +106,11 @@
 
       <mat-menu #menuTabs="matMenu" class="my-menu">
         <button
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
           mat-menu-item
           class="btn-new-save"
           (click)="addCriteriaCategory('APPRAISAL_RULE')"
