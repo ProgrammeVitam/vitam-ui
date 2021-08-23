@@ -9,7 +9,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>ui-parent</artifactId>
-        <version>5rc.0</version>
+        <version>5rc.1-SNPASHOT</version>
     </parent>
 
     <properties>
