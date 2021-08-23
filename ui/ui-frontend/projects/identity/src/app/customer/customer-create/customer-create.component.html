@@ -153,6 +153,8 @@
             <mat-select formControlName="passwordRevocationDelay"
             [placeholder]="'CUSTOMER.INFORMATIONS.PASSWORDS_DURATION' | translate"
                         panelClass="vitamui-mat-select">
+              <mat-option [value]="3">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_THREE' | translate}}
+              </mat-option>
               <mat-option [value]="6">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_SIX' | translate}}
               </mat-option>
               <mat-option [value]="9">{{'CUSTOMER.INFORMATIONS.MODAL.PWD_REVOCATION_NINE' | translate}}
