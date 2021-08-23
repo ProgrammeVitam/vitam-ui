@@ -202,9 +202,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static class PasswordAlreadyUsedException extends InvalidPasswordException {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordAlreadyUsedException() {
@@ -219,9 +216,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
 
     protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
-        /**
-         *
-         */
+
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordNotMatchRegexException() {
@@ -235,9 +230,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     protected static class PasswordConfirmException extends InvalidPasswordException {
-        /**
-         *
-         */
+
         private static final long serialVersionUID = -8981663363751187076L;
 
         public PasswordConfirmException() {
@@ -251,9 +244,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     private static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
-        /**
-         *
-         */
+
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordContainsUserDictionaryException(String message) {

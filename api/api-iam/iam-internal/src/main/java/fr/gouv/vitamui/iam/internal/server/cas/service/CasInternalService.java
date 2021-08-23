@@ -181,7 +181,7 @@ public class CasInternalService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
+    @Autowired
     private PasswordValidator passwordValidator;
 
     @SuppressWarnings("unused")
@@ -189,8 +189,7 @@ public class CasInternalService {
 
     private static final UniqueTicketIdGenerator TICKET_GENERATOR = new DefaultUniqueTicketIdGenerator();
 
-    public CasInternalService(PasswordValidator passwordValidator) {
-        this.passwordValidator = passwordValidator;
+    public CasInternalService() {
     }
 
     @Transactional

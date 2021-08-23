@@ -96,9 +96,6 @@ function jqueryReady() {
         $('#strengthProgressBar').zxcvbnProgressBar({ passwordInput: '#password' });
 
         if (passwordIsNotValid && $('#security-four.valid').length > 0 && $('#security-valid-password.valid').length > 0) {
-          //$('#password-policy-text').show();
-          // $('#password-helper').show();
-
           $('#security-invalid-password').addClass("valid");
           $('#security-invalid-password').show();
         } else {

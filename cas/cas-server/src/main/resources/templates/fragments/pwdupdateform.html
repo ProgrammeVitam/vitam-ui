@@ -124,106 +124,6 @@
 <br/>
 <br/>
 <br/>
-<!--<div>
-    <span th:utext="#{screen.pm.init.security.title}">Password Constraints :</span>
-    <ul id="collapsible" style="color:#aab0b3">
-        <li id="security-pssi-one">
-            <span th:utext="#{screen.pm.init.pssi.security.one}"></span>
-            <i class="material-icons">check</i>
-        </li>
-        <li id="security-pssi-two">
-            <span th:utext="#{screen.pm.init.pssi.security.two}"></span>
-            <i class="material-icons">check</i>
-        </li>
-        <li id="security-pssi-three">
-            <span th:utext="#{screen.pm.init.pssi.security.three}"></span>
-            <i class="material-icons">check</i>
-        </li>
-        <li id="security-pssi-four">
-            <span th:utext="#{screen.pm.init.pssi.security.four}"></span>
-            <i class="material-icons">check</i>
-        </li>
-
-        <li id="security-pssi-five">
-            <ul>
-                <li id="security-pssi-five-one">
-                    <span th:utext="#{screen.pm.init.pssi.security.five.one}"></span>
-                    <i class="material-icons">check</i>
-                </li>
-                <li id="security-pssi-five-two">
-                    <span th:utext="#{screen.pm.init.pssi.security.five.two}"></span>
-                    <i class="material-icons">check</i>
-                </li>
-                <li id="security-pssi-five-three">
-                    <span th:utext="#{screen.pm.init.pssi.security.five.three}"></span>
-                    <i class="material-icons">check</i>
-                </li>
-                <li id="security-pssi-five-four">
-                    <span th:utext="#{screen.pm.init.pssi.security.five.four}"></span>
-                    <i class="material-icons">check</i>
-                </li>
-            </ul>
-        </li>
-    </ul>
-</div>-->
-	<!--<div class="helper password-helper" id="password-helper" hidden>
-		<span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
-		<ul>
-            <li id="security-pssi-one">
-                <span th:utext="#{screen.pm.init.pssi.security.one}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-pssi-two">
-                <span th:utext="#{screen.pm.init.pssi.security.two}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-pssi-three">
-                <span th:utext="#{screen.pm.init.pssi.security.three}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-pssi-four">
-                <span th:utext="#{screen.pm.init.pssi.security.four}"></span>
-                <i class="material-icons">check</i>
-            </li>
-
-            <li id="security-pssi-five">
-                <ul>
-                    <li id="security-pssi-five-one">
-                        <span th:utext="#{screen.pm.init.pssi.security.five.one}"></span>
-                        <i class="material-icons">check</i>
-                    </li>
-                    <li id="security-pssi-five-two">
-                        <span th:utext="#{screen.pm.init.pssi.security.five.two}"></span>
-                        <i class="material-icons">check</i>
-                    </li>
-                    <li id="security-pssi-five-three">
-                        <span th:utext="#{screen.pm.init.pssi.security.five.three}"></span>
-                        <i class="material-icons">check</i>
-                    </li>
-                    <li id="security-pssi-five-four">
-                        <span th:utext="#{screen.pm.init.pssi.security.five.four}"></span>
-                        <i class="material-icons">check</i>
-                    </li>
-                </ul>
-            </li>
-            <li id="security-five">
-                <span th:utext="#{screen.pm.init.security.four}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-four">
-                <span th:utext="#{screen.pm.init.security.four}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-valid-password">
-                <span th:utext="#{screen.pm.init.security.valid.password}"></span>
-                <i class="material-icons">check</i>
-            </li>
-            <li id="security-invalid-password">
-                <span th:utext="#{screen.pm.init.security.invalid.password}"></span>
-                <i class="material-icons">check</i>
-            </li>
-		</ul>
-	</div>-->
 
 <script>
 var coll = document.getElementsByClassName("collapsible");
@@ -262,11 +162,6 @@ var coll = document.getElementsByClassName("collapsible");
         function checkRule(valid, liToVerify) {
         	if(valid) {
         		$(liToVerify).addClass("valid");
-        		//if(liToVerify === '#security-valid-password' && valid) {
-        		//$('#security-valid-password-constraints').addClass("valid");
-        		//$('#security-pssi-one').addClass("valid");
-        		//$('#security-valid-password-constraints').show();
-        		//}
         	} else {
         		$(liToVerify).removeClass("valid");
         	}
