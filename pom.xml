@@ -99,7 +99,7 @@
         <javax.el.version.version>3.0.1-b06</javax.el.version.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
-        <hibernate.validatior.version>6.1.0.Final</hibernate.validatior.version>
+        <hibernate.validatior.version>6.1.5.Final</hibernate.validatior.version>
         <javassist.version>3.28.0-GA</javassist.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
