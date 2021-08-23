@@ -10,7 +10,7 @@
     <parent>
         <groupId>fr.gouv.vitamui</groupId>
         <artifactId>parent</artifactId>
-        <version>5rc.0</version>
+        <version>5rc.1-SNPASHOT</version>
     </parent>
 
     <modules>
