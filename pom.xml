@@ -68,7 +68,7 @@
 
         <!-- Dependencies version -->
         <apache.commons.codec.version>1.14</apache.commons.codec.version>
-        <apache.pdfbox.version>2.0.16</apache.pdfbox.version>
+        <apache.pdfbox.version>2.0.24</apache.pdfbox.version>
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
@@ -80,7 +80,7 @@
         <commons.compress.version>1.20</commons.compress.version>
         <commons.fileupload.version>1.4</commons.fileupload.version>
         <commons.httpclient.version>3.1</commons.httpclient.version>
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <commons.text.version>1.8</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
@@ -99,7 +99,7 @@
         <javax.el.version.version>3.0.1-b06</javax.el.version.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.validation.api.version>2.0.1.Final</javax.validation.api.version>
-        <hibernate.validatior.version>6.1.0.Final</hibernate.validatior.version>
+        <hibernate.validatior.version>6.1.5.Final</hibernate.validatior.version>
         <javassist.version>3.28.0-GA</javassist.version>
         <javax.ws.rs.version>2.1.1</javax.ws.rs.version>
         <jaxb.version>2.4.0-b180830.0359</jaxb.version>
