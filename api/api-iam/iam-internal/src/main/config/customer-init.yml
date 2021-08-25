@@ -74,6 +74,7 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_CREATE_ACCESS_CONTRACTS
         - ROLE_UPDATE_ACCESS_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Profil pour la gestion des contrats d'entrée
       description: Gestion des contrats d'entrée dans Vitam
@@ -83,6 +84,7 @@ customer-init:
         - ROLE_GET_INGEST_CONTRACTS
         - ROLE_CREATE_INGEST_CONTRACTS
         - ROLE_UPDATE_INGEST_CONTRACTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
 
     - name: Profil pour les services agents
       description: Gestion des services agents dans Vitam
@@ -109,6 +111,7 @@ customer-init:
       level:
       roles:
         - ROLE_LOGBOOKS
+
     - name: Profil pour le dépôt et suivi des versements
       description: Gestion des applications de dépôt et suivi des versements
       app-name: INGEST_MANAGEMENT_APP

@@ -1,0 +1,16 @@
+db = db.getSiblingDB('iam')
+
+print("START_33_update_admin_externalParameters_value.js");
+
+const index = 0;
+
+db.externalParameters.update(
+{"_id" : "external_param_default"
+},
+{
+   $set:{
+      [`parameters.${index}.value`] : "ContratTNR"
+   }
+});
+
+print("START_33_update_admin_externalParameters_value.js");

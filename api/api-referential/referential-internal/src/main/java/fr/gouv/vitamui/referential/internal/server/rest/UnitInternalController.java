@@ -103,7 +103,7 @@ public class UnitInternalController {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return unitInternalService.findUnitById(id, vitamContext);
     }
- 
+
     // TODO : Secure it !
     @PostMapping({RestApi.DSL_PATH, RestApi.DSL_PATH + CommonConstants.PATH_ID})
     public JsonNode findByDsl(
@@ -115,9 +115,9 @@ public class UnitInternalController {
         SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
         return unitInternalService.searchUnitsWithErrors(id, dsl, vitamContext);
     }
-    
+
     @PostMapping(CommonConstants.PATH_ID + CommonConstants.PATH_OBJECTS)
-    public JsonNode findObjectMetadataById(            
+    public JsonNode findObjectMetadataById(
     		@RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
             @PathVariable final String id,
@@ -136,23 +136,26 @@ public class UnitInternalController {
             throws VitamClientException, IOException {
         LOGGER.debug("Get filing plan");
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        
+
         // TULEAP-20359 : The filling plan must retrieve the units with the FILING or HOLDING type
         final JsonNode fillingOrHoldingQuery = createQueryForFillingOrHoldingUnit();
-        
+
         return objectMapper.treeToValue(unitInternalService.searchUnits(fillingOrHoldingQuery, vitamContext), VitamUISearchResponseDto.class);
     }
 
     private JsonNode createQueryForFillingOrHoldingUnit() {
+
         try {
             final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query = in(unitType(), UnitTypeEnum.FILING_UNIT.getValue(), UnitTypeEnum.HOLDING_UNIT.getValue());
+            final Query query =
+                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
             select.addQueries(query);
             select.addUsedProjection(FILING_PLAN_PROJECTION);
+            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
             return select.getFinalSelect();
-        }
-        catch (InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new UnexpectedDataException("Unexpected error occured while building holding dsl query : " + e.getMessage());
+        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
+            throw new UnexpectedDataException(
+                "Unexpected error occured while building holding dsl query : " + e.getMessage());
         }
     }
 
