@@ -1882,6 +1882,26 @@
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                     </plugin>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>${maven.dependencycheck.version}</version>
+                        <configuration>
+                            <formats>
+                                <format>XML</format>
+                                <format>HTML</format>
+                                <format>JSON</format>
+                            </formats>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-cli</id>
+                                <goals>
+                                    <goal>aggregate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
             <properties>
@@ -1914,6 +1934,9 @@
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
                 <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
                 <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
+                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
+                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
+                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml</sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.host.url/>
