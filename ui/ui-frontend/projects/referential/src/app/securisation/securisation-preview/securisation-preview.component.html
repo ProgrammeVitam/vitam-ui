@@ -1,16 +1,20 @@
 <div class="vitamui-sidepanel">
     <div class="vitamui-sidepanel-header">
-        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
-
-        <div class="title">
-            <h2>{{securisation?.id}}</h2>
+        <div class="d-flex justify-content-end">
+        <button class="btn link cancel" (click)="emitClose()">
+            <i class="vitamui-icon vitamui-icon-close"></i>
+        </button>
         </div>
 
-        <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
-            <div class="preview-btn-container">
-                <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" 
-                        [disabled]="!accessContractId">Télécharger le rapport</button>
+        <div class="title">
+            <div matTooltipClass="vitamui-tooltip"
+            matTooltip="{{ securisation?.id }}">
+                <h5 class="m-0 text-primary">{{ securisation?.id | truncate: 30}}</h5>
+                <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
             </div>
+        </div>
+        <ng-container *ngIf="securisation.events[securisation.events.length - 1].outcome !== 'WARNING'">
+            <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
         </ng-container>
     </div>
     <div class="vitamui-sidepanel-body">

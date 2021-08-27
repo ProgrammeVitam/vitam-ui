@@ -1,4 +1,4 @@
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {ActivatedRoute} from '@angular/router';
@@ -9,6 +9,13 @@ import {ProbativeValueService} from '../probative-value.service';
 import {ProbativeValuePreviewComponent} from './probative-value-preview.component';
 import {ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
 
+
+@Pipe({name: 'truncate'})
+class MockTruncatePipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
 describe('ProbativeValuePreviewComponent', () => {
   let component: ProbativeValuePreviewComponent;
   let fixture: ComponentFixture<ProbativeValuePreviewComponent>;
@@ -30,7 +37,7 @@ describe('ProbativeValuePreviewComponent', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [ProbativeValuePreviewComponent],
+      declarations: [ProbativeValuePreviewComponent,MockTruncatePipe],
       imports: [
         MatSnackBarModule
       ],

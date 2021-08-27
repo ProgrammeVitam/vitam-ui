@@ -1,14 +1,34 @@
 <div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
-    <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+    <div class="vitamui-sidepanel-header">
+        <div class="d-flex justify-content-end">
+        <button class="btn link cancel" (click)="emitClose()">
+            <i class="vitamui-icon vitamui-icon-close"></i>
+        </button>
+        </div>
 
-    <div class="title">
-      <h2>{{probativeValue?.id}}</h2>
+        <div class="title">
+            <div matTooltipClass="vitamui-tooltip"
+            matTooltip="{{ probativeValue?.id }}">
+                <h5 class="m-0 text-primary">{{ probativeValue?.id | truncate: 30}}</h5>
+                <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
+            </div>
+        </div>
+        <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le rapport</button>
     </div>
-    <button mat-button class="btn btn-primary button-maring" (click)="downloadReport()" [disabled]="!accessContractId">Télécharger le relevé</button>
-  </div>
   <div class="vitamui-sidepanel-body">
     <mat-tab-group class="preview-tab-group">
     </mat-tab-group>
   </div>
+    <div class="vitamui-sidepanel-body">
+        <mat-tab-group class="preview-tab-group">
+
+            <mat-tab label="Informations">
+                <!--Not implemented !-->
+            </mat-tab>
+
+            <mat-tab label="Détails">
+              <!--Not implemented !-->
+            </mat-tab>
+        </mat-tab-group>
+    </div>
 </div>
