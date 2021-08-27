@@ -27,10 +27,14 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.List;
 
@@ -38,7 +42,20 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class SearchCriteriaEltDto implements Serializable {
+    @NotNull
     private String criteria;
-    private List<String> values;
+
+    @NotNull
+    private ArchiveSearchConsts.CriteriaCategory category = ArchiveSearchConsts.CriteriaCategory.FIELDS;
+
+    @NotNull
+    private String operator = ArchiveSearchConsts.CriteriaOperators.EQ.name();
+
+    private List<CriteriaValue> values;
+
+    @NotNull
+    private String dataType = ArchiveSearchConsts.CriteriaDataType.STRING.name();
 }

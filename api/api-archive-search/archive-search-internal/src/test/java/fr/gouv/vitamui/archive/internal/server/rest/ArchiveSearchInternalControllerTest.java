@@ -34,16 +34,16 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {ArchiveSearchInternalControllerTest.class})
 @ActiveProfiles("test")
 public class ArchiveSearchInternalControllerTest {
@@ -70,7 +70,7 @@ public class ArchiveSearchInternalControllerTest {
     @MockBean
     private ArchiveSearchInternalService archiveSearchInternalService;
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }

@@ -43,32 +43,34 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.util.Arrays;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest(controllers = { SearchCriteriaHistoryExternalController.class })
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(controllers = {SearchCriteriaHistoryExternalController.class})
 public class SearchCriteriaHistoryExternalControllerTest extends
     ApiArchiveSearchExternalControllerTest<SearchCriteriaHistoryDto> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryExternalControllerTest.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryExternalControllerTest.class);
 
     @MockBean
     private SearchCriteriaHistoryExternalService service;
 
-    private SearchCriteriaHistoryExternalController mockedController = MvcUriComponentsBuilder.on(SearchCriteriaHistoryExternalController.class);
+    private SearchCriteriaHistoryExternalController mockedController =
+        MvcUriComponentsBuilder.on(SearchCriteriaHistoryExternalController.class);
 
     @Test
-    public void testGetSearchCriteriaHistories() throws Exception{
+    public void testGetSearchCriteriaHistories() throws Exception {
         LOGGER.debug("get search criterias");
         Mockito.when(service.getSearchCriteriaHistory()).thenReturn(Arrays.asList(new SearchCriteriaHistoryDto()));
 
@@ -115,7 +117,7 @@ public class SearchCriteriaHistoryExternalControllerTest extends
         return new String[] {
             ServicesData.ROLE_GET_ALL_ARCHIVE,
             ServicesData.ROLE_CREATE_ARCHIVE,
-            ServicesData.ROLE_GET_ARCHIVE };
+            ServicesData.ROLE_GET_ARCHIVE};
     }
 
 

@@ -45,9 +45,7 @@ public class SearchCriteriaDto implements Serializable {
      * Criteria list for searching archive units
      */
 
-    private List<String> nodes = new ArrayList<>();
     private List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-    private List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList = new ArrayList<>();
     private List<String> fieldsList = new ArrayList<>();
     private SearchCriteriaSort sortingCriteria;
     private Integer pageNumber;

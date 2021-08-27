@@ -26,34 +26,29 @@
 
 package fr.gouv.vitamui.archive.internal.server;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-
-@RunWith(SpringRunner.class)
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
+@ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
 public class ApiArchivesSearchInternalApplicationTest {
 
     @Autowired
     private Environment env;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
         System.setProperty("vitam.config.folder", "src/main/config");
     }
 
     @Test
     public void testContextLoads() {
-        assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name")).isEqualTo("archive-search-internal-application");
+        Assertions.assertNotNull(env);
     }
 }

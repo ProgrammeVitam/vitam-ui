@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.archive.internal.server.searchcriteria.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriasDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaElementsDto;
 import fr.gouv.vitamui.commons.mongo.IdDocument;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -54,8 +54,6 @@ import java.util.List;
 
 /**
  * Search criteria history domain.
- *
- *
  */
 @Document(collection = "searchCriteriaHistories")
 @TypeAlias("searchCriteriaHistories")
@@ -74,5 +72,5 @@ public class SearchCriteriaHistory extends IdDocument {
     private OffsetDateTime savingDate;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<SearchCriteriasDto> searchCriteriaList = new ArrayList<>();
+    private List<SearchCriteriaElementsDto> searchCriteriaList = new ArrayList<>();
 }

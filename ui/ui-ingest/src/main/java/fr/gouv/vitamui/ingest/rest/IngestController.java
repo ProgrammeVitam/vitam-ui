@@ -156,4 +156,5 @@ public class IngestController extends AbstractUiRestController {
         LOGGER.info("The response in ui Ingest is {} ", response.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
