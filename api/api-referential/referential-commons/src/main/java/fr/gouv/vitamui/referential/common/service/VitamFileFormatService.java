@@ -50,6 +50,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import fr.gouv.vitam.common.database.builder.query.Query;
+import fr.gouv.vitam.common.database.builder.query.QueryHelper;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -105,11 +109,18 @@ public class VitamFileFormatService {
         return response;
     }
 
-    public RequestResponse<FileFormatModel> findFileFormatById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
+    public RequestResponse<FileFormatModel> findFileFormatById(final VitamContext vitamContext, final String formatId) throws VitamClientException {
         LOGGER.info("File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-        final RequestResponse<FileFormatModel> response = adminExternalClient.findFormatById(vitamContext, contractId);
-        VitamRestUtils.checkResponse(response);
-        return response;
+        try {
+            // FIXME Get by id don't return #id and #version
+            Select select = new Select();
+            select.setQuery(QueryHelper.eq("PUID", formatId));
+            final RequestResponse<FileFormatModel> response = adminExternalClient.findFormats(vitamContext,select.getFinalSelect());
+            VitamRestUtils.checkResponse(response);
+            return response;
+        } catch (InvalidCreateOperationException icoe){
+          throw  new VitamClientException((icoe));
+        }
     }
 
     /**
@@ -173,8 +184,8 @@ public class VitamFileFormatService {
 
         return importFileFormats(vitamContext, actualFileFormats);
     }
-    
-    public RequestResponse<?> importFileFormats(VitamContext vitamContext, String fileName, MultipartFile file) 
+
+    public RequestResponse<?> importFileFormats(VitamContext vitamContext, String fileName, MultipartFile file)
         	throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         	LOGGER.debug("Import file format file {}", fileName);
         	return adminExternalClient.createFormats(vitamContext, file.getInputStream(), fileName);
