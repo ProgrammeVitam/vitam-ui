@@ -34,31 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { of, Observable } from 'rxjs';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
 import { InjectorModule, LoggerModule, VitamUISnackBar } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { SearchCriteriaListComponent } from './search-criteria-list.component';
 import { SearchCriteriaListService } from './search-criteria-list.service';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
-import {SearchCriteriaHistory, SearchCriterias, SearchCriteriaEltements} from '../../models/search-criteria-history.interface';
 
-@Pipe({name: 'truncate'})
+@Pipe({ name: 'truncate' })
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
 
-const translations: any = {TEST: 'Mock translate test'};
+const translations: any = { TEST: 'Mock translate test' };
 
 class FakeLoader implements TranslateLoader {
   getTranslation(): Observable<any> {
@@ -71,18 +70,17 @@ describe('SearchCriteriaListComponent', () => {
   let fixture: ComponentFixture<SearchCriteriaListComponent>;
 
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
-  matDialogRefSpy.open.and.returnValue({afterClosed: () => of(true)});
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
   const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
   const SearchCriteriaListServiceStub = {
-
     getSearchCriteriaHistory: () => of([]),
 
-    deleteSearchCriteriaHistory: () => of()
+    deleteSearchCriteriaHistory: () => of(),
   };
 
   beforeEach(async () => {
@@ -92,27 +90,26 @@ describe('SearchCriteriaListComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
-          loader: {provide: TranslateLoader, useClass: FakeLoader}
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
-        RouterTestingModule
+        RouterTestingModule,
       ],
-      declarations: [
-        SearchCriteriaListComponent,
-        MockTruncatePipe
-      ],
+      declarations: [SearchCriteriaListComponent, MockTruncatePipe],
       providers: [
         ArchiveSharedDataServiceService,
         DatePipe,
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MatDialog, useValue: matDialogRefSpy},
-        {provide: VitamUISnackBar, useValue: snackBarSpy},
-        {provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub},
-        {provide: ActivatedRoute , useValue: {params: of({tenantIdentifier: 1}), data: of({appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP'})}},
-        {provide: environment, useValue: environment}
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogRefSpy },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub },
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+        },
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-    .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -127,7 +124,6 @@ describe('SearchCriteriaListComponent', () => {
 
   describe('clearElement', () => {
     let searchCriteriaHistory$: SearchCriteriaHistory[] = [];
-    let searchCriteriaList$: SearchCriterias[] = [];
     let criteriaList$: SearchCriteriaEltements[] = [];
     beforeEach(() => {
       // Given
@@ -135,51 +131,69 @@ describe('SearchCriteriaListComponent', () => {
         {
           criteria: 'Title',
           values: [
-            'vdsvdv',
-            'dfbdfd'
-          ]
+            { value: 'vdsvdv', id: 'vdsvdv' },
+            { value: 'dfbdfd', id: 'dfbdfd' },
+          ],
+          dataType: 'STRING',
+          operator: 'EQ',
+          keyTranslated: false,
+          valueTranslated: false,
+          category: 'FIELDS',
         },
         {
           criteria: 'Description',
-          values: [
-            'dfddfgdfdgg'
-          ]
+          values: [{ value: 'dfddfgdfdgg', id: 'dfddfgdfdgg' }],
+          category: 'FIELDS',
+          dataType: 'STRING',
+          operator: 'EQ',
+          keyTranslated: false,
+          valueTranslated: false,
         },
         {
           criteria: '#opi',
           values: [
-            'dfgdfgdfgdfgdfgfdg',
-            'gggggggggg'
-          ]
-        }
+            { value: 'dfgdfgdfgdfgdfgfdg', id: 'dfgdfgdfgdfgdfgfdg' },
+            { value: 'gggggggggg', id: 'gggggggggg' },
+          ],
+          category: 'FIELDS',
+          dataType: 'STRING',
+          operator: 'EQ',
+          keyTranslated: false,
+          valueTranslated: false,
+        },
+        ,
+        {
+          criteria: 'NODE',
+          values: [
+            { value: 'node1', id: 'node1' },
+            { value: 'node2', id: 'node2' },
+            { value: 'node3', id: 'node3' },
+          ],
+          category: 'NODES',
+          dataType: 'STRING',
+          operator: 'EQ',
+          keyTranslated: false,
+          valueTranslated: false,
+        },
       ];
-
-      searchCriteriaList$ =
-        [
-          {
-            nodes: ['node1', 'node2', 'node3'],
-          criteriaList: criteriaList$,
-          }
-      ];
-
 
       searchCriteriaHistory$ = [
         {
-        id: 'id1',
-        name: 'First Svae',
-        savingDate: new Date().toISOString(),
-        searchCriteriaList: searchCriteriaList$
+          id: 'id1',
+          name: 'First Svae',
+          savingDate: new Date().toISOString(),
+          searchCriteriaList: criteriaList$,
         },
         {
           id: 'id2',
           name: 'Second Svae',
           savingDate: new Date().toISOString(),
-          searchCriteriaList: searchCriteriaList$
-        }];
+          searchCriteriaList: criteriaList$,
+        },
+      ];
 
       component.searchCriteriaHistory = searchCriteriaHistory$;
     });
-
 
     describe('deleteSearchCriteriaHistory', () => {
       it('should delete searchCriteria', () => {

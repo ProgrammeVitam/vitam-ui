@@ -48,14 +48,15 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
 import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -63,22 +64,25 @@ public class SearchCriteriaHistoryServiceTest {
 
     private SearchCriteriaHistoryInternalService service;
 
-    private final SearchCriteriaHistoryRepository ssearchCriteriaHistoryRepository = mock(SearchCriteriaHistoryRepository.class);
+    private final SearchCriteriaHistoryRepository ssearchCriteriaHistoryRepository =
+        mock(SearchCriteriaHistoryRepository.class);
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceTest.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(SearchCriteriaHistoryServiceTest.class);
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
 
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter = new SearchCriteriaHistoryConverter();
 
-    @Before
+    @BeforeEach
     public void setup() throws Exception {
 
-        service = new SearchCriteriaHistoryInternalService(sequenceRepository, ssearchCriteriaHistoryRepository, searchCriteriaHistoryConverter,
-                internalSecurityService);
+        service = new SearchCriteriaHistoryInternalService(sequenceRepository, ssearchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter,
+            internalSecurityService);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
@@ -86,7 +90,8 @@ public class SearchCriteriaHistoryServiceTest {
 
     @Test
     public void testCreateSearchCriteriaHistory() throws Exception {
-        final SearchCriteriaHistoryDto searchCriteriaHistoryDto = searchCriteriaHistoryConverter.convertEntityToDto(Utils.buildSearchCriteriaHistory());
+        final SearchCriteriaHistoryDto searchCriteriaHistoryDto =
+            searchCriteriaHistoryConverter.convertEntityToDto(Utils.buildSearchCriteriaHistory());
 
         final SearchCriteriaHistory other = new SearchCriteriaHistory();
         VitamUIUtils.copyProperties(searchCriteriaHistoryDto, other);
@@ -107,7 +112,7 @@ public class SearchCriteriaHistoryServiceTest {
         result.setSearchCriteriaList(created.getSearchCriteriaList());
         result.setSavingDate(created.getSavingDate());
 
-        assertNotNull("SearchCriteriaHistoryDto id should be defined", created.getId());
+        Assertions.assertNotNull("SearchCriteriaHistoryDto id should be defined", created.getId());
         assertThat(result).isEqualToComparingFieldByField(created);
     }
 

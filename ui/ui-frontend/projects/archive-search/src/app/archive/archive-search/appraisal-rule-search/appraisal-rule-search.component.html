@@ -1,0 +1,282 @@
+<div class="container">
+  <form [formGroup]="appraisalRuleCriteriaForm">
+    <div class="row justify-content-start">
+      <div class="form-control">
+        <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DUA_TITLE' | translate }}</h5>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <vitamui-common-editable-input
+          formControlName="appraisalRuleIdentifier"
+          [validator]="appraisalRuleCriteriaForm?.get('appraisalRuleIdentifier')?.validator"
+          label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ID_DUA' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+      <div class="col-4 form-control">
+        <vitamui-common-editable-input
+          formControlName="appraisalRuleTitle"
+          [validator]="appraisalRuleCriteriaForm?.get('appraisalRuleTitle')?.validator"
+          label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.TITLE_DUA' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-1 form-control"></div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-11 form-control">
+        <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA' | translate }}</h5>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-5 form-control">
+        <div class="vitamui-input" (click)="pickerBeginDua.open()">
+          <span
+            *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value; else showBeginDtDua"
+            (click)="pickerBeginDua.open()"
+            class="search-date-label"
+            >{{
+              (endDateInterval
+                ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
+                : 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
+              ) | translate
+            }}</span
+          >
+          <ng-template #showBeginDtDua
+            ><span (click)="pickerBeginDua.open()"
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | date: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerBeginDua"
+            formControlName="appraisalRuleStartDate"
+            [max]="appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value"
+          />
+          <mat-datepicker #pickerBeginDua></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          [ngStyle]="{ 'background-color': 'green', width: '30', height: '30' }"
+          *ngIf="!endDateInterval && appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
+          type="button"
+          mat-mini-fab
+          (click)="addBeginDtDuaCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+
+      <div class="col-4 form-control">
+        <p *ngIf="!endDateInterval" class="text medium text-primary bold text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.CREATE_INTERVAL' | translate }}
+        </p>
+
+        <div class="vitamui-input" (click)="pickerEndDua.open()" *ngIf="endDateInterval">
+          <span
+            *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value; else showEndDtDua"
+            (click)="pickerEndDua.open()"
+            class="search-date-label"
+            >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
+          >
+          <ng-template #showEndDtDua
+            ><span (click)="pickerEndDua.open()"
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | date: 'dd/MM/yyyy' }}
+            </span>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerEndDua"
+            formControlName="appraisalRuleEndDate"
+            [min]="appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
+          />
+          <mat-datepicker #pickerEndDua></mat-datepicker>
+        </div>
+      </div>
+      <div class="col-1 form-control">
+        <button
+          [ngStyle]="{ 'background-color': 'green', width: '30', height: '30' }"
+          *ngIf="
+            endDateInterval &&
+            appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value &&
+            appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value
+          "
+          type="button"
+          mat-mini-fab
+          (click)="addIntervalDtDuaCriteria()"
+        >
+          <i class="material-icons">check</i>
+        </button>
+      </div>
+      <div class="col-1 form-control">
+        <p *ngIf="endDateInterval" class="text medium text-primary bold text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+          {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.DELETE_INTERVAL' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row justify-content-start padding-bottom-medium">
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="text medium text-primary bold">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
+          </p>
+        </div>
+
+        <div class="row criteria-choice">
+          <input
+            class="criteria-choice-input"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE', $event)"
+            id="HAS_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE')"
+          />
+
+          <label for="HAS_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+        <div class="row criteria-choice">
+          <input
+            class="criteria-choice-input"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
+            id="INHERITE_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE')"
+          />
+
+          <label for="INHERITE_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.INHERITE_AT_LEAST_ONE_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+
+        <div class="row criteria-choice">
+          <input
+            class="criteria-choice-input"
+            id="HAS_NO_APPRAISAL_RULE_ORIGIN"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE')"
+          />
+
+          <label for="HAS_NO_APPRAISAL_RULE_ORIGIN" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+        <div class="row criteria-choice">
+          <input
+            class="criteria-choice-input"
+            id="WAITING_TO_RE_CALCULATE_APPRAISAL_RULE_ORIGIN"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE')"
+          />
+          <label for="WAITING_TO_RE_CALCULATE_APPRAISAL_RULE_ORIGIN" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+      </div>
+      <div class="col-4 form-control">
+        <div class="row criteria-choice">
+          <p class="text medium text-primary bold">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
+          </p>
+        </div>
+
+        <div class="row criteria-choice sub-choice">
+          <input
+            class="criteria-choice-input"
+            id="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION')"
+          />
+
+          <label for="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+        <div class="row criteria-choice sub-choice">
+          <input
+            class="criteria-choice-input"
+            type="checkbox"
+            id="INHERITE_APPRAISAL_RULE_FINAL_ACTION_TYPE"
+            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION')"
+          />
+
+          <label for="INHERITE_APPRAISAL_RULE_FINAL_ACTION_TYPE" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.INHERITE_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+      </div>
+      <div class="col-3 form-control">
+        <div class="row criteria-choice">
+          <p class="text medium text-primary bold">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
+          </p>
+        </div>
+
+        <div class="row criteria-choice sub-choice">
+          <input
+            class="criteria-choice-input"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION', $event)"
+            id="ELIMINATION_APPRAISAL_RULE_FINAL_ACTION"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION')"
+          />
+
+          <label for="ELIMINATION_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.ELIMINATION_APPRAISAL_RULE' | translate }}
+          </label>
+        </div>
+        <div class="row criteria-choice sub-choice">
+          <input
+            class="criteria-choice-input"
+            id="KEEP_APPRAISAL_RULE_FINAL_ACTION"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP')"
+          />
+
+          <label for="KEEP_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.KEEP_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+        <div class="row criteria-choice sub-choice">
+          <input
+            class="criteria-choice-input"
+            id="NC_APPRAISAL_RULE_FINAL_ACTION"
+            type="checkbox"
+            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED', $event)"
+            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED')"
+          />
+
+          <label for="NC_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
+            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.NC_APPRAISAL_RULE' | translate }}</label
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-start">
+      <div class="col-4 form-control">
+        <vitamui-common-editable-input
+          formControlName="appraisalRuleEliminationIdentifier"
+          [validator]="appraisalRuleCriteriaForm?.get('appraisalRuleEliminationIdentifier')?.validator"
+          label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ELIMINATION_TECHNICAL_ID' | translate }}"
+        >
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-7 form-control"></div>
+    </div>
+  </form>
+</div>

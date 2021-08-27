@@ -37,18 +37,14 @@
 package fr.gouv.vitamui.archive.internal.server.service;
 
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -56,25 +52,20 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
-@ActiveProfiles("test")
+@ExtendWith(SpringExtension.class)
 public class ArchiveSearchInternalServiceTest {
 
     private static final VitamUILogger LOGGER =
@@ -92,25 +83,26 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "archiveSearchAgenciesInternalService")
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
 
+    @MockBean(name = "archiveSearchRulesInternalService")
+    private ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
+
+    @MockBean(name = "archivesSearchFieldsQueryBuilderService")
+    private ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
+
+    @MockBean(name = "archivesSearchAppraisalQueryBuilderService")
+    private ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archiveSearchInternalService =
-            new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService);
-    }
-
-    @Test(expected = InvalidParseOperationException.class)
-    public void when_vitamArchiveQueryService_throw_invalid_exception()
-        throws InvalidParseOperationException, InvalidCreateOperationException {
-        Map<String, List<String>> searchCriteriaMap = new HashMap<>();
-        VitamQueryHelper
-            .createQueryDSL(null, List.of("Test"), searchCriteriaMap, 0, 10, Optional.empty(),
-                Optional.empty());
+            new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
+                archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
+                archivesSearchAppraisalQueryBuilderService);
     }
 
     @Test
@@ -120,7 +112,7 @@ public class ArchiveSearchInternalServiceTest {
         when(unitService.searchUnits(any(), any()))
             .thenReturn(buildUnitMetadataResponse(FILING_HOLDING_SCHEME_RESULTS));
         // When
-        JsonNode jsonNode = archiveSearchInternalService.searchUnits(any(), any());
+        JsonNode jsonNode = archiveSearchInternalService.searchArchiveUnits(any(), any());
 
         // Configure the mapper
         ObjectMapper objectMapper = new ObjectMapper();
@@ -143,4 +135,5 @@ public class ArchiveSearchInternalServiceTest {
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
+
 }

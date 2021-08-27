@@ -6,12 +6,15 @@
     "TITLE_SEARCH_AREA": "Searching an archive",
     "LAUNCH_SEARCH_ACTION": "Launch the search",
     "SEARCH_CRITERIA_OR": "OR",
+    "SEARCH_CRITERIA_BETWEEN": "BETWEEN",
+    "SEARCH_CRITERIA_AND": "AND",
     "SHOW_SEARCH_CRITERIA": "Show the search filters",
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
     "SHOW_MORE_RESULTS": "Show more results...",
     "NO_MORE_RESULTS": "No more results",
     "SEARCH_CRITERIA_FILTER": {
       "TITLE": "Search filters",
+      "DUA_TITLE": "Administrative useful life",
       "OTHER_FILED_SELECTION": "Select another criteria",
       "FIELDS": {
         "ID": "ID",
@@ -21,13 +24,24 @@
         "START_DATE": "Start date",
         "END_DATE": "End date",
         "DESCRIPTION": "Description",
-        "GUID": "Ingest GUID",
+        "GUID_OPI": "Ingest GUID",
         "UAID": "Archive unit GUID",
         "SP": "Originating agency",
         "SP_CODE": "Originating agency code",
         "SP_LABEL": "Originating agency name",
         "OTHER_FIELD": "Another criteria",
-        "SELECT_OTHER_FIELD": "Select another criteria"
+        "SELECT_OTHER_FIELD": "Select another criteria",
+        "TITLE_DUA": "Title",
+        "ID_DUA": "Id",
+        "START_DATE_DUA": "End Date",
+        "END_DATE_DUA": "Start Date",
+        "ORIGIN": {
+          "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
+          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
+          "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
+          "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_APPRAISAL_RULE": "Select all"
+        }
       }
     },
     "ARCHIVE_UNIT": {
@@ -114,6 +128,16 @@
       "SAVE_NOT_POSSIBLE_ALERT_NAME": "Character limit reached",
       "SAVE_NOT_POSSIBLE_MESSAGE_NAME": "You have reached the maximum number of characters allowed.",
       "OBJECT_TYPE": "Saved Criterias Searches"
+    },
+    "CRITERIA_CATEGORY": {
+      "ADD": "Add filters",
+      "APPRAISAL_RULE": "Administrative useful life",
+      "DUC": "Current useful life",
+      "COMMUNICABILITY": "Communicability",
+      "REUSING": "Reusing",
+      "DIFFUSION": "Diffusion",
+      "CLASSIFICATION": "Classification",
+      "GEL": "Freezing"
     }
   }
 }

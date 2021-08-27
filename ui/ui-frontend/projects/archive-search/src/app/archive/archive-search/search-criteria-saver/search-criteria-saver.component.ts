@@ -34,25 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
-import { SearchCriteria } from '../../models/search.criteria';
+import { SearchCriteria, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverService } from './search-criteria-saver.service';
 
 @Component({
   selector: 'app-search-criteria-saver',
   templateUrl: './search-criteria-saver.component.html',
-  styleUrls: ['./search-criteria-saver.component.css']
+  styleUrls: ['./search-criteria-saver.component.css'],
 })
 export class SearchCriteriaSaverComponent implements OnInit {
-
   searchCriteriaForm: FormGroup;
   criteria: string;
   searchCriteriaHistory: SearchCriteriaHistory;
@@ -81,7 +80,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
   ) {
     this.searchCriteriaForm = this.formBuilder.group({
       searchCriteriaForm: null,
-      name: null
+      name: null,
     });
 
     this.criteria = data.criteria;
@@ -89,7 +88,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     this.nbCriterias = data.nbCriterias;
     this.searchCriterias = data.originalSearchCriteria;
 
-    this.subscriptionAllSearchCriteriaHistory = this.archiveExchangeDataService.getAllSearchCriteriaHistoryShared().subscribe(results => {
+    this.subscriptionAllSearchCriteriaHistory = this.archiveExchangeDataService.getAllSearchCriteriaHistoryShared().subscribe((results) => {
       if (results) {
         this.searchCriteriaHistories = results;
         this.archiveExchangeDataService.sort(Direction.ASCENDANT, this.searchCriteriaHistories);
@@ -118,8 +117,8 @@ export class SearchCriteriaSaverComponent implements OnInit {
         this.dialogRef.close(true);
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
-          data: {type: 'searchCriteriaHistoryCreated', name: response.name},
-          duration: 10000
+          data: { type: 'searchCriteriaHistoryCreated', name: response.name },
+          duration: 10000,
         });
       },
       (error) => {
@@ -127,9 +126,10 @@ export class SearchCriteriaSaverComponent implements OnInit {
         console.error(error);
         this.snackBar.open(error.error.message, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
-      });
+      }
+    );
   }
 
   preUpdate(criteria: SearchCriteriaHistory, event: any) {
@@ -141,19 +141,19 @@ export class SearchCriteriaSaverComponent implements OnInit {
         this.criteriaId = '';
         this.criteriaToUpdate = null;
       } else {
-          this.events[0].target.classList.remove(className);
-          this.events.pop();
-          if (event.target.classList.contains(className)) {
-            event.target.classList.remove(className);
-          } else {
-            event.target.classList.add(className);
-          }
-          this.criteriaId = criteria.id;
-          this.criteriaToUpdate = criteria;
+        this.events[0].target.classList.remove(className);
+        this.events.pop();
+        if (event.target.classList.contains(className)) {
+          event.target.classList.remove(className);
+        } else {
+          event.target.classList.add(className);
         }
-      } else {
+        this.criteriaId = criteria.id;
         this.criteriaToUpdate = criteria;
-        }
+      }
+    } else {
+      this.criteriaToUpdate = criteria;
+    }
 
     this.events.push(event);
 
@@ -184,17 +184,18 @@ export class SearchCriteriaSaverComponent implements OnInit {
         this.dialogRef.close(true);
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
-          data: {type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name},
-          duration: 10000
+          data: { type: 'searchCriteriaHistoryCreated', name: this.criteriaToUpdate.name },
+          duration: 10000,
         });
       },
       (error) => {
         console.error(error);
         this.snackBar.open(error.error.message, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
-      });
+      }
+    );
   }
 
   getNbFilters(criteria: SearchCriteriaHistory): number {
@@ -231,5 +232,9 @@ export class SearchCriteriaSaverComponent implements OnInit {
       default:
         break;
     }
+  }
+
+  getCategoryName(categoryEnum: SearchCriteriaTypeEnum): string {
+    return SearchCriteriaTypeEnum[categoryEnum];
   }
 }

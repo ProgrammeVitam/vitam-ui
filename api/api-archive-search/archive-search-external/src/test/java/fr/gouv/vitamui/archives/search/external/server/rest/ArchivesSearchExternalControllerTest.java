@@ -28,8 +28,11 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -40,26 +43,26 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import org.assertj.core.api.Assertions;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(MockitoExtension.class)
 @WebMvcTest(controllers = {ArchivesSearchExternalController.class})
 public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExternalControllerTest<IdDto> {
 
@@ -82,13 +85,13 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
     @Test
     public void testArchiveController() {
-        Assert.assertNotNull(archivesSearchExternalService);
+        Assertions.assertNotNull(archivesSearchExternalService);
     }
 
 
     private ArchivesSearchExternalController archivesSearchExternalController;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         archivesSearchExternalController = new ArchivesSearchExternalController(archivesSearchExternalService);
     }
@@ -134,14 +137,19 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
             .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(Mockito.eq(query)))
             .thenReturn(expectedResponse);
         ArchiveUnitsDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
-        Assert.assertEquals(responseDto, expectedResponse);
+        Assertions.assertEquals(responseDto, expectedResponse);
     }
 
     @Test
     public void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ko() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setNodes(Arrays.asList("<s>insecure</s>"));
+        SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
+        nodeCriteria.setCriteria("NODES");
+        nodeCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        nodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        nodeCriteria.setValues(Arrays.asList(new CriteriaValue("<s>insecure</s>")));
+        query.setCriteriaList(List.of(nodeCriteria));
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
             .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(Mockito.eq(query)))
@@ -161,8 +169,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         VitamUISearchResponseDto filingHoldingSchemeResults =
             archivesSearchExternalController.getFillingHoldingScheme();
         // Then
-        Assertions.assertThat(filingHoldingSchemeResults).isNotNull();
-        Assertions.assertThat(filingHoldingSchemeResults).isEqualTo(expectedResponse);
+        Assertions.assertNotNull(filingHoldingSchemeResults);
+        Assertions.assertEquals(filingHoldingSchemeResults, expectedResponse);
     }
 
 
@@ -182,7 +190,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         Resource responseCsv =
             archivesSearchExternalController.exportCsvArchiveUnitsByCriteria(query);
         // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        Assertions.assertThat(responseCsv).isEqualTo(resource);
+        Assertions.assertNotNull(responseCsv);
+        Assertions.assertEquals(responseCsv, resource);
     }
 }

@@ -67,5 +67,5 @@ public class SearchCriteriaHistoryDto extends IdDto {
     private OffsetDateTime savingDate;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private List<SearchCriteriasDto> searchCriteriaList = null;
+    private List<SearchCriteriaElementsDto> searchCriteriaList = null;
 }

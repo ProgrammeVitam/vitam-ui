@@ -36,23 +36,21 @@
  */
 
 import { Id } from 'ui-frontend-common';
+import { CriteriaValue } from './search.criteria';
 
 export interface SearchCriteriaHistory extends Id {
-
-    name: string;
-    userId?: string;
-    savingDate: string;
-    searchCriteriaList: SearchCriterias[];
-}
-
-export interface SearchCriterias {
-
-    nodes: string[];
-    criteriaList: SearchCriteriaEltements[];
+  name: string;
+  userId?: string;
+  savingDate: string;
+  searchCriteriaList: SearchCriteriaEltements[];
 }
 
 export interface SearchCriteriaEltements {
-
-    criteria: string;
-    values: string[];
+  criteria: string;
+  operator: string;
+  keyTranslated: boolean;
+  valueTranslated: boolean;
+  values: CriteriaValue[];
+  category: string;
+  dataType: string;
 }
