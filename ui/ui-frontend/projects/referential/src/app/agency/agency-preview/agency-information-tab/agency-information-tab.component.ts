@@ -94,7 +94,7 @@ export class AgencyInformationTabComponent {
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       name: [null, Validators.required],
-      description: [null, Validators.required]
+      description: [null]
     });
   }
 
@@ -105,7 +105,7 @@ export class AgencyInformationTabComponent {
   }
 
   isInvalid(): boolean {
-    return this.form.get('description').invalid || this.form.get('description').pending;
+    return this.form.get('name').invalid || this.form.get('name').pending;
   }
 
   prepareSubmit(): Observable<Agency> {
