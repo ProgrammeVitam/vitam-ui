@@ -26,4 +26,10 @@ export class CriteriaSearchComponent implements OnInit {
   getCategoryName(categoryEnum: SearchCriteriaTypeEnum): string {
     return SearchCriteriaTypeEnum[categoryEnum];
   }
+
+  removeCriteriaAllValues(keyElt: string) {
+    this.criteriaVal.values.forEach((value) => {
+      this.removeCriteria(keyElt, value.value);
+    });
+  }
 }

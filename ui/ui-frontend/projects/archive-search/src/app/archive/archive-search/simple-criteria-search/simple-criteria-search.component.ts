@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -118,7 +118,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       title: ['', []],
       description: ['', []],
       guidopi: ['', []],
-      guid: ['', []],
+      guid: ['', [Validators.pattern('^[a-z0-9_, ]+')]],
       beginDt: ['', []],
       endDt: ['', []],
       serviceProdLabel: ['', []],
@@ -141,20 +141,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
 
   isEmpty(formData: any): boolean {
     if (formData) {
-      if (formData.archiveCriteria) {
+      if (formData.title) {
         this.addCriteria(
-          'TITLE_OR_DESCRIPTION',
-          { value: formData.archiveCriteria.trim(), id: formData.archiveCriteria.trim() },
-          formData.archiveCriteria.trim(),
-          true,
-          'EQ',
-          false,
-          'STRING'
-        );
-        return true;
-      } else if (formData.title) {
-        this.addCriteria(
-          /*'Title',*/ 'TITLE',
+          'TITLE',
           { value: formData.title.trim(), id: formData.title.trim() },
           formData.title.trim(),
           true,
@@ -219,10 +208,15 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         );
         return true;
       } else if (formData.guid) {
-        this.addCriteria('GUID', { value: formData.guid, id: formData.guid }, formData.guid, true, 'EQ', false, 'STRING');
+        var splittedGuids = formData.guid.split(',');
+        splittedGuids.forEach((guidElt: string) => {
+          if (guidElt && guidElt.trim() !== '') {
+            this.addCriteria('GUID', { value: guidElt.trim(), id: guidElt.trim() }, guidElt.trim(), true, 'EQ', false, 'STRING');
+          }
+        });
         return true;
       } else if (formData.guidopi) {
-        this.addCriteria('GUID_OPI', { value: formData.guidopi, id: formData.guidopi }, formData.guidopi, true, 'EQ', false, 'STRING');
+        this.addCriteria('GUID_OPI', { value: formData.guidopi, id: formData.guidopi }, formData.guidopi, true, 'IN', false, 'STRING');
         return true;
       } else if (formData.otherCriteriaValue) {
         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
