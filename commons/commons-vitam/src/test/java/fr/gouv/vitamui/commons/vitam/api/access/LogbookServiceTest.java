@@ -1,16 +1,5 @@
 package fr.gouv.vitamui.commons.vitam.api.access;
 
-import static org.mockito.Mockito.spy;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.ws.rs.core.Response;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AccessExternalClientFactory;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
@@ -25,6 +14,20 @@ import fr.gouv.vitam.ingest.external.client.IngestExternalClientFactory;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.commons.io.IOUtils;
+import org.assertj.core.api.Assertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.ws.rs.core.Response;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+
+import static org.mockito.Mockito.spy;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogbookServiceTest {
@@ -100,6 +103,19 @@ public class LogbookServiceTest {
         Mockito.doThrow(new VitamClientException("error")).when(logbookService).selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any());
 
         logbookService.downloadAtr("vitamId", new VitamContext(10));
+    }
+
+    @Test
+    public void testDownloadDip_whenExportIsSuccess() throws Exception {
+        logbookService = spy(logbookService);
+        final LogbookOperation operation = new LogbookOperation();
+        operation.setEvTypeProc("DIP_EXPORT");
+
+        final Response response = logbookService.downloadReport("aeeaaaaaaggtywctaanl4al3q2moiyyaaaaq", "dip", new VitamContext(10));
+        VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
+
+        String reportContent = IOUtils.toString(response.readEntity(ByteArrayInputStream.class), StandardCharsets.UTF_8);
+        Assertions.assertThat(reportContent).isEqualTo("test");
     }
 
 }
