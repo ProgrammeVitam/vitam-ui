@@ -36,20 +36,24 @@
  */
 package fr.gouv.vitamui.commons.logbook.config;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.instance.InstanceConfiguration;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.scheduler.DeleteSynchronizedEventsTasks;
 import fr.gouv.vitamui.commons.logbook.scheduler.SendEventToVitamTasks;
 
 @ConditionalOnProperty(name = "logbook.scheduling.enabled", havingValue = "true", matchIfMissing = true)
 @Configuration
+@Import(InstanceConfiguration.class)
 @EnableScheduling
 public class LogbookSchedulingConfiguration {
 
@@ -61,6 +65,7 @@ public class LogbookSchedulingConfiguration {
     }
 
     @Bean
+    @ConditionalOnExpression("#{@instanceService.isPrimary()}")
     @ConditionalOnProperty(name = "logbook.scheduling.sendEventToVitamTasks.enabled", havingValue = "true", matchIfMissing = true)
     SendEventToVitamTasks sendEventToVitamTasks(final EventRepository eventRepository,
             final AdminExternalClient adminExternalClient) {
