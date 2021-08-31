@@ -36,7 +36,7 @@
  */
 import { AuthService, LogbookService } from 'ui-frontend-common';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 
@@ -45,13 +45,20 @@ import { LastEventPipe } from '../logbook-operation-list/last-event.pipe';
 import { LogbookOperationDetailComponent } from './logbook-operation-detail.component';
 import {LogbookDownloadService} from '../logbook-download.service';
 
+@Pipe({name: 'truncate'})
+class MockTruncatePipe implements PipeTransform {
+  transform(value: number): number {
+    return value;
+  }
+}
+
 describe('LogbookOperationDetailComponent', () => {
   let component: LogbookOperationDetailComponent;
   let fixture: ComponentFixture<LogbookOperationDetailComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [LogbookOperationDetailComponent, EventTypeBadgeClassPipe, LastEventPipe ],
+      declarations: [LogbookOperationDetailComponent,EventTypeBadgeClassPipe,LastEventPipe,MockTruncatePipe],
       providers: [
         { provide: LogbookService, useValue: {} },
         { provide: LogbookDownloadService, useValue: {} },

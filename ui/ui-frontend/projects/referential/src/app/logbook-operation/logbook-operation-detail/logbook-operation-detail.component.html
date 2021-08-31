@@ -1,5 +1,5 @@
 <div class="vitamui-sidepanel">
-  <div class="vitamui-sidepanel-header">
+  <!--<div class="vitamui-sidepanel-header">
     <ng-container *ngIf="!isPopup">
       <button class="btn-popup" role="button" (click)="openPopup()"><i class="vitamui-icon vitamui-icon-pin"></i></button>
     </ng-container>
@@ -19,7 +19,33 @@
         Télécharger le rapport
       </button>
     </div>
-  </div>
+  </div>-->
+
+    <div class="vitamui-sidepanel-header">
+        <div class="d-flex justify-content-end">
+        <button class="btn link cancel" (click)="emitClose()">
+            <i class="vitamui-icon vitamui-icon-close"></i>
+        </button>
+        </div>
+
+        <div class="title">
+           <span class="status-badge-mini" [ngClass]="event | eventTypeBadgeClass">
+          <i class="vitamui-icon vitamui-icon-logbook-operations vitamui-row-icon status-badge"></i>
+        </span>
+            <div matTooltipClass="vitamui-tooltip"
+            matTooltip="{{ event?.id }}">
+                <h5 class="m-0 text-primary">{{ event?.id | truncate: 30}}</h5>
+                <!--<p class="text large light m-0">{{ accessContract?.identifier }}</p>-->
+            </div>
+        </div>
+        <button mat-button class="btn btn-primary button-maring"
+        *ngIf="!hideDownload || canDownload"
+        (click)="downloadReports()" 
+        [disabled]="couldDownload && !canDownload">
+        Télécharger le rapport
+      </button>
+    </div>
+
   <div class="vitamui-sidepanel-body">
     <mat-tab-group class="preview-tab-group">
       <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">

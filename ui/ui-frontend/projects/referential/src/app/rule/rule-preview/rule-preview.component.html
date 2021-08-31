@@ -1,9 +1,15 @@
 <div class="vitamui-sidepanel">
     <div class="vitamui-sidepanel-header">
-        <button class="btn-close" role="button" (click)="emitClose()"><i class="material-icons">close</i></button>
+        <div class="d-flex justify-content-end">
+        <button class="btn link cancel" (click)="emitClose()">
+            <i class="vitamui-icon vitamui-icon-close"></i>
+        </button>
+        </div>
 
         <div class="title">
-            <h2>{{rule?.ruleValue.substr(0,33)}} <small>({{rule?.ruleId}})</small></h2>
+            <div matTooltipClass="vitamui-tooltip">
+                <h5 class="m-0 text-primary">{{rule?.ruleValue.substr(0,33)}} <small>({{rule?.ruleId}})</small></h5>
+            </div>
         </div>
     </div>
     <div class="vitamui-sidepanel-body">
