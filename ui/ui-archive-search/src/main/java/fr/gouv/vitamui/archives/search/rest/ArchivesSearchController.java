@@ -171,4 +171,13 @@ public class ArchivesSearchController extends AbstractUiRestController {
             .header("Content-Disposition", "attachment")
             .body(exportedCsvResult);
     }
+
+    @ApiOperation(value = "export DIP by criteria")
+    @PostMapping(RestApi.EXPORT_DIP)
+    @ResponseStatus(HttpStatus.OK)
+    public String exportDIPByCriteria(@RequestBody final SearchCriteriaDto searchQuery) {
+        LOGGER.debug("Export DIP  with criteria {}", searchQuery);
+        String result = archivesSearchService.exportDIPByCriteria(searchQuery, buildUiHttpContext()).getBody();
+        return result;
+    }
 }

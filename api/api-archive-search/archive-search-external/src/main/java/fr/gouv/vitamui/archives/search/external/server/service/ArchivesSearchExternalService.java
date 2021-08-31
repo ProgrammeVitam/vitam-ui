@@ -94,4 +94,8 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
         return archiveInternalRestClient.exportCsvArchiveUnitsByCriteria(query, getInternalHttpContext());
     }
+
+    public String exportDIPByCriteria(final SearchCriteriaDto query) {
+        return archiveInternalRestClient.exportDIPByCriteria(query, getInternalHttpContext());
+    }
 }
