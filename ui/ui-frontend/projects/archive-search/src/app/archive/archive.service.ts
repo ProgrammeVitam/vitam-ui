@@ -35,16 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable, LOCALE_ID, Inject } from '@angular/core';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { SearchService } from 'ui-frontend-common';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { SearchService } from 'ui-frontend-common';
+import { ArchiveApiService } from '../core/api/archive-api.service';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
-import { SearchResponse } from './models/search-response.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
@@ -154,7 +154,7 @@ export class ArchiveService extends SearchService<any> {
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = {
+    const pagedResult: PagedResult = {
       results: response.$results,
       totalResults: response.$hits.total,
       pageNumbers:
@@ -162,12 +162,12 @@ export class ArchiveService extends SearchService<any> {
           ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
           : 0,
     };
-    let resultFacets: ResultFacet[] = [];
+    const resultFacets: ResultFacet[] = [];
     if (response.$facetResults && response.$facetResults) {
-      for (let facet of response.$facetResults) {
+      for (const facet of response.$facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
             resultFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
@@ -212,6 +212,12 @@ export class ArchiveService extends SearchService<any> {
 
   getObjectById(id: string, headers?: HttpHeaders) {
     return this.archiveApiService.getObjectById(id, headers);
+  }
+
+  exportDIP(criteriaDto: SearchCriteriaDto, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.exportDIP(criteriaDto, headers);
   }
 }
 

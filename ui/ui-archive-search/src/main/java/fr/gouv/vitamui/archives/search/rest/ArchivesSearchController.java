@@ -171,4 +171,25 @@ public class ArchivesSearchController extends AbstractUiRestController {
             .header("Content-Disposition", "attachment")
             .body(exportedCsvResult);
     }
+
+    @ApiOperation(value = "export DIP by criteria")
+    @PostMapping(RestApi.EXPORT_DIP)
+    @ResponseStatus(HttpStatus.OK)
+    public String exportDIPByCriteria(@RequestBody final SearchCriteriaDto searchQuery) {
+        LOGGER.debug("Export DIP  with criteria {}", searchQuery);
+        String result;
+        final boolean hasSearchByRuleRole = getAuthenticatedUser().getProfileGroup().getProfiles().stream()
+            .filter(Objects::nonNull)
+            .flatMap(profileDto -> profileDto.getRoles().stream())
+            .anyMatch(role -> VitamuiRoles.ROLE_EXPORT_DIP.equals(role.getName()));
+
+        if (!hasSearchByRuleRole) {
+            LOGGER.info("You are not authorized to make a search with DUA criteria");
+            throw new ForbiddenException("You are not authorized to make a search with DUA criteria");
+        }
+        else {
+            result = archivesSearchService.exportDIPByCriteria(searchQuery, buildUiHttpContext()).getBody();
+        }
+        return result;
+    }
 }

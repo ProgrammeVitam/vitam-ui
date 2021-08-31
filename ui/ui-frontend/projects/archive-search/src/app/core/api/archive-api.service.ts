@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { SearchCriteriaDto } from '../../archive/models/search.criteria';
-import { SearchResponse } from '../../archive/models/search-response.interface';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
+import { SearchResponse } from '../../archive/models/search-response.interface';
+import { SearchCriteriaDto } from '../../archive/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
@@ -79,17 +79,17 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
-      headers: headers,
+      headers,
     });
   }
 
   downloadObjectFromUnit(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`, { headers: headers, observe: 'response', responseType: 'blob' });
+    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`, { headers, observe: 'response', responseType: 'blob' });
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers: headers, responseType: 'text' });
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -108,6 +108,13 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
   getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`, { headers: headers, responseType: 'text' });
+    return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
+  }
+
+  exportDIP(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/export-dip`, criteriaDto, {
+      responseType: 'text',
+      headers,
+    });
   }
 }

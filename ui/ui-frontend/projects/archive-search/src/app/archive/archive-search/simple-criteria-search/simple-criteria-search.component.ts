@@ -53,8 +53,8 @@ const UPDATE_DEBOUNCE_TIME = 200;
 })
 export class SimpleCriteriaSearchComponent implements OnInit {
   simpleCriteriaForm: FormGroup;
-  otherCriteriaValueEnabled: boolean = false;
-  otherCriteriaValueType: string = 'DATE';
+  otherCriteriaValueEnabled = false;
+  otherCriteriaValueType = 'DATE';
   selectedValueOntolonogy: any;
   ontologies: any;
 
@@ -94,8 +94,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
       this.ontologies.sort(function (a: any, b: any) {
-        var shortNameA = a.Label;
-        var shortNameB = b.Label;
+        const shortNameA = a.Label;
+        const shortNameB = b.Label;
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
       });
     });
@@ -266,7 +266,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       } else {
         this.simpleCriteriaForm.controls.otherCriteriaValue.setValue('');
         this.otherCriteriaValueEnabled = true;
-        let selectedValueOntolonogyValue = this.simpleCriteriaForm.get('otherCriteria').value;
+        const selectedValueOntolonogyValue = this.simpleCriteriaForm.get('otherCriteria').value;
         const selectedValueOntolonogyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === selectedValueOntolonogyValue);
         if (selectedValueOntolonogyElt) {
           this.selectedValueOntolonogy = selectedValueOntolonogyElt.Label;
@@ -287,14 +287,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
-        keyElt: keyElt,
-        valueElt: valueElt,
-        labelElt: labelElt,
-        keyTranslated: keyTranslated,
-        operator: operator,
+        keyElt,
+        valueElt,
+        labelElt,
+        keyTranslated,
+        operator,
         category: SearchCriteriaTypeEnum.FIELDS,
-        valueTranslated: valueTranslated,
-        dataType: dataType,
+        valueTranslated,
+        dataType,
       });
     }
   }

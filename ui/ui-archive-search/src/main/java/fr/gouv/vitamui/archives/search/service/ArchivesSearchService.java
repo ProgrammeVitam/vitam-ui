@@ -159,4 +159,9 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
             qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().get().getVersions();
         return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
     }
+
+    public ResponseEntity<String> exportDIPByCriteria(final SearchCriteriaDto searchQuery,ExternalHttpContext context) {
+        LOGGER.info("export DIP with criteria {}", searchQuery);
+        return archiveSearchExternalRestClient.exportDIPCriteria(searchQuery, context);
+    }
 }

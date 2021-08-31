@@ -1,5 +1,10 @@
 {
   "ARCHIVE_SEARCH": {
+        "DIP" : {
+      "EXPORT_DIP" : "Export a DIP",
+      "SELECTED" :"Selected"
+
+    },
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
@@ -92,7 +97,6 @@
       "SHOW_TREE_PARENT": "Collapse the tree"
     },
     "EXPORT_CSV": {
-      "EXPORT_SEARCHS": "Export results",
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     },
     "RESULTS": "Results",

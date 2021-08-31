@@ -68,20 +68,34 @@ public class VitamQueryHelper {
         if (searchKey == null || "".equals(searchKey.trim())) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
-        if (CollectionUtils.isEmpty(searchValues)) {
-            //the case of empty list
-            query.add(buildSubQueryByOperator(searchKey, null, operator));
-        } else if (searchValues.size() > 1) {
-            BooleanQuery subQueryOr = or();
-            //The case of multiple values , => Or operator
-            for (String value : searchValues) {
-                subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
+            if (CollectionUtils.isEmpty(searchValues)) {
+                //the case of empty list
+                query.add(buildSubQueryByOperator(searchKey, null, operator));
+            } else if (searchValues.size() > 1) {
+                BooleanQuery subQueryOr = or();
+                BooleanQuery subQueryAnd = and();
+                //The case of multiple values
+                if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+                    for (String value : searchValues) {
+                        subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
+
+                    }
+                    query.add(subQueryAnd);
+                }
+                else {
+                    for (String value : searchValues) {
+                        subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
+                    }
+                    query.add(subQueryOr);
+                }
+
+            } else if (searchValues.size() == 1) {
+                //the case of one value
+                query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
             }
-            query.add(subQueryOr);
-        } else if (searchValues.size() == 1) {
-            //the case of one value
-            query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
-        }
+
+
+
     }
 
     public static void addDatesCriteriaToQuery(BooleanQuery mainQuery, final String criteria,

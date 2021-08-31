@@ -1,5 +1,10 @@
 {
   "ARCHIVE_SEARCH": {
+    "DIP" : {
+      "EXPORT_DIP" : "Exporter un DIP",
+      "SELECTED" :"Sélectionné (s)"
+
+    },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
@@ -143,7 +148,6 @@
       "SHOW_TREE_PARENT": "Réduire l'arborescence"
     },
     "EXPORT_CSV": {
-      "EXPORT_SEARCHS": "Exporter les résultats",
       "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."
     },
     "RESULTS": "résultats",

@@ -123,4 +123,13 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query);
     }
 
+    @PostMapping(RestApi.EXPORT_DIP)
+    @Secured(ServicesData.ROLE_EXPORT_DIP)
+    public String exportDIPByCriteria(final @RequestBody SearchCriteriaDto query) {
+        LOGGER.info("Calling export DIP By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return archivesSearchExternalService.exportDIPByCriteria(query);
+    }
+
 }
