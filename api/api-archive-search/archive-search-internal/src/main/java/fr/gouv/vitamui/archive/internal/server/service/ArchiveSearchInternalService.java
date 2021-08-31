@@ -98,9 +98,8 @@ public class ArchiveSearchInternalService {
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
-    private static final String ARCHIVE_UNIT_USAGE = "qualifier";
-    private static final String ARCHIVE_UNIT_VERSION = "DataObjectVersion";
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
+    private static final Integer EXPORT_DIP_MAX_ELEMENTS = 10000;
     public static final String SEMI_COLON = ";";
     public static final String COMMA = ",";
     public static final String DOUBLE_QUOTE = "\"";
@@ -508,5 +507,23 @@ public class ArchiveSearchInternalService {
         select.setQuery(query);
         LOGGER.info("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
+    }
+
+    public String exportDIP(final SearchCriteriaDto searchQuery,
+                            final VitamContext vitamContext)
+        throws VitamClientException {
+        LOGGER.debug("Export DIP by criteria {} ", searchQuery.toString());
+        searchQuery.setPageNumber(0);
+        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
+        JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
+        return vitamResponse.toString();
+    }
+
+    private void test() {
+
+
     }
 }

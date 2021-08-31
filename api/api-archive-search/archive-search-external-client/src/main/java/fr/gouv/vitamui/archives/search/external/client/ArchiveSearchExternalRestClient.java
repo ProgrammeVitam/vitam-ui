@@ -157,4 +157,14 @@ public class ArchiveSearchExternalRestClient
                 request, Resource.class);
         return response;
     }
+
+    public ResponseEntity<String> exportDIPCriteria(SearchCriteriaDto query, ExternalHttpContext context) {
+        LOGGER.debug("Calling export DIP by criteria");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
+                request, String.class);
+        return response;
+    }
 }

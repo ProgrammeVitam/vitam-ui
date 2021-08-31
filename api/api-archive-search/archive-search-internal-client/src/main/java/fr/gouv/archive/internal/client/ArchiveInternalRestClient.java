@@ -158,4 +158,17 @@ public class ArchiveInternalRestClient
         return response.getBody();
 
     }
+
+    public String exportDIPByCriteria(final SearchCriteriaDto query,
+                                                    final InternalHttpContext context) {
+        LOGGER.info("Calling exportDIPByCriteria with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
+
+    }
 }
