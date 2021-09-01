@@ -34,57 +34,74 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import '@angular/localize/init';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {AccessContract,ExternalParameters,ExternalParametersService} from 'ui-frontend-common';
-import {AccessContractService} from '../../access-contract/access-contract.service';
-import {ProbativeValueService} from '../probative-value.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AccessContract, ExternalParameters, ExternalParametersService } from 'ui-frontend-common';
+import { ProbativeValueService } from '../probative-value.service';
 
 @Component({
   selector: 'app-probative-value-preview',
   templateUrl: './probative-value-preview.component.html',
-  styleUrls: ['./probative-value-preview.component.scss']
+  styleUrls: ['./probative-value-preview.component.scss'],
 })
-export class ProbativeValuePreviewComponent implements OnInit {
-
+export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Input() probativeValue: any;
-  @Output() previewClose: EventEmitter<any>=new EventEmitter();
+  @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContracts: AccessContract[];
   accessContractId: string;
+  hasAccessContract: boolean;
+
+  accessContractSub: Subscription;
+  errorMessageSub: Subscription;
+  accessContract: string;
 
   constructor(
     private probativeValueService: ProbativeValueService,
-    private accessContractService: AccessContractService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private translateService: TranslateService
+  ) {}
+
+  findUserAccessContract() {
+    this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
+      const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessConctractId) {
+        this.accessContract = accessConctractId;
+        this.hasAccessContract = true;
+      } else {
+        this.errorMessageSub = this.translateService
+          .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
+          .pipe(
+            map((message) => {
+              this.snackBar.open(message, null, {
+                panelClass: 'vitamui-snack-bar',
+                duration: 10000,
+              });
+            })
+          )
+          .subscribe();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.accessContractSub.unsubscribe();
+    if (this.errorMessageSub) {
+      this.errorMessageSub.unsubscribe();
+    }
   }
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      if(params.tenantIdentifier) {
-        this.accessContractService.getAllForTenant(params.tenantIdentifier).subscribe((value) => {
-          this.accessContracts=value;
-
-          this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-            const accessContratId: string=parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-            if(this.accessContracts&&this.accessContracts.findIndex(contract => contract.identifier===accessContratId)) {
-              this.accessContractId=accessContratId;
-            } else {
-              this.snackBar.open(
-                $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
-                null,{
-                  panelClass: 'vitamui-snack-bar',
-                  duration: 10000
-              });
-            }
-          });
-
-
-        });
+    this.route.params.subscribe((params) => {
+      if (params.tenantIdentifier) {
+        this.findUserAccessContract();
       }
     });
   }
@@ -94,7 +111,6 @@ export class ProbativeValuePreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.probativeValueService.export(this.probativeValue.id,this.accessContractId);
+    this.probativeValueService.export(this.probativeValue.id, this.accessContractId);
   }
-
 }
