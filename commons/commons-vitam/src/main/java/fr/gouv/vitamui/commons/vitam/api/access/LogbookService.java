@@ -77,6 +77,11 @@ public class LogbookService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookService.class);
 
     private static final String INGEST_TYPE = "INGEST";
+    private static final String DIP_REPORT = "dip";
+    private static final String TRANSFER_REPORT = "transfersip";
+    private static final String BATCH_REPORT = "batchreport";
+    private static final String RULE_REPORT = "report";
+    private static final String OBJECT_REPORT = "object";
 
     private final AccessExternalClient accessExternalClient;
 
@@ -233,26 +238,24 @@ public class LogbookService {
     public Response downloadReport(final String id, final String downloadType, final VitamContext vitamContext) throws VitamClientException {
         Response response;
         switch (downloadType) {
-            case "transfersip":
+            case TRANSFER_REPORT:
                 response = accessExternalClient.getTransferById(vitamContext, id);
                 break;
-            case "dip":
+            case DIP_REPORT:
                 response = accessExternalClient.getDIPById(vitamContext, id);
                 break;
-            case "batchreport":
+            case BATCH_REPORT:
                 response = adminExternalClient.downloadBatchReport(vitamContext, id);
                 break;
-            case "report":
+            case RULE_REPORT:
                 response = adminExternalClient.downloadRulesReport(vitamContext, id);
                 break;
-            case "object":
+            case OBJECT_REPORT:
                 response = downloadAtr(id, vitamContext);
                 break;
             default:
                 response = null;
         }
-
         return response;
     }
-
 }
