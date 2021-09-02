@@ -226,7 +226,7 @@ export class StartupService {
 
   getReferentialUrl(): string {
       if (this.configurationLoaded()) {
-        return this.configurationData.REFERENTIAL_SEARCH_URL;
+        return this.configurationData.REFERENTIAL_URL;
       }
 
       return null;
