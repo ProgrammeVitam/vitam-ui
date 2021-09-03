@@ -68,11 +68,12 @@ const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
+const MAX_ELIMINATION_ANALYSIS_THRESHOLD = 10000;
 
 @Component({
   selector: 'app-archive-search',
   templateUrl: './archive-search.component.html',
-  styleUrls: ['./archive-search.component.scss'],
+  styleUrls: ['./archive-search.component.scss']
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
@@ -223,6 +224,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   hasEliminationAnalysisRole = false;
   openDialogSubscription: Subscription;
 
+  eliminationAnalysisResponse: any;
+  buttonEliminationAnalysisEnabled: boolean;
+
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
   }
@@ -296,8 +300,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.submit();
     });
     this.checkUserHasRole('DIPExport', 'ROLE_EXPORT_DIP', +this.tenantIdentifier);
-    // this.checkUserHasRole('EliminationAnalysis', 'ROLE_EXPORT_DIP', +this.tenantIdentifier);
-    // this.checkUserHasRole('EliminationAction', 'ROLE_EXPORT_DIP', +this.tenantIdentifier);
+    this.checkUserHasRole('EliminationAnalysis', 'ROLE_ELIMINATION', +this.tenantIdentifier);
+    this.checkUserHasRole('EliminationAction', 'ROLE_ELIMINATION', +this.tenantIdentifier);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -843,6 +847,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     if (this.canLoadMore && !this.pending) {
       this.submited = true;
       this.currentPage = this.currentPage + 1;
+      this.criteriaSearchList = [];
       this.buildFieldsCriteriaListForQUery();
       this.buildAppraisalCriteriaListForQUery();
       this.buildNodesListForQUery();
@@ -1010,7 +1015,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   checkUserHasRole(operation: string, role: string, tenantIdentifier: number) {
-    this.archiveService.hasArchiveSearcheRole(role, tenantIdentifier).subscribe((result) => {
+    this.archiveService.hasArchiveSearchRole(role, tenantIdentifier).subscribe((result) => {
       switch (operation) {
         case 'DIPExport':
           this.hasDipExportRole = result;
@@ -1063,4 +1068,43 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
   }
+
+    startEliminationAnalysis() {
+      if (this.itemSelected > MAX_ELIMINATION_ANALYSIS_THRESHOLD) {
+        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
+          duration: 10000
+        });
+        return;
+      }
+
+      this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+      const exportDIPSearchCriteria = {
+        criteriaList: this.listOfUACriteriaSearch,
+        pageNumber: this.currentPage,
+        size: PAGE_SIZE,
+        sortingCriteria,
+        language: this.translateService.currentLang
+      };
+
+      this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria, this.accessContract).subscribe((data) => {
+        this.eliminationAnalysisResponse = data.$results;
+
+        if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
+          const guid = this.eliminationAnalysisResponse[0].itemId;
+          const message = "Votre demande d'élimination a bien prise en compte";
+          let index = this.startupService.getReferentialUrl().lastIndexOf('/');
+          let serviceUrl =
+            this.startupService.getReferentialUrl().substring(0, index) +
+            '/logbook-operation/tenant/' +
+            this.tenantIdentifier +
+            '?guid=' +
+            guid;
+
+          this.openSnackBarForWorkflow(message, serviceUrl);
+        }
+      });
+    }
 }

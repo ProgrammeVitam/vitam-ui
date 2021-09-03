@@ -118,4 +118,11 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       headers,
     });
   }
+
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto,headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/elimination/analysis`,criteriaDto,{
+      //responseType: 'text',
+      headers,
+    });
+  }
 }
