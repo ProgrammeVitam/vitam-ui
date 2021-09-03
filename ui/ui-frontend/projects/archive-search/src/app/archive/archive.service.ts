@@ -39,7 +39,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SearchService } from 'ui-frontend-common';
+import { SearchService, SecurityService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
@@ -55,7 +55,8 @@ export class ArchiveService extends SearchService<any> {
     private archiveApiService: ArchiveApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private securityService: SecurityService
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -218,6 +219,11 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.exportDIP(criteriaDto, headers);
+  }
+
+  hasArchiveSearcheRole(role: string, tenantIdentifier: number): Observable<boolean> {
+    const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
+    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
   }
 }
 

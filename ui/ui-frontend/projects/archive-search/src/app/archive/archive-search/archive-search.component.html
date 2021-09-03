@@ -172,8 +172,8 @@
         ></i>
       </div>
       <div class="col-1">
-        <vitamui-common-menu-button [disabled]="itemSelected === 0" [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="exportDIPService()">
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+          <button mat-menu-item (click)="exportDIPService()" [disabled]="(itemSelected === 0 && hasDipExportRole) || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
         </vitamui-common-menu-button>
