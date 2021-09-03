@@ -1,10 +1,12 @@
 {
   "ARCHIVE_SEARCH": {
-    "DIP" : {
-      "EXPORT_DIP" : "Exporter un DIP",
-      "SELECTED" :"Sélectionnés",
-      "ONE_SELECTED" :"Sélectionné"
-
+    "DIP": {
+      "EXPORT_DIP": "Exporter un DIP",
+      "SELECTED": "Sélectionnés",
+      "ONE_SELECTED": "Sélectionné"
+    },
+    "ELIMINATION": {
+      "ANALYSIS": "Lancer une analyse d'élimination"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",

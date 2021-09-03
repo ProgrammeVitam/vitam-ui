@@ -48,7 +48,7 @@ import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ArchiveService extends SearchService<any> {
   constructor(
@@ -70,7 +70,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId,
+      'X-Access-Contract-Id': accessContractId
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -99,7 +99,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false,
+          hidden: false
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -130,7 +130,7 @@ export class ArchiveService extends SearchService<any> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
-            duration: 10000,
+            duration: 10000
           });
         }
       }
@@ -161,7 +161,7 @@ export class ArchiveService extends SearchService<any> {
       pageNumbers:
         +response.$hits.size !== 0
           ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0,
+          : 0
     };
     const resultFacets: ResultFacet[] = [];
     if (response.$facetResults && response.$facetResults) {
@@ -221,9 +221,15 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.exportDIP(criteriaDto, headers);
   }
 
-  hasArchiveSearcheRole(role: string, tenantIdentifier: number): Observable<boolean> {
-    const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
-    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
+  }
+
+  hasArchiveSearchRole(role: string, tenantIdentifier: number): Observable<boolean> {
+    const appId = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
+    return this.securityService.hasRole(appId, tenantIdentifier, role);
   }
 }
 

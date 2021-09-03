@@ -1,9 +1,12 @@
 {
   "ARCHIVE_SEARCH": {
-        "DIP" : {
-      "EXPORT_DIP" : "Export a DIP",
-      "SELECTED" :"Selected",
-      "ONE_SELECTED" :"Selected"
+    "DIP": {
+      "EXPORT_DIP": "Export a DIP",
+      "SELECTED": "Selected",
+      "ONE_SELECTED": "Selected"
+    },
+    "ELIMINATION": {
+      "ANALYSIS": "Launch elimination analysis"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",

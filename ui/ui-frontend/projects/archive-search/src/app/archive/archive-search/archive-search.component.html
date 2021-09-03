@@ -176,6 +176,9 @@
           <button mat-menu-item (click)="exportDIPService()" [disabled]="(itemSelected === 0 && hasDipExportRole) || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
+            <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisRole || (hasEliminationAnalysisRole && itemSelected == 0)">
+              {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
+            </button>
         </vitamui-common-menu-button>
       </div>
     </div>

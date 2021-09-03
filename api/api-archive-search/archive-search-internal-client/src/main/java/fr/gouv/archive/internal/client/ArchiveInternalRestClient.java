@@ -171,4 +171,16 @@ public class ArchiveInternalRestClient
         return response.getBody();
 
     }
+
+    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context, final SearchCriteriaDto query) {
+        LOGGER.info("Calling elimination analysis with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<JsonNode> response =
+            restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ANALYSIS, HttpMethod.POST,
+                request, JsonNode.class);
+        checkResponse(response);
+        return response;
+
+    }
 }
