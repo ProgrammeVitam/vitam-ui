@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archive.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
@@ -55,6 +56,9 @@ public class ApiArchiveSearchInternalServerConfigTest extends AbstractContextCon
 
     @MockBean(name = "accessExternalClient")
     private AccessExternalClient accessExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
 
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;

@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -125,11 +126,11 @@ public class ArchivesSearchExternalController {
 
     @PostMapping(RestApi.EXPORT_DIP)
     @Secured(ServicesData.ROLE_EXPORT_DIP)
-    public String exportDIPByCriteria(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.info("Calling export DIP By Criteria {} ", query);
-        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
-        SanityChecker.sanitizeCriteria(query);
-        return archivesSearchExternalService.exportDIPByCriteria(query);
+    public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto) {
+        LOGGER.info("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", exportDipCriteriaDto);
+        SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
+        return archivesSearchExternalService.exportDIPByCriteria(exportDipCriteriaDto);
     }
 
 }

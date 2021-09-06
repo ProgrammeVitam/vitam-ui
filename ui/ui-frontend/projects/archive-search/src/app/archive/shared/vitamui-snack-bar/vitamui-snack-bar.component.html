@@ -18,10 +18,13 @@
       {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.DELETED_WITH_SUCCESS_2' | translate }}
     </ng-container>
     <ng-container *ngSwitchCase="'WorkflowSuccessSnackBar'">
-      {{ data?.message }}
+      <span class="space-style">{{ data?.message }}</span>
       <button type="button" class="btn white" (click)="goToLogbook(data?.serviceUrl)">
-        VOIR LE JOURNAL DES OPÉRATIONS
+        {{ 'ARCHIVE_SEARCH.DIP.TO_OPERATION_APP' | translate }}
       </button>
+    </ng-container>
+    <ng-container *ngSwitchCase="'exportDIPLimitReached'">
+      {{ 'ARCHIVE_SEARCH.DIP.EXPORT_LIMITS' | translate }}
     </ng-container>
   </span>
 

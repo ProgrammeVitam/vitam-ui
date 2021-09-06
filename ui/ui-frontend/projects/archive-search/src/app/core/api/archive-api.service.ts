@@ -39,6 +39,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive/models/search.criteria';
@@ -111,8 +112,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
   }
 
-  exportDIP(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
-    return this.http.post(`${this.apiUrl}/export-dip`, criteriaDto, {
+  exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/export-dip`, exportDIPCriteriaList, {
       responseType: 'text',
       headers,
     });

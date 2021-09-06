@@ -87,7 +87,7 @@ public class UnitService {
         return result;
     }
 
-    public RequestResponse<JsonNode> searchUnitsWithErrors(final Optional<String> unitId, final JsonNode dslQuery, final VitamContext vitamContext) 
+    public RequestResponse<JsonNode> searchUnitsWithErrors(final Optional<String> unitId, final JsonNode dslQuery, final VitamContext vitamContext)
         throws VitamClientException {
     	final RequestResponse<JsonNode> result;
     	if (unitId.isPresent()) {
@@ -97,7 +97,7 @@ public class UnitService {
     	}
     	return result;
     }
-    
+
     public RequestResponse<JsonNode> searchUnitsWithInheritedRules(final JsonNode dslQuery,
         final VitamContext vitamContext) throws VitamClientException {
         final RequestResponse<JsonNode> result =
@@ -114,7 +114,7 @@ public class UnitService {
         VitamRestUtils.checkResponse(result);
         return result;
     }
-    
+
     public RequestResponse<JsonNode> findObjectMetadataById(final String unitId, final JsonNode dslQuery, final VitamContext vitamContext) throws VitamClientException {
         final RequestResponse<JsonNode> result = accessExternalClient.selectObjectMetadatasByUnitId(vitamContext, dslQuery, unitId);
         VitamRestUtils.checkResponse(result);

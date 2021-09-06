@@ -48,6 +48,7 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -94,6 +95,9 @@ public class ArchiveSearchInternalServiceTest {
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
+    @MockBean(name = "exportDipV2Service")
+    private ExportDipV2Service exportDipV2Service;
+
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
 
     @BeforeEach
@@ -102,7 +106,7 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchAppraisalQueryBuilderService);
+                archivesSearchAppraisalQueryBuilderService, exportDipV2Service);
     }
 
     @Test

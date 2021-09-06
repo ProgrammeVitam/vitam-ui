@@ -1,9 +1,28 @@
 {
   "ARCHIVE_SEARCH": {
-        "DIP" : {
+      "DIP" : {
       "EXPORT_DIP" : "Export a DIP",
       "SELECTED" :"Selected",
-      "ONE_SELECTED" :"Selected"
+      "ONE_SELECTED" :"Selected",
+      "CANCEL" : "Cancel",
+      "REQUEST_ID" :"Request identifier",
+      "REQUESTER_ID":"Requester identifier",
+      "COMMENT" : "Comment(s)",
+      "ARCHIVAL_AGENCY" :"Archive service identifier",
+      "AUTHORISATION_REQUEST_REPLY" : "Identifier of the response to an authorization request",
+      "SUBMISSION_AGENCY_ID" : "Submission agency identifier ",
+      "REQUIRED": "Required field",
+      "REQUEST_DIP" : "Request to export a DIP",
+      "DIP_PARAMS" : "Define the DIP parameters",
+      "ITEMS_SELECTED" : "Items selected",
+      "ONE_ITEM_SELECTED" : "Item selected",
+      "LOGS" : "Life cycle logs :",
+      "INCLUDE" : "Include",
+      "EXCLUDE" :"Exclude",
+      "OBJECT_GROUPS" : "groups of objects :",
+      "REQUEST_MESSAGE" : "Your DIP request has been taken into account  ",
+      "TO_OPERATION_APP" : "SEE OPERATIONS LOG",
+      "EXPORT_LIMITS": "DIP export cannot be performed. Please restrict your selection to a maximum of 10,000 archival units"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",

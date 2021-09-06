@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.archive.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
@@ -35,6 +36,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -94,6 +96,11 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     @Bean
     public UnitService unitService(final AccessExternalClient client) {
         return new UnitService(client);
+    }
+
+    @Bean
+    public ExportDipV2Service exportDipV2Service(final AccessExternalClientV2 accessExternalClientV2) {
+        return new ExportDipV2Service(accessExternalClientV2);
     }
 
     @Bean

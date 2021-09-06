@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,42 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SecurityService } from './security.service';
 
-@Directive({
-  selector: '[vitamuiCommonHasRole]',
-})
-export class HasRoleDirective implements OnInit, OnDestroy {
-  roleSubscription: Subscription;
+package fr.gouv.vitamui.archives.search.common.dto;
 
-  private viewEmbedded = false;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitam.common.model.export.dip.DipRequestParameters;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private securityService: SecurityService) {}
+import java.io.Serializable;
+import java.util.Set;
 
-  ngOnInit(): void {}
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Setter
+@Getter
+public class ExportDipCriteriaDto implements Serializable {
 
-  ngOnDestroy(): void {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-  }
+    private DipRequestParameters dipRequestParameters;
+    private SearchCriteriaDto exportDIPSearchCriteria;
+    private Set<String> dataObjectVersions ;
+    private boolean lifeCycleLogs;
 
-  @Input()
-  set vitamuiCommonHasRole(data: { appId: string; tenantIdentifier: number; role: string }) {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-
-    this.roleSubscription = this.securityService.hasRole(data.appId, data.tenantIdentifier, data.role).subscribe((allowed) => {
-      if (allowed && !this.viewEmbedded) {
-        this.viewEmbedded = true;
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else if (!allowed && this.viewEmbedded) {
-        this.viewEmbedded = false;
-        this.viewContainer.clear();
-      }
-    });
-  }
 }
