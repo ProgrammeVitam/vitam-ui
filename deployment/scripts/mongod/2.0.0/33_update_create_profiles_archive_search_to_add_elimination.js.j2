@@ -1,0 +1,109 @@
+db = db.getSiblingDB('iam')
+
+print("33_update_create_profiles_archive_search_to_add_elimination.js");
+
+// -------- ARCHIVE_SEARCH PROFILE WITH RULES MANAGEMENT AND DIP EXPORT AND ELIMINATION OPERATIONS -----
+
+db.profiles.updateOne({
+   "_id":"system_archive_search_profile"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+            {
+               "name":"ROLE_ELIMINATION"
+            }
+         ]
+      }
+   }
+});
+
+db.profiles.update({
+   "_id":"system_archive_search_profile"
+},
+{
+   $set:{
+      "description":"Profil pour la recherche et consultation des archives avec mises à jour des règles, export DIP et opérations d'éliminations",
+      "name":"Profil pour la recherche et consultation des archives avec mises à jour des règles, export DIP et opérations d'éliminations"
+   }
+});
+
+// -------- ARCHIVE_SEARCH PROFILE WITH RULES MANAGEMENT AND ELIMINATION OPERATIONS AND WITHOUT DIP EXPORT -----
+
+db.profiles.updateOne({
+   "_id":"system_archive_search_profile_with_rules_without_export"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+            {
+               "name":"ROLE_ELIMINATION"
+            }
+         ]
+      }
+   }
+});
+
+db.profiles.update({
+   "_id":"system_archive_search_profile_with_rules_without_export"
+},
+{
+   $set:{
+      "description":"Profil pour la recherche et consultation des archives avec mises à jour des règles  et opérations d'éliminations",
+      "name":"Profil pour la recherche et consultation des archives avec mises à jour des règles et opérations d'éliminations"
+   }
+});
+
+
+// -------- ARCHIVE_SEARCH PROFILE WITH DIP EXPORT AND ELIMINATION OPERATION BUT WITHOUT RULES MANAGEMENT SEARCH -----
+
+db.profiles.updateOne({
+   "_id":"system_archive_search_profile_without_rules_with_export"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+            {
+               "name":"ROLE_ELIMINATION"
+            }
+         ]
+      }
+   }
+});
+
+db.profiles.insert({
+   "_id":"system_archive_search_profile_without_rules_with_export_and_with_elimination",
+   "identifier":NumberInt(30),
+   "name":"Profil pour la recherche et consultation des archives avec export DIP et opérations d'éliminations et sans mises à jour des règles",
+   "description":"Profil pour la recherche et consultation des archives avec export DIP  et opérations d'éliminations et sans mises à jour des règles",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+   "roles":[
+      {
+         "name":"ROLE_CREATE_ARCHIVE_SEARCH"
+      },
+      {
+         "name":"ROLE_GET_ARCHIVE_SEARCH"
+      },
+      {
+         "name":"ROLE_GET_ALL_ARCHIVE_SEARCH"
+      },
+      {
+         "name":"ROLE_EXPORT_DIP"
+      },
+      {
+         "name":"ROLE_ELIMINATION"
+      }
+   ]
+});
+
+print("33_update_create_profiles_archive_search_to_add_elimination.js");
+
+

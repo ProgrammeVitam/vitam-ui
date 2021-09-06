@@ -35,16 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule } from 'ui-frontend-common';
-
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { EMPTY, of } from 'rxjs';
+import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'ui-frontend-common';
 import { environment } from '../../environments/environment';
 import { LogbookOperationComponent } from './logbook-operation.component';
 import { LogbookSearchService } from './logbook-search.service';
@@ -53,29 +51,25 @@ describe('LogbookOperationComponent', () => {
   let component: LogbookOperationComponent;
   let fixture: ComponentFixture<LogbookOperationComponent>;
 
-  beforeEach(waitForAsync(() => {
-    const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-    TestBed.configureTestingModule({
-      imports: [
-        MatMenuModule,
-        ReactiveFormsModule,
-        InjectorModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [LogbookOperationComponent],
-      providers: [
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY } },
-        { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
-        { provide: Router, useValue: { navigate: () => { } } },
-        GlobalEventService,
-        { provide: ENVIRONMENT, useValue: environment }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+      TestBed.configureTestingModule({
+        imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule],
+        declarations: [LogbookOperationComponent, SearchBarComponent],
+        providers: [
+          { provide: MatDialog, useValue: matDialogSpy },
+          { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
+          { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
+          { provide: Router, useValue: { navigate: () => {} } },
+          GlobalEventService,
+          { provide: ENVIRONMENT, useValue: environment }
+        ],
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationComponent);
