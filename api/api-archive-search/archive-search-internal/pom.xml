@@ -205,7 +205,7 @@
                     <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.archive.internal.server.ApiArchiveInternalServerApplication</mainClass>
                     <jvmArguments>
-                        -Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=7089
+                        -Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam
                     </jvmArguments>
 
                     <arguments>

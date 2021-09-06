@@ -189,6 +189,39 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
 
+    - name: Profil pour la recherche et consultation des archives avec mises à jour des règles et opérations d'élimination
+      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles et opérations d'élimination
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_ELIMINATION
+
+    - name: Profil pour la recherche et consultation des archives avec export DIP et opérations d'élimination
+      description: Gestion d'accès et de recherche des archives dans Vitam avec export DIP et opérations d'éliminations
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_EXPORT_DIP
+        - ROLE_ELIMINATION
+
+    - name: Profil pour la recherche et consultation des archives avec mises à jour des règles, export DIP et opérations d'élimination
+      description: Gestion d'accès et de recherche des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
+      app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
+      level:
+      roles:
+        - ROLE_CREATE_ARCHIVE_SEARCH
+        - ROLE_GET_ARCHIVE_SEARCH
+        - ROLE_GET_ALL_ARCHIVE_SEARCH
+        - ROLE_SEARCH_WITH_RULES
+        - ROLE_EXPORT_DIP
+        - ROLE_ELIMINATION
   #- name: profileName
   #  description: desc
   #  level: 1

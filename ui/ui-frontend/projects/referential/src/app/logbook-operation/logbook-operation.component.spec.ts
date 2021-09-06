@@ -60,16 +60,17 @@ describe('LogbookOperationComponent', () => {
         declarations: [LogbookOperationComponent, SearchBarComponent],
         providers: [
           { provide: MatDialog, useValue: matDialogSpy },
-          { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'ID' }) } },
+          { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
           { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
           { provide: Router, useValue: { navigate: () => {} } },
           GlobalEventService,
-          { provide: ENVIRONMENT, useValue: environment },
+          { provide: ENVIRONMENT, useValue: environment }
         ],
-        schemas: [NO_ERRORS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA]
       }).compileComponents();
     })
-  );
+      .compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LogbookOperationComponent);
