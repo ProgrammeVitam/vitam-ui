@@ -6,7 +6,9 @@
       "ONE_SELECTED": "Sélectionné"
     },
     "ELIMINATION": {
-      "ANALYSIS": "Lancer une analyse d'élimination"
+      "ANALYSIS": "Lancer une analyse d'élimination",
+      "ELIMINATION_LAUNCHED": "Votre demande d'élimination a bien prise en compte",
+      "THRESHOLD_EXCEEDED": "L’analyse d’élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum."
     },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",

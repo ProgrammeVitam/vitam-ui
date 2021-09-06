@@ -49,7 +49,15 @@ import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum } from '../models/search.criteria';
+import {
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
@@ -73,7 +81,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private startupService: StartupService) {
+    private startupService: StartupService
+  ) {
     this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe((nodes) => {
       this.entireNodesIds = nodes;
     });
@@ -1001,7 +1010,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
 
       if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
         const guid = this.eliminationAnalysisResponse[0].itemId;
-        const message = "Votre demande d'élimination a bien prise en compte";
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
         let index = this.startupService.getReferentialUrl().lastIndexOf('/');
         let serviceUrl =
           this.startupService.getReferentialUrl().substring(0, index) +
@@ -1063,7 +1072,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
         message: message,
         serviceUrl: serviceUrl
       },
-      duration: 100000,
+      duration: 100000
     });
   }
 
