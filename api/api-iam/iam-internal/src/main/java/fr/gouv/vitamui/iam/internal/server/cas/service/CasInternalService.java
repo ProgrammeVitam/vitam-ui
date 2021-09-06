@@ -199,7 +199,7 @@ public class CasInternalService {
         final Customer customer = optCustomer.orElseThrow(() -> new ApplicationServerException("Unable to update password : customer not found"));
 
 
-        if(!passwordValidator.isContainsUserOccurrences(user.getLastname(), rawPassword)) {
+        if(passwordValidator.isContainsUserOccurrences(user.getLastname(), rawPassword)) {
             throw new PasswordContainsDictionaryException("Invalid password containing an occurence of user name !");
         }
 

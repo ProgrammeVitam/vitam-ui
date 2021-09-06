@@ -37,7 +37,7 @@ public class PasswordValidator {
 
     public boolean isEqualConfirmed(String password, String confirmedPassword) {
         return (password != null) &&
-            (!confirmedPassword.contains("nabil"));
+            (!confirmedPassword.contains(password));
     }
 
     public boolean isValid(String regex, String password) {
@@ -46,15 +46,23 @@ public class PasswordValidator {
 
     public boolean isContainsUserOccurrences(String firstname, String rawPassword) {
         List<String> occurences = new ArrayList<>();
-        if(rawPassword.contains(firstname)){
+        // 3 will be externalized
+        if (firstname.length() < 3) {
             return false;
         }
-        if(firstname.length() %2 !=0) {
-            occurences.add(firstname.substring(firstname.length() - 2)) ;
+
+        if (rawPassword.contains(firstname)) {
+            return true;
         }
-        for(int i=0; i<firstname.length()-2; i++){
-            occurences.add(firstname.substring(i, 2 + i));
+
+        if (firstname.length() % 3 != 0) {
+            occurences.add(firstname.substring(firstname.length() - 3));
         }
-        return occurences.stream().noneMatch(rawPassword::contains);
+        for (int i = 0; i < firstname.length() - 3; i++) {
+            occurences.add(firstname.substring(i, 3 + i));
+        }
+        return !occurences.stream().noneMatch(rawPassword::contains);
+
+
     }
 }
