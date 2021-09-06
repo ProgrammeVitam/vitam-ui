@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.customer.service;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
@@ -127,6 +128,9 @@ public class InitCustomerServiceIntegrationTest {
 
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
 
     @MockBean
     private InternalSecurityService internalSecurityService;

@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2Factory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
@@ -74,6 +76,15 @@ public abstract class VitamClientConfig {
     @Profile("!test")
     public IngestExternalClient ingestExternalClient() {
         final IngestExternalClientFactory factory = IngestExternalClientFactory.getInstance();
+        if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {
+            throw new InternalServerException("Failed to load Vitam configuration: Vitam client is in MOCK mode");
+        }
+        return factory.getClient();
+    }
+
+    @Bean
+    public AccessExternalClientV2 accessExternalClientV2() {
+        final AccessExternalClientV2Factory factory = AccessExternalClientV2Factory.getInstance();
         if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {
             throw new InternalServerException("Failed to load Vitam configuration: Vitam client is in MOCK mode");
         }

@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ingest.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.vitam.api.ingest.IngestService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
@@ -66,6 +67,9 @@ public class ApiIngestInternalServerConfigTest {
 
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
 
     @MockBean(name = "ingestService")
     private IngestService ingestService;

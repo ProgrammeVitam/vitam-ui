@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ApiIamServerConfigTest {
 
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
 
     @Autowired
     private EventService logbookService;

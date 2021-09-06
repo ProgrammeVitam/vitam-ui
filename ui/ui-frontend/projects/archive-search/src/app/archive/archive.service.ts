@@ -41,6 +41,7 @@ import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { SearchService, SecurityService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
@@ -215,15 +216,27 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.getObjectById(id, headers);
   }
 
-  exportDIP(criteriaDto: SearchCriteriaDto, accessContract: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.archiveApiService.exportDIP(criteriaDto, headers);
-  }
-
   hasArchiveSearcheRole(role: string, tenantIdentifier: number): Observable<boolean> {
     const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
     return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+  }
+
+  exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
+  }
+
+  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      data: {
+        type: 'WorkflowSuccessSnackBar',
+        message,
+        serviceUrl,
+      },
+      duration: 100000,
+    });
   }
 }
 

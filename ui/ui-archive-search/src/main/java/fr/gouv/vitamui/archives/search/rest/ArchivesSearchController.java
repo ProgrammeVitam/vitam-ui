@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.rest;
 
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
@@ -175,9 +176,9 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "export DIP by criteria")
     @PostMapping(RestApi.EXPORT_DIP)
     @ResponseStatus(HttpStatus.OK)
-    public String exportDIPByCriteria(@RequestBody final SearchCriteriaDto searchQuery) {
-        LOGGER.debug("Export DIP  with criteria {}", searchQuery);
-        String result = archivesSearchService.exportDIPByCriteria(searchQuery, buildUiHttpContext()).getBody();
+    public String exportDIPByCriteria(@RequestBody final ExportDipCriteriaDto exportDipCriteriaDto) {
+        LOGGER.debug("Export DIP  with criteria {}", exportDipCriteriaDto);
+        String result = archivesSearchService.exportDIPByCriteria(exportDipCriteriaDto, buildUiHttpContext()).getBody();
         return result;
     }
 }
