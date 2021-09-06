@@ -41,6 +41,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
+import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -106,6 +107,9 @@ public class ArchiveSearchInternalServiceTest {
     private EliminationService eliminationService;
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
+    public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
+    public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
+    public final String ELIMINATION_ANALYSIS_FINAL_RESPONSE = "data/elimination/elimination_analysis_response.json";
 
     @BeforeEach
     public void setUp() {
@@ -147,4 +151,14 @@ public class ArchiveSearchInternalServiceTest {
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
+    @Test
+    public void getFinalEliminationConstructedQuery() throws Exception {
+        JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
+        EliminationRequestBody eliminationRequestBody2 =
+            archiveSearchInternalService.getEliminationRequestBody(fromString);
+
+        JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
+        Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
+        Assertions.assertThat(resultExpected.get(BuilderToken.GLOBAL.THRESOLD.exactToken()).asDouble()).isEqualTo(10000);
+    }
 }
