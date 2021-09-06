@@ -34,42 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SecurityService } from './security.service';
 
-@Directive({
-  selector: '[vitamuiCommonHasRole]',
-})
-export class HasRoleDirective implements OnInit, OnDestroy {
-  roleSubscription: Subscription;
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DipRequestCreateComponent } from './dip-request-create.component';
 
-  private viewEmbedded = false;
+describe('DipRequestCreateComponent', () => {
+  let component: DipRequestCreateComponent;
+  let fixture: ComponentFixture<DipRequestCreateComponent>;
 
-  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private securityService: SecurityService) {}
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
-  ngOnInit(): void {}
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DipRequestCreateComponent],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
+  });
 
-  ngOnDestroy(): void {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-  }
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DipRequestCreateComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  @Input()
-  set vitamuiCommonHasRole(data: { appId: string; tenantIdentifier: number; role: string }) {
-    if (this.roleSubscription) {
-      this.roleSubscription.unsubscribe();
-    }
-
-    this.roleSubscription = this.securityService.hasRole(data.appId, data.tenantIdentifier, data.role).subscribe((allowed) => {
-      if (allowed && !this.viewEmbedded) {
-        this.viewEmbedded = true;
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      } else if (!allowed && this.viewEmbedded) {
-        this.viewEmbedded = false;
-        this.viewContainer.clear();
-      }
-    });
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  it('items Selected should be grather than 0 ', () => {
+    expect(component.itemSelected).toBeGreaterThan(0);
+  });
+  it('Should have an accessContract ', () => {
+    expect(component.data.accessContract).not.toBeNull();
+  });
+});

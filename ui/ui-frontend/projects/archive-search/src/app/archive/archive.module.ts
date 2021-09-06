@@ -74,6 +74,7 @@ import { CriteriaSearchComponent } from './criteria-search/criteria-search.compo
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
 import { SharedModule } from './shared/shared.module';
+import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 
 @NgModule({
   imports: [
@@ -124,6 +125,7 @@ import { SharedModule } from './shared/shared.module';
     AppraisalRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
+    DipRequestCreateComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

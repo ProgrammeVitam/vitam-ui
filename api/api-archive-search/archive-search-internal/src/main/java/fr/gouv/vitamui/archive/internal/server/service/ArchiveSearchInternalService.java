@@ -42,11 +42,15 @@ import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.dip.DataObjectVersions;
+import fr.gouv.vitam.common.model.export.dip.DipExportType;
+import fr.gouv.vitam.common.model.export.dip.DipRequest;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -58,6 +62,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -107,6 +112,7 @@ public class ArchiveSearchInternalService {
     public static final String NEW_LINE = "\n";
     public static final String NEW_TAB = "\t";
     public static final String NEW_LINE_1 = "\r\n";
+    public static final String OPERATION_IDENTIFIER = "itemId";
 
     public static final String SPACE = " ";
 
@@ -116,6 +122,7 @@ public class ArchiveSearchInternalService {
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
     private final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
     private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
+    private final ExportDipV2Service exportDipV2Service;
 
 
     @Autowired
@@ -123,7 +130,8 @@ public class ArchiveSearchInternalService {
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
-        final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService
+        final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService,
+        final ExportDipV2Service exportDipV2Service
 
     ) {
         this.unitService = unitService;
@@ -132,6 +140,7 @@ public class ArchiveSearchInternalService {
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
         this.archivesSearchFieldsQueryBuilderService = archivesSearchFieldsQueryBuilderService;
         this.archivesSearchAppraisalQueryBuilderService = archivesSearchAppraisalQueryBuilderService;
+        this.exportDipV2Service = exportDipV2Service;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
@@ -509,21 +518,44 @@ public class ArchiveSearchInternalService {
         return select.getFinalSelect();
     }
 
-    public String exportDIP(final SearchCriteriaDto searchQuery,
+    public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto,
                             final VitamContext vitamContext)
         throws VitamClientException {
-        LOGGER.debug("Export DIP by criteria {} ", searchQuery.toString());
-        searchQuery.setPageNumber(0);
-        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
-        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
-        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-        JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
-        return vitamResponse.toString();
+
+        LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto);
+        exportDipCriteriaDto.getExportDIPSearchCriteria().setPageNumber(0);
+        exportDipCriteriaDto.getExportDIPSearchCriteria().setSize(EXPORT_DIP_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria());
+
+        DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
+        dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
+        DipRequest dipRequest = prepareDipRequestBody(exportDipCriteriaDto, dslQuery);
+
+        JsonNode response = exportDIP(vitamContext,dipRequest);
+        return response.findValue(OPERATION_IDENTIFIER).textValue();
     }
 
-    private void test() {
+    public DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
+        DipRequest dipRequest = new DipRequest();
 
-
+        if(exportDipCriteriaDto != null) {
+            DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
+            dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
+            dipRequest.setExportWithLogBookLFC(exportDipCriteriaDto.isLifeCycleLogs());
+            dipRequest.setDslRequest(dslQuery);
+            dipRequest.setDipExportType(DipExportType.FULL);
+            dipRequest.setDataObjectVersionToExport(dataObjectVersionToExport);
+            dipRequest.setDipRequestParameters(exportDipCriteriaDto.getDipRequestParameters());
+        }
+        return dipRequest;
     }
+
+    public JsonNode exportDIP( final VitamContext vitamContext,  DipRequest dipRequest)
+        throws VitamClientException {
+        RequestResponse<JsonNode> response = exportDipV2Service.exportDip( vitamContext, dipRequest);
+        return response.toJsonNode();
+    }
+
 }

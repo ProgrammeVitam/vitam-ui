@@ -27,6 +27,7 @@ package fr.gouv.vitamui.archives.search.service;
 
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -160,8 +161,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
     }
 
-    public ResponseEntity<String> exportDIPByCriteria(final SearchCriteriaDto searchQuery,ExternalHttpContext context) {
-        LOGGER.info("export DIP with criteria {}", searchQuery);
-        return archiveSearchExternalRestClient.exportDIPCriteria(searchQuery, context);
+    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
+        return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
     }
 }

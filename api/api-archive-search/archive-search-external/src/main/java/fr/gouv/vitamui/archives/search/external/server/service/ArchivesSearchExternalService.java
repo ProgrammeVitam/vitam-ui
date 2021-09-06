@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.server.service;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -95,7 +96,7 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
         return archiveInternalRestClient.exportCsvArchiveUnitsByCriteria(query, getInternalHttpContext());
     }
 
-    public String exportDIPByCriteria(final SearchCriteriaDto query) {
-        return archiveInternalRestClient.exportDIPByCriteria(query, getInternalHttpContext());
+    public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto) {
+        return archiveInternalRestClient.exportDIPByCriteria(exportDipCriteriaDto, getInternalHttpContext());
     }
 }

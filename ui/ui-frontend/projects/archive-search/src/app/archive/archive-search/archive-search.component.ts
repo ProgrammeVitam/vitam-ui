@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -43,7 +43,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Direction, StartupService } from 'ui-frontend-common';
+import { Direction } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
@@ -60,8 +60,10 @@ import {
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
+import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
+const MAX_DIP_EXPORT_THRESHOLD = 10000;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
@@ -72,13 +74,12 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges {
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private archiveService: ArchiveService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    private startupService: StartupService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {
@@ -220,6 +221,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
   hasDipExportRole = false;
   hasEliminationActionRole = false;
   hasEliminationAnalysisRole = false;
+  openDialogSubscription: Subscription;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -860,6 +862,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
     this.subscriptionEntireNodes.unsubscribe();
     this.subscriptionFilingHoldingSchemeNodes.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd.unsubscribe();
+    this.openDialogSubscription.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
@@ -954,32 +957,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
     }
   }
 
-  exportDIPService() {
-    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-    const exportDIPSearchCriteria = {
-      criteriaList: this.listOfUACriteriaSearch,
-      pageNumber: this.currentPage,
-      size: PAGE_SIZE,
-      sortingCriteria,
-      language: this.translateService.currentLang,
-    };
-    this.archiveService.exportDIP(exportDIPSearchCriteria, this.accessContract).subscribe((data) => {
-      console.log('response', JSON.parse(data));
-      const guid = 'aeeaaaaaaggtywctaanl4al3rxsbxziaaaaq';
-      const message = 'custom message for different workflows';
-      const index = this.startupService.getReferentialUrl().lastIndexOf('/');
-      const serviceUrl =
-        this.startupService.getReferentialUrl().substring(0, index) +
-        '/logbook-operation/tenant/' +
-        this.tenantIdentifier +
-        '?guid=' +
-        guid;
-
-      this.openSnackBarForWorkflow(message, serviceUrl + '');
-    });
-  }
-
   prepareUAIdList(criteriaSearchList: SearchCriteriaEltDto[], listOfUAIdToInclude: CriteriaValue[], listOfUAIdToExclude: CriteriaValue[]) {
     const listOfUACriteriaSearch = [];
     if (criteriaSearchList && criteriaSearchList.length > 0) {
@@ -1046,6 +1023,43 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
           break;
         default:
           break;
+      }
+    });
+  }
+
+  openExportDIPRequestCreateDialog() {
+    if (this.itemSelected > MAX_DIP_EXPORT_THRESHOLD) {
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'exportDIPLimitReached' },
+        duration: 10000,
+      });
+      return;
+    }
+
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const exportDIPSearchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      sortingCriteria,
+      language: this.translateService.currentLang,
+    };
+
+    const dialogRef = this.dialog.open(DipRequestCreateComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: false,
+      data: {
+        itemSelected: this.itemSelected,
+        exportDIPSearchCriteria,
+        accessContract: this.accessContract,
+        tenantIdentifier: this.tenantIdentifier,
+      },
+    });
+    this.openDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        return;
       }
     });
   }

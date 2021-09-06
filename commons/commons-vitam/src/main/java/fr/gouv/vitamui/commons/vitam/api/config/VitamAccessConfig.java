@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -65,6 +66,11 @@ public class VitamAccessConfig extends VitamClientConfig {
     @Bean
     public ExportDipService getExportDipService() {
         return new ExportDipService(accessExternalClient());
+    }
+
+    @Bean
+    public ExportDipV2Service getExportDipV2Service() {
+        return new ExportDipV2Service(accessExternalClientV2());
     }
 
 }

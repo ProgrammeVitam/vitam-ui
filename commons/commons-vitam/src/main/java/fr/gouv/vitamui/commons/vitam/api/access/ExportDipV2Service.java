@@ -35,47 +35,41 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-package fr.gouv.vitamui.archive.internal.server.config;
+package fr.gouv.vitamui.commons.vitam.api.access;
 
-import fr.gouv.vitam.access.external.client.AccessExternalClient;
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
-import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
-import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.export.dip.DipRequest;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.apache.http.HttpStatus;
 
+public class ExportDipV2Service {
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
-@ActiveProfiles("test")
-public class SearchCriteriaHistoryInternalServerConfigTest {
+    @SuppressWarnings("unused")
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ExportDipV2Service.class);
 
-    @MockBean(name = "adminExternalClient")
-    private AdminExternalClient adminExternalClient;
+    private final AccessExternalClientV2 accessExternalClientV2;
 
-    @MockBean(name = "accessExternalClient")
-    private AccessExternalClient accessExternalClient;
+    public ExportDipV2Service(final AccessExternalClientV2 accessExternalClientV2) {
+        this.accessExternalClientV2 = accessExternalClientV2;
+    }
 
-    @MockBean(name = "ingestExternalClient")
-    private IngestExternalClient ingestExternalClient;
+    /**
+     * Starts the export of the files of the selected unit archives.
+     * @param dipRequest DipRequest used to select units to export as DIP
+     * @param vitamContext The vitam context
+     * @return
+     * @throws VitamClientException
+     */
 
-    @MockBean(name = "accessExternalClientV2")
-    private AccessExternalClientV2 accessExternalClientV2;
-
-    @Autowired
-    private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
-
-    @Test
-    public void testSarchCriteriaHistoryInternalServiceConf() {
-        Assertions.assertNotNull(searchCriteriaHistoryInternalService);
+    public RequestResponse<JsonNode> exportDip( final VitamContext vitamContext, final DipRequest dipRequest) throws VitamClientException {
+        final RequestResponse<JsonNode> response = accessExternalClientV2.exportDIP(vitamContext, dipRequest);
+        VitamRestUtils.checkResponse(response, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return response;
     }
 }
