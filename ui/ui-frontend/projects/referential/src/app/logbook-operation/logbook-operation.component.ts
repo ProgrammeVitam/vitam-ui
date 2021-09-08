@@ -45,7 +45,7 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
 @Component({
   selector: 'app-logbook-operation',
   templateUrl: './logbook-operation.component.html',
-  styleUrls: ['./logbook-operation.component.scss']
+  styleUrls: ['./logbook-operation.component.scss'],
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
   search = '';
@@ -70,14 +70,14 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
-      endDate: null
+      endDate: null,
     });
 
     this.dateRangeFilterForm.valueChanges.subscribe((value) => {
       this.filters = {
         type: this.filters.type,
         status: this.filters.status,
-        dateRange: value
+        dateRange: value,
       };
     });
   }
