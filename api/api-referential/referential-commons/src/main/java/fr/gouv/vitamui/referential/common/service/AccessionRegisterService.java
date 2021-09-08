@@ -38,9 +38,7 @@ package fr.gouv.vitamui.referential.common.service;
 
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
@@ -59,10 +57,9 @@ public class AccessionRegisterService {
         this.adminExternalClient = adminExternalClient;
     }
 
-    public RequestResponse<AccessionRegisterSummaryModel> findAccessionRegisterSymbolic(VitamContext context) throws VitamClientException, InvalidCreateOperationException, InvalidParseOperationException {
+    public RequestResponse<AccessionRegisterSummaryModel> findAccessionRegisterSummary(VitamContext context) throws VitamClientException {
         LOGGER.debug("findAccessionRegisterSymbolic");
-        LOGGER.info("Access Register EvIdAppSession : {} " , context.getApplicationSessionId());
+        LOGGER.info("Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
         return this.adminExternalClient.findAccessionRegister(context, new Select().getFinalSelect());
     }
-
 }

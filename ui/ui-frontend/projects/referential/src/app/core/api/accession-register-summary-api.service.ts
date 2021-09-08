@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,34 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.client;
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccessionRegisterSummary, BASE_URL, BaseHttpClient } from 'ui-frontend-common';
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
+@Injectable({
+  providedIn: 'root',
+})
+export class AccessionRegisterSummaryApiService extends BaseHttpClient<AccessionRegisterSummary> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/accession-register/summary');
+  }
 
-import java.util.List;
-
-public class AccessionRegisterInternalRestClient  extends BaseCrudRestClient<AccessionRegisterSummaryDto, InternalHttpContext> {
-
-    public AccessionRegisterInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
-        super(restTemplate, baseUrl);
-    }
-
-    @Override
-    public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL;
-    }
-
-    @Override protected Class<AccessionRegisterSummaryDto> getDtoClass() {
-        return AccessionRegisterSummaryDto.class;
-    }
-
-    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessionRegisterSummaryDto>>() { };
-    }
-
+  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<AccessionRegisterSummary[]> {
+    return super.getAllByParams(params, headers);
+  }
 }

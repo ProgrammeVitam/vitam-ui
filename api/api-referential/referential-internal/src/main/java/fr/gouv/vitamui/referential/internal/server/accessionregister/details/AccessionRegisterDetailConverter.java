@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,28 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {TestBed} from '@angular/core/testing';
+package fr.gouv.vitamui.referential.internal.server.accessionregister.details;
 
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule} from 'ui-frontend-common';
-import {environment} from './../../../environments/environment';
-import {AccessionRegisterApiService} from './accession-register-api.service';
+import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 
-describe('AccessionRegisterApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-      InjectorModule,
-      LoggerModule.forRoot()
-    ],
-    providers: [
-      {provide: BASE_URL, useValue: '/fake-api'},
-      {provide: ENVIRONMENT, useValue: environment}
-    ]
-  }));
+import java.util.List;
+import java.util.stream.Collectors;
 
-  it('should be created', () => {
-    const service: AccessionRegisterApiService = TestBed.inject(AccessionRegisterApiService);
-    expect(service).toBeTruthy();
-  });
-});
+public class AccessionRegisterDetailConverter {
+
+    private AccessionRegisterDetailConverter() {
+        throw new UnsupportedOperationException("Utility class !");
+    }
+
+    public static AccessionRegisterDetailDto convertVitamToDto(final AccessionRegisterDetailModel accessionRegisterDetailModel) {
+        return VitamUIUtils.copyProperties(accessionRegisterDetailModel, new AccessionRegisterDetailDto());
+    }
+
+    public static List<AccessionRegisterDetailDto> convertVitamsToDtos(final List<AccessionRegisterDetailModel> accessionRegisterDetailModels) {
+        return accessionRegisterDetailModels.stream().map(AccessionRegisterDetailConverter::convertVitamToDto).collect(Collectors.toList());
+    }
+}

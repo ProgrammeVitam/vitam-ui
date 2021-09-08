@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,81 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.model;
-
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Calendar;
-
-/**
- * Enum for Rule Measurement
- */
-public enum RuleMeasurementEnum {
-
-    /**
-     * Month
-     */
-    MONTH("month", Calendar.MONTH, ChronoUnit.MONTHS),
-    /**
-     * Day
-     */
-    DAY("day", Calendar.DAY_OF_MONTH, ChronoUnit.DAYS),
-    /**
-     * Year
-     */
-    YEAR("year", Calendar.YEAR, ChronoUnit.YEARS),
-    /**
-     * Second
-     */
-    SECOND("second", Calendar.SECOND, ChronoUnit.SECONDS);
-
-    private final String type;
-    private final int calendarUnitType;
-    private final TemporalUnit temporalUnit;
-
-
-    /**
-     * Constructor
-     */
-    RuleMeasurementEnum(String ruleMeasurement, int calendarUnitType,
-        TemporalUnit temporalUnit) {
-        type = ruleMeasurement;
-        this.calendarUnitType = calendarUnitType;
-        this.temporalUnit = temporalUnit;
-    }
-
-
-    /**
-     *
-     * @return the type of the measure
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     *
-     * @return the Calendar Unit Type
-     */
-    public int getCalendarUnitType() {
-        return calendarUnitType;
-    }
-
-    /**
-     * @param type
-     * @return the associated RuleMeasurementEnum according to parameter
-     */
-
-    public static RuleMeasurementEnum getEnumFromType(String type) {
-        for (final RuleMeasurementEnum e : values()) {
-            if (e.getType().equalsIgnoreCase(type)) {
-                return e;
-            }
-        }
-        return null;
-    }
-
-    public TemporalUnit getTemporalUnit() {
-        return temporalUnit;
-    }
-}
+export * from './accession-register';
+export * from './accession-register-detail';
+export * from './accession-register-status';
+export * from './accession-register-summary';
+export * from './register-value-detail-model';
+export * from './register-value-event-model';

@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { LoggerService } from '../logger/logger.service';
-import { BytesPipe } from './bytes.pipe';
+import {LoggerService} from '../logger/logger.service';
+import {BytesPipe} from './bytes.pipe';
 
 describe('BytesPipe', () => {
   it('create an instance', () => {
@@ -45,8 +45,18 @@ describe('BytesPipe', () => {
 
   it('should display human readable sizes', () => {
     const pipe = new BytesPipe(new LoggerService());
-    expect(pipe.transform('78800')).toBe('76.95 kB');
-    expect(pipe.transform('57489487')).toBe('54.83 MB');
-    expect(pipe.transform('45628658811')).toBe('42.50 GB');
+    expect(pipe.transform('78800')).toBe('76.95 ko');
+    expect(pipe.transform('57489487')).toBe('54.83 Mo');
+    expect(pipe.transform('45628658811')).toBe('42.50 Go');
+  });
+
+  it('should return unformatted same value when provide negative value', () => {
+    const pipe = new BytesPipe(new LoggerService());
+    expect(pipe.transform('-70')).toBe('-70');
+  });
+
+  it('should return 0 when provide 0 as value to format', () => {
+    const pipe = new BytesPipe(new LoggerService());
+    expect(pipe.transform('0')).toBe('0 octet');
   });
 });

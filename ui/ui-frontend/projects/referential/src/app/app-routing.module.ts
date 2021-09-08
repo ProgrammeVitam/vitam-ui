@@ -185,7 +185,16 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'LOGBOOK_MANAGEMENT_OPERATION_APP' },
   },
-
+  // =====================================================
+  //                      ACCESSION REGISTER
+  // =====================================================
+  {
+    path: 'accession-register',
+    loadChildren: () => import('./accession-register/accession-register.module').then((m) => m.AccessionRegisterModule),
+    canActivate: [AuthGuard, AppGuard],
+    resolve: { userAnalytics: AnalyticsResolver },
+    data: { appId: 'ACCESSION_REGISTER_APP' },
+  },
   // =====================================================
   //                      unknown path
   // =====================================================

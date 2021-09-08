@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister;
+package fr.gouv.vitamui.referential.internal.server.accessionregister.summary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
@@ -56,16 +54,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AccessionRegisterInternalService {
+public class AccessionRegisterSummaryInternalService {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(
+        AccessionRegisterSummaryInternalService.class);
 
     final private AccessionRegisterService accessionRegisterService;
 
     private ObjectMapper objectMapper;
 
     @Autowired
-    AccessionRegisterInternalService(AccessionRegisterService accessionRegisterService, ObjectMapper objectMapper) {
+    AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService, ObjectMapper objectMapper) {
         this.accessionRegisterService = accessionRegisterService;
         this.objectMapper = objectMapper;
     }
@@ -74,12 +73,12 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.info("List of Access Register EvIdAppSession : {} " , context.getApplicationSessionId());
-            requestResponse = accessionRegisterService.findAccessionRegisterSymbolic(context);
+            LOGGER.info("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
-            return AccessionRegisterConverter.convertVitamsToDtos(accessionRegisterSymbolicResponseDto.getResults());
-        } catch (JsonProcessingException | VitamClientException | InvalidCreateOperationException | InvalidParseOperationException e) {
+            return AccessionRegisterSummaryConverter.convertVitamsToDtos(accessionRegisterSymbolicResponseDto.getResults());
+        } catch (JsonProcessingException | VitamClientException e) {
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }

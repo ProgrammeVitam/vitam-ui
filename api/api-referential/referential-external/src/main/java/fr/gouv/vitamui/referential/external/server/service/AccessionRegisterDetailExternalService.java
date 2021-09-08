@@ -36,39 +36,44 @@
  */
 package fr.gouv.vitamui.referential.external.server.service;
 
-import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
+import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.internal.client.AccessionRegisterInternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
+import fr.gouv.vitamui.referential.internal.client.AccessionRegisterDetailInternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
-@Getter
-@Setter
 @Service
-public class AccessionRegisterExternalService extends AbstractInternalClientService {
+public class AccessionRegisterDetailExternalService extends
+    AbstractResourceClientService<AccessionRegisterDetailDto, AccessionRegisterDetailDto> {
+
+    private final AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient;
 
     @Autowired
-    private AccessionRegisterInternalRestClient accessionRegisterInternalRestClient;
-
-    public AccessionRegisterExternalService(@Autowired ExternalSecurityService externalSecurityService) {
+    public AccessionRegisterDetailExternalService(ExternalSecurityService externalSecurityService,
+        AccessionRegisterDetailInternalRestClient accessionRegisterDetailInternalRestClient) {
         super(externalSecurityService);
-    }
-
-    public List<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
-        return accessionRegisterInternalRestClient.getAll(getInternalHttpContext(), criteria);
+        this.accessionRegisterDetailInternalRestClient = accessionRegisterDetailInternalRestClient;
     }
 
     @Override
-    protected BaseRestClient<InternalHttpContext> getClient() {
-        return accessionRegisterInternalRestClient;
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer page, final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction) {
+        ParameterChecker.checkPagination(size, page);
+        return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+    }
+
+    @Override
+    protected BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> getClient() {
+        return accessionRegisterDetailInternalRestClient;
     }
 
 }

@@ -78,5 +78,30 @@
     "POP_UP_CANCEL_MESSAGE": "Annuler l'opération ",
     "POP_UP_REPLAY_MESSAGE": "Rejouer l'opération ",
     "POP_UP_RESUME_MESSAGE": "Finaliser l'opération "
+  },
+  "ACCESSION_REGISTER": {
+    "ACCESSION_REGISTER": "Registre des fonds",
+    "SEARCH_BAR_BUTTON_LABEL": "Lancer une recherche",
+    "SEARCH_BAR_PLACEHOLDER": "Rechercher par service producteur ou par identifiant de l'entrée",
+    "LIST": {
+      "NB_ENTRIES": "{{nb}} entrées",
+      "DATE": "Date",
+      "OPERATION_IDENTIFIER": "Identifiant de l'entrée",
+      "ORIGINATING_AGENCY": "Service producteur",
+      "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
+      "ACQUISITION_INFORMATION": "Modalité d'entrée",
+      "TOTAL_UNITS": "Nb d'UA",
+      "TOTAL_OBJECTS_GROUPS": "Nb grpe objet",
+      "TOTAL_OBJECTS": "Nb d'objets",
+      "OBJECT_SIZE_INGESTED": "Volumétrie",
+      "STATUS": "Statut",
+      "NO_RESULT": "Aucun résultat",
+      "LOAD_MORE_RESULTS": "Afficher plus de résultats..."
+    },
+    "STATUS": {
+      "STORED_AND_UPDATED": "Partiellement éliminée ou transférée",
+      "STORED_AND_COMPLETED": "En stock et complète",
+      "UNSTORED": "Totalement éliminée ou transférée"
+    }
   }
 }

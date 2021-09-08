@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,21 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister;
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { AccessionRegisterDetail, BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
-import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+@Injectable({
+  providedIn: 'root',
+})
+export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionRegisterDetail> {
+  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
+    super(http, baseUrl + '/accession-register/details');
+  }
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-public class AccessionRegisterConverter {
-    public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
-        return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
-    }
-
-    public static List<AccessionRegisterSummaryDto> convertVitamsToDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
-        return accessionRegisterSummaryModels.stream().map(AccessionRegisterConverter::convertVitamToDto).collect(Collectors.toList());
-    }
+  public getAllPaginated(
+    pageRequest: PageRequest,
+    embedded?: string,
+    headers?: HttpHeaders
+  ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
+    return super.getAllPaginated(pageRequest, embedded, headers);
+  }
 }

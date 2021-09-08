@@ -34,34 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.external.client;
+package fr.gouv.vitamui.referential.internal.client;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class AccessionRegisterExternalRestClient extends BaseCrudRestClient<AccessionRegisterSummaryDto, ExternalHttpContext> {
+public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
 
-    public AccessionRegisterExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
+    public AccessionRegisterDetailInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
+    }
+
+    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<>() { };
     }
 
     @Override
     public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL;
+        return RestApi.ACCESSION_REGISTER_URL + "/details";
     }
 
-    @Override protected Class<AccessionRegisterSummaryDto> getDtoClass() {
-        return AccessionRegisterSummaryDto.class;
+    @Override protected Class<AccessionRegisterDetailDto> getDtoClass() {
+        return AccessionRegisterDetailDto.class;
     }
 
-    protected ParameterizedTypeReference<List<AccessionRegisterSummaryDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<AccessionRegisterSummaryDto>>() { };
+    protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
+        return new ParameterizedTypeReference<>() { };
     }
 
 }

@@ -19,7 +19,6 @@ export * from './lib/components/filing-plan/filing-plan.module';
 
 /* MODELS */
 export * from './lib/models/access-contract';
-export * from './lib/models/accession-register';
 export * from './lib/models/agency';
 export * from './lib/models/api-unit-object.interface';
 export * from './lib/models/autocomplete-response.interface';

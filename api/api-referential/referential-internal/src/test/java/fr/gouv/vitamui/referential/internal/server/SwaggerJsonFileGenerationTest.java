@@ -45,7 +45,7 @@ import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
 import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
@@ -117,7 +117,7 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
     private OperationInternalService operationInternalService;
 
     @MockBean
-    private AccessionRegisterInternalService accessionRegisterInternalService;
+    private AccessionRegisterSummaryInternalService accessionRegisterSummaryInternalService;
 
     @MockBean
     private AuthenticationProvider authenticationProvider;

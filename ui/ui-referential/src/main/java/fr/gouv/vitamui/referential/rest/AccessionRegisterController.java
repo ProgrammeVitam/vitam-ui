@@ -36,18 +36,22 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.service.AccessionRegisterDetailService;
+import fr.gouv.vitamui.referential.service.AccessionRegisterSummaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,22 +68,36 @@ import java.util.Optional;
 @Produces("application/json")
 public class AccessionRegisterController extends AbstractUiRestController {
 
-    protected final AccessionRegisterService service;
+    protected final AccessionRegisterSummaryService summaryService;
+    protected final AccessionRegisterDetailService detailsService;
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterController.class);
 
-    @Autowired
-    public AccessionRegisterController(final AccessionRegisterService service) {
-        this.service = service;
+    public AccessionRegisterController(AccessionRegisterSummaryService summaryService,
+        AccessionRegisterDetailService detailsService) {
+        this.summaryService = summaryService;
+        this.detailsService = detailsService;
     }
 
-    @ApiOperation(value = "Get entity")
-    @GetMapping
+    @ApiOperation(value = "Get accession register summary entities")
+    @GetMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
     public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get all with criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
-        return service.getAll(buildUiHttpContext(), criteria);
+        return summaryService.getAll(buildUiHttpContext(), criteria);
+    }
+
+    @ApiOperation(value = "Get accession register details entities paginated")
+    @GetMapping(value = "/details", params = {"page", "size"})
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction) {
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
+            orderBy, direction);
+        return detailsService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
 }

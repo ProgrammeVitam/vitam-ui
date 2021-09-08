@@ -36,15 +36,17 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterExternalService;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterDetailExternalService;
+import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterSummaryExternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,21 +59,36 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.ACCESSION_REGISTER_URL)
-@Getter
-@Setter
 public class AccessionRegisterExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterExternalController.class);
 
-    @Autowired
-    private AccessionRegisterExternalService accessionRegisterExternalService;
+    private final AccessionRegisterSummaryExternalService accessionRegisterSummaryExternalService;
+    private final AccessionRegisterDetailExternalService accessionRegisterDetailExternalService;
 
-    @GetMapping()
+    @Autowired
+    public AccessionRegisterExternalController(
+        AccessionRegisterSummaryExternalService accessionRegisterSummaryExternalService,
+        AccessionRegisterDetailExternalService accessionRegisterDetailExternalService) {
+        this.accessionRegisterSummaryExternalService = accessionRegisterSummaryExternalService;
+        this.accessionRegisterDetailExternalService = accessionRegisterDetailExternalService;
+    }
+
+    @GetMapping("/summary")
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    public Collection<AccessionRegisterSummaryDto> getAll(@RequestParam final Optional<String> criteria) {
+    public Collection<AccessionRegisterSummaryDto> getAccessionRegisterSummaries(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all accessionRegister criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
-        return accessionRegisterExternalService.getAll(criteria);
+        return accessionRegisterSummaryExternalService.getAll(criteria);
+    }
+
+    @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
+    @GetMapping(value = "/details", params = { "page", "size" })
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAccessionRegisterDetailsPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
 }

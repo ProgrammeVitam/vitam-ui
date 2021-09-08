@@ -1,0 +1,1097 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 20,
+    "offset": 0,
+    "limit": 10000,
+    "size": 20
+  },
+  "$results": [
+    {
+      "objectSize": {
+        "ingested": 229360,
+        "deleted": 0,
+        "remained": 229360
+      },
+      "#id": "aehaaaaaaefwvz6caasnsalp43e6ogaaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "producteur1",
+      "SubmissionAgency": "producteur1",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-01-27T11:36:29.207",
+      "StartDate": "2020-01-27T11:36:29.207",
+      "LastUpdate": "2020-01-27T11:36:29.207",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 3,
+        "deleted": 0,
+        "remained": 3
+      },
+      "TotalObjects": {
+        "ingested": 3,
+        "deleted": 0,
+        "remained": 3
+      },
+      "ObjectSize": {
+        "ingested": 229360,
+        "deleted": 0,
+        "remained": 229360
+      },
+      "Opc": "aeeaaaaaagfwvz6caaoocalp43e5ceaaaaaq",
+      "Opi": "aeeaaaaaagfwvz6caaoocalp43e5ceaaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfwvz6caaoocalp43e5ceaaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 3,
+          "Objects": 3,
+          "ObjSize": 229360,
+          "CreationDate": "2020-01-27T11:36:29.208"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfwvz6caaoocalp43e5ceaaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 372100,
+        "deleted": 0,
+        "remained": 372100
+      },
+      "#id": "aehaaaaaaegg7lhoaalzsalzazuz4kiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "FRAN_NP_050770",
+      "SubmissionAgency": "FRAN_NP_050770",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2021-04-25T00:24:15.657",
+      "StartDate": "2021-04-25T00:24:15.657",
+      "LastUpdate": "2021-04-25T00:24:15.657",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 10,
+        "deleted": 0,
+        "remained": 10
+      },
+      "TotalUnits": {
+        "ingested": 17,
+        "deleted": 0,
+        "remained": 17
+      },
+      "TotalObjects": {
+        "ingested": 10,
+        "deleted": 0,
+        "remained": 10
+      },
+      "ObjectSize": {
+        "ingested": 372100,
+        "deleted": 0,
+        "remained": 372100
+      },
+      "Opc": "aeeaaaaaaggg7lhoaan2walzazusvaaaaaaq",
+      "Opi": "aeeaaaaaaggg7lhoaan2walzazusvaaaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggg7lhoaan2walzazusvaaaaaaq",
+          "OpType": "INGEST",
+          "Gots": 10,
+          "Units": 17,
+          "Objects": 10,
+          "ObjSize": 372100,
+          "CreationDate": "2021-04-25T00:24:15.657"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggg7lhoaan2walzazusvaaaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefd73ntaambualuwhgbrpiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "FRAN_NP_050758",
+      "SubmissionAgency": "FRAN_NP_050758",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-09-21T17:52:57.021",
+      "StartDate": "2020-09-21T17:52:57.021",
+      "LastUpdate": "2020-09-21T17:52:57.021",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 8,
+        "deleted": 0,
+        "remained": 8
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfd73ntaaoakaluwhf2tmaaaaaq",
+      "Opi": "aeeaaaaaagfd73ntaaoakaluwhf2tmaaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfd73ntaaoakaluwhf2tmaaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 8,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-09-21T17:52:57.022"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfd73ntaaoakaluwhf2tmaaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaeftm2ypaal2ialuf4ijxnaaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "FRAN_NP_050758",
+      "SubmissionAgency": "FRAN_NP_050758",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-08-27T08:37:31.700",
+      "StartDate": "2020-08-27T08:37:31.700",
+      "LastUpdate": "2020-08-27T08:37:31.700",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 8,
+        "deleted": 0,
+        "remained": 8
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagftm2ypaaobgaluf4iidjyaaaaq",
+      "Opi": "aeeaaaaaagftm2ypaaobgaluf4iidjyaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagftm2ypaaobgaluf4iidjyaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 8,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-08-27T08:37:31.700"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagftm2ypaaobgaluf4iidjyaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaegbz46eaal4saluzfy2azaaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-09-26T08:05:01.156",
+      "StartDate": "2020-09-26T08:05:01.156",
+      "LastUpdate": "2020-09-26T08:05:01.156",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaaggbz46eaaogqaluzfyzn7aaaaaq",
+      "Opi": "aeeaaaaaaggbz46eaaogqaluzfyzn7aaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggbz46eaaogqaluzfyzn7aaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-09-26T08:05:01.156"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggbz46eaaogqaluzfyzn7aaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo2xnnxqaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:26:11.166",
+      "StartDate": "2020-10-29T23:26:11.166",
+      "LastUpdate": "2020-10-29T23:26:11.166",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 5,
+        "deleted": 0,
+        "remained": 5
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo2xdtiaaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo2xdtiaaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo2xdtiaaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 5,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:26:11.166"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo2xdtiaaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo3ebuyqaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:53:46.849",
+      "StartDate": "2020-10-29T23:53:46.849",
+      "LastUpdate": "2020-10-29T23:53:46.849",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo3d34qyaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo3d34qyaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo3d34qyaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:53:46.850"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo3d34qyaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo3ecgiiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:53:49.089",
+      "StartDate": "2020-10-29T23:53:49.089",
+      "LastUpdate": "2020-10-29T23:53:49.089",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo3d4c6aaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo3d4c6aaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo3d4c6aaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:53:49.089"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo3d4c6aaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo3edpkiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:53:54.345",
+      "StartDate": "2020-10-29T23:53:54.345",
+      "LastUpdate": "2020-10-29T23:53:54.345",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo3d5shiaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo3d5shiaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo3d5shiaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:53:54.345"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo3d5shiaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaef2e53xaalw2alv2w7llqiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-11-17T10:27:26.785",
+      "StartDate": "2020-11-17T10:27:26.785",
+      "LastUpdate": "2020-11-17T10:27:26.785",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 2,
+        "deleted": 0,
+        "remained": 2
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaagf2e53xaanykalv2w7gb7yaaaaq",
+      "Opi": "aeeaaaaaagf2e53xaanykalv2w7gb7yaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagf2e53xaanykalv2w7gb7yaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 2,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-11-17T10:27:26.785"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagf2e53xaanykalv2w7gb7yaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaegbz46eaal4saluy6s2a6qaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-09-25T23:42:34.618",
+      "StartDate": "2020-09-25T23:42:34.618",
+      "LastUpdate": "2020-09-25T23:42:34.618",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaaggbz46eaaogqaluy6szkhiaaaaq",
+      "Opi": "aeeaaaaaaggbz46eaaogqaluy6szkhiaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggbz46eaaogqaluy6szkhiaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-09-25T23:42:34.618"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggbz46eaaogqaluy6szkhiaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaegrpqteaalvsalwefrxbkiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-12-02T02:58:53.736",
+      "StartDate": "2020-12-02T02:58:53.736",
+      "LastUpdate": "2020-12-02T02:58:53.736",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 2,
+        "deleted": 0,
+        "remained": 2
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaaggrpqteaanwyalwefrvraqaaaaq",
+      "Opi": "aeeaaaaaaggrpqteaanwyalwefrvraqaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggrpqteaanwyalwefrvraqaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 2,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-12-02T02:58:53.737"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggrpqteaanwyalwefrvraqaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaef2e53xaalw2alv33xo4hiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-11-19T05:16:41.884",
+      "StartDate": "2020-11-19T05:16:41.884",
+      "LastUpdate": "2020-11-19T05:16:41.884",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 2,
+        "deleted": 0,
+        "remained": 2
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaagf2e53xaanykalv33xm2yiaaaaq",
+      "Opi": "aeeaaaaaagf2e53xaanykalv33xm2yiaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagf2e53xaanykalv33xm2yiaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 2,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-11-19T05:16:41.885"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagf2e53xaanykalv33xm2yiaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaegrpqteaalvsalwefryp7qaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-12-02T02:58:59.710",
+      "StartDate": "2020-12-02T02:58:59.710",
+      "LastUpdate": "2020-12-02T02:58:59.710",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 2,
+        "deleted": 0,
+        "remained": 2
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaaggrpqteaanwyalwefrwfdiaaaaq",
+      "Opi": "aeeaaaaaaggrpqteaanwyalwefrwfdiaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggrpqteaanwyalwefrwfdiaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 2,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-12-02T02:58:59.710"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggrpqteaanwyalwefrwfdiaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo3ecysqaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:53:51.433",
+      "StartDate": "2020-10-29T23:53:51.433",
+      "LastUpdate": "2020-10-29T23:53:51.433",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 6,
+        "deleted": 0,
+        "remained": 6
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo3d4i2aaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo3d4i2aaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo3d4i2aaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 6,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:53:51.434"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo3d4i2aaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo2xm27iaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:26:08.765",
+      "StartDate": "2020-10-29T23:26:08.765",
+      "LastUpdate": "2020-10-29T23:26:08.765",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 5,
+        "deleted": 0,
+        "remained": 5
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo2xdapqaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo2xdapqaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo2xdapqaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 5,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:26:08.765"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo2xdapqaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo2xkp2yaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:25:59.147",
+      "StartDate": "2020-10-29T23:25:59.147",
+      "LastUpdate": "2020-10-29T23:25:59.147",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 5,
+        "deleted": 0,
+        "remained": 5
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo2xbklyaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo2xbklyaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo2xbklyaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 5,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:25:59.147"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo2xbklyaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "#id": "aehaaaaaaefvsex5aalv6alvo2xmgbiaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-10-29T23:26:06.085",
+      "StartDate": "2020-10-29T23:26:06.085",
+      "LastUpdate": "2020-10-29T23:26:06.085",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "TotalUnits": {
+        "ingested": 5,
+        "deleted": 0,
+        "remained": 5
+      },
+      "TotalObjects": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "ObjectSize": {
+        "ingested": 0,
+        "deleted": 0,
+        "remained": 0
+      },
+      "Opc": "aeeaaaaaagfvsex5aanvialvo2xbueqaaaaq",
+      "Opi": "aeeaaaaaagfvsex5aanvialvo2xbueqaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaagfvsex5aanvialvo2xbueqaaaaq",
+          "OpType": "INGEST",
+          "Gots": 0,
+          "Units": 5,
+          "Objects": 0,
+          "ObjSize": 0,
+          "CreationDate": "2020-10-29T23:26:06.085"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaagfvsex5aanvialvo2xbueqaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaegrpqteaalvsalwga5sfcqaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-12-05T00:09:10.538",
+      "StartDate": "2020-12-05T00:09:10.538",
+      "LastUpdate": "2020-12-05T00:09:10.538",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 3,
+        "deleted": 0,
+        "remained": 3
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaaggrpqteaanwyalwga5rk3iaaaaq",
+      "Opi": "aeeaaaaaaggrpqteaanwyalwga5rk3iaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggrpqteaanwyalwga5rk3iaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 3,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-12-05T00:09:10.538"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggrpqteaanwyalwga5rk3iaaaaq"
+      ]
+    },
+    {
+      "objectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "#id": "aehaaaaaaegrpqteaalvsalweaygkaaaaaaq",
+      "#tenant": 1,
+      "#version": 0,
+      "OriginatingAgency": "Service_producteur",
+      "SubmissionAgency": "Service_versant",
+      "ArchivalAgreement": "ArchivalAgreement0",
+      "EndDate": "2020-12-01T21:23:31.200",
+      "StartDate": "2020-12-01T21:23:31.200",
+      "LastUpdate": "2020-12-01T21:23:31.200",
+      "Status": "STORED_AND_COMPLETED",
+      "TotalObjectGroups": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "TotalUnits": {
+        "ingested": 2,
+        "deleted": 0,
+        "remained": 2
+      },
+      "TotalObjects": {
+        "ingested": 1,
+        "deleted": 0,
+        "remained": 1
+      },
+      "ObjectSize": {
+        "ingested": 1498,
+        "deleted": 0,
+        "remained": 1498
+      },
+      "Opc": "aeeaaaaaaggrpqteaanwyalweayey2yaaaaq",
+      "Opi": "aeeaaaaaaggrpqteaanwyalweayey2yaaaaq",
+      "OpType": "INGEST",
+      "Events": [
+        {
+          "Opc": "aeeaaaaaaggrpqteaanwyalweayey2yaaaaq",
+          "OpType": "INGEST",
+          "Gots": 1,
+          "Units": 2,
+          "Objects": 1,
+          "ObjSize": 1498,
+          "CreationDate": "2020-12-01T21:23:31.200"
+        }
+      ],
+      "OperationIds": [
+        "aeeaaaaaaggrpqteaanwyalweayey2yaaaaq"
+      ]
+    }
+  ],
+  "$facetResults": [],
+  "$context": {
+    "$query": {},
+    "$filter": {},
+    "$projection": {}
+  }
+}

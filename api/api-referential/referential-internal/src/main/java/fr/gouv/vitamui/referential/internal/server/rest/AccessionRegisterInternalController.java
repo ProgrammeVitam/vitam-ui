@@ -38,42 +38,68 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.ACCESSION_REGISTER_URL)
-@Getter
-@Setter
 public class AccessionRegisterInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterInternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(AccessionRegisterInternalController.class);
 
-    @Autowired
-    private AccessionRegisterInternalService accessionRegisterInternalService;
+    private final AccessionRegisterSummaryInternalService summaryInternalService;
 
-    @Autowired
-    private InternalSecurityService securityService;
+    private final AccessionRegisterDetailInternalService detailInternalService;
 
-    @GetMapping()
+    private final InternalSecurityService securityService;
+
+    public AccessionRegisterInternalController(
+        AccessionRegisterSummaryInternalService accessionRegisterSummaryInternalService,
+        AccessionRegisterDetailInternalService accessionRegisterDetailInternalService,
+        InternalSecurityService securityService) {
+        this.summaryInternalService = accessionRegisterSummaryInternalService;
+        this.detailInternalService = accessionRegisterDetailInternalService;
+        this.securityService = securityService;
+    }
+
+    @GetMapping("/summary")
     public Collection<AccessionRegisterSummaryDto> getAll(@RequestParam final Optional<String> criteria,
-                                                          @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
         LOGGER.debug("get all customer criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return accessionRegisterInternalService.getAll(vitamContext);
+        final VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return summaryInternalService.getAll(vitamContext);
+    }
+
+    @GetMapping(value = "/details", params = {"page", "size"})
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page, size, criteria, orderBy, direction);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return detailInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
     }
 
 }

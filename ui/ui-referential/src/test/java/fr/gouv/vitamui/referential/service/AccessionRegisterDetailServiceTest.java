@@ -36,33 +36,48 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import fr.gouv.vitamui.commons.rest.client.BaseCrudRestClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
-import fr.gouv.vitamui.referential.external.client.AccessionRegisterExternalRestClient;
-import fr.gouv.vitamui.ui.commons.service.AbstractCrudService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.referential.external.client.AccessionRegisterDetailExternalRestClient;
+import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.util.Collection;
 import java.util.Optional;
 
-@Service
-public class AccessionRegisterService extends AbstractCrudService<AccessionRegisterSummaryDto> {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-    private AccessionRegisterExternalRestClient client;
+class AccessionRegisterDetailServiceTest {
 
-    @Autowired
-    public AccessionRegisterService(final AccessionRegisterExternalRestClient client) {
-        this.client = client;
+    @Mock
+    private AccessionRegisterDetailExternalRestClient client;
+
+    @Mock
+    private CommonService commonService;
+
+    @InjectMocks
+    AccessionRegisterDetailService accessionRegisterDetailService;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.openMocks(this);
+        accessionRegisterDetailService = new AccessionRegisterDetailService(commonService, client);
     }
 
-    @Override
-    public BaseCrudRestClient<AccessionRegisterSummaryDto, ExternalHttpContext> getClient() {
-        return client;
-    }
+    @Test
+    void should_call_the_right_rest_client_method_once_when_paginated_service_is_invoked() {
+        //Given
+        doReturn(new PaginatedValuesDto<>()).when(client).getAllPaginated(any(), any(), any(), any(), any(), any());
 
-    public Collection<AccessionRegisterSummaryDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
-        return super.getAll(context, criteria);
+        //When
+        accessionRegisterDetailService.getAllPaginated(0, 20, Optional.empty(), Optional.empty(), Optional.empty(), null);
+
+        //Then
+        verify(client, times(1)).getAllPaginated(any(), any(), any(), any(), any(), any());
     }
 }

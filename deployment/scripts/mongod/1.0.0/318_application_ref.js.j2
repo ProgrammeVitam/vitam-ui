@@ -1,0 +1,30 @@
+db = db.getSiblingDB('iam')
+
+print("START 318_application_ref.js");
+
+// -------- VITAM ADMINISTRATION -----
+
+db.applications.insert({
+    "identifier" : "ACCESSION_REGISTER_APP",
+{% if vitamui.referential.base_url is defined %}
+    "url": "{{ vitamui.referential.base_url }}/accession-register",
+{% else %}
+    "url": "{{ url_prefix }}/referential/accession-register",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-rules",
+    "name" : "Registre des fonds",
+    "category" : "ingest_and_consultation",
+    "position" : NumberInt(88),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Visualisation de l'ensemble des données du registre des fonds",
+    "target" : "_self",
+    {% if vitamui.referential.base_url is defined %}
+    	"serviceId": "^{{ vitamui.referential.base_url }}/.*"
+    {% else %}
+    	"serviceId": "^{{ url_prefix }}/referential/.*"
+    {% endif %}
+});
+
+print("END 318_application_ref.js");

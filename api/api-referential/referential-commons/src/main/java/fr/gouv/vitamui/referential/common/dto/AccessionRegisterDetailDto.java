@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,22 +34,56 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {AccessionRegister} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {BASE_URL, BaseHttpClient} from 'ui-frontend-common';
+package fr.gouv.vitamui.referential.common.dto;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AccessionRegisterApiService extends BaseHttpClient<AccessionRegister> {
+import fr.gouv.vitam.common.model.administration.AccessionRegisterStatus;
+import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
+import fr.gouv.vitam.common.model.administration.RegisterValueEventModel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/accession-register');
-  }
+import java.util.List;
 
-  getAllByParams(params: HttpParams, headers?: HttpHeaders): Observable<AccessionRegister[]> {
-    return super.getAllByParams(params, headers);
-  }
+@Getter
+@Setter
+@ToString
+public class AccessionRegisterDetailDto extends AccessionRegisterDto {
+
+    private String submissionAgency;
+
+    private String originatingAgencyLabel;
+
+    private String archivalAgreement;
+
+    private String startDate;
+
+    private String endDate;
+
+    private String lastUpdate;
+
+    private String opi;
+
+    private String opc;
+
+    private String opType;
+
+    private String acquisitionInformation;
+
+    private List<RegisterValueEventModel> events;
+
+    private AccessionRegisterStatus status;
+
+    private RegisterValueDetailModel objectSize;
+
+    private RegisterValueDetailModel totalObjectsGroups;
+
+    private RegisterValueDetailModel totalObjects;
+
+    private RegisterValueDetailModel totalUnits;
+
+    private List<String> operationsIds;
+
+    private String messageIdentifier;
+
 }
