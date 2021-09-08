@@ -600,7 +600,7 @@ public class ArchiveSearchInternalService {
         query.put(BuilderToken.GLOBAL.THRESOLD.exactToken(), ELIMINATION_ANALYSIS_THRESHOLD);
 
         EliminationRequestBody requestBody = new EliminationRequestBody();
-        requestBody.setDate(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        requestBody.setDate(new SimpleDateFormat(ArchiveSearchConsts.ONLY_DATE_FORMAT).format(new Date()));
         requestBody.setDslRequest(query);
         return requestBody;
     }

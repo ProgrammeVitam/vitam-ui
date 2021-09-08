@@ -235,8 +235,6 @@ describe('ArchiveSearchComponent', () => {
           var valueB = b.value;
           return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
         });
-        console.log('newCriteria', newCriteria);
-        //expect(newCriteria).toEqual(searchCriteriaValues);
       });
     });
     describe('submit', () => {
@@ -249,13 +247,5 @@ describe('ArchiveSearchComponent', () => {
         });
       });
     });
-    /*describe('clearCriteria', () => {
-      it('should clear all criterias ', () => {
-        component.clearCriterias();
-        expect(component.searchCriterias.size).toEqual(0);
-        expect(component.nbQueryCriteria).toEqual(0);
-        expect(component.included).toBeFalsy();
-      });
-    });*/
   });
 });

@@ -43,7 +43,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Direction } from 'ui-frontend-common';
+import { Direction, StartupService } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
@@ -82,7 +82,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     private route: ActivatedRoute,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private startupService: StartupService
   ) {
     this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe((nodes) => {
       this.entireNodesIds = nodes;
