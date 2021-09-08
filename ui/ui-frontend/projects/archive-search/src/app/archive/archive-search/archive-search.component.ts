@@ -421,6 +421,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
       if (this.searchCriterias) {
         this.nbQueryCriteria++;
         let criteria: SearchCriteria;
+        console.log('keyElt = ', keyElt);
         if (this.searchCriterias.has(keyElt)) {
           criteria = this.searchCriterias.get(keyElt);
           let values = criteria.values;
@@ -494,6 +495,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
     this.buildFieldsCriteriaListForQUery();
     this.buildAppraisalCriteriaListForQUery();
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      console.log('this.criteriaSearchList, ', this.criteriaSearchList);
       this.callVitamApiService();
     }
   }
@@ -986,7 +988,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges {
   }
 
   startEliminationAnalysis() {
-    if (this.itemSelected > MAX_ELIMINATION_ANALYSIS_THRESHOLD) {
+    if (this.itemSelected >= MAX_ELIMINATION_ANALYSIS_THRESHOLD) {
       this.snackBar.openFromComponent(VitamUISnackBarComponent, {
         panelClass: 'vitamui-snack-bar',
         data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },

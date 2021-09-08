@@ -69,6 +69,11 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                         searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
                             Collectors.toList()),
                         ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
+                } else if (ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID.equals(searchCriteria.getCriteria())) {
+                    queryToFill.add(buildEliminationAnalysisSearchQuery(
+                        searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            Collectors.toList()),
+                        ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                 } else {
                     String mappedCriteriaName =
                         ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
@@ -94,6 +99,21 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                 subQueryOr
                     .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION, value, operator));
                 subQueryOr.add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE, value, operator));
+                subQueryAnd.add(subQueryOr);
+            }
+        }
+        return subQueryAnd;
+    }
+
+    private Query buildEliminationAnalysisSearchQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+                BooleanQuery subQueryOr = or();
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ELIMINATION_GUID, value, operator));
                 subQueryAnd.add(subQueryOr);
             }
         }
