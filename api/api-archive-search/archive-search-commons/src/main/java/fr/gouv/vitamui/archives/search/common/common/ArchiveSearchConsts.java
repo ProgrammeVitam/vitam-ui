@@ -167,6 +167,8 @@ public class ArchiveSearchConsts {
     public static final String UNITS_UPS = "#allunitups";
     public static final String END_DATE = "EndDate";
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
+    public static final String ELIMINATION_TECHNICAL_ID = "ELIMINATION_TECHNICAL_ID";
+    public static final String ELIMINATION_GUID = "#elimination.OperationId";
 
     /* Query fields */
     public static final String ID = "#id";

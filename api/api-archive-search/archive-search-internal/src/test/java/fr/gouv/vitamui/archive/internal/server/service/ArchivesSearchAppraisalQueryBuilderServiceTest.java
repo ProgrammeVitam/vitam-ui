@@ -27,8 +27,11 @@
 
 package fr.gouv.vitamui.archive.internal.server.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -40,6 +43,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedReader;
@@ -62,11 +66,15 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     @InjectMocks
     private ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
 
+    @InjectMocks
+    private ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
+
 
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         archivesSearchAppraisalQueryBuilderService = new ArchivesSearchAppraisalQueryBuilderService();
+        archivesSearchFieldsQueryBuilderService = new ArchivesSearchFieldsQueryBuilderService();
     }
 
 
@@ -413,6 +421,29 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryFileStr = loadFileContent("identifier-final-action-keep-rules-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery() throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("guid")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchFieldsQueryBuilderService
+            .fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/elimination_analysis_search.json"));
+        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
     }
 
     private String loadFileContent(String filename) throws IOException {

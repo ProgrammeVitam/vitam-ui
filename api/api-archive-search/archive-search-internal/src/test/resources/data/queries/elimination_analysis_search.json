@@ -1,0 +1,13 @@
+{
+  "$and": [
+    {
+      "$or": [
+        {
+          "$eq": {
+            "#elimination.OperationId": "guid"
+          }
+        }
+      ]
+    }
+  ]
+}
