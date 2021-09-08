@@ -41,28 +41,23 @@ import { IngestService } from '../ingest.service';
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
-  styleUrls: ['./ingest-preview.component.scss']
+  styleUrls: ['./ingest-preview.component.scss'],
 })
 export class IngestPreviewComponent implements OnInit {
-
   @Input() ingest: any; // Make a type ?
   @Output() previewClose = new EventEmitter();
- 
 
-  constructor(private logbookService: LogbookService, private ingestService : IngestService) { }
+  constructor(private logbookService: LogbookService, private ingestService: IngestService) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   emitClose() {
     this.previewClose.emit();
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST')
+    return (
+      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST'))
     );
   }
 
@@ -81,8 +76,7 @@ export class IngestPreviewComponent implements OnInit {
     if (this.getOperationStatus(ingest) === 'En cours') {
       return 'En cours';
     } else {
-      return (ingest.events !== undefined && ingest.events.length !== 0) ?
-        ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+      return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
     }
   }
 
@@ -94,7 +88,7 @@ export class IngestPreviewComponent implements OnInit {
     this.logbookService.downloadATR(this.ingest.id);
   }
 
-  generateDocX() {
-    this.ingestService.downloadDocxReport(this.ingest.id);
+  downloadODTReport() {
+    this.ingestService.downloadODTReport(this.ingest.id);
   }
 }

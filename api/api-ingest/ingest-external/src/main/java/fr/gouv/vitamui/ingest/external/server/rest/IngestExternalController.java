@@ -117,4 +117,12 @@ public class IngestExternalController {
         SanityChecker.isValidFileName(originalFileName);
         return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }
+
+    @Secured(ServicesData.ROLE_LOGBOOKS)
+    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
+        LOGGER.debug("export ODT report for ingest with id :{}", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
+        return ingestExternalService.generateODTReport(id);
+    }
 }
