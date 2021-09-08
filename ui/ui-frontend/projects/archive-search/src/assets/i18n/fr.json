@@ -131,6 +131,7 @@
         "SP_CODE": "Identifiant",
         "SP_LABEL": "Nom",
         "PATH": "Chemin",
+        "DESCRIPTION_LEVEL": "Niveau de description",
         "DOWNLOAD_DOC": "Télécharger le document"
       },
       "TABS": {
