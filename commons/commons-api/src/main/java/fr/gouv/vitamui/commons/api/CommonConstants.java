@@ -325,8 +325,4 @@ public class CommonConstants {
     public static final String X_SIZE_TOTAL = "X-Size-Total";
     public static final String X_CHUNK_OFFSET = "X-Chunk-Offset";
     public static final String LOGO = "LOGO";
-
-    public static final String ACCESS_CONTRATCS_APPLICATIONS_NAME = "ACCESS_APP";
-    public static final String INGEST_CONTRATCS_APPLICATIONS_NAME = "INGEST_APP";
-    public static final String ADMIN_USER = "admin_user";
 }

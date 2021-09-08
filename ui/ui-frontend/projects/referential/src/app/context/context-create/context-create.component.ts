@@ -43,6 +43,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {SecurityProfileService} from '../../security-profile/security-profile.service';
 import {ContextService} from '../context.service';
 import {ContextCreateValidators} from './context-create.validators';
+import { Context } from '../../../../../vitamui-library/src/lib/models/context';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -93,7 +94,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       identifier: [null, Validators.required, this.contextCreateValidators.uniqueIdentifier()],
       securityProfile: [null, Validators.required],
       enableControl: [false],
-      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, this.contextCreateValidators.permissionInvalid()]
+      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, null]
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -106,10 +107,20 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
     });
 
+    // Add or remove controls on the permissions
+    this.form.controls.enableControl.valueChanges.subscribe((value) => {
+      if (value) {
+        this.form.controls.permissions.setAsyncValidators([this.contextCreateValidators.permissionInvalid()]);
+      } else {
+        this.form.controls.permissions.clearAsyncValidators();
+      }
+      this.form.controls.permissions.updateValueAndValidity(this.form.controls.permissions.value);
+    });
+
     this.securityProfileService.getAll().subscribe(
       securityProfiles => {
         this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
-      });
+    });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -131,7 +142,9 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.contextService.create(this.form.value).subscribe(
+    const context = this.form.value as Context;
+    context.status === 'ACTIVE' ? context.activationDate = new Date().toISOString() : context.deactivationDate = new Date().toISOString();
+    this.contextService.create(context).subscribe(
       () => {
         this.dialogRef.close({success: true, action: 'none'});
       },
@@ -169,7 +182,14 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   get stepProgress() {
-    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+    let stepProgress: number;
+    // For the first step, check if the controls are enabled and if the second step is available or not
+    if (this.stepIndex === 0 && this.form.controls.enableControl.value === true) {
+      stepProgress = ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+    } else {
+      stepProgress = PROGRESS_BAR_MULTIPLICATOR;
+    }
+    return stepProgress;
   }
 
 }
