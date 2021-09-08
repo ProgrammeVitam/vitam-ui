@@ -50,47 +50,47 @@ import { SearchCriteriaDto } from '../../archive/models/search.criteria';
 export class ArchiveApiService extends BaseHttpClient<any> {
   baseUrl: string;
 
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/archive-search');
-    this.baseUrl = baseUrl;
+  constructor(http: HttpClient,@Inject(BASE_URL) baseUrl: string) {
+    super(http,baseUrl+'/archive-search');
+    this.baseUrl=baseUrl;
   }
 
   getBaseUrl() {
     return this.baseUrl;
   }
 
-  getAllPaginated(pageRequest: PageRequest, embedded?: string, headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
+  getAllPaginated(pageRequest: PageRequest,embedded?: string,headers?: HttpHeaders): Observable<PaginatedResponse<any>> {
     return super
-      .getAllPaginated(pageRequest, embedded, headers)
-      .pipe(tap((result) => result.values.map((ev) => (ev.parsedData = ev.data != null ? JSON.parse(ev.data) : null))));
+      .getAllPaginated(pageRequest,embedded,headers)
+      .pipe(tap((result) => result.values.map((ev) => (ev.parsedData=ev.data!=null? JSON.parse(ev.data):null))));
   }
 
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
+    return this.http.get<SearchResponse>(this.apiUrl+'/filingholdingscheme',{headers});
   }
 
-  get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
+  get(unitId: string,headers?: HttpHeaders): Observable<SearchResponse> {
+    return this.http.get<any>(this.apiUrl+'/units/'+unitId,{headers});
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.post<SearchResponse>(`${this.apiUrl}/search`, criteriaDto, { headers });
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto,headers?: HttpHeaders): Observable<SearchResponse> {
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search`,criteriaDto,{headers});
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
-    return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
+  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto,headers?: HttpHeaders): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/export-csv-search`,criteriaDto,{
       responseType: 'blob',
       headers,
     });
   }
 
-  downloadObjectFromUnit(id: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
+  downloadObjectFromUnit(id: string,headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
     // tslint:disable-next-line:max-line-length
-    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`, { headers, observe: 'response', responseType: 'blob' });
+    return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`,{headers,observe: 'response',responseType: 'blob'});
   }
 
-  findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
+  findArchiveUnit(id: string,headers?: HttpHeaders): Observable<any> {
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`,{headers,responseType: 'text'});
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -98,7 +98,7 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   saveSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
-    return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory`, searchCriteriaHistory);
+    return this.http.post<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory`,searchCriteriaHistory);
   }
 
   deleteSearchCriteriaHistory(id: string): Observable<void> {
@@ -106,10 +106,10 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   }
 
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
-    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
+    return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`,searchCriteriaHistory);
   }
-  getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
+  getObjectById(id: string,headers?: HttpHeaders): Observable<any> {
+    return this.http.get(`${this.apiUrl}/object/${id}`,{headers,responseType: 'text'});
   }
 
   exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
@@ -119,10 +119,9 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  startEliminationAnalysis(criteriaDto: SearchCriteriaDto,headers?: HttpHeaders): Observable<any> {
-    return this.http.post(`${this.apiUrl}/elimination/analysis`,criteriaDto,{
-      //responseType: 'text',
-      headers,
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
+    return this.http.post(`${this.apiUrl}/elimination/analysis`, criteriaDto, {
+      headers
     });
   }
 }
