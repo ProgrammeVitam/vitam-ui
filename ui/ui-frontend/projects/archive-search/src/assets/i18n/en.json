@@ -80,7 +80,6 @@
         "SP_CODE": "ID",
         "SP_LABEL": "Name",
         "PATH": "Path",
-        "DESCRIPTION_LEVEL": "Description level",
         "DOWNLOAD_DOC": "Download the document"
       },
       "TABS": {
