@@ -34,37 +34,33 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {TableFilterModule, VitamUICommonModule} from 'ui-frontend-common';
-
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatSelectModule} from '@angular/material/select';
-
-import {
-  LogbookOperationDetailComponent
-} from './logbook-operation-detail/logbook-operation-detail.component';
-import {
-  LogbookOperationPopupComponent
-} from './logbook-operation-detail/logbook-operation-popup.component';
-import {EventTypeBadgeClassPipe} from './logbook-operation-list/event-type-badge-class.pipe';
-import {EventTypeColorClassPipe} from './logbook-operation-list/event-type-color-class.pipe';
-import {LastEventPipe} from './logbook-operation-list/last-event.pipe';
-import {LogbookOperationListComponent} from './logbook-operation-list/logbook-operation-list.component';
-import {LogbookOperationRoutingModule} from './logbook-operation-routing.module';
-import {LogbookOperationComponent} from './logbook-operation.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { LogbookOperationDetailComponent } from './logbook-operation-detail/logbook-operation-detail.component';
+import { LogbookOperationPopupComponent } from './logbook-operation-detail/logbook-operation-popup.component';
+import { EventTypeBadgeClassPipe } from './logbook-operation-list/event-type-badge-class.pipe';
+import { EventTypeColorClassPipe } from './logbook-operation-list/event-type-color-class.pipe';
+import { LastEventPipe } from './logbook-operation-list/last-event.pipe';
+import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
+import { LogbookOperationRoutingModule } from './logbook-operation-routing.module';
+import { LogbookOperationComponent } from './logbook-operation.component';
 
 @NgModule({
   declarations: [
     LogbookOperationComponent,
+
     LogbookOperationListComponent,
     LogbookOperationDetailComponent,
     LogbookOperationPopupComponent,
@@ -86,7 +82,8 @@ import {LogbookOperationComponent} from './logbook-operation.component';
     LogbookOperationRoutingModule,
     MatNativeDateModule,
     MatSelectModule,
-    TableFilterModule
-  ]
+    TableFilterModule,
+    MatTooltipModule,
+  ],
 })
-export class LogbookOperationModule { }
+export class LogbookOperationModule {}
