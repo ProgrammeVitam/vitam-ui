@@ -34,20 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, LOCALE_ID, Inject } from '@angular/core';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { SearchService } from 'ui-frontend-common';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { SearchResponse } from './models/search-response.interface';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { SearchResponse } from './models/search-response.interface';
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
 
@@ -80,7 +88,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -110,7 +118,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -137,14 +145,21 @@ export class ArchiveService extends SearchService<any> {
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = { results: response.$results, totalResults: response.$hits.total, pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0 };
-    let resultFacets: ResultFacet[] = [];
-    if(response.$facetResults && response.$facetResults){
-      for(let facet of response.$facetResults){
-        if(facet.name === 'COUNT_BY_NODE'){
-          let buckets = facet.buckets;
-          for(let bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count});
+    const pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    const resultFacets: ResultFacet[] = [];
+    if (response.$facetResults && response.$facetResults) {
+      for (const facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
+            resultFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
       }
@@ -156,12 +171,17 @@ export class ArchiveService extends SearchService<any> {
   downloadObjectFromUnit(id : string , headers?: HttpHeaders) {
 
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-
-      file => {
+      (response) => {
+        let filename;
+        if (response.headers.get('content-disposition').includes('filename')) {
+          filename = response.headers.get('content-disposition').split('=')[1];
+        } else {
+          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
+        }
 
         const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download ='item-'+id;
+        element.href = window.URL.createObjectURL(response.body);
+        element.download = filename;
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
         element.click();
@@ -170,7 +190,17 @@ export class ArchiveService extends SearchService<any> {
       errors => {
         console.log('Error message : ',errors);
       }
-    ); }
+    );
+  }
+
+  private static fetchTitle(title: string, title_: any) {
+    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  }
+
+  normalizeTitle(title: string): string {
+    title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
+    return title.substring(0, 218);
+  }
 
   findArchiveUnit(id : string, headers?: HttpHeaders) {
       return this.archiveApiService.findArchiveUnit(id, headers);
