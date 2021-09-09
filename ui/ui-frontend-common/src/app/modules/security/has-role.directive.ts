@@ -36,27 +36,19 @@
  */
 import { Directive, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-
 import { SecurityService } from './security.service';
 
 @Directive({
-  selector: '[vitamuiCommonHasRole]'
+  selector: '[vitamuiCommonHasRole]',
 })
 export class HasRoleDirective implements OnInit, OnDestroy {
-
   roleSubscription: Subscription;
 
   private viewEmbedded = false;
 
-  constructor(
-    private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef,
-    private securityService: SecurityService
-  ) {
-  }
+  constructor(private templateRef: TemplateRef<any>, private viewContainer: ViewContainerRef, private securityService: SecurityService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     if (this.roleSubscription) {
@@ -65,13 +57,12 @@ export class HasRoleDirective implements OnInit, OnDestroy {
   }
 
   @Input()
-  set vitamuiCommonHasRole(data: { appId: string, tenantIdentifier: number, role: string }) {
+  set vitamuiCommonHasRole(data: { appId: string; tenantIdentifier: number; role: string }) {
     if (this.roleSubscription) {
       this.roleSubscription.unsubscribe();
     }
 
-    this.roleSubscription = this.securityService.hasRole(data.appId, data.tenantIdentifier, data.role)
-    .subscribe((allowed) => {
+    this.roleSubscription = this.securityService.hasRole(data.appId, data.tenantIdentifier, data.role).subscribe((allowed) => {
       if (allowed && !this.viewEmbedded) {
         this.viewEmbedded = true;
         this.viewContainer.createEmbeddedView(this.templateRef);
@@ -81,5 +72,4 @@ export class HasRoleDirective implements OnInit, OnDestroy {
       }
     });
   }
-
 }

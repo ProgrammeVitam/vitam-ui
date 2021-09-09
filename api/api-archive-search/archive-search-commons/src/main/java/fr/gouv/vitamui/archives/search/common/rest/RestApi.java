@@ -37,4 +37,7 @@ public class RestApi {
     public static final String ARCHIVE_UNIT_INFO = "/archiveunit";
     public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
     public static final String OBJECTGROUP = "/object";
+    public static final String EXPORT_DIP = "/export-dip";
+    public static final String ELIMINATION_ANALYSIS = "/elimination/analysis";
+    public static final String ELIMINATION_ACTION = "/elimination/action";
 }

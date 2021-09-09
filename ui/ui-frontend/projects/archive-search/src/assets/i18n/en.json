@@ -1,5 +1,34 @@
 {
   "ARCHIVE_SEARCH": {
+      "DIP" : {
+      "EXPORT_DIP" : "Export a DIP",
+      "SELECTED" :"Selected",
+      "ONE_SELECTED" :"Selected",
+      "CANCEL" : "Cancel",
+      "REQUEST_ID" :"Request identifier",
+      "REQUESTER_ID":"Requester identifier",
+      "COMMENT" : "Comment(s)",
+      "ARCHIVAL_AGENCY" :"Archive service identifier",
+      "AUTHORISATION_REQUEST_REPLY" : "Identifier of the response to an authorization request",
+      "SUBMISSION_AGENCY_ID" : "Submission agency identifier ",
+      "REQUIRED": "Required field",
+      "REQUEST_DIP" : "Request to export a DIP",
+      "DIP_PARAMS" : "Define the DIP parameters",
+      "ITEMS_SELECTED" : "Items selected",
+      "ONE_ITEM_SELECTED" : "Item selected",
+      "LOGS" : "Life cycle logs :",
+      "INCLUDE" : "Include",
+      "EXCLUDE" :"Exclude",
+      "OBJECT_GROUPS" : "groups of objects :",
+      "REQUEST_MESSAGE" : "Your DIP request has been taken into account  ",
+      "TO_OPERATION_APP" : "SEE OPERATIONS LOG",
+      "EXPORT_LIMITS": "DIP export cannot be performed. Please restrict your selection to a maximum of 10,000 archival units"
+    },
+    "ELIMINATION": {
+      "ANALYSIS": "Launch elimination analysis",
+      "ELIMINATION_LAUNCHED": "Your request for elimination has been taken into account",
+      "THRESHOLD_EXCEEDED": "The elimination analysis cannot be started. Please restrict your selection to a maximum of 10,000 archival units."
+    },
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
@@ -16,6 +45,28 @@
       "TITLE": "Search filters",
       "DUA_TITLE": "Administrative useful life",
       "OTHER_FILED_SELECTION": "Select another criteria",
+      "APPRAISAL_RULE": {
+        "APPRAISAL_RULE_END_DATE_END": "DUA: max End date",
+        "APPRAISAL_RULE_END_DATE_BEGIN": "DUA: min End date",
+        "CREATE_INTERVAL": "Create an interval",
+        "DELETE_INTERVAL": "delete interval",
+        "APPRAISAL_RULE_FINAL_ACTION": "FInal Action",
+        "APPRAISAL_RULE_TITLE": "DUA Rule title",
+        "APPRAISAL_RULE_IDENTIFIER": "DUA Rule identifier",
+        "APPRAISAL_RULE_START_DATE": "DUA Start Date",
+        "APPRAISAL_RULE_END_DATE": "DUAEnd Date",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE": "Final Action",
+        "APPRAISAL_RULE_ORIGIN": "DUA Rule",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP": "Conservation",
+        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED": "Not declared",
+        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
+        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
+        "APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE": "Holden rule",
+        "APPRAISAL_RULE_ORIGIN_HAS_NO_ONE": "Not defined",
+        "APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE": "Waiting for recalculate",
+        "APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
+      },
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Title or Description",
@@ -47,7 +98,8 @@
           "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
           "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Is waiting for rule recalculation",
           "SELECT_ALL_APPRAISAL_RULE": "Select all"
-        }
+        },
+        "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier"
       }
     },
     "ARCHIVE_UNIT": {
@@ -93,7 +145,6 @@
       "SHOW_TREE_PARENT": "Collapse the tree"
     },
     "EXPORT_CSV": {
-      "EXPORT_SEARCHS": "Export results",
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
     },
     "RESULTS": "Results",

@@ -26,8 +26,10 @@
 
 package fr.gouv.vitamui.archives.search.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
@@ -170,5 +172,24 @@ public class ArchivesSearchController extends AbstractUiRestController {
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment")
             .body(exportedCsvResult);
+    }
+
+    @ApiOperation(value = "export DIP by criteria")
+    @PostMapping(RestApi.EXPORT_DIP)
+    @ResponseStatus(HttpStatus.OK)
+    public String exportDIPByCriteria(@RequestBody final ExportDipCriteriaDto exportDipCriteriaDto) {
+        LOGGER.debug("Export DIP  with criteria {}", exportDipCriteriaDto);
+        String result = archivesSearchService.exportDIPByCriteria(exportDipCriteriaDto, buildUiHttpContext()).getBody();
+        return result;
+    }
+
+    @ApiOperation(value = "elimination analysis launch")
+    @PostMapping(RestApi.ELIMINATION_ANALYSIS)
+    @ResponseStatus(HttpStatus.OK)
+    public JsonNode startEliminationAnalysis(@RequestBody final SearchCriteriaDto searchQuery) {
+        LOGGER.debug("Elimination analysis of query: {}", searchQuery);
+        ResponseEntity<JsonNode> jsonNodeResponseEntity =
+            archivesSearchService.startEliminationAnalysis(buildUiHttpContext(), searchQuery);
+        return jsonNodeResponseEntity.getBody();
     }
 }

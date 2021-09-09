@@ -34,13 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import {MatDialog} from '@angular/material/dialog';
+import { GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
 import { EventFilter } from './event-filter.interface';
 import { LogbookOperationListComponent } from './logbook-operation-list/logbook-operation-list.component';
 
@@ -50,14 +48,13 @@ import { LogbookOperationListComponent } from './logbook-operation-list/logbook-
   styleUrls: ['./logbook-operation.component.scss']
 })
 export class LogbookOperationComponent extends SidenavPage<any> implements OnInit {
-
   search = '';
   dateRangeFilterForm: FormGroup;
   tenantIdentifier: number;
   filters: Readonly<EventFilter> = {};
+  workflowGuidToSearch: string;
 
-
-  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
   @ViewChild(LogbookOperationListComponent, { static: true }) list: LogbookOperationListComponent;
 
   constructor(
@@ -69,7 +66,7 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   ) {
     super(route, globalEventService);
 
-    this.route.paramMap.subscribe((paramMap) => this.tenantIdentifier = + paramMap.get('tenantIdentifier'));
+    this.route.paramMap.subscribe((paramMap) => (this.tenantIdentifier = +paramMap.get('tenantIdentifier')));
 
     this.dateRangeFilterForm = this.formBuilder.group({
       startDate: null,
@@ -86,9 +83,23 @@ export class LogbookOperationComponent extends SidenavPage<any> implements OnIni
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe((params) => {
+      if (params.guid) {
+        this.workflowGuidToSearch = params.guid;
+        this.searchBar.searchValue = this.workflowGuidToSearch;
+        this.onSearchSubmit(this.workflowGuidToSearch);
+        this.openOperationDetail();
+      }
+    });
     if (!this.list) {
       console.error('LogbookOperationComponent Error: no list in the template');
     }
+  }
+
+  openOperationDetail() {
+    setTimeout(() => {
+      this.list.eventClick.emit(this.list.dataSource[0]);
+    }, 2000);
   }
 
   changeTenant(tenantIdentifier: number) {

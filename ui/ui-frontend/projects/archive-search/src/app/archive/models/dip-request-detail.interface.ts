@@ -34,22 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
-import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
-@Component({
-  selector: 'app-vitamui-snack-bar',
-  templateUrl: './vitamui-snack-bar.component.html',
-  styleUrls: ['./vitamui-snack-bar.component.scss']
-})
-export class VitamUISnackBarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>) {}
+import { SearchCriteriaEltDto } from './search.criteria';
 
-  close() {
-    this.matSnackBarRef.dismiss();
-  }
+export interface ExportDIPRequestDetail {
+  messageRequestIdentifier: string;
+  requesterIdentifier: string;
+  archivalAgencyIdentifier: string;
+  authorizationRequestReplyIdentifier: string;
+  submissionAgencyIdentifier: string;
+  comment: string;
+}
 
-  goToLogbook(url: string) {
-    window.location.href = url;
-  }
+export interface ExportDIPCriteriaList {
+  dipRequestParameters: ExportDIPRequestDetail;
+  exportDIPSearchCriteria: SearchCriteriaEltDto[];
+  dataObjectVersions: string[];
+  lifeCycleLogs: boolean;
 }

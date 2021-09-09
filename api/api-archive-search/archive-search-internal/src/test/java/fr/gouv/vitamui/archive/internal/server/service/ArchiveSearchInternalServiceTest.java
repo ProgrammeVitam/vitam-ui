@@ -41,13 +41,19 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
+import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -94,7 +100,16 @@ public class ArchiveSearchInternalServiceTest {
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
+    @MockBean(name = "exportDipV2Service")
+    private ExportDipV2Service exportDipV2Service;
+
+    @MockBean(name = "eliminationService")
+    private EliminationService eliminationService;
+
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
+    public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
+    public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
+    public final String ELIMINATION_ANALYSIS_FINAL_RESPONSE = "data/elimination/elimination_analysis_response.json";
 
     @BeforeEach
     public void setUp() {
@@ -102,7 +117,7 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                archivesSearchAppraisalQueryBuilderService);
+                exportDipV2Service, archivesSearchAppraisalQueryBuilderService, eliminationService);
     }
 
     @Test
@@ -136,4 +151,14 @@ public class ArchiveSearchInternalServiceTest {
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
+    @Test
+    public void getFinalEliminationConstructedQuery() throws Exception {
+        JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
+        EliminationRequestBody eliminationRequestBody2 =
+            archiveSearchInternalService.getEliminationRequestBody(fromString);
+
+        JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
+        Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
+        Assertions.assertThat(resultExpected.get(BuilderToken.GLOBAL.THRESOLD.exactToken()).asDouble()).isEqualTo(10000);
+    }
 }

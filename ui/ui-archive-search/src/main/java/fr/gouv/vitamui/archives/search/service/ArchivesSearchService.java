@@ -26,7 +26,9 @@
 package fr.gouv.vitamui.archives.search.service;
 
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -158,5 +160,15 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         List<VersionsDto> versions =
             qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().get().getVersions();
         return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
+    }
+
+    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
+        return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
+    }
+
+    public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
+        LOGGER.info("elimination analysis with query : {}", searchQuery);
+        return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
     }
 }

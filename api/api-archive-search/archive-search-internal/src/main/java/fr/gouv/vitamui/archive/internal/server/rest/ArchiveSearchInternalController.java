@@ -36,6 +36,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -204,6 +205,38 @@ public class ArchiveSearchInternalController {
         Resource exportedResult =
             archiveInternalService.exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
+    }
+
+    @PostMapping(RestApi.EXPORT_DIP)
+    public ResponseEntity<String> exportDIPByCriteria(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final ExportDipCriteriaDto exportDipCriteriaDto)
+        throws VitamClientException {
+        LOGGER.info("Export DIP  by criteria {}", exportDipCriteriaDto);
+        SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, exportDipCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(RestApi.ELIMINATION_ANALYSIS)
+    public JsonNode startEliminationAnalysis(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        LOGGER.info("Calling elimination analysis by criteria {} ", searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        JsonNode jsonNode = archiveInternalService.startEliminationAnalysis(searchQuery, vitamContext);
+        return jsonNode;
     }
 
 }

@@ -72,6 +72,7 @@ ui-archive-search:
     portal: "https://dev.vitamui.com:4200"
     archives-search: "https://dev.vitamui.com:4209/archive-search"
     ingest: "https://dev.vitamui.com:4208/ingest"
+    referential: "https://dev.vitamui.com:4202/referential"
 
   portal-categories:
     ingest_and_consultation:

@@ -35,49 +35,43 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
-import { ENVIRONMENT, GlobalEventService, InjectorModule, LoggerModule, SearchBarComponent, SearchBarModule } from 'ui-frontend-common';
-import { environment } from '../../environments/environment';
-import { LogbookOperationComponent } from './logbook-operation.component';
-import { LogbookSearchService } from './logbook-search.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DipRequestCreateComponent } from './dip-request-create.component';
 
-describe('LogbookOperationComponent', () => {
-  let component: LogbookOperationComponent;
-  let fixture: ComponentFixture<LogbookOperationComponent>;
+describe('DipRequestCreateComponent', () => {
+  let component: DipRequestCreateComponent;
+  let fixture: ComponentFixture<DipRequestCreateComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-      matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-      TestBed.configureTestingModule({
-        imports: [MatMenuModule, ReactiveFormsModule, InjectorModule, LoggerModule.forRoot(), SearchBarModule],
-        declarations: [LogbookOperationComponent, SearchBarComponent],
-        providers: [
-          { provide: MatDialog, useValue: matDialogSpy },
-          { provide: ActivatedRoute, useValue: { paramMap: EMPTY, data: EMPTY, queryParams: of({ guid: 'operationId' }) } },
-          { provide: LogbookSearchService, useValue: { search: () => EMPTY } },
-          { provide: Router, useValue: { navigate: () => {} } },
-          GlobalEventService,
-          { provide: ENVIRONMENT, useValue: environment }
-        ],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [DipRequestCreateComponent],
+      providers: [
+        FormBuilder,
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+      ],
+    }).compileComponents();
+  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LogbookOperationComponent);
+    fixture = TestBed.createComponent(DipRequestCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('items Selected should be grather than 0 ', () => {
+    expect(component.itemSelected).toBeGreaterThan(0);
+  });
+  it('Should have an accessContract ', () => {
+    expect(component.data.accessContract).not.toBeNull();
   });
 });

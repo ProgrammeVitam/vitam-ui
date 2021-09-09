@@ -28,6 +28,7 @@ package fr.gouv.archive.internal.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -156,6 +157,31 @@ public class ArchiveInternalRestClient
                 request, Resource.class);
         checkResponse(response);
         return response.getBody();
+
+    }
+
+    public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
+                                                    final InternalHttpContext context) {
+        LOGGER.info("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
+
+    }
+
+    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context, final SearchCriteriaDto query) {
+        LOGGER.info("Calling elimination analysis with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<JsonNode> response =
+            restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ANALYSIS, HttpMethod.POST,
+                request, JsonNode.class);
+        checkResponse(response);
+        return response;
 
     }
 }

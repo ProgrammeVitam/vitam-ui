@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,22 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject } from '@angular/core';
-import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
-@Component({
-  selector: 'app-vitamui-snack-bar',
-  templateUrl: './vitamui-snack-bar.component.html',
-  styleUrls: ['./vitamui-snack-bar.component.scss']
-})
-export class VitamUISnackBarComponent {
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any, private matSnackBarRef: MatSnackBarRef<VitamUISnackBarComponent>) {}
+package fr.gouv.vitamui.archives.search.common.dto;
 
-  close() {
-    this.matSnackBarRef.dismiss();
-  }
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitam.common.model.export.dip.DipRequestParameters;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-  goToLogbook(url: string) {
-    window.location.href = url;
-  }
+import java.io.Serializable;
+import java.util.Set;
+
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Setter
+@Getter
+public class ExportDipCriteriaDto implements Serializable {
+
+    private DipRequestParameters dipRequestParameters;
+    private SearchCriteriaDto exportDIPSearchCriteria;
+    private Set<String> dataObjectVersions ;
+    private boolean lifeCycleLogs;
+
 }

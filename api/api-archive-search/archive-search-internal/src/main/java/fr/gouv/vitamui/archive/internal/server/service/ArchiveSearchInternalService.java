@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archive.internal.server.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVWriter;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
@@ -36,17 +37,24 @@ import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.dip.DataObjectVersions;
+import fr.gouv.vitam.common.model.export.dip.DipExportType;
+import fr.gouv.vitam.common.model.export.dip.DipRequest;
+import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -55,9 +63,12 @@ import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
+import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -79,6 +90,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -98,9 +110,9 @@ public class ArchiveSearchInternalService {
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalService.class);
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
-    private static final String ARCHIVE_UNIT_USAGE = "qualifier";
-    private static final String ARCHIVE_UNIT_VERSION = "DataObjectVersion";
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
+    private static final Integer EXPORT_DIP_MAX_ELEMENTS = 10000;
+    private static final Integer ELIMINATION_ANALYSIS_THRESHOLD = 10000;
     public static final String SEMI_COLON = ";";
     public static final String COMMA = ",";
     public static final String DOUBLE_QUOTE = "\"";
@@ -108,15 +120,18 @@ public class ArchiveSearchInternalService {
     public static final String NEW_LINE = "\n";
     public static final String NEW_TAB = "\t";
     public static final String NEW_LINE_1 = "\r\n";
+    public static final String OPERATION_IDENTIFIER = "itemId";
 
     public static final String SPACE = " ";
 
     private final ObjectMapper objectMapper;
     private final UnitService unitService;
+    private final EliminationService eliminationService;
     private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
     private final ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
     private final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
     private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
+    private final ExportDipV2Service exportDipV2Service;
 
 
     @Autowired
@@ -124,7 +139,9 @@ public class ArchiveSearchInternalService {
         final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService,
         final ArchiveSearchRulesInternalService archiveSearchRulesInternalService,
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
-        final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService
+        final ExportDipV2Service exportDipV2Service,
+        final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService,
+        final EliminationService eliminationService
 
     ) {
         this.unitService = unitService;
@@ -133,6 +150,8 @@ public class ArchiveSearchInternalService {
         this.archiveSearchRulesInternalService = archiveSearchRulesInternalService;
         this.archivesSearchFieldsQueryBuilderService = archivesSearchFieldsQueryBuilderService;
         this.archivesSearchAppraisalQueryBuilderService = archivesSearchAppraisalQueryBuilderService;
+        this.exportDipV2Service = exportDipV2Service;
+        this.eliminationService = eliminationService;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
@@ -509,4 +528,81 @@ public class ArchiveSearchInternalService {
         LOGGER.info("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
     }
+
+    public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto,
+                            final VitamContext vitamContext)
+        throws VitamClientException {
+
+        LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto);
+        exportDipCriteriaDto.getExportDIPSearchCriteria().setPageNumber(0);
+        exportDipCriteriaDto.getExportDIPSearchCriteria().setSize(EXPORT_DIP_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria());
+
+        DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
+        dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
+        DipRequest dipRequest = prepareDipRequestBody(exportDipCriteriaDto, dslQuery);
+
+        JsonNode response = exportDIP(vitamContext,dipRequest);
+        return response.findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    public DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
+        DipRequest dipRequest = new DipRequest();
+
+        if(exportDipCriteriaDto != null) {
+            DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
+            dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
+            dipRequest.setExportWithLogBookLFC(exportDipCriteriaDto.isLifeCycleLogs());
+            dipRequest.setDslRequest(dslQuery);
+            dipRequest.setDipExportType(DipExportType.FULL);
+            dipRequest.setDataObjectVersionToExport(dataObjectVersionToExport);
+            dipRequest.setDipRequestParameters(exportDipCriteriaDto.getDipRequestParameters());
+        }
+        return dipRequest;
+    }
+
+    public JsonNode exportDIP( final VitamContext vitamContext,  DipRequest dipRequest)
+        throws VitamClientException {
+        RequestResponse<JsonNode> response = exportDipV2Service.exportDip( vitamContext, dipRequest);
+        return response.toJsonNode();
+    }
+
+    public JsonNode startEliminationAnalysis(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+        LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
+        searchQuery.setPageNumber(0);
+        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
+
+        EliminationRequestBody eliminationRequestBody = null;
+        try {
+            eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        } catch (InvalidParseOperationException e) {
+            throw new PreconditionFailedException("invalid request");
+        }
+
+        LOGGER.debug("Elimination final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        RequestResponse<JsonNode> jsonNodeRequestResponse =
+            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
+
+
+        return jsonNodeRequestResponse.toJsonNode();
+    }
+
+    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet) throws InvalidParseOperationException {
+        ObjectNode query = JsonHandler.createObjectNode();
+        query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
+        query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
+        query.put(BuilderToken.GLOBAL.THRESOLD.exactToken(), ELIMINATION_ANALYSIS_THRESHOLD);
+
+        EliminationRequestBody requestBody = new EliminationRequestBody();
+        requestBody.setDate(new SimpleDateFormat(ArchiveSearchConsts.ONLY_DATE_FORMAT).format(new Date()));
+        requestBody.setDslRequest(query);
+        return requestBody;
+    }
+
 }

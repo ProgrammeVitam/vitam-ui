@@ -35,27 +35,29 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable, LOCALE_ID, Inject } from '@angular/core';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { SearchService } from 'ui-frontend-common';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { SearchService, SecurityService } from 'ui-frontend-common';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
-import { SearchResponse } from './models/search-response.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ArchiveService extends SearchService<any> {
   constructor(
     private archiveApiService: ArchiveApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private securityService: SecurityService
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -69,7 +71,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId,
+      'X-Access-Contract-Id': accessContractId
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -98,7 +100,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false,
+          hidden: false
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -129,7 +131,7 @@ export class ArchiveService extends SearchService<any> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
-            duration: 10000,
+            duration: 10000
           });
         }
       }
@@ -154,20 +156,20 @@ export class ArchiveService extends SearchService<any> {
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = {
+    const pagedResult: PagedResult = {
       results: response.$results,
       totalResults: response.$hits.total,
       pageNumbers:
         +response.$hits.size !== 0
           ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0,
+          : 0
     };
-    let resultFacets: ResultFacet[] = [];
+    const resultFacets: ResultFacet[] = [];
     if (response.$facetResults && response.$facetResults) {
-      for (let facet of response.$facetResults) {
+      for (const facet of response.$facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
             resultFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
@@ -212,6 +214,35 @@ export class ArchiveService extends SearchService<any> {
 
   getObjectById(id: string, headers?: HttpHeaders) {
     return this.archiveApiService.getObjectById(id, headers);
+  }
+
+  hasArchiveSearchRole(role: string, tenantIdentifier: number): Observable<boolean> {
+    const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
+    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
+  }
+
+  exportDIPService(exportDIPCriteriaList: ExportDIPCriteriaList, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
+  }
+
+  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
+  }
+
+  openSnackBarForWorkflow(message: string, serviceUrl?: string) {
+    this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+      panelClass: 'vitamui-snack-bar',
+      data: {
+        type: 'WorkflowSuccessSnackBar',
+        message,
+        serviceUrl,
+      },
+      duration: 100000,
+    });
   }
 }
 

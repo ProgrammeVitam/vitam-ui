@@ -1,0 +1,93 @@
+{
+  "$roots": [],
+  "$query": [
+    {
+      "$and": [
+        {
+          "$eq": {
+            "Title": "a"
+          }
+        },
+        {
+          "$or": [
+            {
+              "$eq": {
+                "DescriptionLevel": "RecordGrp"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "File"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Item"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Subfonds"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Class"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Subgrp"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Otherlevel"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Series"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Subseries"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Collection"
+              }
+            },
+            {
+              "$eq": {
+                "DescriptionLevel": "Fonds"
+              }
+            }
+          ]
+        },
+        {
+          "$or": [
+            {
+              "$eq": {
+                "#id": "aeaqaaaaaefwvz6caasnsalp43nxebyaaaba"
+              }
+            },
+            {
+              "$eq": {
+                "#id": "aeaqaaaaaefwvz6caasnsalp43nxebyaaaba"
+              }
+            }
+          ]
+        },
+        {
+          "$eq": {
+            "#unitType": "INGEST"
+          }
+        }
+      ]
+    }
+  ],
+  "$threshold": 10000
+}
