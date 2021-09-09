@@ -3,80 +3,88 @@
     <div class="vitamui-table-head">
       <div class="row col-1"><i class="vitamui-icon vitamui-icon-ingest vitamui-row-icon"></i></div>
       <div class="col-5" i18n="ingest identifier column header@@ingestListIdentifierHeader">
-        <span>{{'INGEST_LIST.ID' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
+        <span>{{ 'INGEST_LIST.ID' | translate }}</span>
+        <vitamui-common-order-by-button orderByKey="#id" [(orderBy)]="orderBy" [(direction)]="direction" (orderChange)="emitOrderChange()">
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2" i18n="ingest createdDate column header@@ingestListCreatedDateHeader">
-        <span>{{'INGEST_LIST.START_DATE' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
+        <span>{{ 'INGEST_LIST.START_DATE' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="evDateTime"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
         </vitamui-common-order-by-button>
       </div>
       <div class="col-2" i18n="ingest createdDate column header@@ingestListCreatedDateHeader">
-        <span>{{'INGEST_LIST.END_DATE' | translate}}</span>
-        <vitamui-common-order-by-button orderByKey="evDateTime" [(orderBy)]="orderBy" [(direction)]="direction"
-          (orderChange)="emitOrderChange()">
+        <span>{{ 'INGEST_LIST.END_DATE' | translate }}</span>
+        <vitamui-common-order-by-button
+          orderByKey="evDateTime"
+          [(orderBy)]="orderBy"
+          [(direction)]="direction"
+          (orderChange)="emitOrderChange()"
+        >
         </vitamui-common-order-by-button>
       </div>
-      <div class="col-2" i18n="Ingest name@@IngestStatus">{{'INGEST_LIST.STATUS' | translate}}</div>
+      <div class="col-2" i18n="Ingest name@@IngestStatus">{{ 'INGEST_LIST.STATUS' | translate }}</div>
     </div>
     <div class="vitamui-table-body">
-      <div class="vitamui-table-rows" *ngFor="let ingest of dataSource; let index = index"
-        (click)="ingestClick.emit(ingest)">
+      <div class="vitamui-table-rows" *ngFor="let ingest of dataSource; let index = index" (click)="ingestClick.emit(ingest)">
         <div class="vitamui-row d-flex align-items-center clickable">
           <div class="row col-1">
             <ng-container [ngSwitch]="ingestStatus(ingest)">
               <div *ngSwitchCase="'OK'">
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-green"
-                  [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-green" [style.fontSize.px]="30"></i>
               </div>
               <div *ngSwitchCase="'En cours'">
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-grey"
-                  [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-grey" [style.fontSize.px]="30"></i>
               </div>
               <div *ngSwitchCase="'WARNING'">
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-orange"
-                  [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-orange" [style.fontSize.px]="30"></i>
               </div>
               <div *ngSwitchCase="'FATAL'">
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-black"
-                  [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-black" [style.fontSize.px]="30"></i>
               </div>
               <div *ngSwitchCase="'KO'">
-                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-red"
-                  [style.fontSize.px]="30"></i>
+                <i class="vitamui-icon vitamui-icon-box vitamui-row-icon status-badge status-badge-red" [style.fontSize.px]="30"></i>
               </div>
             </ng-container>
           </div>
           <div class="col-5">{{ ingest?.obIdIn }}</div>
           <div class="col-2">
-            <div> {{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }} </div> <span class="date">
-              {{ ingest?.evDateTime | date: 'hh:mm:ss' }}
+            <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
+            <span class="date">
+              {{ ingest?.evDateTime | date: 'HH:mm:ss':'-2000' }}
             </span>
           </div>
           <div class="col-2">
-            <div> {{ ingest?.evDateTime | date: 'dd/MM/yyyy'  }} </div> <span class="date">
-              {{ ingestEndDate(ingest) | date: 'hh:mm:ss'  }}
+            <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
+            <span class="date">
+              {{ ingestEndDate(ingest) | date: 'HH:mm:ss':'-2000' }}
             </span>
           </div>
           <div class="col-2">
             <ng-container [ngSwitch]="ingestStatus(ingest)">
               <div *ngSwitchCase="'OK'">
-                <span class="status">{{'INGEST_LIST.RESULT_STATUS.FINISHED' | translate}}</span><br/><span class="text-green">{{'INGEST_LIST.RESULT.OK' | translate}}</span>
+                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span
+                ><br /><span class="text-green">{{ 'INGEST_LIST.RESULT.OK' | translate }}</span>
               </div>
               <div *ngSwitchCase="'En cours'">
-                <span class="status">{{'INGEST_LIST.RESULT.STARTED' | translate}}</span><br/><span class="text-grey">....</span>
+                <span class="status">{{ 'INGEST_LIST.RESULT.STARTED' | translate }}</span
+                ><br /><span class="text-grey">....</span>
               </div>
               <div *ngSwitchCase="'WARNING'">
-                <span class="status">{{'INGEST_LIST.RESULT_STATUS.FINISHED' | translate}}</span><br /><span class="text-orange">{{'INGEST_LIST.RESULT.WARNING' | translate}}</span>
+                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span
+                ><br /><span class="text-orange">{{ 'INGEST_LIST.RESULT.WARNING' | translate }}</span>
               </div>
               <div *ngSwitchCase="'FATAL'">
-                <span class="status">{{'INGEST_LIST.RESULT_STATUS.BREAK' | translate}}</span><br /><span class="text-red">{{'INGEST_LIST.RESULT.FATAL' | translate}}</span>
+                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.BREAK' | translate }}</span
+                ><br /><span class="text-red">{{ 'INGEST_LIST.RESULT.FATAL' | translate }}</span>
               </div>
               <div *ngSwitchCase="'KO'">
-                <span class="status">{{'INGEST_LIST.RESULT_STATUS.FINISHED' | translate}}</span><br /><span class="text-red">{{'INGEST_LIST.RESULT.KO' | translate}}</span>
+                <span class="status">{{ 'INGEST_LIST.RESULT_STATUS.FINISHED' | translate }}</span
+                ><br /><span class="text-red">{{ 'INGEST_LIST.RESULT.KO' | translate }}</span>
               </div>
             </ng-container>
           </div>
@@ -84,7 +92,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!pending && !ingestService.canLoadMore then resultfound else loadingSpinner"></div>
+  <div *ngIf="!pending && !ingestService.canLoadMore; then resultfound; else loadingSpinner"></div>
 </div>
 <ng-template #loadingSpinner>
   <div class="vitamui-min-content">
@@ -92,5 +100,5 @@
   </div>
 </ng-template>
 <ng-template #resultfound>
-  <div class="text-center">{{'INGEST_LIST.NORESULTS' | translate}}</div>
+  <div class="text-center">{{ 'INGEST_LIST.NORESULTS' | translate }}</div>
 </ng-template>

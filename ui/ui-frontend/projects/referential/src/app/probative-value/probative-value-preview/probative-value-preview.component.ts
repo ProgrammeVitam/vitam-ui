@@ -16,7 +16,11 @@ export class ProbativeValuePreviewComponent implements OnInit {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContracts: AccessContract[];
-  accessContractId: string;
+  hasAccessContract: boolean;
+
+  accessContractSub: Subscription;
+  errorMessageSub: Subscription;
+  accessContract: string;
 
   constructor(
     private probativeValueService: ProbativeValueService,
@@ -43,7 +47,7 @@ export class ProbativeValuePreviewComponent implements OnInit {
   }
 
   downloadReport() {
-    this.probativeValueService.export(this.probativeValue.id, this.accessContractId);
+    this.probativeValueService.export(this.probativeValue.id, this.accessContract);
   }
 
 }
