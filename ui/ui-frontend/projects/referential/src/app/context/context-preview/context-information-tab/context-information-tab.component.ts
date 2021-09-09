@@ -34,18 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Context} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Option} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Context } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Option } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { SecurityProfileService } from '../../../security-profile/security-profile.service';
+import { ContextService } from '../../context.service';
 
-import {ContextService} from '../../context.service';
 
-import {SecurityProfileService} from '../../../security-profile/security-profile.service';
-import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-context-information-tab',
