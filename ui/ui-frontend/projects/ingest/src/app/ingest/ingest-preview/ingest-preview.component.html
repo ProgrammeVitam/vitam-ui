@@ -8,7 +8,7 @@
       ? 'grey'
       : 'red'
   "
-  [title]="ingest?.obIdIn ? ingest?.obIdIn : ingest?.id"
+  [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"
   [icon]="'vitamui-icon-box vitamui-row-icon'"
   [hasToolTipOnTitle]="true"
   [toolTipTitleText]="ingest?.obIdIn ? ingest?.obIdIn : ingest?.id"
