@@ -133,7 +133,8 @@
         "SP_LABEL": "Name",
         "PATH": "Path",
         "DESCRIPTION_LEVEL": "Description level",
-        "DOWNLOAD_DOC": "Download the document"
+        "DOWNLOAD_DOC": "Download the document",
+        "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH"
       },
       "TABS": {
         "INFORMATIONS": "Informations"
