@@ -1,13 +1,13 @@
 /* tslint:disable:object-literal-key-quotes quotemark */
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import '@angular/localize/init';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccessContract, IngestContract, SearchUnitApiService } from 'projects/vitamui-library/src/public-api';
-
+import { ExternalParameters, ExternalParametersService, Logger } from 'ui-frontend-common';
+import { AccessContractService } from '../../../access-contract/access-contract.service';
 import { IngestContractNodeUpdateComponent } from './ingest-contract-nodes-update/ingest-contract-node-update.component';
-import { ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
-import '@angular/localize/init';
 
 @Component({
   selector: 'app-ingest-contract-attachment-tab',
@@ -25,7 +25,6 @@ export class IngestContractAttachmentTabComponent implements OnInit {
   accessContracts: AccessContract[];
   titles: any = {};
 
-  // tslint:disable-next-line:variable-name
   private _ingestContract: IngestContract;
 
   previousValue = (): IngestContract => {
@@ -43,17 +42,20 @@ export class IngestContractAttachmentTabComponent implements OnInit {
 
   @Input()
   set readOnly(readOnly: boolean) {
-    console.log('RO:', readOnly);
+    this.logger.info('readOnly', readOnly);
   }
 
   constructor(
     private unitService: SearchUnitApiService,
     private externalParameterService: ExternalParametersService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private accessContractService: AccessContractService,
+    private logger: Logger
   ) {}
 
   ngOnInit() {
+    this.accessContractService.getAll().subscribe((accessContracts) => (this.accessContracts = accessContracts));
     this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {

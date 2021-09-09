@@ -53,7 +53,7 @@
               <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4" required="required">
                 <ng-container *ngIf="form.get('description')?.touched">
                   <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
-                    {{ 'COMMON.REQUIRED' | translate }}
+                    Champ requis
                   </vitamui-common-input-error>
                 </ng-container>
               </vitamui-common-textarea>
@@ -61,8 +61,8 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
       </div>
     </cdk-step>
@@ -103,12 +103,12 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>
@@ -171,12 +171,12 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>
@@ -234,12 +234,12 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext [disabled]="fourthStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext [disabled]="fourthStepInvalid()">Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>
@@ -298,12 +298,12 @@
         </div>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>
@@ -350,12 +350,12 @@
           </div>
         </div>
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>
@@ -382,12 +382,12 @@
           ></vitamui-library-filing-plan>
         </div>
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">{{ 'COMMON.SUBMIT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">Terminer</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>

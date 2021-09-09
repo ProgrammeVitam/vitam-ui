@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
+import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.service.IngestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -108,11 +109,11 @@ public class IngestController extends AbstractUiRestController {
         return ingestService.getOne(buildUiHttpContext(), id);
     }
 
-    @ApiOperation(value = "download Docx Report for an ingest operation")
-    @GetMapping("/docxreport" + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> genereateDocX(final @PathVariable("id") String id) {
+    @ApiOperation(value = "download ODT Report for an ingest operation")
+    @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
         LOGGER.debug("download Docx report for the ingest with id :{}", id);
-        byte[] bytes = ingestService.generateDocX(buildUiHttpContext(), id).getBody();
+        byte[] bytes = ingestService.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
             .body(bytes);

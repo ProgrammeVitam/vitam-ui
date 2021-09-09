@@ -84,8 +84,8 @@ public class IngestInternalRestClient extends BasePaginatingAndSortingRestClient
         return new ParameterizedTypeReference<PaginatedValuesDto<LogbookOperationDto>>() {};
     }
 
-    public ResponseEntity<byte[]> generateDocX(InternalHttpContext context , String id) {
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_DOCX + CommonConstants.PATH_ID );
+    public ResponseEntity<byte[]> generateODTReport(InternalHttpContext context , String id) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID );
         final HttpEntity<AuditOptions> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, byte[].class);
     }
