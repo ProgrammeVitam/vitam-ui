@@ -130,6 +130,8 @@ customer-init:
         - ROLE_CREATE_RULES
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
 
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
@@ -147,6 +149,13 @@ customer-init:
         - ROLE_GET_ALL_LOGBOOK_OPERATION
         - ROLE_UPDATE_LOGBOOK_OPERATION
 
+    - name: Profil pour l'accès au paramétrage externe
+      description: Accéder au paramétrage externe
+      app-name: EXTERNAL_PARAMS
+      level:
+      roles:
+        - ROLE_GET_EXTERNAL_PARAMS
+    
     - name: Profil pour la création des profils paramétrage externe
       description: Gérer et consulter l'ensemble des profils paramétrage externe
       app-name: EXTERNAL_PARAM_PROFILE_APP
