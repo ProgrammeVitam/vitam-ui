@@ -130,6 +130,8 @@ customer-init:
         - ROLE_CREATE_RULES
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
 
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
