@@ -126,6 +126,8 @@ customer-init:
         - ROLE_CREATE_RULES
         - ROLE_UPDATE_RULES
         - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
 
     - name: Profil pour l'accès et la recherche d'archives
       description: Gestion d'accès et de recherche des archives dans Vitam
