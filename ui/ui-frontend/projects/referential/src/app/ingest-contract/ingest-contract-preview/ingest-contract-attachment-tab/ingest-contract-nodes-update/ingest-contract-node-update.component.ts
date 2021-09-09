@@ -34,19 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilingPlanMode } from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
-import { IngestContract } from 'projects/vitamui-library/src/public-api';
-import { IngestContractService } from '../../../ingest-contract.service';
+import {Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FilingPlanMode} from 'projects/vitamui-library/src/lib/components/filing-plan/filing-plan.service';
+import {IngestContract} from 'projects/vitamui-library/src/public-api';
+import {IngestContractService} from '../../../ingest-contract.service';
+
 
 @Component({
   selector: 'app-ingest-contract-node-update',
   templateUrl: './ingest-contract-node-update.component.html',
-  styleUrls: ['./ingest-contract-node-update.component.scss'],
+  styleUrls: ['./ingest-contract-node-update.component.scss']
 })
 export class IngestContractNodeUpdateComponent implements OnInit {
+
   ingestContract: IngestContract;
   accessContractId: string;
   tenantIdentifier: number;
@@ -62,9 +64,11 @@ export class IngestContractNodeUpdateComponent implements OnInit {
   linkParentIdControl = new FormControl();
   checkParentIdControl = new FormControl();
 
+  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+
   constructor(
     public dialogRef: MatDialogRef<IngestContractNodeUpdateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { ingestContract: IngestContract; accessContractId: string; tenantIdentifier: number },
+    @Inject(MAT_DIALOG_DATA) public data: { ingestContract: IngestContract, accessContractId: string, tenantIdentifier: number },
     private formBuilder: FormBuilder,
     private ingestContractService: IngestContractService
   ) {
@@ -72,9 +76,9 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     this.ingestContract = this.data.ingestContract;
     this.tenantIdentifier = this.data.tenantIdentifier;
     this.selectNodesForm = this.formBuilder.group({
-      linkParentId: [{ value: null, disabled: true }, Validators.required],
+      linkParentId: [{value: null, disabled: true}, Validators.required],
       checkParentLink: ['AUTHORIZED', Validators.required],
-      checkParentId: [{ value: null, disabled: true }, Validators.required],
+      checkParentId: [{value: null, disabled: true}, Validators.required]
     });
   }
 
@@ -93,16 +97,14 @@ export class IngestContractNodeUpdateComponent implements OnInit {
     });
 
     this.linkParentIdControl.setValue(
-      this.ingestContract.linkParentId
-        ? { included: [this.ingestContract.linkParentId], excluded: [] }
-        : {
-            included: [],
-            excluded: [],
-          }
+      this.ingestContract.linkParentId ? {included: [this.ingestContract.linkParentId], excluded: []} : {
+        included: [],
+        excluded: []
+      }
     );
     this.checkParentIdControl.setValue({
       included: this.ingestContract.checkParentId ? this.ingestContract.checkParentId : [],
-      excluded: [],
+      excluded: []
     });
   }
 
@@ -117,18 +119,18 @@ export class IngestContractNodeUpdateComponent implements OnInit {
       identifier: this.ingestContract.identifier,
       checkParentId: this.selectNodesForm.get('checkParentId').value,
       linkParentId: this.selectNodesForm.get('linkParentId').value,
-      checkParentLink: this.selectNodesForm.get('checkParentLink').value,
+      checkParentLink: this.selectNodesForm.get('checkParentLink').value
     };
 
-    this.ingestContractService.patch(formData).subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error: any) => {
-        this.dialogRef.close(false);
-        console.error(error);
-      }
-    );
+    this.ingestContractService.patch(formData)
+      .subscribe(
+        () => {
+          this.dialogRef.close(true);
+        },
+        (error: any) => {
+          this.dialogRef.close(false);
+          console.error(error);
+        });
   }
 
   get stepProgress() {
