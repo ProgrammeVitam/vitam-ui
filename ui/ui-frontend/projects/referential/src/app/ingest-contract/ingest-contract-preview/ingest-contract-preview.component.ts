@@ -1,13 +1,13 @@
-import { Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
 import { ConfirmActionComponent, IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Observable } from 'rxjs';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractFormatTabComponent } from './ingest-contract-format-tab/ingest-contract-format-tab.component';
+import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 import { IngestContractInformationTabComponent } from './ingest-contract-information-tab/ingest-contract-information-tab.component';
 import { IngestContractObjectTabComponent } from './ingest-contract-object-tab/ingest-contract-object-tab.component';
-import { IngestContractHeritageTabComponent } from './ingest-contract-heritage-tab/ingest-contract-heritage-tab.component';
 
 @Component({
   selector: 'app-ingest-contract-preview',
@@ -48,8 +48,6 @@ export class IngestContractPreviewComponent implements OnChanges, AfterViewInit 
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.hasOwnProperty('ingestContract')) {
-      console.log('ngOnchanges');
-      console.log(changes.ingestContract.currentValue);
       this.ingestContract = changes.ingestContract.currentValue;
     }
   }

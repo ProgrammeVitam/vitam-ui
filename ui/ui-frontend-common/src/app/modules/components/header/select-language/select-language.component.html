@@ -1,27 +1,33 @@
 <div *ngIf="hasLangSelection">
-  <div *ngIf="displayMode === 'select' then select else button"></div>
+  <div *ngIf="displayMode === 'select'; then select; else button"></div>
 </div>
 
 <ng-template #button>
-  <button class="flag-button" mat-mini-fab [matMenuTriggerFor]="menu"><img [src]="'../../../assets/country/' + currentLang + '.svg'"></button>
+  <button class="flag-button" mat-mini-fab [matMenuTriggerFor]="menu">
+    <img [src]="'../../../assets/country/' + currentLang + '.svg'" />
+  </button>
   <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
-    <span mat-menu-item (click)="use('fr')">
-      FR<img src="../../../assets/country/fr.svg">
-    </span>
-    <span mat-menu-item (click)="use('en')">
-      EN<img src="../../../assets/country/en.svg">
-    </span>
+    <span mat-menu-item (click)="use('fr')"> FR<img src="../../../assets/country/fr.svg" /> </span>
+    <span mat-menu-item (click)="use('en')"> EN<img src="../../../assets/country/en.svg" /> </span>
   </mat-menu>
 </ng-template>
 
 <ng-template #select>
   <div [class.select-language]="hasLangSelection">
     <vitamui-common-item-select
-      [label]="'SELECT-LANGUAGE.LANGUAGE' | translate"
-      [selectedLabel]="'SELECT-LANGUAGE.LANGUAGE' | translate"
-      [items]="[{label: 'SELECT-LANGUAGE.FRENCH' | translate, value:'fr'}, {label: 'SELECT-LANGUAGE.ENGLISH' | translate, value:'en'}]"
-      [selectedItem]="currentLang === 'fr' ? {label: 'SELECT-LANGUAGE.FRENCH' | translate, value:'fr'} : {label: 'SELECT-LANGUAGE.ENGLISH' | translate, value:'en'}"
-      (itemSelected)="use($event.value)">
+      [label]="'SELECT_LANGUAGE.LANGUAGE' | translate"
+      [selectedLabel]="'SELECT_LANGUAGE.LANGUAGE' | translate"
+      [items]="[
+        { label: 'SELECT_LANGUAGE.FRENCH' | translate, value: 'fr' },
+        { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' }
+      ]"
+      [selectedItem]="
+        currentLang === 'fr'
+          ? { label: 'SELECT_LANGUAGE.FRENCH' | translate, value: 'fr' }
+          : { label: 'SELECT_LANGUAGE.ENGLISH' | translate, value: 'en' }
+      "
+      (itemSelected)="use($event.value)"
+    >
     </vitamui-common-item-select>
   </div>
 </ng-template>

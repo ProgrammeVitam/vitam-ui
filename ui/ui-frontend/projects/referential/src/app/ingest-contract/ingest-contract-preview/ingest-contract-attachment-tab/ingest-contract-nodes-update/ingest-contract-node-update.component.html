@@ -2,9 +2,9 @@
   <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
-        <h2 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification des positions de rattachement SIP</h2>
+        <h5 i18n="Create ingestContract title@@accessContractCreateTitle5">Modification des positions de rattachement SIP</h5>
 
-        <h2>Position de rattachement</h2>
+        <h4>Position de rattachement</h4>
         <vitamui-library-filing-plan
           [formControl]="linkParentIdControl"
           [tenantIdentifier]="tenantIdentifier"
@@ -13,8 +13,10 @@
         ></vitamui-library-filing-plan>
 
         <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel customer creation@@customerCreateCancelButton">
+            Annuler
+          </button>
         </div>
       </div>
     </cdk-step>
@@ -61,11 +63,11 @@
           >
             Valider
           </button>
-          <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>
           <i class="material-icons">arrow_back</i>
-          <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <ng-container>Retour</ng-container>
         </button>
       </div>
     </cdk-step>

@@ -25,8 +25,8 @@
       <!-- customer selection -->
       <vitamui-common-item-select
         *ngIf="hasCustomerSelection"
-        [label]="'SELECT-CUSTOMER.SELECT' | translate"
-        [selectedLabel]="'SELECT-CUSTOMER.SELECTED' | translate"
+        [label]="'SELECT_CUSTOMER.SELECT' | translate"
+        [selectedLabel]="'SELECT_CUSTOMER.SELECTED' | translate"
         [items]="customers"
         [selectedItem]="selectedCustomer"
         (itemSelected)="updateCustomer($event)"

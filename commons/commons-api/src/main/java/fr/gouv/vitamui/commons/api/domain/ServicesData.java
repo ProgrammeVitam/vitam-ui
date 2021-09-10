@@ -229,11 +229,15 @@ public class ServicesData {
 
     public static final String SERVICE_INGEST_CONTRACT = "INGEST_CONTRACTS";
 
+    public static final String SERVICE_FILLING_PLAN_ACCESS = "FILLING_PLAN_ACCESS";
+
     public static final String ROLE_CREATE_INGEST_CONTRACTS = CREATE_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
 
     public static final String ROLE_GET_INGEST_CONTRACTS = GET_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
 
     public static final String ROLE_UPDATE_INGEST_CONTRACTS = UPDATE_ROLE_PREFIX + SERVICE_INGEST_CONTRACT;
+
+    public static final String ROLE_GET_FILLING_PLAN_ACCESS = GET_ROLE_PREFIX + SERVICE_FILLING_PLAN_ACCESS;
 
     //------------------------------------ AGENCIES -----------------------------------------
 
@@ -430,6 +434,7 @@ public class ServicesData {
             ROLE_CREATE_INGEST_CONTRACTS,
             ROLE_GET_INGEST_CONTRACTS,
             ROLE_UPDATE_INGEST_CONTRACTS,
+            ROLE_GET_FILLING_PLAN_ACCESS,
 
             ROLE_GET_AGENCIES,
             ROLE_UPDATE_AGENCIES,
@@ -552,6 +557,7 @@ public class ServicesData {
             ROLE_CREATE_INGEST_CONTRACTS,
             ROLE_GET_INGEST_CONTRACTS,
             ROLE_UPDATE_INGEST_CONTRACTS,
+            ROLE_GET_FILLING_PLAN_ACCESS,
 
             ROLE_GET_AGENCIES,
             ROLE_UPDATE_AGENCIES,

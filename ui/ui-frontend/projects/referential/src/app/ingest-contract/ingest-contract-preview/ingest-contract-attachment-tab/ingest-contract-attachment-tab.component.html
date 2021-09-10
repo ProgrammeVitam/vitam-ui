@@ -1,7 +1,9 @@
 <div class="row">
   <div class="col-12 form-control">
     <button class="btn secondary mb-20" (click)="openUpdateSelectedNodes()" [disabled]="!accessContractId">
-      <div i18n="accessContract nodes tab edit@@AccessContractNodesTabEditButton">Modifier</div>
+      <div i18n="accessContract nodes tab edit@@AccessContractNodesTabEditButton">
+        Modifier
+      </div>
     </button>
   </div>
 </div>
@@ -10,7 +12,7 @@
 
   <p>Veuillez sélectionner un contrat d'accès pour afficher le nom des unités archivistiques et modifier les noeuds:</p>
   <mat-form-field class="vitamui-mat-select">
-    <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="initTitles()">
+    <mat-select placeholder="Selectionnez un contrat d'accès" panelclass="vitamui-mat-select" (selectionChange)="initTitles($event)">
       <mat-option *ngFor='let accessContract of accessContracts'
                   [value]="accessContract.identifier">{{accessContract.name}}
       </mat-option>
@@ -18,23 +20,19 @@
   </mat-form-field>
 
   <div class="col-10">
-    <span>Positions de rattachement SIP</span> :
+    <span>Position de rattachement</span> :
     <ul *ngIf="getTitle(ingestContract.linkParentId)">
       <li>{{ getTitle(ingestContract.linkParentId) }}</li>
     </ul>
   </div>
 
   <div class="col-10">
-    <span>Rattachement dans un bordereau: </span>
+    <span>Contrôle des rattachements</span> :
     <span *ngIf="ingestContract.checkParentLink === 'AUTHORIZED'">Autorisé</span>
     <span *ngIf="ingestContract.checkParentLink === 'REQUIRED'">Obligatoire</span>
     <span *ngIf="ingestContract.checkParentLink === 'UNAUTHORIZED'">Interdit</span>
-  </div>
-
-  <div class="col-10">
-    <span>Positions de rattachement UA</span> :
     <ul>
-      <li *ngFor="let unitId of ingestContract.checkParentId">{{ getTitle(unitId) }}</li>
+      <li *ngFor="let unitId of ingestContract.checkParentId"> {{getTitle(unitId)}}</li>
     </ul>
   </div>
 </div>
