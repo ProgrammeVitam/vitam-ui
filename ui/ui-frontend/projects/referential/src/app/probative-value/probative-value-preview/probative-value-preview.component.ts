@@ -54,7 +54,6 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
 
   accessContracts: AccessContract[];
-  accessContractId: string;
   hasAccessContract: boolean;
 
   accessContractSub: Subscription;
@@ -111,6 +110,6 @@ export class ProbativeValuePreviewComponent implements OnInit, OnDestroy {
   }
 
   downloadReport() {
-    this.probativeValueService.export(this.probativeValue.id, this.accessContractId);
+    this.probativeValueService.export(this.probativeValue.id, this.accessContract);
   }
 }

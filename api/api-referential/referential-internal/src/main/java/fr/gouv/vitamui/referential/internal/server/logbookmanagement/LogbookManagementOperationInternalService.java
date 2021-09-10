@@ -49,6 +49,8 @@ import org.springframework.stereotype.Service;
 public class LogbookManagementOperationInternalService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookManagementOperationInternalService.class);
+    private static final String START_MAX_DATE  = "30/12/2999";
+    private static final String START_MIN_DATE = "01/01/1900";
 
     private ObjectMapper objectMapper;
 
@@ -62,6 +64,13 @@ public class LogbookManagementOperationInternalService {
 
     public ProcessDetailDto searchOperationsDetails(VitamContext vitamContext, ProcessQuery processQuery) throws VitamClientException, JsonProcessingException {
         LOGGER.info("Get Operations Details with processQuery = {}",processQuery);
+        if( processQuery.getStartDateMax() == null) {
+            processQuery.setStartDateMax(START_MAX_DATE);
+        }
+        if(processQuery.getStartDateMin() == null) {
+            processQuery.setStartDateMin(START_MIN_DATE);
+        }
+
         JsonNode response = vitamOperationService.listOperationsDetails(vitamContext,processQuery).toJsonNode();
         final VitamUIProcessDetailResponseDto processDetailResponse =
             objectMapper.treeToValue(response, VitamUIProcessDetailResponseDto.class);
