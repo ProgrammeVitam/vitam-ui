@@ -585,10 +585,34 @@ public class ArchiveSearchInternalService {
             throw new PreconditionFailedException("invalid request");
         }
 
-        LOGGER.debug("Elimination final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        LOGGER.debug("Elimination analysis final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
             eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
 
+
+        return jsonNodeRequestResponse.toJsonNode();
+    }
+
+    // TODO nabil: to check requqest and commonize parts
+    public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+        LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
+        searchQuery.setPageNumber(0);
+        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
+
+        EliminationRequestBody eliminationRequestBody = null;
+        try {
+            eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        } catch (InvalidParseOperationException e) {
+            throw new PreconditionFailedException("invalid request");
+        }
+
+        LOGGER.debug("Elimination action final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        RequestResponse<JsonNode> jsonNodeRequestResponse =
+            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
 
         return jsonNodeRequestResponse.toJsonNode();
     }

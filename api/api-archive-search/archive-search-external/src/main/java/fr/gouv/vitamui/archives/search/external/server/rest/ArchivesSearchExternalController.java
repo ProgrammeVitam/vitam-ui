@@ -135,11 +135,20 @@ public class ArchivesSearchExternalController {
     }
 
     @PostMapping(RestApi.ELIMINATION_ANALYSIS)
-    @Secured(ServicesData.ROLE_ELIMINATION_ANALYSIS)
+    @Secured(ServicesData.ROLE_ELIMINATION)
     public ResponseEntity<JsonNode> startEliminationAnalysis(final @RequestBody SearchCriteriaDto query) {
         LOGGER.info("Calling elimination analysis by criteria {} ", query);
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         return archivesSearchExternalService.startEliminationAnalysis(query);
+    }
+
+    @PostMapping(RestApi.ELIMINATION_ACTION)
+    @Secured(ServicesData.ROLE_ELIMINATION)
+    public ResponseEntity<JsonNode> startEliminationAction(final @RequestBody SearchCriteriaDto query) {
+        LOGGER.info("Calling elimination action by criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return archivesSearchExternalService.startEliminationAction(query);
     }
 }
