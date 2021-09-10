@@ -37,19 +37,19 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ArchiveApiService } from '../core/api/archive-api.service';
+import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { SearchService, SecurityService } from 'ui-frontend-common';
-import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
   constructor(
@@ -71,7 +71,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -100,7 +100,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -131,7 +131,7 @@ export class ArchiveService extends SearchService<any> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
-            duration: 10000
+            duration: 10000,
           });
         }
       }
@@ -151,18 +151,18 @@ export class ArchiveService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => this.buildPagedResults(results))
+      map((results) => ArchiveService.buildPagedResults(results))
     );
   }
 
-  private buildPagedResults(response: SearchResponse): PagedResult {
+  private static buildPagedResults(response: SearchResponse): PagedResult {
     const pagedResult: PagedResult = {
       results: response.$results,
       totalResults: response.$hits.total,
       pageNumbers:
         +response.$hits.size !== 0
           ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0
+          : 0,
     };
     const resultFacets: ResultFacet[] = [];
     if (response.$facetResults && response.$facetResults) {
@@ -182,11 +182,11 @@ export class ArchiveService extends SearchService<any> {
   downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
       (response) => {
-        let filename = null;
+        let filename;
         if (response.headers.get('content-disposition').includes('filename')) {
           filename = response.headers.get('content-disposition').split('=')[1];
         } else {
-          filename = this.normalizeTitle(title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en);
+          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
         }
 
         const element = document.createElement('a');
@@ -201,6 +201,10 @@ export class ArchiveService extends SearchService<any> {
         console.log('Error message : ', errors);
       }
     );
+  }
+
+  private static fetchTitle(title: string, title_: any) {
+    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
   }
 
   normalizeTitle(title: string): string {
@@ -243,6 +247,53 @@ export class ArchiveService extends SearchService<any> {
       },
       duration: 100000,
     });
+  }
+
+  buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
+    const criteriaSearchList = [];
+
+    criteriaSearchList.push({
+      criteria: '#id',
+      values: archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp })),
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+      dataType: CriteriaDataType.STRING,
+    });
+
+    const searchCriteria = {
+      criteriaList: criteriaSearchList,
+      pageNumber: 0,
+      size: archiveUnit['#allunitups'].length,
+    };
+
+    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        let resumePath = '/';
+        let fullPath = '/';
+
+        if (pagedResult.results) {
+          resumePath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+          fullPath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+
+          if (pagedResult.results.length > 6) {
+            const upperBoundPath = pagedResult.results
+              .slice(0, 3)
+              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            const lowerBoundPath = pagedResult.results
+              .slice(-3)
+              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            resumePath = `/${upperBoundPath}/../${lowerBoundPath}`;
+          }
+        }
+
+        return {
+          fullPath,
+          resumePath,
+        };
+      })
+    );
   }
 }
 

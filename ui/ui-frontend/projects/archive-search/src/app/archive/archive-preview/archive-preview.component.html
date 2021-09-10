@@ -1,22 +1,25 @@
 <vitamui-common-sidenav-header
-  [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en "
-  [icon]="(archiveUnit?.DescriptionLevel === 'File' ||  archiveUnit?.DescriptionLevel === 'Item' )?  'vitamui-icon-file': 'vitamui-icon-folder' "
-  (onclose)="emitClose()">
+  [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
+  [icon]="
+    archiveUnit?.DescriptionLevel === 'File' || archiveUnit?.DescriptionLevel === 'Item' ? 'vitamui-icon-file' : 'vitamui-icon-folder'
+  "
+  (onclose)="emitClose()"
+>
 </vitamui-common-sidenav-header>
 
 <div class="vitamui-sidepanel-body">
   <mat-tab-group class="preview-tab-group">
-    <mat-tab label="{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate}}">
+    <mat-tab label="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
       <div class="row">
         <div class="col-12">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
             <div>
-              <ng-container *ngIf="archiveUnit?.Title ;else subTitleFr">
+              <ng-container *ngIf="archiveUnit?.Title; else subTitleFr">
                 {{ archiveUnit?.Title }}
               </ng-container>
               <ng-template #subTitleFr>
-                <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
+                <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
                   {{ archiveUnit.Title_.fr }}
                 </ng-container>
               </ng-template>
@@ -32,9 +35,9 @@
       <div class="row">
         <div class="col-12">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.GUID' | translate }} :</label>
             <div>
-              {{archiveUnit['#opi']}}
+              {{ archiveUnit['#opi'] }}
             </div>
           </div>
         </div>
@@ -42,9 +45,9 @@
       <div class="row">
         <div class="col-12">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.UAID' | translate }} :</label>
             <div>
-              {{archiveUnit['#id']}}
+              {{ archiveUnit['#id'] }}
             </div>
           </div>
         </div>
@@ -52,10 +55,10 @@
       <div class="row">
         <div class="col-12">
           <div class="read-only-field text-justify">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
             <div>
               <p class="text-justify">
-                {{archiveUnit.Description}}
+                {{ archiveUnit.Description }}
               </p>
             </div>
           </div>
@@ -65,30 +68,35 @@
       <div class="row">
         <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate}} :</label><br/>
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
             <div>
-              {{ archiveUnit['#originating_agencies']}}
+              {{ archiveUnit['#originating_agencies'] }}
             </div>
           </div>
         </div>
         <div class="col-6">
           <div class="read-only-field">
-            <label></label><br/>
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate}} :</label>
+            <label></label><br />
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
             <div>
-              {{ archiveUnit['originating_agencyName']}}
+              {{ archiveUnit['originating_agencyName'] }}
             </div>
           </div>
         </div>
-
       </div>
       <div class="row">
         <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate}} :</label>
+            <label
+              >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
+              <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
+                {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
+              </button>
+            </label>
             <div>
-              {{archiveUnit.DescriptionLevel}}
+              <span *ngIf="!fullPath">{{ (uaPath$ | async)?.resumePath }}</span>
+              <span *ngIf="fullPath">{{ (uaPath$ | async)?.fullPath }}</span>
             </div>
           </div>
         </div>
@@ -105,26 +113,30 @@
       <div class="row">
         <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.START_DATE' | translate }} :</label>
             <div>
-              {{archiveUnit?.StartDate | date: 'dd/MM/yyyy'}}
+              {{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}
             </div>
           </div>
         </div>
         <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.END_DATE' | translate }} :</label>
             <div>
-              {{archiveUnit?.EndDate | date: 'dd/MM/yyyy'}}
+              {{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}
             </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-12">
-            <button class="btn secondary download-btn" [disabled]="archiveUnit['#object'] == null"
-                    (click)="onDownloadObjectFromUnit(archiveUnit)">
-              <i class="vitamui-icon vitamui-icon-deposit"></i> <span>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate}}</span>
+            <button
+              class="btn secondary download-btn"
+              [disabled]="archiveUnit['#object'] == null"
+              (click)="onDownloadObjectFromUnit(archiveUnit)"
+            >
+              <i class="vitamui-icon vitamui-icon-deposit"></i>
+              <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DOWNLOAD_DOC' | translate }}</span>
             </button>
           </div>
         </div>

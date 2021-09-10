@@ -70,6 +70,7 @@ describe('ArchivePreviewComponent', () => {
 
       const archiveServiceMock = {
         getBaseUrl: () => '/fake-api',
+        buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
       };
 
       TestBed.configureTestingModule({

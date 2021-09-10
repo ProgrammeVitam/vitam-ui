@@ -161,7 +161,8 @@
         "SP_LABEL": "Nom",
         "PATH": "Chemin",
         "DESCRIPTION_LEVEL": "Niveau de description",
-        "DOWNLOAD_DOC": "Télécharger le document"
+        "DOWNLOAD_DOC": "Télécharger le document",
+        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
       },
       "TABS": {
         "INFORMATIONS": "Informations"

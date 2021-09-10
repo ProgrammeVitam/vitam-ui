@@ -34,23 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export * from './application/index';
-export * from './app.configuration.interface';
-export * from './content-disposition.enum';
-export * from './criteria/criteria.interface';
-export * from './criteria/criterion.interface';
-export * from './criteria/criteria.enums';
-export * from './customer/index';
-export * from './group/index';
-export * from './id.interface';
-export * from './logbook/index';
-export * from './operation/index';
-export * from './position/index';
-export * from './profile/index';
-export * from './externalparamprofile/index';
-export * from './subrogation/index';
-export * from './tree-node.interface';
-export * from './user/index';
-export * from './vitam/index';
-export * from './breadcrumb/breadcrumb.interface';
-export * from './access-register/index';
+
+export enum CriteriaOperator {
+  EQ = 'EQ'
+}
+
+export enum CriteriaDataType {
+  STRING = 'STRING'
+}
