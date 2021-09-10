@@ -1,4 +1,3 @@
-
 smtp:
   host: host
   port: 389
@@ -12,6 +11,7 @@ smtp:
     checkserveridentity: false
     trust: "*"
     timeout: 8000
+    protocols: "TLSv1.2 TLSv1.3"
   cas:
     sender: "serveur-cas@noreply.com"
     expiration: 1440 # 1 Day : 24 * 60 Minutes to reset password
