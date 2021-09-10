@@ -247,38 +247,6 @@
     <cdk-step>
       <div class="content">
         <h5>Création d'un contrat d'entrée</h5>
-        <h4>Héritage</h4>
-
-        <div class="form-group">
-          <div class="row">
-            <div class="col-12 form-control">
-              <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtIngest"
-                >Calcul des héritages de règles et d'indexation des échéances
-              </vitamui-common-slide-toggle>
-              <i
-                class="material-icons field-tooltip"
-                matTooltip="Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin
-                qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement"
-                matTooltipClass="vitamui-tooltip"
-                >info</i
-              >
-            </div>
-          </div>
-        </div>
-        <div class="actions">
-          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
-          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
-        </div>
-        <button type="button" class="back" cdkStepperPrevious>
-          <i class="material-icons">arrow_back</i>
-          <ng-container>Retour</ng-container>
-        </button>
-      </div>
-    </cdk-step>
-
-    <cdk-step>
-      <div class="content">
-        <h5>Création d'un contrat d'entrée</h5>
         <h4>
           Position de rattachement<i
             class="material-icons field-tooltip"
@@ -287,6 +255,26 @@
             >info</i
           >
         </h4>
+
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select
+            [formControl]="accessContractSelect"
+            placeholder="Selectionnez un contrat d'accès"
+            panelclass="vitamui-mat-select"
+            required
+          >
+            <mat-option
+              (click)="getaccessContract(accessContract)"
+              *ngFor="let accessContract of accessContracts"
+              [value]="accessContract.identifier"
+              >{{ accessContract.name }}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
 
         <div class="form-group">
           <vitamui-library-filing-plan
@@ -371,6 +359,18 @@
             >info</i
           >
         </h4>
+
+        <mat-form-field class="vitamui-mat-select">
+          <mat-select [formControl]="accessContractSelect" placeholder="{{ accesscontractselected }}" panelclass="vitamui-mat-select">
+            <mat-option *ngFor="let accessContract of accessContracts" [value]="accessContract.identifier"
+              >{{ accessContract.name }}
+            </mat-option>
+          </mat-select>
+          <div class="select-arrow">
+            <i class="material-icons">keyboard_arrow_up</i>
+            <i class="material-icons">keyboard_arrow_down</i>
+          </div>
+        </mat-form-field>
 
         <div class="form-group">
           <vitamui-library-filing-plan

@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import '@angular/localize/init';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FileFormat, FilingPlanMode, IngestContract } from 'projects/vitamui-library/src/public-api';
+import { AccessContract, FileFormat, FilingPlanMode, IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
+import { ConfirmDialogService, Option } from 'ui-frontend-common';
+import { AccessContractService } from '../../access-contract/access-contract.service';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
@@ -71,8 +70,10 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 8;
+  private stepCount = 4;
   private keyPressSubscription: Subscription;
+
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractCreateComponent>,
@@ -84,8 +85,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
     private fileFormatService: FileFormatService,
     private managementContractService: ManagementContractApiService,
     private archiveProfileService: ArchiveProfileApiService,
-    private externalParameterService: ExternalParametersService,
-    private snackBar: MatSnackBar
+    private accessContractService: AccessContractService
   ) {}
 
   statusControl = new FormControl(false);
@@ -96,6 +96,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   formatTypeList: FileFormat[];
   managementContracts: any[];
   archiveProfiles: any[];
+  accessContracts: AccessContract[];
+  accesscontractselected: string;
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -131,27 +133,15 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
       /* default */
       masterMandatory: [true, Validators.required],
-      computeInheritedRulesAtIngest: [false, Validators.required],
+      computedInheritedRulesAtIngest: [false, Validators.required],
     });
 
     this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((files) => {
       this.formatTypeList = files;
     });
 
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessContratId && accessContratId.length > 0) {
-        this.accessContractSelect.setValue(accessContratId);
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          }
-        );
-      }
+    this.accessContractService.getAll().subscribe((value) => {
+      this.accessContracts = value;
     });
 
     const params = new HttpParams().set('embedded', 'ALL');
@@ -212,9 +202,6 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   onSubmit() {
     /*if (this.form.invalid) { return; }*/
     const ingestContract = this.form.value as IngestContract;
-    ingestContract.status === 'ACTIVE'
-      ? (ingestContract.activationDate = new Date().toISOString())
-      : (ingestContract.deactivationDate = new Date().toISOString());
     this.ingestContractService.create(ingestContract).subscribe(
       () => {
         this.dialogRef.close(true);
@@ -264,5 +251,9 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
+  }
+
+  getaccessContract(event: AccessContract) {
+    this.accesscontractselected = event.name;
   }
 }
