@@ -18,14 +18,14 @@
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_DATE' | translate }}</label>
     <div>{{ operation?.processDate | date: 'dd/MM/yyyy' }}</div>
     <span class="date">
-      {{ operation?.processDate | date: 'hh:mm:ss':'+0000' }}
+      {{ operation?.processDate | date: 'HH:mm:ss' }}
     </span>
   </div>
   <div class="col-6 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.FINAL_DATE' | translate }}</label>
     <div>{{ getEventEndDate(event)?.dateTime | date: 'dd/MM/yyyy' }}</div>
     <span class="date">
-      {{ getEventEndDate(event)?.dateTime | date: 'hh:mm:ss' }}
+      {{ getEventEndDate(event)?.dateTime | date: 'HH:mm:ss':'-2000' }}
     </span>
   </div>
 </div>

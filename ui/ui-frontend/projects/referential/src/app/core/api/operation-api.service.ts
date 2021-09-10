@@ -86,9 +86,6 @@ export class OperationApiService extends BaseHttpClient<Event> {
   }
 
   downloadProbativeValue(id: string, headers?: HttpHeaders): Observable<Blob> {
-    console.log('Download probative value ', this.apiUrl, id, headers);
     return this.http.get(`${this.apiUrl}/probativeValue/${id}`, { responseType: 'blob', headers });
   }
-
-  // return this.http.get(`${this.apiUrl}/downloadobjectfromunit/${id}`, { headers: headers, observe: 'response', responseType: 'blob' });
 }

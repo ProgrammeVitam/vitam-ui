@@ -117,13 +117,8 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     this.archiveService.exportDIPService(exportDIPCriteriaList, this.data.accessContract).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const index = this.startupService.getReferentialUrl().lastIndexOf('/');
         const serviceUrl =
-          this.startupService.getReferentialUrl().substring(0, index) +
-          '/logbook-operation/tenant/' +
-          this.data.tenantIdentifier +
-          '?guid=' +
-          response;
+          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
 
         this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
       },

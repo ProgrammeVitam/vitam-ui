@@ -950,6 +950,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (action) {
         this.listOfUACriteriaSearch = [];
         this.itemSelected++;
+        if (this.itemSelected === this.totalResults) {
+          this.isIndeterminate = false;
+        }
         this.listOfUAIdToInclude.push({ value: id, id });
         this.listOfUAIdToExclude.splice(0, this.listOfUAIdToExclude.length);
       } else {
@@ -1094,13 +1097,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
         const guid = this.eliminationAnalysisResponse[0].itemId;
         const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-        const index = this.startupService.getReferentialUrl().lastIndexOf('/');
-        const serviceUrl =
-          this.startupService.getReferentialUrl().substring(0, index) +
-          '/logbook-operation/tenant/' +
-          this.tenantIdentifier +
-          '?guid=' +
-          guid;
+        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
         this.openSnackBarForWorkflow(message, serviceUrl);
       }
