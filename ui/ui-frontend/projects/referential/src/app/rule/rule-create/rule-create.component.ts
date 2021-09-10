@@ -88,7 +88,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
       ruleId: [null, [Validators.required, this.ruleCreateValidator.ruleIdPattern()], this.ruleCreateValidator.uniqueRuleId()],
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
-      ruleDescription: [null],
+      ruleDescription: [null, Validators.required],
       ruleDuration: [null, Validators.required],
       ruleMeasurement: [null, Validators.required]
     });
