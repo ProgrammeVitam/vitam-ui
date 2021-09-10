@@ -34,14 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component,OnInit,ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ActivatedRoute} from '@angular/router';
-import {ApplicationService,GlobalEventService,SidenavPage} from 'ui-frontend-common';
+
+import {ApplicationService, GlobalEventService, SidenavPage} from 'ui-frontend-common';
 import {Context} from '../../../../vitamui-library/src/lib/models/context';
 import {ContextCreateComponent} from './context-create/context-create.component';
 import {ContextListComponent} from './context-list/context-list.component';
-
 
 @Component({
   selector: 'app-context',

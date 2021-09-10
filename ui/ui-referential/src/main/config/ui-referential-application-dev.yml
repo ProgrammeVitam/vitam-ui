@@ -144,3 +144,5 @@ list-enable-external-identifiers:
       - ACCESS_CONTRACT
       - MANAGEMENT_CONTRACT
       - PROFILE
+      - SECURITY_PROFILE
+      - CONTEXT

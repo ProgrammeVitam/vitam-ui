@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Context} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Option} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Context } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Option } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { SecurityProfileService } from '../../../security-profile/security-profile.service';
+import { ContextService } from '../../context.service';
 
-import {ContextService} from '../../context.service';
 
-import {SecurityProfileService} from '../../../security-profile/security-profile.service';
 
 @Component({
   selector: 'app-context-information-tab',
@@ -172,11 +172,8 @@ export class ContextInformationTabComponent {
     this.prepareSubmit().subscribe(() => {
       this.contextService.get(this._context.identifier).subscribe(
         response => {
-          this.submited = false;  
-          this.context = extend(this.context, response);
-          // Update the activation and deactivation dates
-          this.context.activationDate = response.activationDate ? response.activationDate : null;
-          this.context.deactivationDate = response.deactivationDate ? response.deactivationDate : null;
+          this.submited = false;
+          this.context = response;
         }
       );
     }, () => {
