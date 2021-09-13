@@ -128,6 +128,7 @@ spring.mail.properties.mail.transport.protocol: {{ smtp.protocol|lower }}
 spring.mail.properties.mail.smtps.ssl.checkserveridentity: {{ smtp.smtps.checkserveridentity|lower }}
 spring.mail.properties.mail.smtps.ssl.trust: "{{ smtp.smtps.trust|lower }}"
 spring.mail.properties.mail.smtps.timeout: {{ smtp.smtps.timeout|default('8000') }}
+spring.mail.properties.mail.smtps.ssl.protocols: {{ smtp.smtps.ssl.protocols}}
 {% endif %}
 
 
