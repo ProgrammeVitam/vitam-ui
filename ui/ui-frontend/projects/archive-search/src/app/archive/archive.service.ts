@@ -250,15 +250,25 @@ export class ArchiveService extends SearchService<any> {
   }
 
   buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
-    const criteriaSearchList = [];
+    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
 
-    criteriaSearchList.push({
-      criteria: '#id',
-      values: archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp })),
-      operator: CriteriaOperator.EQ,
-      category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-      dataType: CriteriaDataType.STRING,
-    });
+    // When UA doesn't have parent, return empty string
+    if (!allunitups || allunitups.length === 0) {
+      return of({
+        fullPath: '',
+        resumePath: '',
+      });
+    }
+
+    const criteriaSearchList = [
+      {
+        criteria: '#id',
+        values: allunitups,
+        operator: CriteriaOperator.EQ,
+        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+        dataType: CriteriaDataType.STRING,
+      },
+    ];
 
     const searchCriteria = {
       criteriaList: criteriaSearchList,
@@ -268,8 +278,8 @@ export class ArchiveService extends SearchService<any> {
 
     return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
       map((pagedResult: PagedResult) => {
-        let resumePath = '/';
-        let fullPath = '/';
+        let resumePath = '';
+        let fullPath = '';
 
         if (pagedResult.results) {
           resumePath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
