@@ -43,7 +43,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Direction, StartupService } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, StartupService } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
@@ -57,6 +57,7 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
@@ -192,7 +193,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   archiveUnits: Unit[];
   ontologies: any;
   filterMapType: { [key: string]: string[] } = {
-    status: ['Folder', 'Document', 'Subfonds', 'Class', 'Subgrp', 'Otherlevel', 'Series', 'Subseries', 'Collection', 'Fonds'],
+    status: ['Folder', 'Document'],
   };
   shouldShowPreviewArchiveUnit = false;
 
@@ -282,18 +283,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
-    this.filterMapType.Type = [
-      'Folder',
-      'Document',
-      'Subfonds',
-      'Class',
-      'Subgrp',
-      'Otherlevel',
-      'Series',
-      'Subseries',
-      'Collection',
-      'Fonds',
-    ];
+    this.filterMapType.Type = ['Folder', 'Document'];
 
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
@@ -535,14 +525,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   buildFieldsCriteriaListForQUery() {
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.FIELDS) {
-        const strValues: CriteriaValue[] = [];
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
-        criteria.values.forEach((elt) => {
-          strValues.push(elt.value);
-        });
         this.criteriaSearchList.push({
           criteria: criteria.key,
-          values: strValues,
+          values: criteria.values.map((elt: SearchCriteriaValue) => elt.value),
           operator: criteria.operator,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
           dataType: criteria.dataType,
@@ -550,25 +536,32 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    const typesFilterValues: CriteriaValue[] = [];
-    this.filterMapType.Type.forEach((filter) => {
-      if (filter === 'Document') {
-        typesFilterValues.push({ id: 'File', value: 'File' });
-        typesFilterValues.push({ id: 'Item', value: 'Item' });
-      } else if (filter === 'Folder') {
-        typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
-      } else {
-        typesFilterValues.push({ id: filter, value: filter });
-      }
-    });
+    if (this.filterMapType.Type.length != 2) {
+      const typesFilterValues: CriteriaValue[] = [];
 
-    if (typesFilterValues.length > 0) {
+      this.filterMapType.Type.forEach((filter) => {
+        if (filter === 'Document') {
+          typesFilterValues.push({ id: 'Item', value: 'Item' });
+        } else if (filter === 'Folder') {
+          typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
+          typesFilterValues.push({ id: 'File', value: 'File' });
+          typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
+          typesFilterValues.push({ id: 'Class', value: 'Class' });
+          typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
+          typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
+          typesFilterValues.push({ id: 'Series', value: 'Series' });
+          typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
+          typesFilterValues.push({ id: 'Collection', value: 'Collection' });
+          typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
+        }
+      });
+
       this.criteriaSearchList.push({
         criteria: 'DescriptionLevel',
         values: typesFilterValues,
-        operator: 'EQ',
+        operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: 'STRING',
+        dataType: CriteriaDataType.STRING,
       });
     }
   }
