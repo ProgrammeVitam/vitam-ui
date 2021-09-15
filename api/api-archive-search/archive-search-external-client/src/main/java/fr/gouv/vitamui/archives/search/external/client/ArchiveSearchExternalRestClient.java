@@ -177,7 +177,7 @@ public class ArchiveSearchExternalRestClient
     }
 
     public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, SearchCriteriaDto query) {
-        LOGGER.debug("Calling elimination action by criteria");
+        LOGGER.debug("Calling elimination action by using criteria {}", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         return restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ACTION, HttpMethod.POST,

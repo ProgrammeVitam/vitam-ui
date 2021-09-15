@@ -173,19 +173,14 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button
-            mat-menu-item
-            (click)="openExportDIPRequestCreateDialog()"
-            [disabled]="(itemSelected === 0 && hasDipExportRole) || !hasDipExportRole"
-          >
+          <button mat-menu-item (click)="openExportDIPRequestCreateDialog()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button
-            mat-menu-item
-            (click)="startEliminationAnalysis()"
-            [disabled]="!hasEliminationAnalysisRole || (hasEliminationAnalysisRole && itemSelected == 0)"
-          >
+          <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
+          </button>
+          <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationActionRole || itemSelected === 0">
+            {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
         </vitamui-common-menu-button>
       </div>
@@ -378,3 +373,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #confirmEliminationActionDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}</div>
+    <div class="text large bold" *ngIf="itemSelected > 1">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.TO_ELIMINATE' | translate }} {{ itemSelected }}
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.SELECTED_ITEMS' | translate }}
+    </div>
+    <div class="text large bold" *ngIf="itemSelected === 1">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.ONE_SELECTED' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" *ngIf="itemSelected > 1" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE' | translate }}
+    </button>
+    <button [matDialogClose]="true" *ngIf="itemSelected === 1" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE_ONE' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

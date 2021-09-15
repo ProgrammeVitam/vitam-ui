@@ -37,10 +37,10 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
+import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
@@ -63,6 +63,34 @@ export class ArchiveService extends SearchService<any> {
   }
 
   headers = new HttpHeaders();
+
+  private static buildPagedResults(response: SearchResponse): PagedResult {
+    const pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    const resultFacets: ResultFacet[] = [];
+    if (response.$facetResults && response.$facetResults) {
+      for (const facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
+            resultFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+      }
+    }
+    pagedResult.facets = resultFacets;
+    return pagedResult;
+  }
+
+  private static fetchTitle(title: string, title_: any) {
+    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  }
 
   public getOntologiesFromJson(): Observable<any> {
     return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
@@ -155,30 +183,6 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0,
-    };
-    const resultFacets: ResultFacet[] = [];
-    if (response.$facetResults && response.$facetResults) {
-      for (const facet of response.$facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    pagedResult.facets = resultFacets;
-    return pagedResult;
-  }
-
   downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
       (response) => {
@@ -201,10 +205,6 @@ export class ArchiveService extends SearchService<any> {
         console.log('Error message : ', errors);
       }
     );
-  }
-
-  private static fetchTitle(title: string, title_: any) {
-    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
   }
 
   normalizeTitle(title: string): string {
@@ -235,6 +235,12 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.startEliminationAnalysis(criteriaDto, headers);
+  }
+
+  launchEliminationAction(criteriaDto: SearchCriteriaDto, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;

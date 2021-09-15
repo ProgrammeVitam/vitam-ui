@@ -193,11 +193,11 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return jsonNodeResponseEntity.getBody();
     }
 
-    @ApiOperation(value = "elimination action launch")
+    @ApiOperation(value = "launch elimination action")
     @PostMapping(RestApi.ELIMINATION_ACTION)
     @ResponseStatus(HttpStatus.OK)
     public JsonNode startEliminationAction(@RequestBody final SearchCriteriaDto searchQuery) {
-        LOGGER.debug("Elimination analysis of query: {}", searchQuery);
+        LOGGER.debug("Elimination Action of query: {}", searchQuery);
         ResponseEntity<JsonNode> jsonNodeResponseEntity =
             archivesSearchService.startEliminationAction(buildUiHttpContext(), searchQuery);
         return jsonNodeResponseEntity.getBody();

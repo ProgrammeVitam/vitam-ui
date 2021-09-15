@@ -245,7 +245,7 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException {
-        LOGGER.info("Calling elimination analysis by criteria {} ", searchQuery);
+        LOGGER.info("Calling elimination action by criteria {} ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",

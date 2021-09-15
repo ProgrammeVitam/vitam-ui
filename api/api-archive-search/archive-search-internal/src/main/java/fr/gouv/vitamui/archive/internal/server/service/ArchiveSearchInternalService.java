@@ -111,7 +111,7 @@ public class ArchiveSearchInternalService {
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
-    private static final Integer EXPORT_DIP_MAX_ELEMENTS = 10000;
+    private static final Integer EXPORT_DIP_AND_ELIMINATION_MAX_ELEMENTS = 10000;
     private static final Integer ELIMINATION_ANALYSIS_THRESHOLD = 10000;
     public static final String SEMI_COLON = ";";
     public static final String COMMA = ",";
@@ -533,12 +533,9 @@ public class ArchiveSearchInternalService {
                             final VitamContext vitamContext)
         throws VitamClientException {
 
-        LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto);
-        exportDipCriteriaDto.getExportDIPSearchCriteria().setPageNumber(0);
-        exportDipCriteriaDto.getExportDIPSearchCriteria().setSize(EXPORT_DIP_MAX_ELEMENTS);
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
-        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
-        JsonNode dslQuery = mapRequestToDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria());
+        LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto.toString());
+        JsonNode dslQuery = prepareDslQuery(exportDipCriteriaDto.getExportDIPSearchCriteria(), vitamContext);
+        LOGGER.debug("Export DIP final DSL query {} ", dslQuery);
 
         DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
         dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
@@ -548,7 +545,68 @@ public class ArchiveSearchInternalService {
         return response.findValue(OPERATION_IDENTIFIER).textValue();
     }
 
-    public DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
+    public JsonNode startEliminationAnalysis(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+
+        LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
+        JsonNode dslQuery = prepareDslQuery(searchQuery, vitamContext);
+        EliminationRequestBody eliminationRequestBody = null;
+        try {
+            eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        } catch (InvalidParseOperationException e) {
+            throw new PreconditionFailedException("invalid request");
+        }
+
+        LOGGER.debug("Elimination analysis final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        RequestResponse<JsonNode> jsonNodeRequestResponse =
+            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
+
+
+        return jsonNodeRequestResponse.toJsonNode();
+    }
+
+    public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+
+        LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
+        JsonNode dslQuery = prepareDslQuery(searchQuery, vitamContext);
+        EliminationRequestBody eliminationRequestBody = null;
+        try {
+            eliminationRequestBody = getEliminationRequestBody(dslQuery);
+        } catch (InvalidParseOperationException e) {
+            throw new PreconditionFailedException("invalid request");
+        }
+        LOGGER.debug("Elimination action final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        RequestResponse<JsonNode> jsonNodeRequestResponse =
+            eliminationService.startEliminationAction(vitamContext, eliminationRequestBody);
+        return jsonNodeRequestResponse.toJsonNode();
+    }
+
+    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet) throws InvalidParseOperationException {
+
+        ObjectNode query = JsonHandler.createObjectNode();
+        query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
+        query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
+        query.put(BuilderToken.GLOBAL.THRESOLD.exactToken(), ELIMINATION_ANALYSIS_THRESHOLD);
+
+        EliminationRequestBody requestBody = new EliminationRequestBody();
+        requestBody.setDate(new SimpleDateFormat(ArchiveSearchConsts.ONLY_DATE_FORMAT).format(new Date()));
+        requestBody.setDslRequest(query);
+        return requestBody;
+    }
+
+    private JsonNode prepareDslQuery(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
+        throws VitamClientException {
+        searchQuery.setPageNumber(0);
+        searchQuery.setSize(EXPORT_DIP_AND_ELIMINATION_MAX_ELEMENTS);
+        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
+        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
+
+        return dslQuery;
+    }
+
+    private DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
         DipRequest dipRequest = new DipRequest();
 
         if(exportDipCriteriaDto != null) {
@@ -568,65 +626,4 @@ public class ArchiveSearchInternalService {
         RequestResponse<JsonNode> response = exportDipV2Service.exportDip( vitamContext, dipRequest);
         return response.toJsonNode();
     }
-
-    public JsonNode startEliminationAnalysis(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
-        throws VitamClientException {
-        LOGGER.debug("Elimination analysis by criteria {} ", searchQuery.toString());
-        searchQuery.setPageNumber(0);
-        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
-        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
-        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-
-        EliminationRequestBody eliminationRequestBody = null;
-        try {
-            eliminationRequestBody = getEliminationRequestBody(dslQuery);
-        } catch (InvalidParseOperationException e) {
-            throw new PreconditionFailedException("invalid request");
-        }
-
-        LOGGER.debug("Elimination analysis final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
-        RequestResponse<JsonNode> jsonNodeRequestResponse =
-            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
-
-
-        return jsonNodeRequestResponse.toJsonNode();
-    }
-
-    // TODO nabil: to check requqest and commonize parts
-    public JsonNode startEliminationAction(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
-        throws VitamClientException {
-        LOGGER.debug("Elimination action by criteria {} ", searchQuery.toString());
-        searchQuery.setPageNumber(0);
-        searchQuery.setSize(EXPORT_DIP_MAX_ELEMENTS);
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
-        archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
-        JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-
-        EliminationRequestBody eliminationRequestBody = null;
-        try {
-            eliminationRequestBody = getEliminationRequestBody(dslQuery);
-        } catch (InvalidParseOperationException e) {
-            throw new PreconditionFailedException("invalid request");
-        }
-
-        LOGGER.debug("Elimination action final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
-        RequestResponse<JsonNode> jsonNodeRequestResponse =
-            eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
-
-        return jsonNodeRequestResponse.toJsonNode();
-    }
-
-    public EliminationRequestBody getEliminationRequestBody(JsonNode updateSet) throws InvalidParseOperationException {
-        ObjectNode query = JsonHandler.createObjectNode();
-        query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
-        query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
-        query.put(BuilderToken.GLOBAL.THRESOLD.exactToken(), ELIMINATION_ANALYSIS_THRESHOLD);
-
-        EliminationRequestBody requestBody = new EliminationRequestBody();
-        requestBody.setDate(new SimpleDateFormat(ArchiveSearchConsts.ONLY_DATE_FORMAT).format(new Date()));
-        requestBody.setDslRequest(query);
-        return requestBody;
-    }
-
 }

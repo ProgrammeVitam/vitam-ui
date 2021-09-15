@@ -90,7 +90,7 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
   private initExportForm() {
     const messageRequestIdentifier = uuid.v4();
     this.exportDIPform = this.formBuilder.group({
-      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE')],
+      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.EXCLUDE')],
       messageRequestIdentifier: [{ value: messageRequestIdentifier, disabled: true }, Validators.required],
       requesterIdentifier: [null, Validators.required],
       archivalAgencyIdentifier: [null, Validators.required],
