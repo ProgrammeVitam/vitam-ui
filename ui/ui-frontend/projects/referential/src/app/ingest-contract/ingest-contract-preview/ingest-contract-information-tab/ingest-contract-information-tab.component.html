@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-10 form-control">
       <vitamui-common-slide-toggle [formControl]="statusControl" i18n="status@@ingestContractPreviewLabelName">
-        Compte actif
+        Contrat actif
       </vitamui-common-slide-toggle>
     </div>
   </div>
@@ -127,7 +127,7 @@
       >
       </vitamui-library-input>
       <vitamui-library-input
-        placeholder="Date d'activation"
+        placeholder="Date de désactivation"
         *ngIf="!ingestContract?.deactivationDate"
         i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
         [value]=""
