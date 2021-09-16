@@ -1,31 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.cas.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -37,6 +11,7 @@ import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -56,6 +31,31 @@ import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @EnableMongoRepositories(basePackageClasses = { CustomSequenceRepository.class, TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
@@ -118,6 +118,8 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    private PasswordValidator passwordValidator = new PasswordValidator();
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
@@ -128,6 +130,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         casService.setSubrogationTokenTtl(15);
         casService.setTimeIntervalForLoginAttempts(20);
         casService.setPasswordEncoder(passwordEncoder);
+        casService.setPasswordValidator(passwordValidator);
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         final Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
@@ -204,6 +207,7 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     private User prepareUserPwd(final String pwd) {
         final User user = new User();
         user.setEmail(EMAIL);
+        user.setLastname("zz");
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setStatus(UserStatusEnum.ENABLED);
         user.setCustomerId(CUSTOMER_ID);

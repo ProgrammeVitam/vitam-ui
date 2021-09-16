@@ -34,38 +34,49 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.util;
+package fr.gouv.vitamui.commons.security.client.config.password;
 
-/**
- * Constants.
- *
- * @sicne 0.1.0
- */
-public abstract class Constants {
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-    public static final String USERNAME = "username";
+import java.util.List;
 
-    // surrogation:
-    public static final String SURROGATE = "surrogate";
+@Data
+@Configuration
+@ConfigurationProperties(prefix = "password")
+public class PasswordConfiguration {
+    public static String ANSSI = "anssi";
+    public static String CUSTOM = "custom";
+    // default profile is anssi, custom otherwise
+    private String profile = "anssi";
+    private Integer length = 12;
+    private boolean checkOccurrence = true;
+    private Integer occurrencesCharsNumber = 3;
+    private Integer maxOldPassword = 12;
+    private PasswordConstraints constraints;
 
-    public static final String SUPER_USER = "superUser";
+    @Data
+    public static class PasswordConstraints {
+        private PasswordDefaultConstraints defaults;
+        private PasswordCustomConstraints customs;
+    }
 
-    // web:
-    public static final String PORTAL_URL = "portalUrl";
+    @Data
+    public static class PasswordDefaultConstraints {
+        private SpecialChars specialChars;
+        private List<String> messages;
+    }
 
-    public static final String VITAM_LOGO = "vitamLogo";
+    @Data
+    public static class SpecialChars {
+        private String title;
+        private List<String> messages;
+    }
 
-    public static final String VITAM_UI_LARGE_LOGO = "vitamuiLargeLogo";
-
-    public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
-
-    public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwodCustomConstraints";
-
-    public static final String PASSWORD_DEFAULT_CONSTRAINTS = "passwodAnssiConstraints";
-
-    public static final String MAX_OLD_PASSWORD = "maxOldPassword";
-
-    public static final String CHECK_OCCURRENCE = "checkOccurrence";
-
-    public static final String OCCURRENCE_CHAR_NUMBERS = "occurrencesCharsNumber";
+    @Data
+    public static class PasswordCustomConstraints {
+        private String title;
+        private List<String> messages;
+    }
 }

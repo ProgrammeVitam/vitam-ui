@@ -1,0 +1,20 @@
+password:
+  profile: "anssi"
+  max-old-password: 3
+  check-occurrence: true
+  occurrences-chars-number: 4
+  constraints:
+    defaults-constraints:
+      title: 'p'
+      messages:
+        - t1
+        - t2
+    customs-constraints:
+      custom-messages:
+        - element 1
+        - element 2
+      special-chars:
+        title: 't'
+        messages:
+          - m1
+          - m2

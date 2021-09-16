@@ -36,10 +36,28 @@
  */
 package fr.gouv.vitamui.cas.config;
 
-import java.util.Collection;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
+import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
+import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
+import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
+import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
+import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
+import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
+import lombok.SneakyThrows;
+import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
@@ -79,7 +97,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.ApplicationEventPublisher;
@@ -90,36 +107,16 @@ import org.springframework.core.Ordered;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
-import fr.gouv.vitamui.cas.authentication.DelegatedSurrogateAuthenticationPostProcessor;
-import fr.gouv.vitamui.cas.authentication.IamSurrogateAuthenticationService;
-import fr.gouv.vitamui.cas.authentication.UserAuthenticationHandler;
-import fr.gouv.vitamui.cas.authentication.UserPrincipalResolver;
-import fr.gouv.vitamui.cas.pm.IamPasswordManagementService;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
-import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
-import lombok.SneakyThrows;
-import lombok.val;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Configure all beans to customize the CAS server.
  */
 @Configuration
-@EnableConfigurationProperties({CasConfigurationProperties.class, IamClientConfigurationProperties.class})
-@Import(ServerIdentityAutoConfiguration.class)
+@EnableConfigurationProperties({CasConfigurationProperties.class, IamClientConfigurationProperties.class, PasswordConfiguration.class})
+@Import({ServerIdentityAutoConfiguration.class})
 public class AppConfig extends BaseTicketCatalogConfigurer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AppConfig.class);
@@ -240,6 +237,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     }
 
     @Bean
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidator();
+    }
+
+    @Autowired
+    private PasswordConfiguration passwordConfiguration;
+
+    @Bean
     public SecurityInterceptor requiresAuthenticationAccessTokenInterceptor() {
         val secConfig = oauthSecConfig.getObject();
         val clients =
@@ -355,7 +360,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     public PasswordManagementService passwordChangeService() {
         return new IamPasswordManagementService(casProperties.getAuthn().getPm(), passwordManagementCipherExecutor, casProperties.getServer().getPrefix(),
                 passwordHistoryService, casRestClient(), providersService(), identityProviderHelper(), centralAuthenticationService.getObject(), utils(),
-                ticketRegistry);
+                ticketRegistry, passwordValidator(), passwordConfiguration);
     }
 
     @Bean
@@ -363,4 +368,8 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return new InitContextConfiguration();
     }
 
+    @Bean
+    public ServletContextInitializer servletPasswordContextInitializer() {
+        return new InitPasswordConstraintsConfiguration();
+    }
 }
