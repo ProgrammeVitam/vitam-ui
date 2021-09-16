@@ -107,9 +107,23 @@ export interface PagedResult {
   results: any[];
   pageNumbers: number;
   totalResults: number;
-  facets?: ResultFacet[];
+  facets?: ResultFacetList[];
+  nodesFacets?: ResultFacet[];
+  waitingToRecalculateRulesListFacets?: ResultFacet[];
+  expiredRulesListFacets?: ResultFacet[];
+  rulesListFacets?: ResultFacet[];
+  finalActionsFacets?: ResultFacet[];
+  noAppraisalRulesFacets?: ResultFacet[];
 }
 
+export interface ResultFacetList {
+  name: string;
+  buckets: ResultBucket[];
+}
+export interface ResultBucket {
+  value: string;
+  count: number;
+}
 export interface ResultFacet {
   node: string;
   count: number;
@@ -129,4 +143,17 @@ export interface CriteriaValue {
   value?: string;
   beginInterval?: string;
   endInterval?: string;
+}
+
+export class ArchiveSearchResultFacets {
+  nodesFacets?: ResultFacet[];
+  appraisalRuleFacets?: AppraisalRuleFacets;
+}
+
+export class AppraisalRuleFacets {
+  waitingToRecalculateRulesListFacets: ResultFacet[];
+  expiredRulesListFacets: ResultFacet[];
+  rulesListFacets: ResultFacet[];
+  finalActionsFacets: ResultFacet[];
+  noAppraisalRulesFacets: ResultFacet[];
 }

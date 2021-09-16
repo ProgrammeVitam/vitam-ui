@@ -170,7 +170,6 @@ public class ArchiveSearchConsts {
     public static final String ID = "#id";
     public static final String NAME = "Name";
     public static final String SHORT_NAME = "ShortName";
-    public static final String PUID = "PUID";
 
     /* Title and Description Query fields */
     public static final String TITLE = "Title";
@@ -182,6 +181,13 @@ public class ArchiveSearchConsts {
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
+
+    public static final String FACETS_EXPIRED_RULES_SCOPED = "EXPIRED_RULES_SCOPED";
+    public static final String FACETS_RULES_SCOPED_NUMBER = "RULES_SCOPED_NUMBER";
+    public static final String FACETS_FINAL_ACTION_SCOPED = "FINAL_ACTION_SCOPED";
+    public static final String FACETS_WAITING_TO_RECALCULATE_NUMBER = "WAITING_TO_RECALCULATE_NUMBER";
+    public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
+    public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
     /* StartDate and EndDate Query fields */
     public static final String START_DATE = "StartDate";
     public static final String START_DATE_CRITERIA = "START_DATE";

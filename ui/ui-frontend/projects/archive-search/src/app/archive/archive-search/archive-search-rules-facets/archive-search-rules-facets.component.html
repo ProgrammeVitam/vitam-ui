@@ -1,0 +1,52 @@
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
+    </ng-template>
+    <ng-container
+      *vitamuiCommonHasRole="{
+        appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+        tenantIdentifier: this.tenantIdentifier,
+        role: 'ROLE_SEARCH_WITH_RULES'
+      }"
+    >
+      <div class="card-criteria">
+        <app-search-appraisal-rules-facets
+          [totalResults]="totalResults"
+          [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+        ></app-search-appraisal-rules-facets>
+      </div>
+    </ng-container>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.COMMUNICABILITY' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

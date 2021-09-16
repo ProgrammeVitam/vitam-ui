@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-3">
+    <app-logbook-operation-facet
+      [facetDetails]="expiredRulesFacetDetails"
+      [facetTitle]="'EXPIRED_RULES' | translate"
+    ></app-logbook-operation-facet>
+  </div>
+  <div class="col-3">
+    <app-logbook-operation-facet
+      [facetDetails]="finalActionFacetDetails"
+      [facetTitle]="'FINAL_ACTIONS' | translate"
+    ></app-logbook-operation-facet>
+  </div>
+
+  <div class="col-3">
+    <app-logbook-operation-facet
+      [facetDetails]="archiveUnitsCountFacetDetails"
+      [facetTitle]="'ARCHIVE_UNITS_COUNT' | translate"
+    ></app-logbook-operation-facet>
+  </div>
+</div>

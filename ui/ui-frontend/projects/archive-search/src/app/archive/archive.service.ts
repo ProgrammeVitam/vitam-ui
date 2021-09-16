@@ -39,14 +39,16 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { ArchiveApiService } from '../core/api/archive-api.service';
 import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
+import { SearchResponse } from './models/search-response.interface';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
@@ -190,6 +192,97 @@ export class ArchiveService extends SearchService<any> {
 
   launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+   }
+  private buildPagedResults(response: SearchResponse): PagedResult {
+    let pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    let nodesFacets: ResultFacet[] = [];
+    let finalActionsFacets: ResultFacet[] = [];
+    let rulesListFacets: ResultFacet[] = [];
+    let expiredRulesListFacets: ResultFacet[] = [];
+    let waitingToRecalculateRulesListFacets: ResultFacet[] = [];
+    let noAppraisalRulesListFacets: ResultFacet[] = [];
+
+    if (response.$facetResults && response.$facetResults.length > 0) {
+      for (let facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            nodesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+
+        if (facet.name === 'FINAL_ACTION_SCOPED') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+        if (facet.name === 'RULES_SCOPED_NUMBER') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            rulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+        if (facet.name === 'EXPIRED_RULES_SCOPED') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+        if (facet.name === 'WAITING_TO_RECALCULATE_NUMBER') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+
+        if (facet.name === 'COUNT_WITHOUT_RULES') {
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            noAppraisalRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+      }
+    }
+    pagedResult.facets = response.$facetResults;
+    pagedResult.nodesFacets = nodesFacets;
+    pagedResult.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
+    pagedResult.expiredRulesListFacets = expiredRulesListFacets;
+    pagedResult.rulesListFacets = rulesListFacets;
+    pagedResult.finalActionsFacets = finalActionsFacets;
+    pagedResult.noAppraisalRulesFacets = noAppraisalRulesListFacets;
+    return pagedResult;
+  }
+
+  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
+    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
+      (response) => {
+        let filename;
+        if (response.headers.get('content-disposition').includes('filename')) {
+          filename = response.headers.get('content-disposition').split('=')[1];
+        } else {
+          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
+        }
+
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(response.body);
+        element.download = filename;
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      (errors) => {
+        console.log('Error message : ', errors);
+      }
+    );
   }
 
   normalizeTitle(title: string): string {
