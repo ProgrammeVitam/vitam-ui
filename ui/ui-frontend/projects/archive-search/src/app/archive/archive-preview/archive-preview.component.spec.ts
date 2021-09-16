@@ -36,26 +36,21 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
-
 import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from '../../../environments/environment.prod';
-import { of } from 'rxjs';
-
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
-import { Unit } from '../models/unit.interface';
-
-import { ArchivePreviewComponent } from './archive-preview.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment.prod';
 import { ArchiveService } from '../archive.service';
+import { Unit } from '../models/unit.interface';
+import { ArchivePreviewComponent } from './archive-preview.component';
 
 describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
@@ -103,7 +98,7 @@ describe('ArchivePreviewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ArchivePreviewComponent);
     component = fixture.componentInstance;
-    let archiveUnit: Unit = {
+    const archiveUnit: Unit = {
       '#allunitups': [],
       '#id': 'id',
       '#object': '',
@@ -111,6 +106,7 @@ describe('ArchivePreviewComponent', () => {
       '#unitups': [],
       '#opi': '',
       Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
     };
     component.archiveUnit = archiveUnit;
     fixture.detectChanges();
