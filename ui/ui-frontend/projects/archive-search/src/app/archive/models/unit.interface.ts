@@ -10,6 +10,7 @@ export interface Unit {
   Title?: string;
   Title_?: any;
   Description?: string;
+  Description_?: any;
   DescriptionLevel?: string;
   CreatedDate?: Date;
   StartDate?: Date;
@@ -23,8 +24,8 @@ export interface Unit {
   DuaEndDate?: Date;
   OriginatingAgencyArchiveUnitIdentifier?: string;
   Status?: string;
-  Vtag?: Array<{ Key: string[], Value: string[] }>;
-  Keyword?: Array<{ KeywordReference: string, KeywordContent: string }>;
+  Vtag?: Array<{ Key: string[]; Value: string[] }>;
+  Keyword?: Array<{ KeywordReference: string; KeywordContent: string }>;
   Type?: string;
   PhysicalAgency?: string[];
   PhysicalStatus?: string[];
@@ -35,5 +36,4 @@ export interface Unit {
   isPhysical?: boolean;
 
   [key: string]: any;
-
 }

@@ -1,6 +1,6 @@
 <div class="archive-search-section">
   <form [formGroup]="form">
-    <div class="row">    
+    <div class="row">
       <h5>{{'ARCHIVE_SEARCH.TITLE_SEARCH' | translate}} </h5>
     </div>
 
@@ -180,15 +180,15 @@
             <div class="col-2 form-control"></div>
             <div class="col-4 form-control">
               <mat-form-field class="vitamui-mat-select search-input-criteria">
-                <mat-select formControlName="otherCriteria" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);"                           
+                <mat-select formControlName="otherCriteria" style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);"
                             placeholder="{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate}}"
-                          
+
                             (valueChange)="onSelectOtherCriteria()">
                   <mat-option value=""style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);">{{'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SELECT_OTHER_FIELD' |
                     translate}}
                   </mat-option>
                   <ng-container *ngFor="let ontology of this.ontologies">
-                    <mat-option  style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);" value="{{ontology.Value}}" matTooltip="{{ontology?.Value}}" 
+                    <mat-option  style="font-size: 14px; font-weight: 700; color: var(--vitamui-primary);" value="{{ontology.Value}}" matTooltip="{{ontology?.Value}}"
                                 matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">{{ontology.Label}}
                     </mat-option>
                   </ng-container>
@@ -346,18 +346,18 @@
               </p>
             </ng-container>
             <ng-template #subTitleFr>
-              <ng-container *ngIf="archiveUnit.Title_.fr ;else subTitleEn">
-                <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip"
-                   [matTooltipShowDelay]="300">
-                  <b>{{ archiveUnit.Title_.fr }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
+              <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
+                <p matTooltip="{{ archiveUnit?.Description_.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                  <b>{{ archiveUnit.Title_.fr }} </b> <br />
+                  {{ archiveUnit?.Description_.fr | truncate: 100 }}
                 </p>
               </ng-container>
             </ng-template>
             <ng-template #subTitleEn>
               <ng-container *ngIf="archiveUnit.Title_.en">
-                <p matTooltip="{{archiveUnit?.Description}}" matTooltipClass="vitamui-tooltip"
-                   [matTooltipShowDelay]="300">
-                  <b>{{ archiveUnit.Title_.en }} </b> <br/> {{archiveUnit?.Description | truncate:100 }}
+                <p matTooltip="{{ archiveUnit?.Description_.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                  <b>{{ archiveUnit.Title_.en }} </b> <br />
+                  {{ archiveUnit?.Description_.en | truncate: 100 }}
                 </p>
               </ng-container>
             </ng-template>
