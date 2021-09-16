@@ -143,8 +143,6 @@ public class ArchiveSearchConsts {
     public static Map<String, String> SIMPLE_FIELDS_VALUES_MAPPING =
         Map.of("GUID", "#id", "GUID_OPI", "#opi",
             ORIGINATING_AGENCY_ID_FIELD, "#originating_agency",
-            "TITLE", "Title",
-            "DESCRIPTION", "Description",
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
             "SP_LABEL", "originating_agency_label"
@@ -159,8 +157,6 @@ public class ArchiveSearchConsts {
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";
     public static final String UNIT_TYPE = "#unitType";
-    public static final String TITLE = "Title";
-    public static final String DESCRIPTION = "Description";
     public static final String START_DATE = "StartDate";
     public static final String PRODUCER_SERVICE = "#originating_agency";
     public static final String GUID = "#id";
@@ -175,6 +171,16 @@ public class ArchiveSearchConsts {
     public static final String NAME = "Name";
     public static final String SHORT_NAME = "ShortName";
     public static final String PUID = "PUID";
+
+    /* Title and Description Query fields */
+    public static final String TITLE = "Title";
+    public static final String TITLE_FR = "Title_.fr";
+    public static final String TITLE_EN = "Title_.en";
+    public static final String DESCRIPTION = "Description";
+    public static final String DESCRIPTION_FR = "Description_.fr";
+    public static final String DESCRIPTION_EN = "Description_.en";
+    public static final String TITLE_CRITERIA = "TITLE";
+    public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
 
 
