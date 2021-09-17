@@ -45,7 +45,11 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-textarea formControlName="ruleDescription" placeholder="Description" [rows]="2">
+      <vitamui-common-textarea formControlName="ruleDescription" required="required" placeholder="Description" [rows]="2">
+        <ng-container *ngIf="form.get('ruleDescription')?.touched">
+          <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required"
+            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+        </ng-container>
       </vitamui-common-textarea>
     </div>
   </div>
