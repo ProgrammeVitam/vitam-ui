@@ -1215,7 +1215,7 @@
         <note priority="1" from="description">Create an ingest contract button label</note>
       </trans-unit><trans-unit id="ingestContractPreviewLabelName" datatype="html">
         <source>
-                Compte actif
+                Contrat actif
             </source><target state="new"/>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ingest-contract/ingest-contract-preview/ingest-contract-information-tab/ingest-contract-information-tab.component.html</context>
