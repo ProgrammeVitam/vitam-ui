@@ -64,7 +64,14 @@ export class FileFormatInformationTabComponent {
   private _fileFormat: FileFormat;
 
   previousValue = (): FileFormat => {
-    return this._fileFormat;
+    var cleanedFileFortmat = this._fileFormat;
+    if (!cleanedFileFortmat.mimeType) {
+      cleanedFileFortmat.mimeType = null;
+    }
+    if (!cleanedFileFortmat.extensions) {
+      cleanedFileFortmat.extensions = null;
+    }
+    return cleanedFileFortmat;
   }
 
   @Input()
@@ -127,6 +134,8 @@ export class FileFormatInformationTabComponent {
         if (formData.extensions) {
           // The extensions property must be an array of string, not a string
           formData.extensions = formData.extensions.replace(/\s/g, '').split(',');
+        } else if(isEmpty(formData.extensions)){
+          formData.extensions = [];
         }
         return this.fileFormatService.patch(formData).pipe(catchError(() => of(null)))
     }));
