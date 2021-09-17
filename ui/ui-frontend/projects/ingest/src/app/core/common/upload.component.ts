@@ -44,7 +44,7 @@ import { UploadService } from './upload.service';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 
 
-const LAST_STEP_INDEX = 2;
+const LAST_STEP_INDEX = 1;
 
 @Component({
   selector: 'app-upload',
