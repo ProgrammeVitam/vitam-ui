@@ -171,6 +171,8 @@ pipeline {
                     branch "develop*"
                     branch "master_*"
                     tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]*+-?[0-9]*\$", comparator: "REGEXP"
+                    tag pattern: "^[1-9]+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
+                    tag pattern: "^[1-9]+\\.rc+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
                 }
                 environment(name: 'DO_PUBLISH', value: 'true')
                 environment(name: 'DO_BUILD', value: 'true')
@@ -189,6 +191,8 @@ pipeline {
                     branch "master_*"
                     branch "master"
                     tag pattern: "^[1-9]+\\.[0-9]+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
+                    tag pattern: "^[1-9]+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
+                    tag pattern: "^[1-9]+\\.rc+\\.[0-9]+-?[0-9]*\$", comparator: "REGEXP"
                 }
                 environment(name: 'DO_CHECKMARX', value: 'true')
             }

@@ -57,9 +57,19 @@
           <div class="read-only-field text-justify">
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
             <div>
-              <p class="text-justify">
-                {{ archiveUnit.Description }}
-              </p>
+              <ng-container *ngIf="archiveUnit?.Description; else descriptionFr">
+                {{ archiveUnit?.Description }}
+              </ng-container>
+              <ng-template #descriptionFr>
+                <ng-container *ngIf="archiveUnit.Description_.fr; else descriptionEn">
+                  {{ archiveUnit.Description_.fr }}
+                </ng-container>
+              </ng-template>
+              <ng-template #descriptionEn>
+                <ng-container *ngIf="archiveUnit.Description_.en">
+                  {{ archiveUnit.Description_.en }}
+                </ng-container>
+              </ng-template>
             </div>
           </div>
         </div>
@@ -102,9 +112,9 @@
         </div>
         <div class="col-6">
           <div class="read-only-field">
-            <label>{{'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate}} :</label>
+            <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
             <div>
-              {{archiveUnit.DescriptionLevel}}
+              {{ archiveUnit.DescriptionLevel }}
             </div>
           </div>
         </div>
