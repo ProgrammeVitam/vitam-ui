@@ -84,8 +84,8 @@ vitamui:
 
 # Password default configuration (see vitamui_extra_vars if you want to add custom configurations)
 vitamui_password_configurations:
-  customPolicyPattern: '^(?=.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
-  anssiPolicyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{length,}$'
+  customPolicyPattern: '^(?=.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
+  anssiPolicyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
   password:
     length: 12 # 8 for custom profile
     max_old_password: 12 # 3 for custom profile
@@ -95,8 +95,8 @@ vitamui_password_configurations:
     constraints:
       defaults: # default ANSSI messages
         messages:
-          - Ne pas contenir plus de ${password.occurrences_chars_number} caractères consécutifs issus de votre nom d'utilisateur
-          - Etre différent des ${password.max_old_password} derniers mots de passe
+          - Ne pas contenir plus de ${password.occurrences-chars-number} caractères consécutifs issus de votre nom d'utilisateur
+          - Etre différent des ${password.max-old-password} derniers mots de passe
           - Avoir une taille d'au moins ${password.length} caractères
           - Les deux mots de passe doivent etre identiques
         special_chars:
@@ -112,5 +112,5 @@ vitamui_password_configurations:
       #    - au moins ${password.length} caractères
       #    - des miniscules et des majiscules
       #    - au moins un chiffre et un caractère spécial
-      #    - etre différent des ${password.max_old_password} derniers mots de passe
+      #    - etre différent des ${password.max-old-password} derniers mots de passe
       #    - les deux mots de passe doivent etre identiques
