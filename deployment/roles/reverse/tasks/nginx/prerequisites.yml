@@ -1,0 +1,42 @@
+---
+
+- name: 'Tasks > reverse > prerequisites.yml | Ensure that epel-release is present on the system'
+  package:
+    state: present
+    name: epel-release
+  become: true
+
+- name: 'Tasks > reverse > prerequisites.yml | Install nginx package'
+  package:
+    state: present
+    name: nginx
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+  become: true
+
+- name: 'Tasks > reverse > prerequisites.yml | Install module nginx-mod-stream'
+  package:
+    state: present
+    name: nginx-mod-stream
+  become: true
+
+- name: 'Tasks > reverse > prerequisites.yml | Set vars user and group'
+  set_fact:
+    reverse_user: "root"
+    reverse_group: "root"
+
+- name: 'Tasks > reverse > prerequisites.yml | Ensure that reverse group exists'
+  group:
+    name: "{{ reverse_group }}"
+    state: present
+
+- name: 'Tasks > reverse > prerequisites.yml | Ensure that reverse user exists'
+  user:
+    name: "{{ reverse_user }}"
+    create_home: no
+    group: "{{ reverse_group }}"
+    state: present
+  become: true
+
