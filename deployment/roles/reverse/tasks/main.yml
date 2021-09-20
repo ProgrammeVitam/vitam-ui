@@ -3,9 +3,5 @@
 - import_tasks: apache.yml
   when: reverse|lower == 'apache'
 
-# Task breaking deployments (cf. ticket #8448)
-#- import_tasks: merge_index_apache.yml
-#  when: reverse|lower == 'apache'
-
 - import_tasks: nginx.yml
   when: reverse|lower == 'nginx'
