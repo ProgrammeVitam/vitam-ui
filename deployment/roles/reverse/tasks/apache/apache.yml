@@ -111,6 +111,15 @@
   with_fileglob:
     - "{{ inventory_dir }}/certs/server/ca/*.crt"
 
+- name: Copy the CA (servicesca)
+  copy:
+    src: "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/servicesca.pem"
+    dest:  "/etc/{{ apache_service }}/certs/servicesca.pem"
+    owner: "root"
+    group: "{{ apache_group }}"
+    mode: 0400
+  when: (vitam_reverse_external_protocol is defined) and (vitam_reverse_external_protocol == 'https')
+
 - name: copy httpd configuration template
   template:
     src: "apache/httpd_config"
