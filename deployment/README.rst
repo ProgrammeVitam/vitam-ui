@@ -197,8 +197,13 @@ Déploiement
 
 *Playbook* ::
 
-   ansible-playbook -i <inventaire> vitamui.yml --vault-password-file vault_pass.txt [ --extra-vars=@./environments/vitamui_extra_vars.yml ]
+   ansible-playbook -i <inventaire> vitamui.yml --vault-password-file vault_pass.txt [ --extra-vars=@./environments/vitamui_extra_vars.yml ] [-e extra=yes]
 
+pour deployer le browser , le reverse et les liens d'accès rapide vitam-ui il faut mettre la variable extra vars:  extra=yes
+
+ATTENTION: il faut avoir déployer aussi les extras Vitam, sinon le déploiement plantera. 
+
+en l'absence ce cette extra vars, le comportement par defaut est extra=no
 
 Désinstallation
 =================
