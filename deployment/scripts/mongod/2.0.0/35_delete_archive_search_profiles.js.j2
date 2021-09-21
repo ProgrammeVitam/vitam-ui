@@ -1,0 +1,9 @@
+db = db.getSiblingDB('iam')
+
+print("START_35_delete_archive_search_profiles.js");
+
+// ----- DELETE OLD PROFILES -----
+
+db.profiles.deleteMany( { "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP" } );
+
+print("END_35_delete_archive_search_profiles.js");
