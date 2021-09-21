@@ -104,4 +104,8 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public ResponseEntity<JsonNode> startEliminationAnalysis(final SearchCriteriaDto query) {
         return archiveInternalRestClient.startEliminationAnalysis(getInternalHttpContext(), query);
     }
+
+    public ResponseEntity<JsonNode> startEliminationAction(final SearchCriteriaDto query) {
+        return archiveInternalRestClient.startEliminationAction(getInternalHttpContext(), query);
+    }
 }

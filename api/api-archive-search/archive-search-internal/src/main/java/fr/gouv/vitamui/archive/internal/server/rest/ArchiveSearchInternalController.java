@@ -239,4 +239,19 @@ public class ArchiveSearchInternalController {
         return jsonNode;
     }
 
+    @PostMapping(RestApi.ELIMINATION_ACTION)
+    public JsonNode startEliminationAction(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        LOGGER.info("Calling elimination action by criteria {} ", searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        JsonNode jsonNode = archiveInternalService.startEliminationAction(searchQuery, vitamContext);
+        return jsonNode;
+    }
 }

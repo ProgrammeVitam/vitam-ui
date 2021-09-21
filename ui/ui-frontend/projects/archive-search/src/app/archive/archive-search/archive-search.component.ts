@@ -35,14 +35,14 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, Direction, StartupService } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
@@ -65,6 +65,7 @@ import { DipRequestCreateComponent } from './dip-request-create/dip-request-crea
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
 const MAX_DIP_EXPORT_THRESHOLD = 10000;
+const MAX_ELIMINATION_ACTION_THRESHOLD = 10000;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
@@ -225,9 +226,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   hasEliminationActionRole = false;
   hasEliminationAnalysisRole = false;
   openDialogSubscription: Subscription;
+  analysisliminationSuscription: Subscription;
+  showConfirmEliminationSuscription: Subscription;
+  actionliminationSuscription: Subscription;
 
   eliminationAnalysisResponse: any;
-  buttonEliminationAnalysisEnabled: boolean;
+  eliminationActionResponse: any;
+
+  @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -237,7 +243,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
     if (indexOfCategory === -1) {
       this.additionalSearchCriteriaCategories.push({ name: categoryName, index: this.additionalSearchCriteriaCategories.length + 1 });
-      // make the selected tab
+
       this.additionalSearchCriteriaCategories.forEach((category, index) => {
         category.index = index + 1;
       });
@@ -862,6 +868,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptionFilingHoldingSchemeNodes.unsubscribe();
     this.subscriptionSimpleSearchCriteriaAdd.unsubscribe();
     this.openDialogSubscription.unsubscribe();
+    this.showConfirmEliminationSuscription.unsubscribe();
+    this.actionliminationSuscription?.unsubscribe();
+    this.analysisliminationSuscription?.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
@@ -1084,16 +1093,62 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       language: this.translateService.currentLang,
     };
 
-    this.archiveService.startEliminationAnalysis(exportDIPSearchCriteria, this.accessContract).subscribe((data) => {
-      this.eliminationAnalysisResponse = data.$results;
+    this.analysisliminationSuscription = this.archiveService
+      .startEliminationAnalysis(exportDIPSearchCriteria, this.accessContract)
+      .subscribe((data) => {
+        this.eliminationAnalysisResponse = data.$results;
 
-      if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
-        const guid = this.eliminationAnalysisResponse[0].itemId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+        if (this.eliminationAnalysisResponse && this.eliminationAnalysisResponse[0].itemId) {
+          const guid = this.eliminationAnalysisResponse[0].itemId;
+          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+          const serviceUrl =
+            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
-        this.openSnackBarForWorkflow(message, serviceUrl);
-      }
-    });
+          this.openSnackBarForWorkflow(message, serviceUrl);
+        }
+      });
+  }
+
+  launchEliminationAction() {
+    if (this.itemSelected > MAX_ELIMINATION_ACTION_THRESHOLD) {
+      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+        panelClass: 'vitamui-snack-bar',
+        data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
+        duration: 10000,
+      });
+      return;
+    }
+    const dialogToOpen = this.confirmEliminationActionDialog;
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+
+    this.showConfirmEliminationSuscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+        const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+        const exportDIPSearchCriteria = {
+          criteriaList: this.listOfUACriteriaSearch,
+          pageNumber: this.currentPage,
+          size: PAGE_SIZE,
+          sortingCriteria,
+          language: this.translateService.currentLang,
+        };
+
+        this.actionliminationSuscription = this.archiveService
+          .launchEliminationAction(exportDIPSearchCriteria, this.accessContract)
+          .subscribe((response) => {
+            this.eliminationActionResponse = response.$results;
+
+            if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
+              const guid = this.eliminationActionResponse[0].itemId;
+              const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+              const serviceUrl =
+                this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+              this.openSnackBarForWorkflow(message, serviceUrl);
+            }
+          });
+      });
   }
 }

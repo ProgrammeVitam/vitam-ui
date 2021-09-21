@@ -171,4 +171,9 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.info("elimination analysis with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
     }
+
+    public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
+        LOGGER.info("elimination action with query : {}", searchQuery);
+        return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
+    }
 }
