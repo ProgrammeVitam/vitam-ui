@@ -61,12 +61,12 @@
                 {{ archiveUnit?.Description }}
               </ng-container>
               <ng-template #descriptionFr>
-                <ng-container *ngIf="archiveUnit.Description_.fr; else descriptionEn">
+                <ng-container *ngIf="archiveUnit?.Description_?.fr; else descriptionEn">
                   {{ archiveUnit.Description_.fr }}
                 </ng-container>
               </ng-template>
               <ng-template #descriptionEn>
-                <ng-container *ngIf="archiveUnit.Description_.en">
+                <ng-container *ngIf="archiveUnit?.Description_?.en">
                   {{ archiveUnit.Description_.en }}
                 </ng-container>
               </ng-template>
