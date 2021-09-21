@@ -34,29 +34,25 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component,EventEmitter,Input,OnChanges,OnInit,Output,SimpleChanges} from '@angular/core';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
-import {AuthService,Event,ExternalParameters,ExternalParametersService,fadeInOutAnimation,LogbookService} from 'ui-frontend-common';
-import {LogbookDownloadService} from '../logbook-download.service';
-
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService, Event, ExternalParameters, ExternalParametersService, fadeInOutAnimation, LogbookService } from 'ui-frontend-common';
+import { LogbookDownloadService } from '../logbook-download.service';
 
 @Component({
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  animations: [
-    fadeInOutAnimation
-  ]
+  animations: [fadeInOutAnimation],
 })
-export class LogbookOperationDetailComponent implements OnInit,OnChanges {
-
+export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   @Input() eventId: string;
 
   @Input() tenantIdentifier: number;
   @Input() isPopup: boolean;
 
-  @Output() closePanel=new EventEmitter();
+  @Output() closePanel = new EventEmitter();
 
   event: Event;
   loading: boolean;
@@ -65,39 +61,35 @@ export class LogbookOperationDetailComponent implements OnInit,OnChanges {
   canDownload: boolean;
   couldDownload: boolean;
   accessContractId: string;
+  downloadButtonTitle: string;
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private logbookService: LogbookService,private authService: AuthService,
-    private route: ActivatedRoute,private logbookDownloadService: LogbookDownloadService,
-    private externalParameterService: ExternalParametersService,private snackBar: MatSnackBar) {
-  }
+  constructor(
+    private logbookService: LogbookService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private logbookDownloadService: LogbookDownloadService,
+    private externalParameterService: ExternalParametersService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
-      const accessContratId: string=parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if(accessContratId&&accessContratId.length>0) {
-        this.accessContractId=accessContratId;
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
+      const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+      if (accessContratId && accessContratId.length > 0) {
+        this.accessContractId = accessContratId;
       } else {
-        this.snackBar.open(
-          $localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utiisateur`,
-          null,{
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
+        this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utiisateur`, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
       }
     });
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.eventId||changes.tenantIdentifier) {
+    if (changes.eventId || changes.tenantIdentifier) {
       this.refreshEvents();
     }
-  }
-
-  openPopup() {
-    window.open('/logbook-operation/tenant/'+this.tenantIdentifier+'/event/'+this.event.id,
-      'detailPopup','width=584, height=713, resizable=no, location=no');
-    this.emitClose();
   }
 
   closePopup() {
@@ -108,56 +100,54 @@ export class LogbookOperationDetailComponent implements OnInit,OnChanges {
     this.closePanel.emit();
   }
 
-
   downloadReports() {
-    if(this.tenantIdentifier===null||this.tenantIdentifier===undefined||!this.eventId) {
+    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
       return;
     }
-    this.logbookDownloadService.downloadReport(this.event,this.tenantIdentifier,this.accessContractId);
+    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
   updateCanDownload(event: Event) {
-    const canDownloadReports=this.logbookDownloadService.canDownloadReports(event);
-    this.hideDownload=canDownloadReports.length<1;
-    if(!this.hideDownload) {
-      this.canDownload=canDownloadReports.includes('download');
-      this.couldDownload=canDownloadReports.includes('in-progress');
+    const canDownloadReports = this.logbookDownloadService.canDownloadReports(event);
+    this.hideDownload = canDownloadReports.length < 1;
+    if (!this.hideDownload) {
+      this.canDownload = canDownloadReports.includes('download');
+      this.couldDownload = canDownloadReports.includes('in-progress');
     } else {
-      this.canDownload=false;
-      this.couldDownload=false;
+      this.canDownload = false;
+      this.couldDownload = false;
     }
   }
 
   private refreshEvents() {
-    if(this.tenantIdentifier===null||this.tenantIdentifier===undefined||!this.eventId) {
+    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
       return;
     }
 
-    const tenant=this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId,this.tenantIdentifier);
+    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
 
-    if(!tenant) {
+    if (!tenant) {
       return;
     }
 
-    const accessContractLogbookIdentifier=tenant.accessContractLogbookIdentifier||'';
+    const accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
 
-    this.loading=true;
-    this.logbookService.getOperationById(this.eventId,this.tenantIdentifier,accessContractLogbookIdentifier)
-      .subscribe((event) => {
-        this.event=event;
-        this.loading=false;
-        this.updateCanDownload(event);
-        if(event.events.length>0&&event.events[0].data!=null) {
-          const data=JSON.parse(this.event.events[0].data);
-          if(data!=null&&data.FileName!=null) {
-            this.reportFileName=data.FileName;
-          } else {
-            this.reportFileName=null;
-          }
+    this.loading = true;
+    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, accessContractLogbookIdentifier).subscribe((event) => {
+      this.event = event;
+      this.downloadButtonTitle = event?.typeProc === 'EXPORT_DIP' ? 'Télécharger le DIP' : 'Télécharger le rapport';
+      this.loading = false;
+      this.updateCanDownload(event);
+      if (event.events.length > 0 && event.events[0].data != null) {
+        const data = JSON.parse(this.event.events[0].data);
+        if (data != null && data.FileName != null) {
+          this.reportFileName = data.FileName;
         } else {
-          this.reportFileName=null;
+          this.reportFileName = null;
         }
-      });
+      } else {
+        this.reportFileName = null;
+      }
+    });
   }
-
 }
