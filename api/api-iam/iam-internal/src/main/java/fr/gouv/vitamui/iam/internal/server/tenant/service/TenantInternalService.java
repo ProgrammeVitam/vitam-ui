@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -52,9 +53,11 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
+import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
 import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
@@ -62,7 +65,6 @@ import fr.gouv.vitamui.iam.internal.server.common.utils.EntityFactory;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
-import fr.gouv.vitamui.iam.internal.server.customer.service.InitCustomerService;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.dao.ExternalParametersRepository;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.domain.ExternalParameters;
 import fr.gouv.vitamui.iam.internal.server.externalParameters.service.ExternalParametersInternalService;
@@ -228,10 +230,11 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         if (!tenantDto.isProof()) {
             checkSetReadonly(tenantDto.isReadonly(), message);
         }
-        ExternalParametersDto fullAccessContract = checkAndGetExternalParameterByIdentifier(
-            InitCustomerService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX + customer.getIdentifier(), message);
         tenantDto.setIdentifier(generateTenantIdentifier());
+        ExternalParametersDto fullAccessContract =
+            initFullAccessContractExternalParameter(customer.getIdentifier(), tenantDto.getName());
         initVitamTenantService.init(tenantDto, fullAccessContract);
+        externalParametersInternalService.create(fullAccessContract);
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
         final List<Tenant> tenants =
             tenantRepository.findByNameIgnoreCaseAndCustomerId(name, tenantDto.getCustomerId());
@@ -245,14 +248,27 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     @Transactional
     public TenantDto create(final TenantDto tenantDto) {
 
+        Optional<Customer> customerOptional = customerRepository.findById(tenantDto.getCustomerId());
+        Assert.isTrue(customerOptional.isPresent(),
+            "No customer found with id " + tenantDto.getCustomerId());
+        Customer customer = customerOptional.get();
         final TenantDto createdTenantDto = super.create(tenantDto);
+        Optional<ExternalParameters> fullAccessContractOpt = externalParametersRepository.findByIdentifier(
+            ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX +
+                customer.getIdentifier() + "_" +
+                tenantDto.getName());
+        Assert.isTrue(fullAccessContractOpt.isPresent(),
+            "No external parameter found with id " +
+                ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX +
+                customer.getIdentifier() + "_" +
+                tenantDto.getName());
+        createExternalParameterProfileForDefaultAccessContract(tenantDto.getCustomerId(), tenantDto.getIdentifier(),
+            fullAccessContractOpt.get().getId());
 
         iamLogbookService.createTenantEvent(createdTenantDto);
-
         final List<Profile> profiles =
             getDefaultProfiles(createdTenantDto.getCustomerId(), createdTenantDto.getIdentifier());
         profiles.forEach(profile -> saveProfile(profile));
-
         addAdminProfilesToAdminGroup(createdTenantDto.getCustomerId(), profiles);
         return createdTenantDto;
     }
@@ -561,5 +577,37 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     @Override
     protected Converter<TenantDto, Tenant> getConverter() {
         return tenantConverter;
+    }
+
+
+    private Profile createExternalParameterProfileForDefaultAccessContract(String customerId, Integer tenantIdentifier,
+        String externalParameterId) {
+        Profile defaultAccessContractProfile = EntityFactory
+            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+                    tenantIdentifier,
+                String.valueOf(sequenceGeneratorService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER,
+                    CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE.intValue())),
+                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+                    tenantIdentifier,
+                true,
+                "",
+                tenantIdentifier,
+                Application.EXTERNAL_PARAMS.name(),
+                List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
+                customerId, externalParameterId);
+        return saveProfile(defaultAccessContractProfile);
+    }
+
+    private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier,
+        String tenantName) {
+        ExternalParametersDto fullAccessContract = new ExternalParametersDto();
+        fullAccessContract.setIdentifier(
+            ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX + customerIdentifier + "_" +
+                tenantName);
+        fullAccessContract.setName(
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX +
+                customerIdentifier + "_" +
+                tenantName);
+        return fullAccessContract;
     }
 }

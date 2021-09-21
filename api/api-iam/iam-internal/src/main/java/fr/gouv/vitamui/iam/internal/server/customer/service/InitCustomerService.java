@@ -98,12 +98,6 @@ import java.util.stream.Collectors;
 @Setter
 public class InitCustomerService {
 
-    public static final String EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX =
-        "default_ac_";
-    public static final String EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX =
-        "Profil pour la gestion des paramétrages externes ";
-    public static final String EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT =
-        "Profil pour la gestion des paramétrages externes ";
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -171,13 +165,14 @@ public class InitCustomerService {
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
         createIdentityProvider(customerDto.getId(), customerDto.getDefaultEmailDomain());
-        ExternalParametersDto fullAccessContract = initFullAccessContractExternalParameter(customerDto.getIdentifier());
+        ExternalParametersDto fullAccessContract =
+            initFullAccessContractExternalParameter(customerDto.getIdentifier(), tenantName);
 
         final Tenant proofTenantDto =
             createProofTenant(tenantName, createdOwnerDtos.get(0).getId(), customerDto.getId(), fullAccessContract);
         final List<Profile> createdAdminProfiles = createAdminProfiles(customerDto, proofTenantDto);
         Profile fullAccessContractProfile =
-            createExternalParameterProfileForDefaultAccessContract(customerDto, proofTenantDto,
+            createExternalParameterProfileForDefaultAccessContract(customerDto.getId(), proofTenantDto.getIdentifier(),
                 fullAccessContract.getId());
         createdAdminProfiles.add(fullAccessContractProfile);
 
@@ -192,10 +187,16 @@ public class InitCustomerService {
 
     }
 
-    private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier) {
+    private ExternalParametersDto initFullAccessContractExternalParameter(String customerIdentifier,
+        String tenantName) {
         ExternalParametersDto fullAccessContract = new ExternalParametersDto();
-        fullAccessContract.setIdentifier(EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX + customerIdentifier);
-        fullAccessContract.setName(EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX + customerIdentifier);
+        fullAccessContract.setIdentifier(
+            ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX + customerIdentifier + "_" +
+                tenantName);
+        fullAccessContract.setName(
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX +
+                customerIdentifier + "_" +
+                tenantName);
         return fullAccessContract;
     }
 
@@ -292,19 +293,21 @@ public class InitCustomerService {
         return profiles;
     }
 
-    private Profile createExternalParameterProfileForDefaultAccessContract(CustomerDto customerDto, Tenant proofTenant,
+    private Profile createExternalParameterProfileForDefaultAccessContract(String customerId, Integer tenantIdentifier,
         String externalParameterId) {
         //Adding nex profile for default access contract defined in External Parameter application
         Profile defaultAccessContractProfile = EntityFactory
-            .buildProfile(EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " + proofTenant.getIdentifier(),
+            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+                    tenantIdentifier,
                 generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " + proofTenant.getIdentifier(),
+                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+                    tenantIdentifier,
                 true,
                 "",
-                proofTenant.getIdentifier(),
+                tenantIdentifier,
                 Application.EXTERNAL_PARAMS.name(),
                 List.of(ServicesData.ROLE_GET_EXTERNAL_PARAMS),
-                customerDto.getId(), externalParameterId);
+                customerId, externalParameterId);
         return saveProfile(defaultAccessContractProfile);
     }
 

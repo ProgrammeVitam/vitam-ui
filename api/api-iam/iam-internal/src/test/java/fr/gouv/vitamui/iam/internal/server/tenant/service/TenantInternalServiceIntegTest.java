@@ -254,6 +254,9 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         when(internalUserService.getDefaultAdminUser(IamServerUtilsTest.CUSTOMER_ID))
             .thenReturn(IamServerUtilsTest.buildUserDto());
         Mockito.when(internalSecurityService.getProofTenantIdentifier()).thenReturn(10001);
+        when(externalParametersRepository.findByIdentifier(Mockito.anyString()))
+            .thenReturn(Optional.of(buildExternalParameter()));
+
         final Tenant tenantProof = new Tenant();
         tenantProof.setCustomerId(IamServerUtilsTest.CUSTOMER_ID);
         tenantProof.setIdentifier(10001);
@@ -264,8 +267,6 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         TenantDto tenant = IamServerUtilsTest.buildTenantDto();
         tenant.setId(null);
 
-        when(externalParametersRepository.findByIdentifier(Mockito.anyString()))
-            .thenReturn(Optional.of(buildExternalParameter()));
 
 
         tenant = service.create(tenant);
@@ -278,7 +279,7 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         final Criteria profileCriteria = Criteria.where("obIdReq").is(MongoDbCollections.PROFILES).and("evType")
             .is(EventType.EXT_VITAMUI_CREATE_PROFILE);
         final List<Event> evProfileCreation = eventRepository.findAll(Query.query(profileCriteria));
-        assertThat(evProfileCreation).isNotNull().isNotEmpty().hasSize(1);
+        assertThat(evProfileCreation).isNotNull().isNotEmpty().hasSize(2);
         final Criteria groupUpdateCriteria =
             Criteria.where("obId").is("" + IamServerUtilsTest.GROUP_IDENTIFIER).and("obIdReq")
                 .is(MongoDbCollections.GROUPS)
