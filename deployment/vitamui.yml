@@ -24,5 +24,5 @@
 
 - import_playbook: reverse_proxy.yml
 
-# for dev and integration purpose
+# condition with extra vars -e extra=yes inside roles
 - import_playbook: vitamui_extra.yml
