@@ -90,7 +90,6 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     const query: any = {};
     this.addCriteriaFromSearch(query);
     this.addCriteriaFromFilters(query);
-    console.log(query);
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
     super.search(pageRequest);
   }
