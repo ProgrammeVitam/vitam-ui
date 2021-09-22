@@ -1,0 +1,58 @@
+---
+
+- name: 'Tasks > reverse > configure_nginx.yml | Create folder'
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: "{{ item.mode | int }}"
+  with_items:
+    - {path: "{{ nginx_ssl_conf }}", mode: 644}
+    - {path: "{{ nginx_conf_dir }}", mode: 755}
+    - {path: "{{ nginx_tmp_dir }}", mode: 755}
+    - {path: "{{ nginx_run_dir }}", mode: 755}
+    - {path: "{{ nginx_data_dir }}", mode: 755}
+    - {path: "{{ nginx_log_dir }}", mode: 755}
+  become: true
+
+- name: 'Tasks > reverse > configure_nginx.yml | Put nginx.conf in conf folder'
+  template:
+    src: "{{ role_path }}/templates/nginx/nginx.conf.j2"
+    dest: "/etc/nginx/nginx.conf"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: 0644
+  become: true
+
+- name: 'Tasks > reverse > configure_nginx.yml | Put ssl conf'
+  template:
+    src: "{{ role_path }}/templates/nginx/ssl/{{ item }}"
+    dest: "{{ nginx_ssl_conf }}/{{ item | regex_replace('\\.j2$') }}"
+    group: "{{ reverse_group }}"
+    owner: "{{ reverse_user }}"
+    mode: 0644
+  with_items:
+    - ssl.conf.j2
+    - reverse.key_pass.j2
+    - reverse.crt.j2
+    - reverse.key.j2
+    - dhparam.pem.j2
+  become: true
+
+- name: 'Tasks > reverse > configure_nginx.yml | Copy common configuration (file proxy_params)'
+  copy:
+    src: "nginx/proxy_params"
+    dest: "{{ nginx_conf_dir }}"
+    owner: "{{ reverse_user }}"
+    group: "{{ reverse_group }}"
+    mode: '0640'
+  become: true
+
+- name: 'Tasks > reverse > configure_nginx.yml | Enable the service'
+  systemd:
+    name: nginx
+    enabled: yes
+    state: started
+  become: true
+

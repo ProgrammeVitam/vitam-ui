@@ -1,0 +1,18 @@
+---
+
+- import_tasks: prerequisites.yml
+- import_tasks: configure_nginx.yml
+- import_tasks: configure_vitamui_vhost.yml
+#- import_tasks: configure_streamd.yml
+
+- name: 'Tasks > reverse > main.yml | Ensure nginx is started'
+  systemd:
+    name: nginx
+    enabled: yes
+    state: restarted
+  register: nginx_service
+  until: nginx_service.failed|bool == false
+  retries: 10
+  delay: 20
+  become: true
+
