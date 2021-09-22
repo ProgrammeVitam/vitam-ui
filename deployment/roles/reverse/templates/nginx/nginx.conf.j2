@@ -1,9 +1,9 @@
-user    {{ reverse_user }} {{ reverse_group }};
+user    {{ reverse_user }} {{  reverse_group }};
 
 worker_processes auto;
 
 error_log {{ nginx_log_dir }}/master-error.log;
-pid       {{ nginx_run_dir }}/nginx.pid;
+pid       /run/nginx.pid;
 
 
 # Load dynamic modules. See /usr/share/nginx/README.dynamic.
@@ -50,21 +50,21 @@ http {
     default_type        application/octet-stream;
 
     # Password file for ssl cert:
-    ssl_password_file {{ reverse_conf_dir }}/ssl/reverse.key_pass;
+    ssl_password_file {{ nginx_conf_dir }}/ssl/reverse.key_pass;
 
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
     include {{ nginx_conf_dir }}/*.conf;
 
-    server {
-        listen       80 default_server;
-        server_name  _;
-        root         {{ nginx_data_dir }};
+   # server {
+   #     listen       80 default_server;
+   #     server_name  _;
+   #     root         {{ nginx_data_dir }};
 
-        add_header Content-Security-Policy upgrade-insecure-requests;
+   #     add_header Content-Security-Policy upgrade-insecure-requests;
 
         # Status page for consul agent check
-        return 301 https://$http_host$request_uri;
-    }
+   #     return 301 https://$http_host$request_uri;
+   # }
 }
