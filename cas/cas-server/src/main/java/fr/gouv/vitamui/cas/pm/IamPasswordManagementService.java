@@ -163,7 +163,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
         if((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
             (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
-            String userLastName = findUsername(username);
+            String userLastName = findUserLastName(username);
             Assert.notNull(userLastName, "user last name can not be null");
             if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(), passwordConfiguration.getOccurrencesCharsNumber())) {
                 throw new PasswordContainsUserDictionaryException(
@@ -228,8 +228,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         }
     }
 
-    @Override
-    public String findUsername(final String userMail) {
+    public String findUserLastName(final String userMail) {
         String userLastName = null;
         val usernameWithLowercase = userMail.toLowerCase().trim();
         try {

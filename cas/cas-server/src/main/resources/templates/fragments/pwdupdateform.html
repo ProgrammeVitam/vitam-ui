@@ -91,28 +91,28 @@
 
 <div class="content" style="display: none">
     <ul id="collapsible" style="color:#aab0b3">
-        <div th:if="${application.passwodAnssiConstraints != null}">
+        <div th:if="${application.passwordAnssiConstraints != null}">
 
-            <li th:if="${application.passwodAnssiConstraints.messages != null}"
-                th:each="message : ${application.passwodAnssiConstraints.messages}" th:text="${message}">
+            <li th:if="${application.passwordAnssiConstraints.messages != null}"
+                th:each="message : ${application.passwordAnssiConstraints.messages}" th:text="${message}">
             </li>
 
-            <li th:if="${application.passwodAnssiConstraints != null && application.passwodAnssiConstraints.specialChars != null && application.passwodAnssiConstraints.specialChars.title != null}"
-                th:utext="${application.passwodAnssiConstraints.specialChars.title}">
+            <li th:if="${application.passwordAnssiConstraints != null && application.passwordAnssiConstraints.specialChars != null && application.passwordAnssiConstraints.specialChars.title != null}"
+                th:utext="${application.passwordAnssiConstraints.specialChars.title}">
             </li>
 
             <ul>
-                <li th:if="${application.passwodAnssiConstraints != null && application.passwodAnssiConstraints.specialChars != null && application.passwodAnssiConstraints.specialChars.messages != null}"
-                    th:each="specials : ${application.passwodAnssiConstraints.specialChars.messages}" th:text="${specials}">
+                <li th:if="${application.passwordAnssiConstraints != null && application.passwordAnssiConstraints.specialChars != null && application.passwordAnssiConstraints.specialChars.messages != null}"
+                    th:each="specials : ${application.passwordAnssiConstraints.specialChars.messages}" th:text="${specials}">
                 </li>
             </ul>
 
         </div>
 
-        <div th:if="${application.passwodCustomConstraints != null}">
+        <div th:if="${application.passwordCustomConstraints != null}">
             <ul>
-                <li th:if="${application.passwodCustomConstraints != null && application.passwodCustomConstraints.messages != null}"
-                    th:each="message : ${application.passwodCustomConstraints.messages}" th:text="${message}"></li>
+                <li th:if="${application.passwodCustomConstraints != null && application.passwordCustomConstraints.messages != null}"
+                    th:each="message : ${application.passwordCustomConstraints.messages}" th:text="${message}"></li>
             </ul>
 
         </div>

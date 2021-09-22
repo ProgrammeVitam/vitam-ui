@@ -59,9 +59,9 @@ public abstract class Constants {
 
     public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
 
-    public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwodCustomConstraints";
+    public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwordCustomConstraints";
 
-    public static final String PASSWORD_DEFAULT_CONSTRAINTS = "passwodAnssiConstraints";
+    public static final String PASSWORD_DEFAULT_CONSTRAINTS = "passwordAnssiConstraints";
 
     public static final String MAX_OLD_PASSWORD = "maxOldPassword";
 

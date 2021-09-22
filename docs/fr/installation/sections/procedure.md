@@ -116,7 +116,7 @@ Ce profil est nommé `'anssi'`, l'exploitant peut le changer en choisissant le p
 ```
 # Password configuration
 vitamui_password_configurations:
-  anssiPolicyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
+  anssiPolicyPattern: '(^(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)'
   password:
     profile: "anssi" # default profile is anssi, for (Agence Nationale de la Sécurité des Systèmes d'Information), use custom profile otherwise
     length: 12
@@ -238,7 +238,7 @@ en cas de changement manuelle par l'administrateur système du nombre de mots pa
 Voir le document d'exploitation qui contient différents exemples de configurations par profil.
 
 >[!NOTE]
-> L'authentification est transparente pour les utilisateurs qui possèdent déjà des comptes crées, jusqu'à expiration de leurs mots de passe.
+> L'authentification est transparente pour les utilisateurs qui possèdent déjà des comptes VITAMUI, jusqu'à expiration de leurs mots de passe.
 > Et lors du changement de mots de passe suite à expiration de celui ci, ils verront les nouvelles contraintes exigées par la plateforme.
 
 > L'Internationnalisation sera traité ultérieurement.
