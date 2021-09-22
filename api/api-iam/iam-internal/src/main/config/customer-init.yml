@@ -150,6 +150,9 @@ customer-init:
         - ROLE_CREATE_EXTERNAL_PARAM_PROFILE
         - ROLE_EDIT_EXTERNAL_PARAM_PROFILE
         - ROLE_SEARCH_EXTERNAL_PARAM_PROFILE
+        - ROLE_GET_PROFILES
+        - ROLE_UPDATE_PROFILES
+        - ROLE_LOGBOOKS
 
 
     - name: Consultation
