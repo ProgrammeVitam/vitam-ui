@@ -194,7 +194,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
         prepareServices();
         controller.create(dto);
-        verify(profileRepository, times(2)).save(any());
+        verify(profileRepository, times(3)).save(any());
     }
 
     @Test
@@ -224,7 +224,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
             controller.create(dto);
             fail("should fail");
         } catch (final IllegalArgumentException e) {
-            assertEquals("Unable to create tenant " + dto.getName() + ": customer does not exist", e.getMessage());
+            assertEquals("No customer found with id Bad customerId", e.getMessage());
         }
     }
 
