@@ -61,10 +61,10 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   getAccessionRegisterStatus(locale: string) {
     const prefix = 'ACCESSION_REGISTER.STATUS.';
-    return this.translateService.get(prefix + AccessionRegisterStatus.STORED_AND_COMPLETED).pipe(
+    return this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_COMPLETED).pipe(
       withLatestFrom(
-        this.translateService.get(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
-        this.translateService.get(prefix + AccessionRegisterStatus.UNSTORED)
+        this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.STORED_AND_UPDATED),
+        this.translateService.getStreamOnTranslationChange(prefix + AccessionRegisterStatus.UNSTORED)
       ),
       map(([storedAndCompleted, storedAndUpdated, unstored]) => {
         const data = [
@@ -75,7 +75,6 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
         return data.sort(this.sortByLabel(locale));
       }),
       catchError((error) => {
-        console.error(error);
         return of(error);
       })
     );

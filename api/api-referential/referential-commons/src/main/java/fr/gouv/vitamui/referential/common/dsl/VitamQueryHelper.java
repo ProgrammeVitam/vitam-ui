@@ -121,8 +121,6 @@ public class VitamQueryHelper {
                     case IDENTIFIER:
                     case ID:
                     case PUID:
-                    case OPI:
-                    case ORIGINATING_AGENCY:
                         // string equals operation
                         final String stringValue = (String) entry.getValue();
                         queryOr.add(eq(searchKey, stringValue));
@@ -134,6 +132,8 @@ public class VitamQueryHelper {
                         query.add(eq(searchKey, ruleType));
                         break;
                     case RULE_ID:
+                    case OPI:
+                    case ORIGINATING_AGENCY:
                         // string wildward operation
                         final String ruleId = (String) entry.getValue();
                         queryOr.add(wildcard(searchKey, "*"+ruleId+"*"));
