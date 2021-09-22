@@ -10,7 +10,8 @@ consul:
     network: "ip_admin" # Which network to use for consul communications ? ip_admin or ip_service ?
 
 # If connect to VITAM consul, please uncomment & describe params
+# If using [hosts_vitamui_consul_server], don't forget to connect to Vitam's consul cluster.
 #consul_remote_sites:
-#    - vitamui:
-#      name: "vitamui"
-#      wan: ["machine_vitam"]
+#    - vitam:
+#      name: vitam
+#      wan: ["IP_vitam_consul_servers"]
