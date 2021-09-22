@@ -34,20 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ArchiveService } from '../archive.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Option } from 'ui-frontend-common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveService } from '../archive.service';
 
 @Component({
   selector: 'app-access-contract',
   templateUrl: './access-contract.component.html',
-  styleUrls: ['./access-contract.component.scss']
+  styleUrls: ['./access-contract.component.scss'],
 })
 export class AccessContractComponent implements OnInit {
-
   tenantIdentifier: string;
   accessContracts: Option[] = [];
   form: FormGroup;
@@ -55,32 +54,32 @@ export class AccessContractComponent implements OnInit {
 
   @Output() selectedAccessContract = new EventEmitter<string>();
 
-  constructor(private archiveService: ArchiveService, private route: ActivatedRoute,
-              private archiveSharedDataServiceService: ArchiveSharedDataServiceService, private formBuilder: FormBuilder) {
-    this.route.params.subscribe(params => {
+  constructor(
+    private archiveService: ArchiveService,
+    private route: ActivatedRoute,
+    private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
+    private formBuilder: FormBuilder
+  ) {
+    this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.archiveService.getAllAccessContracts(this.tenantIdentifier).subscribe(
-      accessContracts => {
-        this.accessContracts = accessContracts.map(accessContract => ({
-          key: accessContract.identifier,
-          label: accessContract.name
-        }));
-      }
-    );
+    this.archiveService.getAllAccessContracts(this.tenantIdentifier).subscribe((accessContracts) => {
+      this.accessContracts = accessContracts.map((accessContract) => ({
+        key: accessContract.identifier,
+        label: accessContract.name,
+      }));
+    });
 
     this.form = this.formBuilder.group({
       id: null,
       accessContract: [null, Validators.required],
       dsl: [null, Validators.required],
-      response: null
+      response: null,
     });
-
-              }
-
-  ngOnInit() {
   }
+
+  ngOnInit() {}
 
   initContractSelected(event: any) {
     this.accessContractIdSelected = event.value;

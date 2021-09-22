@@ -35,27 +35,21 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, LOCALE_ID, Inject } from '@angular/core';
-import { ArchiveApiService } from '../core/api/archive-api.service';
-import { SearchService } from 'ui-frontend-common';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { SearchService } from 'ui-frontend-common';
+import { ArchiveApiService } from '../core/api/archive-api.service';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
-import { SearchResponse } from './models/search-response.interface';
-
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
-
-  constructor(
-    private archiveApiService: ArchiveApiService,
-    http: HttpClient,
-    @Inject(LOCALE_ID) private locale: string
-  ) {
+  constructor(private archiveApiService: ArchiveApiService, http: HttpClient, @Inject(LOCALE_ID) private locale: string) {
     super(http, archiveApiService, 'ALL');
   }
 
@@ -72,15 +66,13 @@ export class ArchiveService extends SearchService<any> {
   }
 
   public getOntologiesFromJson(): Observable<any> {
-    return this.http.get("assets/ontologies/ontologies.json")
-      .pipe(map(resp => resp));
+    return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
   }
-
 
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -88,9 +80,8 @@ export class ArchiveService extends SearchService<any> {
         return of({ $hits: null, $results: [] });
       }),
       map((response) => response.$results),
-      tap(() => {
-      }),
-      map(results => this.buildNestedTreeLevels(results))
+      tap(() => {}),
+      map((results) => this.buildNestedTreeLevels(results))
     );
   }
 
@@ -104,13 +95,13 @@ export class ArchiveService extends SearchService<any> {
       ) {
         const outNode: FilingHoldingSchemeNode = {
           id: unit['#id'],
-          title: unit.Title ? unit.Title : ((unit.Title_) ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en),
+          title: unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en,
           type: unit.DescriptionLevel,
           children: [],
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode).sort(byTitle(this.locale));
         out.push(outNode);
@@ -120,31 +111,33 @@ export class ArchiveService extends SearchService<any> {
     return out;
   }
 
-
-
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<PagedResult> {
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
-   //   timeout(TIMEOUT_SEC),
+      //   timeout(TIMEOUT_SEC),
       catchError((error) => {
-        if(error instanceof TimeoutError) {
+        if (error instanceof TimeoutError) {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map(results => this.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = { results: response.$results, totalResults: response.$hits.total, pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0 };
-    let resultFacets: ResultFacet[] = [];
-    if(response.$facetResults && response.$facetResults){
-      for(let facet of response.$facetResults){
-        if(facet.name === 'COUNT_BY_NODE'){
-          let buckets = facet.buckets;
-          for(let bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count});
+    const pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0,
+    };
+    const resultFacets: ResultFacet[] = [];
+    if (response.$facetResults && response.$facetResults) {
+      for (const facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
+            resultFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
       }
@@ -153,29 +146,26 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  downloadObjectFromUnit(id : string , headers?: HttpHeaders) {
-
+  downloadObjectFromUnit(id: string, headers?: HttpHeaders) {
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-
-      file => {
-
+      (file) => {
         const element = document.createElement('a');
         element.href = window.URL.createObjectURL(file);
-        element.download ='item-'+id;
+        element.download = 'item-' + id;
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
       },
-      errors => {
-        console.log('Error message : ',errors);
+      (errors) => {
+        console.log('Error message : ', errors);
       }
-    ); }
+    );
+  }
 
-  findArchiveUnit(id : string, headers?: HttpHeaders) {
-      return this.archiveApiService.findArchiveUnit(id, headers);
-    }
-
+  findArchiveUnit(id: string, headers?: HttpHeaders) {
+    return this.archiveApiService.findArchiveUnit(id, headers);
+  }
 }
 
 function idExists(units: Unit[], id: string): boolean {

@@ -39,6 +39,7 @@ export * from './app.configuration.interface';
 export * from './content-disposition.enum';
 export * from './criteria/criteria.interface';
 export * from './criteria/criterion.interface';
+export * from './criteria/criteria.enums';
 export * from './customer/index';
 export * from './group/index';
 export * from './id.interface';

@@ -41,6 +41,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.QueryHelper;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -127,11 +130,15 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_return_ok_when_vitamclient_ok() throws VitamClientException {
+    public void findFileFormatById_should_return_ok_when_vitamclient_ok() throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
 
-        expect(adminExternalClient.findFormatById(vitamContext, id))
+        Select select = new Select();
+        select.setQuery(QueryHelper.eq("PUID", id));
+        JsonNode selectQuery = select.getFinalSelect();
+
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
             .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(200));
         EasyMock.replay(adminExternalClient);
 
@@ -141,11 +148,15 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException {
+    public void findFileFormatById_should_throw_BadRequestException_when_vitamclient_400() throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
 
-        expect(adminExternalClient.findFormatById(vitamContext, id))
+        Select select = new Select();
+        select.setQuery(QueryHelper.eq("PUID", id));
+        JsonNode selectQuery = select.getFinalSelect();
+
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
             .andReturn(new RequestResponseOK<FileFormatModel>().setHttpCode(400));
         EasyMock.replay(adminExternalClient);
 
@@ -155,11 +166,14 @@ public class VitamFileFormatServiceTest {
     }
 
     @Test
-    public void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException {
+    public void findFileFormatById_should_throw_VitamClientException_when_vitamclient_throws_VitamClientException() throws VitamClientException, InvalidCreateOperationException {
         VitamContext vitamContext = new VitamContext(0);
         String id = "Id_0";
+        Select select = new Select();
+        select.setQuery(QueryHelper.eq("PUID", id));
+        JsonNode selectQuery = select.getFinalSelect();
 
-        expect(adminExternalClient.findFormatById(vitamContext, id))
+        expect(adminExternalClient.findFormats(vitamContext, selectQuery))
             .andThrow(new VitamClientException("Exception thrown by Vitam"));
         EasyMock.replay(adminExternalClient);
 

@@ -10,11 +10,13 @@
   <mat-sidenav-content>
     <div class="vitamui-header">
       <div class="vitamui-container">
-        <vitamui-common-navbar [appId]="appId" [hideTenantMenu]="false" [hideCustomerMenu]="true"
-          (tenantSelect)="changeTenant($event)"></vitamui-common-navbar>
-        <h2 i18n="@@apiSupervisionPageTitle">
-          <img src="assets/vitamui-logo-small.png"><strong>Journal des Opérations</strong>
-        </h2>
+        <vitamui-common-navbar
+          [appId]="appId"
+          [hideTenantMenu]="false"
+          [hideCustomerMenu]="true"
+          (tenantSelect)="changeTenant($event)"
+        ></vitamui-common-navbar>
+        <h2 i18n="@@apiSupervisionPageTitle"><img src="assets/mini-logo-vitam.png" /><strong>Journal des Opérations</strong></h2>
 
         <div class="controls">
           <div class="search-bar-filters">
