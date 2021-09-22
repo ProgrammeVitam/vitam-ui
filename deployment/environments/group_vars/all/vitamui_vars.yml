@@ -397,6 +397,8 @@ vitamui_platform_informations:
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
   default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!
+  default_phone:
+  default_mobile:
   address:
     street: change-it
     zip_code: change-it
