@@ -34,61 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
+import { SearchService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import { PagedResult, ResultFacet, SearchCriteriaDto } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
-import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
-  constructor(
-    private archiveApiService: ArchiveApiService,
-    http: HttpClient,
-    @Inject(LOCALE_ID) private locale: string,
-    private snackBar: MatSnackBar,
-    private securityService: SecurityService
-  ) {
+  constructor(private archiveApiService: ArchiveApiService, http: HttpClient, @Inject(LOCALE_ID) private locale: string) {
     super(http, archiveApiService, 'ALL');
   }
 
   headers = new HttpHeaders();
 
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0,
-    };
-    const resultFacets: ResultFacet[] = [];
-    if (response.$facetResults && response.$facetResults) {
-      for (const facet of response.$facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    pagedResult.facets = resultFacets;
-    return pagedResult;
+  getBaseUrl() {
+    return this.archiveApiService.getBaseUrl();
   }
 
-  private static fetchTitle(title: string, title_: any) {
-    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  public getAllAccessContracts(tenantId: string): Observable<any[]> {
+    const params = new HttpParams().set('embedded', 'ALL');
+    const headers = new HttpHeaders().append('X-Tenant-Id', tenantId);
+    return this.archiveApiService.getAllAccessContracts(params, headers);
   }
 
   public getOntologiesFromJson(): Observable<any> {
@@ -137,38 +111,7 @@ export class ArchiveService extends SearchService<any> {
     return out;
   }
 
-  exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, accessContract: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-
-    return this.archiveApiService.exportCsvSearchArchiveUnitsByCriteria(criteriaDto, headers).subscribe(
-      (file) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
-        element.download = 'export-archive-units.csv';
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      },
-      (errors: HttpErrorResponse) => {
-        if (errors.status === 413) {
-          console.log('Please update filter to reduce size of response' + errors.message);
-
-          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: 'exportCsvLimitReached' },
-            duration: 10000,
-          });
-        }
-      }
-    );
-  }
-
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<PagedResult> {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<PagedResult> {
     return this.archiveApiService.searchArchiveUnitsByCriteria(criteriaDto, headers).pipe(
       //   timeout(TIMEOUT_SEC),
       catchError((error) => {
@@ -178,23 +121,37 @@ export class ArchiveService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => ArchiveService.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
-  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
-    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-      (response) => {
-        let filename;
-        if (response.headers.get('content-disposition').includes('filename')) {
-          filename = response.headers.get('content-disposition').split('=')[1];
-        } else {
-          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
+  private buildPagedResults(response: SearchResponse): PagedResult {
+    const pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers: +response.$hits.size !== 0 ? Math.floor(+response.$hits.total / +response.$hits.size) : 0,
+    };
+    const resultFacets: ResultFacet[] = [];
+    if (response.$facetResults && response.$facetResults) {
+      for (const facet of response.$facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
+            resultFacets.push({ node: bucket.value, count: bucket.count });
+          }
         }
+      }
+    }
+    pagedResult.facets = resultFacets;
+    return pagedResult;
+  }
 
+  downloadObjectFromUnit(id: string, headers?: HttpHeaders) {
+    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
+      (file) => {
         const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(response.body);
-        element.download = filename;
+        element.href = window.URL.createObjectURL(file);
+        element.download = 'item-' + id;
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
         element.click();
@@ -206,73 +163,8 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  normalizeTitle(title: string): string {
-    title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
-    return title.substring(0, 218);
-  }
-
   findArchiveUnit(id: string, headers?: HttpHeaders) {
     return this.archiveApiService.findArchiveUnit(id, headers);
-  }
-
-  getObjectById(id: string, headers?: HttpHeaders) {
-    return this.archiveApiService.getObjectById(id, headers);
-  }
-
-  buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
-    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
-
-    if (!allunitups || allunitups.length === 0) {
-      return of({
-        fullPath: '',
-        resumePath: '',
-      });
-    }
-
-    const criteriaSearchList = [
-      {
-        criteria: '#id',
-        values: allunitups,
-        operator: CriteriaOperator.EQ,
-        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING,
-      },
-    ];
-
-    const searchCriteria = {
-      criteriaList: criteriaSearchList,
-      pageNumber: 0,
-      size: archiveUnit['#allunitups'].length,
-    };
-
-    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
-      map((pagedResult: PagedResult) => {
-        let resumePath = '';
-        let fullPath = '';
-
-        if (pagedResult.results) {
-          resumePath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
-          fullPath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
-
-          if (pagedResult.results.length > 6) {
-            const upperBoundPath = pagedResult.results
-              .slice(0, 3)
-              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
-              .join('/');
-            const lowerBoundPath = pagedResult.results
-              .slice(-3)
-              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
-              .join('/');
-            resumePath = `/${upperBoundPath}/../${lowerBoundPath}`;
-          }
-        }
-
-        return {
-          fullPath,
-          resumePath,
-        };
-      })
-    );
   }
 }
 

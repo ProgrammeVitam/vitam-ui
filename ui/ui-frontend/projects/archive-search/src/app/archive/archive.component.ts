@@ -35,35 +35,38 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnInit } from '@angular/core';
-import { SidenavPage, GlobalEventService } from 'ui-frontend-common';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss']
+  styleUrls: ['./archive.component.scss'],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit {
-
   show = true;
   tenantIdentifier: string;
-  foundAccessContract =  false;
+  foundAccessContract = false;
   accessContract: string;
 
-  constructor(private route: ActivatedRoute, private router: Router,
-              globalEventService: GlobalEventService, public dialog: MatDialog,
-              private archiveSharedDataServiceService: ArchiveSharedDataServiceService) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    globalEventService: GlobalEventService,
+    public dialog: MatDialog,
+    private archiveSharedDataServiceService: ArchiveSharedDataServiceService
+  ) {
     super(route, globalEventService);
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.archiveSharedDataServiceService.getToggle().subscribe(hidden => {
+    this.archiveSharedDataServiceService.getToggle().subscribe((hidden) => {
       this.show = hidden;
     });
-    }
+  }
 
   onSelectAccessContract(revievedAccessContract: string) {
     this.accessContract = revievedAccessContract;
@@ -71,17 +74,15 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit {
     this.show = true;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   hiddenTreeBlock(hidden: boolean): void {
-    this.show = ! hidden;
+    this.show = !hidden;
   }
 
   changeTenant(tenantIdentifier: number) {
     this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
-
 
   showPreviewArchiveUnit(item: Event) {
     this.openPanel(item);

@@ -70,7 +70,7 @@ export interface SearchCriteriaDto{
 
 export interface PagedResult {
     results: any[];
-    pageNumbers: number;    
+    pageNumbers: number;
     totalResults: number;
     facets?: ResultFacet[];
 }

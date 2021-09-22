@@ -152,6 +152,11 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitam</groupId>
+            <artifactId>common-database-public</artifactId>
+            <version>3.0.1</version>
+        </dependency>
 
     </dependencies>
 
