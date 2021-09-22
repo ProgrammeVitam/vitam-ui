@@ -34,38 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.util;
+package fr.gouv.vitamui.cas.pm;
 
-/**
- * Constants.
- *
- * @sicne 0.1.0
- */
-public abstract class Constants {
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringRunner;
 
-    public static final String USERNAME = "username";
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = { ServerIdentityAutoConfiguration.class, PasswordConfiguration.class })
+@TestPropertySource(properties = { "spring.config.location=classpath:cas-server-application-test.properties" })
+public final class PasswordConfigurationTest {
 
-    // surrogation:
-    public static final String SURROGATE = "surrogate";
+    @Autowired
+    private PasswordConfiguration passwordConfiguration;
 
-    public static final String SUPER_USER = "superUser";
-
-    // web:
-    public static final String PORTAL_URL = "portalUrl";
-
-    public static final String VITAM_LOGO = "vitamLogo";
-
-    public static final String VITAM_UI_LARGE_LOGO = "vitamuiLargeLogo";
-
-    public static final String VITAM_UI_FAVICON = "vitamuiFavicon";
-
-    public static final String PASSWORD_CUSTOM_CONSTRAINTS = "passwordCustomConstraints";
-
-    public static final String PASSWORD_DEFAULT_CONSTRAINTS = "passwordAnssiConstraints";
-
-    public static final String MAX_OLD_PASSWORD = "maxOldPassword";
-
-    public static final String CHECK_OCCURRENCE = "checkOccurrence";
-
-    public static final String OCCURRENCE_CHAR_NUMBERS = "occurrencesCharsNumber";
+    @Test
+    public void tesPasswordConfigurations() {
+        Assert.assertNotNull(passwordConfiguration);
+        Assert.assertEquals(Integer.valueOf(12), passwordConfiguration.getMaxOldPassword());
+        Assert.assertEquals("anssi", passwordConfiguration.getProfile());
+    }
 }

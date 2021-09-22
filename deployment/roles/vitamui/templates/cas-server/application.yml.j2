@@ -99,7 +99,12 @@ cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNever
 cas.ticket.tst.timeToKillInSeconds: 86400
 
 cas.authn.pm.enabled: true
-cas.authn.pm.policyPattern: {{ lookup('file', "{{ inventory_dir }}/templates/policy_pattern.regex") }}
+
+{% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
+cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
+{% else %}
+cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
+{% endif %}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
@@ -221,4 +226,54 @@ cas.httpWebRequest.cors.allowCredentials: false
 cas.httpWebRequest.cors.allowOrigins: ['*']
 cas.httpWebRequest.cors.allowMethods: ['*']
 cas.httpWebRequest.cors.allowHeaders: ['*']
+{% endif %}
+
+# Password configuration
+password:
+  length: {{ vitamui_password_configurations.password.length | default('8') }}
+  max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('3') }}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence | lower == true %}
+  check-occurrence: true
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == false and vitamui_password_configurations.password.profile == "anssi"  %}
+  check-occurrence: true
+  occurrences-chars-number: 3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is undefined and vitamui_password_configurations.password.profile == "anssi" %}
+  check-occurrence: true
+  occurrences-chars-number: 3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == true and vitamui_password_configurations.password.profile == "anssi"%}
+  check-occurrence: true
+  occurrences-chars-number: {{ vitamui_password_configurations.password.occurrences_chars_number | default('3') }} # should be >=3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == true and vitamui_password_configurations.password.profile == "custom"%}
+  check-occurrence: true
+  occurrences-chars-number: {{ vitamui_password_configurations.password.occurrences_chars_number | default('3') }}
+{% endif %}
+{% if vitamui_password_configurations.password.profile is defined and vitamui_password_configurations.password.profile | lower != 'anssi' %}
+  profile: "custom"
+{% else %}
+  profile: "anssi"
+{% endif %}
+  constraints:
+{% if vitamui_password_configurations.password.constraints.defaults is defined and vitamui_password_configurations.password.profile == 'anssi' %}
+    defaults:
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.messages %}
+          - {{ message }}
+{% endfor %}
+        special-chars:
+            title: '{{ vitamui_password_configurations.password.constraints.defaults.special_chars.title }}'
+            messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.special_chars.messages %}
+                - {{ message }}
+{% endfor %}
+{% else %}
+    customs:
+        title: '{{ vitamui_password_configurations.password.constraints.customs.title }}'
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.messages %}
+            - {{ message }}
+{% endfor %}
 {% endif %}

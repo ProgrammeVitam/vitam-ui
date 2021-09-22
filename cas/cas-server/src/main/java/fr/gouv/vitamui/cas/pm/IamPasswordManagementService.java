@@ -36,10 +36,19 @@
  */
 package fr.gouv.vitamui.cas.pm;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Optional;
-
+import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.authentication.Credential;
@@ -57,17 +66,9 @@ import org.springframework.util.Assert;
 import org.springframework.webflow.execution.RequestContext;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
-import fr.gouv.vitamui.commons.api.exception.ConflictException;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.Getter;
-import lombok.Setter;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.Optional;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.SUPER_USER_ATTRIBUTE;
 
@@ -94,16 +95,24 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private final TicketRegistry ticketRegistry;
 
+    private final PasswordValidator passwordValidator;
+
+    private final PasswordConfiguration passwordConfiguration;
+
+    private static Integer maxOldPassword;
+
     public IamPasswordManagementService(final PasswordManagementProperties passwordManagementProperties,
-                                        final CipherExecutor<Serializable, String> cipherExecutor,
-                                        final String issuer,
-                                        final PasswordHistoryService passwordHistoryService,
-                                        final CasExternalRestClient casExternalRestClient,
-                                        final ProvidersService providersService,
-                                        final IdentityProviderHelper identityProviderHelper,
-                                        final CentralAuthenticationService centralAuthenticationService,
-                                        final Utils utils,
-                                        final TicketRegistry ticketRegistry) {
+        final CipherExecutor<Serializable, String> cipherExecutor,
+        final String issuer,
+        final PasswordHistoryService passwordHistoryService,
+        final CasExternalRestClient casExternalRestClient,
+        final ProvidersService providersService,
+        final IdentityProviderHelper identityProviderHelper,
+        final CentralAuthenticationService centralAuthenticationService,
+        final Utils utils,
+        final TicketRegistry ticketRegistry,
+        final PasswordValidator passwordValidator,
+        final PasswordConfiguration passwordConfiguration) {
         super(passwordManagementProperties, cipherExecutor, issuer, passwordHistoryService);
         this.casExternalRestClient = casExternalRestClient;
         this.providersService = providersService;
@@ -111,6 +120,9 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         this.centralAuthenticationService = centralAuthenticationService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
+        this.passwordValidator = passwordValidator;
+        this.passwordConfiguration = passwordConfiguration;
+        this.maxOldPassword = passwordConfiguration.getMaxOldPassword();
     }
 
     protected RequestContext blockIfSubrogation() {
@@ -136,25 +148,46 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             flowScope.put("passwordHasBeenChanged", true);
         }
 
+        if (!passwordValidator.isEqualConfirmed(bean.getPassword(), bean.getConfirmedPassword())) {
+            throw new PasswordConfirmException();
+        }
+
+        if (!passwordValidator.isValid(getProperties().getPolicyPattern(), bean.getPassword())) {
+            throw new PasswordNotMatchRegexException();
+        }
+
         val upc = (UsernamePasswordCredential) c;
         val username = upc.getUsername();
+
+        LOGGER.debug("passwordConfiguration: {}", passwordConfiguration);
+
+        if((passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0) ||
+            (!passwordConfiguration.getProfile().equalsIgnoreCase("anssi") && passwordConfiguration.isCheckOccurrence() && passwordConfiguration.getOccurrencesCharsNumber() != null && passwordConfiguration.getOccurrencesCharsNumber() > 0)) {
+            String userLastName = findUserLastName(username);
+            Assert.notNull(userLastName, "user last name can not be null");
+            if (passwordValidator.isContainsUserOccurrences(userLastName, bean.getPassword(), passwordConfiguration.getOccurrencesCharsNumber())) {
+                throw new PasswordContainsUserDictionaryException(
+                    "Invalid password containing an occurence of user name !");
+            }
+        }
+
         Assert.notNull(username, "username can not be null");
         // username to lowercase
         val usernameLowercase = username.toLowerCase().trim();
         LOGGER.debug("username: {}", usernameLowercase);
-        val identityProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
-        Assert.isTrue(identityProvider.isPresent(), "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
+        val identityProvider =
+            identityProviderHelper.findByUserIdentifier(providersService.getProviders(), usernameLowercase);
+        Assert.isTrue(identityProvider.isPresent(),
+            "only a user [" + usernameLowercase + "] linked to an identity provider can change his password");
         Assert.isTrue(identityProvider.get().getInternal() != null && identityProvider.get().getInternal(),
                 "only an internal user [" + usernameLowercase + "] can change his password");
 
         try {
             casExternalRestClient.changePassword(utils.buildContext(usernameLowercase), usernameLowercase, bean.getPassword());
             return true;
-        }
-        catch (final ConflictException e) {
+        } catch (final ConflictException e) {
             throw new PasswordAlreadyUsedException();
-        }
-        catch (final VitamUIException e) {
+        }  catch (final VitamUIException e) {
             LOGGER.error("Cannot change password", e);
             return false;
         }
@@ -183,9 +216,6 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
 
     private static class PasswordAlreadyUsedException extends InvalidPasswordException {
 
-        /**
-         *
-         */
         private static final long serialVersionUID = -8981663363751187075L;
 
         public PasswordAlreadyUsedException() {
@@ -195,6 +225,63 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         @Override
         public String getMessage() {
             return "password already used";
+        }
+    }
+
+    public String findUserLastName(final String userMail) {
+        String userLastName = null;
+        val usernameWithLowercase = userMail.toLowerCase().trim();
+        try {
+            val user = casExternalRestClient.getUserByEmail(utils.buildContext(usernameWithLowercase), usernameWithLowercase, Optional.empty());
+            if (user != null && UserStatusEnum.ENABLED.equals(user.getStatus())) {
+                return user.getLastname();
+            }
+        }
+        catch (final VitamUIException e) {
+            LOGGER.error("Cannot retrieve user: {}", usernameWithLowercase, e);
+        }
+        return userLastName;
+    }
+
+    protected static class PasswordNotMatchRegexException extends InvalidPasswordException {
+
+        private static final long serialVersionUID = -8981663363751187076L;
+
+        public PasswordNotMatchRegexException() {
+            super(".invalidPassword", null, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "password not match global regex";
+        }
+    }
+
+    protected static class PasswordConfirmException extends InvalidPasswordException {
+
+        private static final long serialVersionUID = -8981663363751187076L;
+
+        public PasswordConfirmException() {
+            super(".pwdNotConfirm", null, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "password confirm error";
+        }
+    }
+
+    protected static class PasswordContainsUserDictionaryException extends InvalidPasswordException {
+
+        private static final long serialVersionUID = -8981663363751187075L;
+
+        public PasswordContainsUserDictionaryException(String message) {
+            super(".invalidPwdDictionary", message, null);
+        }
+
+        @Override
+        public String getMessage() {
+            return "Invalid password containing an occurence of user name !";
         }
     }
 }

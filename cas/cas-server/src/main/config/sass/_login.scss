@@ -40,7 +40,7 @@
 
 .centered {
     position: fixed;
-    top: 40%;
+    top: 44%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -49,7 +49,7 @@
     position: relative;
     display: block;
     box-sizing: border-box;
-    width: 800px;
+    width: 820px;
 
     @include vitamui-modal;
 

@@ -36,21 +36,21 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
-import java.security.GeneralSecurityException;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-
-import javax.security.auth.login.AccountException;
-import javax.security.auth.login.AccountLockedException;
-import javax.security.auth.login.AccountNotFoundException;
-import javax.security.auth.login.CredentialNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
+import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
+import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
+import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import org.apereo.cas.authentication.*;
+import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
+import lombok.val;
+import org.apereo.cas.authentication.AuthenticationHandlerExecutionResult;
+import org.apereo.cas.authentication.PreventedException;
+import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.exceptions.AccountDisabledException;
 import org.apereo.cas.authentication.exceptions.AccountPasswordMustChangeException;
@@ -58,17 +58,16 @@ import org.apereo.cas.authentication.handler.support.AbstractUsernamePasswordAut
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.services.ServicesManager;
-
-import fr.gouv.vitamui.cas.util.Utils;
-import fr.gouv.vitamui.commons.api.exception.VitamUIException;
-import fr.gouv.vitamui.commons.api.exception.InvalidAuthenticationException;
-import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
-import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import org.springframework.webflow.execution.RequestContextHolder;
 
-import lombok.val;
+import javax.security.auth.login.AccountException;
+import javax.security.auth.login.AccountLockedException;
+import javax.security.auth.login.AccountNotFoundException;
+import javax.security.auth.login.CredentialNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import java.security.GeneralSecurityException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
 
 /**
  * Authentication handler to check the username/password on the IAM API.

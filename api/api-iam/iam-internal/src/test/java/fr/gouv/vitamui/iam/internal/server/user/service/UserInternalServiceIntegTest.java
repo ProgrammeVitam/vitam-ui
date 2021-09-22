@@ -1,34 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
@@ -49,7 +20,6 @@ import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
-import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
@@ -76,6 +46,34 @@ import fr.gouv.vitamui.iam.internal.server.user.converter.UserConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
+import org.bson.Document;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Class.
@@ -166,7 +164,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
         internalUserService = new UserInternalService(sequenceRepository, userRepository, groupInternalService, internalProfileService,
                 mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
-                iamLogbookService, userConverter, null, null, addressService, applicationInternalService);
+                iamLogbookService, userConverter, null, null, addressService, applicationInternalService, null);
 
         iamAuthentificationService = new IamAuthentificationService(internalUserService, tokenRepository, subrogationRepository);
         iamAuthentificationService.setTokenAdditionalTtl(15);

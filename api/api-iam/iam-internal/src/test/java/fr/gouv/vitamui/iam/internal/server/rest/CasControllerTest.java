@@ -1,27 +1,5 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.OffsetDateTime;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.MockitoAnnotations;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
@@ -31,6 +9,7 @@ import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.dto.cas.LoginRequestDto;
@@ -51,6 +30,27 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.MockitoAnnotations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests the {@link CasInternalController}.
@@ -108,6 +108,8 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
 
     private IamLogbookService iamLogbookService;
 
+    private PasswordValidator passwordValidator = new PasswordValidator();
+
     @Before
     public void setup() {
         internalUserService = mock(UserInternalService.class);
@@ -124,7 +126,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         internalSecurityService = mock(InternalSecurityService.class);
         customerRepository = mock(CustomerRepository.class);
         iamLogbookService = mock(IamLogbookService.class);
-
+        passwordValidator = new PasswordValidator();
         subrogationConverter = new SubrogationConverter(userRepository);
         internalSubrogationService = new SubrogationInternalService(sequenceRepository, subrogationRepository, userRepository, userInternalService,
                 groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
@@ -142,6 +144,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         casService.setTimeIntervalForLoginAttempts(20);
         casService.setIamLogbookService(iamLogbookService);
         casService.setPasswordEncoder(passwordEncoder);
+        casService.setPasswordValidator(passwordValidator);
 
         controller = new CasInternalController(casService, passwordEncoder, internalUserService);
         controller.setMaximumFailuresForLoginAttempts(5);
@@ -153,6 +156,7 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
         user.setId(ID);
         user.setPassword(null);
         user.setEmail(EMAIL);
+        user.setLastname("zz");
         user.setCustomerId(CUSTOMER_ID);
         user.setPasswordExpirationDate(OffsetDateTime.now());
         when(userRepository.findByEmail(EMAIL)).thenReturn(user);

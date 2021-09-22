@@ -1,0 +1,26 @@
+password:
+  length: 12
+  max-old-password: 3
+  check-occurrence: true
+  occurrences-chars-number: 4
+  constraints:
+    defaults-constraints:
+      title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+      messages:
+        - au moins ${password.length} caractères
+        - des miniscules et des majiscules
+        - au moins un chiffre et un caractère spécial
+        - les deux mots de passe doivent etre identiques
+    customs-constraints:
+      custom-messages:
+        - Ne pas contenir plus de ${password.occurrences-chars-number} caractères consécutifs issus de votre nom d'utilisateur
+        - Etre différent des ${password.max-old-password} derniers mots de passe
+        - Avoir une taille d'au moins ${password.length} caractères
+        - Les deux mots de passe doivent etre identiques
+      special-chars:
+        title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour les catégories suivantes:'
+        messages:
+          - Minuscules (a-z)
+          - Majuscules (A-Z)
+          - Numériques (0-9)
+          - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)

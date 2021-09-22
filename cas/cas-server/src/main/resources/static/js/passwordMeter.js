@@ -67,6 +67,7 @@ function jqueryReady() {
             }
         }
     };
+    ///
     var policyPatternRegex = new RegExp(policyPattern);
     var password = document.getElementById('password');
     var confirmed = document.getElementById('confirmedPassword');
@@ -94,45 +95,16 @@ function jqueryReady() {
         var result = zxcvbn(val);
         $('#strengthProgressBar').zxcvbnProgressBar({ passwordInput: '#password' });
 
-        if (passwordIsNotValid && $('#security-one.valid').length > 0 && $('#security-two.valid').length > 0
-          && $('#security-three.valid').length > 0 && $('#security-four.valid').length > 0) {
-          $('#password-policy-text').show();
+        if (passwordIsNotValid && $('#security-four.valid').length > 0 && $('#security-valid-password.valid').length > 0) {
+          $('#security-invalid-password').addClass("valid");
+          $('#security-invalid-password').show();
         } else {
           $('#password-policy-text').hide();
+          $('#security-valid-password').show();
         }
 
         if (disableSubmit) {
            return;
-        }
-
-        // Check strength, update the text indicator
-        if (val !== '') {
-            $('#password-strength-text').show();
-
-            var title = 'Strength: <strong>' + strength[result.score] + '</strong>';
-            var text = '<p><span class=\'feedback\'>' + result.feedback.warning + ' ' + result.feedback.suggestions + '</span></p>';
-            var clz = alertSettings.alertClassDanger;
-            switch (result.score) {
-            case 0:
-            case 1:
-                clz = alertSettings.alertClassDanger;
-                break;
-            case 2:
-                clz = alertSettings.alertClassWarning;
-                break;
-            case 3:
-                clz = alertSettings.alertClassInfo;
-                break;
-            case 4:
-            case 5:
-            default:
-                clz = alertSettings.alertClassSuccess;
-                break;
-            }
-            responseText = '<div class=\'alert alert-' + clz + '\'>' + title + text + '</div>';
-            $('#password-strength-text').html(responseText);
-        } else {
-            $('#password-strength-text').hide();
         }
     }
 }
