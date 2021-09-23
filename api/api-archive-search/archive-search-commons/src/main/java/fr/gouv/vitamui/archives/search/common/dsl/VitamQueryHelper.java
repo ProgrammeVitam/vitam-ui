@@ -67,14 +67,18 @@ public class VitamQueryHelper {
     }
 
 
-    private static final int DEFAULT_DEPTH = 30;
-    private static final int FACET_SIZE_MILTIPLIER = 10;
+    private static final int DEFAULT_DEPTH = 10;
+    private static final int FACET_SIZE_MILTIPLIER = 100;
 
     /* Query fields */
     private static final String IDENTIFIER = "Identifier";
     private static final String UNIT_TYPE = "#unitType";
     private static final String TITLE = "Title";
+    private static final String TITLE_FR = "Title_.fr";
+    private static final String TITLE_EN = "Title_.en";
     private static final String DESCRIPTION = "Description";
+    private static final String DESCRIPTION_EN = "Description_.en";
+    private static final String DESCRIPTION_FR = "Description_.fr";
     private static final String START_DATE = "StartDate";
     private static final String PRODUCER_SERVICE = "#originating_agency";
     private static final String GUID = "#id";
@@ -110,7 +114,7 @@ public class VitamQueryHelper {
         //Handle roots
         if (nodes != null && !nodes.isEmpty()) {
             select.addRoots(nodes.toArray(new String[nodes.size()]));
-            select.addFacets(FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, nodes.size() * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
+            select.addFacets(FacetHelper.terms("COUNT_BY_NODE", UNITS_UPS, (nodes.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
             query.setDepthLimit(DEFAULT_DEPTH);
         }
 
@@ -145,10 +149,6 @@ public class VitamQueryHelper {
                     case PRODUCER_SERVICE:
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
                         break;
-                    case TITLE:
-                    case DESCRIPTION:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.MATCH, searchKey, entry.getValue());
-                        break;
                     case START_DATE:
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.GE, searchKey, entry.getValue());
                         break;
@@ -156,7 +156,13 @@ public class VitamQueryHelper {
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.LE, searchKey, entry.getValue());
                         break;
                     case TITLE_OR_DESCRIPTION:
-                        query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.MATCH));
+                        query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
+                        break;
+                    case TITLE:
+                        query.add(buildTitleQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
+                        break;
+                    case DESCRIPTION:
+                        query.add(buildDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
                         break;
                     default:
                         LOGGER.info("adding other field from not listed fields for key: {},", searchKey);
@@ -200,13 +206,48 @@ public class VitamQueryHelper {
     private static Query buildTitleAndDescriptionQuery(final List<String> searchValues, CRITERIA_OPERATORS operator)
         throws InvalidParseOperationException, InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
         if (searchValues != null && !searchValues.isEmpty()) {
             for (String value : searchValues) {
-                BooleanQuery subQueryOr = or();
                 subQueryOr.add(buildSubQueryByOperator(DESCRIPTION, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION_EN, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION_FR, value, operator));
                 subQueryOr.add(buildSubQueryByOperator(TITLE, value, operator));
-                subQueryAnd.add(subQueryOr);
+                subQueryOr.add(buildSubQueryByOperator(TITLE_FR, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(TITLE_EN, value, operator));
             }
+            subQueryAnd.add(subQueryOr);
+        }
+        return subQueryAnd;
+    }
+
+
+    private static Query buildTitleQuery(final List<String> searchValues, CRITERIA_OPERATORS operator)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+        if (searchValues != null && !searchValues.isEmpty()) {
+            for (String value : searchValues) {
+                subQueryOr.add(buildSubQueryByOperator(TITLE, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(TITLE_FR, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(TITLE_EN, value, operator));
+            }
+            subQueryAnd.add(subQueryOr);
+        }
+        return subQueryAnd;
+    }
+
+    private static Query buildDescriptionQuery(final List<String> searchValues, CRITERIA_OPERATORS operator)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+        if (searchValues != null && !searchValues.isEmpty()) {
+            for (String value : searchValues) {
+                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION_EN, value, operator));
+                subQueryOr.add(buildSubQueryByOperator(DESCRIPTION_FR, value, operator));
+            }
+            subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;
     }

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ArchiveService } from '../archive.service';
@@ -10,7 +10,7 @@ import { Unit } from '../models/unit.interface';
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnInit {
+export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   archiveUnit: Unit;
   @Input()
@@ -30,12 +30,27 @@ export class ArchivePreviewComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', this.accessContract);
+    this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, headers);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', this.accessContract);
+    if (changes.archiveUnit.firstChange) {
+      return;
+    }
+    if (changes.archiveUnit.currentValue['#id'] !== changes.archiveUnit.previousValue['#id']) {
+      this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, headers);
+    }
+    this.fullPath = false;
+  }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', this.accessContract);
-
     return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], headers);
   }
 
