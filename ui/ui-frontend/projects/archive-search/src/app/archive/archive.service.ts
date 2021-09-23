@@ -55,6 +55,10 @@ export class ArchiveService extends SearchService<any> {
 
   headers = new HttpHeaders();
 
+  private static fetchTitle(title: string, title_: any) {
+    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  }
+
   getBaseUrl() {
     return this.archiveApiService.getBaseUrl();
   }
@@ -150,7 +154,7 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
       (file) => {
         const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file);
+        element.href = window.URL.createObjectURL(file.body);
         element.download = 'item-' + id;
         element.style.visibility = 'hidden';
         document.body.appendChild(element);
@@ -165,6 +169,58 @@ export class ArchiveService extends SearchService<any> {
 
   findArchiveUnit(id: string, headers?: HttpHeaders) {
     return this.archiveApiService.findArchiveUnit(id, headers);
+  }
+
+  buildArchiveUnitPath(archiveUnit: Unit, headers?: HttpHeaders) {
+    const criteriaSearchList = [];
+    const allunitups = archiveUnit['#allunitups'].map((unitUp) => unitUp);
+
+    if (!allunitups || allunitups.length === 0) {
+      return of({
+        fullPath: '',
+        resumePath: '',
+      });
+    }
+
+    criteriaSearchList.push({
+      criteria: '#id',
+      values: archiveUnit['#allunitups'].map((unitUp) => unitUp),
+    });
+
+    const searchCriteria = {
+      criteriaList: criteriaSearchList,
+      pageNumber: 0,
+      size: archiveUnit['#allunitups'].length,
+    };
+
+    return this.searchArchiveUnitsByCriteria(searchCriteria, headers).pipe(
+      map((pagedResult: PagedResult) => {
+        let resumePath = '';
+        let fullPath = '';
+
+        if (pagedResult.results) {
+          resumePath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+          fullPath = `/${pagedResult.results.map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+
+          if (pagedResult.results.length > 6) {
+            const upperBoundPath = pagedResult.results
+              .slice(0, 3)
+              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            const lowerBoundPath = pagedResult.results
+              .slice(-3)
+              .map((ua) => ArchiveService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            resumePath = `/${upperBoundPath}/../${lowerBoundPath}`;
+          }
+        }
+
+        return {
+          fullPath,
+          resumePath,
+        };
+      })
+    );
   }
 }
 
