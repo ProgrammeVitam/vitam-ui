@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AccessContract, AccessionRegister, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
@@ -16,7 +16,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   templateUrl: './audit-create.component.html',
   styleUrls: ['./audit-create.component.scss'],
 })
-export class AuditCreateComponent implements OnInit {
+export class AuditCreateComponent implements OnInit, OnDestroy {
   @Input() tenantIdentifier: number;
 
   FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
@@ -77,8 +77,7 @@ export class AuditCreateComponent implements OnInit {
     this.accessContractSelect.valueChanges.subscribe((accessContractId) => {
       if (
         this.form.controls.auditActions.value === 'AUDIT_FILE_EXISTING' ||
-        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY' ||
-        this.form.controls.auditActions.value === 'AUDIT_FILE_RECTIFICATION'
+        this.form.controls.auditActions.value === 'AUDIT_FILE_INTEGRITY'
       ) {
         this.auditService.getAllAccessionRegister(accessContractId).subscribe((accessionRegisters) => {
           this.accessionRegisters = accessionRegisters;
@@ -86,27 +85,23 @@ export class AuditCreateComponent implements OnInit {
       } else {
         this.accessionRegisters = null;
       }
-      this.updateObjectIdValidators();
     });
 
-    this.form.controls.auditActions.valueChanges.subscribe((auditActions) => {
-      // Update the audit type
-      if (auditActions === 'AUDIT_FILE_EXISTING' || auditActions === 'AUDIT_FILE_INTEGRITY') {
+    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+
+    this.form.controls.auditActions.valueChanges.subscribe((action) => {
+      if (action === 'AUDIT_FILE_EXISTING' || action === 'AUDIT_FILE_INTEGRITY') {
         this.form.controls.auditType.setValue(this.allServices.value ? 'tenant' : 'originatingagency');
       } else {
         this.form.controls.auditType.setValue('dsl');
       }
     });
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
-
     this.allServices.valueChanges.subscribe((value) => {
       if (this.form.controls.auditActions.value !== 'AUDIT_FILE_RECTIFICATION') {
         this.form.controls.auditType.setValue(value ? 'tenant' : 'originatingagency');
       }
       this.form.controls.objectId.setValue(value ? this.startupService.getTenantIdentifier() : null);
-      this.updateObjectIdValidators();
-      this.form.updateValueAndValidity();
     });
 
     this.selectedNodes.valueChanges.subscribe((value) => {
@@ -124,21 +119,6 @@ export class AuditCreateComponent implements OnInit {
     this.allNodes.valueChanges.subscribe((value) => (this.stepCount = value ? 1 : 2));
   }
 
-  /**
-   * Add or remove the required validator on the filed 'objectId'
-   */
-  private updateObjectIdValidators() {
-    if (
-      this.allServices.value &&
-      this.accessionRegisters &&
-      (this.form.value.auditActions === 'AUDIT_FILE_EXISTING' || this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY')
-    ) {
-      this.form.get('objectId').setValidators(Validators.required);
-    } else {
-      this.form.get('objectId').clearValidators();
-    }
-  }
-
   isStepValid(): boolean {
     const isEvidenceAuditValid =
       this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' && !this.accessContractSelect.invalid && !this.accessContractSelect.pending;
@@ -147,7 +127,9 @@ export class AuditCreateComponent implements OnInit {
       !this.accessContractSelect.invalid &&
       !this.accessContractSelect.pending &&
       !this.form.get('evidenceAudit').invalid &&
-      !this.form.get('evidenceAudit').pending;
+      !this.form.get('evidenceAudit').pending &&
+      !this.form.get('objectId').invalid &&
+      !this.form.get('objectId').pending;
     const isOtherAuditValid =
       (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' || this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
       !this.accessContractSelect.invalid &&
@@ -159,9 +141,9 @@ export class AuditCreateComponent implements OnInit {
     return isEvidenceAuditValid || isRectificationAuditValid || isOtherAuditValid;
   }
 
-  ngOnDestroy = () => {
+  ngOnDestroy() {
     this.keyPressSubscription.unsubscribe();
-  };
+  }
 
   onCancel() {
     if (this.form.dirty) {
