@@ -124,10 +124,6 @@ export class AuditListComponent extends InfiniteScrollTable<any> implements OnDe
         criteria.evType = this._filters.types;
       }
     }
-    // Default type filter used to exclude the other types
-    if (!criteria.evType) {
-      criteria.evType = ['PROCESS_AUDIT', 'EVIDENCE_AUDIT', 'RECTIFICATION_AUDIT'];
-    }
 
     return criteria;
   }
