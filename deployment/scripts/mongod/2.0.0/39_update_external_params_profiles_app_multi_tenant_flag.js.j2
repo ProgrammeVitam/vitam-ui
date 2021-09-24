@@ -1,0 +1,24 @@
+db = db.getSiblingDB('iam')
+
+print("START_39_update_external_params_profiles_app_multi_tenant_flag.js");
+
+// -------- EXTERNAL_PARAM_PROFILE_APP  -----
+
+db.profiles.update({
+   "applicationName":"EXTERNAL_PARAM_PROFILE_APP"
+},
+{
+      $addToSet:{
+           "roles":{
+              $each:[
+                 {
+                    "name":"ROLE_GET_PROFILES",
+                    "name":"ROLE_UPDATE_PROFILES",
+                    "name":"ROLE_LOGBOOKS"
+                 }
+              ]
+           }
+        }
+});
+
+print("END_39_update_external_params_profiles_app_multi_tenant_flag.js");
