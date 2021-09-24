@@ -5,7 +5,6 @@
     SSLEngine on
     SSLCertificateFile /etc/{{apache_service}}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{apache_service}}/certs/reverse.key
-    SSLCACertificateFile /etc/{{apache_service}}/certs/servicesca.pem
     ServerName reverse.service.{{ consul_domain }}
     ServerAlias {{ vitam_reverse_external_dns }}
     ServerAlias {{ ip_service }}
