@@ -516,7 +516,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
-
+        this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
         this.criteriaSearchList.push({
           criteria: 'NODE',
           values: strValues,
