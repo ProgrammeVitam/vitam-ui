@@ -118,32 +118,37 @@
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC')">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
         </button>
         <button
           mat-menu-item
           class="btn-new-save"
           (click)="addCriteriaCategory('COMMUNICABILITY')"
-          [disabled]="isCategoryAdded('COMMUNICABILITY')"
+          [disabled]="isCategoryAdded('COMMUNICABILITY') || true"
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.COMMUNICABILITY' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING')">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DIFFUSION')" [disabled]="isCategoryAdded('DIFFUSION')">
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('DIFFUSION')"
+          [disabled]="isCategoryAdded('DIFFUSION') || true"
+        >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
         </button>
         <button
           mat-menu-item
           class="btn-new-save"
           (click)="addCriteriaCategory('CLASSIFICATION')"
-          [disabled]="isCategoryAdded('CLASSIFICATION')"
+          [disabled]="isCategoryAdded('CLASSIFICATION') || true"
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL')">
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
         </button>
       </mat-menu>
