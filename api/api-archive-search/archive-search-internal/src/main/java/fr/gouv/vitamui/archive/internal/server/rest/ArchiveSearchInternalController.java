@@ -182,7 +182,7 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Access Contract {} ", accessContractId);
         ParameterChecker
             .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
-        LOGGER.info("Download Archive Unit Object with id  {}", id);
+        LOGGER.info("Download Archive Unit Object with id {}", id);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);

@@ -72,6 +72,7 @@ public class ArchivesSearchServiceTest {
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
     public final String GOT_PHYSICAL = "data/vitam_got_physical.json";
     public final String GOT_DISSEMINATION = "data/vitam_got_dissemination.json";
+    public final String GOT_TEXTCONTENT = "data/vitam_got_textcontent.json";
     public final String GOT_BINARYMASTER_MULTI_QUALIFIERS = "data/vitam_got_binarymaster_multiple_versions.json";
     public final String GOT_BINARYMASTER = "data/vitam_got_binarymaster.json";
 
@@ -136,7 +137,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, "BinaryMaster");
+        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
         assertEquals(objectData.getFilename(), "this_is_a_BinaryMaster.txt");
     }
 
@@ -197,7 +198,7 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
         assertEquals(version, 1);
     }
 
@@ -216,7 +217,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
         assertEquals(objectData.getFilename(), "Gallieni pour diffusion");
     }
 
@@ -253,7 +254,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
         assertEquals(objectData.getFilename(), "titre dissemination");
     }
 
@@ -272,7 +273,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.THUMBNAIL.getValue());
         assertEquals(objectData.getFilename(), "titre thumbnail.txt");
     }
 
@@ -291,7 +292,7 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertEquals(usage, ObjectQualifierTypeEnum.THUMBNAIL.getValue());
         assertNull(objectData.getFilename());
     }
     private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
@@ -308,5 +309,43 @@ public class ArchivesSearchServiceTest {
             .getResourceAsStream(filename);
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+    }
+
+
+    @Test
+    public void should_return_textcontent()
+        throws VitamClientException, IOException, InvalidParseOperationException {
+        // Given
+        ObjectData objectData = new ObjectData();
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_TEXTCONTENT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        // When
+        unitService.findObjectMetadataById(any(), any());
+        archivesSearchService.findObjectById(any(), any());
+        String usage = archivesSearchService.getUsage(resultsDto, objectData);
+        int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
+
+        // Then
+        assertEquals(usage, ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
+        assertEquals(version, 3);
+    }
+
+    @Test
+    public void should_return_textcontent_file_info()
+        throws  IOException, InvalidParseOperationException, VitamClientException {
+        // Given
+        ObjectData objectData = new ObjectData();
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildGot(GOT_TEXTCONTENT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        // When
+        unitService.findObjectMetadataById(any(), any());
+        archivesSearchService.findObjectById(any(), any());
+        String usage = archivesSearchService.getUsage(resultsDto, objectData);
+
+        // Then
+        assertEquals(usage, ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
+        assertEquals(objectData.getFilename(), "Un fichier de type TextContent");
     }
 }

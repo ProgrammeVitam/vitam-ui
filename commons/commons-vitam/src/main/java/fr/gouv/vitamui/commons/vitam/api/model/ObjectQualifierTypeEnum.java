@@ -42,7 +42,9 @@ public enum ObjectQualifierTypeEnum {
     BINARYMASTER("BinaryMaster"),
     DISSEMINATION("Dissemination"),
     THUMBNAIL("Thumbnail"),
-    PHYSICALMASTER("PhysicalMaster");
+    TEXTCONTENT("TextContent");
+
+
 
     private final String value;
 

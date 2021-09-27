@@ -276,9 +276,18 @@ public class ArchiveSearchInternalService {
         }
     }
 
+    /**
+     * Download the Unit Binary Object
+     *
+     * @param id
+     * @param usage
+     * @param version
+     * @param vitamContext
+     * @throws VitamClientException
+     */
     public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
-        LOGGER.info("Download Archive Unit Object with id {} ", id);
+        LOGGER.info("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
         return unitService
             .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
