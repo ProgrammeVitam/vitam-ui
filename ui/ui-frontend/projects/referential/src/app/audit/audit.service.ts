@@ -52,7 +52,7 @@ export class AuditService extends SearchService<Event> {
   constructor(
     private operationApiService: OperationApiService,
     private logbookApiService: LogbookApiService,
-    private accessionRegisterApiService: AccessionRegisterSummaryApiService,
+    private accessionRegisterSummaryApiService: AccessionRegisterSummaryApiService,
     private snackBar: VitamUISnackBar,
     http: HttpClient
   ) {
@@ -138,7 +138,10 @@ export class AuditService extends SearchService<Event> {
   }
 
   getAllAccessionRegister(accessContractId: string): Observable<AccessionRegisterSummary[]> {
-    return this.accessionRegisterApiService.getAllByParams(new HttpParams(), new HttpHeaders({ 'X-Access-Contract-Id': accessContractId }));
+    return this.accessionRegisterSummaryApiService.getAllByParams(
+      new HttpParams(),
+      new HttpHeaders({ 'X-Access-Contract-Id': accessContractId })
+    );
   }
 
   checkEvidenceAuditExistence(evidenceAuditId: string): Observable<boolean> {

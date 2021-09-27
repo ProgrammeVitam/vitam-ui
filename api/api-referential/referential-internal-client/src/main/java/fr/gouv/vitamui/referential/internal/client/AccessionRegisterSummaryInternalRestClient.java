@@ -54,7 +54,7 @@ public class AccessionRegisterSummaryInternalRestClient
 
     @Override
     public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL;
+        return RestApi.ACCESSION_REGISTER_URL + "/summary";
     }
 
     @Override

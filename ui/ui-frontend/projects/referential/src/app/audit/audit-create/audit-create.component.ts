@@ -101,9 +101,8 @@ export class AuditCreateComponent implements OnInit {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessConctractId && accessConctractId.length > 0) {
         this.accessContractId = accessConctractId;
-
-        this.auditService.getAllAccessionRegister(this.accessContractId).subscribe((accessionRegisters) => {
-          this.accessionRegisterSummaries = accessionRegisters;
+        this.auditService.getAllAccessionRegister(this.accessContractId).subscribe((accessionRegisterSummaries) => {
+          this.accessionRegisterSummaries = accessionRegisterSummaries;
         });
       } else {
         this.snackBar.open(
