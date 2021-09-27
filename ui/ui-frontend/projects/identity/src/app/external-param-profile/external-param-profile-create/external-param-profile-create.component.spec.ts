@@ -34,34 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {ComponentFixture,TestBed} from '@angular/core/testing';
-import {FormBuilder,FormsModule,ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MatDialog,MatDialogRef,MAT_DIALOG_DATA} from '@angular/material/dialog';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatSelectModule} from '@angular/material/select';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY,of} from 'rxjs';
-import {BASE_URL,CollapseModule,ConfirmDialogService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-import {AccessContractApiService} from '../../../../../referential/src/app/core/api/access-contract-api.service';
-import {ExternalParamProfileService} from '../external-param-profile.service';
-import {ExternalParamProfileValidators} from '../external-param-profile.validators';
-import {ExternalParamProfileCreateComponent} from './external-param-profile-create.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { CollapseModule, ConfirmDialogService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { ExternalParamProfileService } from '../external-param-profile.service';
+import { ExternalParamProfileValidators } from '../external-param-profile.validators';
+import { ExternalParamProfileCreateComponent } from './external-param-profile-create.component';
 
-describe('ExternalParamProfileCreateComponent',() => {
+describe('ExternalParamProfileCreateComponent', () => {
   let component: ExternalParamProfileCreateComponent;
   let fixture: ComponentFixture<ExternalParamProfileCreateComponent>;
 
-  const matDialogRefSpy=jasmine.createSpyObj('MatDialogRef',['close']);
+  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
 
-  const externalParamProfileService=jasmine.createSpyObj('ExternalParamProfileService',{create: of({})});
-  const externalParamProfileValidators=jasmine.createSpyObj('ExternalParamProfileValidators',{nameExists: () => of(null)});
-  const matDialogSpy=jasmine.createSpyObj('MatDialog',['open']);
-  const accessContractApiServiceStub={
-    getAllAccessContracts: () => of([])
+  const externalParamProfileValidators = jasmine.createSpyObj('ExternalParamProfileValidators', { nameExists: () => of(null) });
+  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  const externalParamProfileService = {
+    getAllActiveAccessContracts: () => of([]),
+    create: of({}),
+    patch: of({}),
+    exists: of({}),
   };
 
   beforeEach(async () => {
@@ -76,37 +77,28 @@ describe('ExternalParamProfileCreateComponent',() => {
         HttpClientTestingModule,
         FormsModule,
         MatSelectModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
       ],
       providers: [
         FormBuilder,
-        {provide: MatDialogRef,useValue: matDialogRefSpy},
-        {provide: MatDialog,useValue: matDialogSpy},
-        {provide: MAT_DIALOG_DATA,useValue: {}},
-        {provide: AccessContractApiService,useValue: accessContractApiServiceStub},
-        {provide: ConfirmDialogService,useValue: {keydownEvents: () => EMPTY,listenToEscapeKeyPress: () => EMPTY}},
-        {provide: ExternalParamProfileValidators,useValue: externalParamProfileValidators},
-        {provide: ExternalParamProfileService,useValue: externalParamProfileService},
-        {provide: BASE_URL,useValue: '/fake-api'},
-        /*{
-          provide: NG_VALUE_ACCESSOR,
-          multi: true,
-          useExisting: forwardRef(() => MyControlComponent),
-        }*/
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: ConfirmDialogService, useValue: { keydownEvents: () => EMPTY, listenToEscapeKeyPress: () => EMPTY } },
+        { provide: ExternalParamProfileValidators, useValue: externalParamProfileValidators },
+        { provide: ExternalParamProfileService, useValue: externalParamProfileService },
       ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture=TestBed.createComponent(ExternalParamProfileCreateComponent);
-    component=fixture.componentInstance;
+    fixture = TestBed.createComponent(ExternalParamProfileCreateComponent);
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create',() => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
