@@ -34,11 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import {
+  AccessContract,
+  AccessContractApiService,
   Criterion,
   ExternalParamProfile,
   ExternalParamProfileApiService,
@@ -55,12 +57,25 @@ import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 export class ExternalParamProfileService extends SearchService<ExternalParamProfile> {
   updated = new Subject<ExternalParamProfile>();
 
-  constructor(private externalParamProfileApi: ExternalParamProfileApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
+  constructor(
+    private externalParamProfileApi: ExternalParamProfileApiService,
+    private accessContractApiService: AccessContractApiService,
+    private snackBar: VitamUISnackBar,
+    http: HttpClient
+  ) {
     super(http, externalParamProfileApi);
   }
 
   getOne(id: string): Observable<ExternalParamProfile> {
     return this.externalParamProfileApi.getOne(id);
+  }
+
+  getAllActiveAccessContracts(tenantIdentifier: string): Observable<AccessContract[]> {
+    const params = new HttpParams();
+    const headers = new HttpHeaders().append('X-Tenant-Id', tenantIdentifier);
+    return this.accessContractApiService
+      .getAllAccessContracts(params, headers)
+      .pipe(map((accessContracts) => accessContracts.filter((accessContract) => accessContract.status === 'ACTIVE')));
   }
 
   create(externalParamProfile: ExternalParamProfile) {
