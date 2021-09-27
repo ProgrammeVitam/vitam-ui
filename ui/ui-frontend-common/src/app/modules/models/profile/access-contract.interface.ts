@@ -37,17 +37,17 @@
 import { Id } from '../id.interface';
 
 export interface AccessContract extends Id {
-    tenant: number;
-    version: number;
-    name: string;
-    identifier: string;
-    description: string;
-    status: string;
-    writingPermission: boolean;
-    everyOriginatingAgency: boolean;
-    everyDataObjectVersion: boolean;
-    creationDate: string;
-    lastUpdate: string;
-    activationDate: string;
-    rootUnits: string[];
+  tenant: number;
+  version: number;
+  name: string;
+  identifier: string;
+  description: string;
+  status: string;
+  writingPermission: boolean;
+  everyOriginatingAgency: boolean;
+  everyDataObjectVersion: boolean;
+  creationDate: string;
+  lastUpdate: string;
+  activationDate: string;
+  rootUnits: string[];
 }
