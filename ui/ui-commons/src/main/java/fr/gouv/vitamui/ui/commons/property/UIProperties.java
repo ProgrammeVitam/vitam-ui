@@ -71,4 +71,7 @@ public interface UIProperties {
     public Map<String, Map<String,Object>> getPortalCategories();
 
     public String getVersionRelease();
+
+    public String getUserLogo();
+
 }
