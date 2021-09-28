@@ -420,6 +420,7 @@ vitamui_platform_informations:
     portal_logo: logo_PORTAL.png
     header_logo: logo_HEADER.png
     footer_logo: logo_FOOTER.png
+    user_logo: logo_USER.png
     theme_colors:
       vitamui_primary: "#702382"
       vitamui_secondary: "#2563A9"
@@ -498,7 +499,18 @@ vitamui_password_configurations:
 mongo_dump_folder: /backup/mongod/
 mongo_backup_reinstall:
   - db: "iam"
-    collections: [ "customers","externalParameters","groups","owners","profiles","sequences","tenants","users","providers" ]
+    collections:
+      [
+        "customers",
+        "externalParameters",
+        "groups",
+        "owners",
+        "profiles",
+        "sequences",
+        "tenants",
+        "users",
+        "providers"
+      ]
   #- db: "admin"
   #  collections: []
 
