@@ -415,6 +415,7 @@ vitamui_platform_informations:
     portal_logo: logo_PORTAL.png
     header_logo: logo_HEADER.png
     footer_logo: logo_FOOTER.png
+    user_logo: logo_USER.png
     theme_colors:
       vitamui_primary: "#702382"
       vitamui_secondary: "#2563A9"
