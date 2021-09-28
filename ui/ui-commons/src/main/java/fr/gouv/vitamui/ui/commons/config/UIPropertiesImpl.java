@@ -83,6 +83,8 @@ public class UIPropertiesImpl implements UIProperties {
 
     private Map<String, String> customer;
 
+    private String userLogo;
+
     /**
      * Map of application categories (key: category ID, value: category properties)
      */

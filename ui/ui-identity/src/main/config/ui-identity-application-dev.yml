@@ -14,6 +14,7 @@ ui-identity:
   portal-logo: logo_PORTAL.png
   header-logo: logo_HEADER.png
   footer-logo: logo_FOOTER.png
+  user-logo: logo_USER.png
   portal-message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
   portal-title: "Portail des applications de l'archivage"
   theme-colors:

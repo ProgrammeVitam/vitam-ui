@@ -236,6 +236,9 @@ public class ApplicationService extends AbstractCrudService<ApplicationDto> {
                 case PORTAL:
                     file = getBase64File(properties.getPortalLogo(), properties.getAssets());
                     break;
+                case USER:
+                    file = getBase64File(properties.getUserLogo(), properties.getAssets());
+                    break;
             }
             files.put(asset.value(), file);
         });
