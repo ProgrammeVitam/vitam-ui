@@ -47,18 +47,19 @@ public class PasswordValidator {
         if (firstname.length() <= maxOccurrencesChars) {
             return false;
         }
-
-        if (rawPassword.contains(firstname)) {
+        String firstnameLower = firstname.toLowerCase();
+        String passwordLower = rawPassword.toLowerCase();
+        if (passwordLower.contains(firstnameLower)) {
             return true;
         }
         List<String> occurences = new ArrayList<>();
-        if (firstname.length() % maxOccurrencesChars != 0) {
+        if (firstnameLower.length() % maxOccurrencesChars != 0) {
             occurences = new ArrayList<>();
-            occurences.add(firstname.substring(firstname.length() - maxOccurrencesChars));
+            occurences.add(firstnameLower.substring(firstnameLower.length() - maxOccurrencesChars));
         }
-        for (int i = 0; i < firstname.length() - maxOccurrencesChars; i++) {
-            occurences.add(firstname.substring(i, maxOccurrencesChars + i));
+        for (int i = 0; i < firstnameLower.length() - maxOccurrencesChars; i++) {
+            occurences.add(firstnameLower.substring(i, maxOccurrencesChars + i));
         }
-        return occurences.stream().anyMatch(rawPassword::contains);
+        return occurences.stream().anyMatch(passwordLower::contains);
     }
 }

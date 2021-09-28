@@ -82,39 +82,131 @@
             <i class="material-icons">check</i>
         </li>
     </ul>
+    <div th:if="${application.maxOldPassword != null}">
+        <span th:utext="#{screen.pm.init.security.password.check.internal(${application.maxOldPassword})}"></span>
+    </div>
+    <br/>
 </div>
 
 <span class="collapsible" style="color: #aab0b3;">
     <span th:utext="#{screen.pm.init.security.password.constraints}" class="collapsible">Password constraints validity</span>
-    <i class="material-icons " style="font-size: 14px;">remove</i>
+    <i class="material-icons " style="font-size: 14px;">add</i>
 </span>
 
 <div class="content" style="display: none">
     <ul id="collapsible" style="color:#aab0b3">
-        <div th:if="${application.passwordAnssiConstraints != null}">
+        <div th:switch="${#locale.language}">
+            <div th:case="fr">
+                <div th:if="${application.passwordAnssiConstraints != null}">
+                    <div th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null}">
 
-            <li th:if="${application.passwordAnssiConstraints.messages != null}"
-                th:each="message : ${application.passwordAnssiConstraints.messages}" th:text="${message}">
-            </li>
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('fr').messages != null}"
+                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('fr').messages}" th:text="${message}">
+                        </li>
 
-            <li th:if="${application.passwordAnssiConstraints != null && application.passwordAnssiConstraints.specialChars != null && application.passwordAnssiConstraints.specialChars.title != null}"
-                th:utext="${application.passwordAnssiConstraints.specialChars.title}">
-            </li>
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars.title != null}"
+                            th:utext="${application.passwordAnssiConstraints.defaults.get('fr').specialChars.title}">
+                        </li>
 
-            <ul>
-                <li th:if="${application.passwordAnssiConstraints != null && application.passwordAnssiConstraints.specialChars != null && application.passwordAnssiConstraints.specialChars.messages != null}"
-                    th:each="specials : ${application.passwordAnssiConstraints.specialChars.messages}" th:text="${specials}">
-                </li>
-            </ul>
+                        <ul>
+                            <li th:if="${application.passwordAnssiConstraints.defaults.get('fr') != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars != null && application.passwordAnssiConstraints.defaults.get('fr').specialChars.messages != null}"
+                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('fr').specialChars.messages}" th:text="${specials}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div th:if="${application.passwordCustomConstraints != null}">
+                    <div th:if="${application.passwordCustomConstraints.customs.get('fr') != null}">
+                        <li th:if="${application.passwordCustomConstraints.customs.get('fr') != null && application.passwordCustomConstraints.customs.get('fr').messages != null}"
+                                th:each="message : ${application.passwordCustomConstraints.customs.get('fr').messages}" th:text="${message}">
+                        </li>
+                    </div>
+                </div>
+            </div>
+            <div th:case="en">
+                <div th:if="${application.passwordAnssiConstraints != null}">
+                    <div th:if="${application.passwordAnssiConstraints.defaults.get('en') != null}">
 
-        </div>
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en').messages != null}"
+                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('en').messages}" th:text="${message}">
+                        </li>
 
-        <div th:if="${application.passwordCustomConstraints != null}">
-            <ul>
-                <li th:if="${application.passwodCustomConstraints != null && application.passwordCustomConstraints.messages != null}"
-                    th:each="message : ${application.passwordCustomConstraints.messages}" th:text="${message}"></li>
-            </ul>
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.title != null}"
+                            th:utext="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
+                        </li>
 
+                        <ul>
+                            <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.messages != null}"
+                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('en').specialChars.messages}" th:text="${specials}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div th:if="${application.passwordCustomConstraints != null}">
+                    <div th:if="${application.passwordCustomConstraints.customs.get('en') != null}">
+                            <li th:if="${application.passwordCustomConstraints.customs.get('en') != null && application.passwordCustomConstraints.customs.get('en').messages != null}"
+                                th:each="message : ${application.passwordCustomConstraints.customs.get('en').messages}" th:text="${message}">
+                            </li>
+                    </div>
+                </div>
+            </div>
+            <div th:case="de">
+                <div th:if="${application.passwordAnssiConstraints != null}">
+                    <div th:if="${application.passwordAnssiConstraints.defaults.get('de') != null}">
+
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('de').messages != null}"
+                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('de').messages}" th:text="${message}">
+                        </li>
+
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('de') != null && application.passwordAnssiConstraints.defaults.get('de').specialChars != null && application.passwordAnssiConstraints.defaults.get('de').specialChars.title != null}"
+                            th:utext="${application.passwordAnssiConstraints.defaults.get('de').specialChars.title}">
+                        </li>
+
+                        <ul>
+                            <li th:if="${application.passwordAnssiConstraints.defaults.get('de') != null && application.passwordAnssiConstraints.defaults.get('de').specialChars != null && application.passwordAnssiConstraints.defaults.get('de').specialChars.messages != null}"
+                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('de').specialChars.messages}" th:text="${specials}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div th:if="${application.passwordCustomConstraints != null}">
+                    <div th:if="${application.passwordCustomConstraints.customs.get('de') != null}">
+                            <li th:if="${application.passwordCustomConstraints.customs.get('de') != null && application.passwordCustomConstraints.customs.get('de').messages != null}"
+                                th:each="message : ${application.passwordCustomConstraints.customs.get('de').messages}" th:text="${message}">
+                            </li>
+                    </div>
+                </div>
+            </div>
+            <div th:case="*">
+                <div th:if="${application.passwordAnssiConstraints != null}">
+                    <div th:if="${application.passwordAnssiConstraints.defaults.get('en') != null}">
+
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en').messages != null}"
+                            th:each="message : ${application.passwordAnssiConstraints.defaults.get('en').messages}" th:text="${message}">
+                        </li>
+
+                        <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.title != null}"
+                            th:utext="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
+                        </li>
+
+                        <ul>
+                            <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.messages != null}"
+                                th:each="specials : ${application.passwordAnssiConstraints.defaults.get('en').specialChars.messages}" th:text="${specials}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div th:if="${application.passwordCustomConstraints != null}">
+                    <div th:if="${application.passwordCustomConstraints.customs.get('en') != null}">
+                            <li th:if="${application.passwordCustomConstraints.customs.get('en') != null && application.passwordCustomConstraints.customs.get('en').messages != null}"
+                                th:each="message : ${application.passwordCustomConstraints.customs.get('en').messages}" th:text="${message}">
+                            </li>
+                    </div>
+                </div>
+            </div>
         </div>
     </ul>
 </div>

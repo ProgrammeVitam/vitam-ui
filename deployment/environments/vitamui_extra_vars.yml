@@ -89,28 +89,59 @@ vitamui_password_configurations:
   password:
     length: 12 # 8 for custom profile
     max_old_password: 12 # 3 for custom profile
-    check_occurrence: true # false or absent custom profile
+    check_occurrence: true # false for custom profile
     occurrences_chars_number: 3 # absent for custom profile
-    profile: "anssi" # default profile is anssi, for (Agence Nationale de la Sécurité des Systèmes d'Information), use custom profile otherwise
+    profile: "anssi" # default profile is anssi (Agence Nationale de la Sécurité des Systèmes d'Information), custom otherwise
     constraints:
-      defaults: # default ANSSI messages
-        messages:
-          - Ne pas contenir plus de ${password.occurrences-chars-number} caractères consécutifs issus de votre nom d'utilisateur
-          - Etre différent des ${password.max-old-password} derniers mots de passe
-          - Avoir une taille d'au moins ${password.length} caractères
-          - Les deux mots de passe doivent etre identiques
-        special_chars:
-          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour les catégories suivantes:'
+      defaults:
+        fr:
           messages:
-            - Minuscules (a-z)
-            - Majuscules (A-Z)
-            - Numériques (0-9)
-            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Avoir une taille d'au moins ${password.length} caractères
+          special_chars:
+            title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+            messages:
+              - Minuscules (a-z)
+              - Majuscules (A-Z)
+              - Numériques (0-9)
+              - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        en:
+          messages:
+            - To be different than ${password.max-old-password} oldest passwords
+            - Have a size of at least ${password.length} characters
+          special_chars:
+            title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+            messages:
+              - Uppercases (a-z)
+              - Lowercases (A-Z)
+              - Digital (0-9)
+              - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        de:
+          messages:
+            - Um sich von den ${password.max-old-password} ältesten Passwörtern zu unterscheiden
+            - Mindestens ${password.length} Zeichen lang sein
+          special_chars:
+            title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+            messages:
+              - Großbuchstaben (a-z)
+              - Kleinbuchstaben (A-Z)
+              - Digital (0-9)
+              - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
       #customs:
-      #  title: 'Pour des raisons de sécurité, votre mot de passe doit:'
-      #  messages: # custom messages for custom profile
-      #    - au moins ${password.length} caractères
-      #    - des miniscules et des majiscules
-      #    - au moins un chiffre et un caractère spécial
-      #    - etre différent des ${password.max-old-password} derniers mots de passe
-      #    - les deux mots de passe doivent etre identiques
+      #  fr:
+      #    title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+      #    messages:
+      #      - Au moins ${password.length} caractères
+      #      - Des miniscules et des majiscules
+      #      - Au moins un chiffre et un caractère spécial
+      #  en:
+      #    title: 'For security reasons, your password must:'
+      #    messages:
+      #      - At least ${password.length} characters
+      #      - Lowercase and uppercase
+      #      - At least one number and one special character
+      #  de:
+      #    title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+      #    messages:
+      #      - Mindestens ${password.length} Zeichen
+      #      - Klein- und Großbuchstaben
+      #      - Mindestens eine Zahl und ein Sonderzeichen

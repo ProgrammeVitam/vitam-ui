@@ -259,21 +259,69 @@ password:
   constraints:
 {% if vitamui_password_configurations.password.constraints.defaults is defined and vitamui_password_configurations.password.profile == 'anssi' %}
     defaults:
-        messages:
-{% for message in vitamui_password_configurations.password.constraints.defaults.messages %}
-          - {{ message }}
-{% endfor %}
-        special-chars:
-            title: '{{ vitamui_password_configurations.password.constraints.defaults.special_chars.title }}'
-            messages:
-{% for message in vitamui_password_configurations.password.constraints.defaults.special_chars.messages %}
-                - {{ message }}
-{% endfor %}
-{% else %}
-    customs:
-        title: '{{ vitamui_password_configurations.password.constraints.customs.title }}'
-        messages:
-{% for message in vitamui_password_configurations.password.constraints.customs.messages %}
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.fr is defined %}
+      fr:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.fr.messages %}
             - {{ message }}
 {% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.fr.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.fr.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.en is defined %}
+      en:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.en.messages %}
+            - {{ message }}
+{% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.en.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.en.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.de is defined %}
+      de:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.de.messages %}
+            - {{ message }}
+{% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.de.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.de.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% else %}
+    customs:
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.fr is defined %}
+      fr:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.fr.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.fr.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.en is defined %}
+      en:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.en.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.en.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.de is defined %}
+      de:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.de.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.de.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
 {% endif %}

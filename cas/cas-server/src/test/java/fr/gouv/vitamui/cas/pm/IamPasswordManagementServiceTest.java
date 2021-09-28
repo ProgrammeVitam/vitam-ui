@@ -108,6 +108,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     private static final String BAD_PASSWORD = "password1234";
     private static final String NOT_PASSWORD = "password1234";
     private static final String PASSWORD_CONTAINS_DICTIONARY = "ADMIN-Change-itChange-it0!0!";
+    private static final String PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE = "admin-Change-itChange-it0!0!";
 
     private IamPasswordManagementService service;
 
@@ -185,6 +186,17 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
     public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInPassword() {
         try {
             assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY), new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY, PASSWORD_CONTAINS_DICTIONARY)));
+            fail("should fail");
+        }
+        catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {
+            assertEquals("Invalid password containing an occurence of user name !", e.getValidationMessage());
+        }
+    }
+
+    @Test
+    public void testChangePasswordFailureBecauseOfPresenceOfUsernameOccurenceInsensitiveCaseInPassword() {
+        try {
+            assertTrue(service.change(new UsernamePasswordCredential(EMAIL, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE), new PasswordChangeRequest(EMAIL, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE, PASSWORD_CONTAINS_DICTIONARY_INSENSITIVE)));
             fail("should fail");
         }
         catch (final IamPasswordManagementService.PasswordContainsUserDictionaryException e) {

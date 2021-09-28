@@ -40,7 +40,9 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Configuration
@@ -56,10 +58,11 @@ public class PasswordConfiguration {
     private Integer maxOldPassword = 12;
     private PasswordConstraints constraints;
 
+
     @Data
     public static class PasswordConstraints {
-        private PasswordDefaultConstraints defaults;
-        private PasswordCustomConstraints customs;
+        private Map<String, PasswordDefaultConstraints> defaults = new HashMap<>();
+        private Map<String, PasswordCustomConstraints> customs = new HashMap<>();
     }
 
     @Data
