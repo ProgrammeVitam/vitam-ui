@@ -37,11 +37,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { ApplicationService } from './application.service';
-
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
+import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
@@ -87,11 +86,14 @@ export class StartupService {
         this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
       })
       .then(() => this.refreshUser().toPromise())
-      .then(() => this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.Portal]).toPromise())
+      .then(() =>
+        this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal]).toPromise()
+      )
       .then((data) => {
         this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
         this.configurationData.FOOTER_LOGO = data[AttachmentType.Footer];
         this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
+        this.configurationData.USER_LOGO = data[AttachmentType.User];
         this.configurationData.LOGO = data[AttachmentType.Portal];
       })
       .then(() => {
@@ -225,12 +227,11 @@ export class StartupService {
   }
 
   getReferentialUrl(): string {
-      if (this.configurationLoaded()) {
-        return this.configurationData.REFERENTIAL_URL;
-      }
-
-      return null;
+    if (this.configurationLoaded()) {
+      return this.configurationData.REFERENTIAL_URL;
     }
+    return null;
+  }
   getConfigStringValue(key: string): string {
     if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
       return this.configurationData[key];
@@ -294,5 +295,4 @@ export class StartupService {
 
     return null;
   }
-
 }
