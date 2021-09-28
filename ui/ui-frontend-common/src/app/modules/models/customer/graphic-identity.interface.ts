@@ -34,12 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 export interface GraphicIdentity {
-
-    hasCustomGraphicIdentity: boolean;
-    headerDataBase64: string;
-    footerDataBase64: string;
-    portalDataBase64: string;
-    themeColors: {[colorId: string]: string};
-
+  hasCustomGraphicIdentity: boolean;
+  headerDataBase64: string;
+  footerDataBase64: string;
+  portalDataBase64: string;
+  userDataBase64: string;
+  themeColors: { [colorId: string]: string };
 }
