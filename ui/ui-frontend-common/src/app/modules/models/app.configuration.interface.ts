@@ -34,21 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface AppConfiguration {
 
-    PORTAL_URL: string;
-    CAS_URL: string;
-    CAS_LOGOUT_URL: string;
-    LOGOUT_REDIRECT_UI_URL: string;
-    SEARCH_URL?: string;
-    THEME_COLORS: any;
-    PORTAL_MESSAGE: string;
-    PORTAL_TITLE: string;
-    PORTAL_LOGO: string;
-    HEADER_LOGO: string;
-    FOOTER_LOGO: string;
-    LOGO: string;
-    [key: string]: string;
-    PLATFORM_NAME: string;
-    CUSTOMER: string;
+export interface AppConfiguration {
+  PORTAL_URL: string;
+  CAS_URL: string;
+  CAS_LOGOUT_URL: string;
+  LOGOUT_REDIRECT_UI_URL: string;
+  SEARCH_URL?: string;
+  THEME_COLORS: any;
+  PORTAL_MESSAGE: string;
+  PORTAL_TITLE: string;
+  PORTAL_LOGO: string;
+  HEADER_LOGO: string;
+  FOOTER_LOGO: string;
+  USER_LOGO: string;
+  LOGO: string;
+  [key: string]: string;
+  PLATFORM_NAME: string;
+  CUSTOMER: string;
 }
