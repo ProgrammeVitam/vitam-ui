@@ -32,6 +32,7 @@ ui-archive-search:
   portal-logo: logo_PORTAL.png
   header-logo: logo_HEADER.png
   footer-logo: logo_FOOTER.png
+  user-logo: logo_USER.png
   portal-title: "Portail des applications de l'archivage"
   theme-colors:
     vitamui-primary: "#702382"
