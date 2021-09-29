@@ -178,7 +178,7 @@ export class LogbookManagementOperationListComponent implements OnInit {
   filterByOerationCategory() {
     window.scroll(0, 20);
     this.initializeParameters(true);
-    this.resultsFiltred = this.operationsList.results.filter((x) => this.filterMap.categories.includes(x.processType));
+    this.resultsFiltred = this.operationsList.results.filter((operation) => this.filterMap.categories.includes(operation.processType));
     if (this.filterMap.categories.length === 0) {
       this.resultsFiltred = this.operationsList.results;
     }
@@ -293,5 +293,24 @@ export class LogbookManagementOperationListComponent implements OnInit {
     } else {
       this.show = true;
     }
+  }
+
+  orderByStatus() {
+    this.initializeParameters(this.filter);
+    const resultsToShow: any[] = this.filter ? this.resultsFiltred : this.operationsList.results;
+    if (!this.getParamShow('Status')) {
+      resultsToShow.sort((a, b) =>
+        this.translate.instant('STATUS_VALUE.' + a.stepStatus) > this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1
+      );
+      this.changeParamShow('Status', true);
+    } else {
+      resultsToShow.sort((a, b) =>
+        this.translate.instant('STATUS_VALUE.' + a.stepStatus) < this.translate.instant('STATUS_VALUE.' + b.stepStatus) ? 1 : -1
+      );
+      this.changeParamShow('Status', false);
+    }
+
+    this.results = resultsToShow.slice(0, 20);
+    this.show = this.results.length < 20 ? true : false;
   }
 }
