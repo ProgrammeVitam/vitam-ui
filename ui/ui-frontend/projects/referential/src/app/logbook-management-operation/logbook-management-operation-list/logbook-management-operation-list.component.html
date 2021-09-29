@@ -19,7 +19,12 @@
   <div class="row row-data">
     <div class="col-12 title-text">
       <div class="result-layout">
-        <span class="result-number">{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.RESULTS' | translate }}</span>
+        <span class="result-number" *ngIf="totalResults > 1 || totalResults === 0"
+          >{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.RESULTS' | translate }}</span
+        >
+        <span class="result-number" *ngIf="totalResults === 1"
+          >{{ totalResults }} {{ 'LOGBOOK_OPERATION_LIST.ONE_RESULT' | translate }}</span
+        >
       </div>
     </div>
   </div>
@@ -44,61 +49,61 @@
           <ng-template #categoriesFilterTemplate>
             <vitamui-common-table-filter [(filter)]="filterMap['categories']">
               <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Entrée') }}" (click)="filterByOerationCategory()">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Entrée</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.INGEST' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Sécurisation') }}" (click)="filterByOerationCategory()">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Sécurisation</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.TRACEABILITY' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Sauvegarde des journaux des écritures') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Sauvegarde des journaux des écritures</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.STORAGE_BACKUP' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Audit') }}" (click)="filterByOerationCategory()">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Audit</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.AUDIT' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Données de base') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Données de base</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.MASTERDATA' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Élimination des unités archivistiques') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Élimination des unités archivistiques</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.ELIMINATION' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Vérification des journaux sécurisés') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Vérification des journaux sécurisés</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.CHECK' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Mise à jour') }}" (click)="filterByOerationCategory()">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Mise à jour</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.UPDATE' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option value="{{ getProcessTypeByValue('Export du DIP') }}" (click)="filterByOerationCategory()">
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Export du DIP</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.EXPORT_DIP' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Modification d&#8217;arborescence des unités archivistiques') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Modification d'arborescence des unités archivistiques</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.RECLASSIFICATION' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Processus global de préservation') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Processus global de préservation</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.PRESERVATION' | translate }}</div>
               </vitamui-common-table-filter-option>
               <vitamui-common-table-filter-option
                 value="{{ getProcessTypeByValue('Journalisation d&#8217;événements externes') }}"
                 (click)="filterByOerationCategory()"
               >
-                <div class="table-filter-icon" i18n="@@userStatusEnabled">Journalisation d'événements externes</div>
+                <div class="table-filter-icon">{{ 'LOGBOOK_OPERATION_PAGE.OPERATION_CATEGORY.EXTERNAL_LOGBOOK' | translate }}</div>
               </vitamui-common-table-filter-option>
             </vitamui-common-table-filter>
           </ng-template>
@@ -122,7 +127,7 @@
             <br />
             <span class="date">{{ 'LOGBOOK_OPERATION_LIST.STATE' | translate }}</span>
           </div>
-          <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByParam('stepStatus', 'Status')">{{
+          <i class="material-icons mat-icon-rtl-mirror clickable" (click)="orderByStatus()">{{
             filtredByStatus ? 'expand_less' : 'expand_more'
           }}</i>
         </div>
