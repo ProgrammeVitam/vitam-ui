@@ -472,20 +472,20 @@ vitamui_password_configurations:
           title: 'Pour des raisons de sécurité, votre mot de passe doit:'
           messages:
             - Au moins ${password.length} caractères
-            - Des miniscules et des majiscules
-            - Au moins un chiffre et un caractère spécial
+            - Des minuscules et des majuscules
+            - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
         en:
           title: 'For security reasons, your password must:'
           messages:
             - At least ${password.length} characters
             - Lowercase and uppercase
-            - At least one number and one special character
+            - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
         de:
           title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
           messages:
             - Mindestens ${password.length} Zeichen
             - Klein- und Großbuchstaben
-            - Mindestens eine Zahl und ein Sonderzeichen
+            - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 
 # backup specific collections before install and restore after install
 mongo_dump_folder: /backup/mongod/

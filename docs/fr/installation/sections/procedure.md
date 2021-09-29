@@ -172,7 +172,7 @@ vitamui_password_configurations:
           title: 'Pour des raisons de sécurité, votre mot de passe doit:'
           messages:
             - Au moins ${password.length} caractères
-            - Des miniscules et des majiscules
+            - Des minuscules et des majuscules
             - Au moins un chiffre et un caractère spécial
             - Etre différent des ${password.max-old-password} derniers mots de passe
         en:
@@ -219,7 +219,7 @@ Ce bloc contient la liste des messages personnalisés, et les différentes contr
 ###### Les langues supportées par CAS à ce jour:
 Les langues supportées par CAS sont: la langue Français, la langue Anglaise  et l'Allemande.
 
-Il est recommandé de définir les trois blocs des différentes langues, pour garder la cohérence avec les différentes interfaces du serveur d'authentification CAS.
+Il est fortement recommandé de définir les trois blocs des différentes langues, pour garder la cohérence avec les différentes interfaces du serveur d'authentification CAS.
 ### Configuration des profils de mots de passe (YAML):
 
 La configuration finale transcrite dans les fichiers de configurations serveurs:
@@ -281,20 +281,20 @@ password:
               title: 'Pour des raisons de sécurité, votre mot de passe doit:'
               messages:
                   - Au moins ${password.length} caractères
-                  - Des miniscules et des majiscules
-                  - Au moins un chiffre et un caractère spécial
+                  - Des minuscules et des majuscules
+                  - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
           en:
               title: 'For security reasons, your password must:'
               messages:
                   - At least ${password.length} characters
                   - Lowercase and uppercase
-                  - At least one number and one special character
+                  - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
           de:
               title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
               messages:
                   - Mindestens ${password.length} Zeichen
                   - Klein- und Großbuchstaben
-                  - Mindestens eine Zahl und ein Sonderzeichen
+                  - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 ```
 > Note:
 en cas de changement manuelle par l'administrateur système du nombre de mots passe anciens à utiliser, le changement devra se faire au niveau CAS et iam-internal.
