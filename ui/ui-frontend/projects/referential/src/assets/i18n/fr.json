@@ -13,6 +13,7 @@
     "STATE" : "Etat",
     "STATUS": "Statut",
     "RESULTS": "Résultats",
+    "ONE_RESULT": "Résultat",
     "OPERATION_ID": "Identifiant de l'opération",
     "OPERATION_CATEGORY": "Catégorie d'opération",
     "START_DATE": "Date de début",
@@ -39,7 +40,21 @@
     "OPERATION_DATE": "Date d'opération",
     "AND": "et le :",
     "ADD_INTREVAL": "AJOUTER UN INTERVALLE",
-    "DELETE_INTERVAL": "SUPPRIMER L'INTERVALLE"
+    "DELETE_INTERVAL": "SUPPRIMER L'INTERVALLE",
+    "OPERATION_CATEGORY" : {
+      "TRACEABILITY" : "Sécurisation",
+      "INGEST" : "Entrée",
+      "STORAGE_BACKUP":"Sauvegarde des journaux des écritures",
+      "AUDIT":"Audit",
+      "MASTERDATA":"Données de base",
+      "ELIMINATION":"Élimination des unités archivistiques",
+      "CHECK":"Vérification des journaux sécurisés",
+      "UPDATE":"Mise à jour",
+      "EXPORT_DIP":"Export du DIP",
+      "RECLASSIFICATION":"Modification d’arborescence des unités archivistiques",
+      "PRESERVATION":"Processus global de préservation",
+      "EXTERNAL_LOGBOOK":"Journalisation d’événements externes"
+    }
   },
   "STATE_VALUE": {
     "COMPLETED": "Terminé",
