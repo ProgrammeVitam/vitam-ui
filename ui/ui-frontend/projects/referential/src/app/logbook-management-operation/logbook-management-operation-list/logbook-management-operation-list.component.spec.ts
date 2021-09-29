@@ -110,7 +110,6 @@ describe('LogbookManagementOperationListComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
 
-    // tslint:disable-next-line: deprecation
     const logbookManagementOperationService = TestBed.get(LogbookManagementOperationService);
     spyOn(logbookManagementOperationService, 'listOperationsDetails').and.callThrough();
   });
@@ -156,5 +155,9 @@ describe('LogbookManagementOperationListComponent', () => {
   });
   it('should show return ELIMINATION as result', () => {
     expect(component.getProcessTypeByValue('Élimination des unités archivistiques')).toBe('ELIMINATION');
+  });
+  it('should the id of the second operation of results be', () => {
+    component.orderByStatus();
+    expect(component.results[1].operationId).toEqual('aecaaaaaagfogjqbaai6malzqushoeyaaaaq');
   });
 });

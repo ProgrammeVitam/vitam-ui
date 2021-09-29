@@ -13,6 +13,7 @@
     "STATE": "State",
     "STATUS": "Status",
     "RESULTS": "Results",
+    "ONE_RESULT": "Result",
     "OPERATION_ID": "Operation identifier",
     "OPERATION_CATEGORY": "Operation category",
     "START_DATE": "Start date",
@@ -39,7 +40,21 @@
     "OPERATION_DATE": "Operation date",
     "AND": "and the :",
     "ADD_INTREVAL": "ADD INTERVAL",
-    "DELETE_INTERVAL": "DELETE INTERVAL"
+    "DELETE_INTERVAL": "DELETE INTERVAL",
+      "OPERATION_CATEGORY" : {
+      "TRACEABILITY" : "Securing",
+      "INGEST" : "Entry",
+      "STORAGE_BACKUP":"Save write logs",
+      "AUDIT":"Audit",
+      "MASTERDATA":"Basic data",
+      "ELIMINATION":"Elimination of archival units",
+      "CHECK":"Checking secure logs",
+      "UPDATE":"Update",
+      "EXPORT_DIP":"Export of the DIP",
+      "RECLASSIFICATION":"Modification of the tree structure of archival units",
+      "PRESERVATION":"Global preservation process",
+      "EXTERNAL_LOGBOOK":"Logging of external events"
+    }
   },
   "STATE_VALUE": {
     "COMPLETED": "Completed",
