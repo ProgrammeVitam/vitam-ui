@@ -125,18 +125,36 @@ vitamui_password_configurations:
     occurrences_chars_number: 3
     constraints:
       defaults:
-        messages:
-          - Ne pas contenir plus de ${password.occurrences-chars-number} caractères consécutifs issus de votre nom d'utilisateur
-          - Etre différent des ${password.max-old-password} derniers mots de passe
-          - Avoir une taille d'au moins ${password.length} caractères
-          - Les deux mots de passe doivent etre identiques
-        special_chars:
-          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour les catégories suivantes:'
+        fr:
           messages:
-            - Minuscules (a-z)
-            - Majuscules (A-Z)
-            - Numériques (0-9)
-            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+            - Avoir une taille d'au moins ${password.length} caractères
+          special-chars:
+            title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+            messages:
+              - Minuscules (a-z)
+              - Majuscules (A-Z)
+              - Numériques (0-9)
+              - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        en:
+          messages:
+            - Have a size of at least ${password.length} characters
+          special-chars:
+            title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+            messages:
+              - Uppercases (a-z)
+              - Lowercases (A-Z)
+              - Digital (0-9)
+              - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        de:
+          messages:
+            - Mindestens ${password.length} Zeichen lang sein
+          special-chars:
+            title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+            messages:
+              - Großbuchstaben (a-z)
+              - Kleinbuchstaben (A-Z)
+              - Digital (0-9)
+              - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 ```
 
 #### Configuration pour le profil personnalisé (profil custom):
@@ -150,13 +168,27 @@ vitamui_password_configurations:
     max_old_password: 3
     constraints:
       customs:
-        title: 'Pour des raisons de sécurité, votre mot de passe doit:'
-        messages:
-          - Au moins ${password.length} caractères
-          - Des miniscules et des majiscules
-          - Au moins un chiffre et un caractère spécial
-          - Etre différent des ${password.max-old-password} derniers mots de passe
-          - Les deux mots de passe doivent etre identiques
+        fr:
+          title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+          messages:
+            - Au moins ${password.length} caractères
+            - Des minuscules et des majuscules
+            - Au moins un chiffre et un caractère spécial
+            - Etre différent des ${password.max-old-password} derniers mots de passe
+        en:
+          title: 'For security reasons, your password must:'
+          messages:
+            - At least ${password.length} characters
+            - Lowercase and uppercase
+            - At least one number and one special character
+            - Be different from the last ${password.max-old-password} passwords
+        de:
+          title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+          messages:
+            - Mindestens ${password.length} Zeichen
+            - Klein- und Großbuchstaben
+            - Mindestens eine Zahl und ein Sonderzeichen
+            - Unterscheiden Sie sich von den letzten ${password.max-old-password} Passwörtern
 ```
 
 ##### Explication de la configuration:
@@ -175,15 +207,19 @@ vitamui_password_configurations:
 - `constraints`: bloc des différentes contraintes des mots de passe par profile. 
 
 ###### Configuration pour le profil ANSSI:
-Le sous bloc `defaults` du bloc `constraints` concerne les configurations par défault.
+Le sous bloc `defaults` du bloc `constraints` concerne les configurations par défault par bloc de langue.
 
 Ce bloc contient la liste des messages personnalisés, et les différentes contraintes en termes des caractères alphanumérique, spéciaux, miniscules, majiscules etc..
 
 ###### Configuration pour le profil personnalisé:
-Le sous bloc `customs` du bloc `constraints` concerne les configurations du profil personnalisé.
+Le sous bloc `customs` du bloc `constraints` concerne les configurations du profil personnalisé par bloc de langue.
 
 Ce bloc contient la liste des messages personnalisés, et les différentes contraintes en termes des caractères alphanumérique, spéciaux, miniscules, majiscules etc..
 
+###### Les langues supportées par CAS à ce jour:
+Les langues supportées par CAS sont: la langue Français, la langue Anglaise  et l'Allemande.
+
+Il est fortement recommandé de définir les trois blocs des différentes langues, pour garder la cohérence avec les différentes interfaces du serveur d'authentification CAS.
 ### Configuration des profils de mots de passe (YAML):
 
 La configuration finale transcrite dans les fichiers de configurations serveurs:
@@ -198,19 +234,37 @@ password:
   check-occurrence: true
   occurrences-chars-number: 3
   constraints:
-    defaults:
-      messages:
-        - Ne pas contenir plus de ${password.occurrences-chars-number} caractères consécutifs issus de votre nom d'utilisateur
-        - Etre différent des ${password.max-old-password} derniers mots de passe
-        - Avoir une taille d'au moins ${password.length} caractères
-        - Les deux mots de passe doivent etre identiques
-      special-chars:
-        title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour les catégories suivantes:'
-        messages:
-          - Minuscules (a-z)
-          - Majuscules (A-Z)
-          - Numériques (0-9)
-          - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      defaults:
+          fr:
+              messages:
+                  - Avoir une taille d'au moins ${password.length} caractères
+              special-chars:
+                  title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+                  messages:
+                      - Minuscules (a-z)
+                      - Majuscules (A-Z)
+                      - Numériques (0-9)
+                      - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+          en:
+              messages:
+                  - Have a size of at least ${password.length} characters
+              special-chars:
+                  title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+                  messages:
+                      - Uppercases (a-z)
+                      - Lowercases (A-Z)
+                      - Digital (0-9)
+                      - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+          de:
+              messages:
+                  - Mindestens ${password.length} Zeichen lang sein
+              special-chars:
+                  title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+                  messages:
+                      - Großbuchstaben (a-z)
+                      - Kleinbuchstaben (A-Z)
+                      - Digital (0-9)
+                      - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 ```
 
 Profil CUSTOM:
@@ -222,14 +276,25 @@ password:
   length: 8
   max-old-password: 3
   constraints:
-    customs:
-      title: 'Pour des raisons de sécurité, votre mot de passe doit:'
-      messages:
-        - Au moins ${password.length} caractères
-        - Des miniscules et des majiscules
-        - Au moins un chiffre et un caractère spécial
-        - Etre différent des ${password.max-old-password} derniers mots de passe
-        - Les deux mots de passe doivent etre identiques
+      customs:
+          fr:
+              title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+              messages:
+                  - Au moins ${password.length} caractères
+                  - Des minuscules et des majuscules
+                  - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+          en:
+              title: 'For security reasons, your password must:'
+              messages:
+                  - At least ${password.length} characters
+                  - Lowercase and uppercase
+                  - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+          de:
+              title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+              messages:
+                  - Mindestens ${password.length} Zeichen
+                  - Klein- und Großbuchstaben
+                  - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 ```
 > Note:
 en cas de changement manuelle par l'administrateur système du nombre de mots passe anciens à utiliser, le changement devra se faire au niveau CAS et iam-internal.
@@ -240,8 +305,6 @@ Voir le document d'exploitation qui contient différents exemples de configurati
 >[!NOTE]
 > L'authentification est transparente pour les utilisateurs qui possèdent déjà des comptes VITAMUI, jusqu'à expiration de leurs mots de passe.
 > Et lors du changement de mots de passe suite à expiration de celui ci, ils verront les nouvelles contraintes exigées par la plateforme.
-
-> L'Internationnalisation sera traité ultérieurement.
 
 ### Préparation du fichier d'inventaire
 

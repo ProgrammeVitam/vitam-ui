@@ -87,6 +87,7 @@
 
             <button  type="submit" autofocus  class="vitamui-primary" name="submit" accesskey="l" th:value="Suivant" tabindex="6">OK</button>
         </form>
+
         <div class="helper" th:utext="#{cas.authentication.connexion.helper}">Appuyez sur <strong>Entrée</strong> pour valider</div>
 		<button class="back" type="button" th:onclick="|location.href = '@{/login(service=${serviceUrl})}';|" th:if="${!#strings.isEmpty(superUser)}">
             <i class="material-icons" >arrow_back</i> <span th:text="#{cas.welcome.button.back}">RETOUR</span>

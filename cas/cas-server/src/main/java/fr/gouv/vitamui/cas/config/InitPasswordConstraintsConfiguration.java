@@ -63,8 +63,8 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
     public void onStartup(final ServletContext servletContext) throws ServletException {
         LOGGER.debug("PASSWORD_CONSTRAINTS = {}", passwordConfiguration.toString());
         if (Objects.isNull(passwordConfiguration) || (Objects.isNull(passwordConfiguration.getConstraints()) ||
-            (Objects.isNull(passwordConfiguration.getConstraints().getCustoms()) &&
-                Objects.isNull(passwordConfiguration.getConstraints().getDefaults()))) ||
+            (Objects.isNull(passwordConfiguration.getConstraints().getDefaults()) &&
+                Objects.isNull(passwordConfiguration.getConstraints().getCustoms()))) ||
             Objects.isNull(passwordConfiguration.getProfile())) {
             LOGGER.debug("Configuration error, check your password server constraints configurations !");
             throw new ServletException(
@@ -108,7 +108,7 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
             LOGGER.debug("PASSWORD_CUSTOM_CONSTRAINTS = {}",
                 passwordConfiguration.getConstraints().getCustoms().toString());
             servletContext.setAttribute(Constants.PASSWORD_CUSTOM_CONSTRAINTS,
-                passwordConfiguration.getConstraints().getCustoms());
+                passwordConfiguration.getConstraints());
         } else {
             servletContext.setAttribute(Constants.PASSWORD_CUSTOM_CONSTRAINTS, null);
         }
@@ -120,7 +120,7 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
             LOGGER.debug("PASSWORD_ANSSI_CONSTRAINTS = {}",
                 passwordConfiguration.getConstraints().getDefaults().toString());
             servletContext.setAttribute(Constants.PASSWORD_DEFAULT_CONSTRAINTS,
-                passwordConfiguration.getConstraints().getDefaults());
+                passwordConfiguration.getConstraints());
         } else {
             servletContext.setAttribute(Constants.PASSWORD_DEFAULT_CONSTRAINTS, null);
         }
