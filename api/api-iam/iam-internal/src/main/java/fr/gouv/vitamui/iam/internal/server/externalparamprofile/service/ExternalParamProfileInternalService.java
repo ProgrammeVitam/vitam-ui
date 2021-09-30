@@ -126,7 +126,7 @@ public class ExternalParamProfileInternalService {
         LOGGER.debug("create access external parameter profile");
         LOGGER.debug("create {}, {}, {} ", entityDto.getName(), entityDto.getDescription(),
             entityDto.getAccessContract());
-
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         AuthUserDto authUserDto = internalSecurityService.getUser();
 
         String externalParamIdentifier =
@@ -140,7 +140,7 @@ public class ExternalParamProfileInternalService {
             entityDto.isEnabled(),
             false,
             "",
-            authUserDto.getProofTenantIdentifier(),
+            tenantIdentifier,
             CommonConstants.EXTERNAL_PARAMS_APP,
             List.of(
                 ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
