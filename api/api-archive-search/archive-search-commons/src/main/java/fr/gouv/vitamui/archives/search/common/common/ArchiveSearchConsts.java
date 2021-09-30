@@ -157,11 +157,9 @@ public class ArchiveSearchConsts {
     /* Query fields */
     public static final String IDENTIFIER = "Identifier";
     public static final String UNIT_TYPE = "#unitType";
-    public static final String START_DATE = "StartDate";
     public static final String PRODUCER_SERVICE = "#originating_agency";
     public static final String GUID = "#id";
     public static final String UNITS_UPS = "#allunitups";
-    public static final String END_DATE = "EndDate";
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
     public static final String ELIMINATION_TECHNICAL_ID = "ELIMINATION_TECHNICAL_ID";
     public static final String ELIMINATION_GUID = "#elimination.OperationId";
@@ -182,6 +180,10 @@ public class ArchiveSearchConsts {
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
-
+    /* StartDate and EndDate Query fields */
+    public static final String START_DATE = "StartDate";
+    public static final String START_DATE_CRITERIA = "START_DATE";
+    public static final String END_DATE = "EndDate";
+    public static final String END_DATE_CRITERIA = "END_DATE";
 
 }
