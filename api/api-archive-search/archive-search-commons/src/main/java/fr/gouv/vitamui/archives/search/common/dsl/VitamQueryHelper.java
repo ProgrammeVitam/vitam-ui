@@ -94,7 +94,7 @@ public class VitamQueryHelper {
                 query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
             }
 
-
+            
 
     }
 
@@ -102,6 +102,12 @@ public class VitamQueryHelper {
         final List<String> searchValues)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
+        String searchCriteria = ArchiveSearchConsts.START_DATE_CRITERIA.equals(criteria) ?
+            ArchiveSearchConsts.START_DATE :
+            (ArchiveSearchConsts.END_DATE_CRITERIA.equals(criteria) ?
+                ArchiveSearchConsts.END_DATE : null);
+
+        LOGGER.info("The search criteria Date is {} ", searchCriteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
             if (searchValues.size() > 2) {
                 throw new IllegalArgumentException("criteria date should not contains more than 2 values");
@@ -113,22 +119,23 @@ public class VitamQueryHelper {
                         .withMinute(0).withSecond(0).withNano(0);
 
                 subQueryAnd.add(VitamQueryHelper
-                    .buildSubQueryByOperator(criteria, ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDate),
+                    .buildSubQueryByOperator(searchCriteria, ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDate.plusDays(1)),
                         ArchiveSearchConsts.CriteriaOperators.EQ));
+
             } else {
                 LocalDateTime firstDate =
                     LocalDateTime.parse(searchValues.get(0), ArchiveSearchConsts.ISO_FRENCH_FORMATER);
                 LocalDateTime secondDate =
                     LocalDateTime.parse(searchValues.get(1), ArchiveSearchConsts.ISO_FRENCH_FORMATER);
 
-                subQueryAnd.add(VitamQueryHelper.buildSubQueryByOperator(criteria,
-                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER
-                        .format(firstDate.isAfter(secondDate) ? secondDate : firstDate),
-                    ArchiveSearchConsts.CriteriaOperators.GTE));
-                subQueryAnd.add(VitamQueryHelper.buildSubQueryByOperator(criteria,
-                    ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER
-                        .format(firstDate.isAfter(secondDate) ? firstDate : secondDate),
-                    ArchiveSearchConsts.CriteriaOperators.LTE));
+                    subQueryAnd.add(VitamQueryHelper.buildSubQueryByOperator(searchCriteria,
+                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER
+                            .format(firstDate.isAfter(secondDate) ? secondDate.plusDays(1) : firstDate.plusDays(1)),
+                        ArchiveSearchConsts.CriteriaOperators.GTE));
+                    subQueryAnd.add(VitamQueryHelper.buildSubQueryByOperator(searchCriteria,
+                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER
+                            .format(firstDate.isAfter(secondDate) ? firstDate.plusDays(1) : secondDate.plusDays(1)),
+                        ArchiveSearchConsts.CriteriaOperators.LTE));
 
             }
         }
