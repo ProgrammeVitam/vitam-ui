@@ -1,16 +1,12 @@
 <VirtualHost *:{{ reverse_proxy_port }}>
 
-{% if vitam_reverse_external_protocol is defined %}
-{% if vitam_reverse_external_protocol == 'https' %}
+{% if vitam_reverse_external_protocol is defined and vitam_reverse_external_protocol == 'https' %}
     SSLEngine on
     SSLCertificateFile /etc/{{apache_service}}/certs/reverse.crt
     SSLCertificateKeyFile /etc/{{apache_service}}/certs/reverse.key
     ServerName reverse.service.{{ consul_domain }}
     ServerAlias {{ vitam_reverse_external_dns }}
     ServerAlias {{ ip_service }}
-{% else %}
-    ServerName {{ vitam_reverse_external_dns }}
-{% endif %}
 {% else %}
     ServerName {{ vitam_reverse_external_dns }}
 {% endif %}
@@ -39,7 +35,6 @@
     AddOutputFilterByType SUBSTITUTE application/javascript
     SubstituteMaxLineLength 12M
 
-
     <Location /dev-tools/>
         DirectoryIndex index.html
     </Location>
@@ -54,9 +49,7 @@
     ProxyPassReverse  /browse{{loop.index}} http://{{ hostvars[host]['ip_admin'] }}/browse
 {% endfor %}
 
-
     # CONSUL
-
 {% if groups['hosts_vitamui_consul_server']|length >0 %}
     # Consul UI
     ProxyPass /ui http://{{hostvars [groups['hosts_vitamui_consul_server'][0]]['ip_admin']}}:8500/ui
@@ -72,48 +65,35 @@
 
     ProxyPass {{ mongo_express_conf.baseuri }} http://{{hostvars[host]['ip_admin']}}:{{ mongo_express_conf.mongo_express_port }}{{ mongo_express_conf.baseuri }} {{reverse_connection_params}}
     ProxyPassReverse  {{ mongo_express_conf.baseuri }} http://{{hostvars[host]['ip_admin']}}:{{ mongo_express_conf.mongo_express_port }}{{ mongo_express_conf.baseuri }}
-
     {% endif %}
     {% endif %}
 {% endfor %}
 
     # UI IDENTITY ADMIN
-
 {% for host in groups['hosts_ui_identity_admin'] %}
-    ProxyPassMatch ^/identity-admin(/.*)$ {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity$1 {{reverse_connection_params}}
-    ProxyPassReverse /identity-admin {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity
-
-    ProxyHTMLURLMap {{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/ /identity
+    ProxyPassMatch ^/identity-admin(/.*)$ {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity-admin$1 {{reverse_connection_params}}
+    ProxyPassReverse /identity-admin {% if vitamui.identity_admin.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.identity_admin.port_service }}/identity-admin
 
     <Location /identity-admin/>
-       ProxyPassReverse /identity/
-       SetOutputFilter proxy-html
-       ProxyHTMLURLMap /identity/ {{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/
-       ProxyHTMLURLMap  /identity/ /identity-admin/
-       Substitute s|/identity/|{{ vitam_reverse_external_protocol }}://{{ vitam_reverse_external_dns }}/identity-admin/|i
-       Substitute s|/identity/|/identity-admin/|i
-       RequestHeader unset Accept-Encoding
+        SetOutputFilter proxy-html
+        ProxyHTMLURLMap /identity/ /identity-admin/
+        RequestHeader unset Accept-Encoding
     </Location>
 {% endfor %}
 
     # UI IDENTITY
-
 {% for host in groups['hosts_ui_identity'] %}
     ProxyPassMatch ^/identity(/.*)$ {% if vitamui.identity.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.identity.port_service }}/identity$1
     ProxyPassReverse /identity {% if vitamui.identity.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.identity.port_service }}/identity
-
 {% endfor %}
 
     # UI REFERENTIAL
-
 {% for host in groups['hosts_ui_referential'] %}
     ProxyPassMatch ^/referential(/.*)$ {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential$1
     ProxyPassReverse /referential {% if vitamui.referential.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.referential.port_service }}/referential
-
 {% endfor %}
 
     # UI INGEST
-
 {% for host in groups['hosts_ui_ingest'] %}
     ProxyPassMatch ^/ingest(/.*)$ {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest$1
     ProxyPassReverse /ingest {% if vitamui.ingest.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.ingest.port_service }}/ingest
@@ -121,14 +101,12 @@
 
 
     # UI ARCHIVE SEARCH
-
 {% for host in groups['hosts_ui_archive_search'] %}
        ProxyPassMatch ^/archive-search(/.*)$ {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search$1
        ProxyPassReverse /archive-search {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search
 {% endfor %}
 
     # CAS SERVER
-
 {% for host in groups['hosts_cas_server'] %}
     ProxyPass /cas/login {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/login {{reverse_connection_params}}
     ProxyPassReverse  /cas/login {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/login
@@ -146,11 +124,10 @@
 
     ProxyPass /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout {{reverse_connection_params}}
     ProxyPassReverse  /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout
-
 {% endfor %}
+
     # PORTAL
 {% for host in groups['hosts_ui_portal'] %}
-
     ProxyPass / {% if vitamui.portal.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.portal.port_service }}/ {{reverse_connection_params}}
     ProxyPassReverse  / {% if vitamui.portal.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.portal.port_service }}/
 {% endfor %}
