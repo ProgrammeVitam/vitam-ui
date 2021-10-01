@@ -19,7 +19,12 @@ server:
   servlet.context-path: /
   servlet.session.cookie.path: /
 {% else %}
+
+{% if reverse|lower == 'nginx' %}
   servlet.context-path: /identity-admin
+{% else %}
+  servlet.context-path: /identity
+{% endif %}
   servlet.session.cookie.path: /identity-admin
 {% endif %}
   scheme: {% if vitamui_struct.secure|lower =='true' %}https{% else %}http{% endif %}
