@@ -1,9 +1,9 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Unit } from '../models/unit.interface';
 import { HttpHeaders } from '@angular/common/http';
-import { ArchiveService } from '../archive.service';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { ArchiveService } from '../archive.service';
+import { Unit } from '../models/unit.interface';
 
 @Component({
   selector: 'app-archive-preview',
@@ -35,10 +35,10 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['archiveUnit'].firstChange) {
+    if (changes.archiveUnit.firstChange) {
       return;
     }
-    if (changes['archiveUnit'].currentValue['#id'] !== changes['archiveUnit'].previousValue['#id']) {
+    if (changes.archiveUnit.currentValue['#id'] !== changes.archiveUnit.previousValue['#id']) {
       this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
     }
     this.fullPath = false;
