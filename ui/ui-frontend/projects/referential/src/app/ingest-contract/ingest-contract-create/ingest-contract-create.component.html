@@ -247,6 +247,39 @@
     <cdk-step>
       <div class="content">
         <h5>Création d'un contrat d'entrée</h5>
+        <h4>Héritage</h4>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-12 form-control">
+              <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtIngest"
+              >Calcul des héritages de règles et d'indexation des échéances
+              </vitamui-common-slide-toggle>
+              <i
+                class="material-icons field-tooltip"
+                matTooltip="Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin
+                qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement"
+                matTooltipClass="vitamui-tooltip"
+              >info</i
+              >
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
+          <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
+        </div>
+        <button type="button" class="back" cdkStepperPrevious>
+          <i class="material-icons">arrow_back</i>
+          <ng-container>Retour</ng-container>
+        </button>
+      </div>
+    </cdk-step>
+
+
+    <cdk-step>
+      <div class="content">
+        <h5>Création d'un contrat d'entrée</h5>
         <h4>
           Position de rattachement<i
             class="material-icons field-tooltip"
