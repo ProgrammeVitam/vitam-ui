@@ -36,6 +36,7 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Rule } from 'projects/vitamui-library/src/lib/models/rule';
 import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -51,9 +52,10 @@ import {
   Rule,
   RuleService,
   User,
-  VitamUISnackBar
+  VitamUISnackBar,
 } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { RuleService } from '../rule.service';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -61,7 +63,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 @Component({
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
-  styleUrls: ['./rule-list.component.scss']
+  styleUrls: ['./rule-list.component.scss'],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -111,7 +113,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
@@ -137,7 +138,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildRuleCriteriaFromSearch();
-      console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
@@ -211,4 +211,5 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
         });
       });
   }
+
 }
