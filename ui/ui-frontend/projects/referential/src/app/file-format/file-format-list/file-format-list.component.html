@@ -1,60 +1,70 @@
 <table class="vitamui-table" vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
   <thead>
-  <tr>
-    <th><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></th>
-    <th>
-      <div class="vitamui-table-header">
-        <span i18n="fileFormat name column header@@fileFormatListNameHeader">Nom</span>
-        <vitamui-common-order-by-button orderByKey="Name" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th>
-      <div class="vitamui-table-header">
-        <span i18n="fileFormat id column header@@fileFormatListIdHeader">PUID</span>
-        <vitamui-common-order-by-button orderByKey="PUID" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th>
-      <div class="vitamui-table-header">
-        <span i18n="fileFormat desc column header@@fileFormatListCreationDateHeader">Date de création</span>
-        <vitamui-common-order-by-button orderByKey="CreatedDate" [(orderBy)]="orderBy" [(direction)]="direction"
-                                        (orderChange)="emitOrderChange()"></vitamui-common-order-by-button>
-      </div>
-    </th>
-    <th></th>
-  </tr>
+    <tr>
+      <th><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon"></i></th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="fileFormat name column header@@fileFormatListNameHeader">Nom</span>
+          <vitamui-common-order-by-button
+            orderByKey="Name"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="fileFormat id column header@@fileFormatListIdHeader">PUID</span>
+          <vitamui-common-order-by-button
+            orderByKey="PUID"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th>
+        <div class="vitamui-table-header">
+          <span i18n="fileFormat desc column header@@fileFormatListCreationDateHeader">Date de création</span>
+          <vitamui-common-order-by-button
+            orderByKey="CreatedDate"
+            [(orderBy)]="orderBy"
+            [(direction)]="direction"
+            (orderChange)="emitOrderChange()"
+          ></vitamui-common-order-by-button>
+        </div>
+      </th>
+      <th></th>
+    </tr>
   </thead>
   <tbody>
-  <ng-container *ngFor="let format of dataSource; let index = index">
-
-    <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
-
-    <tr class="vitamui-table-row">
-
-
-      <td><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon status-badge status-badge-green"></i></td>
-      <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.name }}</td>
-      <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.puid }}</td>
-      <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.createdDate | date:'dd/MM/yyyy' }}</td>
-      <td>
-        <div class="actions" *ngIf="!isInternal(format)">
-          <button class="btn-circle primary" (click)="deleteFileFormatDialog(format)">
-            <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
-          </button>
-        </div>
-      </td>
-    </tr>
-
-
-  </ng-container>
+    <ng-container *ngFor="let format of dataSource; let index = index">
+      <tr class="vitamui-table-row">
+        <td><i class="vitamui-icon vitamui-icon-fichiers vitamui-row-icon status-badge status-badge-green"></i></td>
+        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.name }}</td>
+        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.puid }}</td>
+        <td class="clickable" (click)="fileFormatClick.emit(format)">{{ format?.createdDate | date: 'dd/MM/yyyy' }}</td>
+        <td>
+          <div class="actions" *ngIf="!isInternal(format)">
+            <button class="btn-circle primary" (click)="deleteFileFormatDialog(format)">
+              <i class="vitamui-icon vitamui-icon-bin"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </table>
 
 <div class="vitamui-table-footer">
   <mat-spinner *ngIf="pending" diameter="50" color="accent"></mat-spinner>
-  <button *ngIf="!pending && infiniteScrollDisabled && fileFormatService.canLoadMore" (click)="loadMore()" class="btn" i18n="Show more results@@tableMoreResultButton">
+  <button
+    *ngIf="!pending && infiniteScrollDisabled && fileFormatService.canLoadMore"
+    (click)="loadMore()"
+    class="btn"
+    i18n="Show more results@@tableMoreResultButton"
+  >
     Afficher plus de résultats...
   </button>
   <span *ngIf="!pending && !fileFormatService.canLoadMore">Fin des résultats</span>
