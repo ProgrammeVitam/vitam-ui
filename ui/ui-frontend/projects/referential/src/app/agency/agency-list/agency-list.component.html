@@ -27,21 +27,17 @@
       <th></th>
     </tr>
   </thead>
-  <!--tbody vitamuiCommonCollapseContainer-->
   <tbody>
     <ng-container *ngFor="let agency of dataSource; let index = index">
-      <!-- <tr class="vitamui-table-row" [class.row-expanded]="row.state === 'expanded'"> -->
-
       <tr class="vitamui-table-row">
         <td><i class="vitamui-icon vitamui-icon-agent vitamui-row-icon status-badge status-badge-green"></i></td>
         <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.name }}</td>
         <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.identifier }}</td>
-        <!-- TODO: Add date pipe -->
         <td class="clickable" (click)="agencyClick.emit(agency)">{{ agency?.description }}</td>
         <td>
           <div class="actions">
             <button class="btn-circle primary" (click)="deleteAgencyDialog(agency)">
-              <i class="vitamui-icon vitamui-icon-trash btn-icon"></i>
+              <i class="vitamui-icon vitamui-icon-bin"></i>
             </button>
           </div>
         </td>
