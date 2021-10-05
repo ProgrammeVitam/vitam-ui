@@ -42,9 +42,10 @@ import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
-import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
+import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
@@ -82,6 +83,7 @@ import fr.gouv.vitamui.iam.internal.server.owner.service.OwnerInternalService;
 import fr.gouv.vitamui.iam.internal.server.profile.converter.ProfileConverter;
 import fr.gouv.vitamui.iam.internal.server.profile.dao.ProfileRepository;
 import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalService;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
 import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
 import fr.gouv.vitamui.iam.internal.server.security.IamApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.internal.server.security.IamAuthentificationService;
@@ -121,7 +123,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Import({RestExceptionHandler.class, MongoConfig.class, SwaggerConfiguration.class, ConverterConfig.class,
     LogbookConfiguration.class, VitamAccessConfig.class,
     VitamAdministrationConfig.class})
-@EnableConfigurationProperties
+@EnableConfigurationProperties({PasswordConfiguration.class})
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @SuppressWarnings("unused")
@@ -132,6 +134,15 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     public MultipartResolver multipartResolver() {
         return new CommonsMultipartResolver();
     }
+
+
+    @Bean
+    public PasswordValidator passwordValidator() {
+        return new PasswordValidator();
+    }
+
+    @Autowired
+    private PasswordConfiguration passwordConfiguration;
 
     @SuppressWarnings("rawtypes")
     @Bean
@@ -284,12 +295,13 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final IamLogbookService iamLogbookService, final UserConverter userConverter,
         final MongoTransactionManager mongoTransactionManager,
         final LogbookService logbookService, final AddressService addressService,
-        final ApplicationInternalService applicationInternalService) {
+        final ApplicationInternalService applicationInternalService,
+        final PasswordConfiguration passwordConfiguration) {
         return new UserInternalService(sequenceRepository, userRepository, groupInternalService, profileInternalService,
             userEmailInternalService,
             tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
             iamLogbookService, userConverter,
-            mongoTransactionManager, logbookService, addressService, applicationInternalService);
+            mongoTransactionManager, logbookService, addressService, applicationInternalService, passwordConfiguration);
     }
 
     @Bean

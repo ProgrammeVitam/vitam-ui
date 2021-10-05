@@ -40,12 +40,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ParameterDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -112,7 +114,11 @@ public class ExternalParamProfileInternalService {
 
     public PaginatedValuesDto<ExternalParamProfileDto> getAllPaginated(final Integer page, final Integer size,
         final String criteria, final String orderBy, final DirectionDto direction) {
-        return externalParamProfileRepository.getAllPaginated(page, size, criteria, orderBy, direction);
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
+        QueryDto queryDto = QueryDto.fromJson(criteria);
+        queryDto
+            .addQuery(QueryDto.andQuery().addCriterion("tenantIdentifier", tenantIdentifier, CriterionOperator.EQUALS));
+        return externalParamProfileRepository.getAllPaginated(page, size, queryDto.toJson(), orderBy, direction);
     }
 
     @Transactional
@@ -120,7 +126,7 @@ public class ExternalParamProfileInternalService {
         LOGGER.debug("create access external parameter profile");
         LOGGER.debug("create {}, {}, {} ", entityDto.getName(), entityDto.getDescription(),
             entityDto.getAccessContract());
-
+        final Integer tenantIdentifier = internalSecurityService.getTenantIdentifier();
         AuthUserDto authUserDto = internalSecurityService.getUser();
 
         String externalParamIdentifier =
@@ -134,7 +140,7 @@ public class ExternalParamProfileInternalService {
             entityDto.isEnabled(),
             false,
             "",
-            authUserDto.getProofTenantIdentifier(),
+            tenantIdentifier,
             CommonConstants.EXTERNAL_PARAMS_APP,
             List.of(
                 ServicesData.ROLE_GET_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,

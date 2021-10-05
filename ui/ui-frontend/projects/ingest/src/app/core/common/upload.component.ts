@@ -42,7 +42,7 @@ import { BytesPipe, Logger } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { UploadService } from './upload.service';
 
-const LAST_STEP_INDEX = 2;
+const LAST_STEP_INDEX = 1;
 
 @Component({
   selector: 'app-upload',

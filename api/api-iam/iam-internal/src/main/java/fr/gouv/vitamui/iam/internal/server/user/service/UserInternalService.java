@@ -36,40 +36,7 @@
  */
 package fr.gouv.vitamui.iam.internal.server.user.service;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
-
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.util.Assert;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -91,6 +58,7 @@ import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
+import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.security.client.dto.BasicCustomerDto;
 import fr.gouv.vitamui.commons.security.client.dto.GraphicIdentityDto;
@@ -118,8 +86,38 @@ import fr.gouv.vitamui.iam.internal.server.user.domain.User;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.bson.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.MongoTransactionManager;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.util.Assert;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static fr.gouv.vitamui.commons.api.CommonConstants.GPDR_DEFAULT_VALUE;
 
 /**
  * The service to read, create, update and delete the users.
@@ -130,7 +128,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
 @Setter
 public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
-    private static final int MAX_OLD_PASSWORDS = 3;
+    public static final int MAX_OLD_PASSWORDS = 12;
 
     private UserRepository userRepository;
 
@@ -166,6 +164,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
     private final ApplicationInternalService applicationInternalService;
 
+    private final PasswordConfiguration passwordConfiguration;
+
+    private final Integer maxOldPassword;
+
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalService.class);
 
     @Autowired
@@ -175,7 +177,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository, final ProfileRepository profilRepository,
             final GroupRepository groupRepository, final IamLogbookService iamLogbookService, final UserConverter userConverter,
             final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService, final AddressService addressService,
-            ApplicationInternalService applicationInternalService) {
+            ApplicationInternalService applicationInternalService, final PasswordConfiguration passwordConfiguration) {
         super(sequenceRepository);
         this.userRepository = userRepository;
         this.groupInternalService = groupInternalService;
@@ -192,6 +194,8 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         this.logbookService = logbookService;
         this.addressService = addressService;
         this.applicationInternalService = applicationInternalService;
+        this.passwordConfiguration = passwordConfiguration;
+        this.maxOldPassword = (passwordConfiguration !=null && passwordConfiguration.getMaxOldPassword() != null)  ? passwordConfiguration.getMaxOldPassword() : MAX_OLD_PASSWORDS;
     }
 
     /**
@@ -353,7 +357,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
             final UserStatusEnum existingStatus = existingUser.getStatus();
             final UserStatusEnum newStatus = dto.getStatus();
             if (statusEquals(newStatus, UserStatusEnum.ENABLED) && statusEquals(existingStatus, UserStatusEnum.DISABLED)) {
-                saveCurrentPasswordInOldPasswords(entity, entity.getPassword());
+                saveCurrentPasswordInOldPasswords(entity, entity.getPassword(), maxOldPassword);
                 entity.setPassword(null);
                 entity.setPasswordExpirationDate(OffsetDateTime.now());
                 entity.setNbFailedAttempts(0);
@@ -384,15 +388,16 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         return updatedUser;
     }
 
-    public void saveCurrentPasswordInOldPasswords(final User user, final String newPassword) {
+    public void saveCurrentPasswordInOldPasswords(final User user, final String newPassword, Integer maxOldPassword) {
+
         if (StringUtils.isNotBlank(newPassword)) {
             List<String> oldPasswords = user.getOldPasswords();
             if (oldPasswords == null) {
                 oldPasswords = new ArrayList<>();
             }
             oldPasswords.add(0, newPassword);
-            if (oldPasswords.size() > MAX_OLD_PASSWORDS) {
-                oldPasswords = oldPasswords.subList(0, MAX_OLD_PASSWORDS);
+            if (oldPasswords.size() > maxOldPassword) {
+                oldPasswords = oldPasswords.subList(0, maxOldPassword);
             }
             user.setOldPasswords(oldPasswords);
         }

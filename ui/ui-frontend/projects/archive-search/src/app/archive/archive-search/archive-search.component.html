@@ -173,16 +173,15 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button
-            mat-menu-item
-            (click)="openExportDIPRequestCreateDialog()"
-            [disabled]="(itemSelected === 0 && hasDipExportRole) || !hasDipExportRole"
-          >
+          <button mat-menu-item (click)="openExportDIPRequestCreateDialog()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-            <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisRole || (hasEliminationAnalysisRole && itemSelected == 0)">
-              {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
-            </button>
+          <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisRole || itemSelected === 0">
+            {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
+          </button>
+          <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationActionRole || itemSelected === 0">
+            {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
+          </button>
         </vitamui-common-menu-button>
       </div>
     </div>
@@ -218,56 +217,6 @@
               <div class="table-filter-icon">
                 <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
                 {{ 'ARCHIVE_SEARCH.FOLDER' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Subgrp">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.SUBGRP' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Subseries">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.SUBSERIES' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Series">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.SERIES' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Collection">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.COLLECTION' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Class">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.CLASS' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-
-            <vitamui-common-table-filter-option value="Subfonds">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.SUBFONDS' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-
-            <vitamui-common-table-filter-option value="Fonds">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.FONDS' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Otherlevel">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.OTHERLEVEL' | translate }}
               </div>
             </vitamui-common-table-filter-option>
           </vitamui-common-table-filter>
@@ -382,17 +331,17 @@
             </ng-container>
             <ng-template #subTitleFr>
               <ng-container *ngIf="archiveUnit.Title_.fr; else subTitleEn">
-                <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                <p matTooltip="{{ archiveUnit?.Description_?.fr }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                   <b>{{ archiveUnit.Title_.fr }} </b> <br />
-                  {{ archiveUnit?.Description | truncate: 100 }}
+                  {{ archiveUnit?.Description_?.fr | truncate: 100 }}
                 </p>
               </ng-container>
             </ng-template>
             <ng-template #subTitleEn>
               <ng-container *ngIf="archiveUnit.Title_.en">
-                <p matTooltip="{{ archiveUnit?.Description }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+                <p matTooltip="{{ archiveUnit?.Description_?.en }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
                   <b>{{ archiveUnit.Title_.en }} </b> <br />
-                  {{ archiveUnit?.Description | truncate: 100 }}
+                  {{ archiveUnit?.Description_?.en | truncate: 100 }}
                 </p>
               </ng-container>
             </ng-template>
@@ -424,3 +373,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #confirmEliminationActionDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}</div>
+    <div class="text large bold" *ngIf="itemSelected > 1">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.TO_ELIMINATE' | translate }} {{ itemSelected }}
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.SELECTED_ITEMS' | translate }}
+    </div>
+    <div class="text large bold" *ngIf="itemSelected === 1">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.ONE_SELECTED' | translate }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" *ngIf="itemSelected > 1" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE' | translate }}
+    </button>
+    <button [matDialogClose]="true" *ngIf="itemSelected === 1" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE_ONE' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

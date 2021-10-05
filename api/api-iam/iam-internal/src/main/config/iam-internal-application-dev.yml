@@ -114,3 +114,7 @@ provisioning-client:
           hostname-verification: false
 
 gdpr_alert_readonly: true
+
+# Password configuration
+password:
+  max-old-password: 12

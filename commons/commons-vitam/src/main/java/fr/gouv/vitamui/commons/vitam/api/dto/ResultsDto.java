@@ -73,6 +73,9 @@ public class ResultsDto {
     @JsonProperty("Description")
     private String description;
 
+    @JsonProperty("Description_")
+    private DescriptionDto description_;
+
     @JsonProperty("OriginatingAgencyArchiveUnitIdentifier")
     private List<String> originatingAgencyArchiveUnitIdentifier = new ArrayList<>();
 

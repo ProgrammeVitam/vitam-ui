@@ -81,3 +81,67 @@ vitamui:
   # base_url:  "https://{{ vitam_site_name }}-changeme.com"
   vitam_host:
     server_name: "{{ vitam_site_name }}-changeme.com"
+
+# Password default configuration (see vitamui_extra_vars if you want to add custom configurations)
+vitamui_password_configurations:
+  customPolicyPattern: '^(?=.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
+  anssiPolicyPattern: '(^(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)|(^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$)'
+  password:
+    length: 12 # 8 for custom profile
+    max_old_password: 12 # 3 for custom profile
+    check_occurrence: true # false for custom profile
+    occurrences_chars_number: 3 # absent for custom profile
+    profile: "anssi" # default profile is anssi (Agence Nationale de la Sécurité des Systèmes d'Information), custom otherwise
+    constraints:
+      defaults:
+        fr:
+          messages:
+            - Avoir une taille d'au moins ${password.length} caractères
+          special_chars:
+            title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+            messages:
+              - Minuscules (a-z)
+              - Majuscules (A-Z)
+              - Numériques (0-9)
+              - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        en:
+          messages:
+            - To be different than ${password.max-old-password} oldest passwords
+            - Have a size of at least ${password.length} characters
+          special_chars:
+            title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+            messages:
+              - Uppercases (a-z)
+              - Lowercases (A-Z)
+              - Digital (0-9)
+              - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+        de:
+          messages:
+            - Um sich von den ${password.max-old-password} ältesten Passwörtern zu unterscheiden
+            - Mindestens ${password.length} Zeichen lang sein
+          special_chars:
+            title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+            messages:
+              - Großbuchstaben (a-z)
+              - Kleinbuchstaben (A-Z)
+              - Digital (0-9)
+              - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      #customs:
+      #  fr:
+      #    title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+      #    messages:
+      #      - Au moins ${password.length} caractères
+      #      - Des minuscules et des majuscules
+      #      - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      #  en:
+      #    title: 'For security reasons, your password must:'
+      #    messages:
+      #      - At least ${password.length} characters
+      #      - Lowercase and uppercase
+      #      - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      #  de:
+      #    title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+      #    messages:
+      #      - Mindestens ${password.length} Zeichen
+      #      - Klein- und Großbuchstaben
+      #      - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)

@@ -74,6 +74,16 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                         searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
                             Collectors.toList()),
                         ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
+                } else if (ArchiveSearchConsts.TITLE_CRITERIA.equals(searchCriteria.getCriteria())) {
+                    queryToFill.add(buildTitleQuery(
+                        searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            Collectors.toList()),
+                        ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
+                } else if (ArchiveSearchConsts.DESCRIPTION_CRITERIA.equals(searchCriteria.getCriteria())) {
+                    queryToFill.add(buildDescriptionQuery(
+                        searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            Collectors.toList()),
+                        ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                 } else {
                     String mappedCriteriaName =
                         ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
@@ -93,14 +103,61 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         ArchiveSearchConsts.CriteriaOperators operator)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
-                BooleanQuery subQueryOr = or();
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE_FR, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE_EN, value, operator));
                 subQueryOr
                     .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION, value, operator));
-                subQueryOr.add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE, value, operator));
-                subQueryAnd.add(subQueryOr);
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_EN, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_FR, value, operator));
             }
+            subQueryAnd.add(subQueryOr);
+        }
+        return subQueryAnd;
+    }
+
+    private Query buildTitleQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE_FR, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.TITLE_EN, value, operator));
+            }
+            subQueryAnd.add(subQueryOr);
+        }
+        return subQueryAnd;
+    }
+
+    private Query buildDescriptionQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_EN, value, operator));
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_FR, value, operator));
+            }
+            subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;
     }
@@ -109,13 +166,13 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         ArchiveSearchConsts.CriteriaOperators operator)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
-                BooleanQuery subQueryOr = or();
                 subQueryOr
                     .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ELIMINATION_GUID, value, operator));
-                subQueryAnd.add(subQueryOr);
             }
+            subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;
     }

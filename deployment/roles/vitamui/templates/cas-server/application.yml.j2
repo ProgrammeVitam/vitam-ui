@@ -86,7 +86,7 @@ cas.server.prefix: {{ url_prefix }}/cas
 {% endif %}
 login.url: ${cas.server.prefix}/login
 
-cas.serviceRegistry.mongo.clientUri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+cas.serviceRegistry.mongo.clientUri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port | default(27017) }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
 cas.serviceRegistry.mongo.collection: services
 cas.serviceRegistry.mongo.userId: {{ mongodb.cas.user }}
 cas.serviceRegistry.mongo.password: {{ mongodb.cas.password }}
@@ -99,7 +99,12 @@ cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNever
 cas.ticket.tst.timeToKillInSeconds: 86400
 
 cas.authn.pm.enabled: true
-cas.authn.pm.policyPattern: {{ lookup('file', "{{ inventory_dir }}/templates/policy_pattern.regex") }}
+
+{% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
+cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
+{% else %}
+cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
+{% endif %}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
@@ -221,4 +226,102 @@ cas.httpWebRequest.cors.allowCredentials: false
 cas.httpWebRequest.cors.allowOrigins: ['*']
 cas.httpWebRequest.cors.allowMethods: ['*']
 cas.httpWebRequest.cors.allowHeaders: ['*']
+{% endif %}
+
+# Password configuration
+password:
+  length: {{ vitamui_password_configurations.password.length | default('8') }}
+  max-old-password: {{ vitamui_password_configurations.password.max_old_password | default('3') }}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence | lower == true %}
+  check-occurrence: true
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == false and vitamui_password_configurations.password.profile == "anssi"  %}
+  check-occurrence: true
+  occurrences-chars-number: 3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is undefined and vitamui_password_configurations.password.profile == "anssi" %}
+  check-occurrence: true
+  occurrences-chars-number: 3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == true and vitamui_password_configurations.password.profile == "anssi"%}
+  check-occurrence: true
+  occurrences-chars-number: {{ vitamui_password_configurations.password.occurrences_chars_number | default('3') }} # should be >=3
+{% endif %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == true and vitamui_password_configurations.password.profile == "custom"%}
+  check-occurrence: true
+  occurrences-chars-number: {{ vitamui_password_configurations.password.occurrences_chars_number | default('3') }}
+{% endif %}
+{% if vitamui_password_configurations.password.profile is defined and vitamui_password_configurations.password.profile | lower != 'anssi' %}
+  profile: "custom"
+{% else %}
+  profile: "anssi"
+{% endif %}
+  constraints:
+{% if vitamui_password_configurations.password.constraints.defaults is defined and vitamui_password_configurations.password.profile == 'anssi' %}
+    defaults:
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.fr is defined %}
+      fr:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.fr.messages %}
+            - {{ message }}
+{% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.fr.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.fr.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.en is defined %}
+      en:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.en.messages %}
+            - {{ message }}
+{% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.en.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.en.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'anssi' and vitamui_password_configurations.password.constraints.defaults.de is defined %}
+      de:
+          messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.de.messages %}
+            - {{ message }}
+{% endfor %}
+          special-chars:
+               title: "{{ vitamui_password_configurations.password.constraints.defaults.de.special_chars.title }}"
+               messages:
+{% for message in vitamui_password_configurations.password.constraints.defaults.de.special_chars.messages %}
+                  - {{ message }}
+{% endfor %}
+{% endif %}
+{% else %}
+    customs:
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.fr is defined %}
+      fr:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.fr.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.fr.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.en is defined %}
+      en:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.en.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.en.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
+{% if vitamui_password_configurations.password.profile == 'custom' and vitamui_password_configurations.password.constraints.customs.de is defined %}
+      de:
+        title: "{{ vitamui_password_configurations.password.constraints.customs.de.title }}"
+        messages:
+{% for message in vitamui_password_configurations.password.constraints.customs.de.messages %}
+              - {{ message }}
+{% endfor %}
+{% endif %}
 {% endif %}

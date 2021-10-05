@@ -1,0 +1,101 @@
+db = db.getSiblingDB('iam')
+
+print("START_36_create_new_archive_search_profiles.js");
+
+// -------- ARCHIVE_SEARCH PROFILE : CONSULTATION -----
+
+db.profiles.insert({
+   "_id":"system_archive_search_profile_consultation",
+   "identifier":NumberInt(29),
+   "name":"Consultation",
+   "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, sans export DIP et sans élimination",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+    "roles": [
+        {
+            "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_SEARCH_WITH_RULES"
+        }
+    ]
+});
+
+// -------- ARCHIVE_SEARCH PROFILE : ARCHIVISTE -----
+
+db.profiles.insert({
+   "_id":"system_archive_search_profile_archiviste",
+   "identifier":NumberInt(29),
+   "name":"Archiviste",
+   "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles de gestion, avec export DIP et sans élimination",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+    "roles": [
+        {
+            "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_SEARCH_WITH_RULES"
+        },
+        {
+            "name": "ROLE_EXPORT_DIP"
+        }
+    ]
+});
+
+// -------- ARCHIVE_SEARCH PROFILE : ARCHIVISTE ADMINISTRATEUR-----
+
+db.profiles.insert({
+   "_id":"system_archive_search_profile_archiviste_administrator",
+   "identifier":NumberInt(29),
+   "name":"Archiviste administrateur",
+   "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination",
+   "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP",
+   "level":"",
+   "enabled":true,
+   "readonly":false,
+   "customerId":"system_customer",
+    "roles": [
+        {
+            "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+        },
+        {
+            "name": "ROLE_SEARCH_WITH_RULES"
+        },
+        {
+            "name": "ROLE_EXPORT_DIP"
+        },
+        {
+            "name": "ROLE_ELIMINATION"
+        }
+    ]
+});
+
+print("END_36_create_new_archive_search_profiles.js");

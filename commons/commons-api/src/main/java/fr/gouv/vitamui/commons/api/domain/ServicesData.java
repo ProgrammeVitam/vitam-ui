@@ -368,7 +368,7 @@ public class ServicesData {
     public static final String ROLE_GET_ALL_ARCHIVE = GET_ROLE_PREFIX + "ALL_" + SERVICE_ARCHIVE;
     public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
     public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT_DIP";
-    public static final String ROLE_ELIMINATION_ANALYSIS = ROLE_PREFIX + "ELIMINATION";
+    public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 

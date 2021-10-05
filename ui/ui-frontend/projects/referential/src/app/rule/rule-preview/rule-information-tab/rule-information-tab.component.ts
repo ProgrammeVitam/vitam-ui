@@ -98,7 +98,7 @@ export class RuleInformationTabComponent {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
-      ruleDescription: [null],
+      ruleDescription: [null, Validators.required],
       ruleDuration: [null, Validators.required],
       ruleMeasurement: [null, Validators.required]
     });

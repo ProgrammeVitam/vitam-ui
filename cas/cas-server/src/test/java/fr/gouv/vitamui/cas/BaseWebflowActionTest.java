@@ -1,6 +1,7 @@
 package fr.gouv.vitamui.cas;
 
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import lombok.val;
 import org.apereo.cas.authentication.principal.WebApplicationService;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -24,8 +25,6 @@ import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import lombok.val;
 
 /**
  * A base webflow action test.

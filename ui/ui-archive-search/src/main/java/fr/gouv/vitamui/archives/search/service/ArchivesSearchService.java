@@ -128,26 +128,32 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         String finalUsage = null;
         for (QualifiersDto qualifier : qualifiers) {
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
-                finalUsage = setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
+                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
                 if(StringUtils.isEmpty(objectData.getFilename())) {
                     continue;
                 }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
-                setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
+                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
+                if(StringUtils.isEmpty(objectData.getFilename())) {
+                    continue;
+                }
+            }
+            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.TEXTCONTENT.getValue())) {
+                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.TEXTCONTENT);
                 if(StringUtils.isEmpty(objectData.getFilename())) {
                     continue;
                 }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.THUMBNAIL.getValue())) {
-                setObjectData(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
+                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
             }
         }
         return finalUsage;
     }
 
     @NotNull
-    private String setObjectData(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
+    private String updateObjectDataFilename(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
         if(qualifier.getVersions().get(0).getFileInfoModel() != null && StringUtils.isEmpty(objectData.getFilename())) {
             String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
             objectData.setFilename(filename);
@@ -170,5 +176,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination analysis with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
+    }
+
+    public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
+        LOGGER.info("elimination action with query : {}", searchQuery);
+        return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
     }
 }

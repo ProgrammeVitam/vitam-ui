@@ -145,6 +145,7 @@
         [validator]="form?.get('passwordRevocationDelay')?.validator"
         [asyncValidator]="form?.get('passwordRevocationDelay')?.asyncValidator"
       >
+        <vitamui-common-editable-option [value]="3" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_THREE' | translate"></vitamui-common-editable-option>
         <vitamui-common-editable-option [value]="6" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_SIX' | translate"></vitamui-common-editable-option>
         <vitamui-common-editable-option [value]="9" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_NINE' | translate"></vitamui-common-editable-option>
         <vitamui-common-editable-option [value]="12" [content]="'CUSTOMER.INFORMATIONS.PWD_REVOCATION_TWELVE' | translate"></vitamui-common-editable-option>

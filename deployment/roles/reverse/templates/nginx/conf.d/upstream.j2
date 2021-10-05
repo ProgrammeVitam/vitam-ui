@@ -1,0 +1,60 @@
+##################################################################
+# UPSTREAM DEFINITION == PER 'HOSTS-*' ZONE + PER APPLICATION PORT
+##################################################################
+
+# VITAMUI
+
+upstream IDENTITY {
+  ip_hash;
+{% for h in groups['hosts_ui_identity'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.identity.port_service }};
+{% endfor %}
+}
+
+upstream IDENTITY_ADMIN {
+  ip_hash;
+{% for h in groups['hosts_ui_identity_admin'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.identity_admin.port_service }};
+{% endfor %}
+}
+
+upstream CAS {
+  ip_hash;
+{% for h in groups['hosts_cas_server'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.cas_server.port_service }};
+{% endfor %}
+}
+
+upstream PORTAL {
+  ip_hash;
+{% for h in groups['hosts_ui_portal'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.portal.port_service }};
+{% endfor %}
+}
+
+{% if groups['hosts_ui_referential']|length > 0 %}
+upstream REFERENTIAL {
+  ip_hash;
+{% for h in groups['hosts_ui_referential'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.referential.port_service }};
+{% endfor %}
+}
+{% endif %}
+
+{% if groups['hosts_ui_ingest']|length > 0 %}
+upstream INGEST {
+  ip_hash;
+{% for h in groups['hosts_ui_ingest'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.ingest.port_service }};
+{% endfor %}
+}
+{% endif %}
+
+{% if groups['hosts_ui_archive_search']|length > 0 %}
+upstream ARCHIVE_SEARCH {
+  ip_hash;
+{% for h in groups['hosts_ui_archive_search'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.archive_search.port_service }};
+{% endfor %}
+}
+{% endif %}

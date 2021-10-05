@@ -26,8 +26,14 @@
     },
     "ELIMINATION": {
       "ANALYSIS": "Lancer une analyse d'élimination",
-      "ELIMINATION_LAUNCHED": "Votre demande d'élimination a bien prise en compte",
-      "THRESHOLD_EXCEEDED": "L’analyse d’élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum."
+      "ELIMINATION_LAUNCHED": "Votre demande d'élimination a bien été prise en compte",
+      "THRESHOLD_EXCEEDED": "L’analyse d’élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
+      "EXECUTION" : "Eliminer des archives",
+      "TO_ELIMINATE" : "Voulez-vous éliminer les",
+      "SELECTED_ITEMS" : "éléments séléctionnés ?",
+      "ONE_SELECTED" : "Voulez-vous éliminer l'élément séléctionné ?" ,
+      "EXECUTE" : "Eliminer les archives",
+      "EXECUTE_ONE" : "Eliminer l'archive"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",

@@ -4,10 +4,10 @@ vitam_reverse_external_protocol: https
 reverse_connection_params: "acquire=5000 connectiontimeout=300 timeout=600 retry=5"
 reverse_connection_short_params: "acquire=5000 connectiontimeout=300 timeout=50 retry=5"
 
-# nginx default vars
-nginx_ssl_conf: "/vitamui/conf/nginx/ssl/"
-nginx_conf_dir: "/vitamui/conf/nginx/conf.d"
-nginx_log_dir: "/vitamui/log/nginx"
-nginx_run_dir: "/vitamui/run/nginx"
-nginx_tmp_dir: "/vitamui/tmp/nginx"
-nginx_data_dir: "/vitamui/data/nginx"
+root_path: "/vitamui/conf"
+nginx_ssl_conf: "/etc/nginx/conf.d/ssl/"
+nginx_conf_dir: "/etc/nginx/conf.d/"
+nginx_log_dir: "/var/log/nginx/"
+nginx_run_dir: "/run/"
+nginx_tmp_dir: "/etc/nginx/tmp/"
+nginx_data_dir: "/usr/share/nginx/html/"

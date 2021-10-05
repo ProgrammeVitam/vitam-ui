@@ -182,7 +182,7 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Access Contract {} ", accessContractId);
         ParameterChecker
             .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
-        LOGGER.info("Download Archive Unit Object with id  {}", id);
+        LOGGER.info("Download Archive Unit Object with id {}", id);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
@@ -239,4 +239,19 @@ public class ArchiveSearchInternalController {
         return jsonNode;
     }
 
+    @PostMapping(RestApi.ELIMINATION_ACTION)
+    public JsonNode startEliminationAction(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        LOGGER.info("Calling elimination action by criteria {} ", searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        JsonNode jsonNode = archiveInternalService.startEliminationAction(searchQuery, vitamContext);
+        return jsonNode;
+    }
 }

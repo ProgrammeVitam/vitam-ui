@@ -1,0 +1,70 @@
+include /etc/nginx/conf.d/upstream;
+
+server {
+
+  listen 443 ssl;
+  include {{ nginx_ssl_conf }}/ssl.conf;
+
+  server_name {{ vitam_reverse_external_dns }};
+
+  location = /favicon.ico {
+    alias {{ root_path }}/assets/favicon.ico;
+  }
+
+  # UI IDENTITY_ADMIN
+  location /identity-admin {
+    proxy_pass https://IDENTITY_ADMIN/identity-admin;
+    sub_filter '/identity/' 'https://{{ vitam_reverse_external_dns }}/identity-admin/';
+    sub_filter_types text/html text/css;
+    sub_filter_once off;
+    proxy_set_header Accept-Encoding "";
+    include /etc/nginx/conf.d/proxy_params;
+  }
+
+  # UI IDENTITY
+  location /identity {
+    proxy_pass https://IDENTITY/identity;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+
+{% if groups['hosts_ui_referential']|length > 0 %}
+  # UI REFERENTIAL
+  location /referential {
+    proxy_pass https://REFERENTIAL/referential;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+{% endif %}
+
+{% if groups['hosts_ui_ingest']|length > 0 %}
+  # UI INGEST
+  location /ingest {
+    proxy_pass https://INGEST/ingest;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+{% endif %}
+
+{% if groups['hosts_ui_archive_search']|length > 0 %}
+  # UI ARCHIVE_SEARCH
+  location /archive-search {
+    proxy_pass https://ARCHIVE_SEARCH/archive-search;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+{% endif %}
+
+  # CAS SERVER
+  location = /cas {
+    return 302 $scheme://$host/cas/login;
+  }
+
+  location ~ ^/cas/(login|logout|extras|webjars|css|favicon|images|js|serviceValidate|oauth2.0|clientredirect) {
+    proxy_pass https://CAS;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+
+  # PORTAL
+  location / {
+    proxy_pass https://PORTAL;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+
+}

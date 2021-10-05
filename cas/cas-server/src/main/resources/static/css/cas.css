@@ -205,7 +205,7 @@
 
 .centered {
   position: fixed;
-  top: 40%;
+  top: 44%;
   left: 50%;
   transform: translate(-50%, -50%); }
 
@@ -213,7 +213,7 @@
   position: relative;
   display: block;
   box-sizing: border-box;
-  width: 800px;
+  width: 820px;
   border-radius: 20px;
   background-color: #ffffff;
   box-shadow: 0px 8px 32px rgba(33, 33, 33, 0.2), 0px 16px 64px rgba(33, 33, 33, 0.05);

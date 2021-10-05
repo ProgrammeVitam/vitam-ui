@@ -73,7 +73,7 @@ cas.ticket.tst.timeToKillInSeconds: 86400
 
 
 cas.authn.pm.enabled: true
-cas.authn.pm.policyPattern: '^(?=.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{8,}$'
+cas.authn.pm.policyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{12,}$'
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
@@ -84,15 +84,6 @@ cas.authn.pm.reset.securityQuestionsEnabled: false
 cas.authn.pm.reset.includeServerIpAddress: false
 cas.authn.pm.autoLogin: true
 
-
-cas.authn.mfa.simple.sms.from: 'changeme'
-cas.authn.mfa.simple.sms.text: 'Code : %s'
-cas.authn.mfa.simple.sms.attributeName: mobile
-cas.authn.mfa.simple.timeToKillInSeconds: 3600
-cas.authn.mfa.simple.tokenLength: 4
-cas.authn.mfa.globalPrincipalAttributeNameTriggers: computedOtp
-cas.authn.mfa.globalPrincipalAttributeValueRegex: 'true'
-cas.authn.mfa.simple.mail.text: xxx
 
 cas.authn.mfa.simple.sms.from: 'changeme'
 cas.authn.mfa.simple.sms.text: 'Code : %s'
@@ -178,3 +169,62 @@ cas.httpWebRequest.cors.allowCredentials: false
 cas.httpWebRequest.cors.allowOrigins: [ '*' ]
 cas.httpWebRequest.cors.allowMethods: [ '*' ]
 cas.httpWebRequest.cors.allowHeaders: [ '*' ]
+
+# Password configuration
+password:
+  length: 12 # 8 for custom profile
+  max-old-password: 12 # 3 for custom profile
+  check-occurrence: true # false for custom profile
+  occurrences-chars-number: 3 # absent for custom profile
+  profile: "anssi" # default profile is anssi (Agence Nationale de la Sécurité des Systèmes d'Information), custom otherwise
+  constraints:
+    defaults:
+      fr:
+        messages:
+          - Avoir une taille d'au moins ${password.length} caractères
+        special-chars:
+          title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+          messages:
+            - Minuscules (a-z)
+            - Majuscules (A-Z)
+            - Numériques (0-9)
+            - Caractères spéciaux (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        messages:
+          - Have a size of at least ${password.length} characters
+        special-chars:
+          title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+          messages:
+            - Uppercases (a-z)
+            - Lowercases (A-Z)
+            - Digital (0-9)
+            - Special Characters (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        messages:
+          - Mindestens ${password.length} Zeichen lang sein
+        special-chars:
+          title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+          messages:
+            - Großbuchstaben (a-z)
+            - Kleinbuchstaben (A-Z)
+            - Digital (0-9)
+            - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+    customs:
+      fr:
+        title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+        messages:
+          - Au moins ${password.length} caractères
+          - Des minuscules et des majuscules
+          - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      en:
+        title: 'For security reasons, your password must:'
+        messages:
+          - At least ${password.length} characters
+          - Lowercase and uppercase
+          - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
+      de:
+        title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+        messages:
+          - Mindestens ${password.length} Zeichen
+          - Klein- und Großbuchstaben
+          - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)

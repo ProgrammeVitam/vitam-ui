@@ -184,4 +184,16 @@ public class ArchiveInternalRestClient
         return response;
 
     }
+
+    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context, final SearchCriteriaDto query) {
+        LOGGER.info("Calling elimination action with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<JsonNode> response =
+            restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ACTION, HttpMethod.POST,
+                request, JsonNode.class);
+        checkResponse(response);
+        return response;
+
+    }
 }

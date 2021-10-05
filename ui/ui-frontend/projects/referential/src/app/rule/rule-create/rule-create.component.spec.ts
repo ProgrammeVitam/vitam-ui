@@ -184,6 +184,9 @@ describe('RuleCreateComponent', () => {
           expect(setControlValue('ruleDuration', '').invalid).toBeTruthy('empty ruleDuration invalid');
           expect(setControlValue('ruleDuration', '10').valid).toBeTruthy('ruleDuration valid');
 
+          expect(setControlValue('ruleDescription', '').invalid).toBeTruthy('empty ruleDescription invalid');
+          expect(setControlValue('ruleDescription', 'azerty').valid).toBeTruthy('ruleDescription valid');
+
           expect(setControlValue('ruleMeasurement', '').invalid).toBeTruthy('empty ruleMeasurement invalid');
           expect(setControlValue('ruleMeasurement', RULE_MEASUREMENTS[0].key).valid).toBeTruthy('ruleMeasurement valid');
         });
