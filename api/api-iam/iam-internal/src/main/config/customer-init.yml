@@ -187,6 +187,7 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
+        - ROLE_UPDATE_MANAGEMENT_RULES
 
   #- name: profileName
   #  description: desc

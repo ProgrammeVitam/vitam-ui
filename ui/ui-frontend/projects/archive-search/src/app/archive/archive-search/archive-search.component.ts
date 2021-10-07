@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
@@ -43,7 +44,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, StartupService } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
@@ -223,8 +224,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   listOfUAIdToExclude: CriteriaValue[] = [];
   isIndeterminate: boolean;
   hasDipExportRole = false;
-  hasEliminationActionRole = false;
-  hasEliminationAnalysisRole = false;
+  hasUpdateManagementRuleRole = false;
+  hasEliminationAnalysisOrActionRole = false;
   openDialogSubscription: Subscription;
   analysisliminationSuscription: Subscription;
   showConfirmEliminationSuscription: Subscription;
@@ -296,9 +297,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
-    this.checkUserHasRole('DIPExport', 'ROLE_EXPORT_DIP', +this.tenantIdentifier);
-    this.checkUserHasRole('EliminationAnalysis', 'ROLE_ELIMINATION', +this.tenantIdentifier);
-    this.checkUserHasRole('EliminationAction', 'ROLE_ELIMINATION', +this.tenantIdentifier);
+
+    this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
+    this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
+    this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -462,7 +464,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             keyTranslated,
             valueTranslated,
           });
-          const criteria = {
+          const criteriaToAdd = {
             key: keyElt,
             values,
             operator,
@@ -471,7 +473,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             valueTranslated,
             dataType,
           };
-          this.searchCriterias.set(keyElt, criteria);
+          this.searchCriterias.set(keyElt, criteriaToAdd);
         }
         if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
@@ -509,6 +511,20 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return nodesIdList;
   }
 
+  addAllDescriptionLevelValues(typesFilterValues: CriteriaValue[]) {
+    typesFilterValues.push({ id: 'Item', value: 'Item' });
+    typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
+    typesFilterValues.push({ id: 'File', value: 'File' });
+    typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
+    typesFilterValues.push({ id: 'Class', value: 'Class' });
+    typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
+    typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
+    typesFilterValues.push({ id: 'Series', value: 'Series' });
+    typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
+    typesFilterValues.push({ id: 'Collection', value: 'Collection' });
+    typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
+  }
+
   buildNodesListForQUery() {
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.NODES) {
@@ -542,13 +558,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    if (this.filterMapType.Type.length != 2) {
+    if (this.filterMapType.Type.length !== 2) {
       const typesFilterValues: CriteriaValue[] = [];
+      if (this.filterMapType.Type.length === 0) {
+        this.addAllDescriptionLevelValues(typesFilterValues);
+      }
 
-      this.filterMapType.Type.forEach((filter) => {
-        if (filter === 'Document') {
+      this.filterMapType.Type.forEach((filterType) => {
+        if (filterType === 'Document') {
           typesFilterValues.push({ id: 'Item', value: 'Item' });
-        } else if (filter === 'Folder') {
+        } else if (filterType === 'Folder') {
           typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
           typesFilterValues.push({ id: 'File', value: 'File' });
           typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
@@ -1024,11 +1043,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         case 'DIPExport':
           this.hasDipExportRole = result;
           break;
-        case 'EliminationAnalysis':
-          this.hasEliminationAnalysisRole = result;
+        case 'EliminationAnalysisOrAction':
+          this.hasEliminationAnalysisOrActionRole = result;
           break;
-        case 'EliminationAction':
-          this.hasEliminationActionRole = result;
+        case 'UpdateRule':
+          this.hasUpdateManagementRuleRole = result;
           break;
         default:
           break;
@@ -1150,5 +1169,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             }
           });
       });
+  }
+
+  updateManagementRule() {
+    console.log('hello');
   }
 }

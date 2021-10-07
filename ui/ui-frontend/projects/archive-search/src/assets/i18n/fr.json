@@ -35,6 +35,10 @@
       "EXECUTE" : "Eliminer les archives",
       "EXECUTE_ONE" : "Eliminer l'archive"
     },
+    "RULE" : {
+      "UPDATE_RULE" : "Modifier une règle"
+    },
+    
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
