@@ -176,10 +176,13 @@
           <button mat-menu-item (click)="openExportDIPRequestCreateDialog()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisRole || itemSelected === 0">
+          <button mat-menu-item (click)="updateManagementRule()" [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0">
+            {{ 'ARCHIVE_SEARCH.RULE.UPDATE_RULE' | translate }}
+          </button>
+          <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationActionRole || itemSelected === 0">
+          <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
         </vitamui-common-menu-button>

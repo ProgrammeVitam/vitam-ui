@@ -35,6 +35,10 @@
       "EXECUTE" : "Delete the archives",
       "EXECUTE_ONE" : "Delete the archive"
     },
+       "RULE" : {
+      "UPDATE_RULE" : "Update a rule"
+    },
+
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",
     "TITLE_SEARCH": "Search : ",
