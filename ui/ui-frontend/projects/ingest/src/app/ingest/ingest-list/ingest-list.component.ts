@@ -158,13 +158,19 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       if (ingest.evType === ingest.events[eventsLength - 1].evType) {
         return ingest.events[eventsLength - 1].outcome;
       } else {
-        return 'En cours';
+        if (ingest.events[eventsLength - 1].outcome === 'FATAL') {
+          return 'FATAL';
+        } else {
+          return 'En cours';
+        }
       }
     }
   }
 
   ingestStatus(ingest: any): string {
-    if (this.getOperationStatus(ingest) === 'En cours') {
+    if (this.getOperationStatus(ingest) === 'FATAL') {
+      return 'FATAL';
+    } else if (this.getOperationStatus(ingest) === 'En cours') {
       return 'En cours';
     } else {
       return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
