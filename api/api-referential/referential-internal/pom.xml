@@ -312,12 +312,10 @@
 					<attach>false</attach> <!-- Need to use the original jar for integration-tests -->
 					<mainClass>fr.gouv.vitamui.referential.internal.server.ApiReferentialServerApplication</mainClass>
 					<jvmArguments>
-                        -Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam
+                        -Xmx512m
 					</jvmArguments>
 					<arguments>
-						<!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
-						<!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
-						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/referential-internal-application-dev.yml</argument>
+						<argument>--spring.profiles.active=dev</argument>
 					</arguments>
 				</configuration>
 			</plugin>

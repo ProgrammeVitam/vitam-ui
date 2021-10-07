@@ -57,15 +57,13 @@ public class ApiSecurityServerApplication implements CommandLineRunner {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiSecurityServerApplication.class);
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiSecurityServerApplication.class)
-                .properties("spring.config.name:security-internal-application").build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiSecurityServerApplication.class).build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
         LOGGER.debug("VITAMUI SpringBoot Application started:");
-        LOGGER.debug("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.debug("spring.application.name: " + env.getProperty("spring.application.name"));
     }
 
