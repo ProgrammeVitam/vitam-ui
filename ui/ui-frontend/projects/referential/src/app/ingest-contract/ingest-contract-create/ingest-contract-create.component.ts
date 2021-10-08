@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { HttpHeaders, HttpParams } from '@angular/common/http';
-import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AccessContract, FileFormat, FilingPlanMode, IngestContract } from 'projects/vitamui-library/src/public-api';
@@ -70,10 +70,8 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
-  private stepCount = 4;
+  private stepCount = 8;
   private keyPressSubscription: Subscription;
-
-  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<IngestContractCreateComponent>,
@@ -133,7 +131,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
 
       /* default */
       masterMandatory: [true, Validators.required],
-      computedInheritedRulesAtIngest: [false, Validators.required],
+      computeInheritedRulesAtIngest: [false, Validators.required],
     });
 
     this.fileFormatService.getAllForTenant('' + this.tenantIdentifier).subscribe((files) => {
