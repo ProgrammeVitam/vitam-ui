@@ -151,6 +151,21 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>target/www/</directory>
+                <targetPath>static/</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

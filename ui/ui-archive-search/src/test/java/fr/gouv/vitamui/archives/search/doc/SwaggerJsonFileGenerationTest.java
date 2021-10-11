@@ -38,7 +38,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -48,7 +47,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
-@TestPropertySource(properties = {"spring.config.name=ui-archive-search-application"})
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

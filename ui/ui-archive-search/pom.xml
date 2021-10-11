@@ -159,6 +159,12 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -179,89 +185,105 @@
                 </executions>
                 <configuration>
                     <executable>true</executable>
-                    <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
+                    <attach>true</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.archives.search.ArchiveSearchApplication</mainClass>
+                    <jvmArguments>-Xmx512m</jvmArguments>
                     <arguments>
-                        <!-- use src/main/config/application-dev.yml when using mvn spring-boot:run -->
-                        <!-- See : https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-application-property-files -->
-                        <argument>
-                            --spring.config.additional-location=file:${basedir}/src/main/config/ui-archive-search-application-dev.yml
-                        </argument>
+                        <argument>--spring.profiles.active=dev</argument>
                     </arguments>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>${maven.frontend.plugin.version}</version>
-                <configuration>
-                    <workingDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</workingDirectory>
-                    <installDirectory>${maven.multiModuleProjectDirectory}/ui/ui-frontend</installDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>initialize</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <nodeVersion>${node.version}</nodeVersion>
-                            <npmVersion>${npm.version}</npmVersion>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <arguments>install --legacy-peer-deps --loglevel warn</arguments>
-                        </configuration>
-                    </execution>
-                    <!-- copy scss from vitamui-library to other projects -->
-                    <execution>
-                        <id>copy scss</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <arguments>run copy-scss:vitamui-library</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm run build</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>process-sources</phase>
-                        <configuration>
-                            <skip>${skipAllFrontend}</skip>
-                            <arguments>run build -- --project=archive-search --output-path=${project.basedir}/target/www
-                                --base-href=${angular.base.href} --deploy-url=${angular.base.href}
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>npm test</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipTests}</skip>
-                            <arguments>run test:archive-search</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>rpm</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>rpm-package-admin</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile
+                                        </argument>
+                                        <argument>rpm</argument>
+                                        <argument>NAME=${project.artifactId}-admin</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <argument>USER=vitamui</argument>
+                                        <!--
+                                           If you want to changes default dependencies (only systemd), define them as a
+                                            comma separated list of packages
+                                        -->
+                                        <argument>DEPENDENCIES=systemd,java-11-openjdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>deb</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deb-package-admin</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>make</executable>
+                                    <workingDirectory>target</workingDirectory>
+                                    <skip>${rpm.skip}</skip>
+                                    <arguments>
+                                        <argument>-f</argument>
+                                        <argument>${maven.multiModuleProjectDirectory}/tools/packaging/Makefile
+                                        </argument>
+                                        <argument>deb</argument>
+                                        <argument>NAME=${project.artifactId}-admin</argument>
+                                        <argument>VERSION=${project.version}</argument>
+                                        <argument>JAR_FILE=${rpm.jar-file}</argument>
+                                        <argument>USER=vitamui</argument>
+                                        <!--
+                                           If you want to changes default dependencies (only systemd), define them as a
+                                            comma separated list of packages
+                                        -->
+                                        <argument>DEPENDENCIES=systemd,openjdk-11-jdk</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 
 </project>

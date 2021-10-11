@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ingest.internal.server;
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -44,9 +46,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ApiIngestInternalServerApplication implements CommandLineRunner {
@@ -54,19 +53,18 @@ public class ApiIngestInternalServerApplication implements CommandLineRunner {
     @Autowired
     private Environment env;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiIngestInternalServerApplication.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ApiIngestInternalServerApplication.class);
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiIngestInternalServerApplication.class).properties("spring.config.name:ingest-internal-application")
-                .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiIngestInternalServerApplication.class)
+            .build();
         app.run(args);
     }
 
     @Override
     public void run(final String... args) throws Exception {
         LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
-        LOGGER.info("vitam.config.folder: " + env.getProperty("vitam.config.folder"));
     }
 }

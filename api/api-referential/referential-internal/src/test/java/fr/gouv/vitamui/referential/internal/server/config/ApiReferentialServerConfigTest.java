@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
@@ -51,7 +52,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +61,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 public class ApiReferentialServerConfigTest extends AbstractContextConfiguration {
 
-    @MockBean(name ="adminExternalClient")
+    @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;
 
     @MockBean(name = "accessExternalClient")
@@ -69,6 +69,9 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
 
     @MockBean(name = "ingestExternalClient")
     private IngestExternalClient ingestExternalClient;
+
+    @MockBean(name = "accessExternalClientV2")
+    private AccessExternalClientV2 accessExternalClientV2;
 
     @Autowired
     private AccessContractInternalService accessContractInternalService;
@@ -85,18 +88,12 @@ public class ApiReferentialServerConfigTest extends AbstractContextConfiguration
     @Autowired
     private LogbookManagementOperationInternalService logbookManagementOperationInternalService;
 
-    @Test
-    public void testContext() {
-        assertThat(accessContractInternalService).isNotNull();
-    }
+
 
     @Test
     public void testAgency() {
         assertThat(agencyInternalService).isNotNull();
     }
 
-    @Test
-    public void testLogbookManagementOperation() {
-        assertThat(logbookManagementOperationInternalService).isNotNull();
-    }
+
 }

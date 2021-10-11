@@ -36,34 +36,25 @@
  */
 package fr.gouv.vitamui.ingest.internal.server;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = { "spring.config.name=ingest-internal-application" })
 @ActiveProfiles("test")
 public class ApiIngestInternalApplicationTest {
 
     @Autowired
     private Environment env;
 
-    @BeforeClass
-    public static void init() {
-        System.setProperty("vitam.config.folder", "src/main/config");
-    }
-
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name")).isEqualTo("ingest-internal-application");
     }
 
 }

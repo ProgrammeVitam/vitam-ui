@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ingest.external.server;
 
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -44,9 +46,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.core.env.Environment;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-
 @SpringBootApplication
 @EnableDiscoveryClient
 public class ApiIngestExternalServerApplication implements CommandLineRunner {
@@ -54,11 +53,12 @@ public class ApiIngestExternalServerApplication implements CommandLineRunner {
     @Autowired
     private Environment env;
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ApiIngestExternalServerApplication.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ApiIngestExternalServerApplication.class);
 
     public static void main(final String[] args) {
-        final SpringApplication app = new SpringApplicationBuilder(ApiIngestExternalServerApplication.class).properties("spring.config.name:ingest-external-application")
-                .build();
+        final SpringApplication app = new SpringApplicationBuilder(ApiIngestExternalServerApplication.class)
+            .build();
         app.run(args);
     }
 
@@ -66,7 +66,6 @@ public class ApiIngestExternalServerApplication implements CommandLineRunner {
     public void run(final String... args) throws Exception {
 
         LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
         LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
         LOGGER.info("-------------------------------");
         LOGGER.info("\n");

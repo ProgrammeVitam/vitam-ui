@@ -1,6 +1,8 @@
 spring:
-  profiles: recette
-
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: recette, swagger
 ui-referential:
   base-url:
     portal: "https://dev.vitamui.com:9000"

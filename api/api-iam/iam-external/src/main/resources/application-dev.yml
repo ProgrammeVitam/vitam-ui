@@ -1,8 +1,10 @@
 debug: false
 
 spring:
+  config:
+    use-legacy-processing: true
   profiles:
-    active: swagger
+    active: dev, swagger
 
   cloud:
     consul: #disabled for dev

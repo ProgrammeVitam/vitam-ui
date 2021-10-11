@@ -1,11 +1,12 @@
 debug: false
 
 spring:
+  config:
+    use-legacy-processing: true
   profiles:
-    active: swagger
-
+    active: dev, swagger
   cloud:
-    consul:  #disabled for dev
+    consul: #disabled for dev
       enabled: false
       discovery:
         enabled: false
@@ -36,7 +37,7 @@ clients:
     server-port: 7083
 
 swagger:
- file-path: file:../../../tools/swagger/docs/api-internal/referential-internal/swagger.json
+  file-path: file:../../../tools/swagger/docs/api-internal/referential-internal/swagger.json
 
 # Jaeger
 opentracing:

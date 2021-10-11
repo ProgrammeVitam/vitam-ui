@@ -1,0 +1,69 @@
+debug: false
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: dev, swagger
+
+
+  cloud:
+    consul: #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: ingest-external
+  identityServerId: 1
+
+server:
+  host:
+  port: 8088
+  ssl:
+    key-store: src/main/resources/dev/keystore_ingest-external.jks
+    key-store-password: changeme
+    key-password: changeme
+    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store-password: changeme
+    client-auth: need
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
+management:
+  server:
+    address: localhost
+    port: 8188
+    ssl:
+      enabled: false
+
+ingest-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+  ingest-internal-client:
+    server-host: localhost
+    server-port: 7088
+    secure: false
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    fr.gouv.vitamui.iam.security: DEBUG
+    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

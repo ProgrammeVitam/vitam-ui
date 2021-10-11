@@ -55,7 +55,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = {"spring.config.name=archive-search-internal-application"})
 @ActiveProfiles("test")
 public class SearchCriteriaHistoryInternalServerConfigTest {
 

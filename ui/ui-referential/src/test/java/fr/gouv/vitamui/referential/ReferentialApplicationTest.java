@@ -36,8 +36,7 @@
  */
 package fr.gouv.vitamui.referential;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitamui.referential.config.ReferentialApplicationProperties;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +44,12 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.referential.config.ReferentialApplicationProperties;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(properties = { "spring.config.name=ui-referential-application" })
 public class ReferentialApplicationTest {
 
     @Autowired
@@ -67,7 +64,6 @@ public class ReferentialApplicationTest {
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name") ).isEqualTo("ui-referential-application");
 
         assertThat(referentialProperties).isNotNull();
         assertThat(referentialProperties.getIamExternalClient()).isNotNull();
