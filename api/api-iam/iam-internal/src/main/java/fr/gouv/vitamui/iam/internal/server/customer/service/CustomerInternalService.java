@@ -125,11 +125,11 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
     @Autowired
     public CustomerInternalService(final CustomSequenceRepository sequenceRepository,
-            final CustomerRepository customerRepository, final OwnerInternalService internalOwnerService,
-            final UserInternalService userInternalService, final InternalSecurityService internalSecurityService,
-            final AddressService addressService, final InitCustomerService initCustomerService,
-            final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
-            final LogbookService logbookService) {
+        final CustomerRepository customerRepository, final OwnerInternalService internalOwnerService,
+        final UserInternalService userInternalService, final InternalSecurityService internalSecurityService,
+        final AddressService addressService, final InitCustomerService initCustomerService,
+        final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
+        final LogbookService logbookService) {
         super(sequenceRepository);
         this.customerRepository = customerRepository;
         this.internalOwnerService = internalOwnerService;
@@ -171,7 +171,11 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     @Transactional
     public CustomerDto create(final CustomerCreationFormData customerData) {
         CustomerDto createdCustomerDto = null;
-
+        try {
+            wait(20000);
+        } catch (InterruptedException e) {
+            
+        }
         final CustomerDto dto = customerData.getCustomerDto();
 
         LOGGER.debug("Create {} with {}", getObjectName(), dto);
@@ -236,8 +240,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final String message = "Unable to patch customer " + id;
 
         Assert.isTrue(
-                !checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")),
-                message);
+            !checkMapContainsOnlyFieldsUnmodifiable(partialDto, Arrays.asList("id", "readonly", "identifier")),
+            message);
         final String code = CastUtils.toString(partialDto.get("code"));
         if (code != null) {
             checkCode(Optional.of(customer.getId()), code);
@@ -288,7 +292,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     break;
                 case "enabled":
                     logbooks.add(
-                            new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
+                        new EventDiffDto(CustomerConverter.ENABLED_KEY, customer.isEnabled(), entry.getValue()));
                     customer.setEnabled(CastUtils.toBoolean(entry.getValue()));
                     break;
                 case "language":
@@ -330,7 +334,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                             "Unable to patch customer " + customer.getId() + ": value for " + entry.getKey() +
                                 " is not allowed, because the main setting is readOnly, please contact your administrator to update it");
                     } else {
-                        if(CastUtils.toInt(entry.getValue()) > 0) {
+                        if (CastUtils.toInt(entry.getValue()) > 0) {
                             logbooks.add(
                                 new EventDiffDto(CustomerConverter.GDPR_ALERT_DELAY_KEY, customer.getGdprAlertDelay(),
                                     entry.getValue()));
@@ -399,7 +403,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     break;
                 case "portalTitles":
                     final Object portalTitlesValue =
-                            entry.getValue();
+                        entry.getValue();
 
                     if (portalTitlesValue instanceof Map) {
                         final Map<String, String> portalTitles = (Map) portalTitlesValue;
@@ -407,7 +411,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     } else {
                         LOGGER.error("Cannot instantiate portalTitles value as a Map<String, String>.");
                         throw new IllegalArgumentException("Unable to patch customer " + customer.getId()
-                                + ": value for " + entry.getKey() + " is not allowed");
+                            + ": value for " + entry.getKey() + " is not allowed");
                     }
                     break;
                 case "portalMessages":
@@ -419,7 +423,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
                     } else {
                         LOGGER.error("Cannot instantiate portalMessages value as a Map<String, String>.");
                         throw new IllegalArgumentException("Unable to patch customer " + customer.getId()
-                                + ": value for " + entry.getKey() + " is not allowed");
+                            + ": value for " + entry.getKey() + " is not allowed");
                     }
                     break;
                 default:
@@ -465,7 +469,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final Optional<MultipartFile> portal = customerFormData.getPortal();
 
         if ((header != null && header.isPresent()) || (footer != null && footer.isPresent())
-                ||
+            ||
             (portal != null && portal.isPresent())) {
             if (header != null && header.isPresent()) {
                 patchLogos(customer, header.get(), AttachmentType.HEADER);
@@ -509,13 +513,13 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
     /**
      * Method allowing to check if a code can be used.
      *
-     * @param customerId   Id of an existing customer wanting code's update.
+     * @param customerId Id of an existing customer wanting code's update.
      * @param customerCode Code to check.
      */
     protected void checkCode(final Optional<String> customerId, final String customerCode) {
         final Optional<Customer> optCustomer = customerRepository.findByCode(customerCode);
         if (optCustomer.isPresent()
-                &&
+            &&
             (!customerId.isPresent() || !optCustomer.get().getId().equals(customerId.get()))) {
             throw new IllegalArgumentException(String.format(
                 "Integrity constraint error on the customer %s : the new code is already used by another customer.",
@@ -565,8 +569,8 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         LOGGER.debug("findHistoryById for id" + id);
         final VitamContext vitamContext = new VitamContext(internalSecurityService.getProofTenantIdentifier())
             .setAccessContract(
-                        internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
-                .getAccessContractLogbookIdentifier())
+                internalSecurityService.getTenant(internalSecurityService.getProofTenantIdentifier())
+                    .getAccessContractLogbookIdentifier())
             .setApplicationSessionId(internalSecurityService.getApplicationId());
 
         final Optional<Customer> customer = getRepository().findById(id);

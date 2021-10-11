@@ -198,6 +198,9 @@ vitamui:
     port_service: 8101
     port_admin: 7101
     secure: true
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     jvm_log: false
     logging_level: "INFO"
     log:
@@ -215,6 +218,9 @@ vitamui:
     service_name: "vitamui-iam-internal"
     port_service: 8201
     port_admin: 7201
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     secure: true
     jvm_log: false
     logging_level: "INFO"
