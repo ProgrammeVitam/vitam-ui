@@ -174,7 +174,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         try {
             wait(20000);
         } catch (InterruptedException e) {
-            
+
         }
         final CustomerDto dto = customerData.getCustomerDto();
 
