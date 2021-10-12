@@ -26,7 +26,6 @@ import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class })
 @WebMvcTest(controllers = { SecurityController.class })
 @Import(value = { PortalApplicationProperties.class, SecurityConfig.class, ServerIdentityConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=ui-portal-application" })
 public class SecurityControllerTest extends UIControllerTest<UserDto> {
 
     @Value("${ui-portal.prefix}")

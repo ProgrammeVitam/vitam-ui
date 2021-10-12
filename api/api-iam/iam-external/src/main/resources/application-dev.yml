@@ -1,0 +1,68 @@
+debug: false
+
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: dev, swagger
+
+  cloud:
+    consul: #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+
+spring.servlet.multipart.max-file-size: -1
+spring.servlet.multipart.max-request-size: -1
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: iam-external
+  identityServerId: 1
+
+server:
+  host:
+  port: 8083
+  ssl:
+    key-store: src/main/resources/dev/keystore_iam-external.jks
+    key-store-password: changeme
+    key-password: changeme
+    trust-store: src/main/resources/dev/truststore_server.jks
+    trust-store-password: changeme
+    client-auth: need
+    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
+
+management:
+  server:
+    address: localhost
+    port: 8183
+    ssl:
+      enabled: false
+
+iam-external:
+  security-client:
+    server-host: localhost
+    server-port: 8084
+    secure: false
+  iam-internal-client:
+    server-host: localhost
+    server-port: 7083
+    secure: false
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+logging:
+  level:
+    fr.gouv.vitamui: DEBUG
+    fr.gouv.vitamui.iam.security: DEBUG
+    #level.org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

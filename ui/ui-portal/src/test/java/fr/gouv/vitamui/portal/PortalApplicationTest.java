@@ -15,7 +15,6 @@ import fr.gouv.vitamui.portal.config.PortalApplicationProperties;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@TestPropertySource(properties = { "spring.config.name=ui-portal-application" })
 public class PortalApplicationTest {
 
     @Autowired

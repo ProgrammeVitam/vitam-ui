@@ -49,7 +49,6 @@ public class ApiArchivesSearchExternalServerApplication implements CommandLineRu
 
     public static void main(final String[] args) {
         final SpringApplication app = new SpringApplicationBuilder(ApiArchivesSearchExternalServerApplication.class)
-            .properties("spring.config.name:archive-search-external-application")
             .build();
         app.run(args);
     }
@@ -58,8 +57,6 @@ public class ApiArchivesSearchExternalServerApplication implements CommandLineRu
     public void run(final String... args) throws Exception {
 
         LOGGER.info("VITAMUI SpringBoot Application started:");
-        LOGGER.info("spring.config.name: " + env.getProperty("spring.config.name"));
-        LOGGER.info("spring.application.name: " + env.getProperty("spring.application.name"));
         LOGGER.info("-------------------------------");
         LOGGER.info("\n");
     }

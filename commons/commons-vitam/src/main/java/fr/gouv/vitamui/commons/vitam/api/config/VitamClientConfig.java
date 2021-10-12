@@ -36,19 +36,18 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
-import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
-import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2Factory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
-
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AccessExternalClientFactory;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClientFactory;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
+import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2Factory;
 import fr.gouv.vitam.common.client.VitamClientFactoryInterface.VitamClientType;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClientFactory;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 public abstract class VitamClientConfig {
 
@@ -83,6 +82,7 @@ public abstract class VitamClientConfig {
     }
 
     @Bean
+    @Profile("!test")
     public AccessExternalClientV2 accessExternalClientV2() {
         final AccessExternalClientV2Factory factory = AccessExternalClientV2Factory.getInstance();
         if (VitamClientType.MOCK.equals(factory.getVitamClientType())) {

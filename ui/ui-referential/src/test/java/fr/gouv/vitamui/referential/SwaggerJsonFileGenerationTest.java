@@ -36,30 +36,41 @@
  */
 package fr.gouv.vitamui.referential;
 
-import fr.gouv.vitamui.referential.service.*;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
+import fr.gouv.vitamui.referential.service.AccessContractService;
+import fr.gouv.vitamui.referential.service.AccessionRegisterSummaryService;
+import fr.gouv.vitamui.referential.service.AgencyService;
+import fr.gouv.vitamui.referential.service.ContextService;
+import fr.gouv.vitamui.referential.service.CustomerService;
+import fr.gouv.vitamui.referential.service.FileFormatService;
+import fr.gouv.vitamui.referential.service.IngestContractService;
+import fr.gouv.vitamui.referential.service.LogbookManagementOperationService;
+import fr.gouv.vitamui.referential.service.ManagementContractService;
+import fr.gouv.vitamui.referential.service.OntologyService;
+import fr.gouv.vitamui.referential.service.OperationService;
+import fr.gouv.vitamui.referential.service.ProfileService;
+import fr.gouv.vitamui.referential.service.RuleService;
+import fr.gouv.vitamui.referential.service.SecurityProfileService;
+import fr.gouv.vitamui.referential.service.TenantService;
+import fr.gouv.vitamui.referential.service.UnitService;
+import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
-import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 
 /**
  * Swagger JSON Generation.
  * With this test class, we can generate the swagger json file without launching a full SpringBoot app.
- *
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@Import(value = { SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class })
-@TestPropertySource(properties = { "spring.config.name=ui-referential-application" })
+@Import(value = {SecurityConfig.class, ServerIdentityConfiguration.class, SwaggerConfiguration.class})
 @ActiveProfiles("test, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
 

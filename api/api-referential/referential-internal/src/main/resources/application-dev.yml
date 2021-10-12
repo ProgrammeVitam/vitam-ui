@@ -1,0 +1,59 @@
+debug: false
+
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: dev, swagger
+  cloud:
+    consul: #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: referential-internal
+  identityServerId: 1
+
+server:
+  host:
+  port: 7087
+  tomcat.connection-timeout: 60000
+
+management:
+  server:
+    address: localhost
+    port: 7187
+
+clients:
+  iam-internal:
+    server-host: localhost
+    server-port: 7083
+
+swagger:
+  file-path: file:../../../tools/swagger/docs/api-internal/referential-internal/swagger.json
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+logging:
+  level:
+    fr.gouv.vitamui.referential: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+    fr.gouv.vitam.access: DEBUG
+    fr.gouv.vitam.access.*: DEBUG
+#    org.springframework.core.env: DEBUG
+

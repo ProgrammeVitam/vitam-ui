@@ -48,23 +48,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = { "spring.config.name=referential-internal-application" })
 @ActiveProfiles("test")
 public class ApiReferentialApplicationTest {
 
     @Autowired
     private Environment env;
 
-    @BeforeClass
-    public static void init() {
-        // Set the location of the vitam config folder. Mandatory for the application to start
-        System.setProperty("vitam.config.folder", "src/main/config");
-    }
-
     @Test
     public void testContextLoads() {
         assertThat(env).isNotNull();
-        assertThat(env.getProperty("spring.config.name")).isEqualTo("referential-internal-application");
     }
 
 }

@@ -1,0 +1,124 @@
+debug: false
+
+spring:
+  config:
+    use-legacy-processing: true
+  profiles:
+    active: dev, swagger
+
+
+  cloud:
+    consul: #disabled for dev
+      enabled: false
+      discovery:
+        enabled: false
+        register: false
+  data:
+    mongodb:
+      uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
+
+server-identity:
+  identityName: vitamui-dev
+  identityRole: iam-internal
+  identityServerId: 1
+
+server:
+  host:
+  port: 7083
+
+management:
+  server:
+    address: localhost
+    port: 7183
+
+security:
+  host: localhost
+  port: 8084
+
+cas-client:
+  server-host: dev.vitamui.com
+  server-port: 8080
+  secure: true
+  ssl-configuration:
+    truststore:
+      key-path: src/main/resources/dev/keystore_iam-internal.jks
+      key-password: changeme
+    keystore:
+      key-path: src/main/resources/dev/keystore_iam-internal.jks
+      key-password: changeme
+      type: JKS
+    hostname-verification: false
+
+cas.reset.password.url: /cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
+
+login:
+  url: http://dev.vitamui.com:8080/cas/login
+
+login.attempts.maximum.failures: 5
+login.attempts.time.interval: 20
+
+logbook:
+  scheduling:
+    enabled: false
+    sendEventToVitamTasks:
+      delay: 10000
+
+vitam.tenant.init.mandatory: true
+
+customer.init.config.file: src/main/resources/dev/customer-init.yml
+
+# Jaeger
+opentracing:
+  jaeger:
+    enabled: true
+    logSpans: true
+    expandExceptionLogs: true
+    udp-sender:
+      host: localhost
+      port: 6831
+
+logging:
+  level:
+    fr.gouv.vitamui.commons.mongo.service: DEBUG
+    fr.gouv.vitamui.iam.internal.server: DEBUG
+    fr.gouv.vitamui.commons.logbook.scheduler: DEBUG
+    # org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    fr.gouv.vitamui.iam.security: INFO
+
+gdpr_alert_readonly: true
+
+provisioning-client:
+  identity-providers:
+    - idp-identifier: system_idp
+      uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+    - idp-identifier: 2
+      uri: https://localhost:8090/provisioning/v1/users
+      client:
+        secure: true
+        ssl-configuration:
+          keystore:
+            key-path: src/main/resources/dev/keystore_iam-internal.jks
+            key-password: changeme
+            type: JKS
+          truststore:
+            key-path: src/main/resources/dev/truststore_server.jks
+            key-password: changeme
+            type: JKS
+          hostname-verification: false
+
+
+# Password configuration
+password:
+  max-old-password: 12

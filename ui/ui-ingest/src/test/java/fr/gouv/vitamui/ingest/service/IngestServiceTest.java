@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.ingest.service;
 
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalWebClient;
 import fr.gouv.vitamui.ingest.external.client.IngestStreamingExternalRestClient;
@@ -34,6 +35,8 @@ public class IngestServiceTest {
     public void init() {
         ingestService = new IngestService(commonService, ingestExternalRestClient, ingestExternalWebClient,
             ingestStreamingExternalRestClient);
+        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+
     }
 
     @Test

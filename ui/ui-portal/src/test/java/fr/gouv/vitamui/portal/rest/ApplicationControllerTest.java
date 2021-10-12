@@ -29,7 +29,6 @@ import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 @ImportAutoConfiguration(classes = { UICommonsAutoSpringMockConfiguration.class, UICommonsAutoConfiguration.class, ServerIdentityAutoConfiguration.class })
 @Import(value = { PortalApplicationProperties.class })
 @WebMvcTest(controllers = { ApplicationController.class })
-@TestPropertySource(properties = { "spring.config.name=ui-portal-application" })
 public class ApplicationControllerTest extends UIControllerTest<ApplicationDto> {
 
     @Value("${ui-prefix}")
