@@ -140,7 +140,6 @@ public class AccessionRegisterDetailInternalService {
         AccessionRegisterDetailResponseDto results;
         try {
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
-            LOGGER.info("AccessionRegisterDetailModel: {}", accessionRegisterDetails);
             results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
         } catch (VitamClientException e) {
             throw new InternalServerException("Can't fetch data from VITAM", e);

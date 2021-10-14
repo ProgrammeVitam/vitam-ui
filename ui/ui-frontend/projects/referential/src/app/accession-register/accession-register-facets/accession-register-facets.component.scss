@@ -1,0 +1,17 @@
+.head-title {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.1px;
+  color: var(--vitamui-secondary);
+  cursor: pointer;
+}
+
+.stats-border {
+  border: 1px dashed var(--vitamui-grey-400);
+}

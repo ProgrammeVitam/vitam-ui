@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-12">
+    <div class="row">
+      <div class="col">
+        <p>
+          <a (click)="showAdvancedSearchPanel.emit(true)" class="head-title">{{ 'ACCESSION_REGISTER.FACETS.SHOW_SEARCH_FILTERS' | translate }}</a>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+      <vitamui-interval-date-picker
+        label="{{ 'ACCESSION_REGISTER.FACETS.DATE_SEARCH_FILTER_LABEL' | translate }}"
+        (criteriaChange)="onDateCriteriaChange($event)"
+      >
+      </vitamui-interval-date-picker>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <app-logbook-operation-facet
+          [facetDetails]="stateFacetDetails$|async"
+        ></app-logbook-operation-facet>
+      </div>
+    </div>
+  </div>
+</div>

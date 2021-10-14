@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Subject } from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 import { Id } from '../';
 import { Direction } from './direction.enum';
@@ -48,6 +48,7 @@ export class InfiniteScrollTable<T extends Id> {
   infiniteScrollDisabled = false;
   pending = false;
   dataSource: T[];
+  dataSource$: BehaviorSubject<T[]> = new BehaviorSubject([]);
   // with this information, the caller can be able to set himself the end of the change
   overridePendingChange = false;
 
@@ -64,6 +65,7 @@ export class InfiniteScrollTable<T extends Id> {
       this.searchService.loadMore().subscribe(
         (data: T[]) => {
           this.dataSource = data;
+          this.dataSource$.next(data);
           if (!this.overridePendingChange) {
             this.pending = false;
           }
@@ -86,6 +88,7 @@ export class InfiniteScrollTable<T extends Id> {
       this.searchService.search(pageRequest).subscribe(
         (data: T[]) => {
           this.dataSource = data;
+          this.dataSource$.next(data);
           if (!this.overridePendingChange) {
             this.pending = false;
           }

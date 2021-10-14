@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component } from '@angular/core';
-import { AccessionRegisterSummary, AccessionRegisterDetail, SidenavPage } from 'ui-frontend-common';
+import { AccessionRegisterDetail, AccessionRegisterSummary, SidenavPage } from 'ui-frontend-common';
 import { AccessionRegistersService } from './accession-register.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -45,13 +45,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> {
   accessionRegisterSummary: AccessionRegisterSummary[] = [];
-  public search: string;
+  search: string;
 
-  constructor(accessionRegisterService: AccessionRegistersService, route: ActivatedRoute) {
+  constructor(private accessionRegisterService: AccessionRegistersService, route: ActivatedRoute) {
     super(route, accessionRegisterService);
   }
 
   onSearchSubmit(search: string) {
     this.search = search;
+  }
+
+  openAdvancedSearchPanel(value: boolean) {
+    console.log(value);
+    this.accessionRegisterService.toggleOpenAdvancedSearchPanel();
   }
 }

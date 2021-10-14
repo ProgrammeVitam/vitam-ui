@@ -36,13 +36,19 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -72,6 +78,15 @@ public class AccessionRegisterDetailExternalRestClient extends
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
         return new ParameterizedTypeReference<>() {
         };
+    }
+
+    public AccessionRegisterStatsDto getAccessionRegisterDetailStats(ExternalHttpContext context, AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + "/stats");
+        final HttpEntity<AccessionRegisterDetailsSearchStatsDto> request = new HttpEntity<>(detailsSearchDto, buildHeaders(context));
+        final ResponseEntity<AccessionRegisterStatsDto> response = restTemplate
+            .exchange(uriBuilder.toUriString(), HttpMethod.POST, request, AccessionRegisterStatsDto.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
 }

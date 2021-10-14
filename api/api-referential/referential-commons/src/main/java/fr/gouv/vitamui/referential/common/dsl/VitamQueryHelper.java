@@ -36,17 +36,26 @@
  */
 package fr.gouv.vitamui.referential.common.dsl;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.CompareQuery;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +87,11 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
+    private static final String START_DATE = "StartDate";
+
+    private VitamQueryHelper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -168,6 +182,9 @@ public class VitamQueryHelper {
                     case EV_DATE_TIME_END:
                         query.add(lt("evDateTime", (String) entry.getValue()));
                         break;
+                    case START_DATE:
+                        addStartDateToQuery(query, entry.getValue());
+                        break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);
                         break;
@@ -185,6 +202,33 @@ public class VitamQueryHelper {
 
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
+    }
+
+    private static void addStartDateToQuery(BooleanQuery query, Object value) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            AccessionRegisterDetailsSearchStatsDto.DateInterval dateInterval = mapper.convertValue(value, new TypeReference<>() {});
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String dateMinStr = dateInterval.getStartDateMin();
+            String dateMaxStr = dateInterval.getStartDateMax();
+
+            if(dateMinStr != null && dateMaxStr == null) {
+                query.add(lte(START_DATE, formatter.parse(dateMinStr)));
+            }
+
+            if(dateMinStr == null && dateMaxStr != null) {
+                query.add(lte(START_DATE, formatter.parse(dateMaxStr)));
+            }
+
+            if(dateMinStr != null && dateMaxStr != null) {
+                query.add(range(START_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+            }
+
+        } catch (InvalidCreateOperationException | ParseException e) {
+            LOGGER.error("Can not find binding for StartDate key: \n {}", e);
+        }
+
     }
 
     public static JsonNode getLastOperationQuery(String operationType) throws InvalidCreateOperationException, InvalidParseOperationException {
