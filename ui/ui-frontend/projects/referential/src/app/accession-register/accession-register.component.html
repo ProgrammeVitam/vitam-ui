@@ -12,8 +12,18 @@
       </search-bar-with-sibling-button>
     </div>
     <div class="vitamui-content">
+      <div>
+        <app-accession-register-facets
+          (showAdvancedSearchPanel)="openAdvancedSearchPanel($event)"
+        >
+        </app-accession-register-facets>
+      </div>
       <div class="mt-3">
-        <app-accession-register-list [search]="search" (accessionRegisterClick)="openPanel($event)"> </app-accession-register-list>
+        <app-accession-register-list
+          [search]="search"
+          (accessionRegisterClick)="openPanel($event)"
+        >
+        </app-accession-register-list>
       </div>
     </div>
   </mat-sidenav-content>

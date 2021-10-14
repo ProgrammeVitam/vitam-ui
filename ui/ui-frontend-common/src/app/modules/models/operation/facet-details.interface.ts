@@ -30,5 +30,5 @@ export interface FacetDetails {
   totalResults: number;
   clickable: boolean;
   color: string;
-  filter: string;
+  filter?: string;
 }

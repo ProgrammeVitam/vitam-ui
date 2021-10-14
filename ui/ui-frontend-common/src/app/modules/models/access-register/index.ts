@@ -40,3 +40,4 @@ export * from './accession-register-status';
 export * from './accession-register-summary';
 export * from './register-value-detail-model';
 export * from './register-value-event-model';
+export * from './accession-registers-stats';

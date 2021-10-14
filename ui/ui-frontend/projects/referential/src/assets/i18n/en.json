@@ -102,6 +102,15 @@
       "STORED_AND_UPDATED": "Partially eliminated or transferred",
       "STORED_AND_COMPLETED": "In stock and complete",
       "UNSTORED": "Completely eliminated or transferred"
+    },
+    "FACETS": {
+      "SHOW_SEARCH_FILTERS": "Show search filters",
+      "DATE_SEARCH_FILTER_LABEL": "Filter by operation date between",
+      "TOTAL_OPERATION_ENTRIES": "All operations",
+      "TOTAL_UNITS": "All units",
+      "TOTAL_OBJECTS_GROUP": "All Objects Groups",
+      "TOTAL_OBJECTS": "All Objects",
+      "TOTAL_SIZE": "Global Size"
     }
   }
 }

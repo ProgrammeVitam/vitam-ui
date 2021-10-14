@@ -44,6 +44,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccessionRegisterSummaryConverter {
+
+    private AccessionRegisterSummaryConverter() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
         return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
     }

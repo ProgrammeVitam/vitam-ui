@@ -34,13 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, Subject } from 'rxjs';
-import { AccessionRegisterDetail, AccessionRegisterStatus, SearchService } from 'ui-frontend-common';
+import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
+import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import {
+  AccessionRegisterDetail,
+  AccessionRegisterStats,
+  AccessionRegisterStatus,
+  Colors,
+  ExternalParameters,
+  ExternalParametersService,
+  SearchService,
+} from 'ui-frontend-common';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
-import { catchError, map, withLatestFrom } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -51,10 +60,21 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   customerEvent = new Subject<string>();
   updated = new Subject<AccessionRegisterDetail>();
 
+  searchTextChange$ = new BehaviorSubject<string>('');
+  statusFilterChange$ = new BehaviorSubject<{ [key: string]: any[] }>({});
+  dataSourceChange$ = new BehaviorSubject<AccessionRegisterDetail[]>([]);
+  dateIntervalChange$ = new BehaviorSubject<{ startDateMin: string; startDateMax: string }>({
+    startDateMin: null,
+    startDateMax: null,
+  });
+
+  private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
-    accessionRegisterApiService: AccessionRegisterDetailApiService,
+    private accessionRegisterApiService: AccessionRegisterDetailApiService,
     http: HttpClient,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private externalParameterService: ExternalParametersService
   ) {
     super(http, accessionRegisterApiService, 'ALL');
   }
@@ -82,5 +102,96 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   private sortByLabel(locale: string): (a: { label: string }, b: { label: string }) => number {
     return (a: { label: string }, b: { label: string }) => a.label.localeCompare(b.label, locale);
+  }
+
+  fetchUserAccessContract(): Observable<string> {
+    return this.externalParameterService
+      .getUserExternalParameters()
+      .pipe(map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)));
+  }
+
+  getFacetDetailsStats(): Observable<FacetDetails[]> {
+    return combineLatest([this.dataSourceChange$, this.searchTextChange$, this.statusFilterChange$, this.dateIntervalChange$]).pipe(
+      exhaustMap((changes: any) => {
+        console.log(changes);
+
+        const search = {
+          searchText: changes[1],
+          statusFilter: changes[2],
+          dateInterval: changes[3],
+        };
+
+        return this.fetchUserAccessContract().pipe(
+          exhaustMap((accessContract) => {
+            let headers = new HttpHeaders().append('Content-Type', 'application/json');
+            headers = headers.append('X-Access-Contract-Id', accessContract);
+            return this.accessionRegisterApiService
+              .getAccessionRegisterDetailStats(headers, search)
+              .pipe(map((accessionRegisterStats) => this.fetchFacetDetails(accessionRegisterStats)));
+          })
+        );
+      })
+    );
+  }
+
+  private fetchFacetDetails(accessionRegisterStats: AccessionRegisterStats): FacetDetails[] {
+    const stateFacetDetails: FacetDetails[] = [];
+
+    stateFacetDetails.push({
+      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
+      totalResults: this.data?.length,
+      clickable: false,
+      color: Colors.DEFAULT,
+    });
+    stateFacetDetails.push({
+      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_UNITS'),
+      totalResults: accessionRegisterStats.totalUnits,
+      clickable: false,
+      color: Colors.DEFAULT,
+    });
+    stateFacetDetails.push({
+      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS_GROUP'),
+      totalResults: accessionRegisterStats.totalObjectsGroups,
+      clickable: false,
+      color: Colors.DEFAULT,
+    });
+    stateFacetDetails.push({
+      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS'),
+      totalResults: accessionRegisterStats.totalObjects,
+      clickable: false,
+      color: Colors.DEFAULT,
+    });
+    stateFacetDetails.push({
+      title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_SIZE'),
+      totalResults: accessionRegisterStats.objectSizes,
+      clickable: false,
+      color: Colors.DEFAULT,
+    });
+
+    return stateFacetDetails;
+  }
+
+  notifyFilterChange(value: { [key: string]: any[] }) {
+    this.statusFilterChange$.next(value);
+  }
+
+  notifySearchChange(value: string) {
+    this.searchTextChange$.next(value);
+  }
+
+  notifyDataSourceChange(value: AccessionRegisterDetail[]) {
+    this.dataSourceChange$.next(value);
+  }
+
+  notifyDateIntervalChange(value: { startDateMin: string; startDateMax: string }) {
+    this.dateIntervalChange$.next(value);
+  }
+
+  getDateIntervalChanges(): BehaviorSubject<{ startDateMin: string; startDateMax: string }> {
+    return this.dateIntervalChange$;
+  }
+
+  toggleOpenAdvancedSearchPanel() {
+    this.openAdvancedSearchPanel.next(!this.openAdvancedSearchPanel.getValue());
   }
 }

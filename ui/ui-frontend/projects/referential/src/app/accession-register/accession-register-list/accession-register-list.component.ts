@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
 import { debounceTime, startWith } from 'rxjs/operators';
 import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
 import { AccessionRegistersService } from '../accession-register.service';
@@ -51,6 +51,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
+    this.accessionRegistersService.notifySearchChange(searchText);
   }
 
   private readonly filterChange = new Subject<{ [key: string]: any[] }>();
@@ -68,6 +69,11 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     Status: [],
   };
 
+  dateIntervalChanges$: BehaviorSubject<{ startDateMin: string; startDateMax: string }> = new BehaviorSubject({
+    startDateMin: null,
+    startDateMax: null,
+  });
+
   searchSub: Subscription;
 
   constructor(public accessionRegistersService: AccessionRegistersService, @Inject(LOCALE_ID) private locale: string) {
@@ -75,10 +81,12 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   ngOnInit() {
-    this.searchSub = merge(this.searchChange, this.filterChange, this.orderChange)
+    this.searchSub = merge(this.searchChange, this.filterChange, this.orderChange, this.dateIntervalChanges$)
       .pipe(startWith(null), debounceTime(this.filterDebounceTimeMs))
       .subscribe(() => this.search());
     this.statusFilterOptions$ = this.accessionRegistersService.getAccessionRegisterStatus(this.locale);
+    this.dataSource$.subscribe((data) => this.accessionRegistersService.notifyDataSourceChange(data));
+    this.accessionRegistersService.getDateIntervalChanges().subscribe((dateInterval) => this.dateIntervalChanges$.next(dateInterval));
   }
 
   ngOnDestroy() {
@@ -90,8 +98,28 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     const query: any = {};
     this.addCriteriaFromSearch(query);
     this.addCriteriaFromFilters(query);
+    this.addCriteriaFromDateFilters(query);
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
     super.search(pageRequest);
+  }
+
+  addCriteriaFromDateFilters(query: any) {
+    const currentDateInterval = this.dateIntervalChanges$.getValue();
+    if (currentDateInterval.startDateMin !== null || currentDateInterval.startDateMax !== null) {
+      query['StartDate'] = currentDateInterval;
+    }
+    // const currentDateInterval = this.dateIntervalChanges$.getValue();
+    // if (currentDateInterval.startDateMin !== null && currentDateInterval.startDateMax === null) {
+    //   query['StartDate'] = currentDateInterval.startDateMin;
+    // }
+    //
+    // if (currentDateInterval.startDateMin === null && currentDateInterval.startDateMax !== null) {
+    //   query['StartDate'] = currentDateInterval.startDateMax;
+    // }
+    //
+    // if (currentDateInterval.startDateMin !== null && currentDateInterval.startDateMax !== null) {
+    //   query['StartDate'] = currentDateInterval;
+    // }
   }
 
   addCriteriaFromFilters(query: any) {
@@ -117,5 +145,10 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   onFilterChange(key: string, values: any[]) {
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
+    this.accessionRegistersService.notifyFilterChange(this.filterMap);
+  }
+
+  onSelectRow(accessionRegisterDetail: AccessionRegisterDetail) {
+    this.accessionRegisterClick.emit(accessionRegisterDetail);
   }
 }
