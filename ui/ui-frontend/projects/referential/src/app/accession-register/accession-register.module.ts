@@ -58,6 +58,7 @@ import { AccessionRegisterListComponent } from './accession-register-list/access
 import { AccessionRegisterRoutingModule } from './accession-register-routing.module';
 import { AccessionRegisterComponent } from './accession-register.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
 
 @NgModule({
   imports: [
@@ -84,8 +85,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatCardModule,
     MatPseudoCheckboxModule,
     MatDatepickerModule,
+    VitamUICommonModule,
   ],
-  declarations: [AccessionRegisterComponent, AccessionRegisterListComponent],
+  declarations: [AccessionRegisterComponent, AccessionRegisterListComponent, AccessionRegisterFacetsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AccessionRegisterModule {}

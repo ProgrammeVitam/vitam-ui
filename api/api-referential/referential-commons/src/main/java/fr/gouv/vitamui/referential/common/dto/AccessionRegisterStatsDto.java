@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,35 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {
-  AccessionRegisterDetail,
-  AccessionRegisterStats,
-  BASE_URL,
-  BaseHttpClient,
-  PageRequest,
-  PaginatedResponse,
-} from 'ui-frontend-common';
+package fr.gouv.vitamui.referential.common.dto;
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionRegisterDetail> {
-  constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/accession-register/details');
-  }
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-  public getAllPaginated(
-    pageRequest: PageRequest,
-    embedded?: string,
-    headers?: HttpHeaders
-  ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
-    return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  getAccessionRegisterDetailStats(headers: HttpHeaders, search: any): Observable<AccessionRegisterStats> {
-    return this.http.post<AccessionRegisterStats>(`${this.apiUrl}` + '/stats', search, { headers });
-  }
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class AccessionRegisterStatsDto {
+    private long totalUnits;
+    private long totalObjectsGroups;
+    private long totalObjects;
+    private long objectSizes;
 }

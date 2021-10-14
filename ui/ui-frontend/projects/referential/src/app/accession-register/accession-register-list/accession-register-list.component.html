@@ -86,7 +86,7 @@
         <div
           class="vitamui-table-rows"
           *ngFor="let accessionRegisterDetail of dataSource"
-          (click)="accessionRegisterClick.emit(accessionRegisterDetail)"
+          (click)="onSelectRow(accessionRegisterDetail)"
         >
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-1">{{ accessionRegisterDetail.startDate | date: 'dd/MM/yyyy' }}</div>

@@ -118,6 +118,15 @@
       "STORED_AND_UPDATED": "Partiellement éliminée ou transférée",
       "STORED_AND_COMPLETED": "En stock et complète",
       "UNSTORED": "Totalement éliminée ou transférée"
+    },
+    "FACETS": {
+      "SHOW_SEARCH_FILTERS": "Afficher les filtres de recherche",
+      "DATE_SEARCH_FILTER_LABEL": "Filter par date d'opération d'entrée entre le",
+      "TOTAL_OPERATION_ENTRIES": "Toutes les opérations d'entrées",
+      "TOTAL_UNITS": "Toutes les unités archivistiques",
+      "TOTAL_OBJECTS_GROUP": "Tous les groupes d'objets",
+      "TOTAL_OBJECTS": "Tous les objets",
+      "TOTAL_SIZE": "Volumétrie totale"
     }
   }
 }
