@@ -233,7 +233,7 @@ vitamui:
   cas_server:
     host: "cas-server.service.{{ consul_domain }}"
     vitamui_component: "cas-server"
-    vitamui_component_type: "external"
+    vitamui_component_type: "ui"
     package_name: "vitamui-cas-server"
     store_name: "cas-server"
     service_name: "vitamui-cas-server"
