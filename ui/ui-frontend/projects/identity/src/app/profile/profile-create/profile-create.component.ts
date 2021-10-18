@@ -41,7 +41,7 @@ import {
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { CustomerService } from '../../core/customer.service';
 import { ProfileService } from '../profile.service';
@@ -87,6 +87,7 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
       tenantIdentifier: this.tenantWithProofId,
       roles : [[{name : this.roleEnum.ROLE_GET_USERS},
                 {name : this.roleEnum.ROLE_GET_GROUPS},
+                {name : this.roleEnum.ROLE_GET_USER_INFOS}
               ]]
     });
   }
@@ -126,20 +127,59 @@ export class ProfileCreateComponent implements OnInit, OnDestroy {
       || this.adminProfileForm.get('level').invalid;
   }
 
-  completeRoles(profile: Profile) {
-    const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
-    const hasRole = profile.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
-    if (hasRole) {
-      profile.roles = profile.roles.concat([{ name: Role.ROLE_UPDATE_USERS }]);
+  completeUpdateRoles(profile: Profile) {
+    // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
+    // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
+    const userUpdateRolesNames = [
+      Role.ROLE_MFA_USERS.toString(),
+      Role.ROLE_UPDATE_STANDARD_USERS.toString(),
+    ];
+
+    const hasUpdateRole = profile.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
+    const roleUpdateUsersIndex = profile.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
+    const roleUpdateUsersInfoIndex = profile.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USER_INFOS);
+
+    if (hasUpdateRole) {
+      if (roleUpdateUsersIndex === -1) {
+        profile.roles.push({ name: Role.ROLE_UPDATE_USERS });
+      }
+
+      if (roleUpdateUsersInfoIndex === -1) {
+        profile.roles.push({ name: Role.ROLE_UPDATE_USER_INFOS });
+      }
     } else {
-      profile.roles = profile.roles.filter((r: any) => Role.ROLE_UPDATE_USERS !== r.name);
+      if (roleUpdateUsersIndex !== -1) {
+        profile.roles.splice(roleUpdateUsersIndex, 1);
+      }
+
+      if (roleUpdateUsersInfoIndex !== -1) {
+        profile.roles.splice(roleUpdateUsersInfoIndex, 1);
+      }
+    }
+  }
+
+  completeCreateRoles(profile: Profile) {
+    const userCreateRolesNames = [
+      Role.ROLE_CREATE_USERS.toString(),
+    ];
+
+    const hasUserCreateRole = profile.roles.some((r: any) => userCreateRolesNames.includes(r.name));
+    const userCreateInfoRoleIndex = profile.roles.findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
+
+    if (hasUserCreateRole) {
+      if (userCreateInfoRoleIndex === -1) {
+        profile.roles.push({ name: Role.ROLE_CREATE_USER_INFOS });
+      }
+    } else if (userCreateInfoRoleIndex !== -1) {
+      profile.roles.splice(userCreateInfoRoleIndex, 1);
     }
   }
 
   onSubmit() {
     if (this.adminProfileForm.invalid) { return; }
     const profile: Profile = this.adminProfileForm.getRawValue();
-    this.completeRoles(profile);
+    this.completeUpdateRoles(profile);
+    this.completeCreateRoles(profile);
     this.rngProfileService.create(profile).subscribe(
       () => this.dialogRef.close(true),
       (error) => {

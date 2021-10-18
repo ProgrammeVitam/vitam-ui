@@ -97,22 +97,70 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
                                  formData)),
         switchMap((formData) => this.rngProfileService.patch(formData).pipe(catchError(() => of(null))))
       )
-      .subscribe((profile) => this.resetForm(this.form, profile, this.readOnly));
+      .subscribe((profile) => {
+        this.resetForm(this.form, profile, this.readOnly);
+      });
   }
 
   ngOnInit() {
     this.userLevel = this.authService.user.level;
   }
 
-  completeRoles(data: { [key: string]: any }) {
+  private completeRoles(data: { [key: string]: any }): { [key: string]: any } {
+    const updatedData  = this.completeUpdateRoles(data);
+    return  this.completeCreateRoles(updatedData);
+  }
+
+  private completeUpdateRoles(data: { [key: string]: any }): { [key: string]: any } {
+    // add ROLE_UPDATE_USERS when an user can update standard informations or MFA data
+    // remove ROLE_UPDATE_USERS when an user can't update standard informations and MFA data
     if (data.roles) {
-      const userUpdateRolesNames = [Role.ROLE_MFA_USERS.toString(), Role.ROLE_UPDATE_STANDARD_USERS.toString()];
-      const hasRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
-      const hasUpdateUsersRole = data.roles.some((r: any) => r.name === Role.ROLE_UPDATE_USERS.toString());
-      if (hasRole && !hasUpdateUsersRole) {
-        data.roles = data.roles.concat([{ name: Role.ROLE_UPDATE_USERS }]);
-      } else if (!hasRole) {
-        data.roles = data.roles.filter((r: any) => Role.ROLE_UPDATE_USERS !== r.name);
+      const userUpdateRolesNames = [
+        Role.ROLE_MFA_USERS.toString(),
+        Role.ROLE_UPDATE_STANDARD_USERS.toString(),
+      ];
+
+      const hasUpdateRole = data.roles.some((r: any) => userUpdateRolesNames.includes(r.name));
+      const roleUpdateUsersIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USERS);
+      const roleUpdateUsersInfoIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_UPDATE_USER_INFOS);
+
+      if (hasUpdateRole) {
+        if (roleUpdateUsersIndex === -1) {
+          data.roles.push({ name: Role.ROLE_UPDATE_USERS });
+        }
+
+        if (roleUpdateUsersInfoIndex === -1) {
+          data.roles.push({ name: Role.ROLE_UPDATE_USER_INFOS });
+        }
+      } else {
+        if (roleUpdateUsersIndex !== -1) {
+          data.roles.splice(roleUpdateUsersIndex, 1);
+        }
+
+        if (roleUpdateUsersInfoIndex !== -1) {
+          data.roles.splice(roleUpdateUsersInfoIndex, 1);
+        }
+      }
+    }
+
+    return data;
+  }
+
+  private completeCreateRoles(data: { [key: string]: any }): { [key: string]: any } {
+    if (data.roles) {
+      const useCreateRolesNames = [
+        Role.ROLE_CREATE_USERS.toString(),
+      ];
+
+      const hasUserCreateRole = data.roles.some((r: any) => useCreateRolesNames.includes(r.name));
+      const userCreateInfoRoleIndex = data.roles.findIndex((role: any) => role.name === Role.ROLE_CREATE_USER_INFOS);
+
+      if (hasUserCreateRole) {
+        if (userCreateInfoRoleIndex === -1) {
+          data.roles.push({ name: Role.ROLE_CREATE_USER_INFOS });
+        }
+      } else if (userCreateInfoRoleIndex !== -1) {
+        data.roles.splice(userCreateInfoRoleIndex, 1);
       }
     }
     return data;
@@ -127,7 +175,6 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
       if (this.profile) {
        this.resetForm(this.form, this.profile, this.readOnly);
        this.previousValue = this.form.value;
-
       }
     }
   }
@@ -140,7 +187,8 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   }
 
   private initFormValidators(form: FormGroup, profile: Profile) {
-    form.get('name').setAsyncValidators(this.profileValidators.nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
+    form.get('name').setAsyncValidators(this.profileValidators
+      .nameExists(profile.tenantIdentifier, profile.level, profile.applicationName, profile.name));
   }
 
   private initCustomFormActivationState(form: FormGroup, profile: Profile, readOnly: boolean) {
@@ -157,9 +205,9 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
   private initFormActivationState(form: FormGroup, readOnly: boolean) {
     if (readOnly) {
       form.disable({ emitEvent: false });
-
       return;
     }
+
     form.enable({ emitEvent: false });
   }
 }
