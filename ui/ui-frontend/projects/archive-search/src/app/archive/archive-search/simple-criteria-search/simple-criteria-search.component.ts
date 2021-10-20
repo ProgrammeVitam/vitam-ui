@@ -169,7 +169,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: this.simpleCriteriaForm.value.beginDt, id: this.simpleCriteriaForm.value.beginDt },
           this.simpleCriteriaForm.value.beginDt,
           true,
-          'EQ',
+          'GTE',
           false,
           'DATE'
         );
@@ -180,7 +180,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: this.simpleCriteriaForm.value.endDt, id: this.simpleCriteriaForm.value.endDt },
           this.simpleCriteriaForm.value.endDt,
           true,
-          'EQ',
+          'LTE',
           false,
           'DATE'
         );
@@ -208,7 +208,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         );
         return true;
       } else if (formData.guid) {
-        var splittedGuids = formData.guid.split(',');
+        let splittedGuids = formData.guid.split(',');
         splittedGuids.forEach((guidElt: string) => {
           if (guidElt && guidElt.trim() !== '') {
             this.addCriteria('GUID', { value: guidElt.trim(), id: guidElt.trim() }, guidElt.trim(), true, 'EQ', false, 'STRING');
