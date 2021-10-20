@@ -94,7 +94,7 @@ public class VitamQueryHelper {
                 query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
             }
 
-            
+
 
     }
 
@@ -141,7 +141,6 @@ public class VitamQueryHelper {
         }
         mainQuery.add(subQueryAnd);
     }
-
 
     public static Query buildSubQueryByOperator(String searchKey, String value,
         ArchiveSearchConsts.CriteriaOperators operator)
