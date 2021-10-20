@@ -62,6 +62,9 @@ ui-identity:
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
+    connect-time-out: {{ vitamui.iam_external.connect_timeout }}
+    read-time-out: {{ vitamui.iam_external.read_timeout }}
+    write-time-out: {{ vitamui.iam_external.write_timeout }}
 {% if vitamui.iam_external.secure|lower == "true" %}
     secure: true
     ssl-configuration:
