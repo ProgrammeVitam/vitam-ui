@@ -54,7 +54,7 @@
         class="w-100"
       >
         <mat-option *ngFor="let accessContract of activeAccessContracts$ | async" [value]="accessContract.identifier"
-          >{{ accessContract.name }}
+          >{{ accessContract.identifier }}
         </mat-option>
       </mat-select>
       <div class="select-arrow">
