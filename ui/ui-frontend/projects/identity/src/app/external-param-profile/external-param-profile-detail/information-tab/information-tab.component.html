@@ -6,7 +6,17 @@
     </vitamui-common-slide-toggle>
     <div class="row">
       <div class="col-6">
-        <vitamui-common-input label="Identifiant" [value]="externalParamProfile?.profileIdentifier" disabled> </vitamui-common-input>
+        <div class="vitamui-input" [class.disabled]="true">
+          <label [ngStyle]="{ 'margin-bottom': '35px' }"> {{ 'COMMON.ID' | translate }}</label>
+
+          <input
+            [ngStyle]="{ 'margin-top': '15px' }"
+            [type]="'text'"
+            [required]="true"
+            [value]="externalParamProfile?.profileIdentifier"
+            [disabled]="true"
+          />
+        </div>
       </div>
       <div class="col-6">
         <vitamui-common-editable-input
@@ -51,7 +61,7 @@
             class="w-100"
           >
             <mat-option *ngFor="let accessContract of activeAccessContracts$ | async" [value]="accessContract.identifier"
-              >{{ accessContract.name }}
+              >{{ accessContract.identifier }}
             </mat-option>
           </mat-select>
           <div class="select-arrow">
