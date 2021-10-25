@@ -104,7 +104,7 @@ public class Utils {
         userDto.setIdentifier("code");
         userDto.setStatus(UserStatusEnum.ENABLED);
         userDto.setType(UserTypeEnum.NOMINATIVE);
-        userDto.setLanguage(LanguageDto.FRENCH.toString());
+        userDto.setUserInfoId(id);
         userDto.setLevel(level);
         userDto.setMobile("+33671270699");
         userDto.setPhone("+33134237766");
