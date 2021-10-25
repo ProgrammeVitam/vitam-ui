@@ -53,6 +53,7 @@ import org.odftoolkit.simple.table.Cell;
 import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 import org.odftoolkit.simple.text.Paragraph;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
@@ -93,6 +94,8 @@ public class IngestGeneratorODTFile {
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
 
+    @Value("${tmp_folder_path}")
+    private String tmpFolderPath;
 
     public void generateDocumentHeader(TextDocument document, CustomerDto myCustomer,
         Resource customerLogo) throws IOException, URISyntaxException {
@@ -129,9 +132,10 @@ public class IngestGeneratorODTFile {
                 .getDecoder()
                 .decode(customerLogoBase64Image);
 
-            imgFile = "src/main/resources/logo_ministere." + getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
+            imgFile = tmpFolderPath + "/logo_ministere." + getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
             FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
             headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
+
 
             FileUtils.forceDelete(new File(imgFile));
         }
