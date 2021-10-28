@@ -369,6 +369,7 @@ public class ServicesData {
     public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
     public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT_DIP";
     public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
+    public static final String ROLE_UPDATE_MANAGEMENT_RULES = ROLE_PREFIX + UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -505,6 +506,8 @@ public class ServicesData {
             ROLE_CREATE_ARCHIVE,
             ROLE_SEARCH_WITH_RULES,
             ROLE_EXPORT_DIP,
+            ROLE_ELIMINATION,
+            ROLE_UPDATE_MANAGEMENT_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -643,6 +646,8 @@ public class ServicesData {
             ROLE_CREATE_ARCHIVE,
             ROLE_SEARCH_WITH_RULES,
             ROLE_EXPORT_DIP,
+            ROLE_ELIMINATION,
+            ROLE_UPDATE_MANAGEMENT_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
