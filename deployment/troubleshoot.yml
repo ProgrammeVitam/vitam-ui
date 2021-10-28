@@ -1,0 +1,89 @@
+---
+# Example: ansible-playbook -i environments/<hosts vitamui file> troubleshoot.yml -e 'confirmation=YES log_files_age=2'
+# Optional parameters: -e 'sync_type=rsync get_crt=yes excludes=gc*,access*'
+
+# Confirm launching this playbook and check log_files_age parameter
+- hosts: localhost
+  any_errors_fatal: yes
+  gather_facts: no
+  vars_prompt:
+
+    - name: confirmation
+      prompt: "This playbook will collect logs and other useful information to help debugging your VitamUI instance.\n\nAre you sure you want to run this playbook ?\nAnswer with 'YES'"
+      default: "NO"
+      private: no
+
+    - name: log_files_age
+      prompt: "Type the maximum age of the files you want to retrieve (in days)"
+      default: 2
+      private: no
+
+  tasks:
+
+    - name: Check Confirmation
+      fail: msg="Playbook run confirmation failed"
+      when: confirmation | default(false) | bool == false
+
+    - name: Age check
+      fail:
+        msg: "log_files_age is not valid: {{ log_files_age }} <= 0"
+      when: log_files_age | int <= 0
+
+    - name: Register var
+      set_fact:
+        log_files_age: "{{ log_files_age }}"
+
+  run_once: true
+
+- hosts: vitamui
+  gather_facts: no
+  roles:
+    - init_troubleshoot
+
+# Get consul state
+- hosts: hosts_consul_server
+  gather_facts: no
+  ignore_errors: true
+  roles:
+    - consul_state
+
+# Get all log files for each service
+- hosts: all
+  gather_facts: no
+  ignore_errors: true
+  roles:
+    - vitamui_log_files
+  vars:
+    component_name: "{{ item.value }}"
+    age: "{{ log_files_age }}"
+  delegate_to: "{{ item.key }}"
+  with_items:
+    - { 'key': 'hosts_vitamui_iam_internal' , 'value': 'iam-internal'}
+    - { 'key': 'hosts_vitamui_iam_external' , 'value': 'iam-external'}
+    - { 'key': 'hosts_vitamui_ingest_internal' , 'value': 'ingest-internal'}
+    - { 'key': 'hosts_vitamui_ingest_external' , 'value': 'ingest-external'}
+    - { 'key': 'hosts_vitamui_referential_internal' , 'value': 'referential-internal'}
+    - { 'key': 'hosts_vitamui_referential_external' , 'value': 'referential-external'}
+    - { 'key': 'hosts_vitamui_security_internal' , 'value': 'security-internal'}
+    - { 'key': 'hosts_vitamui_archive_search_internal' , 'value': 'archive-search-internal'}
+    - { 'key': 'hosts_vitamui_archive_search_external' , 'value': 'archive-search-external'}
+    - { 'key': 'hosts_ui_identity' , 'value': 'ui-identity'}
+    - { 'key': 'hosts_ui_portal' , 'value': 'ui-portal'}
+    - { 'key': 'hosts_ui_search' , 'value': 'ui-search'}
+    - { 'key': 'hosts_ui_ingest' , 'value': 'ui-ingest'}
+    - { 'key': 'hosts_ui_referential' , 'value': 'ui-referential'}
+    - { 'key': 'hosts_ui_archive_search' , 'value': 'ui-archive-search'}
+    - { 'key': 'hosts_ui_identity_admin' , 'value': 'ui-identity-admin'}
+    - { 'key': 'hosts_cas_server' , 'value': 'cas-server'}
+
+- hosts: vitamui
+  gather_facts: no
+  ignore_errors: true
+  roles:
+    - get_crt_files 
+  when: get_crt | default(false) | bool == true
+
+- hosts: vitam
+  gather_facts: no
+  roles:
+    - end_troubleshoot
