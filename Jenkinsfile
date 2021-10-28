@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Upgrade build context') {
 	    when {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
@@ -88,7 +88,7 @@ pipeline {
 //                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
 //                '''
                 sh '''
-                    $MVN_COMMAND clean verify -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
                 '''
             }
             post {
