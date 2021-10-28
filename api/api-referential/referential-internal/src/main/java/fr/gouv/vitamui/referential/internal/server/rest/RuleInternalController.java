@@ -36,19 +36,22 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -56,23 +59,27 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.RULES_URL)
@@ -167,11 +174,11 @@ public class RuleInternalController {
         }
         return null;
     }
-    
+
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("import rule file {}", fileName);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ruleInternalService.importRules(vitamContext, fileName, file);
     }
 }

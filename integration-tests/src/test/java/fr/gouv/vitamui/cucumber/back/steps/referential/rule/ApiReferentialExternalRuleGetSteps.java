@@ -36,15 +36,11 @@
  */
 package fr.gouv.vitamui.cucumber.back.steps.referential.rule;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.QueryOperator;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
-import fr.gouv.vitamui.utils.TestConstants;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 

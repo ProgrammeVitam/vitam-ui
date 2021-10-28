@@ -63,7 +63,9 @@ import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-po
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
+import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
@@ -74,7 +76,6 @@ import { CriteriaSearchComponent } from './criteria-search/criteria-search.compo
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
 import { SharedModule } from './shared/shared.module';
-import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 
 @NgModule({
   imports: [
@@ -102,7 +103,7 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
-    MatTabsModule,
+    MatTabsModule
   ],
   providers: [
     ArchiveApiService,
@@ -111,6 +112,7 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     ArchiveSearchResolverService,
     TranslateService,
     SearchCriteriaSaverService,
+    RuleValidator
   ],
   declarations: [
     ArchiveComponent,
@@ -125,8 +127,8 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     AppraisalRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
-    DipRequestCreateComponent,
+    DipRequestCreateComponent
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ArchiveModule {}

@@ -34,28 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
-import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GlobalEventService, Rule, RuleService, SidenavPage } from 'ui-frontend-common';
 import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
 import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
-import {RuleCreateComponent} from './rule-create/rule-create.component';
-import {RuleListComponent} from './rule-list/rule-list.component';
-import {RuleService} from './rule.service';
-import {NULL_TYPE, RULE_TYPES} from './rules.constants';
+import { RuleCreateComponent } from './rule-create/rule-create.component';
+import { RuleListComponent } from './rule-list/rule-list.component';
+import { NULL_TYPE, RULE_TYPES } from './rules.constants';
 
 @Component({
   selector: 'app-rules',
   templateUrl: './rule.component.html',
   styleUrls: ['./rule.component.scss']
 })
-
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
-
-  @ViewChild(RuleListComponent, {static: true}) ruleListComponentListComponent: RuleListComponent;
+  @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
 
   search = '';
   typeFilterForm: FormGroup;
@@ -70,14 +66,14 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder) {
-
+    private formBuilder: FormBuilder
+  ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
       this.refreshList();
     });
 
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
         this.tenantId = params.tenantIdentifier;
       }
@@ -87,12 +83,10 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
       ruleTypes: null
     });
 
-    this.typeFilterForm
-      .controls.ruleTypes.valueChanges.subscribe(value => {
-        this.filters = value;
-        this.ruleListComponentListComponent.filters = this.filters;
-      });
-
+    this.typeFilterForm.controls.ruleTypes.valueChanges.subscribe((value) => {
+      this.filters = value;
+      this.ruleListComponentListComponent.filters = this.filters;
+    });
   }
 
   openCreateRuleDialog() {
@@ -108,7 +102,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
   }
 
-
   private refreshList() {
     if (!this.ruleListComponentListComponent) {
       return;
@@ -118,15 +111,14 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
   changeTenant(tenantIdentifier: number) {
     this.tenantId = tenantIdentifier;
-    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
+    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
   }
 
   onSearchSubmit(search: string) {
     this.search = search || '';
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   showRule(item: Rule) {
     this.openPanel(item);
@@ -137,17 +129,15 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   }
 
   openRuleImportDialog() {
-    const dialogRef = this.dialog.open(
-      VitamUIImportDialogComponent, {
-        panelClass: 'vitamui-modal',
-        data: Referential.RULE,
-        disableClose: true
-      });
+    const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
+      panelClass: 'vitamui-modal',
+      data: Referential.RULE,
+      disableClose: true
+    });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {
         this.refreshList();
       }
     });
   }
-
 }

@@ -34,27 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {SearchService, VitamUISnackBar} from 'ui-frontend-common';
-import {RuleApiService} from '../core/api/rule-api.service';
-import {VitamUISnackBarComponent} from '../shared/vitamui-snack-bar';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Rule, SearchService, VitamUISnackBar } from 'ui-frontend-common';
+import { RuleApiService } from '../core/api/rule-api.service';
+import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
-
+/**
+ * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use commonized service RuleService instead
+ */
 export class RuleService extends SearchService<Rule> {
-
   updated = new Subject<Rule>();
 
-  constructor(
-    private ruleApiService: RuleApiService,
-    private snackBar: VitamUISnackBar,
-    http: HttpClient) {
+  constructor(private ruleApiService: RuleApiService, private snackBar: VitamUISnackBar, http: HttpClient) {
     super(http, ruleApiService, 'ALL');
   }
 
@@ -69,7 +66,7 @@ export class RuleService extends SearchService<Rule> {
     return this.ruleApiService.getAllByParams(params, headers);
   }
 
-  existsProperties(properties: {name?: string, ruleId?: string}): Observable<any> {
+  existsProperties(properties: { name?: string; ruleId?: string }): Observable<any> {
     const rule: any = {};
     if (properties.ruleId) {
       rule.ruleId = properties.ruleId;
@@ -89,7 +86,7 @@ export class RuleService extends SearchService<Rule> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
             data: {
-              type: message, 
+              type: message,
               name: rule.ruleId
             }
           });
@@ -104,7 +101,7 @@ export class RuleService extends SearchService<Rule> {
     );
   }
 
-  patch(data: {id: string, [key: string]: any}): Observable<boolean> {
+  patch(data: { id: string; [key: string]: any }): Observable<boolean> {
     return this.ruleApiService.patchRule(data).pipe(
       tap(
         (success) => {
@@ -114,7 +111,7 @@ export class RuleService extends SearchService<Rule> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
             data: {
-              type: message, 
+              type: message,
               name: data.id
             }
           });
@@ -139,7 +136,7 @@ export class RuleService extends SearchService<Rule> {
             panelClass: 'vitamui-snack-bar',
             duration: 10000,
             data: {
-              type: message, 
+              type: message,
               name: rule.ruleId
             }
           });
@@ -158,7 +155,7 @@ export class RuleService extends SearchService<Rule> {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       duration: 10000,
-      data: {type: 'ruleExportAll'}
+      data: { type: 'ruleExportAll' }
     });
 
     this.ruleApiService.export().subscribe(
@@ -167,13 +164,14 @@ export class RuleService extends SearchService<Rule> {
         document.body.appendChild(a);
         a.style.display = 'none';
 
-        const blob = new Blob([response], {type: 'octet/stream'});
+        const blob = new Blob([response], { type: 'octet/stream' });
         const url = window.URL.createObjectURL(blob);
         a.href = url;
         a.download = 'rules.csv';
         a.click();
         window.URL.revokeObjectURL(url);
-      }, (error) => {
+      },
+      (error) => {
         this.snackBar.open(error.error.message, null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000
@@ -181,5 +179,4 @@ export class RuleService extends SearchService<Rule> {
       }
     );
   }
-
 }

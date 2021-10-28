@@ -88,4 +88,6 @@ public class UIPropertiesImpl implements UIProperties {
     private Map<String, Map<String,Object>> portalCategories;
 
     private String versionRelease;
+
+    private RestClientConfiguration referentialExternalClient;
 }

@@ -34,16 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Rule} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {RuleService} from '../../rule.service';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../../rules.constants';
-
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Rule, RuleService } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 
 @Component({
   selector: 'app-rule-information-tab',
@@ -51,7 +48,6 @@ import {RULE_MEASUREMENTS, RULE_TYPES} from '../../rules.constants';
   styleUrls: ['./rule-information-tab.component.scss']
 })
 export class RuleInformationTabComponent {
-
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -68,7 +64,7 @@ export class RuleInformationTabComponent {
 
   previousValue = (): Rule => {
     return this._rule;
-  }
+  };
 
   @Input()
   set rule(rule: Rule) {
@@ -84,17 +80,14 @@ export class RuleInformationTabComponent {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private ruleService: RuleService
-  ) {
+  constructor(private formBuilder: FormBuilder, private ruleService: RuleService) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
@@ -114,18 +107,26 @@ export class RuleInformationTabComponent {
   }
 
   isInvalid(): boolean {
-    return this.form.get('ruleType').invalid || this.form.get('ruleType').pending ||
-      this.form.get('ruleValue').invalid || this.form.get('ruleValue').pending ||
-      this.form.get('ruleDescription').invalid || this.form.get('ruleDescription').pending ||
-      this.form.get('ruleDuration').invalid || this.form.get('ruleDuration').pending ||
-      this.form.get('ruleMeasurement').invalid || this.form.get('ruleMeasurement').pending;
+    return (
+      this.form.get('ruleType').invalid ||
+      this.form.get('ruleType').pending ||
+      this.form.get('ruleValue').invalid ||
+      this.form.get('ruleValue').pending ||
+      this.form.get('ruleDescription').invalid ||
+      this.form.get('ruleDescription').pending ||
+      this.form.get('ruleDuration').invalid ||
+      this.form.get('ruleDuration').pending ||
+      this.form.get('ruleMeasurement').invalid ||
+      this.form.get('ruleMeasurement').pending
+    );
   }
 
   prepareSubmit(): Observable<Rule> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId}, formData)),
-      switchMap((formData: {id: string, [key: string]: any}) => this.ruleService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({ id: this.previousValue().ruleId, ruleId: this.previousValue().ruleId }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) => this.ruleService.patch(formData).pipe(catchError(() => of(null))))
+    );
   }
 
   onSubmit() {
@@ -134,26 +135,27 @@ export class RuleInformationTabComponent {
       return;
     }
 
-    this.prepareSubmit().subscribe(() => {
-      this.ruleService.get(this._rule.ruleId).subscribe(
-        response => {
+    this.prepareSubmit().subscribe(
+      () => {
+        this.ruleService.get(this._rule.ruleId).subscribe((response) => {
           this.submited = false;
           this.rule = response;
-        }
-      );
-    }, () => {
-      this.submited = false;
-    });
+        });
+      },
+      () => {
+        this.submited = false;
+      }
+    );
   }
 
   resetForm(rule: Rule) {
-    this.form.reset(rule, {emitEvent: false});
+    this.form.reset(rule, { emitEvent: false });
   }
 
   getRuleTypeLabel(): string {
     const formControl = this.form.get('ruleType');
     if (formControl) {
-      const ruleType = this.ruleTypes.find(item => item.key === formControl.value);
+      const ruleType = this.ruleTypes.find((item) => item.key === formControl.value);
       if (ruleType) {
         return ruleType.label;
       }

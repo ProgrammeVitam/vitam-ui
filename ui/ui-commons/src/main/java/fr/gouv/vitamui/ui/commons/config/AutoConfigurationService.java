@@ -38,14 +38,17 @@ package fr.gouv.vitamui.ui.commons.config;
 
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
 import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
 import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
+import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -122,5 +125,13 @@ public class AutoConfigurationService {
     @ConditionalOnMissingBean
     public AccessContractService accessContractService(final IamExternalRestClientFactory factory) {
         return new AccessContractService(factory.getAccessContractExternalRestClient());
+    }
+
+    @Bean("CommonRuleService")
+    @DependsOn("referentialRestClientFactory")
+    @ConditionalOnMissingBean
+    public RuleService ruleService(final CommonService commonService, final ReferentialExternalRestClientFactory factoryRest, final
+        ReferentialExternalWebClientFactory dactoryWeb) {
+        return new RuleService(commonService ,factoryRest.getRuleExternalRestClient(), dactoryWeb.getRuleExternalWebClient());
     }
 }

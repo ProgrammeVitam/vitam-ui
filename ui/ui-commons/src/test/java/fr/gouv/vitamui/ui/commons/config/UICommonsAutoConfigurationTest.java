@@ -1,7 +1,17 @@
 package fr.gouv.vitamui.ui.commons.config;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.rest.AccountController;
+import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
+import fr.gouv.vitamui.ui.commons.rest.RuleController;
+import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
+import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import fr.gouv.vitamui.ui.commons.service.RuleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -10,14 +20,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import fr.gouv.vitamui.ui.commons.rest.AccountController;
-import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
-import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
-import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class UICommonsAutoConfigurationTest {
@@ -36,6 +39,10 @@ public class UICommonsAutoConfigurationTest {
             assertThat(context).hasSingleBean(IamExternalRestClientFactory.class);
             assertThat(context).hasSingleBean(SubrogationController.class);
             assertThat(context).hasSingleBean(AccountController.class);
+            assertThat(context).hasSingleBean(ReferentialExternalRestClientFactory.class);
+            assertThat(context).hasSingleBean(ReferentialExternalWebClientFactory.class);
+            assertThat(context).hasSingleBean(RuleService.class);
+            assertThat(context).hasSingleBean(RuleController.class);
         });
     }
 
@@ -47,6 +54,7 @@ public class UICommonsAutoConfigurationTest {
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
 

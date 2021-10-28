@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {RuleService} from '../rule.service';
-import {RuleInformationTabComponent} from './rule-information-tab/rule-information-tab.component';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { Rule, RuleService } from 'ui-frontend-common';
+import { RuleInformationTabComponent } from './rule-information-tab/rule-information-tab.component';
 
 @Component({
   selector: 'app-rule-preview',
@@ -49,15 +48,14 @@ import {RuleInformationTabComponent} from './rule-information-tab/rule-informati
   styleUrls: ['./rule-preview.component.scss']
 })
 export class RulePreviewComponent implements AfterViewInit {
-
   @Output() previewClose: EventEmitter<any> = new EventEmitter();
   @Input() rule: Rule;
 
   tabUpdated: boolean[] = [false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
   tabLinks: Array<RuleInformationTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: RuleInformationTabComponent;
+  @ViewChild('infoTab', { static: false }) infoTab: RuleInformationTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
@@ -68,8 +66,7 @@ export class RulePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private ruleService: RuleService) {
-  }
+  constructor(private matDialog: MatDialog, private ruleService: RuleService) {}
 
   ngAfterViewInit() {
     this.tabs._handleClick = this.interceptTabChange.bind(this);
@@ -85,11 +82,9 @@ export class RulePreviewComponent implements AfterViewInit {
       const submitAccessContractUpdate: Observable<Rule> = this.infoTab.prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.ruleService.get(this.rule.ruleId).subscribe(
-          response => {
-            this.rule = response;
-          }
-        );
+        this.ruleService.get(this.rule.ruleId).subscribe((response) => {
+          this.rule = response;
+        });
       });
     } else {
       this.infoTab.resetForm(this.rule);
@@ -106,15 +101,15 @@ export class RulePreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_FILE_FORMAT') ||
-      event.outDetail.includes('EXT_VITAMUI_CREATE_FILE_FORMAT')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_UPDATE_FILE_FORMAT') || event.outDetail.includes('EXT_VITAMUI_CREATE_FILE_FORMAT'))
     );
   }
 
@@ -124,5 +119,4 @@ export class RulePreviewComponent implements AfterViewInit {
     }
     this.previewClose.emit();
   }
-
 }

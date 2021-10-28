@@ -23,8 +23,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Properties;
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ImportAutoConfiguration(classes = { UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class })
 @WebMvcTest(controllers = { SecurityController.class })
@@ -38,6 +36,7 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
     }

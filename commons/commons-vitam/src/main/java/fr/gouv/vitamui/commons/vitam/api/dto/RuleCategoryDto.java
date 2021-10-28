@@ -36,14 +36,13 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,7 +50,7 @@ import lombok.ToString;
 public class RuleCategoryDto {
 
     @JsonProperty("Rules")
-    private List<RuleDto> rules = new ArrayList<>();
+    private List<UnitRuleDto> rules = new ArrayList<>();
 
     @JsonProperty("FinalAction")
     private String finalAction;

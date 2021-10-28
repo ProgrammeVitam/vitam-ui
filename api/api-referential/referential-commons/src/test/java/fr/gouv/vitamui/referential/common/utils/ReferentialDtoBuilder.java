@@ -36,12 +36,17 @@
  */
 package fr.gouv.vitamui.referential.common.utils;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import fr.gouv.vitam.common.model.administration.ActivationStatus;
 import fr.gouv.vitam.common.model.administration.ContextStatus;
-import fr.gouv.vitamui.referential.common.dto.*;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
+import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.PermissionDto;
+import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReferentialDtoBuilder {
 

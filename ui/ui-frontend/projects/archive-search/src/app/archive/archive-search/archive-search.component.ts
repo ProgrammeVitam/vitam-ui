@@ -50,16 +50,7 @@ import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import {
-  CriteriaValue,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
+import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';

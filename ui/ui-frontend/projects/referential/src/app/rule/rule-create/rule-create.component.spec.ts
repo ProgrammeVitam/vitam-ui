@@ -35,24 +35,22 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable: max-classes-per-file directive-selector */
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-import {ReactiveFormsModule} from '@angular/forms';
-import {MatButtonToggleModule} from '@angular/material/button-toggle';
-import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import {MatSelectModule} from '@angular/material/select';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {EMPTY, of} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
-
-import {RuleService} from '../rule.service';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
-import {RuleCreateComponent} from './rule-create.component';
-import {RuleCreateValidators} from './rule-create.validators';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, RuleService } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { RuleCreateComponent } from './rule-create.component';
+import { RuleCreateValidators } from './rule-create.validators';
 
 const expectedRule = {
   ruleId: '424242',
@@ -67,7 +65,6 @@ let component: RuleCreateComponent;
 let fixture: ComponentFixture<RuleCreateComponent>;
 
 class Page {
-
   get submit() {
     return fixture.nativeElement.querySelector('button[type=submit]');
   }
@@ -75,53 +72,48 @@ class Page {
   control(name: string) {
     return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
   }
-
 }
 
 let page: Page;
 
 describe('RuleCreateComponent', () => {
-
-  beforeEach(waitForAsync(() => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
-      create: of({}),
-      existsProperties: of(false)
-    });
-    const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
-    const ruleCreateValidatorsSpy = jasmine.createSpyObj(
-      'RuleCreateValidators', {
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+      const ruleServiceSpy = jasmine.createSpyObj('RuleService', {
+        create: of({}),
+        existsProperties: of(false)
+      });
+      const ruleCreateValidators: RuleCreateValidators = new RuleCreateValidators(null);
+      const ruleCreateValidatorsSpy = jasmine.createSpyObj('RuleCreateValidators', {
         uniqueRuleId: () => of(null),
         ruleIdPattern: ruleCreateValidators.ruleIdPattern()
-      }
-    );
+      });
 
-    TestBed.configureTestingModule({
-      declarations: [
-        RuleCreateComponent
-      ],
-      imports: [
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatButtonToggleModule,
-        MatProgressBarModule,
-        MatProgressSpinnerModule,
-        MatDialogModule,
-        VitamUICommonTestModule,
-      ],
-      providers: [
-        {provide: RuleService, useValue: ruleServiceSpy},
-        {provide: RuleCreateValidators, useValue: ruleCreateValidatorsSpy},
-        {provide: ConfirmDialogService, useValue: {listenToEscapeKeyPress: () => EMPTY}},
-        {provide: MatDialogRef, useValue: matDialogRefSpy},
-        {provide: MAT_DIALOG_DATA, useValue: {}}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+      TestBed.configureTestingModule({
+        declarations: [RuleCreateComponent],
+        imports: [
+          ReactiveFormsModule,
+          NoopAnimationsModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          MatButtonToggleModule,
+          MatProgressBarModule,
+          MatProgressSpinnerModule,
+          MatDialogModule,
+          VitamUICommonTestModule
+        ],
+        providers: [
+          { provide: RuleService, useValue: ruleServiceSpy },
+          { provide: RuleCreateValidators, useValue: ruleCreateValidatorsSpy },
+          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+          { provide: MatDialogRef, useValue: matDialogRefSpy },
+          { provide: MAT_DIALOG_DATA, useValue: {} }
+        ],
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleCreateComponent);
@@ -168,7 +160,6 @@ describe('RuleCreateComponent', () => {
     });
 
     describe('Validators', () => {
-
       describe('fields', () => {
         it('should be required', () => {
           expect(setControlValue('ruleId', '').invalid).toBeTruthy('empty ruleId invalid');
@@ -223,5 +214,4 @@ describe('RuleCreateComponent', () => {
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
   });
-
 });

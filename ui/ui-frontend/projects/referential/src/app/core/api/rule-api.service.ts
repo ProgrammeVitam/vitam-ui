@@ -34,20 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {Rule} from '../../../../../vitamui-library/src/lib/models/rule';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { Rule } from '../../../../../vitamui-library/src/lib/models/rule';
 
 const HTTP_STATUS_OK = 200;
 
 @Injectable({
   providedIn: 'root'
 })
+/**
+ * @deprecated This class is deprecated since 5.0.2, and it will be removed in the next minor version, use RuleApiService of ui-frontend-commons instead!
+ */
 export class RuleApiService extends BaseHttpClient<Rule> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/rule');
   }
@@ -65,27 +67,34 @@ export class RuleApiService extends BaseHttpClient<Rule> {
   }
 
   createRule(rule: Rule, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl(), rule, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl(), rule, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
-  patchRule(partialRule: {id: string, [key: string]: any}, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().patch<any>(super.getApiUrl() + '/' + partialRule.id, partialRule, {observe: 'response', headers})
+  patchRule(partialRule: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<boolean> {
+    return super
+      .getHttp()
+      .patch<any>(super.getApiUrl() + '/' + partialRule.id, partialRule, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   deleteRule(id: string, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().delete<any>(super.getApiUrl() + '/' + id, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .delete<any>(super.getApiUrl() + '/' + id, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   check(rule: Rule, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', rule, {observe: 'response', headers})
+    return super
+      .getHttp()
+      .post<any>(super.getApiUrl() + '/check', rule, { observe: 'response', headers })
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 
   export(headers?: HttpHeaders): Observable<any> {
-    return super.getHttp().get(super.getApiUrl() + '/export', {headers, responseType: 'text'});
+    return super.getHttp().get(super.getApiUrl() + '/export', { headers, responseType: 'text' });
   }
-
 }

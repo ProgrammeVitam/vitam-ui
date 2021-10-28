@@ -43,6 +43,19 @@ ui-archive-search:
         key-path: src/main/resources/dev/truststore_server.jks
         key-password: changeme
       hostname-verification: false
+  referential-external-client:
+    server-host: localhost
+    server-port: 8087
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: src/main/resources/dev/keystore_ui-archive-search.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: src/main/resources/dev/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
 
 ui-prefix: archive-search-api
 

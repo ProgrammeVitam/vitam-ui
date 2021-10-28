@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,34 +34,41 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
+import { Injectable } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { of, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { RuleService } from 'ui-frontend-common';
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+@Injectable()
+export class RuleValidator {
+  private debounceTime = 400;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+  constructor(private ruleService: RuleService) {}
 
-@Getter
-@Setter
-@ToString
-public class RuleDto {
+  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
+    return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
+  };
 
-    /**
-     * Rule id
-     */
-    @JsonProperty("Rule")
-    private String rule;
+  ruleIdPattern = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const regexp = /[À-ÖØ-öø-ÿ ]/;
+      return regexp.test(control.value) ? { ruleIdPattern: true } : null;
+    };
+  };
 
-    /**
-     * Start date
-     */
-    @JsonProperty("StartDate")
-    private String startDate;
+  private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
+    return (control: AbstractControl) => {
+      const properties: any = {};
+      properties[field] = control.value;
+      const existField: any = {};
+      existField[existTag] = true;
 
-    /**
-     * End date
-     */
-    @JsonProperty("EndDate")
-    private String endDate;
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? null : existField))
+      );
+    };
+  }
 }

@@ -1,39 +1,39 @@
 {
   "ARCHIVE_SEARCH": {
-      "DIP" : {
-      "EXPORT_DIP" : "Exporter un DIP",
-      "SELECTED" :"Sélectionnés",
-      "ONE_SELECTED" :"Sélectionné",
-      "CANCEL" : "Annuler",
-      "REQUEST_ID" :"Identifiant de la demande",
-      "REQUESTER_ID":"Identifiant du demandeur",
-      "COMMENT" : "Commentaire(s)",
-      "ARCHIVAL_AGENCY" :"Identifiant du service d’archives",
-      "AUTHORISATION_REQUEST_REPLY" : "Identifiant de la réponse à une demande d’autorisation ",
-      "SUBMISSION_AGENCY_ID" : "Identifiant du service versant ",
+    "DIP": {
+      "EXPORT_DIP": "Exporter un DIP",
+      "SELECTED": "Sélectionnés",
+      "ONE_SELECTED": "Sélectionné",
+      "CANCEL": "Annuler",
+      "REQUEST_ID": "Identifiant de la demande",
+      "REQUESTER_ID": "Identifiant du demandeur",
+      "COMMENT": "Commentaire(s)",
+      "ARCHIVAL_AGENCY": "Identifiant du service d’archives",
+      "AUTHORISATION_REQUEST_REPLY": "Identifiant de la réponse à une demande d’autorisation ",
+      "SUBMISSION_AGENCY_ID": "Identifiant du service versant ",
       "REQUIRED": "Champ requis",
-      "REQUEST_DIP" : "Demande d'export d'un DIP",
-      "DIP_PARAMS" : "Définir les paramètres du DIP",
-      "ITEMS_SELECTED" : "éléments sélectionnés",
-      "ONE_ITEM_SELECTED" : "élément sélectionné",
-      "LOGS" : "Journaux :",
-      "INCLUDE" : "Inclure",
-      "EXCLUDE" :"Exclure",
-      "OBJECT_GROUPS" : "Groupes d'objets :",
-      "REQUEST_MESSAGE" : "Votre demande de DIP a bien été prise en compte  ",
-      "TO_OPERATION_APP" : "VOIR LE JOURNAL DES OPÉRATIONS",
-      "EXPORT_LIMITS" : "L’export de DIP ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum."
+      "REQUEST_DIP": "Demande d'export d'un DIP",
+      "DIP_PARAMS": "Définir les paramètres du DIP",
+      "ITEMS_SELECTED": "éléments sélectionnés",
+      "ONE_ITEM_SELECTED": "élément sélectionné",
+      "LOGS": "Journaux :",
+      "INCLUDE": "Inclure",
+      "EXCLUDE": "Exclure",
+      "OBJECT_GROUPS": "Groupes d'objets :",
+      "REQUEST_MESSAGE": "Votre demande de DIP a bien été prise en compte  ",
+      "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS",
+      "EXPORT_LIMITS": "L’export de DIP ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum."
     },
     "ELIMINATION": {
       "ANALYSIS": "Lancer une analyse d'élimination",
       "ELIMINATION_LAUNCHED": "Votre demande d'élimination a bien été prise en compte",
       "THRESHOLD_EXCEEDED": "L’analyse d’élimination ne peut être lancée. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum.",
-      "EXECUTION" : "Eliminer des archives",
-      "TO_ELIMINATE" : "Voulez-vous éliminer les",
-      "SELECTED_ITEMS" : "éléments séléctionnés ?",
-      "ONE_SELECTED" : "Voulez-vous éliminer l'élément séléctionné ?" ,
-      "EXECUTE" : "Eliminer les archives",
-      "EXECUTE_ONE" : "Eliminer l'archive"
+      "EXECUTION": "Eliminer des archives",
+      "TO_ELIMINATE": "Voulez-vous éliminer les",
+      "SELECTED_ITEMS": "éléments séléctionnés ?",
+      "ONE_SELECTED": "Voulez-vous éliminer l'élément séléctionné ?",
+      "EXECUTE": "Eliminer les archives",
+      "EXECUTE_ONE": "Eliminer l'archive"
     },
     "RULE" : {
       "UPDATE_RULE" : "Modifier une règle"
@@ -235,6 +235,10 @@
       "DIFFUSION": "Diffusion",
       "CLASSIFICATION": "Classification",
       "GEL": "Gel"
+    },
+    "RULE": {
+      "CODE_NOT_EXIST": "La Règle n'existe pas",
+      "WRONG_FORMAT": "Mauvais format de règle"
     }
   }
 }

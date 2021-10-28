@@ -36,36 +36,35 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.RuleExternalWebClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+
+@Deprecated(since = "5.0.2", forRemoval = true)
 @Service
 public class RuleService extends AbstractPaginateService<RuleDto> {
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleService.class);
 
     private RuleExternalRestClient client;
-    
+
     private RuleExternalWebClient webClient;
 
     private CommonService commonService;
@@ -99,15 +98,15 @@ public class RuleService extends AbstractPaginateService<RuleDto> {
     public boolean check(ExternalHttpContext context, RuleDto ruleDto) {
         return client.check(context,ruleDto);
     }
-    
+
     public boolean createRule(ExternalHttpContext context, RuleDto ruleDto) {
     	return client.createRule(context, ruleDto);
     }
-    
+
     public boolean patchRule(ExternalHttpContext context, Map<String, Object> partialDto, String id) {
     	return client.patchRule(context, partialDto, id);
     }
-    
+
     public boolean deleteRule(ExternalHttpContext context, String id) {
     	return client.deleteRule(context, id);
     }

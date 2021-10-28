@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,35 +34,4 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.rule;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import fr.gouv.vitam.common.model.administration.FileRulesModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
-
-public class RuleConverter {
-
-    public FileRulesModel convertDtoToVitam(final RuleDto dto) {
-        final FileRulesModel rule = VitamUIUtils.copyProperties(dto, new FileRulesModel());
-
-        return rule;
-    }
-
-    public RuleDto convertVitamToDto(final FileRulesModel rule) {
-        final RuleDto dto = VitamUIUtils.copyProperties(rule, new RuleDto());
-
-        return dto;
-    }
-
-    public List<FileRulesModel> convertDtosToVitams(final List<RuleDto> dtos) {
-        return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
-    }
-
-    public List<RuleDto> convertVitamsToDtos(final List<FileRulesModel> rules) {
-        return rules.stream().map(this::convertVitamToDto).collect(Collectors.toList());
-    }
-
-}
+export * from './rule.interface';

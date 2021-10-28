@@ -208,7 +208,19 @@
     },
     "RULES_APP": {
       "NAME": "Management rules",
-      "TOOLTIP": "Management rules"
+      "TOOLTIP": "Management rules",
+      "MESSAGES": {
+        "COMMON_RULE_MESSAGE": "The Rule",
+        "CREATION_SUCCESS": "succussfully created.",
+        "DELETION": "rule deletion",
+        "CREATION_FAILED": "didn't created.",
+        "UPDATE_SUCCESS": "successfully uodated",
+        "UPDATE_FAILED": "didn't updated",
+        "DELETION_SUCCESS": "successfully deleted",
+        "DELETION_FAILED": "didn't deleted",
+        "OPERATION_IN_PROGRESS": "in progress...",
+        "EXPORT_IN_PROGRESS": "Rule export in progress..."
+      }
     },
     "FILE_FORMATS_APP": {
       "NAME": "Files formats",

@@ -256,7 +256,19 @@
     },
     "RULES_APP": {
       "NAME": "Règles de gestion",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les règles de gestion"
+      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les règles de gestion",
+      "MESSAGES": {
+        "COMMON_RULE_MESSAGE": "La règle de gestion ",
+        "CREATION_SUCCESS": "a bien été créée",
+        "DELETION": "Suppression de la règle de gestion ",
+        "CREATION_FAILED": "n'a pu être créée.",
+        "UPDATE_SUCCESS": "a bien été mise à jour.",
+        "UPDATE_FAILED": "n'a pu être mise à jour.",
+        "DELETION_SUCCESS": "a bien été supprimée.",
+        "DELETION_FAILED": "n'a pu être supprimée.",
+        "OPERATION_IN_PROGRESS": "en cours...",
+        "EXPORT_IN_PROGRESS": "Export des règles de gestion en cours..."
+      }
     },
     "FILE_FORMATS_APP": {
       "NAME": "Formats de fichiers",
