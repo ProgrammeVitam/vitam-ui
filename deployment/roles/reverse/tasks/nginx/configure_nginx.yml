@@ -11,8 +11,6 @@
     - {path: "{{ nginx_ssl_conf }}", mode: 644}
     - {path: "{{ nginx_conf_dir }}", mode: 755}
     - {path: "{{ nginx_tmp_dir }}", mode: 755}
-    - {path: "{{ nginx_run_dir }}", mode: 755}
-    - {path: "{{ nginx_data_dir }}", mode: 755}
     - {path: "{{ nginx_log_dir }}", mode: 755}
   become: true
 
