@@ -110,6 +110,7 @@ public class ArchiveSearchInternalServiceTest {
     public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_RESPONSE = "data/elimination/elimination_analysis_response.json";
+    public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
 
     @BeforeEach
     public void setUp() {
@@ -160,5 +161,20 @@ public class ArchiveSearchInternalServiceTest {
         JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
         Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
         Assertions.assertThat(resultExpected.get(BuilderToken.GLOBAL.THRESOLD.exactToken()).asDouble()).isEqualTo(10000);
+    }
+
+
+    @Test
+    public void getFinalFillingHoldingSchemeQuery() throws Exception {
+        // Given
+        JsonNode expectedQuery = JsonHandler.getFromFile(PropertiesUtils.findFile(FILLING_HOLDING_SCHEME_EXPECTED_QUERY));
+
+        // When
+        JsonNode givenQuery =
+            archiveSearchInternalService.createQueryForHoldingFillingUnit();
+
+        // Then
+        Assertions.assertThat(expectedQuery.toString()).isEqualTo(String.valueOf(givenQuery));
+        Assertions.assertThat(givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken()).has("Title")).isTrue();
     }
 }
