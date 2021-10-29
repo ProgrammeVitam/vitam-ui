@@ -36,9 +36,9 @@
  */
 package fr.gouv.vitamui.ui.commons.property;
 
-import java.util.Map;
-
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+
+import java.util.Map;
 
 public interface UIProperties {
 
@@ -47,6 +47,8 @@ public interface UIProperties {
     public BaseUrl getBaseUrl();
 
     public RestClientConfiguration getIamExternalClient();
+
+    public RestClientConfiguration getReferentialExternalClient();
 
     public Integer getLimitPagination();
 

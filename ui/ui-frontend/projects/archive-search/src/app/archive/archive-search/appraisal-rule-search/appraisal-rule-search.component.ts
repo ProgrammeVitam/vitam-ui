@@ -6,6 +6,7 @@ import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { RuleValidator } from './rule.validator';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
@@ -33,6 +34,7 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 @Component({
   selector: 'appraisal-rule-search',
   templateUrl: './appraisal-rule-search.component.html',
+  styleUrls: ['./appraisal-rule-search.component.css']
 })
 export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   appraisalRuleCriteriaForm: FormGroup;
@@ -73,7 +75,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     notSpecifiedFinalActionType: false,
     appraisalRuleFinalActionHasFinalAction: false,
     appraisalRuleFinalActionInheriteFinalAction: false,
-    appraisalRuleEliminationIdentifier: '',
+    appraisalRuleEliminationIdentifier: ''
   };
 
   showUnitPreviewBlock = false;
@@ -81,15 +83,16 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService
+    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private ruleValidator: RuleValidator
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
-      appraisalRuleIdentifier: ['', []],
+      appraisalRuleIdentifier: [null, [this.ruleValidator.ruleIdPattern()], this.ruleValidator.uniqueRuleId()],
       appraisalRuleTitle: ['', []],
       appraisalRuleStartDate: ['', []],
       appraisalRuleEndDate: ['', []],
 
-      appraisalRuleEliminationIdentifier: ['', []],
+      appraisalRuleEliminationIdentifier: ['', []]
     });
     merge(this.appraisalRuleCriteriaForm.statusChanges, this.appraisalRuleCriteriaForm.valueChanges)
       .pipe(
@@ -137,7 +140,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_ORIGIN, {
             id: APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE,
-            value: APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE,
+            value: APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleOriginInheriteAtLeastOne = action;
@@ -157,7 +160,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_ORIGIN, {
             id: APPRAISAL_RULE_ORIGIN_HAS_NO_ONE,
-            value: APPRAISAL_RULE_ORIGIN_HAS_NO_ONE,
+            value: APPRAISAL_RULE_ORIGIN_HAS_NO_ONE
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleOriginHasNoOne = action;
@@ -177,7 +180,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_ORIGIN, {
             id: APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE,
-            value: APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE,
+            value: APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleOriginWaitingRecalculate = action;
@@ -197,7 +200,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_ORIGIN, {
             id: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
-            value: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
+            value: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleOriginHasAtLeastOne = action;
@@ -217,7 +220,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION_TYPE, {
             id: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION,
-            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION,
+            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION
           });
         }
         this.previousAppraisalCriteriaValue.eliminationFinalActionType = action;
@@ -237,7 +240,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION_TYPE, {
             id: APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP,
-            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP,
+            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP
           });
         }
         this.previousAppraisalCriteriaValue.keepFinalActionType = action;
@@ -257,7 +260,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION_TYPE, {
             id: APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED,
-            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED,
+            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED
           });
         }
         this.previousAppraisalCriteriaValue.notSpecifiedFinalActionType = action;
@@ -277,7 +280,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION, {
             id: APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION,
-            value: APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION,
+            value: APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleFinalActionHasFinalAction = action;
@@ -297,7 +300,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         } else {
           this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION, {
             id: APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION,
-            value: APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION,
+            value: APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION
           });
         }
         this.previousAppraisalCriteriaValue.appraisalRuleFinalActionInheriteFinalAction = action;
@@ -315,7 +318,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         {
           id: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate + '-',
           beginInterval: '',
-          endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
+          endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate
         },
         this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
         true,
@@ -328,6 +331,26 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     }
   }
 
+  addCriteriaRulePostCheck() {
+    if (this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier) {
+      this.addCriteria(
+        APPRAISAL_RULE_IDENTIFIER,
+        {
+          id: this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim(),
+          value: this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim()
+        },
+
+        this.appraisalRuleCriteriaForm.value.appraisalRuleIdentifier.trim(),
+        true,
+        'EQ',
+        false,
+        'STRING',
+        SearchCriteriaTypeEnum.APPRAISAL_RULE
+      );
+      this.appraisalRuleCriteriaForm.controls.appraisalRuleIdentifier.setValue(null);
+    }
+  }
+
   addIntervalDtDuaCriteria() {
     if (this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate && this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate) {
       this.addCriteria(
@@ -335,7 +358,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         {
           id: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate + '-' + this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate,
           beginInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
-          endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate,
+          endInterval: this.appraisalRuleCriteriaForm.value.appraisalRuleEndDate
         },
         this.appraisalRuleCriteriaForm.value.appraisalRuleStartDate,
         true,
@@ -351,21 +374,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
   isEmpty(formData: any): boolean {
     if (formData) {
-      if (formData.appraisalRuleIdentifier) {
-        this.addCriteria(
-          APPRAISAL_RULE_IDENTIFIER,
-          { id: formData.appraisalRuleIdentifier.trim(), value: formData.appraisalRuleIdentifier.trim() },
-
-          formData.appraisalRuleIdentifier.trim(),
-          true,
-          'EQ',
-          false,
-          'STRING',
-          SearchCriteriaTypeEnum.APPRAISAL_RULE
-        );
-
-        return true;
-      } else if (formData.appraisalRuleTitle) {
+      if (formData.appraisalRuleTitle) {
         this.addCriteria(
           APPRAISAL_RULE_TITLE,
           { id: formData.appraisalRuleTitle.trim(), value: formData.appraisalRuleTitle.trim() },
@@ -435,7 +444,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       appraisalRuleFinalActionHasFinalAction: false,
       appraisalRuleFinalActionInheriteFinalAction: false,
 
-      appraisalRuleEliminationIdentifier: '',
+      appraisalRuleEliminationIdentifier: ''
     };
 
     this.addCriteria(
@@ -485,7 +494,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         operator,
         category,
         valueTranslated,
-        dataType,
+        dataType
       });
     }
   }

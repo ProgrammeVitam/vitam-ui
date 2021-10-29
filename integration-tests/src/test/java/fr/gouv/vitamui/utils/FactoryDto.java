@@ -1,24 +1,7 @@
 package fr.gouv.vitamui.utils;
 
-import static fr.gouv.vitamui.utils.TestConstants.ADMIN_LEVEL;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
-
-import java.util.Arrays;
-import java.util.concurrent.ThreadLocalRandom;
-
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParametersDto;
-import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
-import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.openqa.selenium.InvalidArgumentException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
@@ -26,10 +9,26 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
+import fr.gouv.vitamui.referential.common.dto.ContextDto;
+import fr.gouv.vitamui.referential.common.dto.IngestContractDto;
+import fr.gouv.vitamui.referential.common.dto.SecurityProfileDto;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.openqa.selenium.InvalidArgumentException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static fr.gouv.vitamui.utils.TestConstants.ADMIN_LEVEL;
+import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_CUSTOMER_ID;
+import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 
 public class FactoryDto {
 

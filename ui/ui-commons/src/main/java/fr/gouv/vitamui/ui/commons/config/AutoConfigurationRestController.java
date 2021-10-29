@@ -37,28 +37,29 @@
 package fr.gouv.vitamui.ui.commons.config;
 
 import fr.gouv.vitamui.ui.commons.rest.AccessContractController;
+import fr.gouv.vitamui.ui.commons.rest.AccountController;
+import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
 import fr.gouv.vitamui.ui.commons.rest.ExternalParamProfileController;
-import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
+import fr.gouv.vitamui.ui.commons.rest.ExternalParametersController;
+import fr.gouv.vitamui.ui.commons.rest.LogbookController;
+import fr.gouv.vitamui.ui.commons.rest.RuleController;
+import fr.gouv.vitamui.ui.commons.rest.SecurityController;
+import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
+import fr.gouv.vitamui.ui.commons.rest.UserController;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
+import fr.gouv.vitamui.ui.commons.service.AccountService;
+import fr.gouv.vitamui.ui.commons.service.ApplicationService;
+import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
+import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
+import fr.gouv.vitamui.ui.commons.service.LogbookService;
+import fr.gouv.vitamui.ui.commons.service.RuleService;
+import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-
-import fr.gouv.vitamui.ui.commons.rest.AccountController;
-import fr.gouv.vitamui.ui.commons.rest.ApplicationController;
-import fr.gouv.vitamui.ui.commons.rest.ExternalParametersController;
-import fr.gouv.vitamui.ui.commons.rest.LogbookController;
-import fr.gouv.vitamui.ui.commons.rest.SecurityController;
-import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
-import fr.gouv.vitamui.ui.commons.rest.UserController;
-import fr.gouv.vitamui.ui.commons.service.AccountService;
-import fr.gouv.vitamui.ui.commons.service.ApplicationService;
-import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
-import fr.gouv.vitamui.ui.commons.service.LogbookService;
-import fr.gouv.vitamui.ui.commons.service.SubrogationService;
-import fr.gouv.vitamui.ui.commons.service.UserService;
 
 @Configuration
 public class AutoConfigurationRestController {
@@ -120,5 +121,12 @@ public class AutoConfigurationRestController {
     @DependsOn("CommonAccessContractService")
     public AccessContractController accessContractController(final AccessContractService accessContractService) {
         return new AccessContractController(accessContractService);
+    }
+
+    @Bean("CommonRuleController")
+    @DependsOn("CommonRuleService")
+    @ConditionalOnMissingBean
+    public RuleController ruleService(final RuleService ruleService) {
+        return new RuleController(ruleService);
     }
 }

@@ -36,27 +36,21 @@
  */
 package fr.gouv.vitamui.cucumber.back.steps.referential.rule;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.ContextDto;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
-import fr.gouv.vitamui.utils.FactoryDto;
-import fr.gouv.vitamui.utils.TestConstants;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.apache.commons.io.IOUtils;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API Rules dans Referential admin : operations de creation.
@@ -65,7 +59,7 @@ import com.fasterxml.jackson.databind.JsonNode;
  */
 
 public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
-	
+
     private JsonNode response;
 
     @When("^un utilisateur avec le role ROLE_CREATE_RULES ajoute une nouvelle regle en utilisant un certificat full access avec le role ROLE_CREATE_RULES$")
@@ -78,22 +72,22 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
     public void le_serveur_retourne_la_regle_creee() {
         assertThat(testContext.savedRuleDto).overridingErrorMessage("la reponse retournee est null").isNotNull();
     }
-    
+
     @When("^un utilisateur importe des règles à partir d'un fichier csv valide$")
     public void un_utilisateur_importe_des_regles_à_partir_d_un_fichier_csv_valide() throws IOException {
 	    File file = new File("src/test/resources/data/import_rules_valid.csv");
 	    FileInputStream input = new FileInputStream(file);
 	    MultipartFile multipartFile = new MockMultipartFile("import_rules_valid.csv",
-	    	file.getName(), "application/csv", IOUtils.toByteArray(input));  	
+	    	file.getName(), "application/csv", IOUtils.toByteArray(input));
 	    response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
     }
-    
+
     @Then("^l'import des règles a réussi$")
     public void l_import_règles_a_réussi() {
         assertThat(response).isNotNull();
         assertThat(response.get("httpCode").asInt()).isEqualTo(200);
     }
-    
+
     @When("^un utilisateur importe des règles à partir d'un fichier csv invalide$")
     public void un_utilisateur_importe_des_formats_de_fichier_à_partir_d_un_fichier_csv_invalide() throws IOException {
 	    File file = new File("src/test/resources/data/import_rules_invalid.csv");
@@ -102,7 +96,7 @@ public class ApiReferentialExternalRuleCreationSteps extends CommonSteps {
 	    	file.getName(), "application/csv", IOUtils.toByteArray(input));
 	    response = getFileFormatWebClient().importFileFormats(getSystemTenantUserAdminContext(), multipartFile);
     }
-    
+
     @Then("^l'import des règles a échoué$")
     public void l_import_des_règles_a_échoué() {
         assertThat(response).isNotNull();

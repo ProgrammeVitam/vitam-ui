@@ -48,6 +48,10 @@
 			<groupId>fr.gouv.vitamui</groupId>
 			<artifactId>iam-external-client</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>referential-external-client</artifactId>
+        </dependency>
 		<!-- Utils -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -130,7 +134,11 @@
 			<groupId>org.owasp.antisamy</groupId>
 			<artifactId>antisamy</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>referential-commons</artifactId>
+        </dependency>
+    </dependencies>
 
 	<build>
         <plugins>

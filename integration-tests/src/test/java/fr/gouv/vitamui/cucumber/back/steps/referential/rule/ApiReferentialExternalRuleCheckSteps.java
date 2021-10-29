@@ -36,8 +36,8 @@
  */
 package fr.gouv.vitamui.cucumber.back.steps.referential.rule;
 
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
-import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.utils.ReferentialDtoBuilder;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;

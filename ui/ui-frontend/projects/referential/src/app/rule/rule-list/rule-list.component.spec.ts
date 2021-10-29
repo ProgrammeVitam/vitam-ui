@@ -34,16 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
-import {Rule} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {AuthService, BASE_URL, VitamUISnackBar} from 'ui-frontend-common';
-import {RuleService} from '../rule.service';
-import {RuleListComponent} from './rule-list.component';
-
+import { of } from 'rxjs';
+import { AuthService, BASE_URL, Rule, RuleService, VitamUISnackBar } from 'ui-frontend-common';
+import { RuleListComponent } from './rule-list.component';
 
 describe('RuleListComponent', () => {
   let component: RuleListComponent;
@@ -55,19 +51,21 @@ describe('RuleListComponent', () => {
     search: () => of(null)
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [RuleListComponent],
-      providers: [
-        {provide: BASE_URL, useValue: ''},
-        {provide: RuleService, useValue: ruleServiceMock},
-        {provide: AuthService, useValue: {user: {proofTenantIdentifier: '1'}}},
-        {provide: VitamUISnackBar, useValue: {}},
-        {provide: MatDialog, useValue: {}}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RuleListComponent],
+        providers: [
+          { provide: BASE_URL, useValue: '' },
+          { provide: RuleService, useValue: ruleServiceMock },
+          { provide: AuthService, useValue: { user: { proofTenantIdentifier: '1' } } },
+          { provide: VitamUISnackBar, useValue: {} },
+          { provide: MatDialog, useValue: {} }
+        ],
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleListComponent);

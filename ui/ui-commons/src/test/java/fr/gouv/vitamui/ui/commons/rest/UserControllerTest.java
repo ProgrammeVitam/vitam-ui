@@ -1,12 +1,19 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
+import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
+import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -21,21 +28,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
-import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
-import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
-import fr.gouv.vitamui.ui.commons.service.UserService;
+import static fr.gouv.vitamui.commons.api.CommonConstants.APPLICATION_ID;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
@@ -60,6 +58,7 @@ public class UserControllerTest extends UIControllerTest<UserDto> {
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
 

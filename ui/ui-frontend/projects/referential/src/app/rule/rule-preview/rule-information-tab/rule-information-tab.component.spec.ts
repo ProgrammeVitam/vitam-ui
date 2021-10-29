@@ -34,14 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
-
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {Rule} from 'projects/vitamui-library/src/public-api';
-import {of} from 'rxjs';
-import {RuleService} from '../../rule.service';
-import {RuleInformationTabComponent} from './rule-information-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+import { Rule } from 'projects/vitamui-library/src/public-api';
+import { of } from 'rxjs';
+import { RuleService } from 'ui-frontend-common';
+import { RuleInformationTabComponent } from './rule-information-tab.component';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;
@@ -74,17 +73,15 @@ describe('RuleInformationTabComponent', () => {
     updateDate: '20/02/2020'
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [RuleInformationTabComponent],
-      providers: [
-        FormBuilder,
-        {provide: RuleService, useValue: ruleServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [RuleInformationTabComponent],
+        providers: [FormBuilder, { provide: RuleService, useValue: ruleServiceMock }],
+        schemas: [NO_ERRORS_SCHEMA]
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleInformationTabComponent);

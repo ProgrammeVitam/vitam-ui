@@ -122,5 +122,4 @@ public class IamInternalRestClientFactory extends BaseRestClientFactory {
     public AccessContractInternalRestClient<InternalHttpContext> getAccessContractInternalRestClient() {
         return new AccessContractInternalRestClient<>(getRestTemplate(), getBaseUrl());
     }
-
 }

@@ -34,16 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Rule} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-
-import {RuleService} from '../rule.service';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
-import {RuleCreateValidators} from './rule-create.validators';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Rule, RuleService } from 'ui-frontend-common';
+import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
+import { RuleCreateValidators } from './rule-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -53,7 +50,6 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./rule-create.component.scss']
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
   hasCustomGraphicIdentity = false;
@@ -70,7 +66,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
   tenantIdentifier: number;
 
   constructor(
@@ -80,8 +76,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private ruleService: RuleService,
     private ruleCreateValidator: RuleCreateValidators
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -117,16 +112,16 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
     this.ruleService.create(format).subscribe(
       () => {
-        this.dialogRef.close({success: true});
+        this.dialogRef.close({ success: true });
       },
       (error: any) => {
-        this.dialogRef.close({success: false});
+        this.dialogRef.close({ success: false });
         console.error(error);
-      });
+      }
+    );
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

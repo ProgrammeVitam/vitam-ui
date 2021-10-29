@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.commons.vitam.api.config;
 
+import fr.gouv.vitamui.commons.vitam.api.config.converter.RuleConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -77,5 +78,10 @@ public class VitamAdministrationConfig extends VitamClientConfig {
     @Bean
     public IngestContractService geIngestContractService() {
         return new IngestContractService(adminExternalClient());
+    }
+
+    @Bean
+    public RuleConverter rulesConverter() {
+        return new RuleConverter();
     }
 }

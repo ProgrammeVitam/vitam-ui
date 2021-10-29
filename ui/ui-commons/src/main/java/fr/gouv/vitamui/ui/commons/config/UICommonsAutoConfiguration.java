@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -68,4 +70,19 @@ public class UICommonsAutoConfiguration {
     public IamExternalRestClientFactory iamRestClientFactory(final UIProperties uiProperties, final RestTemplateBuilder restTemplateBuilder) {
         return new IamExternalRestClientFactory(uiProperties.getIamExternalClient(), restTemplateBuilder);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(final UIProperties uiProperties, final RestTemplateBuilder restTemplateBuilder) {
+        return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(), restTemplateBuilder);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalWebClientFactory referentialWebClientFactory(final UIProperties uiProperties) {
+        return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    }
+
 }

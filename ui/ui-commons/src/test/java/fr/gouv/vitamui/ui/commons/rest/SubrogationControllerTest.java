@@ -1,8 +1,16 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
+import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
+import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
+import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
+import fr.gouv.vitamui.ui.commons.service.SubrogationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -16,17 +24,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
-import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
-import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
-import fr.gouv.vitamui.ui.commons.config.UIPropertiesImpl;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
-import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ImportAutoConfiguration(classes = {UICommonsAutoConfiguration.class, UICommonsAutoSpringMockConfiguration.class})
@@ -41,6 +40,7 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
 

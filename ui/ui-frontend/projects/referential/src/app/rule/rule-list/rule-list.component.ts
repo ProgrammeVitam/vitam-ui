@@ -34,22 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {Rule} from 'projects/vitamui-library/src/lib/models/rule';
-import {ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {merge, Subject} from 'rxjs';
-import {debounceTime, filter} from 'rxjs/operators';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { merge, Subject } from 'rxjs';
+import { debounceTime, filter } from 'rxjs/operators';
 import {
   AdminUserProfile,
   ApplicationId,
@@ -59,12 +48,13 @@ import {
   InfiniteScrollTable,
   PageRequest,
   Role,
+  Rule,
+  RuleService,
   User,
   VitamUISnackBar
 } from 'ui-frontend-common';
-import {VitamUISnackBarComponent} from '../../shared/vitamui-snack-bar';
-import {RuleService} from '../rule.service';
-import {RULE_MEASUREMENTS, RULE_TYPES} from '../rules.constants';
+import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -98,16 +88,16 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   @Output() ruleClick = new EventEmitter<Rule>();
 
-  @ViewChild('filterTemplate', {static: false}) filterTemplate: TemplateRef<RuleListComponent>;
-  @ViewChild('filterButton', {static: false}) filterButton: ElementRef;
+  @ViewChild('filterTemplate', { static: false }) filterTemplate: TemplateRef<RuleListComponent>;
+  @ViewChild('filterButton', { static: false }) filterButton: ElementRef;
 
   overridePendingChange: true;
   loaded = false;
   orderBy = 'RuleId';
   direction = Direction.ASCENDANT;
-  genericUserRole: Readonly<{appId: ApplicationId, tenantIdentifier: number, roles: Role[]}>;
+  genericUserRole: Readonly<{ appId: ApplicationId; tenantIdentifier: number; roles: Role[] }>;
 
-  private groups: Array<{id: string, group: any}> = [];
+  private groups: Array<{ id: string; group: any }> = [];
   private readonly filterChange = new Subject<string>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
@@ -139,13 +129,11 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   }
 
   ngOnInit() {
-    this.ruleService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT))
-      .subscribe((data: Rule[]) => {
-        this.dataSource = data;
-      });
+    this.ruleService.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.ASCENDANT)).subscribe((data: Rule[]) => {
+      this.dataSource = data;
+    });
 
-    const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange)
-      .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
+    const searchCriteriaChange = merge(this.searchChange, this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildRuleCriteriaFromSearch();
@@ -188,7 +176,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   getRuleType(input: string) {
     if (input) {
-      const result = this.ruleTypes.find(x => x.key.toLowerCase() === input.toLowerCase());
+      const result = this.ruleTypes.find((x) => x.key.toLowerCase() === input.toLowerCase());
       return result ? result.label : input;
     } else {
       return '';
@@ -197,7 +185,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
   getRuleMeasurement(input: string) {
     if (input) {
-      const result = this.ruleMeasurements.find(x => x.key.toLowerCase() === input.toLowerCase());
+      const result = this.ruleMeasurements.find((x) => x.key.toLowerCase() === input.toLowerCase());
       return result ? result.label : input;
     } else {
       return '';
@@ -205,23 +193,22 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
   }
 
   deleteRuleDialog(rule: Rule) {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.objectType = 'format de fichier';
     dialog.componentInstance.objectName = rule.ruleId;
 
-    dialog.afterClosed().pipe(
-      filter((result) => !!result)
-    ).subscribe(() => {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        duration: 5000,
-        data: {type: 'ruleDeleteStart', name: rule.ruleId}
+    dialog
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 5000,
+          data: { type: 'ruleDeleteStart', name: rule.ruleId }
+        });
+        this.ruleService.delete(rule).subscribe(() => {
+          this.searchRuleOrdered();
+        });
       });
-      this.ruleService.delete(rule).subscribe(() => {
-        this.searchRuleOrdered();
-      });
-    });
-
   }
-
 }

@@ -85,6 +85,21 @@ ui-ingest:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
+  referential-external-client:
+    server-host: {{ vitamui.referential_external.host }}
+    server-port: {{ vitamui.referential_external.port_service }}
+{% if vitamui.referential_external.secure | lower == "true" %}
+    secure: {{ vitamui.referential_external.secure | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
   assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"

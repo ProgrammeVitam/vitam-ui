@@ -53,8 +53,8 @@ import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -99,8 +99,9 @@ class AccessionRegisterDetailInternalServiceTest {
         doNothing().when(vitamUILogger).info(any());
     }
 
-    @Test
-    void should_call_appropriate_api_once_when_get_paginated_is_invoked() throws IOException, InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
+   @Test
+    void should_call_appropriate_api_once_when_get_paginated_is_invoked() throws IOException,
+       InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         Map<String, Object> vitamCriteria = new HashMap<>();
