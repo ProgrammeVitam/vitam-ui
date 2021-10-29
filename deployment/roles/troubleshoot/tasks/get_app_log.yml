@@ -1,0 +1,17 @@
+---
+
+- name: list files from {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/{{ component_name }}
+  find:
+    paths: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/{{ component_name }}"
+    age: "-{{ age }}d"
+    recurse: no # no subdir
+    file_type: file
+    excludes: "java_pid*,{{ excludes | default('') }}"
+  register: path_files
+
+# Run the rest only if there is files to get
+- name: handle files for log
+  include_tasks: handle_files.yml
+  vars:
+    component_name: "{{ component_name }}"
+    sufix: log
