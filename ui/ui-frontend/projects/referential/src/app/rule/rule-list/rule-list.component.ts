@@ -36,7 +36,6 @@
  */
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Rule } from 'projects/vitamui-library/src/lib/models/rule';
 import { ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
 import { merge, Subject } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -55,7 +54,6 @@ import {
   VitamUISnackBar,
 } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
-import { RuleService } from '../rule.service';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
@@ -125,7 +123,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
@@ -204,12 +202,11 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
           duration: 5000,
-          data: { type: 'ruleDeleteStart', name: rule.ruleId }
+          data: { type: 'ruleDeleteStart', name: rule.ruleId },
         });
         this.ruleService.delete(rule).subscribe(() => {
           this.searchRuleOrdered();
         });
       });
   }
-
 }
