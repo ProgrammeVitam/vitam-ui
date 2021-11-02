@@ -1,11 +1,22 @@
 <div>
   <form [formGroup]="form">
     <vitamui-common-slide-toggle formControlName="enabled">
-      {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!form.get('enabled')?.value">in</span>{{ 'COMMON.ACTIVE' | translate }}
+      {{ 'EXTERNAL_PARAM_PROFILE.PROFILE' | translate }} <span *ngIf="!form.get('enabled')?.value">in</span
+      >{{ 'COMMON.ACTIVE' | translate }}
     </vitamui-common-slide-toggle>
     <div class="row">
       <div class="col-6">
-        <vitamui-common-input label="Identifiant" [value]="externalParamProfile?.profileIdentifier" disabled> </vitamui-common-input>
+        <div class="vitamui-input" [class.disabled]="true">
+          <label [ngStyle]="{ 'margin-bottom': '35px' }"> {{ 'COMMON.ID' | translate }}</label>
+
+          <input
+            [ngStyle]="{ 'margin-top': '15px' }"
+            [type]="'text'"
+            [required]="true"
+            [value]="externalParamProfile?.profileIdentifier"
+            [disabled]="true"
+          />
+        </div>
       </div>
       <div class="col-6">
         <vitamui-common-editable-input
@@ -15,8 +26,12 @@
           [validator]="form?.get('name')?.validator"
           [asyncValidator]="form?.get('name')?.asyncValidator"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate }}</vitamui-common-field-error>
-          <vitamui-common-field-error errorKey="nameExists">{{ 'EXTERNAL_PARAM_PROFILE.NAME_ALREADY_USED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{
+            'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate
+          }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="nameExists">{{
+            'EXTERNAL_PARAM_PROFILE.NAME_ALREADY_USED' | translate
+          }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
@@ -29,17 +44,24 @@
           label="{{ 'EXTERNAL_PARAM_PROFILE.DESCRIPTION' | translate }}"
           [validator]="form?.get('description')?.validator"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{
+            'EXTERNAL_PARAM_PROFILE.INPUT_REQUIRED' | translate
+          }}</vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
         <mat-form-field class="vitamui-mat-select">
-          <mat-select formControlName="accessContract"
-                      placeholder="{{ 'EXTERNAL_PARAM_PROFILE.SELECT_ACCESSCONTRACT' | translate }}" required="required" panelclass="vitamui-mat-select"
-                      class="w-100">
-            <mat-option *ngFor='let accessContract of (accessContracts$|async)' [value]="accessContract.identifier">{{accessContract.name}}
+          <mat-select
+            formControlName="accessContract"
+            placeholder="{{ 'EXTERNAL_PARAM_PROFILE.SELECT_ACCESSCONTRACT' | translate }}"
+            required="required"
+            panelclass="vitamui-mat-select"
+            class="w-100"
+          >
+            <mat-option *ngFor="let accessContract of activeAccessContracts$ | async" [value]="accessContract.identifier"
+              >{{ accessContract.identifier }}
             </mat-option>
           </mat-select>
           <div class="select-arrow">

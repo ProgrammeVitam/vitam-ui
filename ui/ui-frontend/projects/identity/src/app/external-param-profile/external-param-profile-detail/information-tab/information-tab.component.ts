@@ -38,10 +38,9 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { AccessContractApiService, ApplicationId, diff, ExternalParamProfile } from 'ui-frontend-common';
+import { AccessContract, ApplicationId, diff, ExternalParamProfile } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { ExternalParamProfileService } from '../../external-param-profile.service';
-import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { ExternalParamProfileValidators } from '../../external-param-profile.validators';
 
 @Component({
@@ -50,12 +49,17 @@ import { ExternalParamProfileValidators } from '../../external-param-profile.val
   styleUrls: ['./information-tab.component.scss'],
 })
 export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
+  constructor(
+    private formBuilder: FormBuilder,
+    private externalParamProfileService: ExternalParamProfileService,
+    private externalParamProfileValidators: ExternalParamProfileValidators
+  ) {}
   form: FormGroup;
   permissionForm: FormGroup;
   groupsCount: boolean;
   userLevel: string;
   previousValue: ExternalParamProfile;
-  accessContracts$: Observable<any[]>;
+  activeAccessContracts$: Observable<AccessContract[]>;
 
   @Input() externalParamProfile: ExternalParamProfile;
   @Input() readOnly: boolean;
@@ -63,17 +67,19 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
 
   private updateFormSub: Subscription;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private externalParamProfileService: ExternalParamProfileService,
-    private accessContractApiService: AccessContractApiService,
-    private externalParamProfileValidators: ExternalParamProfileValidators
-  ) {}
+  private static initFormActivationState(form: FormGroup, readOnly: boolean) {
+    if (readOnly) {
+      form.disable({ emitEvent: false });
+      return;
+    }
+    form.enable({ emitEvent: false });
+  }
 
   ngOnInit() {
     this.initForm();
     this.initListenersOnFormsValuesChanges();
-    this.accessContracts$ = this.getAllAccessContracts();
+
+    this.activeAccessContracts$ = this.externalParamProfileService.getAllActiveAccessContracts(this.tenantIdentifier);
   }
 
   ngOnDestroy() {
@@ -133,19 +139,5 @@ export class InformationTabComponent implements OnDestroy, OnInit, OnChanges {
           externalParamProfile.name
         )
       );
-  }
-
-  private static initFormActivationState(form: FormGroup, readOnly: boolean) {
-    if (readOnly) {
-      form.disable({ emitEvent: false });
-      return;
-    }
-    form.enable({ emitEvent: false });
-  }
-
-  private getAllAccessContracts(): Observable<any[]> {
-    const params = new HttpParams();
-    const headers = new HttpHeaders().append('X-Tenant-Id', this.tenantIdentifier);
-    return this.accessContractApiService.getAllAccessContracts(params, headers);
   }
 }

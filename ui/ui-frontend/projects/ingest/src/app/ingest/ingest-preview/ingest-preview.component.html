@@ -6,6 +6,10 @@
       ? 'orange'
       : ingestStatus(ingest) === 'STARTED'
       ? 'grey'
+      : ingestStatus(ingest) === 'FATAL'
+      ? 'black'
+      : ingestStatus(ingest) === 'En cours'
+      ? 'grey'
       : 'red'
   "
   [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"

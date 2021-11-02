@@ -51,7 +51,7 @@ import {
   Rule,
   RuleService,
   User,
-  VitamUISnackBar
+  VitamUISnackBar,
 } from 'ui-frontend-common';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../rules.constants';
@@ -61,7 +61,7 @@ const FILTER_DEBOUNCE_TIME_MS = 400;
 @Component({
   selector: 'app-rule-list',
   templateUrl: './rule-list.component.html',
-  styleUrls: ['./rule-list.component.scss']
+  styleUrls: ['./rule-list.component.scss'],
 })
 export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDestroy, OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -111,7 +111,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this._connectedUserInfo = userInfo;
   }
 
-  // tslint:disable-next-line:variable-name
   private _connectedUserInfo: AdminUserProfile;
 
   constructor(
@@ -124,7 +123,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
     this.genericUserRole = {
       appId: ApplicationId.USERS_APP,
       tenantIdentifier: +this.authService.user.proofTenantIdentifier,
-      roles: [Role.ROLE_GENERIC_USERS]
+      roles: [Role.ROLE_GENERIC_USERS],
     };
   }
 
@@ -137,7 +136,6 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
 
     searchCriteriaChange.subscribe(() => {
       const query: any = this.buildRuleCriteriaFromSearch();
-      console.log('query: ', query);
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
@@ -204,7 +202,7 @@ export class RuleListComponent extends InfiniteScrollTable<Rule> implements OnDe
         this.snackBar.openFromComponent(VitamUISnackBarComponent, {
           panelClass: 'vitamui-snack-bar',
           duration: 5000,
-          data: { type: 'ruleDeleteStart', name: rule.ruleId }
+          data: { type: 'ruleDeleteStart', name: rule.ruleId },
         });
         this.ruleService.delete(rule).subscribe(() => {
           this.searchRuleOrdered();

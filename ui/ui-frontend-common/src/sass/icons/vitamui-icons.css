@@ -773,3 +773,7 @@ i.vitamui-icon {
 .vitamui-icon-radio-checked:before {
   content: "\ea78";
 }
+.vitamui-icon-bin:before {
+  content: "\e9ac";
+}
+

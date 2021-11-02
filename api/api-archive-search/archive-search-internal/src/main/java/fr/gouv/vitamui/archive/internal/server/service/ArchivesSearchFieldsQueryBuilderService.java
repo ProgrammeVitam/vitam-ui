@@ -59,12 +59,7 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                     LOGGER.error("Field not mapped correctly  " + searchCriteria.getCriteria());
                     throw new IllegalArgumentException("Field not mapped correctly  ");
                 }
-                if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
-                    VitamQueryHelper
-                        .addDatesCriteriaToQuery(queryToFill, searchCriteria.getCriteria(),
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
-                                Collectors.toList()));
-                } else if (ArchiveSearchConsts.TITLE_OR_DESCRIPTION.equals(searchCriteria.getCriteria())) {
+                  if (ArchiveSearchConsts.TITLE_OR_DESCRIPTION.equals(searchCriteria.getCriteria())) {
                     queryToFill.add(buildTitleAndDescriptionQuery(
                         searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
                             Collectors.toList()),
