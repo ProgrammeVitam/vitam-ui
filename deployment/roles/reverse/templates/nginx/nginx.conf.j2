@@ -1,4 +1,4 @@
-user    {{ reverse_user }} {{  reverse_group }};
+user    {{ reverse_user }} {{ reverse_group }};
 
 worker_processes auto;
 
@@ -18,8 +18,8 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    client_body_temp_path   {{ nginx_tmp_dir }}/nginx;
-    access_log              {{ nginx_log_dir }}/access.log  main;
+    client_body_temp_path   {{ nginx_tmp_dir }}/;
+    access_log              {{ nginx_log_dir }}/access.log main;
     error_log               {{ nginx_log_dir }}/error.log;
 
     # Force consul agent resolution
@@ -57,14 +57,4 @@ http {
     # for more information.
     include {{ nginx_conf_dir }}/*.conf;
 
-   # server {
-   #     listen       80 default_server;
-   #     server_name  _;
-   #     root         {{ nginx_data_dir }};
-
-   #     add_header Content-Security-Policy upgrade-insecure-requests;
-
-        # Status page for consul agent check
-   #     return 301 https://$http_host$request_uri;
-   # }
 }
