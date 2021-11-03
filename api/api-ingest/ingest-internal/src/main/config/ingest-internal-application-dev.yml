@@ -47,6 +47,8 @@ opentracing:
       host: localhost
       port: 6831
 
+tmp_folder_path: "src/main/resources"
+
 logging:
   level:
     fr.gouv.vitamui.ingest: DEBUG
