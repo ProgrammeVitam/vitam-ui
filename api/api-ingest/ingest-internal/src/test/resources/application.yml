@@ -27,4 +27,6 @@ server-identity:
   identityServerId: 1
 
 
+tmp_folder_path: "src/main/resources"
+
 logbook.scheduling.sendEventToVitamTasks.enabled: false
