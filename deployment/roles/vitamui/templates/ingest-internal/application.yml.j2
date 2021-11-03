@@ -59,6 +59,8 @@ clients:
       hostname-verification: false
 {% endif %}
 
+tmp_folder_path : {{ vitamui_struct.tmp_folder_path }}/{{ vitamui_struct.vitamui_component }}
+
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
