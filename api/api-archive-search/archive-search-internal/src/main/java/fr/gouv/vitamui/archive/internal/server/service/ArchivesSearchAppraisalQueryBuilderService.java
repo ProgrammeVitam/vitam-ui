@@ -368,89 +368,8 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
         String endDtVitamFieldNameScoped =
             ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING
                 .get(ArchiveSearchConsts.APPRAISAL_RULE_END_DATE);
-        if (ArchiveSearchConsts.AppraisalRuleOrigin.INHERITED.equals(origin)) {
-            //In case we have endates criteria
-            if (appraisalEndDatesCriteria.isPresent()) {
-                //in case we have rules id criteria
-                if (appraisalIdentifierCriteria.isPresent()) {
-                    BooleanQuery intervalQuery = or();
-                    for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
-                        for (CriteriaValue valueEndDate : appraisalEndDatesCriteria.get().getValues()) {
-                            BooleanQuery intervalQueryByInterval = and();
-                            String beginDtStr = valueEndDate.getBeginInterval();
-                            String endDtStr = valueEndDate.getEndInterval();
-
-                            if (!ObjectUtils.isEmpty(beginDtStr)) {
-                                LocalDateTime beginDt =
-                                    LocalDateTime.parse(beginDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
-                                VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
-                                    ArchiveSearchConsts.CriteriaOperators.GTE,
-                                    ruleIdVitamFieldName + "." + valueIdentifier.getValue(),
-                                    List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDt)));
-                            }
-
-                            if (!ObjectUtils.isEmpty(endDtStr)) {
-                                LocalDateTime endDt =
-                                    LocalDateTime.parse(endDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
-                                VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
-                                    ArchiveSearchConsts.CriteriaOperators.LTE,
-                                    ruleIdVitamFieldName + "." + valueIdentifier.getValue(),
-                                    List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
-                            }
-                            if (intervalQueryByInterval.isReady()) {
-                                intervalQuery.add(intervalQueryByInterval);
-                            }
-                        }
-                    }
-                    if (intervalQuery.isReady()) {
-                        appraisalMgtRulesSubQuery.add(intervalQuery);
-                    }
-                } else {
-                    BooleanQuery intervalQuery = or();
-                    for (CriteriaValue valueEndDate : appraisalEndDatesCriteria.get().getValues()) {
-                        BooleanQuery intervalQueryByInterval = and();
-                        String beginDtStr = valueEndDate.getBeginInterval();
-                        String endDtStr = valueEndDate.getEndInterval();
-
-                        if (!ObjectUtils.isEmpty(beginDtStr)) {
-                            LocalDateTime beginDt =
-                                LocalDateTime.parse(beginDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
-                            VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
-                                ArchiveSearchConsts.CriteriaOperators.GTE,
-                                endDtVitamFieldName,
-                                List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDt)));
-                        }
-
-                        if (!ObjectUtils.isEmpty(endDtStr)) {
-                            LocalDateTime endDt =
-                                LocalDateTime.parse(endDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
-                            VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
-                                ArchiveSearchConsts.CriteriaOperators.LTE,
-                                endDtVitamFieldName,
-                                List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
-                        }
-                        if (intervalQueryByInterval.isReady()) {
-                            intervalQuery.add(intervalQueryByInterval);
-                        }
-                    }
-                    if (intervalQuery.isReady()) {
-                        appraisalMgtRulesSubQuery.add(intervalQuery);
-                    }
-                }
-            } else {
-                if (appraisalIdentifierCriteria.isPresent()) {
-                    BooleanQuery identifierQuery = or();
-                    for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
-                        VitamQueryHelper
-                            .addParameterCriteria(identifierQuery, ArchiveSearchConsts.CriteriaOperators.EXISTS,
-                                ruleIdVitamFieldName + "." + valueIdentifier.getValue(), List.of());
-                    }
-                    if (identifierQuery.isReady()) {
-                        appraisalMgtRulesSubQuery.add(identifierQuery);
-                    }
-                }
-            }
-        } else if (ArchiveSearchConsts.AppraisalRuleOrigin.SCOPED.equals(origin)) {
+        
+        if (ArchiveSearchConsts.AppraisalRuleOrigin.SCOPED.equals(origin)) {
             if (appraisalIdentifierCriteria.isPresent()) {
                 BooleanQuery identifierQuery = or();
                 for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
@@ -482,6 +401,48 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                             LocalDateTime.parse(endDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
                         VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
                             ArchiveSearchConsts.CriteriaOperators.LTE, endDtVitamFieldNameScoped,
+                            List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
+                    }
+                    if (intervalQueryByInterval.isReady()) {
+                        appraisalEndQuery.add(intervalQueryByInterval);
+                    }
+                }
+                if (appraisalEndQuery.isReady()) {
+                    appraisalMgtRulesSubQuery.add(appraisalEndQuery);
+                }
+            }
+        } else if (ArchiveSearchConsts.AppraisalRuleOrigin.INHERITED.equals(origin)) {
+            if (appraisalIdentifierCriteria.isPresent()) {
+                BooleanQuery identifierQuery = or();
+                for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
+                    VitamQueryHelper.addParameterCriteria(identifierQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
+                        ruleIdVitamFieldName, List.of(valueIdentifier.getValue()));
+                }
+                if (identifierQuery.isReady()) {
+                    appraisalMgtRulesSubQuery.add(identifierQuery);
+                }
+            }
+            if (appraisalEndDatesCriteria.isPresent()) {
+                BooleanQuery appraisalEndQuery = or();
+                for (CriteriaValue valueEndDate : appraisalEndDatesCriteria.get().getValues()) {
+                    BooleanQuery intervalQueryByInterval = and();
+                    String beginDtStr = valueEndDate.getBeginInterval();
+                    String endDtStr = valueEndDate.getEndInterval();
+
+                    if (!ObjectUtils.isEmpty(beginDtStr)) {
+                        LocalDateTime beginDt =
+                            LocalDateTime.parse(beginDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
+                        VitamQueryHelper
+                            .addParameterCriteria(intervalQueryByInterval, ArchiveSearchConsts.CriteriaOperators.GTE,
+                                endDtVitamFieldName,
+                                List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDt)));
+                    }
+
+                    if (!ObjectUtils.isEmpty(endDtStr)) {
+                        LocalDateTime endDt =
+                            LocalDateTime.parse(endDtStr, ArchiveSearchConsts.ISO_FRENCH_FORMATER);
+                        VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
+                            ArchiveSearchConsts.CriteriaOperators.LTE, endDtVitamFieldName,
                             List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
                     }
                     if (intervalQueryByInterval.isReady()) {

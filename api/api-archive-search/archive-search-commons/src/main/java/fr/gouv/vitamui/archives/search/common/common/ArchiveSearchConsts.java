@@ -105,11 +105,11 @@ public class ArchiveSearchConsts {
             ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#management.AppraisalRule.Rules.EndDate"
         );
     public static Map<String, String> INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#computedInheritedRules.AppraisalRule.EndDates",
-            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#computedInheritedRules.AppraisalRule.MaxEndDate"
+        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#computedInheritedRules.AppraisalRule.Rules.Rule",
+            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#computedInheritedRules.AppraisalRule.Rules.EndDate"
         );
 
-    public static String APPRAISAL_RULE_ORIGIN_INHERITED_FIELD = "#computedInheritedRules.AppraisalRule";
+    public static String APPRAISAL_RULE_ORIGIN_INHERITED_FIELD = "#computedInheritedRules.AppraisalRule.Rules.Rule";
     public static String APPRAISAL_RULE_ORIGIN_SCOPED_FIELD = "#management.AppraisalRule.Rules.Rule";
 
 
