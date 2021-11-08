@@ -78,6 +78,8 @@ import java.util.*;
 public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
+    private final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
+
     private final InternalSecurityService internalSecurityService;
 
     private final IngestExternalClient ingestExternalClient;
@@ -211,7 +213,9 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                manifest = ingestGeneratorODTFile.resourceAsString(resource);
+                manifest = ingestGeneratorODTFile.resourceAsString(resource)
+                    .replaceAll(ILLEGAL_CHARACTERS, "");
+
             }
             LOGGER.info("Manifest EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return manifest;
@@ -230,7 +234,8 @@ public class IngestInternalService {
             Object entity = response.getEntity();
             if (entity instanceof InputStream) {
                 Resource resource = new InputStreamResource((InputStream) entity);
-                atr = ingestGeneratorODTFile.resourceAsString(resource);
+                atr = ingestGeneratorODTFile.resourceAsString(resource)
+                    .replaceAll(ILLEGAL_CHARACTERS, "");
             }
             LOGGER.info("ATR EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             return atr;
@@ -248,8 +253,9 @@ public class IngestInternalService {
         Resource customerLogo = null;
 
         try {
-
-            Document atr = ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
+            LOGGER.info("Generate ODT Report : get Manifest and ATR of the operation ID : {} ", id);
+            Document atr =
+                ingestGeneratorODTFile.convertStringToXMLDocument(getAtrAsString(vitamContext, id));
             Document manifest =
                 ingestGeneratorODTFile.convertStringToXMLDocument(getManifestAsString(vitamContext, id));
             TextDocument document;
@@ -267,8 +273,10 @@ public class IngestInternalService {
             }
             List<ArchiveUnitDto> archiveUnitDtoList = ingestGeneratorODTFile.getValuesForDynamicTable(atr, manifest);
 
+            LOGGER.info("Generate ODT Report : get customer : {} logo ", myCustomer.getId());
             ingestGeneratorODTFile.generateDocumentHeader(document, myCustomer, customerLogo);
 
+            LOGGER.info("Generate ODT Report : generate the first page content ");
             ingestGeneratorODTFile.generateFirstTitle(document);
 
             ingestGeneratorODTFile.generateServicesTable(document, manifest);
@@ -281,12 +289,14 @@ public class IngestInternalService {
 
             document.addPageBreak();
 
+            LOGGER.info("Generate ODT Report : generate the second page content");
             ingestGeneratorODTFile.generateSecondtTitle(document);
 
             ingestGeneratorODTFile.generateArchiveUnitDetailsTable(document, archiveUnitDtoList);
 
             LOGGER.info("Generate ODT Report EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             ByteArrayOutputStream result = new ByteArrayOutputStream();
+
             try {
                 document.save(result);
             } catch (Exception e) {
