@@ -368,7 +368,7 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
         String endDtVitamFieldNameScoped =
             ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING
                 .get(ArchiveSearchConsts.APPRAISAL_RULE_END_DATE);
-        
+
         if (ArchiveSearchConsts.AppraisalRuleOrigin.SCOPED.equals(origin)) {
             if (appraisalIdentifierCriteria.isPresent()) {
                 BooleanQuery identifierQuery = or();
