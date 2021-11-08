@@ -1,1 +1,1 @@
-[{"$or":[{"$eq":{"#management.AppraisalRule.Rules.Rule":"APP-001"}},{"$exists":"#computedInheritedRules.AppraisalRule.EndDates.APP-001"}]}, {"$or":[{"$eq":{"#management.AppraisalRule.FinalAction":"Keep"}},{"$eq":{"#computedInheritedRules.AppraisalRule.FinalAction":"Keep"}}]}]
+[{"$or":[{"$eq":{"#management.AppraisalRule.Rules.Rule":"APP-001"}},{"$eq":{"#computedInheritedRules.AppraisalRule.Rules.Rule":"APP-001"}}]}, {"$or":[{"$eq":{"#management.AppraisalRule.FinalAction":"Keep"}},{"$eq":{"#computedInheritedRules.AppraisalRule.FinalAction":"Keep"}}]}]
