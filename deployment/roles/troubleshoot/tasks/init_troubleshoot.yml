@@ -7,6 +7,15 @@
     mode: 0777
   delegate_to: localhost
 
+- name: ensure zip package is installed on remote vm
+  package:
+    name: zip
+    state: present
+  register: result
+  retries: "{{ packages_install_retries_number }}"
+  until: result is succeeded
+  delay: "{{ packages_install_retries_delay }}"
+
 # If sync_type == 'rsync'
 - block:
 
