@@ -9,11 +9,10 @@
   register: path_files
 
 # Run the rest only if there is files to get
-# Run the rest only if there is files to get
 - name: handle files for conf
   include_tasks: handle_files.yml
   vars:
-    component_name: "{{ component_name }}"
+    component: "{{ component_name }}"
     sufix: conf
 
   

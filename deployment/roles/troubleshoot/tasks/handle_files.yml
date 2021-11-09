@@ -3,34 +3,62 @@
 # Run the rest only if there is files to get
 - block:
 
+  - debug:
+      msg: "Handle {{ suffix }} for {{ component }}"
+
   - name: create list of files
-    set_fact: fichier="{{ item.path }}"
+    set_fact: 
+      fichier:
+        - "{{ item.path }}"
     with_items: "{{ path_files.files }}"
     register: filespath
 
-  - name: Create a temp zip archive from {{ component_name }}
+  - name: set temporary working zip for all
+    set_fact:
+      work_zip_file: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ component }}/{{ component }}_{{ suffix }}.zip"
+      dest_zip_file: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/{{ component }}/{{ component }}_{{ suffix }}.zip"
+
+  - block:
+         
+    - set_fact:
+        files_for_zip: "{{ filespath.results | map(attribute='ansible_facts.fichier') | list | to_json }}"
+
+    - set_fact:
+        path_files_for_zip: "{{ item }}"
+      with_items: "{{ files_for_zip }}"    
+  
+    when: "{{ filespath.results | map(attribute='ansible_facts.fichier') | list | length }} == 1"
+  
+  - block:
+
+    - set_fact:
+        path_files_for_zip: "{{ filespath.results | map(attribute='ansible_facts.fichier') | list }}"
+
+    when: "{{ filespath.results | map(attribute='ansible_facts.fichier') | list | length }} > 1"
+
+  - name: Create a temp zip archive
     archive:
-      path: "{{ filespath.results| map(attribute='ansible_facts.fichier') | list }}"
-      dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ component_name }}/{{ component_name }}_{{ suffix }}.zip"
+      path: "{{ path_files_for_zip }}"
+      dest: "{{ work_zip_file }}"
       format: zip
 
-  - name: fetch zip file from {{ component_name }} with rsync method
+  - name: fetch zip file with rsync method
     synchronize:
       mode: pull
-      src: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ component_name }}/{{ component_name }}_{{ suffix }}.zip"
-      dest: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/{{ component_name }}/"
+      src: "{{ work_zip_file }}"
+      dest: "{{ dest_zip_file }}"
     when: sync_type | default('fetch') | lower == 'rsync'
 
-  - name: fetch zip file from {{ component_name }} with fetch method
+  - name: fetch zip file with fetch method
     fetch:
-      src: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ component_name }}/{{ component_name }}_{{ suffix }}.zip"
-      dest: "{{ inventory_dir }}/troubleshoot/{{ inventory_hostname }}/{{ component_name }}/{{ component_name }}_{{ suffix }}.zip"
+      src: "{{ work_zip_file }}"
+      dest: "{{ dest_zip_file }}"
       flat: yes
     when: sync_type | default('fetch') | lower == 'fetch'
 
   - name: remove temp zip file on host
     file:
-      path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ component_name }}/{{ component_name }}_{{ suffix }}.zip"
+      path: "{{ work_zip_file }}"
       state: absent
 
   when: path_files is defined and path_files.matched > 0

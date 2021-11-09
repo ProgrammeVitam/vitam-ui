@@ -1,46 +1,50 @@
 ---
 
 - name: set mapping service to host
-  map_service_to_host:
-    - { 'key': 'hosts_vitamui_iam_internal' , 'value': 'iam-internal'}
-    - { 'key': 'hosts_vitamui_iam_external' , 'value': 'iam-external'}
-    - { 'key': 'hosts_vitamui_ingest_internal' , 'value': 'ingest-internal'}
-    - { 'key': 'hosts_vitamui_ingest_external' , 'value': 'ingest-external'}
-    - { 'key': 'hosts_vitamui_referential_internal' , 'value': 'referential-internal'}
-    - { 'key': 'hosts_vitamui_referential_external' , 'value': 'referential-external'}
-    - { 'key': 'hosts_vitamui_security_internal' , 'value': 'security-internal'}
-    - { 'key': 'hosts_vitamui_archive_search_internal' , 'value': 'archive-search-internal'}
-    - { 'key': 'hosts_vitamui_archive_search_external' , 'value': 'archive-search-external'}
-    - { 'key': 'hosts_ui_identity' , 'value': 'ui-identity'}
-    - { 'key': 'hosts_ui_portal' , 'value': 'ui-portal'}
-    - { 'key': 'hosts_ui_search' , 'value': 'ui-search'}
-    - { 'key': 'hosts_ui_ingest' , 'value': 'ui-ingest'}
-    - { 'key': 'hosts_ui_referential' , 'value': 'ui-referential'}
-    - { 'key': 'hosts_ui_archive_search' , 'value': 'ui-archive-search'}
-    - { 'key': 'hosts_ui_identity_admin' , 'value': 'ui-identity-admin'}
-    - { 'key': 'hosts_cas_server' , 'value': 'cas-server'}
+  set_fact:
+    services:
+      - 'iam-internal'
+      - 'iam-external'
+      - 'ingest-internal'
+      - 'ingest-external'
+      - 'referential-internal'
+      - 'referential-external'
+      - 'security-internal'
+      - 'archive-search-internal'
+      - 'archive-search-external'
+      - 'ui-identity'
+      - 'ui-portal'
+      - 'ui-search'
+      - 'ui-ingest'
+      - 'ui-referential'
+      - 'ui-archive-search'
+      - 'ui-identity-admin'
+      - 'cas-server'
 
 - name: troubleshoot - init
   include_tasks: init_troubleshoot.yml
-
+  
 - name: troubleshoot - get consul state
   include_tasks: consul_state.yml
 
 - name: troubleshoot - get log for services
   include_tasks: get_app_log.yml
+  vars:
+    component_name: "{{ item }}"
+    suffix: log
   with_items:
-    - "{{ map_service_to_host }}"
+    - "{{ services }}"
 
 - name: troubleshoot - get configuration for service
   include_tasks: get_app_conf.yml
+  vars:
+    component_name: "{{ item }}"
+    suffix: conf
   with_items:
-    - "{{ map_service_to_host }}"
-
-- name: troubleshoot - get reverse configuration
-  include_tasks: get_reverse_conf.yml
+    - "{{ services }}"
 
 - name: troubleshoot - get crt files
-  include_tasks: get_app_conf.yml
+  include_tasks: get_crt_files.yml
   when: get_crt | default(false) | bool == true
 
 - name: troubleshoot - end

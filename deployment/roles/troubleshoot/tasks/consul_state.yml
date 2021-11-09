@@ -1,6 +1,7 @@
 ---
 
 - name: get consul state
+  ignore_errors: true
   uri:
     url: http://{{ ip_admin }}:8500/v1/health/state/any
     return_content: true
