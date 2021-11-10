@@ -43,6 +43,8 @@ clients:
 swagger:
  file-path: file:../../../tools/swagger/docs/api-internal/ingest-internal/swagger.json
 
+tmp_folder_path: "src/main/resources"
+
 logging:
   level:
     fr.gouv.vitamui.ingest: DEBUG

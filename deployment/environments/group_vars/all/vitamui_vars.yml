@@ -325,6 +325,7 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
+    tmp_folder_path : "{{ vitamui_defaults.folder.root_path }}/tmp"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
