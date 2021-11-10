@@ -53,7 +53,7 @@ import lombok.ToString;
 @Document(collection = MongoDbCollections.USER_INFOS)
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @ToString
 public class UserInfo extends IdDocument {
     @NotNull
