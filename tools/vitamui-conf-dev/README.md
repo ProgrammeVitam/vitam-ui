@@ -21,7 +21,7 @@ to download a specific version (example 2.15.3) of VITAM virtual machine, [see](
 ### 1 - Steps after downloading the VITAM VM
 
 After downloading the VITAM Virtual Machine, launch it using either [VirtualBox](https://www.virtualbox.org/) or [VM Ware](https://www.vmware.com)
-dans ce qui suit, le lancement est fait avec VirtualBox.
+below the process to launch the VM with VirtualBox
 
 ### 1a - Starting checks
  
@@ -92,9 +92,9 @@ In this step we are going to send a real SIP to VITAM, see the screen example
 
 use this request to reproduce it in your local: 
 
->`bash$ curl -XPOST -v  -k --key ./key.pem --cert ./crt.pem https://@yourIP:8443/ingest-external/v1/ingests  -H 'X-Tenant-Id: 0' -H 'X-Action: RESUME' -H 'Accept: application/json' -H 'X-Chunk-Offset:0' -H 'X-Context-Id: DEFAULT_WORKFLOW' -H 'Content-Type: application/octet-stream' -H 'X-Size-Total: Size-2510 (verify size of sip.zip)' --data-binary @path/to/some/valid/sip.zip`
+>`bash$ curl -XPOST -v  -k --key ./key.pem --cert ./crt.pem https://@yourIP:8443/ingest-external/v1/ingests  -H 'X-Tenant-Id: 0' -H 'X-Action: RESUME' -H 'Accept: application/json' -H 'X-Chunk-Offset:0' -H 'X-Context-Id: DEFAULT_WORKFLOW' -H 'Content-Type: application/octet-stream' -H 'X-Size-Total: size (verify size of sip.zip)' --data-binary @path/to/some/valid/sip.zip`
 
-> :warning: change `@yourIP`, `Size-2510` and the `path/to/some/valid/sip.zip` before launching the command
+> :warning: change `@yourIP`, `X-Size-Total` and the `path/to/some/valid/sip.zip` before launching the command
 
 ### 1c - Configure VITAMUI to access Vitam APIs
 The final Step is to configure VITAMUI modules that interacts with VITAM.
@@ -104,12 +104,49 @@ the `IAM` module and the `Ingest` module. specifically the `IAM-Internal` and `I
 #### Copie VITAM configuration files and necessary certificates to VITAMUI modules
 Under the `conf` directory of this two modules, a directory called `vitam-dev` directory for dev purposes as it's name indicate.
 at this level you should copy 4 necessary files:
-- `access-external-client.conf` [download](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/access-external-client.conf)
-- `ingest-external-client.conf` [download](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/ingest-external-client.conf)
-- `keystore_ihm-demo.p12` [download](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/keystore_ihm-demo.p12)
-- `truststore_ihm-demo.jks` [download](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/truststore_ihm-demo.jks)
+- `access-external-client.conf` [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/access-external-client.conf](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/access-external-client.conf)
+- `ingest-external-client.conf` [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/ingest-external-client.conf](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/ingest-external-client.conf)
+- `keystore_ihm-demo.p12` [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/keystore_ihm-demo.p12](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/keystore_ihm-demo.p12)
+- `truststore_ihm-demo.jks` [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/truststore_ihm-demo.jks](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/truststore_ihm-demo.jks)
 
 copy them to the `vitam-dev` directory of the two modules.
 
-these files are accessible here : [4 files](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo)
+these files are accessible here : [localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo](localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo)
 
+### Upgrading PKI (Public Key Infrastructure) in case of Certificates expiration:
+
+In your virtual machine, go to path `/code/deployment/`
+
+#### Modifying the configuration file:
+
+Modify the file `environments/vitam_pf_vars.yml`, comment the line `admin_context_certs`
+
+#### Regenerating the vitam PKI:
+
+To do that, execute the following command lines :
+
+- Generate the CA (Certificate Authorities):
+ `bash$ ./pki/scripts/generate_ca.sh true`
+
+- Generate new Certificates
+ `bash$ ./pki/scripts/generate_certs.sh environments/hosts.demo true`
+
+- Generate the keystores (truststores, keystores, p12 and jks):
+ `bash$ ./generate_stores.sh true`
+
+#### Pushing the new PKI generate:
+Push the new PKI generated in the previous step, by executing the following commands, always from `/code/deployment` location
+
+- `bash$ ansible-playbook ansible-vitam/vitam.yml -i environments/hosts.demo --vault-password-file vault_pass.txt -e confirmation=yes
+--tags update_vitam_certificates --extra-vars=@environments/vitam_pf_vars.yml
+--extra-vars=@environments/environments_vars.yml`
+
+- `bash$ ansible-playbook ansible-vitam-extra/extra.yml -i environments/hosts.demo --vault-password-file vault_pass.txt -e confirmation=yes
+--tags update_vitam_certificates --extra-vars=@environments/vitam_pf_vars.yml
+--extra-vars=@environments/environments_vars.yml`
+
+update_vitam_certificates is an ansible tag the will target the specific locations to update only certificates.
+
+#### Reboot the VM
+
+Restart the VM, and check that all the services are up'running in consul, and check that stores are updated in services at `/vitam/conf/{vitam-service-name}`
