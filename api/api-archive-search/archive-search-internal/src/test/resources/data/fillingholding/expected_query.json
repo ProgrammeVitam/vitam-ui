@@ -1,0 +1,31 @@
+{
+  "$roots": [],
+  "$query": [
+    {
+      "$in": {
+        "#unitType": [
+          "HOLDING_UNIT",
+          "FILING_UNIT"
+        ]
+      }
+    }
+  ],
+  "$filter": {
+    "$limit": 10000,
+    "$orderby": {
+      "Title": 1
+    }
+  },
+  "$projection": {
+    "$fields": {
+      "#id": 1,
+      "Title": 1,
+      "Title_": 1,
+      "DescriptionLevel": 1,
+      "#unitType": 1,
+      "#unitups": 1,
+      "#allunitups": 1
+    }
+  },
+  "$facets": []
+}

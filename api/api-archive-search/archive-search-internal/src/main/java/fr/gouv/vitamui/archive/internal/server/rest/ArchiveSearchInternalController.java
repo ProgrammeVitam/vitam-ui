@@ -29,10 +29,6 @@ package fr.gouv.vitamui.archive.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.query.Query;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
@@ -42,12 +38,10 @@ import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import lombok.Getter;
@@ -70,9 +64,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
-
 @RestController
 @RequestMapping(RestApi.ARCHIVE_SEARCH_PATH)
 @Getter
@@ -82,9 +73,6 @@ public class ArchiveSearchInternalController {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
-
-    private static final String[] FILING_PLAN_PROJECTION =
-        new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
 
     private final ArchiveSearchInternalService archiveInternalService;
 
@@ -126,25 +114,8 @@ public class ArchiveSearchInternalController {
         ParameterChecker.checkParameter("The tenant Id, the accessContract Id  are mandatory parameters: ", tenantId,
             accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        final JsonNode holdingQuery = createQueryForHoldingUnit();
-        return objectMapper.treeToValue(archiveInternalService.searchArchiveUnits(holdingQuery, vitamContext),
+        return objectMapper.treeToValue(archiveInternalService.getFillingHoldingScheme(vitamContext),
             VitamUISearchResponseDto.class);
-    }
-
-    private JsonNode createQueryForHoldingUnit() {
-        try {
-            final SelectMultiQuery select = new SelectMultiQuery();
-            final Query query =
-                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
-            select.addQueries(query);
-            select.addUsedProjection(FILING_PLAN_PROJECTION);
-            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
-            return select.getFinalSelect();
-        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
-            throw new UnexpectedDataException(
-                "Unexpected error occured while building holding dsl query : " + e.getMessage());
-        }
-
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)

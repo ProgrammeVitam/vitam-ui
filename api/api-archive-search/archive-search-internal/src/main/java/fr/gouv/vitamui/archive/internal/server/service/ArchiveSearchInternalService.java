@@ -37,6 +37,7 @@ import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.facet.FacetHelper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
@@ -46,9 +47,9 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.dip.DataObjectVersions;
+import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitam.common.model.export.dip.DipExportType;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
-import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
@@ -65,6 +66,7 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
@@ -72,6 +74,7 @@ import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,6 +103,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
+import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 
 /**
  * Archive-Search Internal service communication with VITAM.
@@ -121,8 +126,9 @@ public class ArchiveSearchInternalService {
     public static final String NEW_TAB = "\t";
     public static final String NEW_LINE_1 = "\r\n";
     public static final String OPERATION_IDENTIFIER = "itemId";
-
     public static final String SPACE = " ";
+    private static final String[] FILING_PLAN_PROJECTION =
+        new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
 
     private final ObjectMapper objectMapper;
     private final UnitService unitService;
@@ -245,6 +251,11 @@ public class ArchiveSearchInternalService {
         throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.searchUnits(dslQuery, vitamContext);
         return response.toJsonNode();
+    }
+
+    public JsonNode getFillingHoldingScheme(VitamContext vitamContext) throws VitamClientException {
+        final JsonNode fillingHoldingQuery = createQueryForHoldingFillingUnit();
+        return searchArchiveUnits(fillingHoldingQuery, vitamContext);
     }
 
     public ResultsDto findArchiveUnitById(String id, VitamContext vitamContext) throws VitamClientException {
@@ -628,6 +639,26 @@ public class ArchiveSearchInternalService {
             dipRequest.setDipRequestParameters(exportDipCriteriaDto.getDipRequestParameters());
         }
         return dipRequest;
+    }
+
+    public JsonNode createQueryForHoldingFillingUnit() {
+        try {
+            final SelectMultiQuery select = new SelectMultiQuery();
+            final Query query =
+                in(unitType(), UnitTypeEnum.HOLDING_UNIT.getValue(), UnitTypeEnum.FILING_UNIT.getValue());
+            select.addQueries(query);
+            ObjectNode orderFilter = JsonHandler.createObjectNode();
+            orderFilter.put("Title", 1);
+            ObjectNode filter = JsonHandler.createObjectNode();
+            filter.set("$orderby", orderFilter);
+            select.setFilter(filter);
+            select.addUsedProjection(FILING_PLAN_PROJECTION);
+            LOGGER.debug("query =", select.getFinalSelect().toPrettyString());
+            return select.getFinalSelect();
+        } catch (InvalidCreateOperationException | InvalidParseOperationException e) {
+            throw new UnexpectedDataException(
+                "Unexpected error occured while building holding dsl query : " + e.getMessage());
+        }
     }
 
     public JsonNode exportDIP( final VitamContext vitamContext,  DipRequest dipRequest)
