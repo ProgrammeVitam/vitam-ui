@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Upgrade build context') {
 	    when {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
@@ -67,8 +67,8 @@ pipeline {
                 sh 'node -v'
                 sh '/usr/bin/node -v'
                 sh 'npm -v'
-                sh 'sudo rm /usr/local/bin/node'
-                sh 'sudo rm /usr/local/bin/npm'
+                sh 'sudo rm /usr/local/bin/node || true'
+                sh 'sudo rm /usr/local/bin/npm || true'
                 sh 'node -v;npm -v'
             }
         }
