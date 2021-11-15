@@ -82,6 +82,7 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     TranslateModule
   ],
   declarations: [
+    EditableFieldComponent,
     EditableButtonToggleComponent,
     EditableDurationInputComponent,
     EditableEmailInputComponent,
@@ -97,6 +98,7 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     SubLevelPipe,
   ],
   exports: [
+    EditableFieldComponent,
     EditableInputComponent,
     EditableOptionComponent,
     EditableSelectComponent,
@@ -110,6 +112,8 @@ import { MultipleEmailInputComponent } from './multiple-email-input/multiple-ema
     EditableDurationInputComponent,
     HumanizedDurationPipe,
     SubLevelPipe,
+    LevelInputModule,
+    EmailsInputModule
   ]
 })
 export class EditableFieldModule { }

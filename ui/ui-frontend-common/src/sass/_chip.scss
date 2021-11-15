@@ -51,4 +51,9 @@
   &:disabled {
     border: 1px solid var(--vitamui-grey);
   }
+
+  &.activated {
+    color: white !important;
+    background-color: #2c76c9 !important;
+  }
 }

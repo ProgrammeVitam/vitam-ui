@@ -1,0 +1,85 @@
+@import '../../../../sass/variables/colors';
+
+$anim-timing: 150ms ease-out;
+
+:host {
+  width: 100%;
+  display: block;
+}
+
+mat-chip i,
+mat-chip span {
+  vertical-align: middle;
+}
+
+.list-input-control {
+  // margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+
+  .list-input-wrapper {
+    position: relative;
+    margin-right: 15px;
+    flex-grow: 1;
+
+    .vitamui-input.max-width {
+      max-width: unset;
+    }
+
+    mat-spinner {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+    }
+  }
+}
+
+.vitamui-chip-list {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.vitamui-chip {
+  color: var(--vitamui-grey-900);
+  border: 1px solid var(--vitamui-grey-900);
+
+  &:not(.disabled), &:not(:disabled) {
+    box-shadow: none;
+  }
+}
+
+.vitamui-remove-chip {
+  color: var(--vitamui-grey-900) !important;
+  border-left: 1px solid var(--vitamui-grey-900) !important;
+}
+
+:host.list-input-mini {
+  .list-input-control {
+    button, input {
+      height: 34px;
+      border-radius: 17px;
+    }
+
+    > span {
+      font-size: 18px;
+    }
+
+    mat-spinner {
+      right: 8px;
+      top: 8px;
+    }
+  }
+
+  .vitamui-chip-list {
+    padding-left: 27px;
+  }
+}
+
+.white {
+  color: white;
+}
+
+.required-marker {
+  color: $red;
+}

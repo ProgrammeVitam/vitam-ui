@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {debounceTime} from "rxjs/operators";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {debounceTime} from 'rxjs/operators';
 
 @Component({
   selector: 'vitamui-interval-date-picker',
@@ -8,40 +8,14 @@ import {debounceTime} from "rxjs/operators";
   styleUrls: ['./vitamui-interval-date-picker.component.scss']
 })
 export class VitamuiIntervalDatePickerComponent implements OnInit {
-  @Input() label: string;
-  @Output() criteriaChange = new EventEmitter<{ startDateMin: string; startDateMax: string }>();
-
-  dateRangeFilterForm: FormGroup;
-  showStartDateMax = false;
-  searchCriteria: any = {};
 
   constructor(private formBuilder: FormBuilder) {}
+  @Input() label: string;
+  @Output() criteriaChange = new EventEmitter<{ dateMin: string; dateMax: string }>();
 
-  ngOnInit(): void {
-    this.dateRangeFilterForm = this.formBuilder.group({
-      startDateMin: null,
-      startDateMax: null,
-    });
-
-    this.dateRangeFilterForm.valueChanges.pipe(debounceTime(200)).subscribe((value) => {
-      if (value) {
-        this.searchCriteria = {
-          startDateMin: null,
-          startDateMax: null,
-        };
-
-        if (value.startDateMin != null) {
-          this.searchCriteria.startDateMin = VitamuiIntervalDatePickerComponent.fetchDate(value.startDateMin);
-        }
-
-        if (value.startDateMax != null) {
-          this.searchCriteria.startDateMax = VitamuiIntervalDatePickerComponent.fetchDate(value.startDateMax);
-        }
-
-        this.criteriaChange.emit(this.searchCriteria);
-      }
-    });
-  }
+  dateRangeFilterForm: FormGroup;
+  showDateMax = false;
+  searchCriteria: any = {};
 
   private static fetchDate(boundedDate: string) {
     return (
@@ -69,20 +43,46 @@ export class VitamuiIntervalDatePickerComponent implements OnInit {
     }
   }
 
+  ngOnInit(): void {
+    this.dateRangeFilterForm = this.formBuilder.group({
+      dateMin: null,
+      dateMax: null,
+    });
+
+    this.dateRangeFilterForm.valueChanges.pipe(debounceTime(200)).subscribe((value) => {
+      if (value) {
+        this.searchCriteria = {
+          dateMin: null,
+          dateMax: null,
+        };
+
+        if (value.dateMin != null) {
+          this.searchCriteria.dateMin = VitamuiIntervalDatePickerComponent.fetchDate(value.dateMin);
+        }
+
+        if (value.dateMax != null) {
+          this.searchCriteria.dateMax = VitamuiIntervalDatePickerComponent.fetchDate(value.dateMax);
+        }
+
+        this.criteriaChange.emit(this.searchCriteria);
+      }
+    });
+  }
+
   showIntervalDate(value: boolean) {
-    this.showStartDateMax = value;
+    this.showDateMax = value;
     if (!value) {
-      this.clearDate('startDateMax');
+      this.clearDate('dateMax');
     }
   }
 
-  clearDate(date: 'startDateMin' | 'startDateMax') {
-    if (date === 'startDateMin') {
+  clearDate(date: 'dateMin' | 'dateMax') {
+    if (date === 'dateMin') {
       this.dateRangeFilterForm.get(date).reset(null);
-      this.searchCriteria.startDateMin = null;
-    } else if (date === 'startDateMax') {
+      this.searchCriteria.dateMin = null;
+    } else if (date === 'dateMax') {
       this.dateRangeFilterForm.get(date).reset(null);
-      this.searchCriteria.startDateMax = null;
+      this.searchCriteria.dateMax = null;
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }

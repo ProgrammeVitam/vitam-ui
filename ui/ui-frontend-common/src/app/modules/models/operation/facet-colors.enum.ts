@@ -27,8 +27,10 @@
 
 export enum Colors {
   DEFAULT = '#757575',
+  DISABLED = '#eaeaea',
   FATAL_COLOR = '#c10000',
   KO_COLOR = 'red',
   WARNING_COLOR = 'orange',
   OK_COLOR = '#27740a',
+  BLACK = '#000000',
 }

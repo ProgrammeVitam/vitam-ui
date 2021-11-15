@@ -59,6 +59,7 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
@@ -110,7 +111,15 @@ public class AccessionRegisterDetailInternalService {
         //Fetch agencies to complete return Dto 'originatingAgencyLabel' property
         Map<String, String> agenciesMap = findAgencies(vitamContext, results);
 
-        boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
+        HitsDto hits = results.getHits();
+        Integer resultSize = 0;
+        Integer resultTotal = 0;
+        if(hits != null) {
+            resultSize = hits.getSize();
+            resultTotal = hits.getTotal();
+        }
+
+        boolean hasMore = pageNumber * size + resultSize < resultTotal;
         List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
         valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
 
