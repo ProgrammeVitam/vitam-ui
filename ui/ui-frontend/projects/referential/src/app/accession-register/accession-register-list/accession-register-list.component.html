@@ -12,10 +12,10 @@
         <div class="col-1">
           <span>{{ 'ACCESSION_REGISTER.LIST.DATE' | translate }}</span>
           <vitamui-common-order-by-button
-            orderByKey="StartDate"
+            orderByKey="EndDate"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
+            (orderChange)="emitOrderChange($event)"
           ></vitamui-common-order-by-button>
         </div>
         <div class="col-3">
@@ -27,7 +27,7 @@
             orderByKey="OriginatingAgency"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
+            (orderChange)="emitOrderChange($event)"
           ></vitamui-common-order-by-button>
         </div>
         <div class="col-1">
@@ -36,16 +36,16 @@
             orderByKey="ArchivalAgreement"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
+            (orderChange)="emitOrderChange($event)"
           ></vitamui-common-order-by-button>
         </div>
         <div class="col-1">
           <span>{{ 'ACCESSION_REGISTER.LIST.ACQUISITION_INFORMATION' | translate }}</span>
           <vitamui-common-order-by-button
-            orderByKey="OpType"
+            orderByKey="AcquisitionInformation"
             [(orderBy)]="orderBy"
             [(direction)]="direction"
-            (orderChange)="emitOrderChange()"
+            (orderChange)="emitOrderChange($event)"
           ></vitamui-common-order-by-button>
         </div>
         <div class="col-1">
@@ -89,7 +89,7 @@
           (click)="onSelectRow(accessionRegisterDetail)"
         >
           <div class="vitamui-row d-flex align-items-center clickable">
-            <div class="col-1">{{ accessionRegisterDetail.startDate | date: 'dd/MM/yyyy' }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.endDate | date: 'dd/MM/yyyy' }}</div>
             <div class="col-3">{{ accessionRegisterDetail.opi }}</div>
             <div class="col-1">
               <p

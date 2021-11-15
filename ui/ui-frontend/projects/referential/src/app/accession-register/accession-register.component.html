@@ -9,12 +9,29 @@
         placeholder="{{ 'ACCESSION_REGISTER.SEARCH_BAR_PLACEHOLDER' | translate }}"
         (search)="onSearchSubmit($event)"
       >
+        <div class="d-flex div-btn-delete ml-3">
+          <button class="mat-boutton">
+            <button
+              (click)="resetAdvancedSearch()"
+              type="button"
+              class="circle editable-field-cancel clickable">
+              <i class="material-icons primary-save-icon">delete</i>
+            </button>
+          </button>
+          <strong class="ml-3" *ngIf="isAdvancedFormChanged$|async">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH_FILTERS_ACTIVATED' | translate }}</strong>
+        </div>
       </search-bar-with-sibling-button>
+
+      <app-accession-register-advanced-search
+        [ngClass]="{'hide-panel': !(advancedSearchPanelOpenState$|async)}"
+        (showAdvancedSearchPanel)="openAdvancedSearchPanel()"
+      >
+      </app-accession-register-advanced-search>
     </div>
     <div class="vitamui-content">
       <div>
         <app-accession-register-facets
-          (showAdvancedSearchPanel)="openAdvancedSearchPanel($event)"
+          (showAdvancedSearchPanel)="openAdvancedSearchPanel()"
         >
         </app-accession-register-facets>
       </div>

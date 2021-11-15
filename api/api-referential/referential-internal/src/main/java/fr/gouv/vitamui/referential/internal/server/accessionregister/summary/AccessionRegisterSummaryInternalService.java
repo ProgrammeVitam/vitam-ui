@@ -40,7 +40,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper;
@@ -58,16 +57,16 @@ import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,8 +78,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.range;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.wildcard;
 
@@ -99,7 +101,14 @@ public class AccessionRegisterSummaryInternalService {
     private static final String STATUS = "Status";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
     private static final String DATE_FORMAT = "dd/MM/yyyy";
-    private static final String START_DATE = "StartDate";
+    private static final String END_DATE = "EndDate";
+    private static final String ARCHIVAL_AGREEMENT = "ArchivalAgreement";
+    private static final String ARCHIVAL_PROFILE = "ArchivalProfile";
+    private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
+    private static final String EVENTS_OPTYPE = "Events.OpType";
+    private static final String ELIMINATION = "ELIMINATION";
+    private static final String TRANSFER = "TRANSFER";
+    private static final String PRESERVATION = "PRESERVATION";
 
     @Autowired
     AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService,
@@ -129,26 +138,25 @@ public class AccessionRegisterSummaryInternalService {
         List<AccessionRegisterSummaryDto> customAccessionRegisterSummaries =
             getCustomAccessionRegisterSummaries(vitamContext, detailsSearchDto);
 
-        LOGGER.info("################ customAccessionRegisterSummaries : {} ", customAccessionRegisterSummaries);
         if(customAccessionRegisterSummaries == null) {
             throw new InternalServerException("Unable to find accessionRegister Summaries");
         }
 
         long totalUnits = customAccessionRegisterSummaries.stream().parallel()
             .map(AccessionRegisterSummaryDto::getTotalUnits)
-            .map(RegisterValueDetailModel::getRemained).mapToLong(Long::longValue).sum();
+            .map(RegisterValueDetailModel::getIngested).mapToLong(Long::longValue).sum();
 
         long totalObjectsGroups = customAccessionRegisterSummaries.stream().parallel()
             .map(AccessionRegisterSummaryDto::getTotalObjectsGroups)
-            .map(RegisterValueDetailModel::getRemained).mapToLong(Long::longValue).sum();
+            .map(RegisterValueDetailModel::getIngested).mapToLong(Long::longValue).sum();
 
         long totalObjects = customAccessionRegisterSummaries.stream().parallel()
             .map(AccessionRegisterSummaryDto::getTotalObjects)
-            .map(RegisterValueDetailModel::getRemained).mapToLong(Long::longValue).sum();
+            .map(RegisterValueDetailModel::getIngested).mapToLong(Long::longValue).sum();
 
         long objectSizes = customAccessionRegisterSummaries.stream().parallel()
             .map(AccessionRegisterSummaryDto::getObjectSize)
-            .map(RegisterValueDetailModel::getRemained).mapToLong(Long::longValue).sum();
+            .map(RegisterValueDetailModel::getIngested).mapToLong(Long::longValue).sum();
 
         return new AccessionRegisterStatsDto(totalUnits, totalObjectsGroups, totalObjects, objectSizes);
     }
@@ -156,16 +164,16 @@ public class AccessionRegisterSummaryInternalService {
     public List<AccessionRegisterSummaryDto> getCustomAccessionRegisterSummaries(VitamContext context, AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.info("Context application Session ID : {} ", context.getApplicationSessionId());
+            LOGGER.debug("Context application Session ID : {} ", context.getApplicationSessionId());
 
             JsonNode detailsQuery = buildCustomAccessionRegisterDetailsQuery(detailsSearchDto);
-            LOGGER.info("################ detailsQuery : {} ", detailsQuery);
+
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient
                 .findAccessionRegisterDetails(context, detailsQuery);
-            LOGGER.info("################ accessionRegisterDetails : {} ", accessionRegisterDetails);
+
             AccessionRegisterDetailResponseDto results = objectMapper
                 .treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
-            LOGGER.info("################ results : {} ", results);
+
 
             List<String> distinctOriginatingAgencies = new ArrayList<>();
             if (results != null) {
@@ -175,16 +183,13 @@ public class AccessionRegisterSummaryInternalService {
                     .filter(originatingAgency -> ConcurrentHashMap.newKeySet().add(originatingAgency))
                     .collect(Collectors.toList());
             }
-            LOGGER.info("################ distinctOriginatingAgencies : {} ", distinctOriginatingAgencies);
+            LOGGER.debug("Distinct Originating Agencies : {} ", distinctOriginatingAgencies);
 
             JsonNode query = buildCustomAccessionRegisterSummariesQuery(distinctOriginatingAgencies);
-            LOGGER.info("################ query : {} ", query);
             requestResponse = accessionRegisterService.findAccessionRegisterSummaryByQuery(context, query);
-            LOGGER.info("################ requestResponse.toJsonNode() : {} ", requestResponse.toJsonNode());
-
             final AccessionRegisterSummaryResponseDto accessionRegisterSummaryResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
-            LOGGER.info("################ accessionRegisterSummaryResponseDto : {} ", accessionRegisterSummaryResponseDto);
+
             return AccessionRegisterSummaryConverter.convertVitamsToDtos(accessionRegisterSummaryResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException | InvalidCreateOperationException | ParseException e) {
             throw new InternalServerException("Unable to find accessionRegister Summaries", e);
@@ -199,7 +204,6 @@ public class AccessionRegisterSummaryInternalService {
 
         if(detailsSearchDto.getSearchText() != null) {
             query.add(wildcard(ORIGINATING_AGENCY, "*"+detailsSearchDto.getSearchText()+"*"));
-            select.setQuery(query);
         }
 
         if(detailsSearchDto.getStatusFilter() != null && !detailsSearchDto.getStatusFilter().isEmpty()
@@ -208,27 +212,75 @@ public class AccessionRegisterSummaryInternalService {
             query.add(in(STATUS, stringValues.toArray(new String[] {})));
         }
 
-        if(detailsSearchDto.getDateInterval() != null) {
-            AccessionRegisterDetailsSearchStatsDto.DateInterval dateInterval = detailsSearchDto.getDateInterval();
+        addStartDateToQuery(query, detailsSearchDto.getDateInterval());
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
-            String dateMinStr = dateInterval.getStartDateMin();
-            String dateMaxStr = dateInterval.getStartDateMax();
+        if(detailsSearchDto.getAdvancedSearch() != null) {
+            AccessionRegisterDetailsSearchStatsDto.AdvancedSearchData advancedSearch = detailsSearchDto.getAdvancedSearch();
 
-            if(dateMinStr != null && dateMaxStr == null) {
-                query.add(lte(START_DATE, formatter.parse(dateMinStr)));
+            addQueryFrom(query, advancedSearch.getOriginatingAgencies(), ORIGINATING_AGENCY);
+            addQueryFrom(query, advancedSearch.getArchivalAgreements(), ARCHIVAL_AGREEMENT);
+            addQueryFrom(query, advancedSearch.getArchivalProfiles(), ARCHIVAL_PROFILE);
+
+            if(CollectionUtils.isNotEmpty(advancedSearch.getAcquisitionInformations())) {
+                List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
+                acquisitionInformations.removeAll(advancedSearch.getAcquisitionInformations());
+                if(!acquisitionInformations.isEmpty()) {
+                    query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+                }
             }
 
-            if(dateMinStr == null && dateMaxStr != null) {
-                query.add(lte(START_DATE, formatter.parse(dateMaxStr)));
-            }
+            addEventOpTypeQuery(query, advancedSearch.getElimination(), ELIMINATION);
+            addEventOpTypeQuery(query, advancedSearch.getElimination(), TRANSFER);
+            addEventOpTypeQuery(query, advancedSearch.getElimination(), PRESERVATION);
 
-            if(dateMinStr != null && dateMaxStr != null) {
-                query.add(range(START_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
-            }
+        }
+
+        if(!query.getQueries().isEmpty()) {
+            select.setQuery(query);
         }
 
         return select.getFinalSelect();
+    }
+
+    private static void addStartDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)
+        throws ParseException, InvalidCreateOperationException {
+
+        if(dateInterval != null) {
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+            String dateMinStr = dateInterval.getEndDateMin();
+            String dateMaxStr = dateInterval.getEndDateMax();
+
+            if (dateMinStr != null && dateMaxStr == null) {
+                query.add(lte(END_DATE, formatter.parse(dateMinStr)));
+            }
+
+            if (dateMinStr == null && dateMaxStr != null) {
+                query.add(lte(END_DATE, formatter.parse(dateMaxStr)));
+            }
+
+            if (dateMinStr != null && dateMaxStr != null) {
+                query.add(range(END_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+            }
+        }
+    }
+
+    private static void addQueryFrom(BooleanQuery query, List<String> values, String searchKeyUpperCase)
+        throws InvalidCreateOperationException {
+        if(CollectionUtils.isNotEmpty(values)) {
+            query.add(in(searchKeyUpperCase, values.toArray(new String[] {})));
+        }
+    }
+
+    private static void addEventOpTypeQuery(BooleanQuery query, String value, String searchKeyUpperCase)
+        throws InvalidCreateOperationException {
+        if(value != null && !value.equals("all")) {
+            boolean cond = Boolean.parseBoolean(value);
+            if(cond) {
+                query.add(eq(EVENTS_OPTYPE, searchKeyUpperCase));
+            } else {
+                query.add(ne(EVENTS_OPTYPE, searchKeyUpperCase));
+            }
+        }
     }
 
     public static JsonNode buildCustomAccessionRegisterSummariesQuery(List<String> distinctOriginatingAgencies)

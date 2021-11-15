@@ -35,9 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
-import { BehaviorSubject, merge, Observable, Subject, Subscription } from 'rxjs';
-import { debounceTime, startWith } from 'rxjs/operators';
-import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
+import { AccessionRegisterDetail, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, OjectUtils, PageRequest } from 'ui-frontend-common';
 import { AccessionRegistersService } from '../accession-register.service';
 
 @Component({
@@ -49,99 +49,133 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   @Output() accessionRegisterClick = new EventEmitter<AccessionRegisterDetail>();
   @Input('search')
   set searchText(searchText: string) {
-    this._searchText = searchText;
+    this.entryToSearch = searchText;
     this.searchChange.next(searchText);
     this.accessionRegistersService.notifySearchChange(searchText);
   }
 
-  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  private readonly searchChange = new Subject<string>();
-  private readonly orderChange = new Subject<string>();
-  private readonly searchKeys = ['OriginatingAgency', 'Opi'];
-  private _searchText: string;
-
   filterDebounceTimeMs = 400;
   direction = Direction.DESCENDANT;
   orderBy = 'StartDate';
+
+  private filterChange = new BehaviorSubject<{ [key: string]: any[] }>({});
+  private searchChange = new BehaviorSubject<string>(null);
+  private orderChange = new BehaviorSubject<string>(this.orderBy);
+  private searchKeys = ['OriginatingAgency', 'Opi'];
+  private entryToSearch: string;
 
   statusFilterOptions$: Observable<Array<{ value: string; label: string }>>;
   filterMap: { [key: string]: any[] } = {
     Status: [],
   };
 
-  dateIntervalChanges$: BehaviorSubject<{ startDateMin: string; startDateMax: string }> = new BehaviorSubject({
-    startDateMin: null,
-    startDateMax: null,
-  });
-
   searchSub: Subscription;
+  advancedSearchSub: Subscription;
 
   constructor(public accessionRegistersService: AccessionRegistersService, @Inject(LOCALE_ID) private locale: string) {
     super(accessionRegistersService);
   }
 
   ngOnInit() {
-    this.searchSub = merge(this.searchChange, this.filterChange, this.orderChange, this.dateIntervalChanges$)
-      .pipe(startWith(null), debounceTime(this.filterDebounceTimeMs))
-      .subscribe(() => this.search());
     this.statusFilterOptions$ = this.accessionRegistersService.getAccessionRegisterStatus(this.locale);
-    this.dataSource$.subscribe((data) => this.accessionRegistersService.notifyDataSourceChange(data));
-    this.accessionRegistersService.getDateIntervalChanges().subscribe((dateInterval) => this.dateIntervalChanges$.next(dateInterval));
+    this.advancedSearchSub = this.accessionRegistersService
+      .getGlobalSearchButtonEvent()
+      .pipe(
+        withLatestFrom(
+          this.searchChange,
+          this.filterChange,
+          this.orderChange,
+          this.accessionRegistersService.getDateIntervalChanges(),
+          this.accessionRegistersService.getAdvancedSearchData()
+        )
+      )
+      .subscribe((changes) => {
+        const globalSearch = changes[0];
+        if (globalSearch) {
+          this.searchRequest();
+        }
+      });
   }
 
   ngOnDestroy() {
-    this.searchSub.unsubscribe();
+    this.searchSub?.unsubscribe();
+    this.advancedSearchSub?.unsubscribe();
   }
 
-  //Gestion de la recherche
-  search() {
+  // Gestion de la recherche
+  searchRequest() {
+    const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
+    const avancedSearchData: any = this.accessionRegistersService.getAdvancedSearchData().getValue();
     const query: any = {};
     this.addCriteriaFromSearch(query);
     this.addCriteriaFromFilters(query);
-    this.addCriteriaFromDateFilters(query);
+    this.addCriteriaFromDateFilters(query, dateInterval);
+    this.addAdvancedCriteriaData(query, avancedSearchData);
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
     super.search(pageRequest);
   }
 
-  addCriteriaFromDateFilters(query: any) {
-    const currentDateInterval = this.dateIntervalChanges$.getValue();
-    if (currentDateInterval.startDateMin !== null || currentDateInterval.startDateMax !== null) {
-      query['StartDate'] = currentDateInterval;
+  addAdvancedCriteriaData(query: any, avancedSearchData: any) {
+    if (avancedSearchData === null) {
+      return;
     }
-    // const currentDateInterval = this.dateIntervalChanges$.getValue();
-    // if (currentDateInterval.startDateMin !== null && currentDateInterval.startDateMax === null) {
-    //   query['StartDate'] = currentDateInterval.startDateMin;
-    // }
-    //
-    // if (currentDateInterval.startDateMin === null && currentDateInterval.startDateMax !== null) {
-    //   query['StartDate'] = currentDateInterval.startDateMax;
-    // }
-    //
-    // if (currentDateInterval.startDateMin !== null && currentDateInterval.startDateMax !== null) {
-    //   query['StartDate'] = currentDateInterval;
-    // }
+
+    if (OjectUtils.arrayNotUndefined(avancedSearchData.originatingAgencies)) {
+      query.originatingAgencies = avancedSearchData.originatingAgencies;
+    }
+
+    if (OjectUtils.arrayNotUndefined(avancedSearchData.archivalAgreements)) {
+      query.archivalAgreements = avancedSearchData.archivalAgreements;
+    }
+
+    if (OjectUtils.arrayNotUndefined(avancedSearchData.archivalProfiles)) {
+      query.archivalProfiles = avancedSearchData.archivalProfiles;
+    }
+
+    if (OjectUtils.arrayNotUndefined(avancedSearchData.acquisitionInformations)) {
+      query.acquisitionInformations = avancedSearchData.acquisitionInformations;
+    }
+
+    if (OjectUtils.valueNotUndefined(avancedSearchData.elimination)) {
+      query.elimination = avancedSearchData.elimination;
+    }
+
+    if (OjectUtils.valueNotUndefined(avancedSearchData.transfer)) {
+      query.transfer = avancedSearchData.transfer;
+    }
+
+    if (OjectUtils.valueNotUndefined(avancedSearchData.preservation)) {
+      query.preservation = avancedSearchData.preservation;
+    }
+  }
+
+  addCriteriaFromDateFilters(query: any, dateInterval: { endDateMin: string; endDateMax: string }) {
+    if (dateInterval !== null && (dateInterval.endDateMin !== null || dateInterval.endDateMax !== null)) {
+      query.EndDate = dateInterval;
+    }
   }
 
   addCriteriaFromFilters(query: any) {
-    if (this.filterMap['Status'].length !== 0) {
-      query['Status'] = this.filterMap['Status'];
+    if (this.filterMap.Status.length !== 0) {
+      query.Status = this.filterMap.Status;
     }
   }
 
   addCriteriaFromSearch(query: any) {
-    if (this._searchText != undefined && this._searchText.length > 0) {
+    if (this.entryToSearch !== undefined && this.entryToSearch.length > 0) {
       this.searchKeys.forEach((key) => {
-        query[key] = this._searchText;
+        query[key] = this.entryToSearch;
       });
     }
   }
 
-  //Gestion du tri
-  emitOrderChange() {
-    this.orderChange.next();
+  // Gestion du tri
+  emitOrderChange(event: string) {
+    this.orderChange.next(event);
+    this.accessionRegistersService.notifyOrderChange();
   }
 
-  //Gestion des filtres
+  // Gestion des filtres
   onFilterChange(key: string, values: any[]) {
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);

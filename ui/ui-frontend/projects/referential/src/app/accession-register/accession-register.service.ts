@@ -36,20 +36,21 @@
  */
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of, Subject } from 'rxjs';
-import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import {BehaviorSubject, EMPTY, Observable, of, Subject} from 'rxjs';
+import {catchError, exhaustMap, map, withLatestFrom} from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
   AccessionRegisterStats,
   AccessionRegisterStatus,
+  BytesPipe,
   Colors,
   ExternalParameters,
   ExternalParametersService,
   SearchService,
 } from 'ui-frontend-common';
-import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
-import { TranslateService } from '@ngx-translate/core';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -60,21 +61,22 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   customerEvent = new Subject<string>();
   updated = new Subject<AccessionRegisterDetail>();
 
-  searchTextChange$ = new BehaviorSubject<string>('');
-  statusFilterChange$ = new BehaviorSubject<{ [key: string]: any[] }>({});
-  dataSourceChange$ = new BehaviorSubject<AccessionRegisterDetail[]>([]);
-  dateIntervalChange$ = new BehaviorSubject<{ startDateMin: string; startDateMax: string }>({
-    startDateMin: null,
-    startDateMax: null,
-  });
+  private searchTextChange$ = new BehaviorSubject<string>('');
+  private statusFilterChange$ = new BehaviorSubject<{ [key: string]: any[] }>(null);
+  private dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
 
   private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private advancedSearchData$ = new BehaviorSubject<any>(null);
+  private globalSearchButtonEvent$ = new BehaviorSubject<boolean>(true);
+  private advancedFormHaveChanged$ = new BehaviorSubject<boolean>(false);
+  private globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private accessionRegisterApiService: AccessionRegisterDetailApiService,
     http: HttpClient,
     private translateService: TranslateService,
-    private externalParameterService: ExternalParametersService
+    private externalParameterService: ExternalParametersService,
+    private bytesPipe: BytesPipe
   ) {
     super(http, accessionRegisterApiService, 'ALL');
   }
@@ -111,25 +113,29 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   }
 
   getFacetDetailsStats(): Observable<FacetDetails[]> {
-    return combineLatest([this.dataSourceChange$, this.searchTextChange$, this.statusFilterChange$, this.dateIntervalChange$]).pipe(
+    return this.globalSearchButtonEvent$.pipe(
+      withLatestFrom(this.searchTextChange$, this.statusFilterChange$, this.dateIntervalChange$, this.advancedSearchData$),
       exhaustMap((changes: any) => {
-        console.log(changes);
+        const globalSearch = changes[0];
+        if (globalSearch) {
+          const search = {
+            searchText: changes[1],
+            statusFilter: changes[2],
+            dateInterval: changes[3],
+            advancedSearch: changes[4],
+          };
 
-        const search = {
-          searchText: changes[1],
-          statusFilter: changes[2],
-          dateInterval: changes[3],
-        };
-
-        return this.fetchUserAccessContract().pipe(
-          exhaustMap((accessContract) => {
-            let headers = new HttpHeaders().append('Content-Type', 'application/json');
-            headers = headers.append('X-Access-Contract-Id', accessContract);
-            return this.accessionRegisterApiService
-              .getAccessionRegisterDetailStats(headers, search)
-              .pipe(map((accessionRegisterStats) => this.fetchFacetDetails(accessionRegisterStats)));
-          })
-        );
+          return this.fetchUserAccessContract().pipe(
+            exhaustMap((accessContract) => {
+              let headers = new HttpHeaders().append('Content-Type', 'application/json');
+              headers = headers.append('X-Access-Contract-Id', accessContract);
+              return this.accessionRegisterApiService
+                .getAccessionRegisterDetailStats(headers, search)
+                .pipe(map((accessionRegisterStats) => this.fetchFacetDetails(accessionRegisterStats)));
+            })
+          );
+        }
+        return EMPTY;
       })
     );
   }
@@ -141,31 +147,36 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
       totalResults: this.data?.length,
       clickable: false,
-      color: Colors.DEFAULT,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_UNITS'),
       totalResults: accessionRegisterStats.totalUnits,
       clickable: false,
-      color: Colors.DEFAULT,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS_GROUP'),
       totalResults: accessionRegisterStats.totalObjectsGroups,
       clickable: false,
-      color: Colors.DEFAULT,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OBJECTS'),
       totalResults: accessionRegisterStats.totalObjects,
       clickable: false,
-      color: Colors.DEFAULT,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
     });
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_SIZE'),
-      totalResults: accessionRegisterStats.objectSizes,
+      totalResults: this.bytesPipe.transform(accessionRegisterStats.objectSizes),
       clickable: false,
-      color: Colors.DEFAULT,
+      color: Colors.BLACK,
+      backgroundColor: Colors.DISABLED,
     });
 
     return stateFacetDetails;
@@ -173,25 +184,81 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   notifyFilterChange(value: { [key: string]: any[] }) {
     this.statusFilterChange$.next(value);
+    this.globalSearchButtonEvent$.next(true);
   }
 
   notifySearchChange(value: string) {
     this.searchTextChange$.next(value);
   }
 
-  notifyDataSourceChange(value: AccessionRegisterDetail[]) {
-    this.dataSourceChange$.next(value);
-  }
-
-  notifyDateIntervalChange(value: { startDateMin: string; startDateMax: string }) {
+  notifyDateIntervalChange(value: { endDateMin: string; endDateMax: string }) {
     this.dateIntervalChange$.next(value);
+    this.globalSearchButtonEvent$.next(true);
   }
 
-  getDateIntervalChanges(): BehaviorSubject<{ startDateMin: string; startDateMax: string }> {
+  getDateIntervalChanges(): BehaviorSubject<{ endDateMin: string; endDateMax: string }> {
     return this.dateIntervalChange$;
   }
 
   toggleOpenAdvancedSearchPanel() {
     this.openAdvancedSearchPanel.next(!this.openAdvancedSearchPanel.getValue());
+  }
+
+  isOpenAdvancedSearchPanel(): Observable<boolean> {
+    return this.openAdvancedSearchPanel.asObservable();
+  }
+
+  getAcquisitionInformations() {
+    return [
+      'Versement',
+      'Protocole',
+      'Achat',
+      'Copie',
+      'Dation',
+      'Dépôt',
+      'Dévolution',
+      'Don',
+      'Legs',
+      'Réintégration',
+      'Autres',
+      'Non renseigné',
+    ];
+  }
+
+  setAdvancedSearchData(value: any) {
+    this.advancedSearchData$.next(value);
+  }
+
+  getAdvancedSearchData(): BehaviorSubject<any> {
+    return this.advancedSearchData$;
+  }
+
+  setGlobalSearchButtonEvent(value: any) {
+    this.globalSearchButtonEvent$.next(value);
+  }
+
+  getGlobalSearchButtonEvent(): Observable<any> {
+    return this.globalSearchButtonEvent$.asObservable();
+  }
+
+  setAdvancedFormHaveChanged(value: boolean) {
+    this.advancedFormHaveChanged$.next(value);
+  }
+
+  isAdvancedFormChanged(): Observable<boolean> {
+    return this.advancedFormHaveChanged$.asObservable();
+  }
+
+  setGlobalResetEvent(value: boolean) {
+    this.globalResetEvent$.next(value);
+    this.globalSearchButtonEvent$.next(true);
+  }
+
+  isGlobalResetEvent(): Observable<boolean> {
+    return this.globalResetEvent$.asObservable();
+  }
+
+  notifyOrderChange() {
+    this.globalSearchButtonEvent$.next(true);
   }
 }

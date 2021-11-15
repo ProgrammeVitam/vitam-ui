@@ -59,6 +59,8 @@ import { AccessionRegisterRoutingModule } from './accession-register-routing.mod
 import { AccessionRegisterComponent } from './accession-register.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AccessionRegisterFacetsComponent } from './accession-register-facets/accession-register-facets.component';
+import { AccessionRegisterAdvancedSearchComponent } from './accession-register-advanced-search/accession-register-advanced-search.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   imports: [
@@ -86,8 +88,14 @@ import { AccessionRegisterFacetsComponent } from './accession-register-facets/ac
     MatPseudoCheckboxModule,
     MatDatepickerModule,
     VitamUICommonModule,
+    MatRadioModule,
   ],
-  declarations: [AccessionRegisterComponent, AccessionRegisterListComponent, AccessionRegisterFacetsComponent],
+  declarations: [
+    AccessionRegisterComponent,
+    AccessionRegisterListComponent,
+    AccessionRegisterFacetsComponent,
+    AccessionRegisterAdvancedSearchComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AccessionRegisterModule {}

@@ -9,12 +9,24 @@ import java.util.Map;
 public class AccessionRegisterDetailsSearchStatsDto {
     private String searchText;
     private Map<String, List<String>> statusFilter;
-    private DateInterval dateInterval;
+    private EndDateInterval dateInterval;
+    private AdvancedSearchData advancedSearch;
 
     @Data
-    public static class DateInterval {
-        private String startDateMin;
-        private String startDateMax;
+    public static class EndDateInterval {
+        private String endDateMin;
+        private String endDateMax;
+    }
+
+    @Data
+    public static class AdvancedSearchData {
+        private List<String> originatingAgencies;
+        private List<String> archivalAgreements;
+        private List<String> archivalProfiles;
+        private List<String> acquisitionInformations;
+        private String elimination;
+        private String transfer;
+        private String preservation;
     }
 }
 
