@@ -91,6 +91,12 @@ public class IamInternalRestClientFactory extends BaseRestClientFactory {
         return new UserInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
+
+
+    public UserInfoInternalRestClient getUserInfoInternalRestClient() {
+        return new UserInfoInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
     public OwnerInternalRestClient getOwnerInternalRestClient() {
         return new OwnerInternalRestClient(getRestTemplate(), getBaseUrl());
     }

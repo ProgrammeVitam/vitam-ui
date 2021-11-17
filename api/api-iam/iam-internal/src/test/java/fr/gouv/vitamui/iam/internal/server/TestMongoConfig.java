@@ -82,5 +82,11 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
 
-
+    @Override
+    // Spring Data MongoDB can automatically create indexes for entity types annotated with @Document.
+    // Index creation must be explicitly enabled since version 3.0 to prevent undesired effects with
+    // collection lifecycle and performance impact.
+    protected boolean autoIndexCreation() {
+        return true;
+    }
 }

@@ -46,6 +46,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -77,6 +78,9 @@ public class UserEmailInternalService {
     private IdentityProviderHelper identityProviderHelper;
 
     @Autowired
+    private UserInfoInternalService userInfoInternalService;
+
+    @Autowired
     private IdentityProviderInternalService internalIdentityProviderService;
 
     private final RestClientFactory restClientFactory;
@@ -91,8 +95,9 @@ public class UserEmailInternalService {
                 final List<IdentityProviderDto> providers = internalIdentityProviderService.getAll(Optional.empty(), Optional.empty());
                 if (identityProviderHelper.identifierMatchProviderPattern(providers, userDto.getEmail())) {
                     LOGGER.debug("Sending mail after creating  user: {}", userDto.getEmail());
+                    final UserInfoDto userInfoDto = userInfoInternalService.getOne(userDto.getUserInfoId());
                     restClientFactory.getRestTemplate().getForEntity(restClientFactory.getBaseUrl() + casResetPasswordUrl, Boolean.class, userDto.getEmail(),
-                            userDto.getFirstname(), userDto.getLastname(), LanguageDto.valueOf(userDto.getLanguage()).getLanguage());
+                            userDto.getFirstname(), userDto.getLastname(), LanguageDto.valueOf(userInfoDto.getLanguage()).getLanguage());
                 }
             }
             catch (final Exception e) {

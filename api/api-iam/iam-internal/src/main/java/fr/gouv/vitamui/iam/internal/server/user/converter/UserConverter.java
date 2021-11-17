@@ -108,6 +108,7 @@ public class UserConverter implements Converter<UserDto, User> {
 
     private final GroupRepository groupRepository;
 
+
     private final AddressConverter addressConverter;
 
     public UserConverter(final GroupRepository groupRepository, final AddressConverter addressConverter) {
@@ -121,7 +122,6 @@ public class UserConverter implements Converter<UserDto, User> {
         userLogbookData.put(LASTNAME_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(FIRSTNAME_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(EMAIL_KEY, GPDR_DEFAULT_VALUE);
-        userLogbookData.put(LANGUAGE_KEY, LogbookUtils.getValue(user.getLanguage()));
         userLogbookData.put(MOBILE_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(PHONE_KEY, GPDR_DEFAULT_VALUE);
         userLogbookData.put(TYPE_KEY, LogbookUtils.getValue(user.getType().toString()));
@@ -179,4 +179,5 @@ public class UserConverter implements Converter<UserDto, User> {
         }
         return userDto;
     }
+
 }

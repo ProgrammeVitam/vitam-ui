@@ -1,15 +1,15 @@
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +27,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableMap;
+
+import javax.ws.rs.core.Response;
 
 import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -64,12 +66,10 @@ import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 
 /**
  * Tests the {@link OwnerInternalService}.
- *
- *
  */
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { OwnerRepository.class, CustomSequenceRepository.class,
-        TokenRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {OwnerRepository.class, CustomSequenceRepository.class, TokenRepository.class},
+        repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTest {
 
     private OwnerInternalService ownerService;
@@ -136,7 +136,7 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         assertThat(owner.getCode()).isNotBlank();
 
         final Criteria criteria = Criteria.where("obId").is(owner.getIdentifier()).and("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_OWNER);;
+                .is(EventType.EXT_VITAMUI_CREATE_OWNER);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -219,8 +219,9 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
 
         Mockito.when(internalSecurityService.getTenantIdentifier()).thenReturn(tenant.getIdentifier());
         Mockito.when(internalSecurityService.getTenant(eq(tenant.getIdentifier()))).thenReturn(tenant);
-        final RequestResponse<LogbookOperation> operationsResponse = new RequestResponseOK<JsonNode>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId")
-                .addHeader(GlobalDataRest.X_APPLICATION_ID, "appId").setHttpCode(Response.Status.OK.getStatusCode());
+        final RequestResponse<LogbookOperation> operationsResponse =
+                new RequestResponseOK<JsonNode>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId").addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
+                        .setHttpCode(Response.Status.OK.getStatusCode());
         Mockito.when(logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())).thenReturn(operationsResponse);
 
         final JsonNode historyResult = ownerService.findHistoryById(ownerCreated.getId());
@@ -234,4 +235,5 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     private OwnerDto buildOwnerDto() {
         return IamServerUtilsTest.buildOwnerDto();
     }
+
 }

@@ -72,7 +72,6 @@ public class ExtUserDto extends UserDto {
         setIdentifier(user.getIdentifier());
         setOtp(user.isOtp());
         setSubrogeable(user.isSubrogeable());
-        setLanguage(user.getLanguage());
         setPhone(user.getPhone());
         setMobile(user.getMobile());
         setStatus(user.getStatus());

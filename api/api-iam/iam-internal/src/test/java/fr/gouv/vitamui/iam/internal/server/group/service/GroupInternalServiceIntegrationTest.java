@@ -55,7 +55,7 @@ import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 
 @RunWith(SpringRunner.class)
-@EnableMongoRepositories(basePackageClasses = { GroupRepository.class, CustomSequenceRepository.class }, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@EnableMongoRepositories(basePackageClasses = {GroupRepository.class, CustomSequenceRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private GroupInternalService service;
@@ -123,13 +123,13 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
         repository.save(IamServerUtilsTest.buildGroup(ID, "identifier", "nameknow", CUSTOMER_ID));
 
-        QueryDto criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS).addCriterion("name", "nameknow",
-                CriterionOperator.EQUALS);
+        QueryDto criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
+                .addCriterion("name", "nameknow", CriterionOperator.EQUALS);
         boolean exist = service.checkExist(criteria.toJson());
         assertThat(exist).isTrue();
 
-        criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS).addCriterion("name", "nameunknow",
-                CriterionOperator.EQUALS);
+        criteria = QueryDto.criteria().addCriterion("customerId", CUSTOMER_ID, CriterionOperator.EQUALS)
+                .addCriterion("name", "nameunknow", CriterionOperator.EQUALS);
         exist = service.checkExist(criteria.toJson());
         assertThat(exist).isFalse();
 
@@ -296,4 +296,5 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
         return service.create(groupDto);
     }
+
 }

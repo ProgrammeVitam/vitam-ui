@@ -42,6 +42,7 @@ import fr.gouv.vitamui.commons.api.domain.LanguageDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -76,6 +77,7 @@ import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.InitVitamTenantService;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
@@ -128,6 +130,9 @@ public class InitCustomerService {
 
     @Autowired
     private UserInternalService internalUserService;
+
+    @Autowired
+    private UserInfoInternalService userInfoInternalService;
 
     @Autowired
     private ProfileInternalService internalProfileService;
@@ -238,6 +243,12 @@ public class InitCustomerService {
         return internalUserService.create(dto);
     }
 
+    private UserInfoDto saveUserInfo(String language) {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setLanguage(language);
+        return userInfoInternalService.create(userInfoDto);
+    }
+
     private List<OwnerDto> createOwners(final List<OwnerDto> ownerDtos, final String customerId) {
         final ArrayList<OwnerDto> owners = new ArrayList<>();
         for (final OwnerDto ownerDto : ownerDtos) {
@@ -278,15 +289,9 @@ public class InitCustomerService {
         List<Profile> profiles = new ArrayList<>();
         if (customerInitConfig.getProfiles() != null) {
             customerInitConfig.getProfiles().forEach(p -> {
-                Profile profile = EntityFactory.buildProfile(p.getName() + " " + proofTenant.getIdentifier(),
-                    generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
-                    p.getDescription(),
-                    true,
-                    p.getLevel(),
-                    proofTenant.getIdentifier(),
-                    p.getAppName(),
-                    p.getRoles(),
-                    customerDto.getId());
+                Profile profile = EntityFactory
+                        .buildProfile(p.getName() + " " + proofTenant.getIdentifier(), generateIdentifier(SequencesConstants.PROFILE_IDENTIFIER),
+                                p.getDescription(), true, p.getLevel(), proofTenant.getIdentifier(), p.getAppName(), p.getRoles(), customerDto.getId());
                 profiles.add(saveProfile(profile));
             });
         }
@@ -343,7 +348,7 @@ public class InitCustomerService {
                 userDto.setSubrogeable(true);
                 userDto.setLastname(u.getLastName());
                 userDto.setFirstname(u.getFirstName());
-                userDto.setLanguage(getLanguage(customerDto));
+                userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
                 userDto.setGroupId(groupsByName.get(u.getProfilesGroupName()).getId());
                 userDto.setLevel(u.getLevel());
                 userDto.setCustomerId(customerDto.getId());
@@ -450,7 +455,7 @@ public class InitCustomerService {
         userDto.setSubrogeable(true);
         userDto.setLastname(ApiIamInternalConstants.ADMIN_CLIENT_LASTNAME);
         userDto.setFirstname(ApiIamInternalConstants.ADMIN_CLIENT_FIRSTNAME);
-        userDto.setLanguage(getLanguage(customerDto));
+        userDto.setUserInfoId(saveUserInfo(getLanguage(customerDto)).getId());
         userDto.setGroupId(group.getId());
         userDto.setLevel(ApiIamInternalConstants.ADMIN_LEVEL);
         userDto.setCustomerId(customerDto.getId());
@@ -475,4 +480,5 @@ public class InitCustomerService {
             .orElseThrow(() -> new InternalServerException("Sequence with name : " + sequenceName + " didn't exist"));
         return String.valueOf(customSequence.get().getSequence());
     }
+
 }

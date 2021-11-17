@@ -45,6 +45,7 @@ import { ENVIRONMENT } from './../injection-tokens';
 
 import { NavbarStubComponent, VitamUICommonTestModule } from '../../../../testing/src/public_api';
 import { environment } from '../../../environments/environment';
+import { BaseUserInfoApiService } from '../api/base-user-info-api.service';
 import { InjectorModule } from '../helper/injector.module';
 import { LoggerModule } from '../logger';
 import { Account } from '../models/account/account.interface';
@@ -64,6 +65,11 @@ describe('AccountComponent', () => {
     getMyAccount: () => of({})
   };
 
+
+  const userInfoApiServiceSpy = {
+    getMyUserInfo: () => of({})
+  };
+
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -81,6 +87,7 @@ describe('AccountComponent', () => {
       providers: [
         { provide: TranslateService, useValue: { instant: () => EMPTY } },
         { provide: AccountService, useValue: accountServiceSpy },
+        { provide: BaseUserInfoApiService, useValue: userInfoApiServiceSpy },
         { provide: ActivatedRoute, useValue: { data: EMPTY } },
         { provide: ENVIRONMENT, useValue: environment }
       ],

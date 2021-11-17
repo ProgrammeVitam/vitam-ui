@@ -34,6 +34,7 @@ import fr.gouv.vitamui.iam.internal.server.profile.service.ProfileInternalServic
 import fr.gouv.vitamui.iam.internal.server.security.IamApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.internal.server.subrogation.service.SubrogationInternalService;
 import fr.gouv.vitamui.iam.internal.server.tenant.service.TenantInternalService;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 
@@ -53,6 +54,9 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private UserInternalService userInternalService;
+
+    @MockBean
+    private UserInfoInternalService userInfoInternalService;
 
     @MockBean
     private SubrogationInternalService subrogationInternalService;

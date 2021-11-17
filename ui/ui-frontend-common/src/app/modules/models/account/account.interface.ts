@@ -35,8 +35,9 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Group } from '../group';
-import { User } from '../user';
+import { User, UserInfo } from '../user';
 
 export interface Account extends User {
   profileGroup: Group;
+  userInfo?: UserInfo;
 }

@@ -77,8 +77,6 @@ import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link UserInternalService}.
- *
- *
  */
 public final class UserInternalServiceTest {
 
@@ -139,9 +137,10 @@ public final class UserInternalServiceTest {
         addressService = mock(AddressService.class);
         applicationInternalService = mock(ApplicationInternalService.class);
 
-        internalUserService = new UserInternalService(sequenceRepository, userRepository, internalGroupService, internalProfileService,
-                userEmailInternalService, tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository,
-                mock(IamLogbookService.class), userConverter, null, null, addressService, applicationInternalService,  null);
+        internalUserService =
+                new UserInternalService(sequenceRepository, userRepository, internalGroupService, internalProfileService, userEmailInternalService,
+                        tenantRepository, internalSecurityService, customerRepository, profileRepository, groupRepository, mock(IamLogbookService.class),
+                        userConverter, null, null, addressService, applicationInternalService,  null);
 
         tokenRepository = mock(TokenRepository.class);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
@@ -253,8 +252,7 @@ public final class UserInternalServiceTest {
         when(userRepository
                 .getPaginatedValues(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(buildPageable(buildUser("id")));
-        when(userRepository
-                .aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+        when(userRepository.aggregation(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(Map.of("type", Arrays.asList("DISTINCT")));
 
         final Customer customer = new Customer();
@@ -278,7 +276,7 @@ public final class UserInternalServiceTest {
         assertThat(subrogateUsers.getValues()).hasSize(1);
         assertThat(subrogateUsers.getGroups()).hasSize(1);
         assertThat(subrogateUsers.getGroups().containsKey("type")).isEqualTo(true);
-        assertThat(((List)subrogateUsers.getGroups().get("type")).get(0)).isEqualTo("DISTINCT");
+        assertThat(((List) subrogateUsers.getGroups().get("type")).get(0)).isEqualTo("DISTINCT");
     }
 
     @Test
@@ -569,80 +567,70 @@ public final class UserInternalServiceTest {
         userToUpdate.setEmail("-test@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test-@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test--toto@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail(".test@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test.@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test@t");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test@vitamui.f");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test@vitamui");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail("test..toto@vitamui.com");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setEmail(null);
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
     }
@@ -735,8 +723,7 @@ public final class UserInternalServiceTest {
         userToUpdate.setPhone("0171270691");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
@@ -744,16 +731,14 @@ public final class UserInternalServiceTest {
         userToUpdate.setMobile("0671270691");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setPhone("+331712706999999999999");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
@@ -761,16 +746,14 @@ public final class UserInternalServiceTest {
         userToUpdate.setMobile("+336712706999999999999");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setPhone("+33171");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
@@ -778,16 +761,14 @@ public final class UserInternalServiceTest {
         userToUpdate.setMobile("+33671");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
         userToUpdate.setPhone("+33171$_éù%999999+");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
 
@@ -795,8 +776,7 @@ public final class UserInternalServiceTest {
         userToUpdate.setMobile("+33671$_éù%999999+");
         try {
             internalUserService.update(userToUpdate);
-        }
-        catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("format is not allowed"));
         }
     }
@@ -874,7 +854,8 @@ public final class UserInternalServiceTest {
     public void patchNotAllowedAnalyticsFieldShouldThrowAnException() {
         Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of("notAllowedField", "test")));
 
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Unable to patch user analytics key : notAllowedField is not allowed");
         verifyNoInteractions(applicationInternalService);
         verifyNoInteractions(userRepository);
     }
@@ -914,7 +895,8 @@ public final class UserInternalServiceTest {
 
         Throwable thrown = catchThrowable(() -> internalUserService.patchAnalytics(Map.of(APPLICATION_ID, "applicationWithoutPermission")));
 
-        assertThat(thrown).isInstanceOf(IllegalArgumentException.class).hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
+        assertThat(thrown).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("User has no permission to access to the application : applicationWithoutPermission");
         verify(userRepository).findById(user.getId());
         verify(applicationInternalService).getAll(Optional.empty(), Optional.empty());
         verifyNoMoreInteractions(applicationInternalService);
@@ -950,4 +932,5 @@ public final class UserInternalServiceTest {
         assertThat(applications.get(0).getApplicationId()).isEqualTo(applicationId);
         assertThat(applications.get(0).getAccessCounter()).isEqualTo(1);
     }
+
 }

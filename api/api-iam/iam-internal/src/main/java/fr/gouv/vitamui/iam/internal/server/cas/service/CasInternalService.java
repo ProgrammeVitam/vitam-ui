@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
@@ -73,6 +74,7 @@ import fr.gouv.vitamui.iam.internal.server.token.dao.TokenRepository;
 import fr.gouv.vitamui.iam.internal.server.token.domain.Token;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 import lombok.Getter;
 import lombok.Setter;
@@ -104,8 +106,6 @@ import java.util.Set;
 
 /**
  * Specific CAS service.
- *
- *
  */
 @Getter
 @Setter
@@ -128,6 +128,9 @@ public class CasInternalService {
 
     @Autowired
     private UserInternalService internalUserService;
+
+    @Autowired
+    private UserInfoInternalService userInfoInternalService;
 
     @Autowired
     private UserRepository userRepository;
@@ -223,8 +226,7 @@ public class CasInternalService {
 
         if (StringUtils.isEmpty(existingPassword)) {
             iamLogbookService.createPasswordEvent(user);
-        }
-        else {
+        } else {
             iamLogbookService.updatePasswordEvent(user);
         }
     }
@@ -249,8 +251,7 @@ public class CasInternalService {
         final User user = userRepository.findByEmail(email);
         if (user == null) {
             throw new NotFoundException(USER_NOT_FOUND_MESSAGE + email);
-        }
-        else if (UserTypeEnum.NOMINATIVE != user.getType()) {
+        } else if (UserTypeEnum.NOMINATIVE != user.getType()) {
             throw new InvalidAuthenticationException("User unavailable: " + email);
         }
         checkStatus(user.getStatus(), user.getEmail());
@@ -296,8 +297,7 @@ public class CasInternalService {
             createEventsSubrogation(userDto, isSubrogation);
             return authUserDto;
 
-        }
-        else {
+        } else {
             return userDto;
         }
     }
@@ -367,9 +367,14 @@ public class CasInternalService {
 
         final Customer customer = customerRepository.findById(user.getCustomerId())
             .orElseThrow(() -> new NotFoundException(String.format("Cannot find customer : %s", user.getCustomerId())));
-        user.setLanguage(customer.getLanguage());
-
+        user.setUserInfoId(createUserInfo(customer.getLanguage()).getId());
         internalUserService.create(user);
+    }
+
+    private UserInfoDto createUserInfo(final String language) {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setLanguage(language);
+        return userInfoInternalService.create(userInfoDto);
     }
 
     private GroupDto getGroupByUnit(final String unit) {
@@ -455,8 +460,7 @@ public class CasInternalService {
             final EventType type;
             if (surrogate.getType().equals(UserTypeEnum.GENERIC)) {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_GENERIC;
-            }
-            else {
+            } else {
                 type = EventType.EXT_VITAMUI_START_SURROGATE_USER;
 
             }
@@ -481,11 +485,9 @@ public class CasInternalService {
         final int ttlInMinutes;
         if (isSubrogation && user.getType() == UserTypeEnum.GENERIC) {
             ttlInMinutes = subrogationTokenTtl;
-        }
-        else if (isApi) {
+        } else if (isApi) {
             ttlInMinutes = apiTokenTtl;
-        }
-        else {
+        } else {
             ttlInMinutes = tokenTtl;
         }
         final Date nowPlusXMinutes = DateUtils.addMinutes(new Date(), ttlInMinutes);
@@ -520,8 +522,7 @@ public class CasInternalService {
     protected final SubrogationDto convertFromSubrogationToDto(final Subrogation entity) {
         if (entity != null) {
             return internalSubrogationService.internalConvertFromEntityToDto(entity);
-        }
-        else {
+        } else {
             return null;
         }
     }
@@ -552,4 +553,5 @@ public class CasInternalService {
         }
         return null;
     }
+
 }

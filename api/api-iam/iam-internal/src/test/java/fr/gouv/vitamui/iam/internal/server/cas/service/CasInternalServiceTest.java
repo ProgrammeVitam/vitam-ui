@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +33,7 @@ import fr.gouv.vitamui.iam.internal.server.group.service.GroupInternalService;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
 import fr.gouv.vitamui.iam.internal.server.provisioning.service.ProvisioningInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserRepository;
+import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 
 @ExtendWith(MockitoExtension.class)
@@ -43,6 +45,8 @@ class CasInternalServiceTest {
 
     private static final String GROUP_ID = "groupID";
 
+    private static final String USER_INFO_ID = "userInfoId";
+
     private static final String CUSTOMER_ID = "customerID";
 
     @InjectMocks
@@ -53,6 +57,9 @@ class CasInternalServiceTest {
 
     @Mock
     private UserInternalService userInternalService;
+
+    @Mock
+    private UserInfoInternalService userInfoInternalService;
 
     @Mock
     private GroupInternalService groupInternalService;
@@ -94,6 +101,7 @@ class CasInternalServiceTest {
 
         when(userInternalService.findUserByEmail(USER_EMAIL))
                 .thenReturn(buildAuthUser(false));
+        when(userInfoInternalService.create(any())).thenReturn(buildUserInfo());
 
         final Customer customer = new Customer();
         customer.setLanguage("fr");
@@ -103,7 +111,13 @@ class CasInternalServiceTest {
         verify(userInternalService, times(1)).create(any());
         verify(userInternalService, times(0)).patch(any());
         assertThat(user).isNotNull();
-        assertThat(user.getLanguage()).isEqualTo(customer.getLanguage());
+    }
+
+    private UserInfoDto buildUserInfo() {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setId(USER_INFO_ID);
+        userInfoDto.setLanguage("FR");
+        return userInfoDto;
     }
 
     @Test
@@ -152,9 +166,9 @@ class CasInternalServiceTest {
         authUser.setEmail(USER_EMAIL);
         authUser.setFirstname("Jean-Jacques");
         authUser.setLastname("Dupont");
-        authUser.setLanguage("fr");
         authUser.setAutoProvisioningEnabled(autoProvisioningEnabled);
         authUser.setGroupId(GROUP_ID);
+        authUser.setUserInfoId(GROUP_ID);
         return authUser;
     }
 

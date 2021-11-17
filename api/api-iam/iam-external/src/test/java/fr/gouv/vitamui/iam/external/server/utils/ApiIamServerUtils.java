@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.external.server.utils;
 
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
@@ -16,6 +17,13 @@ public class ApiIamServerUtils {
         final UserDto basicUserDto = new UserDto();
         basicUserDto.setId(id);
         return basicUserDto;
+    }
+
+    public static UserInfoDto buildUserInfoDto(final String id) {
+        final UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setId(id);
+        userInfoDto.setLanguage("fr");
+        return userInfoDto;
     }
 
     public static ProfileDto buildProfileDto(final String id) {

@@ -207,7 +207,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
         val computedOtp = otp && identityProviderHelper.identifierMatchProviderPattern(providersService.getProviders(), otpUsername);
         attributes.put(COMPUTED_OTP, Collections.singletonList("" + computedOtp));
         attributes.put(SUBROGEABLE_ATTRIBUTE, Collections.singletonList(user.isSubrogeable()));
-        attributes.put(LANGUAGE_ATTRIBUTE, Collections.singletonList(user.getLanguage()));
+        attributes.put(USER_INFO_ID, Collections.singletonList(user.getUserInfoId()));
         attributes.put(PHONE_ATTRIBUTE, Collections.singletonList(user.getPhone()));
         attributes.put(MOBILE_ATTRIBUTE, Collections.singletonList(user.getMobile()));
         attributes.put(STATUS_ATTRIBUTE, Collections.singletonList(user.getStatus()));

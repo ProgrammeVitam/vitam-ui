@@ -105,7 +105,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setIdentifier(user.getIdentifier());
         setOtp(user.isOtp());
         setSubrogeable(user.isSubrogeable());
-        setLanguage(user.getLanguage());
         setPhone(user.getPhone());
         setAddress(user.getAddress());
         setMobile(user.getMobile());
@@ -122,6 +121,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         setInternalCode(user.getInternalCode());
         setCenterCode(user.getCenterCode());
         setAutoProvisioningEnabled(user.isAutoProvisioningEnabled());
+        setUserInfoId(user.getUserInfoId());
     }
 
     public AuthUserDto(final String username, final Map<String, Object> attributes) {
@@ -204,9 +204,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
                     case SUBROGEABLE_ATTRIBUTE :
                         setSubrogeable(Boolean.parseBoolean((String) value));
                         break;
-                    case LANGUAGE_ATTRIBUTE :
-                        setLanguage((String) value);
-                        break;
                     case PHONE_ATTRIBUTE :
                         setPhone((String) value);
                         break;
@@ -262,6 +259,9 @@ public class AuthUserDto extends UserDto implements UserDetails {
                     case INTERNAL_CODE :
                         setInternalCode((String) value);
                         break;
+                    case USER_INFO_ID:
+                        setUserInfoId((String) value);
+                        break;
                 }
             }
         }
@@ -302,7 +302,6 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setIdentifier(getIdentifier());
         user.setOtp(isOtp());
         user.setSubrogeable(isSubrogeable());
-        user.setLanguage(getLanguage());
         user.setPhone(getPhone());
         user.setAddress(getAddress());
         user.setMobile(getMobile());
@@ -317,6 +316,7 @@ public class AuthUserDto extends UserDto implements UserDetails {
         user.setAnalytics(getAnalytics());
         user.setSiteCode(getSiteCode());
         user.setAutoProvisioningEnabled(isAutoProvisioningEnabled());
+        user.setUserInfoId(getUserInfoId());
         return user;
     }
 }

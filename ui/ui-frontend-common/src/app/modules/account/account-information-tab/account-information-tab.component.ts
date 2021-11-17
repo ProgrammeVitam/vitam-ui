@@ -46,34 +46,51 @@ import { AccountService } from '../account.service';
   styleUrls: ['./account-information-tab.component.scss']
 })
 export class AccountInformationTabComponent implements OnInit {
+  public form: FormGroup;
 
-  form: FormGroup;
+  public language: string;
 
   @Input()
   set account(account: Account) {
-      this._account = account;
-      this.resetForm(this.account);
+    this._account = account;
+    if (this.account?.userInfo) {
+        this.language = this.account.userInfo.language;
+    }
+    this.resetForm(this.account);
   }
-  get account(): Account { return this._account; }
+  get account(): Account {
+    return this._account;
+  }
   // tslint:disable-next-line:variable-name
   private _account: Account;
 
-  constructor(private formBuilder: FormBuilder, private accountService: AccountService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private accountService: AccountService
+  ) {
     this.form = this.formBuilder.group({
       id: [null],
-      firstname: [{ value: null, disabled: true}, Validators.required],
-      lastname: [{ value: null, disabled: true}, Validators.required],
-      email: [{ value: null, disabled: true}, [Validators.required, Validators.email]],
-      language: [{ value: null, disabled: true}, Validators.required],
-      level : [{ value: null, disabled: true}],
-      otp: [{ value: null, disabled: true}],
-      mobile: [{ value: null, disabled: true}, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      phone: [{ value: null, disabled: true}, [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)]],
-      address: [{ value: null, disabled: true}, Validators.required],
-      type: [{ value: null, disabled: true}],
-      profileGroup: [{ value: null, disabled: true}],
+      firstname: [{ value: null, disabled: true }, Validators.required],
+      lastname: [{ value: null, disabled: true }, Validators.required],
+      email: [
+        { value: null, disabled: true },
+        [Validators.required, Validators.email],
+      ],
+      level: [{ value: null, disabled: true }],
+      otp: [{ value: null, disabled: true }],
+      mobile: [
+        { value: null, disabled: true },
+        [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
+      ],
+      phone: [
+        { value: null, disabled: true },
+        [Validators.pattern(/^[+]{1}[0-9]{11,12}$/)],
+      ],
+      address: [{ value: null, disabled: true }, Validators.required],
+      type: [{ value: null, disabled: true }],
+      profileGroup: [{ value: null, disabled: true }],
     });
-   }
+  }
 
   ngOnInit() {
     this.form.valueChanges.subscribe((values: Account) => {
@@ -85,5 +102,4 @@ export class AccountInformationTabComponent implements OnInit {
     // Passing the user email to the validator so it doesn't check if his own code exists
     this.form.reset(account, { emitEvent: false });
   }
-
 }

@@ -19,6 +19,7 @@ import fr.gouv.vitamui.identity.service.OwnerService;
 import fr.gouv.vitamui.identity.service.ProfileService;
 import fr.gouv.vitamui.identity.service.ProviderService;
 import fr.gouv.vitamui.identity.service.TenantService;
+import fr.gouv.vitamui.identity.service.UserInfoService;
 import fr.gouv.vitamui.identity.service.UserService;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 
@@ -59,5 +60,9 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private UserInfoService userInfoService;
+
 
 }

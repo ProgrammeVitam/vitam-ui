@@ -1,3 +1,4 @@
+
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -39,6 +40,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AdminUserProfile, AuthService, Customer, Group, isLevelAllowed, StartupService, User } from 'ui-frontend-common';
+import { UserInfo } from 'ui-frontend-common/app/modules/models/user/user-info.interface';
+import { UserInfoService } from './../user-info.service';
+
 import { UserApiService } from '../../core/api/user-api.service';
 import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
@@ -53,7 +57,22 @@ import { UserService } from '../user.service';
 export class UserPreviewComponent implements OnDestroy, OnInit {
 
   @Input() isPopup: boolean;
-  @Input() user: User;
+
+   // tslint:disable-next-line:variable-name
+   _user: User;
+
+
+   get user() : User {
+     return this._user;
+   }
+   @Input()
+  set user(user: User){
+    this._user = user;
+    if(this._user.userInfoId)
+   {
+    this.userInfoService.get(this._user.userInfoId).subscribe((response) => this.userInfo = response);
+   }
+  }
   @Input() customer: Customer;
 
   @Output() previewClose = new EventEmitter();
@@ -66,6 +85,7 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   connectedUserInfo: AdminUserProfile;
   userUpdatedSub: Subscription;
   attribaGroups: GroupSelection[];
+  userInfo: UserInfo;
 
   @Input()
   get groups(): Group[] { return this._groups; }
@@ -83,7 +103,8 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
     private authService: AuthService,
     public userApi: UserApiService,
     private startupService: StartupService,
-    public groupService: GroupService
+    public groupService: GroupService,
+    private userInfoService: UserInfoService
   ) { }
 
   ngOnInit() {

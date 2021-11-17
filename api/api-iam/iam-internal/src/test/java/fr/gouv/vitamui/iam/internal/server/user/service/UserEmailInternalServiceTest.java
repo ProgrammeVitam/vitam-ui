@@ -17,6 +17,7 @@ import org.mockito.Mockito;
 import org.springframework.web.client.RestTemplate;
 
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.rest.client.RestClientFactory;
@@ -24,6 +25,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalService;
+import fr.gouv.vitamui.iam.internal.server.utils.IamServerUtilsTest;
 
 /**
  * Tests {@link UserEmailInternalService}.
@@ -32,7 +34,6 @@ import fr.gouv.vitamui.iam.internal.server.idp.service.IdentityProviderInternalS
  */
 public final class UserEmailInternalServiceTest {
 
-    private static final String LANGUAGE = "FRENCH";
 
     private static final String LASTNAME = "Leleu";
 
@@ -52,11 +53,14 @@ public final class UserEmailInternalServiceTest {
 
     private UserEmailInternalService internalUserEmailService;
 
+    private UserInfoInternalService userInfoInternalService;
+
     private final String casResetPasswordUrl = "/cas/extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day";
 
     @Before
     public void setUp() {
         identityProviderHelper = mock(IdentityProviderHelper.class);
+        userInfoInternalService = mock(UserInfoInternalService.class);
         internalIdentityProviderService = mock(IdentityProviderInternalService.class);
         restClientFactory = mock(RestClientFactory.class);
         restTemplate = mock(RestTemplate.class);
@@ -65,10 +69,12 @@ public final class UserEmailInternalServiceTest {
         internalUserEmailService = new UserEmailInternalService(restClientFactory);
         internalUserEmailService.setInternalIdentityProviderService(internalIdentityProviderService);
         internalUserEmailService.setIdentityProviderHelper(identityProviderHelper);
+        internalUserEmailService.setUserInfoInternalService(userInfoInternalService);
         internalUserEmailService.setCasResetPasswordUrl(casResetPasswordUrl);
         final List<IdentityProviderDto> providers = new ArrayList<>();
         when(internalIdentityProviderService.getAll(Optional.empty(), Optional.empty())).thenReturn(providers);
         when(identityProviderHelper.identifierMatchProviderPattern(providers, EMAIL)).thenReturn(true);
+        when(userInfoInternalService.getOne(any())).thenReturn(buildUserInfoDto());
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
@@ -136,7 +142,13 @@ public final class UserEmailInternalServiceTest {
         user.setEmail(EMAIL);
         user.setFirstname(FIRSTNAME);
         user.setLastname(LASTNAME);
-        user.setLanguage("FRENCH");
+        user.setUserInfoId("userInfoId");
         return user;
     }
+
+
+    private UserInfoDto buildUserInfoDto() {
+        return IamServerUtilsTest.buildUserInfoDto();
+    }
 }
+

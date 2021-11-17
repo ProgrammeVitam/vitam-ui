@@ -10,6 +10,7 @@ import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -28,6 +29,7 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
+import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -411,6 +413,13 @@ public final class IamServerUtilsTest {
         address.setZipCode("75009");
         address.setStreet("rue faubourg poissoniére");
         return address;
+    }
+
+    public static UserInfoDto buildUserInfoDto() {
+        UserInfoDto userInfoDto = new UserInfoDto();
+        userInfoDto.setId("id");
+        userInfoDto.setLanguage("FRENCH");
+        return userInfoDto;
     }
 
 }

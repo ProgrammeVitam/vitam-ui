@@ -89,6 +89,10 @@ public class IamExternalRestClientFactory extends BaseRestClientFactory {
         return new UserExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
+    public UserInfoExternalRestClient getUserInfoInfoExternalRestClient() {
+        return new UserInfoExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
     public OwnerExternalRestClient getOwnerExternalRestClient() {
         return new OwnerExternalRestClient(getRestTemplate(), getBaseUrl());
     }

@@ -55,6 +55,8 @@ public final class MongoDbCollections {
 
     public static final String USERS = "users";
 
+    public static final String USER_INFOS = "userInfos";
+
     public static final String OWNERS = "owners";
 
     public static final String TOKENS = "tokens";

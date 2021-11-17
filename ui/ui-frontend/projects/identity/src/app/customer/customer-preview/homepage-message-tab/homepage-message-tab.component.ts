@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { AuthService, Customer, StartupService } from 'ui-frontend-common';
+import { UserInfoService } from './../../../user/user-info.service';
 import { HomepageMessageUpdateComponent } from './homepage-message-update/homepage-message-update.component';
 
 @Component({
@@ -40,9 +41,10 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
     [key: string]: string;
   };
 
-  public language = this.authService.user.language;
+  public language : string;
 
-  constructor(private dialog: MatDialog, private startupService: StartupService, private authService: AuthService) {
+  constructor(private dialog: MatDialog, private startupService: StartupService, private authService: AuthService,
+    private userInfoService: UserInfoService) {
   }
 
   ngOnDestroy(): void {
@@ -50,6 +52,10 @@ export class HomepageMessageTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    const userInfosId = this.authService.user.userInfoId;
+    this.userInfoService.get(userInfosId).subscribe((userInfo) => {
+        this.language = userInfo.language;
+    });
   }
 
   private resetTab(customer: Customer): void {

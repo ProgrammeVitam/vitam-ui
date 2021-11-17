@@ -39,7 +39,7 @@ import { ConfirmDialogService, Customer, Owner, Tenant } from 'ui-frontend-commo
 
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { OwnerService } from '../owner.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';

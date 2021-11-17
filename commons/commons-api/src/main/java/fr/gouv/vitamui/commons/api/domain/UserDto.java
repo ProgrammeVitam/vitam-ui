@@ -80,9 +80,6 @@ public class UserDto extends CustomerIdDto {
     private String groupId;
 
     @NotNull
-    private String language;
-
-    @NotNull
     @Length(min = 4, max = 100)
     @Email
     @JsonDeserialize(converter = ToLowerCaseConverter.class)
@@ -127,4 +124,7 @@ public class UserDto extends CustomerIdDto {
     private String centerCode;
 
     private boolean autoProvisioningEnabled;
+
+    @NotNull
+    private String userInfoId;
 }
