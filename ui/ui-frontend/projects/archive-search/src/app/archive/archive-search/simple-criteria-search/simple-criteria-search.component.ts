@@ -41,13 +41,15 @@ import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
-import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const UPDATE_DEBOUNCE_TIME = 200;
+const APPRAISAL_RULE_FINAL_ACTION_TYPE = 'APPRAISAL_RULE_FINAL_ACTION_TYPE';
 
 @Component({
-  selector: 'simple-criteria-search',
+  selector: 'app-simple-criteria-search',
   templateUrl: './simple-criteria-search.component.html',
   styleUrls: ['./simple-criteria-search.component.css'],
 })
@@ -57,6 +59,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   otherCriteriaValueType = 'DATE';
   selectedValueOntolonogy: any;
   ontologies: any;
+  criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
 
   previousSimpleCriteriaValue: {
     title: '';
@@ -89,7 +92,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     private formBuilder: FormBuilder,
     private archiveService: ArchiveService,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private managementRulesSharedDataService: ManagementRulesSharedDataService
   ) {
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
@@ -208,7 +212,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         );
         return true;
       } else if (formData.guid) {
-        let splittedGuids = formData.guid.split(',');
+        const splittedGuids = formData.guid.split(',');
         splittedGuids.forEach((guidElt: string) => {
           if (guidElt && guidElt.trim() !== '') {
             this.addCriteria('GUID', { value: guidElt.trim(), id: guidElt.trim() }, guidElt.trim(), true, 'EQ', false, 'STRING');
@@ -254,9 +258,25 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     this.simpleCriteriaForm.reset(this.emptySimpleCriteriaForm);
   }
 
-  ngOnInit() {}
-
-  ngOnChanges(): void {}
+  ngOnInit() {
+    this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
+      this.criteriaSearchListToSave = data;
+    });
+    this.criteriaSearchListToSave.forEach((criteriaSearch) => {
+      criteriaSearch.values.forEach((value) => {
+        this.addCriteria(
+          criteriaSearch.criteria,
+          value,
+          value.id,
+          true,
+          criteriaSearch.operator,
+          criteriaSearch.criteria === APPRAISAL_RULE_FINAL_ACTION_TYPE ? true : false,
+          criteriaSearch.dataType,
+          criteriaSearch.category as SearchCriteriaTypeEnum
+        );
+      });
+    });
+  }
 
   onSelectOtherCriteria() {
     this.simpleCriteriaForm.get('otherCriteria').valueChanges.subscribe((selectedcriteria) => {
@@ -283,7 +303,8 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     keyTranslated: boolean,
     operator: string,
     valueTranslated: boolean,
-    dataType: string
+    dataType: string,
+    category?: SearchCriteriaTypeEnum
   ) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
@@ -292,15 +313,11 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         labelElt,
         keyTranslated,
         operator,
-        category: SearchCriteriaTypeEnum.FIELDS,
+        category: category ? category : SearchCriteriaTypeEnum.FIELDS,
         valueTranslated,
         dataType,
       });
     }
-  }
-
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
   }
 
   get guid() {

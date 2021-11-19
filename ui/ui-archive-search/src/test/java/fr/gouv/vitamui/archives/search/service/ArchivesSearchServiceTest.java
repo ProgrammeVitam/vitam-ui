@@ -32,8 +32,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -52,6 +54,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -64,6 +67,8 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 
@@ -347,5 +352,21 @@ public class ArchivesSearchServiceTest {
         // Then
         assertEquals(usage, ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
         assertEquals(objectData.getFilename(), "Un fichier de type TextContent");
+    }
+
+
+    @Test
+    public void update_archive_units_rules_should_call_appropriate_rest_client_once() {
+
+        // Given
+        Mockito.when(archiveSearchExternalRestClient.updateArchiveUnitsRules(any(RuleSearchCriteriaDto.class), ArgumentMatchers.any()))
+            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+        // When
+        archivesSearchService.updateArchiveUnitsRules(new RuleSearchCriteriaDto(), null);
+
+        // Then
+        verify(archiveSearchExternalRestClient,Mockito.times(1))
+            .updateArchiveUnitsRules(any(RuleSearchCriteriaDto.class), ArgumentMatchers.any());
+
     }
 }

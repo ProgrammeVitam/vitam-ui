@@ -31,6 +31,7 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -192,5 +193,19 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         // Then
         Assertions.assertNotNull(responseCsv);
         Assertions.assertEquals(responseCsv, resource);
+    }
+
+    @Test
+    public void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
+
+        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
+        String expectedResponse = new String();
+
+        Mockito
+            .when(archivesSearchExternalService.updateArchiveUnitsRules(Mockito.eq(ruleSearchCriteriaDto)))
+            .thenReturn(expectedResponse);
+
+        String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
+        Assertions.assertEquals(response, expectedResponse);
     }
 }

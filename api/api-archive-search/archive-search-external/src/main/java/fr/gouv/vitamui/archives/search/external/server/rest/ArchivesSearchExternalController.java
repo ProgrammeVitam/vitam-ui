@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -149,5 +150,14 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         return archivesSearchExternalService.startEliminationAction(query);
+    }
+
+    @PostMapping(RestApi.MASSUPDATEUNITSRULES)
+    @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
+    public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto) {
+        LOGGER.info("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", ruleSearchCriteriaDto);
+        SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
+        return archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
     }
 }
