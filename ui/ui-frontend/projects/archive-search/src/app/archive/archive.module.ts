@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +49,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -58,6 +60,7 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
@@ -75,7 +78,12 @@ import { ArchiveComponent } from './archive.component';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
+import { AddManagementRulesComponent } from './management-rules/add-management-rules/add-management-rules.component';
+import { AddUpdatePropertyComponent } from './management-rules/add-update-property/add-update-property.component';
+import { DuaManagementRulesComponent } from './management-rules/dua-management-rules/dua-management-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
+import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
 @NgModule({
   imports: [
@@ -103,7 +111,8 @@ import { SharedModule } from './shared/shared.module';
     TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    MatRadioModule,
   ],
   providers: [
     ArchiveApiService,
@@ -112,7 +121,9 @@ import { SharedModule } from './shared/shared.module';
     ArchiveSearchResolverService,
     TranslateService,
     SearchCriteriaSaverService,
-    RuleValidator
+    RuleValidator,
+    ManagementRulesSharedDataService,
+    ManagementRulesValidatorService
   ],
   declarations: [
     ArchiveComponent,
@@ -127,7 +138,11 @@ import { SharedModule } from './shared/shared.module';
     AppraisalRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
-    DipRequestCreateComponent
+    DipRequestCreateComponent,
+    ManagementRulesComponent,
+    AddManagementRulesComponent,
+    DuaManagementRulesComponent,
+    AddUpdatePropertyComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

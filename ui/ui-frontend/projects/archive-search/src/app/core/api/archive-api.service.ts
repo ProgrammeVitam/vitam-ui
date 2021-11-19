@@ -40,6 +40,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 import { ExportDIPCriteriaList } from '../../archive/models/dip-request-detail.interface';
+import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface';
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive/models/search.criteria';
@@ -126,6 +127,17 @@ export class ArchiveApiService extends BaseHttpClient<any> {
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/action`, criteriaDto, {
+      headers,
+    });
+  }
+
+  getRuleName(headers?: HttpHeaders): Observable<string> {
+    return this.http.get(`${this.apiUrl}/ruleName`, { headers, responseType: 'text' });
+  }
+
+  updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/units/rules`, ruleSearchCriteriaDto, {
+      responseType: 'text',
       headers,
     });
   }

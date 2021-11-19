@@ -35,14 +35,15 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { SidenavPage, GlobalEventService, ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
-import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ExternalParameters, ExternalParametersService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 
 @Component({
   selector: 'app-archive',
@@ -65,7 +66,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
     private externalParameterService: ExternalParametersService,
     private translateService: TranslateService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private managementRulesSharedDataService: ManagementRulesSharedDataService
   ) {
     super(route, globalEventService);
   }
@@ -95,6 +97,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       if (accessConctractId && accessConctractId.length > 0) {
         this.accessContract = accessConctractId;
         this.foundAccessContract = true;
+        this.managementRulesSharedDataService.emitAccessContract(accessConctractId);
       } else {
         this.errorMessageSub = this.translateService
           .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')

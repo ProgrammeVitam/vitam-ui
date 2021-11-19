@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archives.search.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
@@ -47,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -181,5 +183,15 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination action with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
+    }
+
+    public ResponseEntity<String> getName() {
+        return new ResponseEntity<String>("Rule Name", HttpStatus.OK);
+       // return "Rule Name ";
+    }
+
+    public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
+        return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
     }
 }

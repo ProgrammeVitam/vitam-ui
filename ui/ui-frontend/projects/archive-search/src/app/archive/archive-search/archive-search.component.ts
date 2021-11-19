@@ -40,15 +40,17 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
+import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
@@ -77,7 +79,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
-    private startupService: StartupService
+    private startupService: StartupService,
+    private router: Router,
+    private managementRulesSharedDataService: ManagementRulesSharedDataService
   ) {
     this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe((nodes) => {
       this.entireNodesIds = nodes;
@@ -292,6 +296,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
     this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
+
+    const ruleActions: ActionsRules[] = [];
+    this.managementRulesSharedDataService.emitRuleActions(ruleActions);
+    this.managementRulesSharedDataService.emitManagementRules([]);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -873,12 +881,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     // unsubscribe to ensure no memory leaks
-    this.subscriptionNodes.unsubscribe();
-    this.subscriptionEntireNodes.unsubscribe();
-    this.subscriptionFilingHoldingSchemeNodes.unsubscribe();
-    this.subscriptionSimpleSearchCriteriaAdd.unsubscribe();
-    this.openDialogSubscription.unsubscribe();
-    this.showConfirmEliminationSuscription.unsubscribe();
+    this.subscriptionNodes?.unsubscribe();
+    this.subscriptionEntireNodes?.unsubscribe();
+    this.subscriptionFilingHoldingSchemeNodes?.unsubscribe();
+    this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
+    this.openDialogSubscription?.unsubscribe();
+    this.showConfirmEliminationSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
   }
@@ -1163,6 +1171,24 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateManagementRule() {
-    console.log('hello');
+    // this.route.url.subscribe((data) => {
+    //   console.log('salam', data);
+    // });
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const criteriaSearchDSLQuery = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+    };
+    console.log('hello2', this.router.url);
+    console.log('cooo', this.startupService.getConfigStringValue('UI_URL'));
+
+    // this.managementRulesSharedDataService.emitApplicationName('Hello from archive search');
+    this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
+    this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
+    this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
+
+    this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
   }
 }
