@@ -49,6 +49,8 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
+import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
+import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -106,6 +108,12 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "eliminationService")
     private EliminationService eliminationService;
 
+    @MockBean(name="ruleOperationsConverter")
+    private RuleOperationsConverter ruleOperationsConverter;
+
+    @MockBean(name="rulesUpdateCommonService")
+    private RulesUpdateCommonService rulesUpdateCommonService;
+
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
@@ -117,7 +125,7 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                exportDipV2Service, archivesSearchAppraisalQueryBuilderService, eliminationService);
+                exportDipV2Service, archivesSearchAppraisalQueryBuilderService, eliminationService, ruleOperationsConverter, rulesUpdateCommonService);
     }
 
     @Test

@@ -38,9 +38,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
-import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { ArchiveComponent } from './archive.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 
 const routes: Route[] = [
   {
@@ -58,11 +57,12 @@ const routes: Route[] = [
     component: ArchiveComponent,
     canActivate: [ActiveTenantGuard],
   },
-
+  // les autres composant comme des childs.
+  // découper les composants.
   {
-    path: 'tenant/:tenantIdentifier/:accessContractId/id/:id',
-    component: ArchiveSearchPopupComponent,
-    resolve: { archiveUnit: ArchiveSearchResolverService },
+    path: 'update-rules/tenant/:tenantIdentifier',
+    component: ManagementRulesComponent,
+    canActivate: [ActiveTenantGuard],
   },
 ];
 

@@ -67,7 +67,7 @@
     <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
       <mat-tab label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
         <div class="card-criteria">
-          <simple-criteria-search></simple-criteria-search>
+          <app-simple-criteria-search></app-simple-criteria-search>
         </div>
       </mat-tab>
       <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">

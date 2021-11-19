@@ -369,7 +369,7 @@ public class ServicesData {
     public static final String ROLE_SEARCH_WITH_RULES = ROLE_PREFIX + "SEARCH_WITH_RULES";
     public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT_DIP";
     public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
-    public static final String ROLE_UPDATE_MANAGEMENT_RULES = ROLE_PREFIX + UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
+    public static final String ROLE_UPDATE_MANAGEMENT_RULES = UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 

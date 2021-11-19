@@ -22,11 +22,10 @@
                 *ngIf="!simpleCriteriaForm.get('beginDt').value; else showBeginDt"
                 (click)="pickerBegin.open()"
                 class="search-date-label"
-              >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE' | translate }}</span
+                >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.START_DATE' | translate }}</span
               >
               <ng-template #showBeginDt
-              ><span
-                (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | date: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerBegin.open()">{{ simpleCriteriaForm.get('beginDt').value | date: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -51,12 +50,11 @@
           </div>
           <div class="col-4 form-control">
             <div class="vitamui-input" (click)="pickerEnd.open()">
-              <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()"
-                    class="search-date-label">{{
+              <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
                 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE' | translate
               }}</span>
               <ng-template #showEndDt
-              ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | date: 'dd/MM/yyyy' }} </span>
+                ><span (click)="pickerEnd.open()">{{ simpleCriteriaForm.get('endDt').value | date: 'dd/MM/yyyy' }} </span>
               </ng-template>
               <input
                 class="hidden"
@@ -135,7 +133,7 @@
                     matTooltip="{{ ontology?.Value }}"
                     matTooltipClass="vitamui-tooltip"
                     [matTooltipShowDelay]="300"
-                  >{{ ontology.Label }}
+                    >{{ ontology.Label }}
                   </mat-option>
                 </ng-container>
               </mat-select>
@@ -183,11 +181,11 @@
                 *ngIf="!simpleCriteriaForm.get('otherCriteriaValue').value; else showOtherCriteria"
                 (click)="pickerOtherCriteria.open()"
                 class="search-date-label"
-              >{{ selectedValueOntolonogy }}</span
+                >{{ selectedValueOntolonogy }}</span
               >
               <ng-template #showOtherCriteria
-              ><span (click)="pickerOtherCriteria.open()"
-              >{{ simpleCriteriaForm.get('otherCriteriaValue').value | date: 'dd/MM/yyyy' }}
+                ><span (click)="pickerOtherCriteria.open()"
+                  >{{ simpleCriteriaForm.get('otherCriteriaValue').value | date: 'dd/MM/yyyy' }}
                 </span>
               </ng-template>
               <input

@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +49,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -58,12 +60,14 @@ import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
+import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
@@ -73,8 +77,12 @@ import { ArchiveComponent } from './archive.component';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
+import { AddManagementRulesComponent } from './management-rules/add-management-rules/add-management-rules.component';
+import { AddUpdatePropertyComponent } from './management-rules/add-update-property/add-update-property.component';
+import { DuaManagementRulesComponent } from './management-rules/dua-management-rules/dua-management-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
-import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
+import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
 @NgModule({
   imports: [
@@ -103,6 +111,7 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
+    MatRadioModule,
   ],
   providers: [
     ArchiveApiService,
@@ -111,6 +120,8 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     ArchiveSearchResolverService,
     TranslateService,
     SearchCriteriaSaverService,
+    ManagementRulesSharedDataService,
+    ManagementRulesValidatorService,
   ],
   declarations: [
     ArchiveComponent,
@@ -126,6 +137,10 @@ import { DipRequestCreateComponent } from './archive-search/dip-request-create/d
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
+    ManagementRulesComponent,
+    AddManagementRulesComponent,
+    DuaManagementRulesComponent,
+    AddUpdatePropertyComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

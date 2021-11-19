@@ -37,6 +37,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -253,5 +254,20 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         JsonNode jsonNode = archiveInternalService.startEliminationAction(searchQuery, vitamContext);
         return jsonNode;
+    }
+
+    @PostMapping(RestApi.MASSUPDATEUNITSRULES)
+    public ResponseEntity<String> updateArchiveUnitsRules(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto) throws VitamClientException {
+        LOGGER.info("Update Archive Units Rules by criteria {}", ruleSearchCriteriaDto);
+        SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, ruleSearchCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

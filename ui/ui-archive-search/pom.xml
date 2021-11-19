@@ -187,6 +187,7 @@
                         <argument>
                             --spring.config.additional-location=file:${basedir}/src/main/config/ui-archive-search-application-dev.yml
                         </argument>
+
                     </arguments>
                 </configuration>
             </plugin>

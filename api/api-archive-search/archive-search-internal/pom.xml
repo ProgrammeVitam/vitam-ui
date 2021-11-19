@@ -206,6 +206,7 @@
                     <mainClass>fr.gouv.vitamui.archive.internal.server.ApiArchiveInternalServerApplication</mainClass>
                     <jvmArguments>
                         -Xmx512m -Dvitam.config.folder=${basedir}/src/main/config/dev-vitam
+                       <!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=7089-->
                     </jvmArguments>
 
                     <arguments>
