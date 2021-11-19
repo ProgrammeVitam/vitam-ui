@@ -29,6 +29,7 @@ package fr.gouv.archive.internal.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -194,6 +195,19 @@ public class ArchiveInternalRestClient
                 request, JsonNode.class);
         checkResponse(response);
         return response;
+
+    }
+
+    public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.info("Calling Update Archive Units Rules  with query {} ", ruleSearchCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.MASSUPDATEUNITSRULES, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
 
     }
 }

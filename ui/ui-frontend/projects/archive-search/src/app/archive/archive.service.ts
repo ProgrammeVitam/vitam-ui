@@ -43,6 +43,7 @@ import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } fr
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
@@ -241,6 +242,16 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
+  }
+
+  updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
+  }
+
+  getName(): string {
+    return 'hello from ui-archive-search';
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
