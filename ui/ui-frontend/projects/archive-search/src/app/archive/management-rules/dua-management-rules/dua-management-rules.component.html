@@ -1,5 +1,5 @@
 <div *ngFor="let action of getActionByRuleType('AppraisalRule')">
-  <div *ngIf="action === 'addRules'">
+  <div *ngIf="action === 'ADD_RULES'">
     <div class="action-style">
       {{ 'RULES.RULES_TO_ADD' | translate }}
       <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
@@ -9,7 +9,7 @@
 
     <div class="collapsible" [@collapse]="collapsed" *ngFor="let actionName of getActions('AppraisalRule')">
       <app-add-management-rules
-        *ngIf="actionName.actionType === action && action === 'addRules'"
+        *ngIf="actionName.actionType === action && action === 'ADD_RULES'"
         (delete)="deleteForm(actionName.id, $event)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
@@ -47,7 +47,7 @@
     </i>
   </div>
 
-  <div *ngIf="action === 'addRules'">
+  <div *ngIf="action === 'ADD_RULES'">
     <div class="action-style">
       {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
       <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showUpdatePropertyBloc()">

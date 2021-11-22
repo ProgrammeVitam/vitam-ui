@@ -45,6 +45,9 @@ import fr.gouv.vitam.common.model.massupdate.RuleActions;
 
 import java.util.Arrays;
 
+/**
+ * Update Archive units Rules Common Service
+ */
 public class RulesUpdateCommonService {
 
     public void deleteAttributesFromObjectNode(ObjectNode dslRequest, String ...attributes) {

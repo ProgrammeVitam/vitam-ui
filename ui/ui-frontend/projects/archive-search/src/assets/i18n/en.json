@@ -35,8 +35,8 @@
       "EXECUTE": "Delete the archives",
       "EXECUTE_ONE": "Delete the archive"
     },
-       "RULE" : {
-      "UPDATE_RULE" : "Update a rule"
+    "RULES_ACTION" : {
+      "UPDATE_RULE" : "Update rules"
     },
 
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
@@ -245,7 +245,8 @@
         "RULE_NAME": "Label",
         "END_DATE": "End date",
         "RULE_ID": "Code",
-        "SAME_RULE_ID" : "Code identical to the previous action"
+        "SAME_RULE_ID" : "Code identical to the previous action",
+        "RULE_NOT_EXIST" :"The rule code entered does not exist"
 
       },
       "FINAL_ACTION": {

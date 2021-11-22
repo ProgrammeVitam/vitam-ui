@@ -89,8 +89,8 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  private static fetchTitle(title: string, title_: any) {
-    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  private static fetchTitle(title: string, titleInLanguages: any) {
+    return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
   public getOntologiesFromJson(): Observable<any> {
@@ -184,14 +184,14 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
+  downloadObjectFromUnit(id: string, title?: string, titleInLanguages?: any, headers?: HttpHeaders) {
     return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
       (response) => {
         let filename;
         if (response.headers.get('content-disposition').includes('filename')) {
           filename = response.headers.get('content-disposition').split('=')[1];
         } else {
-          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
+          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, titleInLanguages));
         }
 
         const element = document.createElement('a');
@@ -248,10 +248,6 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
-  }
-
-  getName(): string {
-    return 'hello from ui-archive-search';
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

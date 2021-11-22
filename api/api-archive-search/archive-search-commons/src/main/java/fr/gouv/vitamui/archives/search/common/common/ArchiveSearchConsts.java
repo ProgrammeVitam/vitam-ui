@@ -147,8 +147,7 @@ public class ArchiveSearchConsts {
             ORIGINATING_AGENCY_ID_FIELD, "#originating_agency",
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
-            "SP_LABEL", "originating_agency_label",
-            "APPRAISAL_RULE_START_DATE", "#management.AppraisalRule.Rules.StartDate"
+            "SP_LABEL", "originating_agency_label"
         );
 
 

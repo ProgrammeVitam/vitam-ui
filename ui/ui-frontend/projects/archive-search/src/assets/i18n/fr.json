@@ -35,8 +35,8 @@
       "EXECUTE": "Eliminer les archives",
       "EXECUTE_ONE": "Eliminer l'archive"
     },
-    "RULE" : {
-      "UPDATE_RULE" : "Modifier une règle"
+    "RULES_ACTION" : {
+      "UPDATE_RULE" : "Mettre à jour des règles"
     },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
@@ -272,7 +272,8 @@
         "RULE_NAME" : "Libellé",
         "END_DATE" : "Date de fin",
         "RULE_ID" : "Code",
-        "SAME_RULE_ID" : "Code identique à l'action précédente"
+        "SAME_RULE_ID" : "Code identique à l'action précédente",
+        "RULE_NOT_EXIST" :"Le code de la règle renseigné n'existe pas"
 
       },
       "FINAL_ACTION" : {

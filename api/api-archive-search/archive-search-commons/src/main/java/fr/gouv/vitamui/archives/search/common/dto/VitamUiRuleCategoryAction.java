@@ -55,12 +55,20 @@ import java.util.Set;
 public class VitamUiRuleCategoryAction implements Serializable {
 
     private List<VitamUiRuleAction> rules;
+
     private String finalAction;
+
     private String classificationLevel;
+
     private String classificationOwner;
+
     private String classificationAudience;
+
     private String classificationReassessingDate;
+
     private Boolean needReassessingAuthorization;
+
     private Boolean preventInheritance;
+
     private Set<String> preventRulesId;
 }

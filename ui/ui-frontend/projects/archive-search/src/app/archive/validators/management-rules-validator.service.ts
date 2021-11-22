@@ -36,10 +36,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 
 @Injectable()
@@ -47,37 +49,54 @@ export class ManagementRulesValidatorService {
   debounceTime = 400;
   ruleActions: RuleCategoryAction;
   managementRules: ManagementRules[];
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
+  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private ruleService: RuleService) {}
 
   filterRuleActions(ruleId: string): boolean {
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   this.ruleActions = data;
-    //   console.log('hada filtre', data);
-    // });
-
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
-      console.log('hada filtre', data);
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === 'AppraisalRule') !== -1) {
-      this.ruleActions = this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction;
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+      this.ruleActions = this.managementRules.find(
+        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+      ).ruleCategoryAction;
       return this.ruleActions.rules?.filter((action) => action.rule === ruleId).length !== 0 ? true : false;
     }
     return false;
-
-    // if (this.ruleActions && this.ruleActions.rules) {
-    //   return this.ruleActions.rules?.filter((action) => action.rule === ruleId).length !== 0 ? true : false;
-    // }
   }
 
-  uniqueCode = (codeToIgnore?: string): AsyncValidatorFn => {
+  uniqueRuleId = (codeToIgnore?: string): AsyncValidatorFn => {
     return (control: AbstractControl) => {
-      console.log('control', control);
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterRuleActions(control.value)) : of(false))),
         take(1),
-        map((exists: boolean) => (exists ? { uniqueCode: true } : null))
+        map((exists: boolean) => (exists ? { uniqueRuleId: true } : null))
+      );
+    };
+  };
+
+  ruleIdPattern = (): ValidatorFn => {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const regexp = /[À-ÖØ-öø-ÿ ]/;
+      return regexp.test(control.value) ? { ruleIdPattern: true } : null;
+    };
+  };
+
+  checkRuleIdExistence = (ruleIdToIgnore?: string): AsyncValidatorFn => {
+    return this.existesRuleProperties('ruleId', 'ruleIdExists', ruleIdToIgnore);
+  };
+
+  private existesRuleProperties(field: string, existTag: string, valueToIgnore?: string) {
+    return (control: AbstractControl) => {
+      const properties: any = {};
+      properties[field] = control.value;
+      const existField: any = {};
+      existField[existTag] = true;
+
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? null : existField))
       );
     };
   }

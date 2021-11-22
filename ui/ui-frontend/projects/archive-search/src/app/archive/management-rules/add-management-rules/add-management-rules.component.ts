@@ -41,10 +41,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
 import { isEmpty } from 'underscore';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
+import { RuleTypeEnum } from '../../models/rule-type-enum';
 import { ManagementRules, RuleAction, RuleCategoryAction } from '../../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { ManagementRulesValidatorService } from '../../validators/management-rules-validator.service';
@@ -88,14 +89,15 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   criteriaSearchDSLQuery: SearchCriteriaDto;
 
   criteriaSearchDSLQuerySuscription: Subscription;
-  criteriaSearchForStats: SearchCriteriaDto;
-  criteriaSearchList: any[] = [];
-  // accessContract: string;
-  accessContractSubscription: Subscription;
+  getRuleSuscription: Subscription;
+
   isLoading = false;
   isWarningLoading = false;
   isDisabled = true;
   managementRules: ManagementRules[] = [];
+  managementRulesSubscription: Subscription;
+  rule: Rule;
+  selectedStartDate: any;
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
 
@@ -104,6 +106,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     private archiveService: ArchiveService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
+    public ruleService: RuleService,
     private managementRulesValidatorService: ManagementRulesValidatorService
   ) {
     this.previousRuleDetails = {
@@ -114,18 +117,19 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     };
 
     this.ruleDetailsForm = this.formBuilder.group({
-      rule: [null, [Validators.required], [this.managementRulesValidatorService.uniqueCode()]],
-      // rule: [null, Validators.required],
+      rule: [
+        null,
+        [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
+        [this.managementRulesValidatorService.uniqueRuleId(), , this.managementRulesValidatorService.checkRuleIdExistence()],
+      ],
       name: [{ value: null, disabled: true }, Validators.required],
       startDate: [null, Validators.required],
-      endDate: [{ value: 'date de fin', disabled: true }],
-      // endDate: [{ value: null, disabled: true }],
+      endDate: [{ value: null, disabled: true }],
     });
 
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        // filter(() => this.ruleDetailsForm.valid),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => !isEmpty(formData)),
         filter((formData) => this.patchForm(formData))
@@ -134,33 +138,36 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         this.ruleDetailsForm.reset(this.previousRuleDetails);
       });
 
-    this.ruleDetailsForm.get('startDate').valueChanges.subscribe(() => {
+    this.ruleDetailsForm.get('startDate').valueChanges.subscribe((date) => {
       this.cancelStep.emit();
       this.isShowCheckButton = true;
-      this.isDisabled = false;
+      this.isDisabled = true;
+      this.selectedStartDate = date;
     });
 
-    this.ruleDetailsForm.get('rule').valueChanges.subscribe(() => {
-      this.ruleDetailsForm.patchValue({ name: this.archiveService.getName() });
+    this.ruleDetailsForm.get('rule').valueChanges.subscribe((ruleSelected) => {
+      if (this.ruleDetailsForm.get('rule').value !== this.previousRuleDetails.rule) {
+        this.getRuleSuscription = this.ruleService.get(ruleSelected).subscribe((ruleResponse) => {
+          this.rule = ruleResponse;
+        });
+      }
+
+      if (this.rule && this.rule.ruleValue) {
+        this.ruleDetailsForm.patchValue({ name: this.rule.ruleValue });
+      }
+
       this.cancelStep.emit();
     });
   }
 
   ngOnDestroy() {
     this.showConfirmDeleteAddRuleSuscription?.unsubscribe();
-    // this.selectedItemSubscription?.unsubscribe();
+    this.managementRulesSubscription?.unsubscribe();
     this.criteriaSearchDSLQuerySuscription?.unsubscribe();
-    // this.accessContractSubscription?.unsubscribe();
+    this.getRuleSuscription.unsubscribe();
   }
 
-  ngOnInit(): void {
-    // this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
-    //   this.selectedItem = response;
-    // });
-    // this.accessContractSubscription = this.managementRulesSharedDataService.getAccessContract().subscribe((accessContract) => {
-    //   this.accessContract = accessContract;
-    // });
-  }
+  ngOnInit() {}
 
   initDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
@@ -172,13 +179,6 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.initDSLQuery();
 
-    //     category: "APPRAISAL_RULE"
-    // criteria: "APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE"
-    // dataType: "STRING"
-    // operator: "EQ"
-    // values: [{id: "true", value: "true"}]
-    // 0: {id: "true", value: "true"}
-
     const onlyManagementRules: SearchCriteriaEltDto = {
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
@@ -186,6 +186,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       operator: CriteriaOperator.EQ,
       values: [{ id: 'true', value: 'true' }],
     };
+
     const criteriaWithId: SearchCriteriaEltDto = {
       criteria: APPRAISAL_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
@@ -193,11 +194,11 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
+
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
     this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-      console.log('total qui ont cette règle ', data.totalResults);
       this.itemsWithSameRule = data.totalResults;
       this.itemsToUpdate = this.selectedItem - data.totalResults;
       this.isLoading = false;
@@ -238,7 +239,6 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
     this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-      console.log('total qui ont cette règle et aussi la meme date ', data.totalResults);
       this.itemsWithSameRuleAndDate = data.totalResults;
       this.isWarningLoading = false;
     });
@@ -246,7 +246,6 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
   patchForm(data: any): boolean {
     this.isDisabled = false;
-    // this.ruleDetailsForm.patchValue({ name: this.archiveService.getName() });
     this.previousRuleDetails = {
       rule: data.rule ? data.rule : this.previousRuleDetails.rule,
       name: this.ruleDetailsForm.get('name').value,
@@ -267,23 +266,41 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.delete.emit(this.ruleDetailsForm.get('rule').value);
       });
-
-    console.log('hadi ruleType jdiiida', this.ruleTypeDUA);
   }
 
   addStartDate() {
-    console.log('ddd', this.ruleDetailsForm.get('startDate').value);
     this.previousRuleDetails = {
       rule: this.ruleDetailsForm.get('rule').value,
       name: this.ruleDetailsForm.get('name').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
       endDate: this.ruleDetailsForm.get('endDate').value,
     };
+    if (this.rule && this.rule.ruleMeasurement) {
+      const startDateSelected = new Date(this.selectedStartDate);
+      switch (this.rule.ruleMeasurement.toUpperCase()) {
+        case 'YEAR':
+          startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(this.rule.ruleDuration));
+          break;
+        case 'MONTH':
+          startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.rule.ruleDuration));
+          break;
+        case 'DAY':
+          startDateSelected.setDate(startDateSelected.getDay() + Number(this.rule.ruleDuration));
+          break;
+      }
+
+      const endDate =
+        this.getDay(new Date(startDateSelected).getDate()) +
+        '/' +
+        this.getMonth(new Date(startDateSelected).getMonth() + 1) +
+        '/' +
+        new Date(startDateSelected).getFullYear().toString();
+
+      this.ruleDetailsForm.patchValue({ endDate });
+    }
 
     this.isShowCheckButton = !this.isShowCheckButton;
     this.isDisabled = false;
-
-    console.log('valuuuuuuuuu', this.ruleDetailsForm.getRawValue());
   }
 
   submit() {
@@ -296,58 +313,48 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       name: this.ruleDetailsForm.get('name').value,
     };
 
-    console.log('fffoooo', rule);
-    console.log('previous', this.previousRuleDetails);
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   this.ruleTypeDUA = data;
-    // });
-
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+    this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
     });
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === 'AppraisalRule') !== -1) {
-      this.ruleTypeDUA = this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction;
+
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+      this.ruleTypeDUA = this.managementRules.find(
+        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+      ).ruleCategoryAction;
       if (this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule) === -1) {
         this.ruleTypeDUA.rules.push(rule);
         this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.rule !== this.lastRuleId);
-        this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction = this.ruleTypeDUA;
+        this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction =
+          this.ruleTypeDUA;
       }
     } else {
       this.ruleTypeDUA = { finalAction: '', rules: [rule] };
-      const managementRule: ManagementRules = { category: 'AppraisalRule', ruleCategoryAction: this.ruleTypeDUA };
+      const managementRule: ManagementRules = { category: RuleTypeEnum.APPRAISALRULE, ruleCategoryAction: this.ruleTypeDUA };
       this.managementRules.push(managementRule);
     }
-    // this.ruleTypeDUA = this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule')?.ruleCategoryAction;
-
-    // this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-    //   this.ruleTypeDUA = data.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction;
-    // });
-
-    // if (this.ruleTypeDUA && this.ruleTypeDUA.rules) {
-    //   if (this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule) === -1) {
-    //     this.ruleTypeDUA.rules.push(rule);
-    //     this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.rule !== this.lastRuleId);
-    //   }
-    // }
-
-    // this.managementRulesSharedDataService.emitRuleTypeDUA(this.ruleTypeDUA);
-
-    // this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction = this.ruleTypeDUA;
 
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
-
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   console.log('jdiiid', data);
-    // });
-
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      console.log('jdiiid', data);
-    });
 
     this.addRuleToQuery();
     this.addRuleAndStartDateToQuery();
     this.confirmStep.emit();
 
     this.lastRuleId = this.ruleDetailsForm.get('rule').value;
+  }
+
+  private getMonth(num: number): string {
+    if (num > 9) {
+      return num.toString();
+    } else {
+      return '0' + num.toString();
+    }
+  }
+
+  private getDay(day: number): string {
+    if (day > 9) {
+      return day.toString();
+    } else {
+      return '0' + day.toString();
+    }
   }
 }
