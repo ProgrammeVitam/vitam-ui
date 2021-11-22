@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.cas.authentication;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
@@ -49,8 +50,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.val;
-
 import lombok.val;
 
 /**
@@ -74,7 +73,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
     }
 
     @Override
-    public boolean canAuthenticateAsInternal(final String surrogate, final Principal principal, final Service service) {
+    public boolean canAuthenticateAsInternal(String surrogate, Principal principal, Optional<Service> service) {
         val id = (String) principal.getAttributes().get(UserPrincipalResolver.SUPER_USER_ID_ATTRIBUTE).get(0);
         boolean canAuthenticate = false;
         try {

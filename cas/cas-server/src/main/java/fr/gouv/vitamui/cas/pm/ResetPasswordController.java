@@ -44,12 +44,13 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.PasswordManagementWebflowUtils;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.CollectionUtils;
-import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
@@ -111,7 +112,8 @@ public class ResetPasswordController {
             return false;
         }
         val usernameLower = username.toLowerCase().trim();
-        val email = passwordManagementService.findEmail(usernameLower);
+        val query = PasswordManagementQuery.builder().username(usernameLower).build();
+        val email = passwordManagementService.findEmail(query);
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
@@ -130,7 +132,8 @@ public class ResetPasswordController {
     }
 
     protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties) {
-        val token = passwordManagementService.createToken(username);
+        val query = PasswordManagementQuery.builder().username(username).build();
+        val token = passwordManagementService.createToken(query);
 
         val properties = CollectionUtils.<String, Serializable>wrap(PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN, token);
         val ticket = pmTicketFactory.create((Service) null, properties);

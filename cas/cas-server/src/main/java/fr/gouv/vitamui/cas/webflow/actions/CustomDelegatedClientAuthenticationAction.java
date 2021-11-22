@@ -44,31 +44,16 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.apereo.cas.CentralAuthenticationService;
-import org.apereo.cas.audit.AuditableExecution;
-import org.apereo.cas.authentication.AuthenticationServiceSelectionPlan;
-import org.apereo.cas.authentication.AuthenticationSystemSupport;
-import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
-import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.web.DelegatedClientWebflowManager;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationAction;
-import org.apereo.cas.web.flow.SingleSignOnParticipationStrategy;
-import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
-import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
-import org.apereo.cas.web.support.ArgumentExtractor;
+import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
 import org.apereo.cas.web.support.WebUtils;
-import org.pac4j.core.client.Clients;
-import org.pac4j.core.context.JEEContext;
-import org.pac4j.core.context.session.SessionStore;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import java.io.IOException;
-import java.util.List;
 
 import lombok.val;
 
@@ -84,11 +69,11 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
 
+    private final DelegatedClientAuthenticationConfigurationContext configContext;
+
     private final IdentityProviderHelper identityProviderHelper;
 
     private final ProvidersService providersService;
-
-    private final CasConfigurationProperties casProperties;
 
     private final Utils utils;
 
@@ -98,32 +83,16 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private final String surrogationSeparator;
 
-    public CustomDelegatedClientAuthenticationAction(final CasDelegatingWebflowEventResolver initialAuthenticationAttemptWebflowEventResolver,
-                                                     final CasWebflowEventResolver serviceTicketRequestWebflowEventResolver,
-                                                     final AdaptiveAuthenticationPolicy adaptiveAuthenticationPolicy,
-                                                     final Clients clients,
-                                                     final ServicesManager servicesManager,
-                                                     final AuditableExecution delegatedAuthenticationPolicyEnforcer,
-                                                     final DelegatedClientWebflowManager delegatedClientWebflowManager,
-                                                     final AuthenticationSystemSupport authenticationSystemSupport,
-                                                     final CasConfigurationProperties casProperties,
-                                                     final AuthenticationServiceSelectionPlan authenticationRequestServiceSelectionStrategies,
-                                                     final CentralAuthenticationService centralAuthenticationService,
-                                                     final SingleSignOnParticipationStrategy singleSignOnParticipationStrategy,
-                                                     final SessionStore<JEEContext> sessionStore,
-                                                     final List<ArgumentExtractor> argumentExtractors,
+    public CustomDelegatedClientAuthenticationAction(final DelegatedClientAuthenticationConfigurationContext context,
                                                      final IdentityProviderHelper identityProviderHelper,
                                                      final ProvidersService providersService,
                                                      final Utils utils,
                                                      final TicketRegistry ticketRegistry,
                                                      final String vitamuiPortalUrl,
                                                      final String surrogationSeparator) {
-        super(initialAuthenticationAttemptWebflowEventResolver, serviceTicketRequestWebflowEventResolver, adaptiveAuthenticationPolicy,
-            clients, servicesManager, delegatedAuthenticationPolicyEnforcer, delegatedClientWebflowManager, authenticationSystemSupport,
-            casProperties, authenticationRequestServiceSelectionStrategies, centralAuthenticationService, singleSignOnParticipationStrategy,
-            sessionStore, argumentExtractors);
+        super(context);
+        this.configContext = context;
         this.identityProviderHelper = identityProviderHelper;
-        this.casProperties = casProperties;
         this.providersService = providersService;
         this.utils = utils;
         this.ticketRegistry = ticketRegistry;
@@ -185,7 +154,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                     val optProvider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), idp);
                     if (optProvider.isPresent()) {
                         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
-                        response.addCookie(utils.buildIdpCookie(idp, casProperties.getTgc()));
+                        response.addCookie(utils.buildIdpCookie(idp, configContext.getCasProperties().getTgc()));
                         val client = ((SamlIdentityProviderDto) optProvider.get()).getSaml2Client();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
                         try {

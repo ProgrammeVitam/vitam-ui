@@ -37,14 +37,18 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apereo.cas.audit.AuditActionResolvers;
+import org.apereo.cas.audit.AuditResourceResolvers;
+import org.apereo.cas.audit.AuditableActions;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.actions.SendPasswordResetInstructionsAction;
 import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
-import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.support.WebUtils;
+import org.apereo.inspektr.audit.annotation.Audit;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -90,26 +94,29 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                                                    final ProvidersService providersService,
                                                    final IdentityProviderHelper identityProviderHelper,
                                                    final Utils utils) {
-        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory);
+        super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, null);
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.utils = utils;
     }
 
+    @Audit(action = AuditableActions.REQUEST_CHANGE_PASSWORD,
+        principalResolverName = "REQUEST_CHANGE_PASSWORD_PRINCIPAL_RESOLVER",
+        actionResolverName = AuditActionResolvers.REQUEST_CHANGE_PASSWORD_ACTION_RESOLVER,
+        resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER)
     @Override
     protected Event doExecute(final RequestContext requestContext) {
         communicationsManager.validate();
-        if (!communicationsManager.isMailSenderDefined()) {
+        if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
             return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
         }
 
+        // CUSTO: try to get the username from the credentials also (after a password expiration)
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         request.removeAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE);
         String username = request.getParameter("username");
-        // added from CAS:
         if (StringUtils.isBlank(username)) {
-            // try to get the username from the credentials also (after a password expiration)
             final MutableAttributeMap<Object> flowScope = requestContext.getFlowScope();
             final Object credential = flowScope.get("credential");
             if (credential instanceof UsernamePasswordCredential) {
@@ -117,13 +124,13 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                 username = usernamePasswordCredential.getUsername();
             }
         }
+        val query = buildPasswordManagementQuery(requestContext);
         if (StringUtils.isBlank(username)) {
-            LOGGER.warn("No username parameter is provided");
             return getErrorEvent("username.required", "No username is provided", requestContext);
         }
 
-        // changed from CAS:
-        final String email = passwordManagementService.findEmail(username);
+        val email = passwordManagementService.findEmail(query);
+        // CUSTO: only retrieve email (and not phone) and force success event (instead of error) when failure
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided; nonetheless, we return to the success page");
             return success();
@@ -133,23 +140,26 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         }
 
         val service = WebUtils.getService(requestContext);
-        val url = buildPasswordResetUrl(username, passwordManagementService, casProperties, service);
+        val url = buildPasswordResetUrl(query.getUsername(), passwordManagementService, casProperties, service);
         if (StringUtils.isNotBlank(url)) {
             val pm = casProperties.getAuthn().getPm();
-            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
-                    pm.getReset().getExpirationMinutes());
-            if (sendPasswordResetEmailToAccount(email, url)) {
-                return success();
+            LOGGER.debug("Generated password reset URL [{}]; Link is only active for the next [{}] minute(s)",
+                url, pm.getReset().getExpirationMinutes());
+            // CUSTO: only send email (and not SMS)
+            val sendEmail = sendPasswordResetEmailToAccount(query.getUsername(), email, url, requestContext);
+            if (sendEmail) {
+                return success(url);
             }
         } else {
             LOGGER.error("No password reset URL could be built and sent to [{}]", email);
         }
         LOGGER.error("Failed to notify account [{}]", email);
-        return getErrorEvent("contact.failed", "Failed to send the password reset link to the given email address or phone number", requestContext);
+        return getErrorEvent("contact.failed", "Failed to send the password reset link via email address or phone", requestContext);
     }
 
     @Override
-    protected boolean sendPasswordResetEmailToAccount(final String to, final String url) {
+    protected boolean sendPasswordResetEmailToAccount(final String username, final String to, final String url,
+                                                      final RequestContext requestContext) {
         final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, "", "",
             String.valueOf(casProperties.getAuthn().getPm().getReset().getExpirationMinutes()), url, vitamuiPlatformName,
             LocaleContextHolder.getLocale());

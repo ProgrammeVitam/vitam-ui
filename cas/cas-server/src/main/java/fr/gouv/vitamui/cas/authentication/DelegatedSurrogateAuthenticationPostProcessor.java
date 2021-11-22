@@ -52,6 +52,8 @@ import org.springframework.webflow.execution.RequestContextHolder;
 
 import lombok.val;
 
+import java.util.Collections;
+
 /**
  * Post-processor which also handles the surrogation in the authentication delegation.
  *
@@ -91,7 +93,7 @@ public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuth
                 newCredential.setSurrogateUsername((String) surrogateInSession);
                 WebUtils.putCredential(requestContext, newCredential);
 
-                final AuthenticationTransaction newTransaction = DefaultAuthenticationTransaction.of(transaction.getService(), newCredential);
+                final AuthenticationTransaction newTransaction = new DefaultAuthenticationTransaction(transaction.getService(), Collections.singletonList(newCredential));
                 super.process(builder, newTransaction);
             } else {
                 return;

@@ -27,9 +27,8 @@ public final class GeneralTerminateSessionActionTest {
 
         final LogoutManager logoutManager = mock(LogoutManager.class);
 
-        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null, null, null);
+        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null, null, null, logoutManager, null);
         action.setServicesManager(servicesManager);
-        action.setLogoutManager(logoutManager);
 
         action.performGeneralLogout("tgtId");
     }

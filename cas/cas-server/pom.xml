@@ -196,6 +196,11 @@
             <artifactId>cas-server-support-pm-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-notifications</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
 
         <!-- multi-factor authentication -->
         <dependency>
@@ -221,6 +226,11 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-sms-twilio</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-authentication-mfa-api</artifactId>
             <version>${cas.version}</version>
         </dependency>
 
