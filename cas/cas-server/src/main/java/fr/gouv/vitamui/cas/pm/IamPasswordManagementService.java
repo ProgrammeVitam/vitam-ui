@@ -55,10 +55,7 @@ import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
-import org.apereo.cas.pm.BasePasswordManagementService;
-import org.apereo.cas.pm.InvalidPasswordException;
-import org.apereo.cas.pm.PasswordChangeRequest;
-import org.apereo.cas.pm.PasswordHistoryService;
+import org.apereo.cas.pm.*;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.crypto.CipherExecutor;
 import org.apereo.cas.web.support.WebUtils;
@@ -152,7 +149,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
             throw new PasswordConfirmException();
         }
 
-        if (!passwordValidator.isValid(getProperties().getPolicyPattern(), bean.getPassword())) {
+        if (!passwordValidator.isValid(getProperties().getCore().getPolicyPattern(), bean.getPassword())) {
             throw new PasswordNotMatchRegexException();
         }
 
@@ -194,7 +191,8 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     @Override
-    public String findEmail(final String username) {
+    public String findEmail(final PasswordManagementQuery query) {
+        val username = query.getUsername();
         String email = null;
         val usernameWithLowercase = username.toLowerCase().trim();
         try {
@@ -210,7 +208,7 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
     }
 
     @Override
-    public Map<String, String> getSecurityQuestions(final String username) {
+    public Map<String, String> getSecurityQuestions(final PasswordManagementQuery query) {
         throw new UnsupportedOperationException("security questions/answers are not available");
     }
 

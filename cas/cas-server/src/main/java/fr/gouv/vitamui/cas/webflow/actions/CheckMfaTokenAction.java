@@ -39,8 +39,8 @@ package fr.gouv.vitamui.cas.webflow.actions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apereo.cas.mfa.simple.CasSimpleMultifactorAuthenticationTicketFactory;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
+import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
 import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
@@ -64,7 +64,7 @@ public class CheckMfaTokenAction extends AbstractAction {
     protected Event doExecute(final RequestContext requestContext) {
         val credential = WebUtils.getCredential(requestContext);
         val tokenCredential = (CasSimpleMultifactorTokenCredential) credential;
-        val token = CasSimpleMultifactorAuthenticationTicketFactory.PREFIX + "-" + tokenCredential.getToken();
+        val token = CasSimpleMultifactorAuthenticationTicket.PREFIX + "-" + tokenCredential.getToken();
         LOGGER.debug("Checking token: {}", token);
         WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 

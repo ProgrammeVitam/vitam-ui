@@ -73,7 +73,7 @@ cas.ticket.tst.timeToKillInSeconds: 86400
 
 
 cas.authn.pm.enabled: true
-cas.authn.pm.policyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{12,}$'
+cas.authn.pm.core.policyPattern: '^(?=(.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{12,}$'
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: serveur-cas@noreply.com
