@@ -32,7 +32,7 @@ const APPRAISAL_RULE_END_DATE = 'APPRAISAL_RULE_END_DATE';
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 
 @Component({
-  selector: 'appraisal-rule-search',
+  selector: 'app-appraisal-rule-search',
   templateUrl: './appraisal-rule-search.component.html',
   styleUrls: ['./appraisal-rule-search.component.css']
 })

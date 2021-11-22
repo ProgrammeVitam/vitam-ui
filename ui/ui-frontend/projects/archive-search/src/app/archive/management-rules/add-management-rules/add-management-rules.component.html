@@ -10,9 +10,16 @@
         label="{{ 'RULES.APRAISAL_RULES.RULE_ID' | translate }}"
       >
         <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
-        <vitamui-common-field-error errorKey="uniqueCode">
+        <vitamui-common-field-error errorKey="uniqueRuleId">
           {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
         >
+        <vitamui-common-field-error errorKey="ruleIdPattern"
+          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
+        </vitamui-common-field-error>
+
+        <vitamui-common-field-error errorKey="ruleIdExists"
+          >{{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+        </vitamui-common-field-error>
       </vitamui-common-editable-input>
 
       <vitamui-common-input

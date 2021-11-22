@@ -57,10 +57,16 @@ public class VitamUiRuleCategoryActionDeletion implements Serializable {
 
 
     private Optional<List<VitamUiRuleAction>> rules;
+
     private Optional<String> finalAction;
+
     private Optional<String> classificationAudience;
+
     private Optional<String> classificationReassessingDate;
+
     private Optional<Boolean> needReassessingAuthorization;
+
     private Optional<Boolean> preventInheritance;
+
     private Optional<Set<String>> preventRulesId;
 }

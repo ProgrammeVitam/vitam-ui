@@ -35,75 +35,16 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { SearchCriteriaDto } from './search.criteria';
+export enum RuleTypeEnum {
+  APPRAISALRULE = 'AppraisalRule',
 
-export interface ActionsRules {
-  ruleType: string;
-  actionType: string;
-  id: number;
-  ruleId: string;
-  stepValid: boolean;
-}
+  ACCESSRULE = 'AccessRule',
 
-export interface ActionCounter {
-  actionType: string;
-  actionCounter: number;
-}
+  STORAGERULE = 'StorageRule',
 
-export interface RuleSearchCriteriaDto {
-  searchCriteriaDto: SearchCriteriaDto;
-  ruleActions: RuleActions;
-}
+  DISSEMINATIONRULE = 'DisseminationRule',
 
-export interface RuleAction {
-  rule: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-}
+  CLASSIFICATIONRULE = 'ClassificationRule',
 
-export interface RuleCategoryAction {
-  rules: RuleAction[];
-  finalAction: string;
-}
-
-export interface RuleCat {
-  ruleCat: string;
-  ruleCategoryAction: RuleCategoryAction;
-}
-
-export interface RuleActions {
-  add: any[];
-  update: any[];
-  delete: any[];
-}
-
-export interface RuleCategoryActionDeletion {
-  rules: RuleActions[];
-  finalAction: string;
-  classificationAudience: string;
-  classificationReassessingDate: string;
-  needReassessingAuthorization: boolean;
-  preventInheritance: boolean;
-  preventRulesId: string[];
-}
-
-export interface ManagementMetadataAction {
-  archiveUnitProfile: string;
-}
-
-export interface VitamUiRuleActions {
-  actionType: string;
-  ruleCategories: string[];
-  ruleCatgoryAction: RuleCategoryAction;
-}
-
-export interface ManagementRules {
-  category: string;
-  ruleCategoryAction: RuleCategoryAction;
-}
-
-export enum RuleActionsEnum {
-  ADD_RULES = 'ADD_RULES',
-  UPDATE_PROPERTY = 'UPDATE_PROPERTY',
+  REUSERULE = 'ReuseRule',
 }

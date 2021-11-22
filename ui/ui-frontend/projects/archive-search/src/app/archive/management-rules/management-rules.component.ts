@@ -36,7 +36,6 @@
  */
 
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -45,7 +44,8 @@ import { filter } from 'rxjs/operators';
 import { Logger, StartupService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { ActionsRules, RuleActions, RuleCategoryAction, RuleSearchCriteriaDto, VitamUiRuleActions } from '../models/ruleAction.interface';
+import { RuleTypeEnum } from '../models/rule-type-enum';
+import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto } from '../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
 @Component({
@@ -58,9 +58,10 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   criteriaSearchListToSaveSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
   criteriaSearchDSLQuerySuscription: Subscription;
-  accessContractSubscription: Subscription;
   accessContract: string;
+  accessContractSubscription: Subscription;
   tenantIdentifier: string;
+  tenantIdentifierSubscription: Subscription;
   selectedItem: number;
   selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
@@ -68,10 +69,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   private ruleCategoryDuaActions: RuleCategoryAction = {
     rules: [],
     finalAction: '',
-    // classificationLevel: 'salam',
   };
+  actionSelected: string;
 
-  favoriteSeason: string;
   rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
     { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true },
     { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
@@ -84,16 +84,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
-  ruleDetailsForm: FormGroup;
   ruleCategorySelected: string;
-  actionSelected: string;
-  // collapsed = false;
-  // updatePropertyCollapsed = false;
-  // deletePropertyCollapsed = false;
   isRuleCategorySelected = false;
-
-  vitamUiRuleActions: VitamUiRuleActions;
-
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
@@ -109,43 +101,29 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private router: Router,
     private startupService: StartupService,
     private translateService: TranslateService,
-    private logger: Logger 
+    private logger: Logger
   ) {}
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+  ngOnInit() {
+    this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
+    this.loadAccessContract();
+    this.loadSelectedItem();
+    this.loadCriteriaSearchListToSave();
+    this.loadCriteriaSearchDSLQuery();
 
-    this.accessContractSubscription = this.managementRulesSharedDataService.getAccessContract().subscribe((accessContract) => {
-      this.accessContract = accessContract;
-    });
-
-    this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
-      this.selectedItem = response;
-    });
-
-    this.criteriaSearchListToSaveSuscription = this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((response) => {
-      this.criteriaSearchListToSave = response;
-    });
-
-    this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
-      this.criteriaSearchDSLQuery = response;
-    });
-
-    console.log('criteria search', this.criteriaSearchListToSave);
-    console.log('criteria search DS', this.criteriaSearchDSLQuery);
     if (this.criteriaSearchListToSave.length === 0) {
-      // this.returnToArchiveSearchPage();
-      // envoyer le user vers la page de recherche
-      // this.ruleActions = [];
-      // this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
-      // this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchListToSave);
-      // this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+      this.initializeParameters();
+      this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
     }
+  }
 
-    console.log('Contrat', this.accessContract);
-    // this.testCheck();
+  initializeParameters() {
+    this.ruleActions = [];
+    this.managementRulesSharedDataService.emitManagementRules([]);
+    this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
+    this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchListToSave);
   }
 
   ngOnDestroy() {
@@ -154,10 +132,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuerySuscription?.unsubscribe();
     this.showConfirmRuleActionsDialogSuscription?.unsubscribe();
     this.showConfirmLeaveRuleActionsDialogSuscription?.unsubscribe();
+    this.tenantIdentifierSubscription?.unsubscribe();
   }
 
   selectRule(rule: any) {
-    if (this.rulesCatygoriesToShow.find((x) => x.name === rule.name) === undefined) {
+    if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.length - 1;
     } else {
@@ -167,19 +146,45 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.isRuleCategorySelected = true;
   }
 
+  loadCriteriaSearchDSLQuery() {
+    this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
+      this.criteriaSearchDSLQuery = response;
+    });
+  }
+
+  loadCriteriaSearchListToSave() {
+    this.criteriaSearchListToSaveSuscription = this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((response) => {
+      this.criteriaSearchListToSave = response;
+    });
+  }
+
+  loadAccessContract() {
+    this.accessContractSubscription = this.managementRulesSharedDataService.getAccessContract().subscribe((accessContract) => {
+      this.accessContract = accessContract;
+    });
+  }
+
+  loadSelectedItem() {
+    this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
+      this.selectedItem = response;
+    });
+  }
+
   onSelectAction(rule: string) {
-    console.log('hel', rule);
     let idToAdd = 0;
     this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
     if (this.ruleActions && this.ruleActions.length > 0) {
-      idToAdd = this.ruleActions[this.ruleActions?.length - 1]?.id;
+      idToAdd = this.ruleActions[this.ruleActions.length - 1]?.id;
     }
-    if (rule === 'addRules' && this.ruleActions.filter((action) => action.actionType === 'updateProperty').length === 0) {
+    if (
+      rule === RuleActionsEnum.ADD_RULES &&
+      this.ruleActions.filter((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).length === 0
+    ) {
       this.ruleActions.push({
         ruleType: this.ruleCategorySelected,
-        actionType: 'updateProperty',
+        actionType: RuleActionsEnum.UPDATE_PROPERTY,
         id: idToAdd + 1,
         ruleId: '',
         stepValid: false,
@@ -192,14 +197,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.actionsSelected.push(rule);
     }
 
-    console.log('actions :', this.actionsSelected);
-    console.log('tttt', this.ruleActions);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
   }
-
-  // getActions(category: string): ActionsRules[] {
-  //   return this.ruleActions.filter((action) => action.ruleType === category);
-  // }
 
   returnToArchiveSearchPage() {
     const dialogToOpen = this.confirmLeaveRuleActionsDialog;
@@ -209,13 +208,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        console.log('go to archive-search page');
-        this.ruleActions = [];
-        // const ruleCategoryAction: RuleCategoryAction = { rules: [], finalAction: '' };
-        // this.managementRulesSharedDataService.emitRuleTypeDUA(ruleCategoryAction);
-        this.managementRulesSharedDataService.emitManagementRules([]);
-        this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
-        this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchListToSave);
+        this.initializeParameters();
         this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
       });
   }
@@ -224,12 +217,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const dialogToOpen = this.confirmRuleActionsDialog;
     const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   this.ruleCategoryDuaActions = data;
-    // });
 
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.ruleCategoryDuaActions = data.find((rule) => rule.category === 'AppraisalRule')?.ruleCategoryAction;
+      this.ruleCategoryDuaActions = data.find((rule) => rule.category === RuleTypeEnum.APPRAISALRULE)?.ruleCategoryAction;
     });
 
     actionAddOnRules.AppraisalRule = { rules: this.ruleCategoryDuaActions.rules, finalAction: this.ruleCategoryDuaActions?.finalAction };
@@ -249,15 +239,10 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           ruleActions: allRuleActions,
         };
 
-        console.log('objet pour la partie back', this.ruleSearchCriteriaDto);
-
         this.archiveService.updateUnitsRules(ruleSearchCriteriaDto, this.accessContract).subscribe(
           (response) => {
-            console.log('BackEnd response', response);
             const ruleActions: ActionsRules[] = [];
-            // const ruleCategoryAction: RuleCategoryAction = { rules: [], finalAction: '' };
             this.managementRulesSharedDataService.emitRuleActions(ruleActions);
-            // this.managementRulesSharedDataService.emitRuleTypeDUA(ruleCategoryAction);
             this.managementRulesSharedDataService.emitManagementRules([]);
 
             const serviceUrl =
@@ -272,16 +257,6 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       });
   }
 
-  // update(formData: any): Observable<string> {
-  //   console.log('rak tema', formData.ruleIdentifier);
-  //   return formData.ruleIdentifier;
-  // }
-
-  // getActionByRuleType(ruleType: string): string[] {
-  //   const s: string[] = this.ruleActions.filter((x) => x.ruleType === ruleType).map((x) => x.actionType);
-  //   return s.filter((n, i) => s.indexOf(n) === i);
-  // }
-
   isAllActionsValid(): boolean {
     this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
@@ -294,7 +269,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
   }
 
-  objectToArray(object: any): any[] {
+  private objectToArray(object: any): any[] {
     return Object.keys(object).map((x) => {
       const item: any = {};
       item[x] = object[x];

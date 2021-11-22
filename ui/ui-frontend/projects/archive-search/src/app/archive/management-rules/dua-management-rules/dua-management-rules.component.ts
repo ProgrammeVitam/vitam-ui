@@ -36,9 +36,11 @@
  */
 
 import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular/animations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../models/ruleAction.interface';
+import { RuleTypeEnum } from '../../models/rule-type-enum';
+import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../models/ruleAction.interface';
 
 @Component({
   selector: 'app-dua-management-rules',
@@ -53,36 +55,49 @@ import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../models/
     ]),
   ],
 })
-export class DuaManagementRulesComponent implements OnInit {
+export class DuaManagementRulesComponent implements OnInit, OnDestroy {
   @Input()
   accessContract: string;
   @Input()
   selectedItem: string;
   ruleActions: ActionsRules[];
+  ruleActionsSubscription: Subscription;
   collapsed = false;
   updatePropertyCollapsed = false;
   deletePropertyCollapsed = false;
   ruleCategoryDuaActions: RuleCategoryAction;
   managementRules: ManagementRules[] = [];
+  managementRulesSubscription: Subscription;
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
-  ngOnInit(): void {
-    // this.getLogbookOperationDetails(this.ruleActions);
+  ngOnDestroy() {
+    this.ruleActionsSubscription?.unsubscribe();
+    this.managementRulesSubscription?.unsubscribe();
   }
-  getActionByRuleType(ruleType: string): string[] {
-    // console.log('4444', this.ruleActions);
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+
+  ngOnInit() {}
+
+  confirmStep(id: number) {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    const s: string[] = this.ruleActions.filter((x) => x.ruleType === ruleType).map((x) => x.actionType);
-    // console.log('s', s);
-    return s.filter((n, i) => s.indexOf(n) === i);
+
+    this.ruleActions.find((ruleAction) => ruleAction.id === id).stepValid = true;
+    this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
+  }
+
+  getActionByRuleType(ruleType: string): string[] {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+      this.ruleActions = data;
+    });
+    const rules: string[] = this.ruleActions.filter((actionRules) => actionRules.ruleType === ruleType).map((action) => action.actionType);
+    return rules.filter((ruleName, index) => rules.indexOf(ruleName) === index);
   }
   getActions(category: string): ActionsRules[] {
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    return this.ruleActions.filter((x) => x.ruleType === category);
+    return this.ruleActions.filter((ruleAction) => ruleAction.ruleType === category);
   }
 
   showAddRuleBloc() {
@@ -90,26 +105,22 @@ export class DuaManagementRulesComponent implements OnInit {
   }
 
   deleteForm(id: number, ruleId: string) {
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data.filter((ruleAction) => ruleAction.id !== id);
     });
     this.ruleActions = this.ruleActions.filter((ruleAction) => ruleAction.id !== id);
-    if (this.ruleActions.findIndex((action) => action.actionType === 'addRules') === -1) {
+    if (this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.ADD_RULES) === -1) {
       this.ruleActions = [];
     }
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   this.ruleCategoryDuaActions = data;
-    // });
-
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+    this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === 'AppraisalRule') !== -1) {
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
       this.ruleCategoryDuaActions = this.managementRules.find(
-        (managementRule) => managementRule.category === 'AppraisalRule'
+        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
       ).ruleCategoryAction;
 
       this.ruleCategoryDuaActions = {
@@ -117,30 +128,19 @@ export class DuaManagementRulesComponent implements OnInit {
         finalAction: this.ruleCategoryDuaActions.finalAction,
       };
 
-      this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction =
+      this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction =
         this.ruleCategoryDuaActions;
     }
 
-    // this.managementRulesSharedDataService.emitRuleTypeDUA(this.ruleCategoryDuaActions);
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
-  }
-  confirmStep(id: number) {
-    console.log('id', id);
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-      this.ruleActions = data;
-    });
-
-    this.ruleActions.find((a) => a.id === id).stepValid = true;
-    this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
   }
 
   cancelStep(id: number) {
-    console.log('id', id);
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find((a) => a.id === id).stepValid = false;
+    this.ruleActions.find((ruleAction) => ruleAction.id === id).stepValid = false;
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
   }
 

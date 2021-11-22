@@ -37,41 +37,25 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ActionsRules, ManagementRules, RuleAction, RuleCategoryAction } from '../archive/models/ruleAction.interface';
+import { ActionsRules, ManagementRules } from '../archive/models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../archive/models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ManagementRulesSharedDataService {
-  private ruleAction: RuleAction[] = [];
-  private ruleCategoryAction: RuleCategoryAction = {
-    rules: this.ruleAction,
-    finalAction: '',
-    // classificationLevel: 'hello',
-  };
-  // private managementRulesValues: ManagementRules = {
-  //   category: '',
-  //   ruleCategoryAction: this.ruleCategoryAction,
-  // };
-
-  // private ruleMap: Map<string, RuleCategoryAction> = new Map().set('AppraisalRule', this.ruleCategoryAction);
-
   private accessContract = new BehaviorSubject<string>('');
   private selectedItems = new BehaviorSubject<number>(0);
   private criteriaSearchListToSave = new BehaviorSubject<SearchCriteriaEltDto[]>([]);
   private criteriaSearchDSLQuery = new BehaviorSubject<SearchCriteriaDto>(null);
   private ruleActions = new BehaviorSubject<ActionsRules[]>([]);
-  // private ruleTypeDUA = new BehaviorSubject<RuleType>({ ruleCategory: 'AppraisalRule', ruleCategoryAction: this.ruleCategoryAction });
-  // private ruleTypeDUA = new BehaviorSubject<RuleType>({ ruleMap: this.ruleMap });
-  private ruleTypeDUA = new BehaviorSubject<RuleCategoryAction>(this.ruleCategoryAction);
+
   private managementRules = new BehaviorSubject<ManagementRules[]>([]);
 
   selectedItem = this.selectedItems.asObservable();
   allCriteriaSearchListToSave = this.criteriaSearchListToSave.asObservable();
   allCriteriaSearchDSLQuery = this.criteriaSearchDSLQuery.asObservable();
   allRuleActions = this.ruleActions.asObservable();
-  allRuleTypeDUA = this.ruleTypeDUA.asObservable();
   allManagementRules = this.managementRules.asObservable();
 
   constructor() {}
@@ -114,14 +98,6 @@ export class ManagementRulesSharedDataService {
 
   getRuleActions(): Observable<ActionsRules[]> {
     return this.ruleActions.asObservable();
-  }
-
-  emitRuleTypeDUA(ruleTypeDUA: RuleCategoryAction) {
-    this.ruleTypeDUA.next(ruleTypeDUA);
-  }
-
-  getRuleTypeDUA(): Observable<RuleCategoryAction> {
-    return this.ruleTypeDUA.asObservable();
   }
 
   emitManagementRules(managementRules: ManagementRules[]) {
