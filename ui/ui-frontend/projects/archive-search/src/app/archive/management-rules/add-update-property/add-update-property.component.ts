@@ -35,54 +35,54 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { ActionsRules, ManagementRules, RuleCategoryAction } from '../../models/ruleAction.interface';
+import { RuleTypeEnum } from '../../models/rule-type-enum';
+import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../models/ruleAction.interface';
 
 @Component({
   selector: 'app-add-update-property',
   templateUrl: './add-update-property.component.html',
   styleUrls: ['./add-update-property.component.css'],
 })
-export class AddUpdatePropertyComponent implements OnInit {
+export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   rulePropertyName: string;
   ruleTypeDUA: RuleCategoryAction;
   ruleActions: ActionsRules[];
+  ruleActionsSubscription: Subscription;
   managementRules: ManagementRules[] = [];
+  managementRulesSubscription: Subscription;
   isValidValue = true;
   showText = false;
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
-  ngOnInit(): void {}
+  ngOnDestroy() {
+    this.managementRulesSubscription?.unsubscribe();
+    this.ruleActionsSubscription?.unsubscribe();
+  }
+
+  ngOnInit() {}
 
   onUpdateRuleProperty() {
-    // this.managementRulesSharedDataService.getRuleTypeDUA().subscribe((data) => {
-    //   this.ruleTypeDUA = data;
-    // });
-
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+    this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === 'AppraisalRule') !== -1) {
-      // this.ruleTypeDUA = this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction;
-      // this.ruleTypeDUA.finalAction = this.rulePropertyName;
-      this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction.finalAction =
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+      this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction.finalAction =
         this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
-      const managementRule: ManagementRules = { category: 'AppraisalRule', ruleCategoryAction: this.ruleTypeDUA };
+      const managementRule: ManagementRules = { category: RuleTypeEnum.APPRAISALRULE, ruleCategoryAction: this.ruleTypeDUA };
       this.managementRules.push(managementRule);
     }
 
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find((action) => action.actionType === 'updateProperty').stepValid = true;
-    // this.ruleTypeDUA.finalAction = this.rulePropertyName;
-    // this.managementRules.find((managementRule) => managementRule.category === 'AppraisalRule').ruleCategoryAction = this.ruleTypeDUA;
-    // this.managementRulesSharedDataService.emitRuleTypeDUA(this.ruleTypeDUA);
+    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
     this.isValidValue = true;
@@ -90,10 +90,10 @@ export class AddUpdatePropertyComponent implements OnInit {
   }
 
   onChangeValue() {
-    this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    this.ruleActions.find((action) => action.actionType === 'updateProperty').stepValid = false;
+    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).stepValid = false;
     this.isValidValue = false;
     this.showText = false;
   }

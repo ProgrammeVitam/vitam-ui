@@ -131,10 +131,6 @@ export class ArchiveApiService extends BaseHttpClient<any> {
     });
   }
 
-  getRuleName(headers?: HttpHeaders): Observable<string> {
-    return this.http.get(`${this.apiUrl}/ruleName`, { headers, responseType: 'text' });
-  }
-
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/units/rules`, ruleSearchCriteriaDto, {
       responseType: 'text',

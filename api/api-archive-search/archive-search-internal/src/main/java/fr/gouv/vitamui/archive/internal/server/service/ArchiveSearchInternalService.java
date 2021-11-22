@@ -51,7 +51,6 @@ import fr.gouv.vitam.common.model.dip.DataObjectVersions;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitam.common.model.export.dip.DipExportType;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
-import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitam.common.model.massupdate.MassUpdateUnitRuleRequest;
 import fr.gouv.vitam.common.model.massupdate.RuleActions;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
@@ -700,8 +699,6 @@ public class ArchiveSearchInternalService {
         ObjectNode dslRequest = (ObjectNode) dslQuery;
         rulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, "$projection" ,"$filter","$facets");
 
-/*        massUpdateUnitRuleRequest.setRuleActions(ruleActions);
-        massUpdateUnitRuleRequest.setDslRequest(dslRequest);*/
         rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
 
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

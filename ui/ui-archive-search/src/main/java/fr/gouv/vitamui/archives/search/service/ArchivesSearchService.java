@@ -185,11 +185,6 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
     }
 
-    public ResponseEntity<String> getName() {
-        return new ResponseEntity<String>("Rule Name", HttpStatus.OK);
-       // return "Rule Name ";
-    }
-
     public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,ExternalHttpContext context) {
         LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
         return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);

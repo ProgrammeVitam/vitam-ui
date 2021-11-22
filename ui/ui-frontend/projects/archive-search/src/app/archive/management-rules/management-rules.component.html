@@ -32,7 +32,7 @@
                 [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
                 [(value)]="actionSelected"
               >
-                <mat-option value="addRules" [disabled]="!isRuleCategorySelected" (click)="onSelectAction(actionSelected)">
+                <mat-option value="ADD_RULES" [disabled]="!isRuleCategorySelected" (click)="onSelectAction(actionSelected)">
                   {{ 'RULES.ACTIONS.ADD_RULE' | translate }}
                 </mat-option>
                 <mat-option value="updateRules" [disabled]="true" (click)="onSelectAction(actionSelected)">
@@ -60,7 +60,7 @@
 
           <mat-form-field class="vitamui-mat-select select-more-actions">
             <mat-select placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}" [disabled]="true" (valueChange)="onSelectAction($event)">
-              <mat-option value="updateProperty" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option>
+              <mat-option value="UPDATE_PROPERTY" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option>
               <mat-option value="deleteProperty" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option>
               <mat-option value="BlockPropertyInheritance" [disabled]="true">
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option

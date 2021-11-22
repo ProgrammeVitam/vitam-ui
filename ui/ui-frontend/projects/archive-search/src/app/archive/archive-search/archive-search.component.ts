@@ -52,7 +52,16 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
+import {
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -1171,9 +1180,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateManagementRule() {
-    // this.route.url.subscribe((data) => {
-    //   console.log('salam', data);
-    // });
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const criteriaSearchDSLQuery = {
       criteriaList: this.listOfUACriteriaSearch,
@@ -1181,10 +1187,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
-    console.log('hello2', this.router.url);
-    console.log('cooo', this.startupService.getConfigStringValue('UI_URL'));
 
-    // this.managementRulesSharedDataService.emitApplicationName('Hello from archive search');
     this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
     this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
     this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);

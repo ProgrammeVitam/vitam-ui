@@ -53,5 +53,6 @@ import java.io.Serializable;
 public class RuleSearchCriteriaDto implements Serializable {
 
     private SearchCriteriaDto searchCriteriaDto;
+
     private VitamUiRuleActions ruleActions;
 }

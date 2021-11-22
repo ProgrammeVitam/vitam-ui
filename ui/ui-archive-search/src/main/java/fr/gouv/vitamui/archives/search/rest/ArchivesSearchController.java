@@ -44,7 +44,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
-import fr.gouv.vitamui.commons.vitam.api.dto.RuleCategoryDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -205,22 +204,11 @@ public class ArchivesSearchController extends AbstractUiRestController {
         return jsonNodeResponseEntity.getBody();
     }
 
-    @ApiOperation(value = "get Name")
-    @PostMapping("ruleName")
-    @ResponseStatus(HttpStatus.OK)
-    public String getName() {
-
-        String result = archivesSearchService.getName().getBody();
-        return result;
-    }
-
-
     @ApiOperation(value = "Update Archive Units Rules by criteria")
     @PostMapping(RestApi.MASSUPDATEUNITSRULES)
     @ResponseStatus(HttpStatus.OK)
     public String updateArchiveUnitsRules(@RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
-        LOGGER.debug("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
-        LOGGER.info("Oussama chabaaaaab2 {}", ruleSearchCriteriaDto.getRuleActions());
+        LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);
         String result = archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
         return result;
     }

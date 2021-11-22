@@ -123,7 +123,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     SearchCriteriaSaverService,
     RuleValidator,
     ManagementRulesSharedDataService,
-    ManagementRulesValidatorService
+    ManagementRulesValidatorService,
   ],
   declarations: [
     ArchiveComponent,
@@ -144,6 +144,6 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     DuaManagementRulesComponent,
     AddUpdatePropertyComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ArchiveModule {}
