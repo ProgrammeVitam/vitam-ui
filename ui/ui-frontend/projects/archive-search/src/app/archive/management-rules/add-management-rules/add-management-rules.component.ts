@@ -42,7 +42,6 @@ import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
-import { isEmpty } from 'underscore';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { RuleTypeEnum } from '../../models/rule-type-enum';
@@ -120,7 +119,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       rule: [
         null,
         [Validators.required, this.managementRulesValidatorService.ruleIdPattern()],
-        [this.managementRulesValidatorService.uniqueRuleId(), , this.managementRulesValidatorService.checkRuleIdExistence()],
+        [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       name: [{ value: null, disabled: true }, Validators.required],
       startDate: [null, Validators.required],
@@ -131,7 +130,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
-        filter((formData) => !isEmpty(formData)),
+        filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData))
       )
       .subscribe(() => {
@@ -145,26 +144,29 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       this.selectedStartDate = date;
     });
 
-    this.ruleDetailsForm.get('rule').valueChanges.subscribe((ruleSelected) => {
-      if (this.ruleDetailsForm.get('rule').value !== this.previousRuleDetails.rule) {
-        this.getRuleSuscription = this.ruleService.get(ruleSelected).subscribe((ruleResponse) => {
-          this.rule = ruleResponse;
-        });
-      }
-
-      if (this.rule && this.rule.ruleValue) {
-        this.ruleDetailsForm.patchValue({ name: this.rule.ruleValue });
-      }
-
+    this.ruleDetailsForm.get('rule').valueChanges.subscribe(() => {
       this.cancelStep.emit();
     });
+  }
+
+  isEmpty(formData: any): boolean {
+    if (formData) {
+      if (formData.rule) {
+        this.getRuleSuscription = this.ruleService.get(formData.rule.trim()).subscribe((ruleResponse) => {
+          this.rule = ruleResponse;
+          this.ruleDetailsForm.patchValue({ name: ruleResponse.ruleValue });
+        });
+        return true;
+      }
+    }
+    return false;
   }
 
   ngOnDestroy() {
     this.showConfirmDeleteAddRuleSuscription?.unsubscribe();
     this.managementRulesSubscription?.unsubscribe();
     this.criteriaSearchDSLQuerySuscription?.unsubscribe();
-    this.getRuleSuscription.unsubscribe();
+    this.getRuleSuscription?.unsubscribe();
   }
 
   ngOnInit() {}
