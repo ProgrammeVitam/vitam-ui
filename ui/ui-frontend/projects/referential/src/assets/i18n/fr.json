@@ -3,7 +3,8 @@
     "CANCEL": "Annuler",
     "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
-    "APPLY_UPDATE": "Appliquer les modifications "
+    "APPLY_UPDATE": "Appliquer les modifications ",
+    "REQUIRED" : "Champ requis"
   },
   "LOGBOOK_OPERATION_LIST": {
     "NO_RESULTS" : "Fin des résultats",

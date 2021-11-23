@@ -34,24 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {AgencyService} from '../agency.service';
-import {AgencyCreateValidators} from './agency-create.validators';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { AgencyService } from '../agency.service';
+import { AgencyCreateValidators } from './agency-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-agency-create',
   templateUrl: './agency-create.component.html',
-  styleUrls: ['./agency-create.component.scss']
+  styleUrls: ['./agency-create.component.scss'],
 })
 export class AgencyCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
   hasCustomGraphicIdentity = false;
@@ -64,8 +62,9 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 1;
   private keyPressSubscription: Subscription;
+  isDisabledButton = false;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<AgencyCreateComponent>,
@@ -74,14 +73,13 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private agencyService: AgencyService,
     private agencyCreateValidators: AgencyCreateValidators
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       name: [null, Validators.required],
       identifier: [null, Validators.required, this.agencyCreateValidators.uniqueIdentifier()],
-      description: [null]
+      description: [null],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -101,32 +99,37 @@ export class AgencyCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
-    // TODO : Create !
+    this.isDisabledButton = true;
     this.agencyService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({success: true, action: 'none'});
+        this.isDisabledButton = false;
+        this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.dialogRef.close({success: false, action: 'none'});
+        this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      });
+      }
+    );
   }
 
   onSubmitAndCreate() {
+    this.isDisabledButton = true;
     this.agencyService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({success: true, action: 'restart'});
+        this.isDisabledButton = false;
+        this.dialogRef.close({ success: true, action: 'restart' });
       },
       (error: any) => {
-        this.dialogRef.close({success: false, action: 'restart'});
+        this.dialogRef.close({ success: false, action: 'restart' });
         console.error(error);
-      });
+      }
+    );
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }
