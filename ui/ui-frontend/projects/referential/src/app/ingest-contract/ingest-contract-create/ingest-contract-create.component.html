@@ -382,7 +382,9 @@
           ></vitamui-library-filing-plan>
         </div>
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid() || isDisabledButton">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>

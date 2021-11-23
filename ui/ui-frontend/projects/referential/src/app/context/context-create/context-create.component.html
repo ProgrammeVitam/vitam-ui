@@ -97,7 +97,7 @@
           </ng-container>
         </div>
 
-        <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
+        <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton"
                 i18n="Finish context creation button@@contextCreateFinishButton">Terminer</button>
         <button type="button" class="btn cancel" (click)="onCancel()"
                 i18n="Cancel context creation@@contextCreateCancelButton">Annuler</button>

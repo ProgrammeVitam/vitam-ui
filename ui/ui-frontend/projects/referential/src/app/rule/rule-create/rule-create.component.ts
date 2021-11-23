@@ -50,7 +50,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
 @Component({
   selector: 'app-rule-create',
   templateUrl: './rule-create.component.html',
-  styleUrls: ['./rule-create.component.scss']
+  styleUrls: ['./rule-create.component.scss'],
 })
 export class RuleCreateComponent implements OnInit, OnDestroy {
 
@@ -69,6 +69,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
+  isDisabledButton = false;
 
   @ViewChild('fileSearch', {static: false}) fileSearch: any;
   tenantIdentifier: number;
@@ -90,7 +91,7 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
       ruleValue: [null, Validators.required],
       ruleDescription: [null, Validators.required],
       ruleDuration: [null, Validators.required],
-      ruleMeasurement: [null, Validators.required]
+      ruleMeasurement: [null, Validators.required],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -110,14 +111,18 @@ export class RuleCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
 
     const format: Rule = this.form.value;
+    this.isDisabledButton = true;
 
     this.ruleService.create(format).subscribe(
       () => {
-        this.dialogRef.close({success: true});
+        this.isDisabledButton = false;
+
+        this.dialogRef.close({ success: true });
       },
       (error: any) => {
         this.dialogRef.close({success: false});
