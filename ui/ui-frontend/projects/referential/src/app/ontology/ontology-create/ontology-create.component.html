@@ -80,7 +80,7 @@
           </div>
         </div>
         <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid"
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton"
                   i18n="Finish ontology creation button@@ontologyCreateFinishButton">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()"
                   i18n="Cancel ontology creation@@ontologyCreateCancelButton">Annuler</button>

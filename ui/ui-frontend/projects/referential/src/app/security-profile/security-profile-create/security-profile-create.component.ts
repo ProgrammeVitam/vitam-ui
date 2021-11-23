@@ -34,29 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-
-import {Component, Inject, OnDestroy, OnInit, ViewChild, Input} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SecurityProfileService} from '../security-profile.service';
-import {SecurityProfileCreateValidators} from './security-profile-create.validators';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { SecurityProfileService } from '../security-profile.service';
+import { SecurityProfileCreateValidators } from './security-profile-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-security-profile-create',
   templateUrl: './security-profile-create.component.html',
-  styleUrls: ['./security-profile-create.component.scss']
+  styleUrls: ['./security-profile-create.component.scss'],
 })
 export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
-
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
-  stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
+  stepIndex = 1;
+  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -67,8 +65,9 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 2;
   private keyPressSubscription: Subscription;
+  isDisabledButton = false;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<SecurityProfileCreateComponent>,
@@ -77,8 +76,7 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private securityProfileService: SecurityProfileService,
     private securityProfileCreateValidators: SecurityProfileCreateValidators
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -116,26 +114,32 @@ export class SecurityProfileCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
-    // TODO : Create !
+    this.isDisabledButton = true;
     this.securityProfileService.create(this.form.value).subscribe(
       () => {
-        this.dialogRef.close({success: true, action: 'none'});
+        this.isDisabledButton = false;
+        this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.dialogRef.close({success: false, action: 'none'});
+        this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      });
+      }
+    );
   }
 
   firstStepInvalid(): boolean {
-    return this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('fullAccess').invalid || this.form.get('fullAccess').pending;
+    return (
+      this.form.get('name').invalid ||
+      this.form.get('name').pending ||
+      this.form.get('fullAccess').invalid ||
+      this.form.get('fullAccess').pending
+    );
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

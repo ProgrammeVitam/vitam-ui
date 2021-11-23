@@ -3,8 +3,7 @@
 </div>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
-  <vitamui-common-stepper (selectionChange)="stepIndex=$event.selectedIndex">
-
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
     <cdk-step>
       <div class="content">
         <h4 i18n="Create accessContract title@@accessContractCreateTitle1">Création d'un contrat d'accès</h4>
@@ -15,8 +14,14 @@
         </div>
 
         <div class="d-flex">
-          <vitamui-common-input formControlName="name" minlength="2" maxlength="100" required placeholder="Nom"
-                                i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+          <vitamui-common-input
+            formControlName="name"
+            minlength="2"
+            maxlength="100"
+            required
+            placeholder="Nom"
+            i18n-placeholder="Name@@profileGroupCreateNamePlaceholder"
+          >
             <ng-container *ngIf="form.get('name')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required"
                                           i18n="Required field error hint@@formErrorRequiredField">Champ requis
@@ -29,16 +34,24 @@
         </div>
 
         <div class="d-flex" *ngIf="isSlaveMode">
-          <vitamui-common-input formControlName="identifier" minlength="2" maxlength="100" required
-                                placeholder="Identifiant"
-                                i18n-placeholder="Identifier@@ingectContractCreateIdentifierPlaceholder">
+          <vitamui-common-input
+            formControlName="identifier"
+            minlength="2"
+            maxlength="100"
+            required
+            placeholder="Identifiant"
+            i18n-placeholder="Identifier@@ingectContractCreateIdentifierPlaceholder"
+          >
             <ng-container *ngIf="form.get('identifier')?.touched">
-              <vitamui-common-input-error *ngIf="!!form.get('identifier')?.errors?.required"
-                                          i18n="Required field error hint@@formErrorRequiredField">Champ requis
+              <vitamui-common-input-error
+                *ngIf="!!form.get('identifier')?.errors?.required"
+                i18n="Required field error hint@@formErrorRequiredField"
+                >Champ requis
               </vitamui-common-input-error>
-              <vitamui-common-input-error *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
-                                          i18n="Name exists error hint@@formErrorIdentifierExists">Identifiant déjà
-                utilisé
+              <vitamui-common-input-error
+                *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
+                i18n="Name exists error hint@@formErrorIdentifierExists"
+                >Identifiant déjà utilisé
               </vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
@@ -48,36 +61,41 @@
         </vitamui-common-textarea>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle [formControl]="accessLogControl"
-                                       checked="form.controls.accessLog.value === 'ACTIVE'">
+          <vitamui-common-slide-toggle [formControl]="accessLogControl" checked="form.controls.accessLog.value === 'ACTIVE'">
             Journalisation des accès <span *ngIf="!form.controls.accessLog.value">in</span>actif
           </vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Droit d'enregistrer les accès sur les objets"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <i class="material-icons" matTooltip="Droit d'enregistrer les accès sur les objets" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle [formControl]="ruleFilter">Autoriser le filtrage sur les règles de gestion
+          <vitamui-common-slide-toggle [formControl]="ruleFilter"
+            >Autoriser le filtrage sur les règles de gestion
           </vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Filtrer les accès en fonction des règles de gestion arrivé à échéance"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <i
+            class="material-icons"
+            matTooltip="Filtrer les accès en fonction des règles de gestion arrivé à échéance"
+            matTooltipClass="vitamui-tooltip"
+            >info</i
+          >
         </div>
 
         <div class="form-group select-group-info" *ngIf="ruleFilter.value === true">
-
           <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="ruleCategoryToFilter" placeholder="Sélectionnez les règles"
-                        i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-                        panelclass="vitamui-mat-select"
-                        multiple required>
-              <mat-option *ngFor='let rule of rules' [value]="rule.key">{{rule.label}}</mat-option>
+            <mat-select
+              formControlName="ruleCategoryToFilter"
+              placeholder="Sélectionnez les règles"
+              i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+              panelclass="vitamui-mat-select"
+              multiple
+              required
+            >
+              <mat-option *ngFor="let rule of rules" [value]="rule.key">{{ rule.label }}</mat-option>
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
-          <i class="material-icons" matTooltip="Choisir les règles de gestion"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <i class="material-icons" matTooltip="Choisir les règles de gestion" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <div class="actions">
@@ -97,58 +115,64 @@
         <h5 i18n="Create accessContract title@@accessContractCreateTitle3">Services producteurs et usages</h5>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="everyOriginatingAgency">Tous les services producteurs
-          </vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Service producteur associé au contrat et accédant aux archives"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <vitamui-common-slide-toggle formControlName="everyOriginatingAgency">Tous les services producteurs </vitamui-common-slide-toggle>
+          <i
+            class="material-icons"
+            matTooltip="Service producteur associé au contrat et accédant aux archives"
+            matTooltipClass="vitamui-tooltip"
+            >info</i
+          >
         </div>
 
         <!-- FIXME: Hide if oa filter is on -->
 
         <div class="form-group" *ngIf="form.controls.everyOriginatingAgency.value === false">
           <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="originatingAgencies" placeholder="Sélectionnez les services producteurs"
-                        i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-                        panelclass="vitamui-mat-select"
-                        multiple required>
-              <mat-option *ngFor='let originatingAgencie of originatingAgencies' [value]="originatingAgencie.key">
-                {{originatingAgencie.label}}
+            <mat-select
+              formControlName="originatingAgencies"
+              placeholder="Sélectionnez les services producteurs"
+              i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+              panelclass="vitamui-mat-select"
+              multiple
+              required
+            >
+              <mat-option *ngFor="let originatingAgencie of originatingAgencies" [value]="originatingAgencie.key">
+                {{ originatingAgencie.label }}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
-          <i class="material-icons" matTooltip="Choisir de un à plusieurs services producteur"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <i class="material-icons" matTooltip="Choisir de un à plusieurs services producteur" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous les usages
-          </vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Usage auquel donne droit le contrat d'accès"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous les usages </vitamui-common-slide-toggle>
+          <i class="material-icons" matTooltip="Usage auquel donne droit le contrat d'accès" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <!-- FIXME: Hide if usage filter is on (Check usecase) -->
 
         <div class="form-group" *ngIf="form.controls.everyDataObjectVersion.value === false">
           <mat-form-field class="vitamui-mat-select">
-            <mat-select formControlName="dataObjectVersion" placeholder="Sélectionnez les usages"
-                        i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
-                        panelclass="vitamui-mat-select"
-                        multiple required>
-              <mat-option *ngFor='let usage of usages' [value]="usage.key">
-                {{usage.label}}
+            <mat-select
+              formControlName="dataObjectVersion"
+              placeholder="Sélectionnez les usages"
+              i18n-placeholder="Application@@profilesFormApplicationPlaceholder"
+              panelclass="vitamui-mat-select"
+              multiple
+              required
+            >
+              <mat-option *ngFor="let usage of usages" [value]="usage.key">
+                {{ usage.label }}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
               <i class="material-icons">keyboard_arrow_down</i>
             </div>
           </mat-form-field>
-          <i class="material-icons" matTooltip="Choisir de un à plusieurs usages"
-             matTooltipClass="vitamui-tooltip">info</i>
-
+          <i class="material-icons" matTooltip="Choisir de un à plusieurs usages" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <div class="actions">
@@ -173,16 +197,14 @@
         <h5 i18n="Create accessContract title@@accessContractCreateTitle4">Droits d'écritures</h5>
 
         <div class="form-group">
-          <vitamui-common-slide-toggle formControlName="writingPermission">Droits d'écriture
-          </vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Donner des droits en écriture sur les archives"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <vitamui-common-slide-toggle formControlName="writingPermission">Droits d'écriture </vitamui-common-slide-toggle>
+          <i class="material-icons" matTooltip="Donner des droits en écriture sur les archives" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
         <!-- FIXME: Hide if WritingPermission is off -->
         <div class="form-group" *ngIf="form.controls.writingPermission.value === true">
-          <vitamui-common-slide-toggle formControlName="writingRestrictedDesc">Restriction de modification aux
-            métadonnées de description
+          <vitamui-common-slide-toggle formControlName="writingRestrictedDesc"
+            >Restriction de modification aux métadonnées de description
           </vitamui-common-slide-toggle>
         </div>
 
@@ -209,8 +231,12 @@
 
         <div class="form-group">
           <vitamui-common-slide-toggle [formControl]="allNodes">Toutes les positions</vitamui-common-slide-toggle>
-          <i class="material-icons" matTooltip="Choix des positions auxquelles on souhaite donner accès en consultation"
-             matTooltipClass="vitamui-tooltip">info</i>
+          <i
+            class="material-icons"
+            matTooltip="Choix des positions auxquelles on souhaite donner accès en consultation"
+            matTooltipClass="vitamui-tooltip"
+            >info</i
+          >
         </div>
 
           <div class="form-group" *ngIf="allNodes.value === false">
@@ -238,7 +264,7 @@
               ></vitamui-library-filing-plan>
           </div>
 
-        <button type="submit" class="btn primary" [disabled]="lastStepInvalid()"
+        <button type="submit" class="btn primary" [disabled]="lastStepInvalid() || isDisabledButton"
                 i18n="Finish accessContract creation button@@accessContractCreateFinishButton">Terminer
         </button>
         <button type="button" class="btn cancel" (click)="onCancel()"

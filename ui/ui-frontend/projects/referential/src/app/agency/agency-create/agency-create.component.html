@@ -54,8 +54,8 @@
           </vitamui-common-input>
         </div>
         <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid" i18n="Finish agency creation button@@agencyCreateFinishButton">Terminer</button>
-          <button type="button" class="btn primary" [disabled]="form.pending || form.invalid" (click)="onSubmitAndCreate()" i18n="Finish agency creation button@@agencyCreateFinishButton">Terminer et créer un nouveau service agent</button>
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton" i18n="Finish agency creation button@@agencyCreateFinishButton">Terminer</button>
+          <button type="button" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton" (click)="onSubmitAndCreate()" i18n="Finish agency creation button@@agencyCreateFinishButton">Terminer et créer un nouveau service agent</button>
           <button type="button" class="btn cancel" (click)="onCancel()" i18n="Cancel agency creation@@agencyCreateCancelButton">Annuler</button>
         </div>
       </div>

@@ -37,6 +37,7 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import '@angular/localize/init';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AccessContract, FileFormat, FilingPlanMode, IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
@@ -96,6 +97,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   archiveProfiles: any[];
   accessContracts: AccessContract[];
   accesscontractselected: string;
+  isDisabledButton = false;
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -198,10 +200,11 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    /*if (this.form.invalid) { return; }*/
+    this.isDisabledButton = true;
     const ingestContract = this.form.value as IngestContract;
     this.ingestContractService.create(ingestContract).subscribe(
       () => {
+        this.isDisabledButton = false;
         this.dialogRef.close(true);
       },
       (error) => {
