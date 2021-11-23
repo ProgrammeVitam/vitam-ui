@@ -35,23 +35,23 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 /* tslint:disable:object-literal-key-quotes quotemark */
-import {HttpHeaders} from '@angular/common/http';
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FilingPlanMode} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option, ExternalParametersService, ExternalParameters} from 'ui-frontend-common';
-import {ProbativeValueService} from '../probative-value.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { HttpHeaders } from '@angular/common/http';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import '@angular/localize/init';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
+import { ProbativeValueService } from '../probative-value.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-probative-value-create',
   templateUrl: './probative-value-create.component.html',
-  styleUrls: ['./probative-value-create.component.scss']
+  styleUrls: ['./probative-value-create.component.scss'],
 })
 export class ProbativeValueCreateComponent implements OnInit {
   FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
@@ -63,13 +63,14 @@ export class ProbativeValueCreateComponent implements OnInit {
   allNodes = new FormControl(true);
   selectedNodes = new FormControl();
   accessContractId: string;
+  isDisabledButton = false;
 
   usages: Option[] = [
-    {key: 'BinaryMaster', label: 'Archives numériques originales', info: ''},
-    {key: 'Dissemination', label: 'Copies de diffusion', info: ''},
-    {key: 'Thumbnail', label: 'Vignette', info: ''},
-    {key: 'TextContent', label: 'Contenu textuel', info: ''},
-    {key: 'PhysicalMaster', label: 'Archives physiques', info: ''}
+    { key: 'BinaryMaster', label: 'Archives numériques originales', info: '' },
+    { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
+    { key: 'Thumbnail', label: 'Vignette', info: '' },
+    { key: 'TextContent', label: 'Contenu textuel', info: '' },
+    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
@@ -87,28 +88,29 @@ export class ProbativeValueCreateComponent implements OnInit {
     private probativeValueService: ProbativeValueService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
       } else {
         this.snackBar.open(
           $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
-          null, {
+          null,
+          {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
+            duration: 10000,
+          }
+        );
       }
     });
 
     this.form = this.formBuilder.group({
       unitId: [null, Validators.required],
       usage: [null, Validators.required],
-      version: [null, Validators.required]
+      version: [null, Validators.required],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -116,7 +118,7 @@ export class ProbativeValueCreateComponent implements OnInit {
 
   ngOnDestroy = () => {
     this.keyPressSubscription.unsubscribe();
-  }
+  };
 
   onCancel() {
     if (this.form.dirty) {
@@ -128,19 +130,23 @@ export class ProbativeValueCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
+    this.isDisabledButton = true;
 
-    this.probativeValueService.create(
-      this.createDsl(this.form.value),
-      new HttpHeaders({'X-Access-Contract-Id': this.accessContractId})
-    ).subscribe(
-      () => {
-        this.dialogRef.close({success: true, action: 'none'});
-      },
-      () => {
-        this.dialogRef.close({success: false, action: 'none'});
-      });
+    this.probativeValueService
+      .create(this.createDsl(this.form.value), new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractId }))
+      .subscribe(
+        () => {
+          this.isDisabledButton = false;
+
+          this.dialogRef.close({ success: true, action: 'none' });
+        },
+        () => {
+          this.dialogRef.close({ success: false, action: 'none' });
+        }
+      );
   }
 
   get stepProgress() {
@@ -148,23 +154,23 @@ export class ProbativeValueCreateComponent implements OnInit {
   }
   createDsl(values: any) {
     return {
-      "dslQuery": {
-        "$query": [
+      dslQuery: {
+        $query: [
           {
-            "$or": [
+            $or: [
               {
-                "$in": {
-                  "#id": [values.unitId]
-                }
-              }
-            ]
-          }
+                $in: {
+                  '#id': [values.unitId],
+                },
+              },
+            ],
+          },
         ],
-        "$filter": {},
-        "$projection": {}
+        $filter: {},
+        $projection: {},
       },
-      "usage": values.usage,
-      "version": values.version
+      usage: values.usage,
+      version: values.version,
     };
   }
 }

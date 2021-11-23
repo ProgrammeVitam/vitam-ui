@@ -37,18 +37,17 @@
 import { HttpHeaders, HttpParams } from '@angular/common/http';
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import '@angular/localize/init';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileFormat, FilingPlanMode, IngestContract } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService, Option, ExternalParametersService, ExternalParameters } from 'ui-frontend-common';
-
+import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
 import { ArchiveProfileApiService } from '../../core/api/archive-profile-api.service';
 import { ManagementContractApiService } from '../../core/api/management-contract-api.service';
 import { FileFormatService } from '../../file-format/file-format.service';
 import { IngestContractService } from '../ingest-contract.service';
 import { IngestContractCreateValidators } from './ingest-contract-create.validators';
-import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -97,6 +96,7 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   formatTypeList: FileFormat[];
   managementContracts: any[];
   archiveProfiles: any[];
+  isDisabledButton = false;
 
   usages: Option[] = [
     { key: 'BinaryMaster', label: 'Original numérique', info: '' },
@@ -211,13 +211,14 @@ export class IngestContractCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    /*if (this.form.invalid) { return; }*/
+    this.isDisabledButton = true;
     const ingestContract = this.form.value as IngestContract;
     ingestContract.status === 'ACTIVE'
       ? (ingestContract.activationDate = new Date().toISOString())
       : (ingestContract.deactivationDate = new Date().toISOString());
     this.ingestContractService.create(ingestContract).subscribe(
       () => {
+        this.isDisabledButton = false;
         this.dialogRef.close(true);
       },
       (error) => {

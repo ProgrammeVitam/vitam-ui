@@ -79,7 +79,8 @@
           </div>
         </div>
         <div class="btn-container">
-          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid">{{'COMMON.SUBMIT' | translate}}</button>
+      
+          <button type="submit" class="btn primary" [disabled]="form.pending || form.invalid || isDisabledButton">{{'COMMON.SUBMIT' | translate}}</button>
           <button type="button" class="btn cancel" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
