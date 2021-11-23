@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import org.pac4j.saml.client.SAML2Client;
@@ -58,11 +57,7 @@ public class SpMetadataGenerator {
     public String generate(final IdentityProviderDto provider) {
         final Optional<SAML2Client> optionalSaml2Client = saml2ClientBuilder.buildSaml2Client(provider);
         if (optionalSaml2Client.isPresent()) {
-            try {
-                return optionalSaml2Client.get().getServiceProviderMetadataResolver().getMetadata();
-            } catch (final IOException e) {
-                throw new RuntimeException(e);
-            }
+            return optionalSaml2Client.get().getServiceProviderMetadataResolver().getMetadata();
         }
         return null;
     }

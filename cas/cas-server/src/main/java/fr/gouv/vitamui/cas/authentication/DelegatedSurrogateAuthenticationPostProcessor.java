@@ -84,7 +84,7 @@ public class DelegatedSurrogateAuthenticationPostProcessor extends SurrogateAuth
             val requestContext = RequestContextHolder.getRequestContext();
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-            val webContext = new JEEContext(request, response, sessionStore);
+            val webContext = new JEEContext(request, response);
             val surrogateInSession = sessionStore.get(webContext, Constants.SURROGATE).orElse(null);
             if (surrogateInSession != null) {
                 LOGGER.debug("surrogate: {} found after authentication delegation -> overriding credential", surrogateInSession);

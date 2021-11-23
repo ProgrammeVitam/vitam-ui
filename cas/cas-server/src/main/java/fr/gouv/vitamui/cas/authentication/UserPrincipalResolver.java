@@ -129,7 +129,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-            val webContext = new JEEContext(request, response, sessionStore);
+            val webContext = new JEEContext(request, response);
             val clientCredential = (ClientCredential) credential;
             val providerName = clientCredential.getClientName();
             val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
