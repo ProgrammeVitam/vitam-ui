@@ -59,7 +59,7 @@ iam-client:
 cas.authn.accept.users:
 
 
-cas.messageBundle.baseNames: classpath:overriden_messages,classpath:messages
+cas.message-bundle.base-names: classpath:overriden_messages,classpath:messages
 
 
 {% if vitamui.cas_server.base_url is undefined %}
@@ -76,7 +76,7 @@ cas.authn.pm.reset.crypto.enabled: true
 #
 # 4 (hours) * 60 (minutes) * 60 (seconds)
 #server.servlet.session.timeout: PT14400S
-#cas.ticket.tgt.hardTimeout.timeToKillInSeconds: 14400
+#cas.ticket.tgt.hard-timeout.time-to-kill-in-seconds: 14400
 
 
 {% if vitamui.cas_server.base_url is defined %}
@@ -86,35 +86,36 @@ cas.server.prefix: {{ url_prefix }}/cas
 {% endif %}
 login.url: ${cas.server.prefix}/login
 
-cas.serviceRegistry.mongo.clientUri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port | default(27017) }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
-cas.serviceRegistry.mongo.collection: services
-cas.serviceRegistry.mongo.userId: {{ mongodb.cas.user }}
-cas.serviceRegistry.mongo.password: {{ mongodb.cas.password }}
+cas.service-registry.mongo.client-uri: "mongodb://{{ mongodb.cas.user }}:{{ mongodb.cas.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port | default(27017) }}/{{ mongodb.cas.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}"
+cas.service-registry.mongo.collection: services
+cas.service-registry.mongo.user-id: {{ mongodb.cas.user }}
+cas.service-registry.mongo.password: {{ mongodb.cas.password }}
 
 
 cas.authn.surrogate.separator: ","
-cas.authn.surrogate.sms.attributeName: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
+cas.authn.surrogate.sms.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeverSendAnSMS
 
 # 24 hours cache for login delegation
-cas.ticket.tst.timeToKillInSeconds: 86400
+# Must be at least 24 hours as this cache is also used for password management and its 24-hour-creation email
+cas.ticket.tst.time-to-kill-in-seconds: 86400
 
 cas.authn.pm.enabled: true
 
 {% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
-cas.authn.pm.core.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
+cas.authn.pm.core.policy-pattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
 {% else %}
-cas.authn.pm.core.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
+cas.authn.pm.core.policy-pattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
 {% endif %}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe
 cas.authn.pm.reset.mail.text: "Changez de mot de passe via le lien: %s"
 cas.authn.pm.reset.mail.from: {{ smtp.cas.sender }}
-cas.authn.pm.reset.expirationMinutes: {{ smtp.cas.expiration }}
-cas.authn.pm.reset.mail.attributeName: email
-cas.authn.pm.reset.securityQuestionsEnabled: false
-cas.authn.pm.reset.includeServerIpAddress: false
-cas.authn.pm.reset.includeClientIpAddress: false
-cas.authn.pm.autoLogin: true
+cas.authn.pm.reset.expiration-minutes: {{ smtp.cas.expiration }}
+cas.authn.pm.reset.mail.attribute-name: email
+cas.authn.pm.reset.security-questions-enabled: false
+cas.authn.pm.reset.include-server-ip-address: false
+cas.authn.pm.reset.include-client-ip-address: false
+cas.authn.pm.auto-login: true
 
 # Used to sign/encrypt the password-reset link
 # cas.authn.pm.reset.crypto.encryption.key:
@@ -140,13 +141,13 @@ spring.mail.properties.mail.smtps.ssl.protocols: {{ smtp.smtps.ssl.protocols}}
 
 
 cas.authn.throttle.failure.threshold: 2
-cas.authn.throttle.failure.rangeSeconds: 3
+cas.authn.throttle.failure.range-seconds: 3
 
 
 cas:
   logout:
-    followServiceRedirects: true
-    redirectParameter: next
+    follow-service-redirects: true
+    redirect-parameter: next
 
 
 management.endpoints.enabled-by-default: true
@@ -157,8 +158,8 @@ management.metrics.export.prometheus.enabled: true
 
 {% if sms.enabled|lower == "true" %}
 # for SMS:
-cas.smsProvider.twilio.accountId: {{ sms.account }}
-cas.smsProvider.twilio.token: {{ sms.token }}
+cas.sms-provider.twilio.account-id: {{ sms.account }}
+cas.sms-provider.twilio.token: {{ sms.token }}
 mfa.sms.sender: "{{ sms.sender }}"
 {% endif %}
 
@@ -221,11 +222,11 @@ logging:
 
 {% if vitamui.cas_server.cors.enabled|lower == "true" %}
 # Cas CORS (necessary for mobile app)
-cas.httpWebRequest.cors.enabled: true
-cas.httpWebRequest.cors.allowCredentials: false
-cas.httpWebRequest.cors.allowOrigins: ['*']
-cas.httpWebRequest.cors.allowMethods: ['*']
-cas.httpWebRequest.cors.allowHeaders: ['*']
+cas.http-web-request.cors.enabled: true
+cas.http-web-request.cors.allow-credentials: false
+cas.http-web-request.cors.allow-origins: ['*']
+cas.http-web-request.cors.allow-methods: ['*']
+cas.http-web-request.cors.allow-headers: ['*']
 {% endif %}
 
 # Password configuration

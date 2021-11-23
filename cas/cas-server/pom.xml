@@ -15,13 +15,13 @@
         <jackson.version>2.12.4</jackson.version>
         <lombok.version>1.18.20</lombok.version>
         <micrometer.version>1.7.3</micrometer.version>
-        <mockito.version>1.10.19</mockito.version>
+        <mockito.version>3.12.1</mockito.version>
         <spring.boot.version>2.5.4</spring.boot.version>
         <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
         <spring.security.version>5.5.2</spring.security.version>
         <spring.test.version>5.3.9</spring.test.version>
         <spring.version>5.3.9</spring.version>
-        <swagger.version>1.5.18</swagger.version>
+        <swagger.version>2.1.10</swagger.version>
         <spring-webmvc-pac4j.version>5.0.0</spring-webmvc-pac4j.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
 
