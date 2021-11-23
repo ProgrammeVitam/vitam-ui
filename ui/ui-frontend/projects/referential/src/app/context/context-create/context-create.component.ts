@@ -34,32 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Option} from 'ui-frontend-common';
-
-import {Component, Inject, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SecurityProfileService} from '../../security-profile/security-profile.service';
-import {ContextService} from '../context.service';
-import {ContextCreateValidators} from './context-create.validators';
+import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Option } from 'ui-frontend-common';
 import { Context } from '../../../../../vitamui-library/src/lib/models/context';
+import { SecurityProfileService } from '../../security-profile/security-profile.service';
+import { ContextService } from '../context.service';
+import { ContextCreateValidators } from './context-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-context-create',
   templateUrl: './context-create.component.html',
-  styleUrls: ['./context-create.component.scss']
+  styleUrls: ['./context-create.component.scss'],
 })
 export class ContextCreateComponent implements OnInit, OnDestroy {
-
   @Input() isSlaveMode: boolean;
 
   form: FormGroup;
   statusControl = new FormControl(false);
   stepIndex = 0;
-  accessContractInfo: {code: string, name: string, companyName: string} = {code: '', name: '', companyName: ''};
+  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
@@ -71,8 +69,9 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 2;
   private keyPressSubscription: Subscription;
+  isDisabledButton = false;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   securityProfiles: Option[] = [];
 
@@ -84,8 +83,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     private contextService: ContextService,
     private contextCreateValidators: ContextCreateValidators,
     private securityProfileService: SecurityProfileService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -94,7 +92,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       identifier: [null, Validators.required, this.contextCreateValidators.uniqueIdentifier()],
       securityProfile: [null, Validators.required],
       enableControl: [false],
-      permissions: [[{tenant: null, accessContracts: [], ingestContracts: []}], null, null]
+      permissions: [[{ tenant: null, accessContracts: [], ingestContracts: [] }], null, null],
     });
 
     this.form.controls.name.valueChanges.subscribe((value) => {
@@ -104,7 +102,7 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
 
     // Add or remove controls on the permissions
@@ -117,9 +115,8 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
       this.form.controls.permissions.updateValueAndValidity(this.form.controls.permissions.value);
     });
 
-    this.securityProfileService.getAll().subscribe(
-      securityProfiles => {
-        this.securityProfiles = securityProfiles.map(x => ({label: x.name, key: x.identifier}));
+    this.securityProfileService.getAll().subscribe((securityProfiles) => {
+      this.securityProfiles = securityProfiles.map((x) => ({ label: x.name, key: x.identifier }));
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -139,26 +136,37 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
-
+    this.isDisabledButton = true;
     const context = this.form.value as Context;
-    context.status === 'ACTIVE' ? context.activationDate = new Date().toISOString() : context.deactivationDate = new Date().toISOString();
+    context.status === 'ACTIVE'
+      ? (context.activationDate = new Date().toISOString())
+      : (context.deactivationDate = new Date().toISOString());
     this.contextService.create(context).subscribe(
       () => {
-        this.dialogRef.close({success: true, action: 'none'});
+        this.isDisabledButton = false;
+        this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
-        this.dialogRef.close({success: false, action: 'none'});
+        this.dialogRef.close({ success: false, action: 'none' });
         console.error(error);
-      });
+      }
+    );
   }
 
   firstStepInvalid() {
-    return this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('status').invalid || this.form.get('status').pending ||
-      this.form.get('enableControl').invalid || this.form.get('enableControl').pending ||
-      this.form.get('securityProfile').invalid || this.form.get('securityProfile').pending;
+    return (
+      this.form.get('name').invalid ||
+      this.form.get('name').pending ||
+      this.form.get('status').invalid ||
+      this.form.get('status').pending ||
+      this.form.get('enableControl').invalid ||
+      this.form.get('enableControl').pending ||
+      this.form.get('securityProfile').invalid ||
+      this.form.get('securityProfile').pending
+    );
   }
 
   lastStepInvalid() {
@@ -182,14 +190,6 @@ export class ContextCreateComponent implements OnInit, OnDestroy {
   }
 
   get stepProgress() {
-    let stepProgress: number;
-    // For the first step, check if the controls are enabled and if the second step is available or not
-    if (this.stepIndex === 0 && this.form.controls.enableControl.value === true) {
-      stepProgress = ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
-    } else {
-      stepProgress = PROGRESS_BAR_MULTIPLICATOR;
-    }
-    return stepProgress;
+    return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

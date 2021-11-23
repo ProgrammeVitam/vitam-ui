@@ -3,7 +3,8 @@
     "CANCEL": "Cancel",
     "SUBMIT": "Confirm",
     "UPDATE": "Update",
-    "APPLY_UPDATE": "Apply changes"
+    "APPLY_UPDATE": "Apply changes",
+    "REQUIRED" : "Required field"
   },
   "LOGBOOK_OPERATION_LIST": {
     "NO_RESULTS" : "End of results",

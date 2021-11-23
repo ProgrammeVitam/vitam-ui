@@ -36,26 +36,24 @@
  */
 import { Component, Inject, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import '@angular/localize/init';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Option } from 'ui-frontend-common';
-
-import { AccessContract, FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { AgencyService } from '../../agency/agency.service';
-import { AccessContractCreateValidators } from './access-contract-create.validators';
-import '@angular/localize/init';
 import { AccessContractService } from '../access-contract.service';
+import { AccessContractCreateValidators } from './access-contract-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-access-contract-create',
   templateUrl: './access-contract-create.component.html',
-  styleUrls: ['./access-contract-create.component.scss']
+  styleUrls: ['./access-contract-create.component.scss'],
 })
 export class AccessContractCreateComponent implements OnInit, OnDestroy {
-
   @Input() tenantIdentifier: number;
   @Input() isSlaveMode: boolean;
 
@@ -86,8 +84,7 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar
-  ) {
-  }
+  ) {}
 
   statusControl = new FormControl(false);
   accessLogControl = new FormControl(true);
@@ -98,14 +95,16 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   originatingAgencies: Option[] = [];
 
+  isDisabledButton = false;
+
   // FIXME: Get list from common var ?
   rules: Option[] = [
-    { key: 'StorageRule', label: 'Durée d\'utilité courante', info: '' },
+    { key: 'StorageRule', label: "Durée d'utilité courante", info: '' },
     { key: 'ReuseRule', label: 'Durée de réutilisation', info: '' },
     { key: 'ClassificationRule', label: 'Durée de classification', info: '' },
     { key: 'DisseminationRule', label: 'Délai de diffusion', info: '' },
-    { key: 'AccessRule', label: 'Durée d\'utilité administrative', info: '' },
-    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' }
+    { key: 'AccessRule', label: "Durée d'utilité administrative", info: '' },
+    { key: 'AppraisalRule', label: 'Délai de communicabilité', info: '' },
   ];
 
   // FIXME: Get list from common var ?
@@ -114,28 +113,29 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
     { key: 'Dissemination', label: 'Copies de diffusion', info: '' },
     { key: 'Thumbnail', label: 'Vignettes', info: '' },
     { key: 'TextContent', label: 'Contenu textuel', info: '' },
-    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' }
+    { key: 'PhysicalMaster', label: 'Archives physiques', info: '' },
   ];
 
   ngOnInit() {
-
-    this.externalParameterService.getUserExternalParameters().subscribe(parameters => {
+    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractSelect.setValue(accessContratId);
       } else {
         this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`, 
-          null, {
+          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+          null,
+          {
             panelClass: 'vitamui-snack-bar',
-            duration: 10000
-        });
+            duration: 10000,
+          }
+        );
       }
     });
 
-    this.agencyService.getAll().subscribe(agencies =>
-      this.originatingAgencies = agencies.map(x => ({ label: x.name, key: x.identifier }))
-    );
+    this.agencyService
+      .getAll()
+      .subscribe((agencies) => (this.originatingAgencies = agencies.map((x) => ({ label: x.name, key: x.identifier }))));
 
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required, this.accessContractCreateValidators.uniqueIdentifier()],
@@ -154,18 +154,18 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
       writingRestrictedDesc: [true],
       /* <- step 4 -> */
       rootUnits: [[], Validators.required],
-      excludedRootUnits: [[]]
+      excludedRootUnits: [[]],
     });
 
     this.statusControl.valueChanges.subscribe((value) => {
-      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.status.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
 
     this.accessLogControl.valueChanges.subscribe((value) => {
-      this.form.controls.accessLog.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+      this.form.controls.accessLog.setValue((value = value === false ? 'INACTIVE' : 'ACTIVE'));
     });
 
-    this.selectNodesControl.valueChanges.subscribe((value: { included: string[], excluded: string[] }) => {
+    this.selectNodesControl.valueChanges.subscribe((value: { included: string[]; excluded: string[] }) => {
       this.form.controls.rootUnits.setValue(value.included);
       this.form.controls.excludedRootUnits.setValue(value.excluded);
     });
@@ -193,44 +193,60 @@ export class AccessContractCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.lastStepInvalid()) {
+      this.isDisabledButton = true;
       return;
     }
+    this.isDisabledButton = true;
     const accessContract = this.form.value as AccessContract;
-    accessContract.status === 'ACTIVE' ? accessContract.activationDate = new Date().toISOString() : accessContract.deactivationDate = new Date().toISOString();
+    accessContract.status === 'ACTIVE'
+      ? (accessContract.activationDate = new Date().toISOString())
+      : (accessContract.deactivationDate = new Date().toISOString());
     this.accessContractService.create(accessContract).subscribe(
       () => {
+        this.isDisabledButton = false;
         this.dialogRef.close(true);
       },
       (error) => {
         this.dialogRef.close(false);
         console.error(error);
-      });
+      }
+    );
   }
 
   firstStepInvalid(): boolean {
-    return this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('description').invalid || this.form.get('description').pending ||
-      this.form.get('status').invalid || this.form.get('status').pending ||
-      this.form.get('accessLog').invalid || this.form.get('accessLog').pending ||
-      (this.ruleFilter.value === true && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending));
+    return (
+      this.form.get('identifier').invalid ||
+      this.form.get('identifier').pending ||
+      this.form.get('name').invalid ||
+      this.form.get('name').pending ||
+      this.form.get('description').invalid ||
+      this.form.get('description').pending ||
+      this.form.get('status').invalid ||
+      this.form.get('status').pending ||
+      this.form.get('accessLog').invalid ||
+      this.form.get('accessLog').pending ||
+      (this.ruleFilter.value === true && (this.form.get('ruleCategoryToFilter').invalid || this.form.get('ruleCategoryToFilter').pending))
+    );
   }
 
   secondStepInvalid(): boolean {
-    return (this.form.get('everyOriginatingAgency').value === false &&
-      (this.form.get('originatingAgencies').invalid ||
-        this.form.get('originatingAgencies').pending)) ||
+    return (
+      (this.form.get('everyOriginatingAgency').value === false &&
+        (this.form.get('originatingAgencies').invalid || this.form.get('originatingAgencies').pending)) ||
       (this.form.get('everyDataObjectVersion').value === false &&
-        (this.form.get('dataObjectVersion').invalid ||
-          this.form.get('dataObjectVersion').pending));
+        (this.form.get('dataObjectVersion').invalid || this.form.get('dataObjectVersion').pending))
+    );
   }
 
   lastStepInvalid(): boolean {
-    return this.allNodes.invalid || this.allNodes.pending ||
-      (this.allNodes.value === false && (this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0));
+    return (
+      this.allNodes.invalid ||
+      this.allNodes.pending ||
+      (this.allNodes.value === false && (this.form.controls.rootUnits.invalid || this.form.controls.rootUnits.value.length === 0))
+    );
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

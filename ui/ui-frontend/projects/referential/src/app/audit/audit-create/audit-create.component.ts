@@ -37,22 +37,21 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import '@angular/localize/init';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
 import { Subscription } from 'rxjs';
 import {
   AccessionRegisterSummary,
   ConfirmDialogService,
-  StartupService,
-  ExternalParametersService,
   ExternalParameters,
+  ExternalParametersService,
+  StartupService,
 } from 'ui-frontend-common';
-
 import { AccessContractService } from '../../access-contract/access-contract.service';
 import { AuditService } from '../audit.service';
 import { AuditCreateValidators } from './audit-create-validator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import '@angular/localize/init';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -75,6 +74,7 @@ export class AuditCreateComponent implements OnInit {
 
   accessContractId: string = null;
   accessionRegisterSummaries: AccessionRegisterSummary[];
+  isDisabledButton = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -217,11 +217,14 @@ export class AuditCreateComponent implements OnInit {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
+    this.isDisabledButton = true;
 
     this.auditService.create(this.form.value, new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractId })).subscribe(
       () => {
+        this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
       },
       (error: any) => {
