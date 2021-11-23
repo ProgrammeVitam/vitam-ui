@@ -34,32 +34,31 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FILE_FORMAT_EXTERNAL_PREFIX, FileFormat} from 'projects/vitamui-library/src/public-api';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService} from 'ui-frontend-common';
-
-import {FileFormatService} from '../file-format.service';
-import {FileFormatCreateValidators} from './file-format-create.validators';
+import { Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FileFormat, FILE_FORMAT_EXTERNAL_PREFIX } from 'projects/vitamui-library/src/public-api';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'ui-frontend-common';
+import { FileFormatService } from '../file-format.service';
+import { FileFormatCreateValidators } from './file-format-create.validators';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
 @Component({
   selector: 'app-file-format-create',
   templateUrl: './file-format-create.component.html',
-  styleUrls: ['./file-format-create.component.scss']
+  styleUrls: ['./file-format-create.component.scss'],
 })
 export class FileFormatCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
   stepIndex = 0;
-  accessContractInfo: { code: string, name: string, companyName: string } = {code: '', name: '', companyName: ''};
+  accessContractInfo: { code: string; name: string; companyName: string } = { code: '', name: '', companyName: '' };
   hasCustomGraphicIdentity = false;
   hasError = true;
   message: string;
   isCreationPending = false;
+  isDisabledButton = false;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -68,7 +67,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
   private stepCount = 1;
   private keyPressSubscription: Subscription;
 
-  @ViewChild('fileSearch', {static: false}) fileSearch: any;
+  @ViewChild('fileSearch', { static: false }) fileSearch: any;
 
   constructor(
     public dialogRef: MatDialogRef<FileFormatCreateComponent>,
@@ -77,8 +76,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private agencyService: FileFormatService,
     private fileFormatCreateValidators: FileFormatCreateValidators
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -86,7 +84,7 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
       puid: [null, Validators.required, this.fileFormatCreateValidators.uniquePuid()],
       version: [null, Validators.required],
       mimeType: [null],
-      extensions: [null]
+      extensions: [null],
     });
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
@@ -106,9 +104,10 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.form.invalid) {
+      this.isDisabledButton = true;
       return;
     }
-
+    this.isDisabledButton = true;
     const format: FileFormat = this.form.value;
     format.puid = FILE_FORMAT_EXTERNAL_PREFIX + this.form.value.puid;
     if (this.form.value.extensions) {
@@ -120,16 +119,17 @@ export class FileFormatCreateComponent implements OnInit, OnDestroy {
     this.isCreationPending = true;
     this.agencyService.create(format).subscribe(
       () => {
-        this.dialogRef.close({success: true});
+        this.isDisabledButton = false;
+        this.dialogRef.close({ success: true });
       },
       (error: any) => {
-        this.dialogRef.close({success: false});
+        this.dialogRef.close({ success: false });
         console.error(error);
-      });
+      }
+    );
   }
 
   get stepProgress() {
     return ((this.stepIndex + 1) / this.stepCount) * PROGRESS_BAR_MULTIPLICATOR;
   }
-
 }

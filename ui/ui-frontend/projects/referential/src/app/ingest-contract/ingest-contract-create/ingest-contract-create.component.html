@@ -415,7 +415,7 @@
           ></vitamui-library-filing-plan>
         </div>
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">Terminer</button>
+          <button type="submit" class="btn primary" [disabled]="seventhStepInvalid() || isDisabledButton">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
         <button type="button" class="back" cdkStepperPrevious>

@@ -4,16 +4,20 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
   <vitamui-common-stepper>
-
     <cdk-step>
-
       <div class="content">
         <h5>Relevé de valeur probante</h5>
         <h4>Unités archivistiques</h4>
 
         <div class="d-flex">
-          <vitamui-common-input formControlName="unitId" minlength="36" maxlength="36" required placeholder="Identifiant"
-                                i18n-placeholder="UnitId@@probativeValueCreateIdentifierPlaceholder">
+          <vitamui-common-input
+            formControlName="unitId"
+            minlength="36"
+            maxlength="36"
+            required
+            placeholder="Identifiant"
+            i18n-placeholder="UnitId@@probativeValueCreateIdentifierPlaceholder"
+          >
             <ng-container *ngIf="form.get('unitId')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('unitId')?.errors?.required"
                                           i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
@@ -23,10 +27,8 @@
                     Le champ doit contenir au moins {{ minlength.requiredLength }} caractères
                   </vitamui-common-input-error>
                 </ng-template>
-                <ng-container *ngTemplateOutlet="minlengthErrorTemplate;context:form.get('unitId').errors">
-                </ng-container>
+                <ng-container *ngTemplateOutlet="minlengthErrorTemplate; context: form.get('unitId').errors"> </ng-container>
               </ng-container>
-
             </ng-container>
           </vitamui-common-input>
         </div>
@@ -51,9 +53,8 @@
         <div class="form-group">
           <div class="col-8 form-control">
             <mat-form-field class="vitamui-mat-select">
-              <mat-select formControlName="usage" placeholder="Selectionner un usage"
-                          panelclass="vitamui-mat-select" required>
-                <mat-option *ngFor='let usage of usages' [value]="usage.key">{{usage.label}}</mat-option>
+              <mat-select formControlName="usage" placeholder="Selectionner un usage" panelclass="vitamui-mat-select" required>
+                <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
               </mat-select>
               <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_up</i>
@@ -64,8 +65,14 @@
         </div>
 
         <div class="d-flex">
-          <vitamui-common-input formControlName="version" min="0" required placeholder="Version"
-                                type="number" i18n-placeholder="Version@@probativeValueCreateVersionPlaceholder">
+          <vitamui-common-input
+            formControlName="version"
+            min="0"
+            required
+            placeholder="Version"
+            type="number"
+            i18n-placeholder="Version@@probativeValueCreateVersionPlaceholder"
+          >
             <ng-container *ngIf="form.get('version')?.touched">
               <vitamui-common-input-error *ngIf="!!form.get('version')?.errors?.required"
                                           i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
@@ -74,10 +81,9 @@
         </div>
 
         <div class="actions">
-          <button type="submit" class="btn primary" [disabled]="form.invalid">Terminer</button>
+          <button type="submit" class="btn primary" [disabled]="form.invalid || isDisabledButton">Terminer</button>
           <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
         </div>
-
       </div>
     </cdk-step>
   </vitamui-common-stepper>
