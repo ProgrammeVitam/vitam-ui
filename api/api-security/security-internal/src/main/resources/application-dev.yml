@@ -18,6 +18,9 @@ server-identity:
 
 server:
   port: 8084
+  error:
+    path: /error
+
 management:
   server:
     address: localhost

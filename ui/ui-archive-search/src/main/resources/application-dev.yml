@@ -24,6 +24,9 @@ server:
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
   servlet.session.cookie.path: /archive-search-api
+  error:
+    path: /error
+
 management:
   server:
     address: localhost

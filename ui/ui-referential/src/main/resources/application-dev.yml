@@ -27,6 +27,9 @@ server:
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
   servlet.session.cookie.path: /referential-api
+  error:
+    path: /error
+
 management:
   server:
     address: localhost

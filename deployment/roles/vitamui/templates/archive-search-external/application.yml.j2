@@ -26,6 +26,9 @@ server:
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
+
 {% endif %}
   tomcat:
     accesslog:

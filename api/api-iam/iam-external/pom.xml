@@ -222,7 +222,7 @@
                     <executable>true</executable>
                     <attach>true</attach> <!-- Need to use the original jar for integration-tests -->
                     <mainClass>fr.gouv.vitamui.iam.external.server.ApiIamExternalServerApplication</mainClass>
-                    <jvmArguments>-Xmx512m  -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8083</jvmArguments>
+                    <jvmArguments>-Xmx512m</jvmArguments>
                     <arguments>
                         <argument>--spring.profiles.active=dev</argument>
                     </arguments>
