@@ -97,7 +97,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     merge(this.appraisalRuleCriteriaForm.statusChanges, this.appraisalRuleCriteriaForm.valueChanges)
       .pipe(
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        filter(() => this.appraisalRuleCriteriaForm.valid),
+        //filter(() => this.appraisalRuleCriteriaForm.valid),
         map(() => this.appraisalRuleCriteriaForm.value),
         map(() => diff(this.appraisalRuleCriteriaForm.value, this.previousAppraisalCriteriaValue)),
         filter((formData) => this.isEmpty(formData))
@@ -105,6 +105,25 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.resetAppraisalRuleCriteriaForm();
       });
+
+    this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').valueChanges.subscribe((value) => {
+      if (
+        this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value != null &&
+        this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value != ''
+      ) {
+        this.addCriteria(
+          APPRAISAL_RULE_TITLE,
+          { id: value, value: value },
+          value,
+          true,
+          'EQ',
+          false,
+          'STRING',
+          SearchCriteriaTypeEnum.APPRAISAL_RULE
+        );
+        this.resetAppraisalRuleCriteriaForm();
+      }
+    });
 
     this.subscriptionAppraisalFromMainSearchCriteria = this.archiveExchangeDataService.appraisalFromMainSearchCriteriaObservable.subscribe(
       (criteria) => {
@@ -374,7 +393,21 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
 
   isEmpty(formData: any): boolean {
     if (formData) {
-      if (formData.appraisalRuleTitle) {
+      if (formData.appraisalRuleIdentifier) {
+        this.addCriteria(
+          APPRAISAL_RULE_IDENTIFIER,
+          { id: formData.appraisalRuleIdentifier.trim(), value: formData.appraisalRuleIdentifier.trim() },
+
+          formData.appraisalRuleIdentifier.trim(),
+          true,
+          'EQ',
+          false,
+          'STRING',
+          SearchCriteriaTypeEnum.APPRAISAL_RULE
+        );
+        this.resetAppraisalRuleCriteriaForm();
+        return true;
+      } else if (formData.appraisalRuleTitle) {
         this.addCriteria(
           APPRAISAL_RULE_TITLE,
           { id: formData.appraisalRuleTitle.trim(), value: formData.appraisalRuleTitle.trim() },
