@@ -10,8 +10,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.annotation.DirtiesContext;
 
-import ch.qos.logback.classic.Logger;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import org.slf4j.Logger;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 
 /**
@@ -33,7 +32,7 @@ public class VitamUILoggerImplWithoutConfigurationTest {
     public void testMessagePrependWithoutServerIdentity() {
         PowerMock.mockStatic(ServerIdentityConfiguration.class);
 
-        final Logger logger = (Logger) LoggerFactory.getLogger(VitamUILoggerImplWithoutConfigurationTest.class);
+        final Logger logger = LoggerFactory.getLogger(VitamUILoggerImplWithoutConfigurationTest.class);
         final VitamUILogger vitamuiLogger = new VitamUILoggerImpl(logger);
         EasyMock.expect(ServerIdentityConfiguration.getInstance()).andReturn(null);
 

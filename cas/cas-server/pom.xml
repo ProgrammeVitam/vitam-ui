@@ -436,6 +436,7 @@
                         </overlay>
                     </overlays>
                     <packagingExcludes>
+                        WEB-INF/lib/slf4j-simple-1.7.31.jar,
                         WEB-INF/lib/log4j-api-*.jar,
                         WEB-INF/lib/log4j-jul-*.jar,
                         WEB-INF/lib/log4j-core-*.jar,
