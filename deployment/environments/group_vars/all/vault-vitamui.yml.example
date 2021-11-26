@@ -1,0 +1,19 @@
+---
+
+## consul_vars.yml
+# Must be equal to Vitam's consul_encrypt parameter
+consul_encrypt: Biz14ohqN4HtvZmrXp3N4A==
+
+## infra.yml
+smtp:
+  user: mysmtp_user
+  password: mysmtp_password
+
+## reverse_proxy_conf.yml
+# If your reverse.key is secured by a password
+nginx_cert_key_password: nginx_key_password
+
+## vitamui_vars.yml
+vitamui_platform_informations:
+  # java -jar passwordEncoder.jar -encode my_new_password
+  default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!

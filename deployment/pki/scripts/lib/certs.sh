@@ -23,13 +23,19 @@ function getHostCertificateSan {
     local HOSTNAME="${1}"
     local SERVICE_HOSTNAME="${2}"
     local SERVICE_DC_HOSTNAME="${3}"
-    echo "DNS:${SERVICE_HOSTNAME},DNS:${HOSTNAME},DNS:${SERVICE_DC_HOSTNAME}"
+    local REVERSE_SAN="${4}"
+
+    if [ -n "${REVERSE_SAN}" ]; then
+        echo "DNS:${SERVICE_HOSTNAME},DNS:${HOSTNAME},DNS:${SERVICE_DC_HOSTNAME},DNS:${REVERSE_SAN}"
+    else
+        echo "DNS:${SERVICE_HOSTNAME},DNS:${HOSTNAME},DNS:${SERVICE_DC_HOSTNAME}"
+    fi
 }
 
 # Génération du CN Name pour les certificats serveur.
 function getHostCertificateCn {
-    local SERVICE_DC_HOSTNAME="${1}"
-    echo "${SERVICE_DC_HOSTNAME}"
+    local SERVICE_HOSTNAME="${1}"
+    echo "${SERVICE_HOSTNAME}"
 }
 
 # Génération d'un certificat serveur
@@ -41,11 +47,12 @@ function generateHostCertificate {
     local TYPE_CERTIFICAT="${5}"
     local SERVICE_HOSTNAME="${6}"
     local SERVICE_DC_HOSTNAME="${7}"
+    local REVERSE_SAN="${8}"
 
     # Correctly set Subject Alternate Name (env var is read inside the openssl configuration file)
-    export OPENSSL_SAN="$(getHostCertificateSan $HOSTNAME $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME)"
+    export OPENSSL_SAN="$(getHostCertificateSan $HOSTNAME $SERVICE_HOSTNAME $SERVICE_DC_HOSTNAME $REVERSE_SAN)"
     # Correctly set certificate CN (env var is read inside the openssl configuration file)
-    export OPENSSL_CN="$(getHostCertificateCn $SERVICE_DC_HOSTNAME)"
+    export OPENSSL_CN="$(getHostCertificateCn $SERVICE_HOSTNAME)"
     # Correctly set certificate DIRECTORY (env var is read inside the openssl configuration file)
     export OPENSSL_CRT_DIR=${TYPE_CERTIFICAT}
 
@@ -169,10 +176,13 @@ function generateHostCertAndStorePassphrase {
 
     # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
     CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_server")
+    DC_NAME=$(getDcName)
 
     # sed "1 d" : remove the first line
     for SERVER in $(ansible -i ${ENVIRONNEMENT_FILE} --list-hosts ${HOSTS_GROUP} ${ANSIBLE_VAULT_PASSWD}| sed "1 d"); do
-        
+        if [ "${COMPONENT}" == "reverse" ]; then
+            REVERSE_SAN=$(read_ansible_var "vitam_reverse_external_dns" ${SERVER})
+        fi
         local SERVER_CERTIFICATE_PATH=$(getHostCertificatePath "server" ${SERVER})
         if [ ! -f "${SERVER_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
             # Generate the key
@@ -184,7 +194,8 @@ function generateHostCertAndStorePassphrase {
                                     ${SERVER} \
                                     "server" \
                                     "${COMPONENT}.service.${CONSUL_DOMAIN}" \
-                                    "${COMPONENT}.service.${CONSUL_DOMAIN}"
+                                    "${COMPONENT}.service.${DC_NAME}.${CONSUL_DOMAIN}" \
+                                    "${REVERSE_SAN}"
             # Store the key to the vault
             setComponentPassphrase certs "server_${COMPONENT}_key" \
                                         "${CERT_KEY}"
@@ -255,7 +266,18 @@ function copyCAFromPki {
 }
 
 function getConsulDomain {
-    echo $(read_ansible_var "consul_domain" "hosts_vitamui_iam_internal[0]")
+    echo $(read_ansible_var "consul_domain" "hosts_cas_server[0]")
+}
+
+function getDcName {
+    # Get DC_NAME
+    VITAMUI_SITE_NAME=$(read_ansible_var "vitamui_site_name" "hosts_vitamui_consul_server[0]")
+    if [[ "$VITAMUI_SITE_NAME" =~ "VARIABLEISNOTDEFINED" ]]; then
+        VITAM_SITE_NAME=$(read_ansible_var "vitam_site_name" "hosts_cas_server[0]")
+        echo $VITAM_SITE_NAME
+    else
+        echo $VITAMUI_SITE_NAME
+    fi
 }
 
 function generateCerts {

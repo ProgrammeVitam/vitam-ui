@@ -1,9 +1,11 @@
+---
+
 smtp:
   host: host
   port: 389
-  protocol: smtp
-  user: utilisateur
-  password: password
+  protocol: smtps
+  # user: define in vault-vitamui.yml
+  # password: define in vault-vitamui.yml
   test_smtp_connection: false #none@nomail.com ???
   auth: true
   tls_enable: true
@@ -11,9 +13,10 @@ smtp:
     checkserveridentity: false
     trust: "*"
     timeout: 8000
-    protocols: "TLSv1.2 TLSv1.3"
+    ssl:
+      protocols: "TLSv1.2 TLSv1.3"
   cas:
-    sender: "serveur-cas@noreply.com"
+    sender: noreply@change-it.fr
     expiration: 1440 # 1 Day : 24 * 60 Minutes to reset password
 
 sms:

@@ -1,17 +1,19 @@
+---
 
+# VitamUI installation needs Vitam's repositories
+
+###
+# repositories.yml
 vitam_repositories:
-    - key: vitamui
-      value: "http://pic-prod-repository.vitam-env/contrib/VITAMUI_COMMIT/rpm/"
-      proxy: ""
-    - key: vitam-java
-      value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-core/"
-      proxy: ""
-    - key: vitam-doc
-      value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-extras/"
-      proxy: ""
-    - key: vitam-external
-      value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-external/"
-      proxy: ""
-    - key: vitam-product
-      value: "http://pic-prod-repository.vitam-env/commit/VITAM_COMMIT/rpm/vitam-product/"
-      proxy: ""
+  - key: vitamui
+    value: https://download.programmevitam.fr/vitamui/5.rc.1/rpm/vitamui/
+    proxy: ""
+  - key: vitamui-cots
+    value: https://download.programmevitam.fr/vitamui/5.rc.1/rpm/cots/
+    proxy: ""
+  - key: vitam-product
+    value: https://download.programmevitam.fr/vitam_repository/5.rc.1/rpm/vitam-product/
+    proxy: ""
+  - key: vitam-external
+    value: https://download.programmevitam.fr/vitam_repository/5.rc.1/rpm/vitam-external/
+    proxy: ""

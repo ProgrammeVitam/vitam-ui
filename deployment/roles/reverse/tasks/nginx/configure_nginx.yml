@@ -12,7 +12,6 @@
     - {path: "{{ nginx_conf_dir }}", mode: 755}
     - {path: "{{ nginx_tmp_dir }}", mode: 755}
     - {path: "{{ nginx_log_dir }}", mode: 755}
-  become: true
 
 - name: 'Tasks > reverse > configure_nginx.yml | Put nginx.conf in conf folder'
   template:
@@ -21,7 +20,7 @@
     group: "{{ reverse_group }}"
     owner: "{{ reverse_user }}"
     mode: 0644
-  become: true
+  notify: reload nginx
 
 - name: 'Tasks > reverse > configure_nginx.yml | Put ssl conf'
   template:
@@ -36,7 +35,7 @@
     - reverse.crt.j2
     - reverse.key.j2
     - dhparam.pem.j2
-  become: true
+  notify: reload nginx
 
 - name: 'Tasks > reverse > configure_nginx.yml | Copy common configuration (file proxy_params)'
   copy:
@@ -45,12 +44,10 @@
     owner: "{{ reverse_user }}"
     group: "{{ reverse_group }}"
     mode: '0640'
-  become: true
+  notify: reload nginx
 
 - name: 'Tasks > reverse > configure_nginx.yml | Enable the service'
   systemd:
     name: nginx
     enabled: yes
     state: started
-  become: true
-

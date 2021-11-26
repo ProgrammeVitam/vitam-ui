@@ -1,6 +1,12 @@
 ---
+# Reverse configuration
 
-# Choose your reverse
+# Select the reverse used to serve UI services.
+# nginx will allow you to manage multiple instance of UI components.
+reverse: nginx #or apache
 
-#reverse: nginx
-reverse: apache
+# Extra parameters for apache only
+vitam_reverse_external_protocol: https
+reverse_proxy_port: 443
+
+url_prefix: "{{ vitam_reverse_external_protocol | default('https') }}://{{ vitam_reverse_external_dns }}"
