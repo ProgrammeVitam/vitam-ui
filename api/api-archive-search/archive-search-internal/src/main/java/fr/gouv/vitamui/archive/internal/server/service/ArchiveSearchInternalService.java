@@ -671,8 +671,16 @@ public class ArchiveSearchInternalService {
                 ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION),
                 3, FacetOrder.ASC));
+            select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED,
+                ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING.get(
+                    ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION),
+                3, FacetOrder.ASC));
             select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_SCOPED_NUMBER,
                 ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
+                    ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER),
+                1000, FacetOrder.ASC));
+            select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER,
+                ArchiveSearchConsts.INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER),
                 1000, FacetOrder.ASC));
 
@@ -713,11 +721,16 @@ public class ArchiveSearchInternalService {
                 ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_END_DATE), ArchiveSearchConsts.ONLY_DATE_FORMAT,
                 List.of(new RangeFacetValue("1000-01-01", strDateExpirationCriteria))));
+
+            select.addFacets(FacetHelper.dateRange(ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED,
+                ArchiveSearchConsts.INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
+                    ArchiveSearchConsts.APPRAISAL_RULE_END_DATE), ArchiveSearchConsts.ONLY_DATE_FORMAT,
+                List.of(new RangeFacetValue("1000-01-01", strDateExpirationCriteria))));
         }
     }
 
     public String requestToExportDIP(final ExportDipCriteriaDto exportDipCriteriaDto,
-                            final VitamContext vitamContext)
+        final VitamContext vitamContext)
         throws VitamClientException {
 
         LOGGER.debug("Export DIP by criteria {} ", exportDipCriteriaDto.toString());
@@ -728,7 +741,7 @@ public class ArchiveSearchInternalService {
         dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
         DipRequest dipRequest = prepareDipRequestBody(exportDipCriteriaDto, dslQuery);
 
-        JsonNode response = exportDIP(vitamContext,dipRequest);
+        JsonNode response = exportDIP(vitamContext, dipRequest);
         return response.findValue(OPERATION_IDENTIFIER).textValue();
     }
 
@@ -744,7 +757,8 @@ public class ArchiveSearchInternalService {
             throw new PreconditionFailedException("invalid request");
         }
 
-        LOGGER.debug("Elimination analysis final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        LOGGER.debug("Elimination analysis final query {} ",
+            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
             eliminationService.startEliminationAnalysis(vitamContext, eliminationRequestBody);
 
@@ -763,7 +777,8 @@ public class ArchiveSearchInternalService {
         } catch (InvalidParseOperationException e) {
             throw new PreconditionFailedException("invalid request");
         }
-        LOGGER.debug("Elimination action final query {} ", JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
+        LOGGER.debug("Elimination action final query {} ",
+            JsonHandler.prettyPrint(eliminationRequestBody.getDslRequest()));
         RequestResponse<JsonNode> jsonNodeRequestResponse =
             eliminationService.startEliminationAction(vitamContext, eliminationRequestBody);
         return jsonNodeRequestResponse.toJsonNode();
@@ -796,7 +811,7 @@ public class ArchiveSearchInternalService {
     private DipRequest prepareDipRequestBody(final ExportDipCriteriaDto exportDipCriteriaDto, JsonNode dslQuery) {
         DipRequest dipRequest = new DipRequest();
 
-        if(exportDipCriteriaDto != null) {
+        if (exportDipCriteriaDto != null) {
             DataObjectVersions dataObjectVersionToExport = new DataObjectVersions();
             dataObjectVersionToExport.setDataObjectVersions(exportDipCriteriaDto.getDataObjectVersions());
             dipRequest.setExportWithLogBookLFC(exportDipCriteriaDto.isLifeCycleLogs());
@@ -828,9 +843,9 @@ public class ArchiveSearchInternalService {
         }
     }
 
-    public JsonNode exportDIP( final VitamContext vitamContext,  DipRequest dipRequest)
+    public JsonNode exportDIP(final VitamContext vitamContext, DipRequest dipRequest)
         throws VitamClientException {
-        RequestResponse<JsonNode> response = exportDipV2Service.exportDip( vitamContext, dipRequest);
+        RequestResponse<JsonNode> response = exportDipV2Service.exportDip(vitamContext, dipRequest);
         return response.toJsonNode();
     }
 

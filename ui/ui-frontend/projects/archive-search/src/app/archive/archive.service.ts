@@ -39,16 +39,14 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { ArchiveApiService } from '../core/api/archive-api.service';
 import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { Unit } from './models/unit.interface';
-import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
@@ -87,7 +85,7 @@ export class ArchiveService extends SearchService<any> {
         }
       }
     }
-    pagedResult.facets = resultFacets;
+    //pagedResult.facets = resultFacets;
     return pagedResult;
   }
 

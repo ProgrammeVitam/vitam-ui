@@ -57,6 +57,7 @@ import {AppraisalRuleFacets,
   CriteriaValue,
   PagedResult,
   ResultFacetList
+  PagedResult,
   SearchCriteria,
   SearchCriteriaCategory,
   SearchCriteriaEltDto,
