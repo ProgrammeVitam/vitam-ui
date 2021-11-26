@@ -1,3 +1,4 @@
+---
 
 consul:
     conf_folder: "/vitam/conf/consul"
@@ -9,9 +10,9 @@ consul:
     check_timeout: 5 # in seconds
     network: "ip_admin" # Which network to use for consul communications ? ip_admin or ip_service ?
 
-# If connect to VITAM consul, please uncomment & describe params
-# If using [hosts_vitamui_consul_server], don't forget to connect to Vitam's consul cluster.
+# If using [hosts_vitamui_consul_server]
+# Please uncomment the following lines and add the IP_Wan for consul servers to connect to Vitam's consul cluster.
 #consul_remote_sites:
 #    - vitam:
-#      name: vitam
+#      name: "{{ vitam_site_name }}"
 #      wan: ["IP_vitam_consul_servers"]

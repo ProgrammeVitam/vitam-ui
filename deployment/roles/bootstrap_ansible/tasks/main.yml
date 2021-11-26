@@ -2,13 +2,12 @@
 
 - name: Remove tmp dir
   file:
-    path:  "{{ tmp_dir }}"
+    path: "{{ tmp_dir }}"
     state: absent
-
 
 - name: create tmp dir
   file:
-    path:  "{{ tmp_dir }}"
+    path: "{{ tmp_dir }}"
     state: directory
 
 - name: create facts cache sub-dir

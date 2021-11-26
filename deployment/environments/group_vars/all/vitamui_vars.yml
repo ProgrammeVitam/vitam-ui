@@ -1,7 +1,6 @@
 ---
 
 single_vm_hostnames: [ 'localhost' ]
-vitamui_site_name: "{{ vitam_site_name }}"
 
 pki_dir: "{{ inventory_dir }}/certs"
 
@@ -60,6 +59,7 @@ vitamui_defaults:
       displayTitle: true
       order: 5
 
+################################################################################
 
 vitamui:
   identity:
@@ -333,7 +333,6 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "DEBUG"
 
-
   archive_search:
     host: "archive-search.service.{{ consul_domain }}"
     vitamui_component: "ui-archive-search"
@@ -391,13 +390,15 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "DEBUG"
 
+################################################################################
+
 vitamui_platform_informations:
   name: "system_customer"
   description: "System Customer"
   company_name: "system company"
   default_email_domain: "change-it.fr"
   email_domains: "change-it.fr"
-  default_password: '$2a$10$NV/LI.Uw/BDBTdxBgr8EP.Zn1mCh8vbK746Fy7BMaWk7JgHw6GwVu' # Change-it0!
+  # default_password: define in vault-vitamui.yml
   default_phone:
   default_mobile:
   address:
@@ -425,10 +426,6 @@ vitamui_platform_informations:
     technical_referent_email: contact@programmevitam.fr
     website_url: http://www.programmevitam.fr
 
-# backup specific collections before install and restore after install
-mongo_dump_folder: /backup/mongod/
-mongo_backup_reinstall:
-  - db: "iam"
-    collections: [ "customers","users","profiles", "groups" ]
-  #- db: "admin"
-  #  collections: []
+java_prerequisites:
+  debian: "openjdk-11-jre-headless"
+  redhat: "java-11-openjdk-headless"

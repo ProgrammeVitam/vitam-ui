@@ -1,3 +1,4 @@
+# Inventory file for VitamUI
 [hosts]
 
 [hosts:children]
@@ -22,7 +23,7 @@ hosts_vitamui_reverseproxy
 [hosts_vitamui_reverseproxy]
 # EDIT: Mandatory
 # WARNING: Do not colocate with [hosts_browse] and [hosts_reverse] from Vitam when using reverse: nginx
-localhost
+
 
 ################################################################################
 # ZONE UI
@@ -38,27 +39,22 @@ hosts_ui_referential
 
 [hosts_ui_identity]
 # EDIT: Mandatory
-localhost
 
 [hosts_ui_ingest]
 # EDIT: Mandatory
-localhost
 
 [hosts_ui_archive_search]
 # EDIT: Mandatory
-localhost
 
 [hosts_ui_referential]
 # EDIT: Mandatory
-localhost
 
 [hosts_ui_portal]
 # EDIT: Mandatory
-localhost
 
 [hosts_ui_search]
 # EDIT: Mandatory
-localhost
+
 
 ################################################################################
 # ZONE ADMIN
@@ -69,7 +65,7 @@ hosts_ui_identity_admin
 
 [hosts_ui_identity_admin]
 # EDIT: Mandatory
-localhost
+
 
 ################################################################################
 # ZONE CAS
@@ -79,7 +75,7 @@ hosts_cas_server
 
 [hosts_cas_server]
 # EDIT: Mandatory
-localhost
+
 
 ################################################################################
 # ZONE APP
@@ -97,39 +93,31 @@ hosts_vitamui_security_internal
 
 [hosts_vitamui_iam_external]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_iam_internal]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_ingest_external]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_ingest_internal]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_archive_search_external]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_archive_search_internal]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_referential_external]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_referential_internal]
 # EDIT: Mandatory
-localhost
 
 [hosts_vitamui_security_internal]
 # EDIT: Mandatory
-localhost
+
 
 ################################################################################
 # ZONE DATA
@@ -148,7 +136,7 @@ hosts_vitamui_mongod
 #  - mongo_express=true to deploy mongo_express (default: false)
 # Example:
 # vm-mongo-ui mongo_rs_bootstrap=true mongo_express=true
-localhost mongo_rs_bootstrap=true mongo_express=true
+
 
 ################################################################################
 # ZONE INFRA
@@ -161,7 +149,6 @@ hosts_vitamui_consul_server
 # EDIT: Optionnal
 # Add nodes in this group if you want to start a dedicated logstash cluster for vitamui
 # otherwise leave this group empty (by default logs will be sent to vitam's logstash cluster)
-
 
 [hosts_vitamui_consul_server]
 # EDIT: Mandatory unless [hosts_consul_server] is defined
@@ -178,48 +165,51 @@ hosts_vitamui_consul_server
 hosts_consul_server
 hosts_ingest_external
 hosts_access_external
-hosts_ihm_demo
-hosts_elasticsearch_log
 hosts_functionnal_admin
 hosts_security_internal
+hosts_elasticsearch_log
 
 # MINIMUM REQUIRED IN ZONE VITAM
 [hosts_consul_server]
-localhost
+# EDIT: Mandatory unless [hosts_vitamui_consul_server] is defined
+# Choose between [hosts_consul_server] and [hosts_vitamui_consul_server]. If both defined [hosts_vitamui_consul_server] will be used by default.
 
 [hosts_ingest_external]
-localhost
+# EDIT: Mandatory
 
 [hosts_access_external]
-localhost
-
-[hosts_elasticsearch_log]
-localhost
+# EDIT: Mandatory
 
 [hosts_functionnal_admin]
-localhost
+# EDIT: Mandatory
 
 [hosts_security_internal]
-localhost
+# EDIT: Mandatory
+
+[hosts_elasticsearch_log]
+# EDIT: Mandatory
+
 
 ################################################################################
 # ZONE TOOLS
 ################################################################################
 [hosts_browse]
-# EDIT
+# EDIT: Optionnal
+# WARNING: Do not collocate with [hosts_vitamui_reverseproxy] when using reverse: nginx
 
 
 ################################################################################
 # VARS - common VITAMUI and VITAM
 ################################################################################
 [hosts:vars]
-dns_servers=["10.100.211.222", "8.8.8.8"]
+dns_servers=
 
-vitam_site_name=local
+vitam_site_name=prod-dc1
+# if using [hosts_vitamui_consul_server], vitamui_site_name must be defined and different from vitam_site_name
 vitamui_site_name="{{ vitam_site_name }}-ui"
 
 consul_domain=consul
-vitam_reverse_external_dns=reverse.service.consul
+vitam_reverse_external_dns=my-env.default-domain.fr
 
 ansible_become=true
-ansible_connection=local
+ansible_ssh_common_args='-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'

@@ -1,0 +1,49 @@
+---
+
+## mongo_express_vars.yml
+mongod_express_basicauth_username: vitam_admin
+mongod_express_basicauth_password: changeit_aadmin1234
+
+## mongo-vitamui
+mongod_replicaset_passphrase: changeit_passphrase
+
+mongodb:
+    passphrase: changeit_mongogo
+    admin:
+        db: admin
+        user: vitamdb-admin
+        password: changeit_admin
+        roles: '[{ role: "userAdminAnyDatabase", db: "admin" }, { role: "backup", db: "admin" }, { role: "restore", db: "admin" }, { role: "dbAdminAnyDatabase", db: "admin" }, { role: "readWriteAnyDatabase", db: "admin" }, { role: "clusterMonitor", db:"admin"}, { role: "root", db:"admin"}]'
+    localadmin:
+        db: admin
+        user: mongod_dbuser_localadmin
+        password: changeit_localadmin
+        roles: '[{ role: "clusterAdmin", db: "admin" },{ role: "dbAdminAnyDatabase", db: "admin" },{ role: "readWriteAnyDatabase", db: "admin" }]'
+    system:
+        user: vitamdb-system
+        password: changeit_system
+    security:
+        db: security
+        user: api-security
+        password: changeit_security
+        roles: '[{ role: "readWrite", db: "security" }]'
+    iam:
+        db: iam
+        user: api-iam
+        password: changeit_iam
+        roles: '[{ role: "readWrite", db: "iam" }]'
+    cas:
+        db: cas
+        user: cas
+        password: changeit_cas
+        roles: '[{ role: "readWrite", db: "cas" }]'
+    versioning:
+        db: versioning
+        user: versioning
+        password: changeit_versioning
+        roles: '[{ role: "readWrite", db: "versioning" }]'
+    archivesearch:
+      db: archivesearch
+      user: api-archive-search
+      password: changeit_archivesearch
+      roles: '[{ role: "readWrite", db: "archivesearch" }]'

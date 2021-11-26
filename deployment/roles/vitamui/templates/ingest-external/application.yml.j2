@@ -7,14 +7,14 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
 # should we fix some limit here ?
 spring.servlet.multipart.max-file-size: -1
 spring.servlet.multipart.max-request-size: -1
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: vitamui-{{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -53,7 +53,7 @@ ingest-external:
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
   iam-internal-client:
@@ -68,7 +68,7 @@ ingest-external:
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
   ingest-internal-client:
@@ -83,7 +83,7 @@ ingest-external:
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
 
