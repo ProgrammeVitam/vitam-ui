@@ -150,7 +150,6 @@ public class ArchiveSearchConsts {
             "SP_LABEL", "originating_agency_label"
         );
 
-
     public static final int DEFAULT_DEPTH = 10;
     public static final int FACET_SIZE_MILTIPLIER = 100;
 

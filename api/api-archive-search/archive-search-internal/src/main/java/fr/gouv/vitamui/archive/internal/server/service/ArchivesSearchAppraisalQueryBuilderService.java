@@ -56,6 +56,7 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
         VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalQueryBuilderService.class);
 
 
+
     @Override
     public void fillQueryFromCriteriaList(BooleanQuery query, List<SearchCriteriaEltDto> criteriaList)
         throws InvalidCreateOperationException {
@@ -312,10 +313,14 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                     if (mappedValue != null) {
                         VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
                             ArchiveSearchConsts.CriteriaOperators.EQ,
-                            "#management.AppraisalRule.FinalAction", List.of(mappedValue));
+                            ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING
+                                .get(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION),
+                            List.of(mappedValue));
                         VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
                             ArchiveSearchConsts.CriteriaOperators.IN,
-                            "#computedInheritedRules.AppraisalRule.FinalAction", List.of(mappedValue));
+                            ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING
+                                .get(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION),
+                            List.of(mappedValue));
                     }
                 }
             }
