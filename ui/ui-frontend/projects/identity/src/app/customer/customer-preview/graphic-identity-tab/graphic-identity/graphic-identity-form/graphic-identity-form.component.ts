@@ -5,10 +5,9 @@ import { AttachmentType, Logo, ThemeService } from 'ui-frontend-common';
 @Component({
   selector: 'app-graphic-identity-form',
   templateUrl: './graphic-identity-form.component.html',
-  styleUrls: ['./graphic-identity-form.component.scss']
+  styleUrls: ['./graphic-identity-form.component.scss'],
 })
 export class GraphicIdentityFormComponent implements OnInit {
-
   @Input()
   public graphicIdentityForm: FormGroup;
 
@@ -16,25 +15,24 @@ export class GraphicIdentityFormComponent implements OnInit {
   public disabled = false;
 
   @Output()
-  public formChange = new EventEmitter<{form: FormGroup, logos: Logo[]}>();
+  public formChange = new EventEmitter<{ form: FormGroup; logos: Logo[] }>();
 
   public ATTACHMENT_TYPE = AttachmentType;
   private logos: Logo[] = [];
 
-  constructor(private themeService: ThemeService) { }
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
-
     this.applyTheme();
 
     this.graphicIdentityForm.valueChanges.subscribe(() => {
-      this.formChange.emit({form: this.graphicIdentityForm, logos: this.logos});
+      this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
     });
 
     this.graphicIdentityForm.get('themeColors').valueChanges.subscribe(() => {
       this.graphicIdentityForm.updateValueAndValidity();
       this.applyTheme();
-      this.formChange.emit({form: this.graphicIdentityForm, logos: this.logos});
+      this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
     });
   }
 
@@ -49,10 +47,10 @@ export class GraphicIdentityFormComponent implements OnInit {
     const logo: Logo = { attr: type, file: data };
     const index = this.logos.findIndex((e: Logo) => e.attr === logo.attr);
     if (index === -1) {
-        this.logos.push(logo);
+      this.logos.push(logo);
     } else {
-        this.logos[index] = logo;
+      this.logos[index] = logo;
     }
-    this.formChange.emit({form: this.graphicIdentityForm, logos: this.logos});
+    this.formChange.emit({ form: this.graphicIdentityForm, logos: this.logos });
   }
 }

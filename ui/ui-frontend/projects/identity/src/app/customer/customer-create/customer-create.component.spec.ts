@@ -34,22 +34,20 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { EMPTY, of } from 'rxjs';
-import { ConfirmDialogService, LoggerModule, OtpState } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-
 /* tslint:disable: max-classes-per-file directive-selector */
 import { Component, EventEmitter, forwardRef, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CountryService } from 'ui-frontend-common';
+import { EMPTY, of } from 'rxjs';
+import { ConfirmDialogService, CountryService, LoggerModule, OtpState } from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { CustomerService } from '../../core/customer.service';
 import { OwnerFormValidators } from '../owner-form/owner-form.validators';
 import { OwnerService } from '../owner.service';
@@ -61,11 +59,13 @@ import { CustomerCreateValidators } from './customer-create.validators';
 @Component({
   selector: 'app-domains-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DomainInputStubComponent),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DomainInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class DomainInputStubComponent implements ControlValueAccessor {
   @Input() placeholder: string;
@@ -81,11 +81,13 @@ class DomainInputStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'app-owner-form',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => OwnerFormStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => OwnerFormStubComponent),
+      multi: true,
+    },
+  ],
 })
 class OwnerFormStubComponent implements ControlValueAccessor {
   @Input() customerInfo: any;
@@ -97,19 +99,20 @@ class OwnerFormStubComponent implements ControlValueAccessor {
 @Component({
   selector: 'app-customer-colors-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
-    multi: true,
-  }
-]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-    @Input() placeholder: string;
-    @Input() spinnerDiameter = 25;
-    writeValue() {}
-    registerOnChange() {}
-    registerOnTouched() {}
+  @Input() placeholder: string;
+  @Input() spinnerDiameter = 25;
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 const expectedCustomer = {
@@ -130,87 +133,86 @@ const expectedCustomer = {
   language: 'en',
   emailDomains: ['test.com', 'toto.co.uk'],
   defaultEmailDomain: 'test.com',
-  owners: [{
-    code: '666666',
-    name: 'Alice Vans',
-    companyName: 'Vans',
-    address: {
-      street: 'street2',
-      zipCode: '43121',
-      city: 'Paris',
-      country: 'FR',
-    }
-  }],
+  owners: [
+    {
+      code: '666666',
+      name: 'Alice Vans',
+      companyName: 'Vans',
+      address: {
+        street: 'street2',
+        zipCode: '43121',
+        city: 'Paris',
+        country: 'FR',
+      },
+    },
+  ],
   themeColors: {},
-  gdprAlert : true,
-  gdprAlertDelay : 72,
+  gdprAlert: true,
+  gdprAlertDelay: 72,
   portalMessages: {},
   portalTitles: {},
-  tenantName: 'tenantName'
+  tenantName: 'tenantName',
 };
 
 let component: CustomerCreateComponent;
 let fixture: ComponentFixture<CustomerCreateComponent>;
 
 class Page {
-
-  get submit() { return fixture.nativeElement.querySelector('button[type=submit]'); }
-  control(name: string) { return fixture.nativeElement.querySelector('[formControlName=' + name + ']'); }
-
+  get submit() {
+    return fixture.nativeElement.querySelector('button[type=submit]');
+  }
+  control(name: string) {
+    return fixture.nativeElement.querySelector('[formControlName=' + name + ']');
+  }
 }
 
 let page: Page;
 
 describe('CustomerCreateComponent', () => {
-
-  beforeEach(waitForAsync(() => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}) });
-    const customerCreateValidatorsSpy = jasmine.createSpyObj(
-      'CustomerCreateValidators',
-      { uniqueCode: () => of(null), uniqueDomain: of(null) }
-    );
-    const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
-    const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
-    const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
-    const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
-      uniqueName: () => of(null)
-    });
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatButtonToggleModule,
-        MatProgressBarModule,
-        NoopAnimationsModule,
-        MatProgressSpinnerModule,
-        VitamUICommonTestModule,
-        LoggerModule.forRoot()
-      ],
-      declarations: [
-        CustomerCreateComponent,
-        OwnerFormStubComponent,
-        CustomerColorsInputStubComponent,
-        DomainInputStubComponent
-      ],
-      providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: CustomerService, useValue: customerServiceSpy },
-        { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
-        { provide: OwnerService, useValue: ownerServiceSpy },
-        { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
-        { provide: TenantService, useValue: tenantServiceSpy },
-        { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
-        { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
-        { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
-        { provide : MatDialog , useValue : {} }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+      const customerServiceSpy = jasmine.createSpyObj('CustomerService', { create: of({}), getMyCustomer: of({}) });
+      const customerCreateValidatorsSpy = jasmine.createSpyObj('CustomerCreateValidators', {
+        uniqueCode: () => of(null),
+        uniqueDomain: of(null),
+      });
+      const ownerServiceSpy = jasmine.createSpyObj('OwnerService', { create: of({}) });
+      const ownerFormValidatorsSpy = jasmine.createSpyObj('OwnerFormValidators', { uniqueCode: () => of(null) });
+      const tenantServiceSpy = jasmine.createSpyObj('TenantService', { getTenantsByCustomerIds: of([]) });
+      const tenantFormValidatorsSpy = jasmine.createSpyObj('TenantFormValidators', {
+        uniqueName: () => of(null),
+      });
+      TestBed.configureTestingModule({
+        imports: [
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatSelectModule,
+          MatButtonToggleModule,
+          MatProgressBarModule,
+          NoopAnimationsModule,
+          MatProgressSpinnerModule,
+          VitamUICommonTestModule,
+          LoggerModule.forRoot(),
+        ],
+        declarations: [CustomerCreateComponent, OwnerFormStubComponent, CustomerColorsInputStubComponent, DomainInputStubComponent],
+        providers: [
+          { provide: MatDialogRef, useValue: matDialogRefSpy },
+          { provide: MAT_DIALOG_DATA, useValue: {} },
+          { provide: CustomerService, useValue: customerServiceSpy },
+          { provide: CustomerCreateValidators, useValue: customerCreateValidatorsSpy },
+          { provide: OwnerService, useValue: ownerServiceSpy },
+          { provide: OwnerFormValidators, useValue: ownerFormValidatorsSpy },
+          { provide: TenantService, useValue: tenantServiceSpy },
+          { provide: ConfirmDialogService, useValue: { listenToEscapeKeyPress: () => EMPTY } },
+          { provide: TenantFormValidators, useValue: tenantFormValidatorsSpy },
+          { provide: CountryService, useValue: { getAvailableCountries: () => EMPTY } },
+          { provide: MatDialog, useValue: {} },
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomerCreateComponent);
@@ -237,8 +239,6 @@ describe('CustomerCreateComponent', () => {
       expect(page.control('otp')).toBeTruthy();
       expect(page.control('emailDomains')).toBeTruthy();
     });
-
-
   });
 
   describe('Form', () => {
@@ -252,7 +252,6 @@ describe('CustomerCreateComponent', () => {
     });
 
     describe('Validators', () => {
-
       describe('code', () => {
         it('should check the code format', () => {
           expect(setControlValue('code', '').invalid).toBeTruthy();
@@ -293,7 +292,6 @@ describe('CustomerCreateComponent', () => {
 
           expect(setControlValue('defaultEmailDomain', '').invalid).toBeTruthy();
           expect(setControlValue('defaultEmailDomain', 't').valid).toBeTruthy();
-
         });
       });
 
@@ -308,17 +306,15 @@ describe('CustomerCreateComponent', () => {
 
   describe('Component', () => {
     it('should call dialogRef.close', () => {
-      const matDialogRef =  TestBed.inject(MatDialogRef);
+      const matDialogRef = TestBed.inject(MatDialogRef);
       component.onCancel();
       expect(matDialogRef.close).toHaveBeenCalledTimes(1);
     });
 
     it('should not call create()', () => {
-      const customerService =  TestBed.inject(CustomerService);
+      const customerService = TestBed.inject(CustomerService);
       component.onSubmit();
       expect(customerService.create).toHaveBeenCalledTimes(0);
     });
-
   });
-
 });

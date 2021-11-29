@@ -1,18 +1,18 @@
-<vitamui-common-slide-toggle 
-  [formControl]="displayCustomGraphicIdentity">
-</vitamui-common-slide-toggle>{{'CUSTOMER.GRAPHIC_IDENTITY.TOGGLE_TITLE' | translate}}
+<vitamui-common-slide-toggle [formControl]="displayCustomGraphicIdentity"> </vitamui-common-slide-toggle
+>{{ 'CUSTOMER.GRAPHIC_IDENTITY.TOGGLE_TITLE' | translate }}
 
 <div class="mt-4">
-<app-graphic-identity-form 
-  *ngIf="!displayCustomGraphicIdentity.value && defaultForm" 
-  [graphicIdentityForm]="defaultForm"
-  [disabled]="true">
-</app-graphic-identity-form>
+  <app-graphic-identity-form
+    *ngIf="!displayCustomGraphicIdentity.value && defaultForm"
+    [graphicIdentityForm]="defaultForm"
+    [disabled]="true"
+  >
+  </app-graphic-identity-form>
 
-<app-graphic-identity-form 
-  *ngIf="displayCustomGraphicIdentity.value && customerForm" 
-  [graphicIdentityForm]="customerForm" 
-  (formChange)="sendForm($event)">
-</app-graphic-identity-form>
+  <app-graphic-identity-form
+    *ngIf="displayCustomGraphicIdentity.value && customerForm"
+    [graphicIdentityForm]="customerForm"
+    (formChange)="sendForm($event)"
+  >
+  </app-graphic-identity-form>
 </div>
-

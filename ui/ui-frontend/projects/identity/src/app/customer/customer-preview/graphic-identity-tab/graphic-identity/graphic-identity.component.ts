@@ -38,16 +38,15 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
-import {Customer, Logo, Theme, ThemeColorType, ThemeService} from 'ui-frontend-common';
+import { Customer, Logo, Theme, ThemeColorType, ThemeService } from 'ui-frontend-common';
 import { LogosSafeResourceUrl } from './../logos-safe-resource-url.interface';
 
 @Component({
   selector: 'app-graphic-identity',
   templateUrl: './graphic-identity.component.html',
-  styleUrls: ['./graphic-identity.component.scss']
+  styleUrls: ['./graphic-identity.component.scss'],
 })
 export class GraphicIdentityComponent implements OnInit, OnDestroy {
-
   private hexValidator: ValidatorFn = Validators.pattern(/#([0-9A-Fa-f]{6})/);
 
   private destroy = new Subject();
@@ -63,13 +62,13 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   public customerForm: FormGroup;
 
   @Output()
-  public formToSend = new EventEmitter<{form: FormGroup, logos: Logo[]}>();
+  public formToSend = new EventEmitter<{ form: FormGroup; logos: Logo[] }>();
 
   private customerTheme: Theme = {
     colors: null,
     headerUrl: '',
     footerUrl: '',
-    portalUrl: ''
+    portalUrl: '',
   };
 
   private defaultTheme: Theme = this.themeService.defaultTheme;
@@ -79,7 +78,7 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<GraphicIdentityComponent>,
     private formBuilder: FormBuilder,
-    private themeService: ThemeService,
+    private themeService: ThemeService
   ) {}
 
   ngOnDestroy(): void {
@@ -87,9 +86,8 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.graphicIdentityForm = this.formBuilder.group({
-      id : null,
+      id: null,
       hasCustomGraphicIdentity: false,
       themeColors: this.formBuilder.group({
         [ThemeColorType.VITAMUI_PRIMARY]: new FormControl('', [this.hexValidator, Validators.required]),
@@ -104,16 +102,14 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
     });
 
     this.customerTheme = {
-      colors: this.customer && this.customer.themeColors
-        ? this.themeService.getThemeColors(this.customer.themeColors)
-        : this.defaultTheme.colors,
+      colors:
+        this.customer && this.customer.themeColors ? this.themeService.getThemeColors(this.customer.themeColors) : this.defaultTheme.colors,
       headerUrl: this.customerLogosUrl ? this.customerLogosUrl.headerUrl : this.defaultTheme.headerUrl,
       footerUrl: this.customerLogosUrl ? this.customerLogosUrl.footerUrl : this.defaultTheme.footerUrl,
-      portalUrl: this.customerLogosUrl ? this.customerLogosUrl.portalUrl : this.defaultTheme.portalUrl
+      portalUrl: this.customerLogosUrl ? this.customerLogosUrl.portalUrl : this.defaultTheme.portalUrl,
     };
 
     if (this.customer) {
-
       if (this.customer.id) {
         this.graphicIdentityForm.get('id').setValue(this.customer.id);
       }
@@ -128,52 +124,60 @@ export class GraphicIdentityComponent implements OnInit, OnDestroy {
 
     if (this.displayCustomGraphicIdentity.value === true) {
       this.customerForm.get('hasCustomGraphicIdentity').patchValue(true);
-      this.formToSend.emit({form: this.customerForm, logos: null});
+      this.formToSend.emit({ form: this.customerForm, logos: null });
     } else {
-      this.formToSend.emit({form: this.formBuilder.group({
-        id: this.graphicIdentityForm.get('id').value,
-        hasCustomGraphicIdentity: false
-      }), logos: null});
+      this.formToSend.emit({
+        form: this.formBuilder.group({
+          id: this.graphicIdentityForm.get('id').value,
+          hasCustomGraphicIdentity: false,
+        }),
+        logos: null,
+      });
     }
 
     this.displayCustomGraphicIdentity.valueChanges.subscribe((hasGraphicIdentity: boolean) => {
       if (!hasGraphicIdentity) {
         this.formToSend.emit({
           form: this.formBuilder.group({
-              id: this.graphicIdentityForm.get('id').value,
-              hasCustomGraphicIdentity: false
-            }
-          ),
-          logos: null});
+            id: this.graphicIdentityForm.get('id').value,
+            hasCustomGraphicIdentity: false,
+          }),
+          logos: null,
+        });
       } else {
         this.customerForm.get('hasCustomGraphicIdentity').patchValue(true);
-        this.formToSend.emit({form: this.customerForm, logos: null});
+        this.formToSend.emit({ form: this.customerForm, logos: null });
       }
     });
-
   }
 
-  public sendForm(data: {form: FormGroup, logos: Logo[]}): void {
+  public sendForm(data: { form: FormGroup; logos: Logo[] }): void {
     this.customerForm = data.form;
     this.formToSend.emit(data);
   }
 
   private setTheme(theme: Theme): FormGroup {
-
     let newTheme = this.formBuilder.group(this.graphicIdentityForm.get('themeColors').value);
 
     if (theme.colors) {
       newTheme = new FormGroup({
-        [ThemeColorType.VITAMUI_PRIMARY]: new FormControl(
-          theme.colors[ThemeColorType.VITAMUI_PRIMARY], [this.hexValidator, Validators.required]),
-        [ThemeColorType.VITAMUI_SECONDARY]: new FormControl(
-          theme.colors[ThemeColorType.VITAMUI_SECONDARY], [this.hexValidator, Validators.required]),
-        [ThemeColorType.VITAMUI_TERTIARY]: new FormControl(
-          theme.colors[ThemeColorType.VITAMUI_TERTIARY], this.hexValidator),
-        [ThemeColorType.VITAMUI_HEADER_FOOTER]: new FormControl(
-          theme.colors[ThemeColorType.VITAMUI_HEADER_FOOTER], [this.hexValidator, Validators.required]),
-        [ThemeColorType.VITAMUI_BACKGROUND]: new FormControl(
-          theme.colors[ThemeColorType.VITAMUI_BACKGROUND], [this.hexValidator, Validators.required]),
+        [ThemeColorType.VITAMUI_PRIMARY]: new FormControl(theme.colors[ThemeColorType.VITAMUI_PRIMARY], [
+          this.hexValidator,
+          Validators.required,
+        ]),
+        [ThemeColorType.VITAMUI_SECONDARY]: new FormControl(theme.colors[ThemeColorType.VITAMUI_SECONDARY], [
+          this.hexValidator,
+          Validators.required,
+        ]),
+        [ThemeColorType.VITAMUI_TERTIARY]: new FormControl(theme.colors[ThemeColorType.VITAMUI_TERTIARY], this.hexValidator),
+        [ThemeColorType.VITAMUI_HEADER_FOOTER]: new FormControl(theme.colors[ThemeColorType.VITAMUI_HEADER_FOOTER], [
+          this.hexValidator,
+          Validators.required,
+        ]),
+        [ThemeColorType.VITAMUI_BACKGROUND]: new FormControl(theme.colors[ThemeColorType.VITAMUI_BACKGROUND], [
+          this.hexValidator,
+          Validators.required,
+        ]),
       });
     }
 
