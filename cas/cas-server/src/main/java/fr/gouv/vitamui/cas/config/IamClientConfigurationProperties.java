@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.cas.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
@@ -46,7 +45,6 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
  *
  *
  */
-@Component
 @ConfigurationProperties(value = "iam-client")
 public class IamClientConfigurationProperties extends RestClientConfiguration {
 

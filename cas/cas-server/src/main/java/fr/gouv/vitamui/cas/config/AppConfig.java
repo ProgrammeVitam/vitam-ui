@@ -70,7 +70,6 @@ import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
-import org.apereo.cas.support.oauth.web.response.accesstoken.ext.AccessTokenGrantRequestExtractor;
 import org.apereo.cas.ticket.BaseTicketCatalogConfigurer;
 import org.apereo.cas.ticket.ExpirationPolicyBuilder;
 import org.apereo.cas.ticket.TicketCatalog;
@@ -82,7 +81,6 @@ import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
-import org.pac4j.core.config.Config;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +96,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.mail.javamail.JavaMailSender;
-
-import java.util.Collection;
 
 /**
  * Configure all beans to customize the CAS server.
@@ -182,9 +178,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private SessionStore delegatedClientDistributedSessionStore;
 
     @Autowired
-    private TicketRegistry ticketRegistry;
-
-    @Autowired
     @Qualifier("centralAuthenticationService")
     private ObjectProvider<CentralAuthenticationService> centralAuthenticationService;
 
@@ -195,6 +188,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Autowired
     @Qualifier("passwordHistoryService")
     private PasswordHistoryService passwordHistoryService;
+
+    @Autowired
+    private PasswordConfiguration passwordConfiguration;
 
     @Value("${token.api.cas}")
     private String tokenApiCas;
@@ -211,13 +207,15 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
 
+    // position matters unfortunately: the ticketRegistry must be autowired after (= under) others
+    // as it depends on the catalog instantiated above
+    @Autowired
+    private TicketRegistry ticketRegistry;
+
     @Bean
     public PasswordValidator passwordValidator() {
         return new PasswordValidator();
     }
-
-    @Autowired
-    private PasswordConfiguration passwordConfiguration;
 
     @Bean
     public UserAuthenticationHandler userAuthenticationHandler() {
