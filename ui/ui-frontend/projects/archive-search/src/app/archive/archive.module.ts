@@ -67,6 +67,8 @@ import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
@@ -143,7 +145,6 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     DipRequestCreateComponent,
     SearchAppraisalRulesFacetsComponent,
     ArchiveSearchRulesFacetsComponent
-    DipRequestCreateComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
     DuaManagementRulesComponent,
