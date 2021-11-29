@@ -1,11 +1,11 @@
-package fr.gouv.vitamui.cas.config;
+package org.apereo.cas.custom;
 
 import org.apereo.cas.util.spring.boot.AbstractCasBanner;
 
 /**
  * The Vitam UI custom abnner.
  */
-public class CustomCasBanner extends AbstractCasBanner {
+public class ACustomCasBanner extends AbstractCasBanner {
 
     @Override
     protected String getTitle() {

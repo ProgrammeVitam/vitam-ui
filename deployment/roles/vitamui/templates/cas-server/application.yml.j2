@@ -99,7 +99,7 @@ cas.authn.surrogate.sms.attribute-name: fakeNameToBeSureToFindNoAttributeAndNeve
 # Must be at least 24 hours as this cache is also used for password management and its 24-hour-creation email
 cas.ticket.tst.time-to-kill-in-seconds: 86400
 
-cas.authn.pm.enabled: true
+cas.authn.pm.core.enabled: true
 
 {% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
 cas.authn.pm.core.policy-pattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
@@ -115,7 +115,7 @@ cas.authn.pm.reset.mail.attribute-name: email
 cas.authn.pm.reset.security-questions-enabled: false
 cas.authn.pm.reset.include-server-ip-address: false
 cas.authn.pm.reset.include-client-ip-address: false
-cas.authn.pm.auto-login: true
+cas.authn.pm.core.auto-login: true
 
 # Used to sign/encrypt the password-reset link
 # cas.authn.pm.reset.crypto.encryption.key:
