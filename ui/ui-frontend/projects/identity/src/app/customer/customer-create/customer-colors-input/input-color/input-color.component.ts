@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ColorPickerDirective } from 'ngx-color-picker';
 import { hexToRgb, rgbToHsl } from 'ui-frontend-common';
-
 import { ColorErrorEnum } from './color-error.enum';
 
 @Component({
@@ -23,7 +22,7 @@ export class InputColorComponent implements OnInit {
   public colorErrorEnum: typeof ColorErrorEnum = ColorErrorEnum;
   public colorError: ColorErrorEnum = ColorErrorEnum.NONE;
 
-  constructor() { }
+  constructor() {}
 
   public ngOnInit(): void {
     this.color = this.colorInput.value;
@@ -85,10 +84,7 @@ export class InputColorComponent implements OnInit {
 
     if (inputValue.length === 3 && pickerValue.length === 6) {
       for (let i = 0; i < 3; i++) {
-        if (
-          inputValue.charAt(i) !== pickerValue.charAt(2 * i) ||
-          inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)
-        ) {
+        if (inputValue.charAt(i) !== pickerValue.charAt(2 * i) || inputValue.charAt(i) !== pickerValue.charAt(2 * i + 1)) {
           continue;
         }
         return;
