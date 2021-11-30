@@ -135,6 +135,7 @@
         </dependency>
 
         <!-- Spring Data Mongo-->
+        <!-- TODO adapt this library to be conforme with spring boot versions in futur spring stack bumps-->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
@@ -145,13 +146,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
             <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- UTIL -->
         <dependency>

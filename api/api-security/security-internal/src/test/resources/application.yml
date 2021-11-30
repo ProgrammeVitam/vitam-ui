@@ -11,9 +11,6 @@ spring:
       discovery:
         enabled: false
         register: false
-  autoconfigure:
-    exclude:
-      - org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration
 
 server-identity:
   identityName: vitamui-dev
