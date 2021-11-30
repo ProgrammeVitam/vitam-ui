@@ -184,7 +184,7 @@ export class ArchiveService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => ArchiveService.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
