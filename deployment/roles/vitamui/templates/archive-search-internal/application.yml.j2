@@ -6,13 +6,13 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
   data:
     mongodb:
       uri: mongodb://{{ mongodb.archivesearch.user }}:{{ mongodb.archivesearch.password }}@{{ mongodb.host }}:{{ mongodb.mongod_port }}/{{ mongodb.archivesearch.db }}?replicaSet={{ mongod_replicaset_name }}&connectTimeoutMS={{ mongod_client_connect_timeout_ms }}
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 

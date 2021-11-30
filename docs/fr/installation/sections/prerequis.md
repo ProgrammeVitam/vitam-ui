@@ -1,12 +1,10 @@
 # Prérequis
 
-Vitamui fonctionne avec le socle applicatif Vitam qui doit être préinstallé.
+Vitam-UI fonctionne avec le socle applicatif Vitam qui doit être préinstallé.
 
-Tout comme Vitam, Vitamui est installée sur des vms (machines virtuelles) qui doivent être 
-dimensionnées correctement.
+Tout comme Vitam, Vitam-UI est installé sur des vms (machines virtuelles) qui doivent être dimensionnées correctement.
 
-Voici le détail de consommation mémoire par défaut des services Vitamui, ce qui va permettre
-de faire la répartition par vm(s).
+Voici le détail de consommation mémoire par défaut des services Vitamui, ce qui va permettre de faire la répartition par vm(s).
 
 Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les services en présence:
 
@@ -31,9 +29,9 @@ Par défaut les services java utilisent 512Mo de Ram et on a donc pour tous les 
 * ui-identity-admin  		512Mo
 * ui-portal			    	512Mo
 
-NB: Ce paramétrage peut être modifié selon les besoins. Des variables sont prévus à cet effet (variable jvm_opts à utiliser pour chaque service).
+NB: Ce paramétrage peut être modifié selon les besoins. Des variables sont prévues à cet effet (variable jvm_opts à utiliser pour chaque service).
 
-Exemple de répartition sur 2 hosts (machines virtuelles) disposant de 
+Exemple de répartition sur 2 hosts (machines virtuelles) disposant de
 
 * 50Go de disque dur
 * 8Go de RAM
@@ -55,7 +53,7 @@ HOST1:
 
 HOST2:
 
-* (browser) 
+* (browser)
 * cas-server
 * ui-identity-admin
 * ui-identity
@@ -83,9 +81,7 @@ Sous /etc/yum.repo.d/
 * epel.repo
 * epel-testing.repo
 
-Les paquets de type "CentOS" sont standard à la distribution, les paquets
-"epel" sont nécessaires à l'installation des binaires "npm" et "nodjs" 
-nécessaires à l'utilisation de "mongo-express".
+Les paquets de type "CentOS" sont standard à la distribution, les paquets "epel" sont nécessaires à l'installation des binaires "npm" et "nodjs" nécessaires à l'utilisation de "mongo-express".
 
 Sous Debian:
 

@@ -1,3 +1,4 @@
+---
 
 mongo_express_conf:
     package_name: "vitamui-mongo-express"
