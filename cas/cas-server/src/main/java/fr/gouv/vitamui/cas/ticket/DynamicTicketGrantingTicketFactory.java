@@ -46,7 +46,6 @@ import org.apereo.cas.ticket.*;
 import org.apereo.cas.ticket.expiration.HardTimeoutExpirationPolicy;
 import org.apereo.cas.ticket.factory.DefaultTicketGrantingTicketFactory;
 import org.apereo.cas.util.crypto.CipherExecutor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.List;
@@ -61,14 +60,15 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
  */
 public class DynamicTicketGrantingTicketFactory extends DefaultTicketGrantingTicketFactory {
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
     public DynamicTicketGrantingTicketFactory(final UniqueTicketIdGenerator ticketGrantingTicketUniqueTicketIdGenerator,
                                               final ExpirationPolicyBuilder<TicketGrantingTicket> ticketGrantingTicketExpirationPolicy,
                                               final CipherExecutor<Serializable, String> cipherExecutor,
-                                              final ServicesManager servicesManager) {
+                                              final ServicesManager servicesManager,
+                                              final Utils utils) {
         super(ticketGrantingTicketUniqueTicketIdGenerator, ticketGrantingTicketExpirationPolicy, cipherExecutor, servicesManager);
+        this.utils = utils;
     }
 
     @Override

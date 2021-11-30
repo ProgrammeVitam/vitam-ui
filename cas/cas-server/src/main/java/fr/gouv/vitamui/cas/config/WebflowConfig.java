@@ -44,6 +44,7 @@ import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicketFactory;
 import org.apereo.cas.notifications.CommunicationsManager;
 import org.apereo.cas.pm.PasswordManagementService;
+import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.factory.DefaultTicketFactory;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
@@ -52,6 +53,8 @@ import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.actions.ConsumerExecutionAction;
+import org.apereo.cas.web.flow.actions.StaticEventExecutionAction;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
@@ -81,7 +84,6 @@ import fr.gouv.vitamui.cas.webflow.actions.CustomSendTokenAction;
 import fr.gouv.vitamui.cas.webflow.actions.DispatcherAction;
 import fr.gouv.vitamui.cas.webflow.actions.GeneralTerminateSessionAction;
 import fr.gouv.vitamui.cas.webflow.actions.I18NSendPasswordResetInstructionsAction;
-import fr.gouv.vitamui.cas.webflow.actions.NoOpAction;
 import fr.gouv.vitamui.cas.webflow.actions.TriggerChangePasswordAction;
 import fr.gouv.vitamui.cas.webflow.configurer.CustomLoginWebflowConfigurer;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
@@ -176,11 +178,31 @@ public class WebflowConfig {
     @Qualifier("mfaSimpleAuthenticatorFlowRegistry")
     private FlowDefinitionRegistry mfaSimpleAuthenticatorFlowRegistry;
 
+    @Autowired
+    @Qualifier("servicesManager")
+    private ServicesManager servicesManager;
+
+    @Autowired
+    @Qualifier("frontChannelLogoutAction")
+    private Action frontChannelLogoutAction;
+
     @Value("${vitamui.portal.url}")
     private String vitamuiPortalUrl;
 
     @Value("${cas.authn.surrogate.separator}")
     private String surrogationSeparator;
+
+    @Value("${theme.vitamui-platform-name:VITAM-UI}")
+    private String vitamuiPlatformName;
+
+    @Value("${theme.vitam-logo:#{null}}")
+    private String vitamLogoPath;
+
+    @Value("${theme.vitamui-logo-large:#{null}}")
+    private String vitamuiLargeLogoPath;
+
+    @Value("${theme.vitamui-favicon:#{null}}")
+    private String vitamuiFaviconPath;
 
     @Bean
     public DispatcherAction dispatcherAction() {
@@ -200,7 +222,7 @@ public class WebflowConfig {
         pmTicketFactory.addTicketFactory(TransientSessionTicket.class, pmTicketFactory());
 
         return new I18NSendPasswordResetInstructionsAction(casProperties, communicationsManager, passwordManagementService, ticketRegistry, pmTicketFactory,
-                messageSource, providersService, identityProviderHelper, utils);
+                messageSource, providersService, identityProviderHelper, utils, vitamuiPlatformName);
     }
 
     @Bean
@@ -231,7 +253,8 @@ public class WebflowConfig {
     public Action terminateSessionAction() {
         return new GeneralTerminateSessionAction(centralAuthenticationService.getObject(),
             ticketGrantingTicketCookieGenerator.getObject(), warnCookieGenerator.getObject(),
-            casProperties.getLogout(), logoutManager, applicationContext);
+            logoutManager, applicationContext, utils, casRestClient, servicesManager, casProperties,
+            frontChannelLogoutAction, vitamLogoPath, vitamuiLargeLogoPath, vitamuiFaviconPath);
     }
 
     @Bean
@@ -242,7 +265,7 @@ public class WebflowConfig {
 
     @Bean
     public Action loadSurrogatesListAction() {
-        return new NoOpAction("success");
+        return StaticEventExecutionAction.SUCCESS;
     }
 
     @Bean
@@ -272,6 +295,6 @@ public class WebflowConfig {
     @Lazy
     @RefreshScope
     public Action delegatedAuthenticationClientLogoutAction() {
-        return new NoOpAction(null);
+        return new ConsumerExecutionAction(ctx -> {});
     }
 }

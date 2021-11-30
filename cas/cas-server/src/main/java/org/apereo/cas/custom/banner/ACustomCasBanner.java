@@ -1,4 +1,4 @@
-package org.apereo.cas.custom;
+package org.apereo.cas.custom.banner;
 
 import org.apereo.cas.util.spring.boot.AbstractCasBanner;
 

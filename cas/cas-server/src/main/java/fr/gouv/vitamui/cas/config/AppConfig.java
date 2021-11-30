@@ -57,6 +57,7 @@ import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.apereo.cas.CentralAuthenticationService;
 import org.apereo.cas.audit.AuditableExecution;
 import org.apereo.cas.authentication.AuthenticationEventExecutionPlanConfigurer;
@@ -67,6 +68,7 @@ import org.apereo.cas.authentication.principal.PrincipalFactory;
 import org.apereo.cas.authentication.principal.PrincipalResolver;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.configuration.support.Beans;
 import org.apereo.cas.pm.PasswordHistoryService;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.services.ServicesManager;
@@ -81,11 +83,14 @@ import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
+import org.apereo.cas.web.CasYamlHttpMessageConverter;
+import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -95,6 +100,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSender;
 
 /**
@@ -190,13 +196,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private PasswordHistoryService passwordHistoryService;
 
     @Autowired
+    @Qualifier("builtClients")
+    private Clients builtClients;
+
+    @Autowired
     private PasswordConfiguration passwordConfiguration;
 
     @Value("${token.api.cas}")
     private String tokenApiCas;
-
-    @Value("${api.token.ttl}")
-    private Integer apiTokenTtl;
 
     @Value("${ip.header}")
     private String ipHeaderName;
@@ -248,6 +255,14 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
                 registeredServiceAccessStrategyEnforcer, surrogateEligibilityAuditableExecution, delegatedClientDistributedSessionStore);
     }
 
+    // overrides the CAS specific message converter to prevent
+    // the CasRestExternalClient to use the 'application/vnd.cas.services+yaml;charset=UTF-8'
+    // content type and to fail
+    @Bean
+    public HttpMessageConverter yamlHttpMessageConverter() {
+        return null;
+    }
+
     @Bean
     public IamExternalRestClientFactory iamRestClientFactory() {
         LOGGER.debug("Iam client factory: {}", iamClientProperties);
@@ -266,7 +281,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public ProvidersService providersService() {
-        return new ProvidersService();
+        return new ProvidersService(builtClients, identityProviderCrudRestClient(), saml2ClientBuilder(), utils());
     }
 
     @Bean
@@ -287,7 +302,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     public TicketGrantingTicketFactory defaultTicketGrantingTicketFactory() {
         return new DynamicTicketGrantingTicketFactory(ticketGrantingTicketUniqueIdGenerator, grantingTicketExpirationPolicy.getObject(),
-                protocolTicketCipherExecutor, servicesManager);
+                protocolTicketCipherExecutor, servicesManager, utils());
     }
 
     @Bean
@@ -299,8 +314,10 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Override
     public void configureTicketCatalog(final TicketCatalog plan) {
         final TicketDefinition metadata = buildTicketDefinition(plan, "TOK", OAuth20DefaultAccessToken.class, Ordered.HIGHEST_PRECEDENCE);
-        metadata.getProperties().setStorageName("oauthAccessTokensCache");
-        metadata.getProperties().setStorageTimeout(apiTokenTtl);
+        metadata.getProperties().setStorageName(casProperties.getAuthn().getOauth().getAccessToken().getStorageName());
+        val timeout = Beans.newDuration(casProperties.getAuthn().getOauth().getAccessToken().getMaxTimeToLiveInSeconds()).getSeconds();
+        metadata.getProperties().setStorageTimeout(timeout);
+        metadata.getProperties().setExcludeFromCascade(casProperties.getLogout().isRemoveDescendantTickets());
         registerTicketDefinition(plan, metadata);
     }
 

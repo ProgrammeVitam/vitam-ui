@@ -38,7 +38,6 @@ package fr.gouv.vitamui.cas.pm;
 
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.HierarchicalMessageSource;
 
 import lombok.EqualsAndHashCode;

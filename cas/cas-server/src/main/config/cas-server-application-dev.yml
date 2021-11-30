@@ -143,7 +143,8 @@ ip.header: X-Real-IP
 
 
 # 8 hours in seconds
-api.token.ttl: 28800
+# the old api.token.ttl property
+cas.authn.oauth.access-token.max-time-to-live-in-seconds: 28800
 
 
 server-identity:
@@ -174,7 +175,7 @@ opentracing:
 
 #debug: true
 logging:
-  config: src/main/config/logback-dev.xml
+  config: ${logback.configurationFile}
   level:
     org.springframework.amqp: 'OFF'
     org.springframework.context.annotation: 'OFF'

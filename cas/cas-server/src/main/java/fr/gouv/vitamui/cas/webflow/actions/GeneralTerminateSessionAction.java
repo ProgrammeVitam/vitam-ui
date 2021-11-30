@@ -44,7 +44,6 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
@@ -55,7 +54,6 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.SimpleWebApplicationServiceImpl;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.logout.SingleLogoutExecutionRequest;
 import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
@@ -66,13 +64,11 @@ import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.TicketGrantingTicketImpl;
 import org.apereo.cas.ticket.expiration.NeverExpiresExpirationPolicy;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
-import org.apereo.cas.web.flow.logout.FrontChannelLogoutAction;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
+import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
@@ -93,43 +89,50 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
  *
  *
  */
-@Setter
 @Getter
 public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(GeneralTerminateSessionAction.class);
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Autowired
-    private CasExternalRestClient casExternalRestClient;
+    private final CasExternalRestClient casExternalRestClient;
 
-    @Autowired
-    private ServicesManager servicesManager;
+    private final ServicesManager servicesManager;
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
+    private final CasConfigurationProperties casProperties;
 
-    @Autowired
-    private FrontChannelLogoutAction frontChannelLogoutAction;
+    private final Action frontChannelLogoutAction;
 
-    @Value("${theme.vitam-logo:#{null}}")
-    private String vitamLogoPath;
+    private final String vitamLogoPath;
 
-    @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLargeLogoPath;
+    private final String vitamuiLargeLogoPath;
 
-    @Value("${theme.vitamui-favicon:#{null}}")
-    private String vitamuiFaviconPath;
+    private final String vitamuiFaviconPath;
 
     public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
                                          final CasCookieBuilder ticketGrantingTicketCookieGenerator,
                                          final CasCookieBuilder warnCookieGenerator,
-                                         final LogoutProperties logoutProperties,
                                          final LogoutManager logoutManager,
-                                         final ConfigurableApplicationContext applicationContext) {
-        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties, logoutManager, applicationContext);
+                                         final ConfigurableApplicationContext applicationContext,
+                                         final Utils utils,
+                                         final CasExternalRestClient casExternalRestClient,
+                                         final ServicesManager servicesManager,
+                                         final CasConfigurationProperties casProperties,
+                                         final Action frontChannelLogoutAction,
+                                         final String vitamLogoPath,
+                                         final String vitamuiLargeLogoPath,
+                                         final String vitamuiFaviconPath) {
+        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, casProperties.getLogout(), logoutManager, applicationContext);
+        this.utils = utils;
+        this.casExternalRestClient = casExternalRestClient;
+        this.servicesManager = servicesManager;
+        this.casProperties = casProperties;
+        this.frontChannelLogoutAction = frontChannelLogoutAction;
+        this.vitamLogoPath = vitamLogoPath;
+        this.vitamuiLargeLogoPath = vitamuiLargeLogoPath;
+        this.vitamuiFaviconPath =vitamuiFaviconPath;
+
     }
 
     @Override @SneakyThrows
@@ -189,7 +192,7 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         // if we are in the login webflow, compute the logout URLs
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
             logger.debug("Computing front channel logout URLs");
-            frontChannelLogoutAction.doExecute(context);
+            frontChannelLogoutAction.execute(context);
         }
 
         final MutableAttributeMap<Object> flowScope = context.getFlowScope();

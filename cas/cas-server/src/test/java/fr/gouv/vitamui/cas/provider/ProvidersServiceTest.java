@@ -49,15 +49,11 @@ public final class ProvidersServiceTest {
 
     @Before
     public void setUp() {
-        service = new ProvidersService();
         val clients = new Clients();
-        service.setClients(clients);
         val builder = mock(Saml2ClientBuilder.class);
-        service.setSaml2ClientBuilder(builder);
         restClient = mock(IdentityProviderExternalRestClient.class);
-        service.setIdentityProviderExternalRestClient(restClient);
         val utils = new Utils(null, 0, null, null);
-        service.setUtils(utils);
+        service = new ProvidersService(clients, restClient, builder, utils);
 
         provider = new IdentityProviderDto();
         provider.setId(PROVIDER_ID);

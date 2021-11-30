@@ -44,12 +44,11 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
 import org.pac4j.saml.client.SAML2Client;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
@@ -61,7 +60,6 @@ import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Retrieve all the identity providers from the IAM API.
@@ -69,29 +67,20 @@ import lombok.Setter;
  *
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class ProvidersService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProvidersService.class);
 
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
-    @Autowired
-    @Qualifier("builtClients")
-    private Clients clients;
+    private final Clients clients;
 
-    @Autowired
-    private IdentityProviderExternalRestClient identityProviderExternalRestClient;
+    private final IdentityProviderExternalRestClient identityProviderExternalRestClient;
 
-    @Autowired
-    private Saml2ClientBuilder saml2ClientBuilder;
+    private final Saml2ClientBuilder saml2ClientBuilder;
 
-    @Autowired
-    private Utils utils;
-
-    public ProvidersService() {
-        // do nothing
-    }
+    private final Utils utils;
 
     @PostConstruct
     public void afterPropertiesSet() {
