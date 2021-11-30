@@ -45,7 +45,14 @@ import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import {
+  AppraisalRuleFacets,
+  PagedResult,
+  ResultFacet,
+  ResultFacetList,
+  SearchCriteriaDto,
+  SearchCriteriaTypeEnum,
+} from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
@@ -200,63 +207,75 @@ export class ArchiveService extends SearchService<any> {
           ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
           : 0,
     };
-    let nodesFacets: ResultFacet[] = [];
-    let finalActionsFacets: ResultFacet[] = [];
-    let rulesListFacets: ResultFacet[] = [];
-    let expiredRulesListFacets: ResultFacet[] = [];
-    let waitingToRecalculateRulesListFacets: ResultFacet[] = [];
-    let noAppraisalRulesListFacets: ResultFacet[] = [];
+    pagedResult.facets = response.$facetResults;
+    return pagedResult;
+  }
 
-    if (response.$facetResults && response.$facetResults.length > 0) {
-      for (let facet of response.$facetResults) {
+  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
+    let nodesFacets: ResultFacet[] = [];
+
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
+          let nodesFacets = [];
           let buckets = facet.buckets;
           for (let bucket of buckets) {
             nodesFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
+      }
+    }
+    return nodesFacets;
+  }
 
-        if (facet.name === 'FINAL_ACTION_SCOPED') {
+  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
+    let appraisalRulesFacets = new AppraisalRuleFacets();
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
+        if (facet.name === 'FINAL_ACTION_COMPUTED') {
           let buckets = facet.buckets;
+          let finalActionsFacets = [];
           for (let bucket of buckets) {
             finalActionsFacets.push({ node: bucket.value, count: bucket.count });
           }
+          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
         }
-        if (facet.name === 'RULES_SCOPED_NUMBER') {
+        if (facet.name === 'RULES_COMPUTED_NUMBER') {
+          let rulesListFacets = [];
           let buckets = facet.buckets;
           for (let bucket of buckets) {
             rulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
+          appraisalRulesFacets.rulesListFacets = rulesListFacets;
         }
-        if (facet.name === 'EXPIRED_RULES_SCOPED') {
+        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
+          let expiredRulesListFacets = [];
           let buckets = facet.buckets;
           for (let bucket of buckets) {
             expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
+          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
         }
         if (facet.name === 'WAITING_TO_RECALCULATE_NUMBER') {
           let buckets = facet.buckets;
+          let waitingToRecalculateRulesListFacets = [];
           for (let bucket of buckets) {
             waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
+          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
         }
 
         if (facet.name === 'COUNT_WITHOUT_RULES') {
           let buckets = facet.buckets;
+          let noAppraisalRulesFacets = [];
           for (let bucket of buckets) {
-            noAppraisalRulesListFacets.push({ node: bucket.value, count: bucket.count });
+            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
           }
+          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
         }
       }
     }
-    pagedResult.facets = response.$facetResults;
-    pagedResult.nodesFacets = nodesFacets;
-    pagedResult.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
-    pagedResult.expiredRulesListFacets = expiredRulesListFacets;
-    pagedResult.rulesListFacets = rulesListFacets;
-    pagedResult.finalActionsFacets = finalActionsFacets;
-    pagedResult.noAppraisalRulesFacets = noAppraisalRulesListFacets;
-    return pagedResult;
+    return appraisalRulesFacets;
   }
 
   downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {

@@ -108,12 +108,6 @@ export interface PagedResult {
   pageNumbers: number;
   totalResults: number;
   facets?: ResultFacetList[];
-  nodesFacets?: ResultFacet[];
-  waitingToRecalculateRulesListFacets?: ResultFacet[];
-  expiredRulesListFacets?: ResultFacet[];
-  rulesListFacets?: ResultFacet[];
-  finalActionsFacets?: ResultFacet[];
-  noAppraisalRulesFacets?: ResultFacet[];
 }
 
 export interface ResultFacetList {

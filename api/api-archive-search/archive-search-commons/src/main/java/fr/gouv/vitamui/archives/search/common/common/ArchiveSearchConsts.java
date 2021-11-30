@@ -181,11 +181,8 @@ public class ArchiveSearchConsts {
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
 
-    public static final String FACETS_EXPIRED_RULES_SCOPED = "EXPIRED_RULES_SCOPED";
     public static final String FACETS_EXPIRED_RULES_COMPUTED = "EXPIRED_RULES_COMPUTED";
-    public static final String FACETS_RULES_SCOPED_NUMBER = "RULES_SCOPED_NUMBER";
     public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
-    public static final String FACETS_FINAL_ACTION_SCOPED = "FINAL_ACTION_SCOPED";
     public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
     public static final String FACETS_WAITING_TO_RECALCULATE_NUMBER = "WAITING_TO_RECALCULATE_NUMBER";
     public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";

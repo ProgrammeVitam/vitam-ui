@@ -159,7 +159,7 @@
   </div>
   <div class="row" *ngIf="!pending && submited">
     <app-archive-search-rules-facets
-      [archiveSearchResultFacets]="archiveSearchResultFacets"
+      [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"
     ></app-archive-search-rules-facets>

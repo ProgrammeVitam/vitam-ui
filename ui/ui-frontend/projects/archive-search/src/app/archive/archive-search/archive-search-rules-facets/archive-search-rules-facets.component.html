@@ -3,20 +3,25 @@
     <ng-template mat-tab-label>
       <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
     </ng-template>
+    <!--
     <ng-container
-      *vitamuiCommonHasRole="{
+   
+    *vitamuiCommonHasRole="{
         appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
         tenantIdentifier: this.tenantIdentifier,
         role: 'ROLE_SEARCH_WITH_RULES'
       }"
     >
-      <div class="card-criteria">
-        <app-search-appraisal-rules-facets
-          [totalResults]="totalResults"
-          [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
-        ></app-search-appraisal-rules-facets>
-      </div>
+    -->
+    <div class="card-criteria">
+      <app-search-appraisal-rules-facets
+        [totalResults]="totalResults"
+        [appraisalRuleFacets]="appraisalRuleFacets"
+      ></app-search-appraisal-rules-facets>
+    </div>
+    <!--
     </ng-container>
+    -->
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>

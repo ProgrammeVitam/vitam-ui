@@ -657,18 +657,10 @@ public class ArchiveSearchInternalService {
         throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList)) {
 
-            select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_FINAL_ACTION_SCOPED,
-                ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING.get(
-                    ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION),
-                3, FacetOrder.ASC));
             select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED,
                 ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION),
                 3, FacetOrder.ASC));
-            select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_SCOPED_NUMBER,
-                ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
-                    ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER),
-                1000, FacetOrder.ASC));
             select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER,
                 ArchiveSearchConsts.INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER),
@@ -710,10 +702,6 @@ public class ArchiveSearchInternalService {
             } else {
                 strDateExpirationCriteria = ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(LocalDateTime.now());
             }
-            select.addFacets(FacetHelper.dateRange(ArchiveSearchConsts.FACETS_EXPIRED_RULES_SCOPED,
-                ArchiveSearchConsts.SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
-                    ArchiveSearchConsts.APPRAISAL_RULE_END_DATE), ArchiveSearchConsts.ONLY_DATE_FORMAT,
-                List.of(new RangeFacetValue("1000-01-01", strDateExpirationCriteria))));
 
             select.addFacets(FacetHelper.dateRange(ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED,
                 ArchiveSearchConsts.INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(

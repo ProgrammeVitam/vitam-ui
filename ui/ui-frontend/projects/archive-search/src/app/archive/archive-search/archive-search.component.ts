@@ -652,7 +652,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       (pagedResult: PagedResult) => {
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
-          this.updateFacetsResults(pagedResult.facets);
+          this.archiveSearchResultFacets.nodesFacets = this.archiveService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveService.extractAppraisalRulesFacetsResults(pagedResult.facets);
           this.hasResults = true;
         } else {
           if (pagedResult.results) {
@@ -679,66 +681,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.NOT_INCLUDED);
       }
     );
-  }
-
-  private updateFacetsResults(facetResults: ResultFacetList[]) {
-    let appraisalRulesFacets = new AppraisalRuleFacets();
-    if (facetResults && facetResults.length > 0) {
-      for (let facet of facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          let nodesFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          this.archiveSearchResultFacets.nodesFacets = nodesFacets;
-        }
-
-        if (facet.name === 'FINAL_ACTION_SCOPED') {
-          let buckets = facet.buckets;
-          let finalActionsFacets = [];
-          for (let bucket of buckets) {
-            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
-        }
-        if (facet.name === 'RULES_SCOPED_NUMBER') {
-          let rulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
-            rulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.rulesListFacets = rulesListFacets;
-        }
-        if (facet.name === 'EXPIRED_RULES_SCOPED') {
-          let expiredRulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
-            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
-        }
-        if (facet.name === 'WAITING_TO_RECALCULATE_NUMBER') {
-          let buckets = facet.buckets;
-          let waitingToRecalculateRulesListFacets = [];
-          for (let bucket of buckets) {
-            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
-        }
-
-        if (facet.name === 'COUNT_WITHOUT_RULES') {
-          let buckets = facet.buckets;
-          let noAppraisalRulesFacets = [];
-          for (let bucket of buckets) {
-            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
-        }
-      }
-    }
-    this.archiveSearchResultFacets.appraisalRuleFacets = appraisalRulesFacets;
-    this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
   }
 
   public mapSearchCriteriaHistory() {
