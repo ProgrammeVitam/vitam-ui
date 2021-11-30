@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.services.RegexRegisteredService;
 import org.apereo.cas.services.ServicesManager;
@@ -27,8 +28,8 @@ public final class GeneralTerminateSessionActionTest {
 
         final LogoutManager logoutManager = mock(LogoutManager.class);
 
-        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null, null, null, logoutManager, null);
-        action.setServicesManager(servicesManager);
+        final GeneralTerminateSessionAction action = new GeneralTerminateSessionAction(null, null,
+            null, logoutManager, null, null, null, servicesManager, new CasConfigurationProperties(), null, null, null, null);
 
         action.performGeneralLogout("tgtId");
     }

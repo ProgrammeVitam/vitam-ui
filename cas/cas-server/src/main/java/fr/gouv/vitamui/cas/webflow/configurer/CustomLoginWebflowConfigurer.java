@@ -140,7 +140,7 @@ public class CustomLoginWebflowConfigurer extends DefaultLoginWebflowConfigurer 
         val propertiesToBind = CollectionUtils.wrapList("username");
         val binder = createStateBinderConfiguration(propertiesToBind);
 
-        val state = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, "casLoginView", binder);
+        val state = createViewState(flow, CasWebflowConstants.STATE_ID_VIEW_LOGIN_FORM, "login/casLoginView", binder);
         state.getRenderActionList().add(createEvaluateAction(CasWebflowConstants.ACTION_ID_RENDER_LOGIN_FORM));
         createStateModelBinding(state, CasWebflowConstants.VAR_ID_CREDENTIAL, UsernamePasswordCredential.class);
 

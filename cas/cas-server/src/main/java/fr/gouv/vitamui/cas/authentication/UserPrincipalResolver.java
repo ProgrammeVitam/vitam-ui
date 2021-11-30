@@ -39,7 +39,6 @@ package fr.gouv.vitamui.cas.authentication;
 import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;

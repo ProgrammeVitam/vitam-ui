@@ -82,8 +82,7 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
 
     private final Utils utils;
 
-    @Value("${theme.vitamui-platform-name:VITAM-UI}")
-    private String vitamuiPlatformName;
+    private final String vitamuiPlatformName;
 
     public I18NSendPasswordResetInstructionsAction(final CasConfigurationProperties casProperties,
                                                    final CommunicationsManager communicationsManager,
@@ -93,12 +92,14 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
                                                    final HierarchicalMessageSource messageSource,
                                                    final ProvidersService providersService,
                                                    final IdentityProviderHelper identityProviderHelper,
-                                                   final Utils utils) {
+                                                   final Utils utils,
+                                                   final String vitamuiPlatformName) {
         super(casProperties, communicationsManager, passwordManagementService, ticketRegistry, ticketFactory, null);
         this.messageSource = messageSource;
         this.providersService = providersService;
         this.identityProviderHelper = identityProviderHelper;
         this.utils = utils;
+        this.vitamuiPlatformName = vitamuiPlatformName;
     }
 
     @Audit(action = AuditableActions.REQUEST_CHANGE_PASSWORD,
