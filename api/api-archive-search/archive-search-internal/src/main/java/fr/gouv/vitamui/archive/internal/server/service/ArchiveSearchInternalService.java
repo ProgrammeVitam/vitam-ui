@@ -202,16 +202,6 @@ public class ArchiveSearchInternalService {
                 archiveUnitsDto.getArchives().getFacetResults().add(noRuleFacet);
             }
         }
-        Integer waitingToRecalculateAppraisalRulesUnitsCount =
-            calculateWaitingToRecalculateInheritingRulesUnitsCount(searchQuery, vitamContext);
-        FacetResultsDto waitingToRecalculateRuleFacet = new FacetResultsDto();
-        waitingToRecalculateRuleFacet.setName(ArchiveSearchConsts.FACETS_WAITING_TO_RECALCULATE_NUMBER);
-        waitingToRecalculateRuleFacet
-            .setBuckets(List.of(new FacetBucketDto(ArchiveSearchConsts.FACETS_WAITING_TO_RECALCULATE_NUMBER,
-                Long.valueOf(waitingToRecalculateAppraisalRulesUnitsCount))));
-        archiveUnitsDto.getArchives().getFacetResults().add(waitingToRecalculateRuleFacet);
-
-
         return archiveUnitsDto;
     }
 
@@ -683,7 +673,10 @@ public class ArchiveSearchInternalService {
                 ArchiveSearchConsts.INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING.get(
                     ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER),
                 1000, FacetOrder.ASC));
-
+            select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_WAITING_TO_RECALCULATE_NUMBER,
+                ArchiveSearchConsts.APPRAISAL_MGT_RULES_FIELDS_MAPPING.get(
+                    ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE.name()),
+                2, FacetOrder.ASC));
             String strDateExpirationCriteria;
             Optional<SearchCriteriaEltDto> appraisalEndDateCriteria =
                 appraisalMgtRulesCriteriaList.stream().filter(
