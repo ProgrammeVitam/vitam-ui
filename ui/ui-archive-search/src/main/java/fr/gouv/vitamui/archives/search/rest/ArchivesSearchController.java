@@ -205,7 +205,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Update Archive Units Rules by criteria")
-    @PostMapping(RestApi.MASSUPDATEUNITSRULES)
+    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     @ResponseStatus(HttpStatus.OK)
     public String updateArchiveUnitsRules(@RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
         LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);

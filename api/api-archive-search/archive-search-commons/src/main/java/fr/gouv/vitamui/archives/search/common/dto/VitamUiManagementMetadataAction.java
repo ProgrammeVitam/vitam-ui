@@ -54,5 +54,5 @@ import java.io.Serializable;
 @Getter
 public class VitamUiManagementMetadataAction implements Serializable {
 
-    String archiveUnitProfile;
+    private String archiveUnitProfile;
 }

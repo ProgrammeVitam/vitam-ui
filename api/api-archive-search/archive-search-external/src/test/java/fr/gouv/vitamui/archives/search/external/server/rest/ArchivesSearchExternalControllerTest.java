@@ -72,6 +72,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
 
+    public final String EXPECTED_RESPONSE = "expected_response";
+
     @MockBean
     private ArchivesSearchExternalService archivesSearchExternalService;
 
@@ -199,7 +201,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     public void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
 
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
-        String expectedResponse = new String();
+        String expectedResponse = EXPECTED_RESPONSE;
 
         Mockito
             .when(archivesSearchExternalService.updateArchiveUnitsRules(Mockito.eq(ruleSearchCriteriaDto)))

@@ -111,7 +111,7 @@
         "END_DATE_DUA_EQUAL": "Date de fin extrême",
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
-        "GUID_OPI": "GUID du versement",
+        "GUID_OPI": "Identifiant technique du versement",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",

@@ -52,6 +52,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryActionDeletion;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -65,10 +66,9 @@ import java.util.Map;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class RuleOperationsConverter {
 
-    public RuleOperationsConverter() {
-    }
     public ManagementMetadataAction convertToVitamManagementMetadataAction(
         VitamUiManagementMetadataAction vitamUiManagementMetadataAction) {
 

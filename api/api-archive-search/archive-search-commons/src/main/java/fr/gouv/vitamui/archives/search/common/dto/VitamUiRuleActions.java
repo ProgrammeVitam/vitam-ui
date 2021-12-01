@@ -58,15 +58,14 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.ALWAYS;
 @Getter
 public class VitamUiRuleActions implements Serializable {
 
+    private List<Map<String, VitamUiRuleCategoryAction>> add = new ArrayList<>();
 
-    List<Map<String, VitamUiRuleCategoryAction>> add = new ArrayList<>();
-
-    List<Map<String, VitamUiRuleCategoryAction>> update = new ArrayList<>();
+    private List<Map<String, VitamUiRuleCategoryAction>> update = new ArrayList<>();
 
     @JsonInclude(ALWAYS)
-    List<Map<String, VitamUiRuleCategoryActionDeletion>> delete = new ArrayList<>();
+    private List<Map<String, VitamUiRuleCategoryActionDeletion>> delete = new ArrayList<>();
 
-    VitamUiManagementMetadataAction addOrUpdateMetadata;
+    private VitamUiManagementMetadataAction addOrUpdateMetadata;
 
-    VitamUiManagementMetadataAction deleteMetadata;
+    private VitamUiManagementMetadataAction deleteMetadata;
 }
