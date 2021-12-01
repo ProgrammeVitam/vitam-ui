@@ -174,7 +174,6 @@
         - update_mongodb_configuration
 
     - name: Create the local shard user
-      # command: "mongo --host shard{{ mongo_shard_id }}/{{ ip_service}}:{{ mongodb.mongod_port }} {{ vitamui_defaults.folder.root_path }}/app/mongod/local-user.js"
       command: "mongo --host {{ ip_service}}:{{ mongodb.mongod_port }} {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path }}/app/mongod/local-user.js"
       tags:
         - update_mongodb_configuration
