@@ -152,7 +152,7 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.startEliminationAction(query);
     }
 
-    @PostMapping(RestApi.MASSUPDATEUNITSRULES)
+    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
     public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto) {
         LOGGER.info("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);

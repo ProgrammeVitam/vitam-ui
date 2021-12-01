@@ -204,7 +204,7 @@ public class ArchiveInternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
         final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.MASSUPDATEUNITSRULES, HttpMethod.POST,
+            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
                 request, String.class);
         checkResponse(response);
         return response.getBody();

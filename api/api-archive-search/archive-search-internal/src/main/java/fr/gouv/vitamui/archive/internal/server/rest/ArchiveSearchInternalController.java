@@ -227,7 +227,7 @@ public class ArchiveSearchInternalController {
         return jsonNode;
     }
 
-    @PostMapping(RestApi.MASSUPDATEUNITSRULES)
+    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     public ResponseEntity<String> updateArchiveUnitsRules(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,

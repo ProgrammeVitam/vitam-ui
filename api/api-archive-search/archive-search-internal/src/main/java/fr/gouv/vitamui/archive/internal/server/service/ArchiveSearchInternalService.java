@@ -703,7 +703,7 @@ public class ArchiveSearchInternalService {
 
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);
-        LOGGER.info("Add Rules to UA final updateQuery : {}", updateQuery);
+        LOGGER.debug("Add Rules to UA final updateQuery : {}", updateQuery);
 
         return massUpdateUnitsRules(vitamContext, updateQuery);
     }
