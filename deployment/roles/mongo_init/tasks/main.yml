@@ -30,7 +30,7 @@
 - name: List script files versions in the directory {{ mongod_source_template_dir }}
   delegate_to: localhost
   shell:
-    cmd: find * -maxdepth 1 -type d  | sort -V
+    cmd: find * -maxdepth 1 -type d | sort -V
     chdir: "{{ mongod_source_template_dir }}"
   register: versions
 
@@ -38,13 +38,13 @@
 - name: List script files in the directory {{ mongod_source_template_dir }}
   delegate_to: localhost
   shell:
-    cmd: find {{ version }}/* -type f  -print | sort -V -t '_' -k1
+    cmd: find {{ version }}/* -type f -print | sort -V -t '_' -k1
     chdir: "{{ mongod_source_template_dir }}"
   register: output
   loop: "{{ versions.stdout_lines }}"
   loop_control:
     loop_var: version
-  
+
 - name: "Compute file scripts"
   delegate_to: localhost
   set_fact:
@@ -57,7 +57,7 @@
   set_fact:
     mongod_excluded_files : "{{ (mongod_excluded_files| default([])) + [ item.0 ] }}"
   when: item.0 is not match(item.1) or item.0 is match(item.2)
-  with_nested: 
+  with_nested:
     - "{{ mongod_files }}"
     - "{{ mongodb.included_scripts }}"
     - "{{ mongodb.excluded_scripts }}"
@@ -91,7 +91,7 @@
     dest: "{{ mongod_output_dir_entry_point }}/main_script.js"
     owner: "{{ vitamui_defaults.users.vitamuidb }}"
     group: "{{ vitamui_defaults.users.group }}"
-    mode: 0755     
+    mode: 0755
 
 - name: Load script in database
   shell: "mongo \"mongodb://{{ mongod_uri }}/admin\" {{ mongo_credentials }} {{ mongod_output_dir_entry_point }}/main_script.js"

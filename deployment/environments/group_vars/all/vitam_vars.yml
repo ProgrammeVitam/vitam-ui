@@ -1,3 +1,4 @@
+---
 
 vitam_defaults:
   folder:
@@ -11,6 +12,7 @@ vitam_defaults:
     vitamdb: "vitamdb"
     group: "vitam"
 
+# Mandatory Vitam services for VitamUI
 vitam_vars:
   functional_administration:
     port_admin: 18004
@@ -22,20 +24,14 @@ vitam_vars:
           - MANAGEMENT_CONTRACT
           - ARCHIVE_UNIT_PROFILE
   access_external:
-    host: "access-external.service.{{ consul_remote_sites[0].name|default(vitam_site_name) }}.{{ consul_domain }}"
+    host: "access-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8444
   ingest_external:
-    host: "ingest-external.service.{{ consul_remote_sites[0].name|default(vitam_site_name) }}.{{ consul_domain }}"
+    host: "ingest-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8443
   security_internal:
     port_admin: 28005
     port_service: 8005
-
-# Vitam api urls:
-functional_adm_url: "http://{{ hostvars[groups['hosts_functionnal_admin'][0]].ip_admin }}:{{ vitam_vars.functional_administration.port_admin }}"
-admin_external_url: "https://{{ hostvars[groups['hosts_access_external'][0]].ip_admin }}:{{ vitam_vars.access_external.port_service }}"
-security_internal_url: "http://{{ hostvars[groups['hosts_security_internal'][0]].ip_admin }}:{{ vitam_vars.security_internal.port_admin }}"
-security_business_url: "http://{{ hostvars[groups['hosts_security_internal'][0]].ip_admin }}:{{ vitam_vars.security_internal.port_service }}"
 
 vitam_certs:
   vitamui:

@@ -2,4 +2,4 @@
 
 - hosts: hosts_vitamui_logstash
   roles:
-      - logstash
+    - logstash
