@@ -6,7 +6,7 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
 server:
   host: {{ vitamui.archive_search.host }}
@@ -44,10 +44,10 @@ management:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.archives.*:  {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.archives.*: {{ vitamui_struct.log.vitamui_level }}
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 

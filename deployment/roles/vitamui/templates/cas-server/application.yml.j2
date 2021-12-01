@@ -101,7 +101,7 @@ cas.ticket.tst.timeToKillInSeconds: 86400
 cas.authn.pm.enabled: true
 
 {% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
-cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
+cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern | replace("'","''") }}'
 {% else %}
 cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
 {% endif %}
@@ -177,7 +177,7 @@ api.token.ttl: 28800
 
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -235,7 +235,7 @@ password:
 {% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence | lower == true %}
   check-occurrence: true
 {% endif %}
-{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == false and vitamui_password_configurations.password.profile == "anssi"  %}
+{% if vitamui_password_configurations.password.check_occurrence is defined and vitamui_password_configurations.password.check_occurrence == false and vitamui_password_configurations.password.profile == "anssi" %}
   check-occurrence: true
   occurrences-chars-number: 3
 {% endif %}

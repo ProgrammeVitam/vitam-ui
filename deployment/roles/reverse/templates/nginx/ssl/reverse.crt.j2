@@ -1,1 +1,1 @@
-{{ lookup('file', "environments/certs/server/hosts/{{ inventory_hostname }}/reverse.crt" ) }}
+{{ lookup('file', "{{ inventory_dir }}/certs/server/hosts/{{ inventory_hostname }}/reverse.crt" ) }}
