@@ -24,15 +24,13 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.external.client;
-
-
+package fr.gouv.archive.internal.client;
 
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.CacheControl;
@@ -42,11 +40,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpContext> {
+public class ArchiveSearchInternalWebClient extends BaseWebClient<InternalHttpContext> {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchExternalWebClient.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchInternalWebClient.class);
 
-    public ArchiveSearchExternalWebClient(final WebClient webClient, final String baseUrl) {
+    public ArchiveSearchInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);
     }
 
@@ -54,8 +52,6 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
     public String getPathUrl() {
         return RestApi.ARCHIVE_SEARCH_PATH;
     }
-
-
 
     /**
      * Download object from unit
@@ -65,14 +61,16 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
      * @param version version
      * @param context internl context
      * @return a mono<Response<Resourse>
-     **/
+     */
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
-        final ExternalHttpContext context) {
+        final InternalHttpContext context) {
         LOGGER.info("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
-                "&version=" +
-                version);
+            UriComponentsBuilder.fromHttpUrl(
+                getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
+                    "&version=" +
+                    version);
+
 
         Flux<DataBuffer> dataBuffer = webClient
             .get()
@@ -81,9 +79,11 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
             .retrieve()
             .bodyToFlux(DataBuffer.class);
 
+
         return Mono.just(ResponseEntity
             .ok().cacheControl(CacheControl.noCache())
             .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
 
     }
+
 }

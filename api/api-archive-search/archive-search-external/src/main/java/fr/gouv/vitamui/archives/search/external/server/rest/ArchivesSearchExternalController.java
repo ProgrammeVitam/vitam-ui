@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +56,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -91,9 +93,10 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.getFilingHoldingScheme();
     }
 
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
         final @RequestParam("usage") String usage, final @RequestParam("version") Integer version) {
         LOGGER.info("Download the Archive Unit Object with id {} ", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);

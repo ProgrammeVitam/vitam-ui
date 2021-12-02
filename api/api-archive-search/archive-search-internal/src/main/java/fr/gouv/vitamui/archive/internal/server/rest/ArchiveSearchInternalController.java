@@ -50,7 +50,9 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +62,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -143,13 +147,12 @@ public class ArchiveSearchInternalController {
         return archiveInternalService.findObjectById(id, vitamContext);
     }
 
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
         final @RequestParam("usage") String usage, final @RequestParam("version") Integer version,
-        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
-        throws VitamClientException {
-
-        ResponseEntity<Resource> result = null;
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId
+    ) {
 
         LOGGER.info("Access Contract {} ", accessContractId);
         ParameterChecker
@@ -157,13 +160,13 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Download Archive Unit Object with id {}", id);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-        Object entity = response.getEntity();
-        if (entity instanceof InputStream) {
-            Resource resource = new InputStreamResource((InputStream) entity);
-            result = new ResponseEntity<>(resource, HttpStatus.OK);
-        }
-        return result;
+        return Mono.<Resource>fromCallable(() -> {
+            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+            return new InputStreamResource((InputStream) response.getEntity());
+        }).subscribeOn(Schedulers.boundedElastic())
+            .flatMap(resource -> Mono.just(ResponseEntity
+                .ok().cacheControl(CacheControl.noCache())
+                .body(resource)));
     }
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
@@ -188,7 +191,8 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Export DIP  by criteria {}", exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(
+                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, exportDipCriteriaDto);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         String result = archiveInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
@@ -204,7 +208,8 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Calling elimination analysis by criteria {} ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(
+                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         JsonNode jsonNode = archiveInternalService.startEliminationAnalysis(searchQuery, vitamContext);
@@ -220,7 +225,8 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Calling elimination action by criteria {} ", searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
-            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            .checkParameter(
+                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         JsonNode jsonNode = archiveInternalService.startEliminationAction(searchQuery, vitamContext);

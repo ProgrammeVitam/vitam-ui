@@ -34,60 +34,22 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.rest.client.configuration;
+package fr.gouv.archive.internal.client;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
 /**
- * The RestClientConfiguration stores properties used in the RestClient
+ * A Rest client factory to create specialized Archive Search Rest clients
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class RestClientConfiguration {
+public class ArchiveSearchStreamingInternalRestClientFactory extends BaseStreamingRestClientFactory {
 
-    private String serverHost;
+    public ArchiveSearchStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
+    }
 
-    private int serverPort;
-
-    private boolean secure;
-
-    private boolean noClientAuthentication = false;
-
-    private SSLConfiguration sslConfiguration;
-
-    /**
-     * Connection timeout in seconds.
-     */
-    private int connectTimeOut = 10;
-
-    /**
-     * Read timeout in seconds.
-     */
-    private int readTimeOut = 10;
-
-    /**
-     * Write timeout in seconds.
-     */
-    private int writeTimeOut = 10;
-
-    /**
-     * Total pool size for httpClient.
-     */
-    private int poolMaxTotal = 20;
-
-    /**
-     * Pool size per route(host).
-     */
-    private int poolMaxPerRoute = 20;
-
-    /**
-     * Max data cached on memory in byte
-     */
-    private int maxInMemorySize = 10 * 1024 * 1024;
+    public ArchiveSearchStreamingInternalRestClient getArchiveSearchStreamingInternalRestClient() {
+        return new ArchiveSearchStreamingInternalRestClient(getRestTemplate(), getBaseUrl());
+    }
 }

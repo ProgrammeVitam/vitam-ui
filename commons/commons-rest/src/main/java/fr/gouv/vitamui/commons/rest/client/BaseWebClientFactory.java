@@ -36,26 +36,6 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.client.reactive.ClientHttpConnector;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.util.Assert;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.reactive.function.client.WebClient;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -71,14 +51,31 @@ import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.client.reactive.ClientHttpConnector;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.util.Assert;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 /**
  * A factory using Spring WebFlux {@link WebClient} to create each domain specific REST client.
  * The http connection is configured by the RestClientConfiguration object.
  * The factory handles SSL via x509 certificates.
- *
- *
  */
 
 public class BaseWebClientFactory implements WebClientFactory {
@@ -88,14 +85,15 @@ public class BaseWebClientFactory implements WebClientFactory {
     private final WebClient webClient;
 
     /**
-     *  baseUrl is not mandatory.
-     *  We can build webClient with no specific baseUrl.
-     *  The caller is in charged to determine the URI
+     * baseUrl is not mandatory.
+     * We can build webClient with no specific baseUrl.
+     * The caller is in charged to determine the URI
      */
     private String baseUrl;
 
     /**
      * This method don't use WebBuilder configured by spring boot
+     *
      * @param restClientConfiguration
      */
     @Deprecated
@@ -105,44 +103,60 @@ public class BaseWebClientFactory implements WebClientFactory {
 
     /**
      * This method don't use WebBuilder configured by spring boot
+     *
      * @param restClientConfiguration
      * @param httpPoolConfig
      */
     @Deprecated
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig) {
         this(restClientConfiguration, httpPoolConfig, WebClient.builder());
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder, final String baseUrl) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder, final String baseUrl) {
         this(restClientConfiguration, null, webClientBuilder);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder) {
         this(restClientConfiguration, null, webClientBuilder);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
         this(restClientConfiguration, null, webClientBuilder, null, true);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder, final boolean useBaseUrl) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
+        final boolean useBaseUrl) {
         this(restClientConfiguration, null, webClientBuilder, null, useBaseUrl);
     }
 
-    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder, final String webClientBaseUrl) {
+    public BaseWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
+        final String webClientBaseUrl) {
         this(restClientConfiguration, null, webClientBuilder, webClientBaseUrl, true);
     }
 
-    private BaseWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
+    private BaseWebClientFactory(final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder,
         final String webClientBaseUrl, final boolean useBaseUrl) {
         Assert.notNull(restClientConfig, "Rest client configuration must be specified");
         webClientBuilder.clientConnector(createClientHttpConnector(restClientConfig));
-        if(useBaseUrl) {
+        if (useBaseUrl) {
             // Build or retrieve the baseUrl provided
-            this.baseUrl = StringUtils.isBlank(webClientBaseUrl) ? buildBaseUrl(restClientConfig, restClientConfig.isSecure()) : webClientBaseUrl;
+            this.baseUrl = StringUtils.isBlank(webClientBaseUrl) ?
+                buildBaseUrl(restClientConfig, restClientConfig.isSecure()) :
+                webClientBaseUrl;
             webClientBuilder.baseUrl(baseUrl);
         }
-        webClient = webClientBuilder.build();;
+        webClient = webClientBuilder.exchangeStrategies(ExchangeStrategies.builder()
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(restClientConfig.getMaxInMemorySize()))
+            .build())
+            .build();
+        ;
     }
 
     private String buildBaseUrl(final RestClientConfiguration restClientConfig, final boolean useSSL) {
@@ -159,20 +173,22 @@ public class BaseWebClientFactory implements WebClientFactory {
             if (useSSL) {
                 // secure must precede tcpConfiguration in order for sslContext configuration to be applied.
                 httpClient = HttpClient.create().secure(sslSpec -> sslSpec.sslContext(sslContext))
-                        .tcpConfiguration(client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
-                                .doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
-                                        .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
-            }
-            else {
+                    .tcpConfiguration(client -> client
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
+                        .doOnConnected(connection -> connection
+                            .addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
+                            .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
+            } else {
                 httpClient = HttpClient.create()
-                        .tcpConfiguration(client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
-                                .doOnConnected(connection -> connection.addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
-                                        .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
+                    .tcpConfiguration(client -> client
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
+                        .doOnConnected(connection -> connection
+                            .addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
+                            .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
             }
 
             return new ReactorClientHttpConnector(httpClient);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new ApplicationServerException(e);
         }
 
@@ -185,11 +201,13 @@ public class BaseWebClientFactory implements WebClientFactory {
      */
     private SslContext buildSSLContext(final RestClientConfiguration restClientConfig) {
         if (restClientConfig == null || restClientConfig.getSslConfiguration() == null) {
-            throw new ApplicationServerException("SSL Configuration is not defined. Unable to configure the SSLConnection");
+            throw new ApplicationServerException(
+                "SSL Configuration is not defined. Unable to configure the SSLConnection");
         }
 
         final SSLConfiguration.CertificateStoreConfiguration ks = restClientConfig.getSslConfiguration().getKeystore();
-        final SSLConfiguration.CertificateStoreConfiguration ts = restClientConfig.getSslConfiguration().getTruststore();
+        final SSLConfiguration.CertificateStoreConfiguration ts =
+            restClientConfig.getSslConfiguration().getTruststore();
 
         try {
 
@@ -197,44 +215,47 @@ public class BaseWebClientFactory implements WebClientFactory {
             sslContextBuilder = sslContextBuilder.clientAuth(ClientAuth.NONE);
 
             if (restClientConfig.isNoClientAuthentication()) {
-                LOGGER.warn("By deactivating the authentication client we deprive ourselves of two-way authentication.");
+                LOGGER
+                    .warn("By deactivating the authentication client we deprive ourselves of two-way authentication.");
 
             } else {
                 if (ks != null) {
-                    sslContextBuilder = sslContextBuilder.keyManager(createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
+                    sslContextBuilder = sslContextBuilder.keyManager(
+                        createKeyManagerFactory(ks.getType(), ks.getKeyPath(), ks.getKeyPassword().toCharArray()));
                 }
 
             }
 
             if (restClientConfig.getSslConfiguration().isHostnameVerification()) {
-                final TrustManagerFactory tmfactory = createTrustManagerFactory(ts.getType(), ts.getKeyPath(), ts.getKeyPassword().toCharArray());
+                final TrustManagerFactory tmfactory =
+                    createTrustManagerFactory(ts.getType(), ts.getKeyPath(), ts.getKeyPassword().toCharArray());
                 sslContextBuilder = sslContextBuilder.sslProvider(SslProvider.JDK).trustManager(tmfactory);
-            }
-            else {
+            } else {
                 return sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE).build();
             }
 
             return sslContextBuilder.build();
-        }
-        catch (GeneralSecurityException | IOException e) {
+        } catch (GeneralSecurityException | IOException e) {
             LOGGER.warn("Unable to build the Registry<ConnectionSocketFactory>.", e);
             throw new ApplicationServerException(e);
         }
     }
 
     private KeyManagerFactory createKeyManagerFactory(final String type, final String filename, final char[] password)
-            throws IOException, GeneralSecurityException {
+        throws IOException, GeneralSecurityException {
 
-        final KeyStore keyStore = loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
+        final KeyStore keyStore =
+            loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
 
-        final KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+        final KeyManagerFactory keyManagerFactory =
+            KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         keyManagerFactory.init(keyStore, password);
 
         return keyManagerFactory;
     }
 
     private KeyStore loadPkcs(final String type, final String filename, final char[] password)
-            throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+        throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         final KeyStore keyStore = KeyStore.getInstance(type);
         final File key = ResourceUtils.getFile(filename);
         try (InputStream in = new FileInputStream(key)) {
@@ -243,12 +264,15 @@ public class BaseWebClientFactory implements WebClientFactory {
         return keyStore;
     }
 
-    private TrustManagerFactory createTrustManagerFactory(final String type, final String filename, final char[] password)
-            throws GeneralSecurityException, IOException {
+    private TrustManagerFactory createTrustManagerFactory(final String type, final String filename,
+        final char[] password)
+        throws GeneralSecurityException, IOException {
 
-        final KeyStore trustStore = loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
+        final KeyStore trustStore =
+            loadPkcs(StringUtils.isEmpty(type) ? KeyStore.getDefaultType() : type, filename, password);
 
-        final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+        final TrustManagerFactory trustManagerFactory =
+            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init(trustStore);
 
         return trustManagerFactory;

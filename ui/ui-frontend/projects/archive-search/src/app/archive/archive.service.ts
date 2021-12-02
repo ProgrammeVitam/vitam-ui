@@ -184,28 +184,8 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  downloadObjectFromUnit(id: string, title?: string, titleInLanguages?: any, headers?: HttpHeaders) {
-    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-      (response) => {
-        let filename;
-        if (response.headers.get('content-disposition').includes('filename')) {
-          filename = response.headers.get('content-disposition').split('=')[1];
-        } else {
-          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, titleInLanguages));
-        }
-
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(response.body);
-        element.download = filename;
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      },
-      (errors) => {
-        console.log('Error message : ', errors);
-      }
-    );
+  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
   }
 
   normalizeTitle(title: string): string {
@@ -260,6 +240,16 @@ export class ArchiveService extends SearchService<any> {
       },
       duration: 100000,
     });
+  }
+
+  downloadFile(url: string) {
+    window.addEventListener('focus', window_focus, false);
+    function window_focus() {
+      window.removeEventListener('focus', window_focus, false);
+      URL.revokeObjectURL(url);
+      console.log('revoke ' + url);
+    }
+    location.href = url;
   }
 
   buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
