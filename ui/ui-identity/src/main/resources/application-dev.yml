@@ -48,22 +48,6 @@ ui-identity:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-identity-admin.jks
-        key-password: changeme
-        type: JKS
-      truststore:
-        key-path: src/main/resources/dev/truststore_server.jks
-        key-password: changeme
-      hostname-verification: false
-  referential-external-client:
-    server-host: localhost
-    server-port: 8087
-    connect-time-out: 30
-    read-time-out: 30
-    write-time-out: 30
-    secure: true
-    ssl-configuration:
-      keystore:
         key-path: src/main/resources/dev/keystore_ui-referential.jks
         key-password: changeme
         type: JKS
