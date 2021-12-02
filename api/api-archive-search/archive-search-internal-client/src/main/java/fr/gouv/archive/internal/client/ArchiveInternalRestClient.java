@@ -126,13 +126,6 @@ public class ArchiveInternalRestClient
         return headers;
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, final String usage, Integer version, final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" + version);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
-
-    }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
@@ -162,7 +155,7 @@ public class ArchiveInternalRestClient
     }
 
     public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
-                                                    final InternalHttpContext context) {
+        final InternalHttpContext context) {
         LOGGER.info("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
@@ -174,7 +167,8 @@ public class ArchiveInternalRestClient
 
     }
 
-    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context, final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context,
+        final SearchCriteriaDto query) {
         LOGGER.info("Calling elimination analysis with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
@@ -186,7 +180,8 @@ public class ArchiveInternalRestClient
 
     }
 
-    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context, final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context,
+        final SearchCriteriaDto query) {
         LOGGER.info("Calling elimination action with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);

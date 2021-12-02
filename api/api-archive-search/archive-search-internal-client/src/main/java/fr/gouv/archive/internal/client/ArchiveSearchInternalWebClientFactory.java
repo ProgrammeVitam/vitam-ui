@@ -26,23 +26,27 @@
 
 package fr.gouv.archive.internal.client;
 
-import fr.gouv.vitamui.archives.search.common.rest.RestApi;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
-import org.springframework.web.reactive.function.client.WebClient;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
-public class ArchiveInternalWebClient extends BaseWebClient<InternalHttpContext> {
+public class ArchiveSearchInternalWebClientFactory extends BaseWebClientFactory {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveInternalWebClient.class);
+    public ArchiveSearchInternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
+        super(restClientConfiguration);
+    }
 
-    public ArchiveInternalWebClient(final WebClient webClient, final String baseUrl) {
-        super(webClient, baseUrl);
+    public ArchiveSearchInternalWebClientFactory(final RestClientConfiguration restClientConfig,
+        final HttpPoolConfiguration httpPoolConfig) {
+        super(restClientConfig, httpPoolConfig);
+    }
+
+    public ArchiveSearchInternalWebClient getArchiveInternalWebClient() {
+        return new ArchiveSearchInternalWebClient(getWebClient(), getBaseUrl());
     }
 
     @Override
-    public String getPathUrl() {
-        return RestApi.ARCHIVE_SEARCH_PATH;
+    public String getBaseUrl() {
+        return super.getBaseUrl();
     }
 }

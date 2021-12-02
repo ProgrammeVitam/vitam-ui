@@ -29,6 +29,8 @@ import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRest
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClientFactory;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClient;
+import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.archives.search.external.client.SearchCriteriaHistoryExternalRestClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -43,6 +45,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
@@ -66,13 +69,30 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
             restTemplateBuilder);
     }
 
+
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public ArchiveSearchExternalWebClientFactory archiveSearchExternalWebClientFactory(
-        final ArchiveSearchApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
-        return new ArchiveSearchExternalWebClientFactory(uiProperties.getArchiveSearchExternalClient());
+        final ArchiveSearchApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
+        return new ArchiveSearchExternalWebClientFactory(uiProperties.getArchiveSearchExternalClient(),
+            webClientBuilder);
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ArchiveSearchStreamingExternalRestClientFactory archiveSearchStreamingExternalRestClientFactory(
+        final ArchiveSearchApplicationProperties uiProperties) {
+        return new ArchiveSearchStreamingExternalRestClientFactory(uiProperties.getArchiveSearchExternalClient());
+    }
+
+
+    @Bean
+    public ArchiveSearchStreamingExternalRestClient archiveSearchStreamingExternalRestClient(
+        final ArchiveSearchStreamingExternalRestClientFactory factory) {
+        return factory.getIngestStreamingExternalRestClient();
     }
 
     @Bean
@@ -88,7 +108,10 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
     }
 
     @Bean
-    public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(final ArchiveSearchExternalRestClientFactory factory) {
+    public SearchCriteriaHistoryExternalRestClient searchCriteriaHistoryExternalRestClient(
+        final ArchiveSearchExternalRestClientFactory factory) {
         return factory.getSearchCriteriaHistoryExternalRestClient();
     }
+
+ 
 }

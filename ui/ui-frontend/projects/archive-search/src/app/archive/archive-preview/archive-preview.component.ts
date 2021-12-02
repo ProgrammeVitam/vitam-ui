@@ -1,7 +1,6 @@
-import { HttpHeaders } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
 
@@ -10,7 +9,7 @@ import { Unit } from '../models/unit.interface';
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnInit, OnChanges {
+export class ArchivePreviewComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   archiveUnit: Unit;
   @Input()
@@ -20,13 +19,14 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   isPopup: boolean;
 
-  tenantIdentifier: string;
+  subscriptionDownloadProgress: Subscription;
+  tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
 
   constructor(private archiveService: ArchiveService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
   }
 
@@ -45,10 +45,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.accessContract);
-
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], archiveUnit?.Title, archiveUnit?.Title_, headers);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
   }
 
   emitClose() {
@@ -57,5 +54,10 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
+  }
+
+  ngOnDestroy() {
+    // unsubscribe to ensure no memory leaks
+    this.subscriptionDownloadProgress.unsubscribe();
   }
 }

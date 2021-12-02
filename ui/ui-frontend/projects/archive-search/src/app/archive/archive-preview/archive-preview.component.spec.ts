@@ -59,13 +59,14 @@ describe('ArchivePreviewComponent', () => {
   beforeEach(
     waitForAsync(() => {
       const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
+        params: of({ tenantIdentifier: 1}),
         data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
       };
 
       const archiveServiceMock = {
         getBaseUrl: () => '/fake-api',
         buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
+        receiveDownloadProgressSubject: () => of(true),
       };
 
       TestBed.configureTestingModule({

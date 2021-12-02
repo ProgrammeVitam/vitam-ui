@@ -38,12 +38,13 @@
 package fr.gouv.vitamui.iam.internal.server.provisioning.service;
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Arrays;
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
+import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebClient;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -53,15 +54,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.iam.internal.server.provisioning.config.IdPProvisioningClientConfiguration;
-import fr.gouv.vitamui.iam.internal.server.provisioning.config.ProvisioningClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.iam.common.dto.ProvidedUserDto;
-import fr.gouv.vitamui.iam.internal.server.provisioning.client.ProvisioningWebClient;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class ProvisioningInternalServiceTest {
@@ -78,6 +77,7 @@ class ProvisioningInternalServiceTest {
     @Mock
     private InternalSecurityService securityServiceMock;
 
+
     @Nested
     class getProvisioningClientConfiguration {
 
@@ -93,7 +93,8 @@ class ProvisioningInternalServiceTest {
             // Prepare
             var idpConfiguration = new IdPProvisioningClientConfiguration();
             idpConfiguration.setIdpIdentifier("idp");
-            Mockito.when(provisioningClientConfigurationMock.getIdentityProviders()).thenReturn(Arrays.asList(idpConfiguration));
+            Mockito.when(provisioningClientConfigurationMock.getIdentityProviders())
+                .thenReturn(Arrays.asList(idpConfiguration));
 
             // Do
             IdPProvisioningClientConfiguration idpFound = service.getProvisioningClientConfiguration("idp");
@@ -109,6 +110,8 @@ class ProvisioningInternalServiceTest {
         // Prepare
         var idpConfiguration = new IdPProvisioningClientConfiguration();
         idpConfiguration.setClient(new RestClientConfiguration());
+        Mockito.when(webClientMock.exchangeStrategies(ArgumentMatchers.any(ExchangeStrategies.class)))
+            .thenReturn(webClientMock);
 
         // Do
         ProvisioningWebClient webClient = service.buildWebClient(idpConfiguration);
@@ -125,10 +128,13 @@ class ProvisioningInternalServiceTest {
         var providedUserDtoStub = new ProvidedUserDto();
         providedUserDtoStub.setFirstname("youyou");
 
-        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy).getProvisioningClientConfiguration(ArgumentMatchers.any());
-        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy).buildWebClient(ArgumentMatchers.any());
+        Mockito.doReturn(new IdPProvisioningClientConfiguration()).when(provisioningInternalServiceSpy)
+            .getProvisioningClientConfiguration(ArgumentMatchers.any());
+        Mockito.doReturn(provisioningWebClient).when(provisioningInternalServiceSpy)
+            .buildWebClient(ArgumentMatchers.any());
         Mockito.when(provisioningWebClient.getProvidedUser(ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(providedUserDtoStub);
+            ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(providedUserDtoStub);
 
         // Do
         ProvidedUserDto providedUserDto =
