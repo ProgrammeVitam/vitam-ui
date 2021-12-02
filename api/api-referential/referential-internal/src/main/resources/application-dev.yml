@@ -25,6 +25,8 @@ server:
   host:
   port: 7087
   tomcat.connection-timeout: 60000
+  error:
+    path: /error
 
 management:
   server:

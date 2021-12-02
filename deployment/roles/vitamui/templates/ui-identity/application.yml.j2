@@ -28,6 +28,8 @@ server:
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
 
 {% endif %}
   tomcat:

@@ -45,7 +45,8 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(new MongodConfigBuilder().version(Version.Main.PRODUCTION)
+        _mongodExe = starter.prepare(new MongodConfigBuilder()
+            .version(Version.Main.PRODUCTION)
             .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
             .build());
 

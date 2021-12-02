@@ -1,10 +1,22 @@
-package fr.gouv.vitamui.commons.mongo;
+package fr.gouv.vitamui.commons.mongo.dao;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.mongo.TestMongoConfig;
+import fr.gouv.vitamui.commons.mongo.domain.Address;
+import fr.gouv.vitamui.commons.mongo.domain.Person;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.CriteriaDefinition;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -15,34 +27,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.CriteriaDefinition;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.mongo.config.TestMongoConfig;
-import fr.gouv.vitamui.commons.mongo.dao.PersonRepository;
-import fr.gouv.vitamui.commons.mongo.domain.Address;
-import fr.gouv.vitamui.commons.mongo.domain.Person;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * PersonRepositoryTest.
  *
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
-@Import(TestMongoConfig.class)
+@RunWith(SpringRunner.class)
+@Import({ TestMongoConfig.class })
+@EnableMongoRepositories(basePackageClasses = PersonRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class PersonRepositoryPaginatedNestedObjectsTests {
 
     @Autowired

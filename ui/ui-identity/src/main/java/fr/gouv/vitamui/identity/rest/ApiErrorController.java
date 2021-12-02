@@ -36,37 +36,11 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import fr.gouv.vitamui.commons.rest.BaseApiErrorController;
 import org.springframework.web.bind.annotation.RestController;
-
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @ApiIgnore
-public class ApiErrorController implements ErrorController {
-
-    @RequestMapping(value = "/error")
-    public VitamUIError handleError(final HttpServletRequest request) {
-        final Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-
-        if (status != null) {
-            final Integer statusCode = Integer.valueOf(status.toString());
-
-            final VitamUIError vitamuiError = new VitamUIError();
-            vitamuiError.setStatus(statusCode);
-            return vitamuiError;
-        }
-        return null;
-    }
-
-    @Override
-    public String getErrorPath() {
-        return "/error";
-    }
-
+public class ApiErrorController extends BaseApiErrorController {
 }

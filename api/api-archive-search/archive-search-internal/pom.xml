@@ -17,7 +17,6 @@
         <rpm.skip>false</rpm.skip>
         <swagger.dir>api-internal</swagger.dir>
         <swagger.skip>false</swagger.skip>
-        <spring.data.mongo.version>3.1.7</spring.data.mongo.version>
     </properties>
 
     <dependencies>
@@ -95,18 +94,18 @@
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-mongo</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+        </dependency>
         <!-- Metrics -->
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-
-        <!-- Spring Data Mongo-->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-            <version>${spring.data.mongo.version}</version>
         </dependency>
 
         <!-- PAC4J -->
@@ -157,11 +156,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.flapdoodle.embed</groupId>
-            <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-test</artifactId>
             <type>test-jar</type>
@@ -177,6 +171,11 @@
             <artifactId>iam-commons</artifactId>
             <scope>test</scope>
             <type>test-jar</type>
+        </dependency>
+        <dependency>
+            <groupId>de.flapdoodle.embed</groupId>
+            <artifactId>de.flapdoodle.embed.mongo</artifactId>
+            <scope>test</scope>
         </dependency>
 
 

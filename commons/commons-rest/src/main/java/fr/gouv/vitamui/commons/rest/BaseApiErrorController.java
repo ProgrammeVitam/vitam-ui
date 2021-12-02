@@ -36,15 +36,14 @@
  */
 package fr.gouv.vitamui.commons.rest;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.http.HttpServletRequest;
-
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
+import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.WebUtils;
 
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.rest.dto.VitamUIError;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpServletRequest;
 
 public class BaseApiErrorController implements ErrorController {
 
@@ -68,7 +67,6 @@ public class BaseApiErrorController implements ErrorController {
         throw new NotFoundException("URL Not Found : " + uri);
     }
 
-    @Override
     public String getErrorPath() {
         return ERROR_MAPPING;
     }

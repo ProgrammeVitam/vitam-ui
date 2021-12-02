@@ -1,26 +1,24 @@
-package fr.gouv.vitamui.commons.mongo;
+package fr.gouv.vitamui.commons.mongo.dao;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
-
+import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
+import fr.gouv.vitamui.commons.mongo.TestMongoConfig;
+import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.commons.mongo.config.TestMongoConfig;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import java.util.Optional;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
-@Import(TestMongoConfig.class)
-@ActiveProfiles("test")
+import static org.assertj.core.api.Assertions.assertThat;
+
+@RunWith(SpringRunner.class)
+@Import({ TestMongoConfig.class })
+@EnableMongoRepositories(basePackageClasses = CustomSequenceRepository.class, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class CustomSequenceRepositoryTest {
 
     @Autowired

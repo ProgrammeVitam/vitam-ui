@@ -12,7 +12,6 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
-import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.mongo.repository.CommonsMongoRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.springframework.context.annotation.Configuration;
@@ -48,9 +47,9 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
         port = Network.getFreeServerPort();
 
         _mongodExe = starter.prepare(new MongodConfigBuilder()
-                .version(Version.Main.PRODUCTION)
-                .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
-                .build());
+            .version(Version.Main.PRODUCTION)
+            .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
+            .build());
 
         _mongod = _mongodExe.start();
     }

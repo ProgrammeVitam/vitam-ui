@@ -1,8 +1,7 @@
-package fr.gouv.vitamui.commons.mongo.config;
+package fr.gouv.vitamui.commons.mongo;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerAddress;
-import com.mongodb.client.MongoClient;
 import com.mongodb.connection.ClusterSettings;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -13,23 +12,24 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import fr.gouv.vitamui.commons.mongo.repository.CommonsMongoRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
 
 
 @Configuration
-@EnableMongoRepositories(basePackages = {
-    "fr.gouv.vitamui.commons.mongo.dao",
-    "fr.gouv.vitamui.commons.mongo.repository"
-}, repositoryBaseClass = VitamUIRepositoryImpl.class)
-
+@EnableMongoRepositories(basePackageClasses = {CommonsMongoRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
+@Import({ServerIdentityAutoConfiguration.class})
 public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
@@ -54,11 +54,13 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
     @PreDestroy
     public void close() {
-        if (_mongod != null)
+        if (_mongod != null) {
             _mongod.stop();
+        }
 
-        if (_mongodExe != null)
+        if (_mongodExe != null) {
             _mongodExe.stop();
+        }
     }
 
     @Override
@@ -69,9 +71,10 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
         builder.applyToClusterSettings(b -> b.applySettings(clusterSettings));
     }
 
+    @NotNull
     @Override
     protected String getDatabaseName() {
-        return "test";
+        return "db";
     }
 
     @Override
@@ -79,12 +82,6 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
         converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
-
-    @Override
-    protected String getMappingBasePackage() {
-        return "fr.gouv.vitamui.commons.mongo";
-    }
-
 
 
 }
