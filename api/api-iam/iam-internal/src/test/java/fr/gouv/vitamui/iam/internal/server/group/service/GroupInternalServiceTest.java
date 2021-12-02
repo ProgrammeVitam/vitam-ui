@@ -2,7 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.group.service;
 
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
@@ -29,7 +29,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -60,7 +59,7 @@ public class GroupInternalServiceTest {
 
     private static final String LEVEL = "DSI.DEV";
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
 
     private final IamLogbookService iamLogbookService = mock(IamLogbookService.class);
 
@@ -70,7 +69,7 @@ public class GroupInternalServiceTest {
 
     @Before
     public void setup() {
-        internalGroupService = new GroupInternalService(sequenceRepository, groupRepository, customerRepository,
+        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository,
                 profileInternalService, userRepository, internalSecurityService, tenantRepository, iamLogbookService,
                 groupConverter, null);
         final Tenant tenant = new Tenant();

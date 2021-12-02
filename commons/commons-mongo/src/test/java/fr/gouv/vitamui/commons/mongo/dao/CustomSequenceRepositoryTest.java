@@ -54,7 +54,7 @@ public class CustomSequenceRepositoryTest {
     public void testIncrementSequence() {
         createSequence(TEST_IDENTIFIER);
         Optional<CustomSequence> sequence = repository.incrementSequence(TEST_IDENTIFIER,
-                CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE);
+                CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE);
         assertThat(sequence.isPresent()).isTrue();
         assertThat(sequence.get().getSequence()).isEqualTo(2);
     }

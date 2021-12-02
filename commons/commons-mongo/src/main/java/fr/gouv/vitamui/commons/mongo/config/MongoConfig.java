@@ -40,6 +40,8 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 import fr.gouv.vitamui.commons.api.converter.OffsetDateTimeToStringConverter;
 import fr.gouv.vitamui.commons.api.converter.StringToOffsetDateTimeConverter;
+import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 
 /**
  * MongoDB configuration.

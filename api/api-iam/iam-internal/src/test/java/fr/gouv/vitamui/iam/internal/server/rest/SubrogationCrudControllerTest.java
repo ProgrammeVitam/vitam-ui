@@ -17,6 +17,7 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.CrudController;
 import fr.gouv.vitamui.commons.test.rest.AbstractCrudControllerTest;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -108,7 +109,8 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     @Mock
     private UserInternalService userInternalService;
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    @Mock
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private SubrogationConverter subrogationConverter;
 
@@ -120,7 +122,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     public void setup() {
         super.setup();
         subrogationConverter = new SubrogationConverter(userRepository);
-        final SubrogationInternalService service = new SubrogationInternalService(sequenceRepository, subrogationRepository, userRepository,
+        final SubrogationInternalService service = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
                 userInternalService, groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter,
                 iamLogbookService);
         service.setGenericUsersSubrogationTtl(15);

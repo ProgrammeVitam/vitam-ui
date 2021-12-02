@@ -3,6 +3,7 @@ package fr.gouv.vitamui.iam.internal.server.profile.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -15,6 +16,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import org.bson.Document;
@@ -30,8 +32,6 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
@@ -65,7 +65,7 @@ public class ProfileInternalServiceTest {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalServiceTest.class);
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
 
     private final GroupRepository groupRepository = mock(GroupRepository.class);
 
@@ -80,15 +80,13 @@ public class ProfileInternalServiceTest {
     @Before
     public void setup() throws Exception {
 
-        service = new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository, tenantRepository, userRepository,
+        service = new ProfileInternalService(sequenceGeneratorService, profileRepository, customerRepository, groupRepository, tenantRepository, userRepository,
                 internalSecurityService, iamLogbookService, profileConverter, null);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setSequence(1);
-        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
 
     @Test

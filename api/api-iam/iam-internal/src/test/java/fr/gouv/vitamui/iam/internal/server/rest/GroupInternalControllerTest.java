@@ -2,15 +2,12 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +21,7 @@ import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -68,7 +64,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
     private TenantRepository tenantRepository;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private UserRepository userRepository;
@@ -85,7 +81,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
 
         Mockito.when(groupConverter.convertDtoToEntity(ArgumentMatchers.any())).thenCallRealMethod();
         Mockito.when(groupConverter.convertEntityToDto(ArgumentMatchers.any())).thenCallRealMethod();
-        internalGroupService = new GroupInternalService(sequenceRepository, groupRepository, customerRepository, internalProfileService, userRepository,
+        internalGroupService = new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService, userRepository,
                 internalSecurityService, tenantRepository, iamLogbookService, groupConverter, null);
 
         controller = new GroupInternalController(internalGroupService);
@@ -109,10 +105,7 @@ public final class GroupInternalControllerTest extends AbstractServerIdentityBui
         tenant.setCustomerId("customerId");
         when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setId(UUID.randomUUID().toString());
-        customSequence.setSequence(1);
-        Mockito.when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
 
     @Override

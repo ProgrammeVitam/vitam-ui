@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -14,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.query.CriteriaDefinition;
 
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
@@ -55,7 +54,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     private CustomerRepository customerRepository;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private IamLogbookService iamLogbookService;
@@ -66,7 +65,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        service = new IdentityProviderInternalService(sequenceRepository, identityProviderRepository, spMetadataGenerator, customerRepository,
+        service = new IdentityProviderInternalService(sequenceGeneratorService, identityProviderRepository, spMetadataGenerator, customerRepository,
                 iamLogbookService, identityProviderConverter);
     }
 
@@ -79,10 +78,7 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         when(identityProviderRepository.findById(any())).thenReturn(Optional.of(buildIdentityProvider()));
         when(identityProviderRepository.existsById(any())).thenReturn(true);
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setId(UUID.randomUUID().toString());
-        customSequence.setSequence(1);
-        Mockito.when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        Mockito.when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
 
     @Test

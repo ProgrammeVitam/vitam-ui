@@ -50,7 +50,6 @@ import javax.validation.ValidatorFactory;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.OperationDto;
 import fr.gouv.vitamui.commons.mongo.converter.OperationConverter;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.dao.OperationRepository;
 import fr.gouv.vitamui.commons.mongo.domain.Operation;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
@@ -63,9 +62,9 @@ public class OperationService extends VitamUICrudService<OperationDto, Operation
 
     private final Converter<OperationDto, Operation> defaultConverter;
 
-    public OperationService(final CustomSequenceRepository sequenceRepository, final OperationRepository<Operation> repository,
+    public OperationService(final SequenceGeneratorService sequenceGeneratorService, final OperationRepository<Operation> repository,
             final OperationConverter defaultConverter) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.repository = repository;
         this.defaultConverter = defaultConverter;
     }

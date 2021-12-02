@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,14 +39,13 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
-import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -80,8 +78,8 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     @Mock
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private CustomSequenceRepository sequenceRepository;
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private InternalHttpContext internalHttpContext;
@@ -113,7 +111,7 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ownerService = new OwnerInternalService(sequenceRepository, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
+        ownerService = new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
                 internalSecurityService, ownerConverter, logbookService, tenantRepository);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final Tenant tenant = new Tenant();
@@ -122,12 +120,6 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
         Mockito.when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
         eventRepository.deleteAll();
-
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setName(SequencesConstants.OWNER_IDENTIFIER);
-        sequenceRepository.save(customSequence);
-
-        ownerService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
     }
 
     @Test

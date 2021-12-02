@@ -64,6 +64,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
@@ -128,7 +129,6 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
 
     /**
      * {@inheritDoc}
-     * @param <S>
      */
     @Override
     public PaginatedValuesDto<T> getPaginatedValues(final Integer page, final Integer size, final Optional<Query> query, final Optional<String> orderBy,
@@ -253,21 +253,13 @@ public class VitamUIRepositoryImpl<T extends IdDocument, ID extends Serializable
      * {@inheritDoc}
      */
     @Override
-    public Optional<CustomSequence> incrementSequence(final String nameSquence, final Number incrementValue) {
-        return updateFirst("name", nameSquence, new Update().inc("sequence", incrementValue));
-    }
+    public Optional<CustomSequence> incrementSequence(final String nameSequence, final Number incrementValue) {
+        final Query query = new Query(Criteria.where("name").is(nameSequence));
+        Update update =  new Update().inc("sequence", incrementValue);
+        FindAndModifyOptions options = FindAndModifyOptions.options().returnNew(true);
+        final CustomSequence result = mongoOperations.findAndModify(query, update, options, CustomSequence.class);
+        return Optional.ofNullable(result);
 
-    /**
-     * Update first element matching element using update function.
-     * @param nameSequence
-     * @param keyValue
-     * @param update
-     * @return
-     */
-    private Optional<CustomSequence> updateFirst(final String nameSequence, final Object keyValue, final Update update) {
-        final Query query = new Query(Criteria.where(nameSequence).is(keyValue));
-        final UpdateResult result = mongoOperations.updateFirst(query, update, CustomSequence.class);
-        return retrieveElementIfExists(query, result);
     }
 
     /**

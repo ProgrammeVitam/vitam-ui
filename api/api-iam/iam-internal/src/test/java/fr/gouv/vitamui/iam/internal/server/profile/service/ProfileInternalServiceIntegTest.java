@@ -8,12 +8,14 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.FieldUtils;
@@ -57,10 +59,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -75,6 +77,22 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     @Autowired
     private ProfileRepository repository;
 
+    @MockBean
+    private GroupRepository groupRepository;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileInternalServiceIntegTest.class);
+
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
+
+    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
+
+    @MockBean
+    private TenantRepository tenantRepository;
+
     @Autowired
     private EventRepository eventRepository;
 
@@ -83,15 +101,6 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
     @Autowired
     private ProfileConverter profileConverter;
-
-    @MockBean
-    private GroupRepository groupRepository;
-
-    @MockBean
-    private UserRepository userRepository;
-
-    @MockBean
-    private TenantRepository tenantRepository;
 
     @MockBean
     private OwnerRepository ownerRepository;
@@ -103,8 +112,6 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
 
     private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
 
-    private final CustomerRepository customerRepository = mock(CustomerRepository.class);
-
     private static final Integer TENANT_IDENTIFIER = 10;
 
     private ProfileInternalService service;
@@ -115,17 +122,14 @@ public class ProfileInternalServiceIntegTest extends AbstractLogbookIntegrationT
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        service = new ProfileInternalService(sequenceRepository, repository, customerRepository, groupRepository, tenantRepository, userRepository,
+        service = new ProfileInternalService(sequenceGeneratorService, repository, customerRepository, groupRepository, tenantRepository, userRepository,
                 internalSecurityService, iamLogbookService, profileConverter, null);
         repository.deleteAll();
 
         when(internalSecurityService.userIsRootLevel()).thenCallRealMethod();
         when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.of(new Tenant()));
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setId(UUID.randomUUID().toString());
-        customSequence.setSequence(1);
-        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
 
         FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
 
