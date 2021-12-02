@@ -43,9 +43,9 @@ import java.io.UnsupportedEncodingException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLoggerFactory;
 
-import ch.qos.logback.classic.Logger;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
+import org.slf4j.Logger;
 
 /**
  * The <code>VitamUILoggerFactory</code> is a utility class producing Loggers for VITAMUI.
@@ -74,7 +74,7 @@ public final class VitamUILoggerFactory {
         if (!VitamUILoggerFactory.initialized) {
             new VitamUILoggerFactory();
         }
-        final Logger logger = (Logger) LoggerFactory.getLogger(clazz.getName()); // NOSONAR
+        final Logger logger = LoggerFactory.getLogger(clazz.getName()); // NOSONAR
         return new VitamUILoggerImpl(logger);
     }
 

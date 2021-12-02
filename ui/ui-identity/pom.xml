@@ -128,6 +128,11 @@
             <artifactId>javax.ws.rs-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.owasp.antisamy</groupId>
+            <artifactId>antisamy</artifactId>
+        </dependency>
+
         <!--TEST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

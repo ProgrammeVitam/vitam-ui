@@ -142,8 +142,8 @@
         <xom.version>1.3.4</xom.version>
         <xdocreport.version>2.0.2</xdocreport.version>
         <xerces.version>2.12.1</xerces.version>
-        <esapi.version>2.1.0.1</esapi.version>
-        <antisamy.version>1.5.8</antisamy.version>
+        <esapi.version>2.2.3.1</esapi.version>
+        <antisamy.version>1.6.4</antisamy.version>
         <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <mongo.driver.sync.version>4.1.2</mongo.driver.sync.version>
@@ -615,6 +615,16 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-ext</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
