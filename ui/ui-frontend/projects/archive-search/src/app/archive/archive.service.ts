@@ -150,21 +150,18 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  downloadObjectFromUnit(id: string, headers?: HttpHeaders) {
-    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-      (file) => {
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(file.body);
-        element.download = 'item-' + id;
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      },
-      (errors) => {
-        console.log('Error message : ', errors);
-      }
-    );
+ launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  }
+
+  downloadFile(url: string) {
+    window.addEventListener('focus', window_focus, false);
+    function window_focus() {
+      window.removeEventListener('focus', window_focus, false);
+      URL.revokeObjectURL(url);
+      console.log('revoke ' + url);
+    }
+    location.href = url;
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders) {

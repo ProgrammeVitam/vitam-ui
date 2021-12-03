@@ -27,19 +27,16 @@
 package fr.gouv.vitamui.archives.search.external.client;
 
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 public class ArchiveSearchExternalWebClientFactory extends BaseWebClientFactory {
 
-    public ArchiveSearchExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
-        super(restClientConfiguration);
+    public ArchiveSearchExternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder) {
+        super(restClientConfiguration, webClientBuilder);
     }
 
-    public ArchiveSearchExternalWebClientFactory(final RestClientConfiguration restClientConfig,
-        final HttpPoolConfiguration httpPoolConfig) {
-        super(restClientConfig, httpPoolConfig);
-    }
 
     public ArchiveSearchExternalWebClient getArchiveSearchExternalWebClient() {
         return new ArchiveSearchExternalWebClient(getWebClient(), getBaseUrl());

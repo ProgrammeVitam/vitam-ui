@@ -28,7 +28,7 @@ package fr.gouv.vitamui.archives.search.external.server.service;
 
 
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -55,14 +56,14 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     private final ArchiveInternalRestClient archiveInternalRestClient;
 
     @Autowired
-    private final ArchiveInternalWebClient archiveInternalWebClient;
+    private final ArchiveSearchInternalWebClient archiveSearchInternalWebClient;
 
     public ArchivesSearchExternalService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
-        ArchiveInternalWebClient archiveInternalWebClient,
+        ArchiveSearchInternalWebClient archiveSearchInternalWebClient,
         final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
-        this.archiveInternalWebClient = archiveInternalWebClient;
+        this.archiveSearchInternalWebClient = archiveSearchInternalWebClient;
     }
 
     @Override
@@ -82,9 +83,10 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public VitamUISearchResponseDto getFilingHoldingScheme() {
         return archiveInternalRestClient.getFilingHoldingScheme(getInternalHttpContext());
     }
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id) {
-        return archiveInternalRestClient.downloadObjectFromUnit(id, getInternalHttpContext());
-    }
 
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id) {
+        return archiveSearchInternalWebClient
+            .downloadObjectFromUnit(id, getInternalHttpContext());
+    }
 
 }

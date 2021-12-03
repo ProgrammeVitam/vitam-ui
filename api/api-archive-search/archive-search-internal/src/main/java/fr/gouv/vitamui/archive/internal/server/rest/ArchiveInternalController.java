@@ -39,6 +39,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -52,7 +53,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,6 +63,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -136,29 +140,32 @@ public class ArchiveInternalController {
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
-    public ResultsDto findUnitById(final @PathVariable("id") String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
-        throws VitamClientException {
-        LOGGER.info("UA Details  {}", id);
-        VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return archiveInternalService.findUnitById(id,vitamContext);
-    }
-
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> downloadObjectFromUnit( final @PathVariable("id") String id,
+    public ResultsDto findUnitById(final @PathVariable("id") String id,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId)
         throws VitamClientException {
+        LOGGER.info("UA Details  {}", id);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.findUnitById(id, vitamContext);
+    }
 
-        ResponseEntity<Resource> result = null;
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId) {
 
         LOGGER.info("Access Contract {} ", accessContractId);
-        LOGGER.info("Download Archive Unit Object with id  {}", id);
-       final  VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        Response response =  archiveInternalService.downloadObjectFromUnit(id, vitamContext);
-              Object entity = response.getEntity();
-              if (entity instanceof InputStream) {
-                  Resource resource = new InputStreamResource((InputStream) entity);
-                  result = new ResponseEntity<>(resource, HttpStatus.OK);
-              }
-              return result;
-}
+        ParameterChecker
+            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+        LOGGER.info("Download Archive Unit Object with id {}", id);
+        final VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return Mono.<Resource>fromCallable(() -> {
+            Response response = archiveInternalService.downloadObjectFromUnit(id, vitamContext);
+            return new InputStreamResource((InputStream) response.getEntity());
+        }).subscribeOn(Schedulers.boundedElastic())
+            .flatMap(resource -> Mono.just(ResponseEntity
+                .ok().cacheControl(CacheControl.noCache())
+                .body(resource)));
+    }
 }
