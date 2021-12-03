@@ -43,6 +43,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
@@ -70,9 +71,9 @@ public class ArchiveSearchContextConfiguration extends AbstractContextConfigurat
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
     public ArchiveSearchExternalWebClientFactory archiveSearchExternalWebClientFactory(
-        final ArchiveSearchApplicationProperties uiProperties,
-        RestTemplateBuilder restTemplateBuilder) {
-        return new ArchiveSearchExternalWebClientFactory(uiProperties.getArchiveSearchExternalClient());
+        final ArchiveSearchApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
+        return new ArchiveSearchExternalWebClientFactory(uiProperties.getArchiveSearchExternalClient(),
+            webClientBuilder);
     }
 
     @Bean

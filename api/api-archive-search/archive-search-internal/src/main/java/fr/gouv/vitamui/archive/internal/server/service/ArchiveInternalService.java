@@ -225,9 +225,11 @@ public class ArchiveInternalService {
 
         try {
             LOGGER
-                .info("Archive Unit Infos {}", unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS));
+                .info("Archive Unit Infos {}",
+                    unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS));
             String re = StringUtils
-                .chop(unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS).toString().substring(1));
+                .chop(unitService.findUnitById(id, vitamContext).toJsonNode().get(ARCHIVE_UNIT_DETAILS).toString()
+                    .substring(1));
             return objectMapper.readValue(re, ResultsDto.class);
         } catch (VitamClientException | JsonProcessingException e) {
             LOGGER.error("Can not get the archive unit {} ", e);
@@ -236,7 +238,8 @@ public class ArchiveInternalService {
     }
 
     private String getUsage(String id, VitamContext vitamContext) throws VitamClientException {
-        return unitService.findObjectMetadataById(id, vitamContext).toJsonNode().findValue(ARCHIVE_UNIT_USAGE).textValue();
+        return unitService.findObjectMetadataById(id, vitamContext).toJsonNode().findValue(ARCHIVE_UNIT_USAGE)
+            .textValue();
     }
 
     private int getVersion(String id, VitamContext vitamContext) throws VitamClientException {
@@ -246,6 +249,7 @@ public class ArchiveInternalService {
         return Integer.valueOf(result.split("_")[1]);
 
     }
+
 
     public Response downloadObjectFromUnit(String id, final VitamContext vitamContext)
         throws VitamClientException {

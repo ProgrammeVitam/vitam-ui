@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -85,9 +86,13 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ExternalHttpContext context) {
         LOGGER.info("Download the Archive Unit Object with id {}", id);
-        return archiveSearchExternalRestClient.downloadObjectFromUnit(id, context);
+
+        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
+            archiveSearchExternalWebClient
+                .downloadObjectFromUnit(id, context);
+        return resourceResponseEntityResponse;
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {

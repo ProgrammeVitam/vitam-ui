@@ -32,6 +32,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -54,6 +55,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import java.util.List;
 
 
 @Api(tags = "archives Search")
@@ -99,19 +102,29 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Find the Archive Unit Details")
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id){
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
         LOGGER.debug("Find the Archive Unit with ID {}", id);
         return archivesSearchService.findUnitById(id, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Download Object from the Archive Unit ")
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
-        LOGGER.debug("Donwload the Archive Unit Object with ID {}", id);
-        Resource body = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext()).getBody();
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+        @QueryParam("tenantId") Integer tenantId,
+        @QueryParam("contractId") String contractId) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Download the Archive Unit Object with ID {}", id);
+        ResponseEntity<Resource> responseResource =
+            archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext(tenantId, contractId))
+                .block();
+        List<String> headersValuesContentDispo = responseResource.getHeaders().get("Content-Disposition");
+        LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
+
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
-            .body(body);
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
+            .body(responseResource.getBody());
     }
 }

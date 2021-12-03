@@ -43,8 +43,6 @@ import lombok.ToString;
 
 /**
  * The RestClientConfiguration stores properties used in the RestClient
- *
- *
  */
 
 @Getter
@@ -87,4 +85,8 @@ public class RestClientConfiguration {
      * Pool size per route(host).
      */
     private int poolMaxPerRoute = 20;
+    /**
+     * Max data cached on memory in byte
+     */
+    private int maxInMemorySize = 10 * 1024 * 1024;
 }

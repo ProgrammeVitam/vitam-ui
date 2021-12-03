@@ -29,8 +29,8 @@ package fr.gouv.vitamui.archives.search.external.server.config;
 import fr.gouv.archive.internal.client.AccessContractTempInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClientFactory;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClientFactory;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -113,17 +113,17 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ArchiveInternalWebClientFactory archiveInternalWebClientFactory(
+    public ArchiveSearchInternalWebClientFactory archiveInternalWebClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder) {
-        return new ArchiveInternalWebClientFactory(
+        return new ArchiveSearchInternalWebClientFactory(
             apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
     }
 
 
     @Bean
-    public ArchiveInternalWebClient archiveInternalWebClient(
-        final ArchiveInternalWebClientFactory factory) {
+    public ArchiveSearchInternalWebClient archiveInternalWebClient(
+        final ArchiveSearchInternalWebClientFactory factory) {
         return factory.getArchiveInternalWebClient();
     }
 

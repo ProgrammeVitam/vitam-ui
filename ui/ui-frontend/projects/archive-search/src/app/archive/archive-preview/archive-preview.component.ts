@@ -20,13 +20,13 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   isPopup: boolean;
 
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
 
   constructor(private archiveService: ArchiveService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
   }
 
@@ -49,11 +49,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.accessContract);
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], headers);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
   }
-
   emitClose() {
     this.previewClose.emit();
   }
