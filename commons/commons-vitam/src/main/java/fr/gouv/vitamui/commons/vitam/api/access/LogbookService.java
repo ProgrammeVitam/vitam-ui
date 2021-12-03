@@ -77,7 +77,7 @@ public class LogbookService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookService.class);
 
     private static final String INGEST_TYPE = "INGEST";
-
+    private static final String MASTER_DATA = "MASTERDATA";
     private final AccessExternalClient accessExternalClient;
 
     private final IngestExternalClient ingestExternalClient;
@@ -212,8 +212,9 @@ public class LogbookService {
             if (operation == null || operation.getResults() == null || operation.getResults().size() == 0) {
                 throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation does not exist");
             }
-            if (!INGEST_TYPE.equals(operation.getResults().get(0).getEvTypeProc())) {
-                throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation is not an ingest one");
+            if (!INGEST_TYPE.equals(operation.getResults().get(0).getEvTypeProc()) &&
+                !MASTER_DATA.equals(operation.getResults().get(0).getEvTypeProc())) {
+                throw new IllegalArgumentException("Unable to download object of operation " + id + ": the operation is not an ingest or master data one");
             }
 
             final Response response = ingestExternalClient.downloadObjectAsync(vitamContext, id, collection);
