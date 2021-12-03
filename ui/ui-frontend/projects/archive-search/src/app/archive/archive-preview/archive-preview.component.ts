@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ArchiveService } from '../archive.service';
 import { Unit } from '../models/unit.interface';
 
@@ -9,7 +9,7 @@ import { Unit } from '../models/unit.interface';
   templateUrl: './archive-preview.component.html',
   styleUrls: ['./archive-preview.component.scss'],
 })
-export class ArchivePreviewComponent implements OnInit, OnChanges, OnDestroy {
+export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   archiveUnit: Unit;
   @Input()
@@ -19,7 +19,6 @@ export class ArchivePreviewComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   isPopup: boolean;
 
-  subscriptionDownloadProgress: Subscription;
   tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
@@ -54,10 +53,5 @@ export class ArchivePreviewComponent implements OnInit, OnChanges, OnDestroy {
 
   showArchiveUniteFullPath() {
     this.fullPath = true;
-  }
-
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
-    this.subscriptionDownloadProgress.unsubscribe();
   }
 }
