@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Unit } from '../models/unit.interface';
-import { HttpHeaders } from '@angular/common/http';
 import { ArchiveService } from '../archive.service';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -20,13 +19,13 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   isPopup: boolean;
 
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
 
   constructor(private archiveService: ArchiveService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
   }
 
