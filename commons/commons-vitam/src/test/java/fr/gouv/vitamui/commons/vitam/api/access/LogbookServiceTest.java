@@ -32,6 +32,14 @@ import static org.mockito.Mockito.spy;
 @RunWith(MockitoJUnitRunner.class)
 public class LogbookServiceTest {
 
+    public static final String MASTER_DATA = "MASTERDATA";
+
+    public static final String INGEST = "INGEST";
+
+    public static final String DIP_EXPORT = "DIP_EXPORT";
+
+    public static final String OTHER = "OTHER";
+
     private LogbookService logbookService;
 
     private AccessExternalClient accessExternalClient;
@@ -54,7 +62,7 @@ public class LogbookServiceTest {
     public void testDownloadManifest_whenIngestOperation() throws VitamClientException {
         logbookService = spy(logbookService);
         final LogbookOperation operation = new LogbookOperation();
-        operation.setEvTypeProc("INGEST");
+        operation.setEvTypeProc(INGEST);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
         Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
@@ -67,7 +75,7 @@ public class LogbookServiceTest {
     public void testDownloadAtr_whenIngestOperation() throws VitamClientException {
         logbookService = spy(logbookService);
         final LogbookOperation operation = new LogbookOperation();
-        operation.setEvTypeProc("INGEST");
+        operation.setEvTypeProc(INGEST);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
         Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
@@ -80,7 +88,7 @@ public class LogbookServiceTest {
     public void testDownloadAtr_whenNotIngestOperation() throws VitamClientException {
         logbookService = spy(logbookService);
         final LogbookOperation operation = new LogbookOperation();
-        operation.setEvTypeProc("OTHER");
+        operation.setEvTypeProc(OTHER);
         final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
         operationResponse.addResult(operation);
         Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
@@ -109,13 +117,26 @@ public class LogbookServiceTest {
     public void testDownloadDip_whenExportIsSuccess() throws Exception {
         logbookService = spy(logbookService);
         final LogbookOperation operation = new LogbookOperation();
-        operation.setEvTypeProc("DIP_EXPORT");
+        operation.setEvTypeProc(DIP_EXPORT);
 
         final Response response = logbookService.downloadReport("aeeaaaaaaggtywctaanl4al3q2moiyyaaaaq", "dip", new VitamContext(10));
         VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
 
         String reportContent = IOUtils.toString(response.readEntity(ByteArrayInputStream.class), StandardCharsets.UTF_8);
         Assertions.assertThat(reportContent).isEqualTo("test");
+    }
+
+    @Test
+    public void testDownloadAtr_whenMasterDataOperation() throws VitamClientException {
+        logbookService = spy(logbookService);
+        final LogbookOperation operation = new LogbookOperation();
+        operation.setEvTypeProc(MASTER_DATA);
+        final RequestResponseOK<LogbookOperation> operationResponse = new RequestResponseOK<>();
+        operationResponse.addResult(operation);
+        Mockito.when(logbookService.selectOperationbyId(ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(operationResponse);
+
+        final Response response = logbookService.downloadAtr("vitamId", new VitamContext(10));
+        VitamRestUtils.checkResponse(response, Response.Status.OK.getStatusCode());
     }
 
 }
