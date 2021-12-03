@@ -138,14 +138,6 @@ public class ArchiveSearchExternalRestClient
 
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, String usage, Integer version, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" + version);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
-    }
-
-
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(SearchCriteriaDto query,
         ExternalHttpContext context) {
         LOGGER.debug("Calling export to csv search archives units by criteria");

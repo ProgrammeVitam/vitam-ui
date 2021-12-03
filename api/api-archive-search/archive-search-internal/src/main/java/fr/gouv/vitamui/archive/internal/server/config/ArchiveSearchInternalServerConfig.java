@@ -109,6 +109,8 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
         final SearchCriteriaHistoryRepository searchCriteriaHistoryRepository,
         final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter,
         final InternalSecurityService internalSecurityService) {
-        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository, searchCriteriaHistoryConverter, internalSecurityService);
+        return new SearchCriteriaHistoryInternalService(sequenceRepository, searchCriteriaHistoryRepository,
+            searchCriteriaHistoryConverter, internalSecurityService);
     }
+
 }

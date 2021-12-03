@@ -45,10 +45,7 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', this.accessContract);
-
-    return this.archiveService.downloadObjectFromUnit(archiveUnit['#id'], archiveUnit?.Title, archiveUnit?.Title_, headers);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
   }
 
   emitClose() {
