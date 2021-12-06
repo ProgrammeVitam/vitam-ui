@@ -8,8 +8,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import org.apereo.cas.authentication.principal.DefaultPrincipalFactory;
 import org.apereo.cas.authentication.principal.Principal;
@@ -27,8 +25,6 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
-import lombok.val;
-
 import lombok.val;
 
 /**
@@ -90,11 +86,8 @@ public final class IamSurrogateAuthenticationServiceTest {
     }
 
     private Principal principal() {
-        val attributes = new HashMap<String, List<Object>>();
-        attributes.put(UserPrincipalResolver.SUPER_USER_ID_ATTRIBUTE, Arrays.asList(SU_ID));
-
         val factory = new DefaultPrincipalFactory();
-        return factory.createPrincipal("x", attributes);
+        return factory.createPrincipal(SU_ID);
     }
 
     private SubrogationDto surrogation() {

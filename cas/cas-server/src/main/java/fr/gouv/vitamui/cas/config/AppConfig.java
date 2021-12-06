@@ -83,14 +83,12 @@ import org.apereo.cas.ticket.accesstoken.OAuth20DefaultAccessToken;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.token.JwtBuilder;
 import org.apereo.cas.util.crypto.CipherExecutor;
-import org.apereo.cas.web.CasYamlHttpMessageConverter;
 import org.pac4j.core.client.Clients;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -196,10 +194,6 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     private PasswordHistoryService passwordHistoryService;
 
     @Autowired
-    @Qualifier("builtClients")
-    private Clients builtClients;
-
-    @Autowired
     private PasswordConfiguration passwordConfiguration;
 
     @Value("${token.api.cas}")
@@ -279,9 +273,15 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         return iamRestClientFactory().getIdentityProviderExternalRestClient();
     }
 
+    @RefreshScope
+    @Bean
+    public Clients builtClients() {
+        return new Clients(casProperties.getServer().getLoginUrl());
+    }
+
     @Bean
     public ProvidersService providersService() {
-        return new ProvidersService(builtClients, identityProviderCrudRestClient(), saml2ClientBuilder(), utils());
+        return new ProvidersService(builtClients(), identityProviderCrudRestClient(), saml2ClientBuilder(), utils());
     }
 
     @Bean

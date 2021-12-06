@@ -43,6 +43,7 @@ import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
+import org.apereo.cas.authentication.SurrogatePrincipal;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.ClientCredential;
@@ -221,9 +222,10 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
+        UserDto superUser = null;
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
-            final UserDto superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
@@ -241,7 +243,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
             attributes.put(ROLES_ATTRIBUTE, new ArrayList(roles));
         }
-        return principalFactory.createPrincipal(user.getId(), attributes);
+        val createdPrincipal = principalFactory.createPrincipal(user.getId(), attributes);
+        if (surrogationCall) {
+            val createdSuperPrincipal = principalFactory.createPrincipal(superUser.getId());
+            return new SurrogatePrincipal(createdSuperPrincipal, createdPrincipal);
+        } else {
+            return createdPrincipal;
+        }
     }
 
     @Override
