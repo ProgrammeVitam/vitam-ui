@@ -74,7 +74,7 @@ public class IamSurrogateAuthenticationService extends BaseSurrogateAuthenticati
 
     @Override
     public boolean canAuthenticateAsInternal(String surrogate, Principal principal, Optional<Service> service) {
-        val id = (String) principal.getAttributes().get(UserPrincipalResolver.SUPER_USER_ID_ATTRIBUTE).get(0);
+        val id = principal.getId();
         boolean canAuthenticate = false;
         try {
             val subrogations = casExternalRestClient.getSubrogationsBySuperUserId(utils.buildContext(id), id);

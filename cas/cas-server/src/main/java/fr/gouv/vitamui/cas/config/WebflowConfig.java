@@ -297,4 +297,10 @@ public class WebflowConfig {
     public Action delegatedAuthenticationClientLogoutAction() {
         return new ConsumerExecutionAction(ctx -> {});
     }
+
+    @Bean
+    @RefreshScope
+    public Action delegatedAuthenticationClientFinishLogoutAction() {
+        return new ConsumerExecutionAction(ctx -> {});
+    }
 }
