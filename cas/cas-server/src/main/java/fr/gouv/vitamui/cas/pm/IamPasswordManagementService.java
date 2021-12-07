@@ -126,8 +126,10 @@ public class IamPasswordManagementService extends BasePasswordManagementService 
         val requestContext = RequestContextHolder.getRequestContext();
         val authentication = WebUtils.getAuthentication(requestContext);
         if (authentication != null) {
+            // login/pwd subrogation
             String superUsername = (String) utils.getAttributeValue(authentication.getAttributes(), SurrogateAuthenticationService.AUTHENTICATION_ATTR_SURROGATE_PRINCIPAL);
             if (superUsername == null) {
+                // authn delegation subrogation
                 superUsername = (String) utils.getAttributeValue(authentication.getPrincipal().getAttributes(), SUPER_USER_ATTRIBUTE);
             }
             LOGGER.debug("is it currently a superUser: {}", superUsername);

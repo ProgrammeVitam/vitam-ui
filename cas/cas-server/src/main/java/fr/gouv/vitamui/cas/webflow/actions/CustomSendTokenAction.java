@@ -127,7 +127,7 @@ public class CustomSendTokenAction extends AbstractMultifactorAuthenticationActi
     protected Event doExecute(final RequestContext requestContext) {
         val authentication = WebUtils.getInProgressAuthentication();
         val principal = resolvePrincipal(authentication.getPrincipal());
-        val token = getOrCreateToken(requestContext, principal);
+        val token = createToken(requestContext, principal);
         LOGGER.debug("Using token [{}] created at [{}]", token.getId(), token.getCreationTime());
 
         // CUSTO: check for a principal attribute and redirect to a custom page when missing
@@ -170,16 +170,12 @@ public class CustomSendTokenAction extends AbstractMultifactorAuthenticationActi
         return m;
     }
 
-    private CasSimpleMultifactorAuthenticationTicket getOrCreateToken(final RequestContext requestContext, final Principal principal) {
-        return Optional.ofNullable(WebUtils.getSimpleMultifactorAuthenticationToken(requestContext, CasSimpleMultifactorAuthenticationTicket.class))
-            .filter(token -> !token.isExpired())
-            .orElseGet(() -> {
-                WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
-                val service = WebUtils.getService(requestContext);
-                val token = ticketFactory.create(service,
-                    CollectionUtils.wrap(CasSimpleMultifactorAuthenticationConstants.PROPERTY_PRINCIPAL, principal));
-                LOGGER.debug("Created multifactor authentication token [{}] for service [{}]", token.getId(), service);
-                return token;
-            });
+    private CasSimpleMultifactorAuthenticationTicket createToken(final RequestContext requestContext, final Principal principal) {
+        WebUtils.removeSimpleMultifactorAuthenticationToken(requestContext);
+        val service = WebUtils.getService(requestContext);
+        val token = ticketFactory.create(service,
+            CollectionUtils.wrap(CasSimpleMultifactorAuthenticationConstants.PROPERTY_PRINCIPAL, principal));
+        LOGGER.debug("Created multifactor authentication token [{}] for service [{}]", token.getId(), service);
+        return token;
     }
 }
