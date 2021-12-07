@@ -11,8 +11,8 @@ import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.dao.EventRepository;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -96,8 +96,8 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
 
     private UserInternalService internalUserService;
 
-    @Autowired
-    private CustomSequenceRepository sequenceRepository;
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
     private UserRepository userRepository;
@@ -162,7 +162,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         subrogationRepository = mock(SubrogationRepository.class);
         addressService = mock(AddressService.class);
 
-        internalUserService = new UserInternalService(sequenceRepository, userRepository, groupInternalService, internalProfileService,
+        internalUserService = new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, internalProfileService,
                 mock(UserEmailInternalService.class), tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
                 iamLogbookService, userConverter, null, null, addressService, applicationInternalService, null);
 
@@ -178,10 +178,7 @@ public final class UserInternalServiceIntegTest extends AbstractLogbookIntegrati
         tenant.setIdentifier(10);
         Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setName(SequencesConstants.USER_IDENTIFIER);
-        sequenceRepository.save(customSequence);
-
+        // retrieve sequences
         internalUserService.getNextSequenceId(SequencesConstants.USER_IDENTIFIER);
     }
 

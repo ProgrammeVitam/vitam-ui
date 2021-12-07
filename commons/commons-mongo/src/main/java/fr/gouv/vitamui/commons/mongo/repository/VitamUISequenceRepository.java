@@ -57,6 +57,7 @@ public interface VitamUISequenceRepository<T extends IdDocument, ID extends Seri
 
     /**
      * Search customSequence by key and increment a property with a number.
+     * Use findAndModify mongo db atomic operator
      * @param seqName must not be {@literal null}.
      * @param incrementValue must not be {@literal null}.
      * @return Collection Item modified.

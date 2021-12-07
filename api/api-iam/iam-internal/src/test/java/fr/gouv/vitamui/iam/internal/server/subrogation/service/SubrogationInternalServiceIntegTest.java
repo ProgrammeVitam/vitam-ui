@@ -24,8 +24,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -50,7 +50,6 @@ import fr.gouv.vitamui.iam.internal.server.user.service.UserInternalService;
 
 /**
  * Class for test InternalProfileService with a real repository
- *
  */
 
 @RunWith(SpringRunner.class)
@@ -71,7 +70,8 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SubrogationInternalServiceIntegTest.class);
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private final CustomerRepository customerRepository = mock(CustomerRepository.class);
 
@@ -105,14 +105,13 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
     public void setup() {
         MockitoAnnotations.initMocks(this);
 
-        service = new SubrogationInternalService(sequenceRepository, repository, userRepository, userInternalService,
+        service = new SubrogationInternalService(sequenceGeneratorService, repository, userRepository, userInternalService,
                 groupInternalService, groupRepository, profilRepository, internalSecurityService, customerRepository,
                 subrogationConverter, iamLogbookService);
 
         Tenant tenant = new Tenant();
         tenant.setIdentifier(10);
-        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class)))
-                .thenReturn(Optional.ofNullable(tenant));
+        Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
         Mockito.when(internalSecurityService.getHttpContext()).thenReturn(internalHttpContext);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
@@ -136,8 +135,8 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
-        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq")
-                .is(MongoDbCollections.SUBROGATIONS).and("evType").is(EventType.EXT_VITAMUI_DECLINE_SURROGATE);
+        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
+                .is(EventType.EXT_VITAMUI_DECLINE_SURROGATE);
         final Optional<Event> evSubroDeclined = eventRepository.findOne(Query.query(subroCriteriaCreation));
         assertThat(evSubroDeclined).isPresent();
     }
@@ -156,8 +155,8 @@ public class SubrogationInternalServiceIntegTest extends AbstractLogbookIntegrat
         Mockito.when(internalSecurityService.getUser()).thenReturn(currentUser);
         service.decline(subro.getId());
 
-        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq")
-                .is(MongoDbCollections.SUBROGATIONS).and("evType").is(EventType.EXT_VITAMUI_STOP_SURROGATE);
+        final Criteria subroCriteriaCreation = Criteria.where("obId").is("" + subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
+                .is(EventType.EXT_VITAMUI_STOP_SURROGATE);
         final Optional<Event> evSubroDeclined = eventRepository.findOne(Query.query(subroCriteriaCreation));
         assertThat(evSubroDeclined).isPresent();
 

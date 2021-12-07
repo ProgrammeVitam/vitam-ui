@@ -6,8 +6,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
@@ -75,7 +74,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     private CustomerRepository customerRepository;
 
     @Mock
-    protected CustomSequenceRepository customSequenceRepository;
+    protected SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private OwnerRepository ownerRepository;
@@ -152,8 +151,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
 
         when(internalCustomerService.getMany(tenantDto.getCustomerId())).thenReturn(Arrays.asList(new CustomerDto()));
 
-        when(customSequenceRepository.incrementSequence(anyString(), anyInt()))
-            .thenReturn(Optional.of(new CustomSequence()));
+        when(sequenceGeneratorService.getNextSequenceId(anyString(), anyInt())).thenReturn(1);
 
         when(internalProfileService.create(any())).thenReturn(profileDto);
         when(internalProfileService.internalConvertFromEntityToDto(any())).thenReturn(profileDto);

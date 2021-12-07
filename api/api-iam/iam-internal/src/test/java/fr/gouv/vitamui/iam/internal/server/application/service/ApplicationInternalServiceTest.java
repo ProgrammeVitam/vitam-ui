@@ -2,6 +2,7 @@ package fr.gouv.vitamui.iam.internal.server.application.service;
 
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,8 +26,7 @@ import fr.gouv.vitamui.commons.api.domain.TenantInformationDto;
 import fr.gouv.vitamui.commons.api.exception.UnAuthorizedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
@@ -46,20 +46,17 @@ public class ApplicationInternalServiceTest {
 
     private final ApplicationRepository applicationRepository = mock(ApplicationRepository.class);
 
-    private final CustomSequenceRepository sequenceRepository = mock(CustomSequenceRepository.class);
-
+    private final SequenceGeneratorService sequenceGeneratorService = mock(SequenceGeneratorService.class);
 
     private final InternalSecurityService internalSecurityService = mock(InternalSecurityService.class);
 
     @Before
     public void setup() {
-        applicationService = new ApplicationInternalService(sequenceRepository, applicationRepository, applicationConverter, internalSecurityService);
+        applicationService = new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter, internalSecurityService);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
 
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setSequence(1);
-        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
     }
 
     @Test

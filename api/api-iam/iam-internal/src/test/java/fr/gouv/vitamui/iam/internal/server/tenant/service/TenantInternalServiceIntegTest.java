@@ -9,6 +9,7 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -160,17 +161,17 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
     @Before
     public void setup() {
         internalGroupService =
-            new GroupInternalService(sequenceRepository, groupRepository, customerRepository, internalProfileService,
+            new GroupInternalService(new SequenceGeneratorService(sequenceRepository), groupRepository, customerRepository, internalProfileService,
                 userRepository,
                 internalSecurityService, repository, iamLogbookService, groupConverter, null);
 
         internalProfileService =
-            new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository,
-                repository,
-                userRepository, internalSecurityService, iamLogbookService, profileConverter, null);
+            new ProfileInternalService(new SequenceGeneratorService(sequenceRepository), profileRepository, customerRepository, groupRepository,
+                repository,userRepository,
+                        internalSecurityService, iamLogbookService, profileConverter, null);
 
         repository.deleteAll();
-        service = new TenantInternalService(sequenceRepository, repository, customerRepository, ownerRepository,
+        service = new TenantInternalService(new SequenceGeneratorService(sequenceRepository), repository, customerRepository, ownerRepository,
             groupRepository, profileRepository,
             userRepository, internalGroupService, internalUserService, internalOwnerService, internalProfileService,
             internalSecurityService,
@@ -312,8 +313,8 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         assertThat(evTenantUpdate).isPresent();
         assertThat(evTenantUpdate.get().getEvDetData())
             .isEqualTo("{\"diff\":{\"-Nom\":\"tenantName\"," + "\"+Nom\":\"" + NEW_NAME + "\"," +
-                "\"-Identifiant du propriétaire\":\"identifier_ownerId\","
-                + "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," +
+                "\"-Identifiant du propriétaire\":\"identifier_ownerId\","+
+                 "\"+Identifiant du propriétaire\":\"identifier_" + NEW_OWNER_ID + "\"," + "\"-Activé\":\"true\"," +
                 "\"+Activé\":\"false\"" + "}}");
     }
 
@@ -323,4 +324,5 @@ public class TenantInternalServiceIntegTest extends AbstractLogbookIntegrationTe
         externalParameters.setName("identifierdefault_ac_customerId");
         return externalParameters;
     }
+
 }

@@ -40,8 +40,5 @@ public final class CustomSequencesConstants {
 
     // ---------------------------- COMMONS ------------------------------
 
-    public static final Number SEQUENCE_INCREMENT_VALUE = 1;
-
-    public static final int DEFAULT_SEQUENCE_START_VALUE = 100;
-
+    public static final int DEFAULT_SEQUENCE_INCREMENT_VALUE = 1;
 }

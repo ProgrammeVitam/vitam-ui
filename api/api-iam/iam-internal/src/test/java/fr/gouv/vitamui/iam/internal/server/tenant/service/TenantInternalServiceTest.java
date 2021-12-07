@@ -6,8 +6,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
@@ -82,7 +81,7 @@ public class TenantInternalServiceTest {
     private ProfileInternalService internalProfileService;
 
     @Mock
-    private CustomSequenceRepository customSequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private InternalSecurityService internalSecurityService;
@@ -139,8 +138,7 @@ public class TenantInternalServiceTest {
             .thenReturn(Optional.of(proofTenant));
         when(tenantRepository.generateSuperId()).thenReturn(tenantDto.getId());
         when(tenantRepository.save(any())).thenReturn(buildTenant());
-        when(customSequenceRepository.incrementSequence(anyString(), anyInt()))
-            .thenReturn(Optional.of(new CustomSequence()));
+        when(sequenceGeneratorService.getNextSequenceId(anyString(), anyInt())).thenReturn(1);
 
         when(internalProfileService.create(any())).thenReturn(profileDto);
         when(internalProfileService.internalConvertFromEntityToDto(any())).thenReturn(profileDto);

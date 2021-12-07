@@ -41,6 +41,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +56,6 @@ import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
@@ -88,10 +89,10 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
     private final IdentityProviderConverter idpConverter;
 
     @Autowired
-    public IdentityProviderInternalService(final CustomSequenceRepository sequenceRepository, final IdentityProviderRepository identityProviderRepository,
+    public IdentityProviderInternalService(final SequenceGeneratorService sequenceGeneratorService, final IdentityProviderRepository identityProviderRepository,
             final SpMetadataGenerator spMetadataGenerator, final CustomerRepository customerRepository, final IamLogbookService iamLogbookService,
             final IdentityProviderConverter idpConverter) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.identityProviderRepository = identityProviderRepository;
         this.spMetadataGenerator = spMetadataGenerator;
         this.customerRepository = customerRepository;

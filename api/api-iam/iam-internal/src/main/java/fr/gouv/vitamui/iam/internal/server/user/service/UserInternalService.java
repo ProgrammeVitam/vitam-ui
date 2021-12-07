@@ -56,7 +56,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -171,14 +171,14 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UserInternalService.class);
 
     @Autowired
-    public UserInternalService(final CustomSequenceRepository sequenceRepository, final UserRepository userRepository,
+    public UserInternalService(final SequenceGeneratorService sequenceGeneratorService, final UserRepository userRepository,
             final GroupInternalService groupInternalService, final ProfileInternalService profileInternalService,
             final UserEmailInternalService userEmailInternalService, final TenantRepository tenantRepository,
             final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository, final ProfileRepository profilRepository,
             final GroupRepository groupRepository, final IamLogbookService iamLogbookService, final UserConverter userConverter,
             final MongoTransactionManager mongoTransactionManager, final LogbookService logbookService, final AddressService addressService,
             ApplicationInternalService applicationInternalService, final PasswordConfiguration passwordConfiguration) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.userRepository = userRepository;
         this.groupInternalService = groupInternalService;
         this.profileInternalService = profileInternalService;

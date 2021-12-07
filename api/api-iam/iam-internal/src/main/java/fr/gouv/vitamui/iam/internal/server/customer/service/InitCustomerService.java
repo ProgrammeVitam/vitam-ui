@@ -49,6 +49,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
@@ -98,7 +99,6 @@ import java.util.stream.Collectors;
 @Setter
 public class InitCustomerService {
 
-
     @Autowired
     private CustomerRepository customerRepository;
 
@@ -136,7 +136,7 @@ public class InitCustomerService {
     private GroupInternalService internalGroupService;
 
     @Autowired
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
     private IamLogbookService iamLogbookService;
@@ -268,7 +268,7 @@ public class InitCustomerService {
         tenant.setOwnerId(ownerId);
         tenant.setEnabled(true);
         tenant.setReadonly(false);
-        tenant.setIdentifier(internalTenantService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, 100));
+        tenant.setIdentifier(internalTenantService.getNextSequenceId(SequencesConstants.TENANT_IDENTIFIER, CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE));
         Tenant createdTenant = initVitamTenantService.init(tenant, fullAccessContractDto);
         externalParametersInternalService.create(fullAccessContractDto);
         return saveTenant(createdTenant);
@@ -469,10 +469,6 @@ public class InitCustomerService {
     }
 
     protected String generateIdentifier(final String sequenceName) {
-        final Optional<CustomSequence> customSequence =
-            sequenceRepository.incrementSequence(sequenceName, CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE);
-        customSequence
-            .orElseThrow(() -> new InternalServerException("Sequence with name : " + sequenceName + " didn't exist"));
-        return String.valueOf(customSequence.get().getSequence());
+        return String.valueOf(sequenceGeneratorService.getNextSequenceId(sequenceName, CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE));
     }
 }
