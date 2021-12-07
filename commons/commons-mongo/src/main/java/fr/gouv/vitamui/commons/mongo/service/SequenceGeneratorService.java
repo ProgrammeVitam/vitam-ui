@@ -38,6 +38,9 @@ package fr.gouv.vitamui.commons.mongo.service;
 
 import java.util.Optional;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -60,12 +63,13 @@ public class SequenceGeneratorService {
      * Method allowing to generate the next value of the sequence, according to the value in the mongo repository.<br/>
      * If the sequence does not exist, it will be created with the default value.
      * @param seqName Name of the sequence.
-     * @param defaultValue
+     * @param incrementValue value of the increment
      * @return
      */
-    public synchronized Integer getNextSequenceId(final String seqName, final int defaultValue) {
-        final Optional<CustomSequence> customSequence = sequenceRepository.incrementSequence(seqName, CustomSequencesConstants.SEQUENCE_INCREMENT_VALUE);
-        if (!customSequence.isPresent()) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public Integer getNextSequenceId(final String seqName, final int incrementValue) {
+        final Optional<CustomSequence> customSequence = sequenceRepository.incrementSequence(seqName, incrementValue);
+        if (customSequence.isEmpty()) {
             throw new InternalServerException("Database Sequence undefined for " + seqName);
         }
         return customSequence.get().getSequence();

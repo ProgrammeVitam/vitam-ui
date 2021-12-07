@@ -44,6 +44,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
 import fr.gouv.vitamui.security.server.certificate.service.CertificateCrudService;
@@ -57,19 +58,24 @@ import fr.gouv.vitamui.security.server.context.service.ContextService;
 public class ApiSecurityServerConfig extends AbstractContextConfiguration {
 
     @Bean
+    public SequenceGeneratorService sequenceGeneratorService(final CustomSequenceRepository customSequenceRepository) {
+        return new SequenceGeneratorService(customSequenceRepository);
+    }
+
+    @Bean
     public CertificateCrudService certificateCrudService(
-            final CustomSequenceRepository sequenceRepository,
+        final SequenceGeneratorService sequenceGeneratorService,
             final CertificateRepository certificateRepository,
             final ContextService contextCrudService) {
-        return new CertificateCrudService(sequenceRepository, certificateRepository, contextCrudService);
+        return new CertificateCrudService(sequenceGeneratorService, certificateRepository, contextCrudService);
     }
 
     @Bean
     public ContextService contextService(
-            final CustomSequenceRepository sequenceRepository,
+            final SequenceGeneratorService sequenceGeneratorService,
             final ContextRepository contextRepository,
             final CertificateRepository certificateRepository) {
-        return new ContextService(sequenceRepository, contextRepository, certificateRepository);
+        return new ContextService(sequenceGeneratorService, contextRepository, certificateRepository);
     }
 
 }

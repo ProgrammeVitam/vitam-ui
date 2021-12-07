@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import fr.gouv.vitamui.commons.api.domain.BaseIdDocument;
@@ -70,6 +72,7 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
      * Constructor allowing to initialize a default sequence generator.
      * @param sequenceRepository Repository allowing to manage sequences.
      */
+    @Deprecated
     public VitamUICrudService(final CustomSequenceRepository sequenceRepository) {
         sequenceGeneratorService = new SequenceGeneratorService(sequenceRepository);
     }
@@ -191,24 +194,23 @@ public abstract class VitamUICrudService<D extends IdDto, E extends BaseIdDocume
 
     /**
      * Method allowing to generate the next value of the sequence.
-     * If the sequence does not exist, it will be created with the default value
-     * <code>CustomSequencesConstants.DEFAULT_SEQUENCE_START_VALUE</code>.
+     * If the sequence does not exist, it will throw an exception
      * @param seqName The name of the sequence.
      * @return The next value of the sequence.
      */
     public String getNextSequenceId(final String seqName) {
-        return getNextSequenceId(seqName, CustomSequencesConstants.DEFAULT_SEQUENCE_START_VALUE).toString();
+        return getNextSequenceId(seqName, CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE).toString();
     }
 
     /**
      * Method allowing to generate the next value of the sequence.
-     * If the sequence does not exist, it will be created with the given default value.
+     * If the sequence does not exist, it will throw an exception
      * @param seqName The name of the sequence.
-     * @param defaultValue Default value of the sequence.
+     * @param incrementValue Increment value of the sequence.
      * @return The next value of the sequence.
      */
-    public Integer getNextSequenceId(final String seqName, final int defaultValue) {
-        return sequenceGeneratorService.getNextSequenceId(seqName, defaultValue);
+    public Integer getNextSequenceId(final String seqName, final int incrementValue) {
+        return sequenceGeneratorService.getNextSequenceId(seqName, incrementValue);
     }
 
     /**

@@ -1,5 +1,29 @@
 package fr.gouv.vitamui.iam.internal.server.owner.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitam.common.GlobalDataRest;
@@ -12,14 +36,13 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
 import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.common.domain.MongoDbCollections;
-import fr.gouv.vitamui.iam.internal.server.common.domain.SequencesConstants;
 import fr.gouv.vitamui.iam.internal.server.common.service.AddressService;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
@@ -78,8 +101,8 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     @Mock
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private CustomSequenceRepository sequenceRepository;
+    @MockBean
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private InternalHttpContext internalHttpContext;
@@ -111,7 +134,7 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ownerService = new OwnerInternalService(sequenceRepository, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
+        ownerService = new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, new AddressService(), iamLogbookService,
                 internalSecurityService, ownerConverter, logbookService, tenantRepository);
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         final Tenant tenant = new Tenant();
@@ -120,12 +143,6 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         Mockito.when(tenantRepository.findOne(ArgumentMatchers.any(Query.class))).thenReturn(Optional.ofNullable(tenant));
         Mockito.when(tenantRepository.findByIdentifier(any())).thenReturn(tenant);
         eventRepository.deleteAll();
-
-        final CustomSequence customSequence = new CustomSequence();
-        customSequence.setName(SequencesConstants.OWNER_IDENTIFIER);
-        sequenceRepository.save(customSequence);
-
-        ownerService.getNextSequenceId(SequencesConstants.OWNER_IDENTIFIER);
     }
 
     @Test
@@ -134,7 +151,7 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         assertThat(owner.getCode()).isNotBlank();
 
         final Criteria criteria = Criteria.where("obId").is(owner.getIdentifier()).and("obIdReq").is(MongoDbCollections.OWNERS).and("evType")
-                .is(EventType.EXT_VITAMUI_CREATE_OWNER);;
+                .is(EventType.EXT_VITAMUI_CREATE_OWNER);
         final Optional<Event> ev = eventRepository.findOne(Query.query(criteria));
         assertThat(ev).isPresent();
     }
@@ -232,4 +249,5 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
     private OwnerDto buildOwnerDto() {
         return IamServerUtilsTest.buildOwnerDto();
     }
+
 }

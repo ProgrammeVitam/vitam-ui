@@ -20,13 +20,13 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
   isPopup: boolean;
 
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
   fullPath = false;
 
   constructor(private archiveService: ArchiveService, private route: ActivatedRoute) {
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
   }
 

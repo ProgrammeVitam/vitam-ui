@@ -42,10 +42,8 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.logbook.service.EventService;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +60,8 @@ import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.logbook.common.EventType;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.repository.VitamUIRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
@@ -125,11 +123,11 @@ public class SubrogationInternalService extends VitamUICrudService<SubrogationDt
     private Integer genericUsersSubrogationTtl;
 
     @Autowired
-    public SubrogationInternalService(final CustomSequenceRepository sequenceRepository, final SubrogationRepository subrogationRepository,
+    public SubrogationInternalService(final SequenceGeneratorService sequenceGeneratorService, final SubrogationRepository subrogationRepository,
             final UserRepository userRepository, final UserInternalService userInternalService, final GroupInternalService groupInternalService,
             final GroupRepository groupRepository, final ProfileRepository profilRepository, final InternalSecurityService internalSecurityService,
             final CustomerRepository customerRepository, final SubrogationConverter subrogationConverter, final IamLogbookService iamLogbookService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.subrogationRepository = subrogationRepository;
         this.userRepository = userRepository;
         this.userInternalService = userInternalService;

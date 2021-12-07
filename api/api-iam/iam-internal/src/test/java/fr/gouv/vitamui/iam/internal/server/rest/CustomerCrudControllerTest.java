@@ -8,8 +8,7 @@ import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -69,6 +68,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -134,7 +134,7 @@ public final class CustomerCrudControllerTest {
     private AddressService addressService;
 
     @Mock
-    private CustomSequenceRepository customSequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private IamLogbookService iamLogbookService;
@@ -147,8 +147,6 @@ public final class CustomerCrudControllerTest {
 
     @Mock
     private CustomerInitConfig customerInitConfig;
-
-
 
     @Mock
     private ExternalParametersInternalService externalParametersInternalService;
@@ -167,14 +165,12 @@ public final class CustomerCrudControllerTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
+        internalCustomerService = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService, userInternalService,
+                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+        controller = new CustomerInternalController(internalCustomerService);
         initCustomerService.setOwnerConverter(ownerConverter);
         initCustomerService.setIdpConverter(identityProviderConverter);
         initCustomerService.setExternalParametersInternalService(externalParametersInternalService);
-        internalCustomerService =
-            new CustomerInternalService(customSequenceRepository, customerRepository, internalOwnerService,
-                userInternalService,
-                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter,
-                logbookService);
         controller = new CustomerInternalController(internalCustomerService);
         Mockito.when(ownerRepository.generateSuperId()).thenReturn(UUID.randomUUID().toString());
         Mockito.when(ownerRepository.save(ArgumentMatchers.any(Owner.class)))
@@ -189,7 +185,7 @@ public final class CustomerCrudControllerTest {
     protected void prepareServices() {
         final CustomerDto customerDto = buildCustomerDto();
 
-        when(customSequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(new CustomSequence()));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
         when(customerRepository.save(any())).thenReturn(buildCustomer());
         when(customerRepository.exists(any(Query.class))).thenReturn(true);
         when(customerRepository.existsById(any())).thenReturn(true);

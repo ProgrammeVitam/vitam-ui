@@ -33,6 +33,7 @@ import fr.gouv.vitamui.commons.logbook.domain.Event;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.repository.impl.VitamUIRepositoryImpl;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
@@ -99,7 +100,7 @@ public class GroupInternalServiceIntegrationTest extends AbstractLogbookIntegrat
 
     @Before
     public void setup() {
-        service = new GroupInternalService(sequenceRepository, repository, customerRepository, internalProfileService, userRepository, internalSecurityService,
+        service = new GroupInternalService(new SequenceGeneratorService(sequenceRepository), repository, customerRepository, internalProfileService, userRepository, internalSecurityService,
                 tenantRepository, iamLogbookService, groupConverter, null);
 
         repository.deleteAll();

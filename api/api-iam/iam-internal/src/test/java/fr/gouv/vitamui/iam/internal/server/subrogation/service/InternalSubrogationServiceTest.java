@@ -20,7 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -71,7 +71,7 @@ public final class InternalSubrogationServiceTest {
     private CustomerRepository customerRepository;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private GroupInternalService groupInternalService;
@@ -88,7 +88,7 @@ public final class InternalSubrogationServiceTest {
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
         subrogationConverter = new SubrogationConverter(userRepository);
-        service = new SubrogationInternalService(sequenceRepository, subrogationRepository, userRepository, userInternalService, groupInternalService,
+        service = new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository, userInternalService, groupInternalService,
                 groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter, iamLogbookService);
         service.setGenericUsersSubrogationTtl(15);
         service.setSubrogationTtl(15);

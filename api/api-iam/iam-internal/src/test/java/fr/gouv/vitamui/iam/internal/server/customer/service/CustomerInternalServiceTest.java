@@ -1,11 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
-import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.LanguageDto;
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.api.domain.*;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -111,7 +107,7 @@ public class CustomerInternalServiceTest {
     private LogbookService logbookService;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private CustomerInternalService internalCustomerService;
 
@@ -123,8 +119,8 @@ public class CustomerInternalServiceTest {
         CustomerConverter customerConverter = new CustomerConverter(addressConverter, ownerRepository, ownerConverter);
 
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        internalCustomerService = new CustomerInternalService(sequenceRepository, customerRepository, internalOwnerService, userInternalService,
-                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+        internalCustomerService = new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService, userInternalService,
+            internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
     }
 
     @Test
@@ -143,7 +139,7 @@ public class CustomerInternalServiceTest {
         when(customerRepository.getPaginatedValues(any(), any(), any(), any(), any())).thenReturn(data);
 
         final PaginatedValuesDto<CustomerDto> result = internalCustomerService.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(),
-                Optional.empty(), Optional.of(DirectionDto.ASC));
+            Optional.empty(), Optional.of(DirectionDto.ASC));
         Assert.assertNotNull("Customers should be returned.", result);
         Assert.assertNotNull("Customers should be returned.", result.getValues());
         Assert.assertEquals("Customes size should be returned.", 1, result.getValues().size());

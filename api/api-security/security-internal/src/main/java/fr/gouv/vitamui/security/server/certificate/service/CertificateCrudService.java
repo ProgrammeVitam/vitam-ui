@@ -41,7 +41,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.security.common.dto.CertificateDto;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
@@ -66,10 +66,10 @@ public class CertificateCrudService extends VitamUICrudService<CertificateDto, C
 
     @Autowired
     public CertificateCrudService(
-            final CustomSequenceRepository sequenceRepository,
+            final SequenceGeneratorService sequenceGeneratorService,
             final CertificateRepository certificateRepository,
             final ContextService contextCrudService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.certificateRepository = certificateRepository;
         this.contextCrudService = contextCrudService;
     }
