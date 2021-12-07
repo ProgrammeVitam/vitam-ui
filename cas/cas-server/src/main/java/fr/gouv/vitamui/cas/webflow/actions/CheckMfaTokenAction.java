@@ -41,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCredential;
 import org.apereo.cas.mfa.simple.ticket.CasSimpleMultifactorAuthenticationTicket;
-import org.apereo.cas.ticket.TransientSessionTicket;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.webflow.action.AbstractAction;
@@ -68,7 +67,7 @@ public class CheckMfaTokenAction extends AbstractAction {
         LOGGER.debug("Checking token: {}", token);
         WebUtils.putCredential(requestContext, new CasSimpleMultifactorTokenCredential(token));
 
-        val acct = this.ticketRegistry.getTicket(token, TransientSessionTicket.class);
+        val acct = this.ticketRegistry.getTicket(token, CasSimpleMultifactorAuthenticationTicket.class);
         if (acct != null) {
             val creationTime = acct.getCreationTime();
             val now_less_one_minute = ZonedDateTime.now().minus(60, ChronoUnit.SECONDS);

@@ -71,10 +71,10 @@ public class CustomCasSimpleMultifactorWebflowConfigurer extends AbstractCasMult
 
             // CUSTO:
             val intermediateSubmit = createActionState(flow, "intermediateSubmit", createEvaluateAction("checkMfaTokenAction"));
-            createTransitionForState(sendSimpleToken, CasWebflowConstants.TRANSITION_ID_SUCCESS, CasWebflowConstants.STATE_ID_REAL_SUBMIT);
-            createTransitionForState(sendSimpleToken, CasWebflowConstants.TRANSITION_ID_ERROR, "codeExpired");
+            createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_SUCCESS, CasWebflowConstants.STATE_ID_REAL_SUBMIT);
+            createTransitionForState(intermediateSubmit, CasWebflowConstants.TRANSITION_ID_ERROR, "codeExpired");
             val codeExpired = createViewState(flow, "codeExpired", "casSmsCodeExpiredView");
-            createTransitionForState(sendSimpleToken, "resend", CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
+            createTransitionForState(codeExpired, "resend", CasWebflowConstants.STATE_ID_INIT_LOGIN_FORM);
             //
 
             val realSubmitState = createActionState(flow, CasWebflowConstants.STATE_ID_REAL_SUBMIT,

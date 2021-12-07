@@ -3,7 +3,9 @@
 <script th:src="${'//www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey}" th:if="${recaptchaSiteKey != null and recaptchaVersion == 'v3'}"></script>
 
 <script type="text/javascript" th:src="@{#{webjars.headmin.js}}"></script>
-<script type="text/javascript" th:src="@{${#themes.code('cas.javascript.file')}}"></script>
+<span th:remove="tag" th:each="file : ${#strings.arraySplit(#themes.code('cas.standard.js.file'), ',')}">
+    <script type="text/javascript" th:src="@{${file}}"></script>
+</span>
 
 <script th:inline="javascript">
 head.ready(document, function () {

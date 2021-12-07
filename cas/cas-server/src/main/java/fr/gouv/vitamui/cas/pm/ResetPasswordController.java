@@ -106,7 +106,6 @@ public class ResetPasswordController {
             return false;
         }
 
-        communicationsManager.validate();
         if (!communicationsManager.isMailSenderDefined()) {
             LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
             return false;
@@ -119,11 +118,11 @@ public class ResetPasswordController {
             return false;
         }
 
-        final String url = buildPasswordResetUrl(usernameLower, casProperties);
         final Locale locale = new Locale(language);
         final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
         request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
+        final String url = buildPasswordResetUrl(usernameLower, casProperties);
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
 
         LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
             email, messageToSend.getSubject(), expMinutes);
