@@ -60,15 +60,19 @@ export class RuleValidator {
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
     return (control: AbstractControl) => {
       const properties: any = {};
-      properties[field] = control.value;
-      const existField: any = {};
-      existField[existTag] = true;
+      if (control.value) {
+        properties[field] = control.value;
+        const existField: any = {};
+        existField[existTag] = true;
 
-      return timer(this.debounceTime).pipe(
-        switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
-        take(1),
-        map((exists: boolean) => (exists ? null : existField))
-      );
+        return timer(this.debounceTime).pipe(
+          switchMap(() => (control.value !== valueToIgnore ? this.ruleService.existsProperties(properties) : of(false))),
+          take(1),
+          map((exists: boolean) => (exists ? null : existField))
+        );
+      } else {
+        return of(false);
+      }
     };
   }
 }

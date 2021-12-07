@@ -46,6 +46,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +73,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -125,11 +125,11 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
     private LogbookService logbookService;
 
     @Autowired
-    public ProfileInternalService(final CustomSequenceRepository sequenceRepository, final ProfileRepository profileRepository,
+    public ProfileInternalService(final SequenceGeneratorService sequenceGeneratorService, final ProfileRepository profileRepository,
             final CustomerRepository customerRepository, final GroupRepository groupRepository, final TenantRepository tenantRepository,
             final UserRepository userRepository, final InternalSecurityService internalSecurityService, final IamLogbookService iamLogbookService,
             final ProfileConverter profileConverter, final LogbookService logbookService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.profileRepository = profileRepository;
         this.customerRepository = customerRepository;
         this.groupRepository = groupRepository;

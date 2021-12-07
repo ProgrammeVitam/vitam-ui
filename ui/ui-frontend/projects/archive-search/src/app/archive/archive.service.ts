@@ -43,6 +43,7 @@ import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } fr
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
@@ -88,8 +89,8 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  private static fetchTitle(title: string, title_: any) {
-    return title ? title : title_ ? (title_.fr ? title_.fr : title_.en) : title_.en;
+  private static fetchTitle(title: string, titleInLanguages: any) {
+    return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
   public getOntologiesFromJson(): Observable<any> {
@@ -183,28 +184,8 @@ export class ArchiveService extends SearchService<any> {
     );
   }
 
-  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
-    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-      (response) => {
-        let filename;
-        if (response.headers.get('content-disposition').includes('filename')) {
-          filename = response.headers.get('content-disposition').split('=')[1];
-        } else {
-          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
-        }
-
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(response.body);
-        element.download = filename;
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      },
-      (errors) => {
-        console.log('Error message : ', errors);
-      }
-    );
+  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
   }
 
   normalizeTitle(title: string): string {
@@ -243,6 +224,12 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.launchEliminationAction(criteriaDto, headers);
   }
 
+  updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
+  }
+
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
@@ -253,6 +240,16 @@ export class ArchiveService extends SearchService<any> {
       },
       duration: 100000,
     });
+  }
+
+  downloadFile(url: string) {
+    window.addEventListener('focus', window_focus, false);
+    function window_focus() {
+      window.removeEventListener('focus', window_focus, false);
+      URL.revokeObjectURL(url);
+      console.log('revoke ' + url);
+    }
+    location.href = url;
   }
 
   buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {

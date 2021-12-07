@@ -35,10 +35,9 @@
       "EXECUTE": "Eliminer les archives",
       "EXECUTE_ONE": "Eliminer l'archive"
     },
-    "RULE" : {
-      "UPDATE_RULE" : "Modifier une règle"
+    "RULES_ACTION" : {
+      "UPDATE_RULE" : "Mettre à jour des règles"
     },
-    
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
@@ -112,7 +111,7 @@
         "END_DATE_DUA_EQUAL": "Date de fin extrême",
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
-        "GUID_OPI": "GUID du versement",
+        "GUID_OPI": "Identifiant technique du versement",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
@@ -242,5 +241,76 @@
       "CODE_NOT_EXIST": "La Règle n'existe pas",
       "WRONG_FORMAT": "Mauvais format de règle"
     }
-  }
+  },
+  "RULES" : {   
+      "TITLE" : "Changer une règle",   
+      "SELECT_RULE_CATEGORY" : "Sélectionnez une catégorie de règle",
+      "SELECT_RULE_ACTION" : "Sélectionnez une action",     
+      "OTHER_ACTIONS" : "Autres actions",
+      "BACK" : "RETOUR",
+      "EXECUTE_RULE_UPDATE" : "Lancer la mise à jour",
+      "EXECUTE_RULE_UPDATE_MESSAGE" : "L’opération de mise à jour des règles de gestion a bien été lancée",
+      "ACTION_ON_RULES" : "Action sur les règles",
+      "UA_SELECTED" :"{{ua_selected}} unités archivistiques séléctionnées",
+      "RULES_TO_ADD" : "Règle(s) à ajouter",
+      "ACTIONS" : {
+        "ADD_RULE" : "Ajouter une règle",
+        "DELETE_RULE" :"Supprimer une règle",
+        "BLOCK_RULE_INHERITANCE" : "Bloquer l’héritage d’une règle",
+        "DELETE_BLOCK_RULE_INHERITANCE" : "Supprimer le blocage d’héritage d’une règle",
+        "UPDATE_RULE" : "Modifier une règle"
+      },
+      "MORE_ACTIONS" : {
+        "UPDATE_PROPERTY" :"Ajouter ou modifier une propriété",
+        "DELETE_PROPERTY" : "Supprimer une propriété",
+        "BLOCK_PROPERTY_INHERITANCE" : "Bloquer l’héritage de la catégorie",
+        "DELETE_BLOCK_PROPERTY_INHERITANCE" : "Supprimer le blocage d’héritage de la catégorie"
+      },
+      "APRAISAL_RULES" : {
+        "MANAGEMENT_RULES" : "Règle de gestion",
+        "START_DATE" : "Date de début",
+        "RULE_NAME" : "Libellé",
+        "END_DATE" : "Date de fin",
+        "RULE_ID" : "Code",
+        "SAME_RULE_ID" : "Code identique à l'action précédente",
+        "RULE_NOT_EXIST" :"Le code de la règle renseigné n'existe pas"
+
+      },
+      "FINAL_ACTION" : {
+        "TITLE" : "Sort final",
+        "SELECT_VALUE" : "Sélectionner une valeur",
+        "KEEP" : "Conservation",
+        "ELIMINATION" : "Elimination"
+      },
+      "COMMON" : {
+        "UNDO" : "Annuler",
+        "CONTROL" : "Contrôler",
+        "CONFIRM" : "Confirmer"
+      },
+      "UA_CONTROL" : {
+        "UA_FINAL_ACTION_MESSAGE" : "L'ensemble des UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
+        "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée (s) portent déjà cette règle et seront ignorées.", 
+        "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
+        "UA_WITH_SAME_RULE_AND_DATE" : "{{ itemsWithSameRuleAndDate }} des UA sélectionnée (s) portent déjà cette règle et cette date de début et seront ignorées."
+
+      },
+      "DIALOG_MESSAGE" : {
+        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",       
+        "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer le bloc de mise à jour des règles ?",
+        "UPDATE_CONFIRM_MESSAGE" : "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
+        "EXIT_CONFIRM_MESSAGE" : "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
+      },
+
+      "CATEGORIES_NAME" : {
+        "STORAGE_RULE" : "Durée d'utilité courante (DUC)",
+        "APPRAISAL_RULE" : "Durée d'utilité administrative (DUA)",
+        "HOLD_RULE" : "Gel / Dégel",
+        "ACCESS_RULE" : "Communicabilité",
+        "DISSEMINATION_RULE" : "Diffusion",
+        "REUSE_RULE" : "Réutilisation",
+        "CLASSIFICATION_RULE" : "Classification"
+      }
+    }  
+
+
 }

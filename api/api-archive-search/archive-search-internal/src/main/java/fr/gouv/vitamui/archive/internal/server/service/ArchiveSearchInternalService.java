@@ -26,6 +26,7 @@
 
 package fr.gouv.vitamui.archive.internal.server.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +51,10 @@ import fr.gouv.vitam.common.model.dip.DataObjectVersions;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitam.common.model.export.dip.DipExportType;
 import fr.gouv.vitam.common.model.export.dip.DipRequest;
+import fr.gouv.vitam.common.model.massupdate.MassUpdateUnitRuleRequest;
+import fr.gouv.vitam.common.model.massupdate.RuleActions;
+import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
+import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
@@ -57,6 +62,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
@@ -138,6 +144,8 @@ public class ArchiveSearchInternalService {
     private final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
     private final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
     private final ExportDipV2Service exportDipV2Service;
+    private final RuleOperationsConverter ruleOperationsConverter;
+    private final RulesUpdateCommonService rulesUpdateCommonService;
 
 
     @Autowired
@@ -147,7 +155,9 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService,
         final ExportDipV2Service exportDipV2Service,
         final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService,
-        final EliminationService eliminationService
+        final EliminationService eliminationService,
+        final RuleOperationsConverter ruleOperationsConverter,
+        final RulesUpdateCommonService rulesUpdateCommonService
 
     ) {
         this.unitService = unitService;
@@ -158,6 +168,8 @@ public class ArchiveSearchInternalService {
         this.archivesSearchAppraisalQueryBuilderService = archivesSearchAppraisalQueryBuilderService;
         this.exportDipV2Service = exportDipV2Service;
         this.eliminationService = eliminationService;
+        this.ruleOperationsConverter = ruleOperationsConverter;
+        this.rulesUpdateCommonService = rulesUpdateCommonService;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
@@ -243,6 +255,7 @@ public class ArchiveSearchInternalService {
         } catch (InvalidParseOperationException e) {
             throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
         }
+
         return query;
     }
 
@@ -541,6 +554,7 @@ public class ArchiveSearchInternalService {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
+
         select.setLimitFilter(pageNumber * size, size);
         archivesSearchFieldsQueryBuilderService.fillQueryFromCriteriaList(query, simpleCriteriaList);
         archivesSearchAppraisalQueryBuilderService.fillQueryFromCriteriaList(query, appraisalMgtRulesCriteriaList);
@@ -665,5 +679,32 @@ public class ArchiveSearchInternalService {
         throws VitamClientException {
         RequestResponse<JsonNode> response = exportDipV2Service.exportDip( vitamContext, dipRequest);
         return response.toJsonNode();
+    }
+
+    public String massUpdateUnitsRules(final VitamContext vitamContext, final JsonNode updateQuery)
+        throws VitamClientException {
+        JsonNode response = unitService.massUpdateUnitsRules(vitamContext,updateQuery).toJsonNode();
+        return response.findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    public String updateArchiveUnitsRules(final VitamContext vitamContext, final RuleSearchCriteriaDto ruleSearchCriteriaDto)
+        throws VitamClientException {
+
+        LOGGER.info("Add Rules to Units VitamUI Rules : {}", ruleSearchCriteriaDto.getRuleActions());
+        LOGGER.info("Add Rules to Units VitamUI search Criteria : {}", ruleSearchCriteriaDto.getSearchCriteriaDto().toString());
+        RuleActions ruleActions = ruleOperationsConverter.convertToVitamRuleActions(ruleSearchCriteriaDto.getRuleActions());
+
+        MassUpdateUnitRuleRequest massUpdateUnitRuleRequest = new MassUpdateUnitRuleRequest();
+        JsonNode dslQuery = mapRequestToDslQuery(ruleSearchCriteriaDto.getSearchCriteriaDto());
+        ObjectNode dslRequest = (ObjectNode) dslQuery;
+        rulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, "$projection" ,"$filter","$facets");
+
+        rulesUpdateCommonService.setMassUpdateUnitRuleRequest(massUpdateUnitRuleRequest, ruleActions, dslRequest);
+
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        JsonNode updateQuery = objectMapper.convertValue(massUpdateUnitRuleRequest, JsonNode.class);
+        LOGGER.debug("Add Rules to UA final updateQuery : {}", updateQuery);
+
+        return massUpdateUnitsRules(vitamContext, updateQuery);
     }
 }

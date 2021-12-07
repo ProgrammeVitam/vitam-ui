@@ -32,12 +32,13 @@ import fr.gouv.vitam.access.external.client.v2.AccessExternalClientV2;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchAgenciesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
-import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -47,7 +48,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @ActiveProfiles("test")
-public class ApiArchiveSearchInternalServerConfigTest extends AbstractContextConfiguration {
+@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
+public class ApiArchiveSearchInternalServerConfigTest {
 
     @MockBean(name = "adminExternalClient")
     private AdminExternalClient adminExternalClient;

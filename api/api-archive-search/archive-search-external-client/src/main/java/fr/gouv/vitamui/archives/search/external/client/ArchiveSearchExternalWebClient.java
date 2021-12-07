@@ -33,7 +33,14 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpContext> {
 
@@ -46,5 +53,37 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
     @Override
     public String getPathUrl() {
         return RestApi.ARCHIVE_SEARCH_PATH;
+    }
+
+
+
+    /**
+     * Download object from unit
+     *
+     * @param id unit id
+     * @param usage usage
+     * @param version version
+     * @param context internl context
+     * @return a mono<Response<Resourse>
+     **/
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
+        final ExternalHttpContext context) {
+        LOGGER.info("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
+                "&version=" +
+                version);
+
+        Flux<DataBuffer> dataBuffer = webClient
+            .get()
+            .uri(uriBuilder.toUriString())
+            .headers(addHeaders(buildHeaders(context)))
+            .retrieve()
+            .bodyToFlux(DataBuffer.class);
+
+        return Mono.just(ResponseEntity
+            .ok().cacheControl(CacheControl.noCache())
+            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
+
     }
 }

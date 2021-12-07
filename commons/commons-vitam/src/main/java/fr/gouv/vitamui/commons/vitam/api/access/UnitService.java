@@ -56,6 +56,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamResponseHandler;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.ws.rs.core.Response;
@@ -279,4 +280,19 @@ public class UnitService {
         VitamRestUtils.checkResponse(jsonResponse);
         return jsonResponse;
     }
+
+    /**
+     * update Archive Unit Rules
+     *
+     * @param vitamContext
+     * @param updateQuery
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> massUpdateUnitsRules(final VitamContext vitamContext, final JsonNode updateQuery)
+        throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.massUpdateUnitsRules(vitamContext, updateQuery);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+            }
 }

@@ -59,7 +59,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
@@ -109,11 +109,11 @@ public class OwnerInternalService extends VitamUICrudService<OwnerDto, Owner> {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OwnerInternalService.class);
 
     @Autowired
-    public OwnerInternalService(final CustomSequenceRepository sequenceRepository, final OwnerRepository ownerRepository,
+    public OwnerInternalService(final SequenceGeneratorService sequenceGeneratorService, final OwnerRepository ownerRepository,
             final CustomerRepository customerRepository, final AddressService addressService, final IamLogbookService iamLogbookService,
             final InternalSecurityService internalSecurityService, final OwnerConverter ownerConverter, final LogbookService logbookService,
             final TenantRepository tenantRepository) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.ownerRepository = ownerRepository;
         this.customerRepository = customerRepository;
         this.addressService = addressService;

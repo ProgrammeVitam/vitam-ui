@@ -34,33 +34,30 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { merge, Observable, Subject } from 'rxjs';
-import {ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState } from 'ui-frontend-common';
-
+import { ComponentType } from '@angular/cdk/portal';
 import { Component, Inject, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-
-import { ComponentType } from '@angular/cdk/portal';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { merge, Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { ConfirmDialogService, CountryOption, CountryService, Customer, Logo, OtpState } from 'ui-frontend-common';
 import { CustomerService } from '../../core/customer.service';
 import { TenantFormValidators } from '../tenant-create/tenant-form.validators';
 import { CustomerAlertingComponent } from './customer-alerting/customer-alerting.component';
 import { CustomerCreateValidators } from './customer-create.validators';
 
 interface CustomerInfo {
-   code: string;
-   name: string;
-   companyName: string;
+  code: string;
+  name: string;
+  companyName: string;
 }
 
 @Component({
   selector: 'app-customer-create',
   templateUrl: './customer-create.component.html',
-  styleUrls: ['./customer-create.component.scss']
+  styleUrls: ['./customer-create.component.scss'],
 })
 export class CustomerCreateComponent implements OnInit, OnDestroy {
-
   private destroy = new Subject();
   public form: FormGroup;
   public hasError = true;
@@ -74,7 +71,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   public stepIndex = 0;
   public stepCount = 6;
   private _customerForm: FormGroup;
-  public get customerForm(): FormGroup { return this._customerForm; }
+  public get customerForm(): FormGroup {
+    return this._customerForm;
+  }
   public set customerForm(form: FormGroup) {
     this._customerForm = form;
   }
@@ -82,7 +81,9 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   // tslint:disable-next-line: variable-name
   private _homepageMessageForm: FormGroup;
-  public get homepageMessageForm(): FormGroup { return this._homepageMessageForm; }
+  public get homepageMessageForm(): FormGroup {
+    return this._homepageMessageForm;
+  }
   public set homepageMessageForm(form: FormGroup) {
     this._homepageMessageForm = form;
   }
@@ -99,6 +100,8 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   public countries: CountryOption[];
 
+  customer: Customer;
+
   constructor(
     public dialogRef: MatDialogRef<CustomerCreateComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -108,20 +111,15 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private matDialog: MatDialog,
     private tenantFormValidators: TenantFormValidators,
-    private countryService: CountryService,
-  ) {
-  }
+    private countryService: CountryService
+  ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       gdprAlert: true,
       gdprAlertDelay: [72, Validators.min(1)],
       enabled: [true, Validators.required],
-      code: [
-        null,
-        [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)],
-        this.customerCreateValidators.uniqueCode(),
-      ],
+      code: [null, [Validators.required, Validators.pattern(/^[0-9]{4,25}$/)], this.customerCreateValidators.uniqueCode()],
       name: [null, Validators.required],
       companyName: [null, Validators.required],
       passwordRevocationDelay: 6,
@@ -130,7 +128,7 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
         street: [null, Validators.required],
         zipCode: [null, Validators.required],
         city: [null, Validators.required],
-        country: ['FR', Validators.required]
+        country: ['FR', Validators.required],
       }),
       internalCode: [null],
       language: ['FRENCH', Validators.required],
@@ -140,16 +138,10 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       themeColors: [null],
       portalMessages: [null],
       portalTitles: [null],
-      owners: this.formBuilder.array([
-        this.formBuilder.control(null, Validators.required),
-      ]),
-      tenantName: [
-        null,
-        [Validators.required],
-        this.tenantFormValidators.uniqueName(),
-      ]
+      owners: this.formBuilder.array([this.formBuilder.control(null, Validators.required)]),
+      tenantName: [null, [Validators.required], this.tenantFormValidators.uniqueName()],
     });
-    if(this.data){
+    if (this.data) {
       this.gdprReadOnlyStatus = this.data.gdprReadOnlySettingStatus;
     }
     this.form.get('gdprAlert').valueChanges.subscribe(() => {
@@ -158,11 +150,16 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
       }
     });
 
+    this.customerService.getMyCustomer().subscribe((customerDetails) => {
+      this.customer = customerDetails;
+    });
+
     this.onChanges();
 
-    this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef)
-    .pipe(takeUntil(this.destroy))
-    .subscribe(() => this.onCancel());
+    this.confirmDialogService
+      .listenToEscapeKeyPress(this.dialogRef)
+      .pipe(takeUntil(this.destroy))
+      .subscribe(() => this.onCancel());
 
     this.countryService.getAvailableCountries().subscribe((values: CountryOption[]) => {
       this.countries = values;
@@ -174,18 +171,15 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   onChanges() {
-    merge(
-      this.form.get('code').valueChanges,
-      this.form.get('name').valueChanges,
-      this.form.get('companyName').valueChanges,
-    )
-    .subscribe(() => {
-      this.customerInfo = {
-        code: this.form.get('code').value,
-        name: this.form.get('name').value,
-        companyName: this.form.get('companyName').value,
-      };
-    });
+    merge(this.form.get('code').valueChanges, this.form.get('name').valueChanges, this.form.get('companyName').valueChanges).subscribe(
+      () => {
+        this.customerInfo = {
+          code: this.form.get('code').value,
+          name: this.form.get('name').value,
+          companyName: this.form.get('companyName').value,
+        };
+      }
+    );
   }
 
   getOwnerName(): string {
@@ -201,45 +195,55 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   confirm(componentOrTemplateRef: TemplateRef<unknown> | ComponentType<unknown>): Observable<boolean> {
-    return this.matDialog.open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' }).beforeClosed().pipe(
-      filter((result) => !result)
-    );
-
+    return this.matDialog
+      .open(componentOrTemplateRef, { panelClass: 'vitamui-dialog' })
+      .beforeClosed()
+      .pipe(filter((result) => !result));
   }
 
   onSubmit() {
-    if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) { return; }
+    if (this.lastStepIsInvalid() || this.stepIndex !== this.stepCount - 1) {
+      return;
+    }
     this.creating = true;
     const customer: Customer = this.updateForCustomerModel(this.form.value);
 
-    this.customerService.create(customer, this.logos)
+    this.customerService
+      .create(customer, this.logos)
       .pipe(takeUntil(this.destroy))
       .subscribe(
-      () => {
-        this.dialogRef.close(true);
-      },
-      (error) => {
-        this.creating = false;
-        console.error(error);
-      });
+        () => {
+          this.dialogRef.close(true);
+        },
+        (error) => {
+          this.creating = false;
+          console.error(error);
+        }
+      );
   }
 
   private updateForCustomerModel(formValue: any): Customer {
     let customer = formValue;
 
     if (this.customerForm && this.customerForm.get('hasCustomGraphicIdentity').value === true) {
-      customer = {...formValue, ...{
-        hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
-        themeColors: this.customerForm.get('themeColors').value,
-      }};
+      customer = {
+        ...formValue,
+        ...{
+          hasCustomGraphicIdentity: this.customerForm.get('hasCustomGraphicIdentity').value,
+          themeColors: this.customerForm.get('themeColors').value,
+        },
+      };
     }
 
     if (this.homepageMessageForm) {
-      customer = {...customer, ...{
-        id : this.homepageMessageForm.get('id').value,
-        portalTitles: this.portalTitles,
-        portalMessages: this.portalMessages,
-      }};
+      customer = {
+        ...customer,
+        ...{
+          id: this.homepageMessageForm.get('id').value,
+          portalTitles: this.portalTitles,
+          portalMessages: this.portalMessages,
+        },
+      };
     }
 
     return customer;
@@ -257,23 +261,34 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
   }
 
   firstStepInvalid(): boolean {
-
-    return this.form.get('code').invalid || this.form.get('code').pending ||
-      this.form.get('name').invalid || this.form.get('name').pending ||
-      this.form.get('companyName').invalid || this.form.get('companyName').pending ||
-      this.form.get('address.street').invalid || this.form.get('address.street').pending ||
-      this.form.get('address.zipCode').invalid || this.form.get('address.zipCode').pending ||
-      this.form.get('address.city').invalid || this.form.get('address.city').pending || this.isDurationNotValid() ||
-      this.form.get('internalCode').invalid || this.form.get('internalCode').pending ||
-      this.form.get('address.country').invalid || this.form.get('address.country').pending;
-
+    return (
+      this.form.get('code').invalid ||
+      this.form.get('code').pending ||
+      this.form.get('name').invalid ||
+      this.form.get('name').pending ||
+      this.form.get('companyName').invalid ||
+      this.form.get('companyName').pending ||
+      this.form.get('address.street').invalid ||
+      this.form.get('address.street').pending ||
+      this.form.get('address.zipCode').invalid ||
+      this.form.get('address.zipCode').pending ||
+      this.form.get('address.city').invalid ||
+      this.form.get('address.city').pending ||
+      this.isDurationNotValid() ||
+      this.form.get('internalCode').invalid ||
+      this.form.get('internalCode').pending ||
+      this.form.get('address.country').invalid ||
+      this.form.get('address.country').pending
+    );
   }
 
   secondStepInvalid(): boolean {
-    return this.form.get('passwordRevocationDelay').invalid ||
+    return (
+      this.form.get('passwordRevocationDelay').invalid ||
       this.form.get('otp').invalid ||
       this.form.get('emailDomains').invalid ||
-      this.form.get('defaultEmailDomain').invalid;
+      this.form.get('defaultEmailDomain').invalid
+    );
   }
 
   public thirdStepValid(): boolean {
@@ -286,12 +301,16 @@ export class CustomerCreateComponent implements OnInit, OnDestroy {
 
   private checkValidation(forms: FormGroup[]): boolean {
     let isValid = true;
-    forms.forEach(((x) => {if (!x.valid) { isValid = false; }}));
+    forms.forEach((x) => {
+      if (!x.valid) {
+        isValid = false;
+      }
+    });
     return isValid;
   }
 
   lastStepIsInvalid(): boolean {
-      const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
-      return this.form.pending || this.form.invalid || invalid || this.creating;
+    const invalid = this.firstStepInvalid() || this.secondStepInvalid() || !this.thirdStepValid() || !this.fourthStepValid();
+    return this.form.pending || this.form.invalid || invalid || this.creating;
   }
 }

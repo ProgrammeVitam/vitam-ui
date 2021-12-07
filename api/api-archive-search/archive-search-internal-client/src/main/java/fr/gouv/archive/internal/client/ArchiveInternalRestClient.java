@@ -29,6 +29,7 @@ package fr.gouv.archive.internal.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -125,13 +126,6 @@ public class ArchiveInternalRestClient
         return headers;
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, final String usage, Integer version, final InternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" + version);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
-
-    }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
@@ -161,7 +155,7 @@ public class ArchiveInternalRestClient
     }
 
     public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
-                                                    final InternalHttpContext context) {
+        final InternalHttpContext context) {
         LOGGER.info("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
@@ -173,7 +167,8 @@ public class ArchiveInternalRestClient
 
     }
 
-    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context, final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context,
+        final SearchCriteriaDto query) {
         LOGGER.info("Calling elimination analysis with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
@@ -185,7 +180,8 @@ public class ArchiveInternalRestClient
 
     }
 
-    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context, final SearchCriteriaDto query) {
+    public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context,
+        final SearchCriteriaDto query) {
         LOGGER.info("Calling elimination action with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
@@ -194,6 +190,19 @@ public class ArchiveInternalRestClient
                 request, JsonNode.class);
         checkResponse(response);
         return response;
+
+    }
+
+    public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.info("Calling Update Archive Units Rules  with query {} ", ruleSearchCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
 
     }
 }

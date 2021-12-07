@@ -29,8 +29,10 @@ package fr.gouv.vitamui.archives.search.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -47,8 +49,10 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Objects;
@@ -63,8 +67,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchivesSearchService.class);
 
-    private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
     private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
+    private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
     private CommonService commonService;
 
     @Autowired
@@ -96,16 +100,16 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.getFilingHoldingScheme(context);
     }
 
-    public ObjectData downloadObjectFromUnit(String id, ExternalHttpContext context) {
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
+        ExternalHttpContext context) {
         LOGGER.info("Download the Archive Unit Object with id {}", id);
-        ObjectData objectData = new ObjectData();
+
         ResultsDto got = findObjectById(id, context).getBody();
         String usage = getUsage(Objects.requireNonNull(got), objectData);
-        ResponseEntity<Resource> resourceResponseEntity =
-            archiveSearchExternalRestClient.downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
-        Resource resource = resourceResponseEntity.getBody();
-        objectData.setResource(resource);
-        return objectData;
+        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
+            archiveSearchExternalWebClient
+                .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
+        return resourceResponseEntityResponse;
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -117,6 +121,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.info("Get the Object Group with Identifier {}", id);
         return archiveSearchExternalRestClient.findObjectById(id, context);
     }
+
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
         ExternalHttpContext context) {
         LOGGER.info("export search archives Units by criteria into csv format with criteria {}", searchQuery);
@@ -129,19 +134,19 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         for (QualifiersDto qualifier : qualifiers) {
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
                 finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
-                if(StringUtils.isEmpty(objectData.getFilename())) {
+                if (StringUtils.isEmpty(objectData.getFilename())) {
                     continue;
                 }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
                 finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
-                if(StringUtils.isEmpty(objectData.getFilename())) {
+                if (StringUtils.isEmpty(objectData.getFilename())) {
                     continue;
                 }
             }
             if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.TEXTCONTENT.getValue())) {
                 finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.TEXTCONTENT);
-                if(StringUtils.isEmpty(objectData.getFilename())) {
+                if (StringUtils.isEmpty(objectData.getFilename())) {
                     continue;
                 }
             }
@@ -181,5 +186,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination action with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
+    }
+
+    public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
+        return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
     }
 }

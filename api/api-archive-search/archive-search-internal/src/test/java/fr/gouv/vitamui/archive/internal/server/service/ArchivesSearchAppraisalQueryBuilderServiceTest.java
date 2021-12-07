@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
@@ -38,6 +39,7 @@ import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +49,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -444,6 +447,35 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         JsonNode expectedQuery =
             JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/elimination_analysis_search.json"));
         JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
+        throws InvalidCreateOperationException, IOException  {
+
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_START_DATE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-08T23:00:00.000Z")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchFieldsQueryBuilderService
+            .fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        Assertions.assertEquals(query.getQueries().size(), 1);
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr = loadFileContent("vitam_query_with_start_date.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
     }
 
     private String loadFileContent(String filename) throws IOException {

@@ -1,0 +1,62 @@
+<div *ngFor="let action of getActionByRuleType('AppraisalRule')">
+  <div *ngIf="action === 'ADD_RULES'">
+    <div class="action-style">
+      {{ 'RULES.RULES_TO_ADD' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+        {{ collapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="collapsed" *ngFor="let actionName of getActions('AppraisalRule')">
+      <app-add-management-rules
+        *ngIf="actionName.actionType === action && action === 'ADD_RULES'"
+        (delete)="deleteForm(actionName.id, $event)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+        [accessContract]="accessContract"
+        [selectedItem]="selectedItem"
+      ></app-add-management-rules>
+    </div>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'BlockRuleInheritance'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'deleteBlockRuleInheritance'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'updateRules'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'deleteRules'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div *ngIf="action === 'ADD_RULES'">
+    <div class="action-style">
+      {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showUpdatePropertyBloc()">
+        {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="updatePropertyCollapsed">
+      <app-add-update-property></app-add-update-property>
+    </div>
+  </div>
+</div>

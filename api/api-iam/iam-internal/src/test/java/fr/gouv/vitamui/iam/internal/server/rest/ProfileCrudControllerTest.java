@@ -2,14 +2,14 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
 import org.junit.Before;
@@ -22,7 +22,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.commons.test.utils.AbstractServerIdentityBuilder;
@@ -71,7 +70,7 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     private InternalSecurityService internalSecurityService;
 
     @Mock
-    private CustomSequenceRepository sequenceRepository;
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Mock
     private IamLogbookService iamLogbookService;
@@ -87,7 +86,7 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
 
         final CustomSequence customSequence = new CustomSequence();
         customSequence.setSequence(1);
-        when(sequenceRepository.incrementSequence(any(), any())).thenReturn(Optional.of(customSequence));
+        when(sequenceGeneratorService.getNextSequenceId(any(), anyInt())).thenReturn(1);
         FieldUtils.setFinalStatic(CustomerInitConfig.class.getDeclaredField("allRoles"), ServicesData.getAllRoles());
     }
 

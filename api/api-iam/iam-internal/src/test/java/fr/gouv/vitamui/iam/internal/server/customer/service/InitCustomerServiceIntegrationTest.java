@@ -44,6 +44,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -51,7 +53,6 @@ import org.springframework.data.mongodb.MongoTransactionManager;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @Import({ TestMongoConfig.class })
 @ActiveProfiles(value = "test")
+@ImportAutoConfiguration(exclude = EmbeddedMongoAutoConfiguration.class)
 public class InitCustomerServiceIntegrationTest {
 
     private static final String PROFILE_NAME_1 = "profile1";

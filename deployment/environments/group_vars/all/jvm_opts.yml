@@ -1,0 +1,88 @@
+---
+
+# Defaults values if unset
+# memory: "-Xms512m -Xmx512m"
+# gc: ""
+# java: ""
+
+vitamui:
+  identity:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  identity_admin:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  referential:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  portal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  referential_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  referential_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  iam_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  iam_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  cas_server:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  security_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  ingest:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  ingest_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  ingest_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  archive_search:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  archive_search_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  archive_search_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""

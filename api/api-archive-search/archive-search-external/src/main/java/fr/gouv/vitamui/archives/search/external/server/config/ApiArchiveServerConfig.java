@@ -28,8 +28,10 @@ package fr.gouv.vitamui.archives.search.external.server.config;
 
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClientFactory;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClientFactory;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClientFactory;
+import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClient;
+import fr.gouv.archive.internal.client.ArchiveSearchStreamingInternalRestClientFactory;
 import fr.gouv.archive.internal.client.SearchCriteriaHistoryInternalRestClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
@@ -98,12 +100,27 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public ArchiveSearchStreamingInternalRestClientFactory archiveSearchStreamingInternalRestClientFactory(
+        final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties) {
+        return new ArchiveSearchStreamingInternalRestClientFactory(
+            apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
+    }
+
+    @Bean
+    public ArchiveSearchStreamingInternalRestClient archiveSearchStreamingInternalRestClient(
+        final ArchiveSearchStreamingInternalRestClientFactory factory) {
+        return factory.getArchiveSearchStreamingInternalRestClient();
+    }
+
+    @Bean
     public ArchiveInternalRestClientFactory archiveInternalRestClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder) {
         return new ArchiveInternalRestClientFactory(
             apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient(), restTemplateBuilder);
     }
+
+
 
     @Bean
     public ArchiveInternalRestClient archiveInternalRestClient(
@@ -112,17 +129,17 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ArchiveInternalWebClientFactory archiveInternalWebClientFactory(
+    public ArchiveSearchInternalWebClientFactory archiveInternalWebClientFactory(
         final ApiArchiveExternalApplicationProperties apiArchiveExternalApplicationProperties,
         final RestTemplateBuilder restTemplateBuilder) {
-        return new ArchiveInternalWebClientFactory(
+        return new ArchiveSearchInternalWebClientFactory(
             apiArchiveExternalApplicationProperties.getArchiveSearchInternalClient());
     }
 
 
     @Bean
-    public ArchiveInternalWebClient archiveInternalWebClient(
-        final ArchiveInternalWebClientFactory factory) {
+    public ArchiveSearchInternalWebClient archiveInternalWebClient(
+        final ArchiveSearchInternalWebClientFactory factory) {
         return factory.getArchiveInternalWebClient();
     }
 
@@ -131,4 +148,5 @@ public class ApiArchiveServerConfig extends AbstractContextConfiguration {
         final ArchiveInternalRestClientFactory archiveInternalRestClientFactory) {
         return archiveInternalRestClientFactory.getSearchCriteriaHistoryInternalRestClient();
     }
+
 }

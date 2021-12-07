@@ -67,7 +67,7 @@
     <mat-tab-group [selectedIndex]="additionalSearchCriteriaCategoryIndex" (selectedIndexChange)="selectedCategoryChange($event)">
       <mat-tab label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}">
         <div class="card-criteria">
-          <simple-criteria-search></simple-criteria-search>
+          <app-simple-criteria-search></app-simple-criteria-search>
         </div>
       </mat-tab>
       <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
@@ -90,7 +90,7 @@
                 'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
               }}</a>
             </div>
-            <appraisal-rule-search></appraisal-rule-search>
+            <app-appraisal-rule-search></app-appraisal-rule-search>
           </div>
         </ng-container>
       </mat-tab>
@@ -182,7 +182,7 @@
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
           <button mat-menu-item (click)="updateManagementRule()" [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0">
-            {{ 'ARCHIVE_SEARCH.RULE.UPDATE_RULE' | translate }}
+            {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
           </button>
           <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}

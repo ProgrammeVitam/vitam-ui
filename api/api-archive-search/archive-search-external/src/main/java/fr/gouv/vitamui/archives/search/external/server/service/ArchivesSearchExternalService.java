@@ -29,9 +29,10 @@ package fr.gouv.vitamui.archives.search.external.server.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
-import fr.gouv.archive.internal.client.ArchiveInternalWebClient;
+import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -43,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -56,15 +58,16 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     @Autowired
     private final ArchiveInternalRestClient archiveInternalRestClient;
 
+
     @Autowired
-    private final ArchiveInternalWebClient archiveInternalWebClient;
+    private final ArchiveSearchInternalWebClient archiveSearchInternalWebClient;
 
     public ArchivesSearchExternalService(@Autowired ArchiveInternalRestClient archiveInternalRestClient,
-        ArchiveInternalWebClient archiveInternalWebClient,
+        ArchiveSearchInternalWebClient archiveSearchInternalWebClient,
         final ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.archiveInternalRestClient = archiveInternalRestClient;
-        this.archiveInternalWebClient = archiveInternalWebClient;
+        this.archiveSearchInternalWebClient = archiveSearchInternalWebClient;
     }
 
     @Override
@@ -89,8 +92,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
         return archiveInternalRestClient.getFilingHoldingScheme(getInternalHttpContext());
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, String usage, Integer version) {
-        return archiveInternalRestClient.downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
+        return archiveSearchInternalWebClient
+            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
     }
 
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query) {
@@ -107,5 +111,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
 
     public ResponseEntity<JsonNode> startEliminationAction(final SearchCriteriaDto query) {
         return archiveInternalRestClient.startEliminationAction(getInternalHttpContext(), query);
+    }
+
+    public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
+        return archiveInternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, getInternalHttpContext());
     }
 }

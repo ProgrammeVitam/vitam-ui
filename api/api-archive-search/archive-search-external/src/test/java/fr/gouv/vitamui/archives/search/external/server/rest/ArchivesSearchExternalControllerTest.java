@@ -31,6 +31,7 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -70,6 +71,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         VitamUILoggerFactory.getInstance(ArchivesSearchExternalControllerTest.class);
 
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
+
+    public final String EXPECTED_RESPONSE = "expected_response";
 
     @MockBean
     private ArchivesSearchExternalService archivesSearchExternalService;
@@ -192,5 +195,19 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         // Then
         Assertions.assertNotNull(responseCsv);
         Assertions.assertEquals(responseCsv, resource);
+    }
+
+    @Test
+    public void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
+
+        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
+        String expectedResponse = EXPECTED_RESPONSE;
+
+        Mockito
+            .when(archivesSearchExternalService.updateArchiveUnitsRules(Mockito.eq(ruleSearchCriteriaDto)))
+            .thenReturn(expectedResponse);
+
+        String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
+        Assertions.assertEquals(response, expectedResponse);
     }
 }

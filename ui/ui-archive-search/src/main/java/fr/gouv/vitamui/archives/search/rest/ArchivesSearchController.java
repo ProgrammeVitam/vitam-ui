@@ -31,6 +31,7 @@ import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -63,6 +64,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -145,19 +148,28 @@ public class ArchivesSearchController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Download Object from the Archive Unit ")
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id) {
+    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+        @QueryParam("tenantId") Integer tenantId,
+        @QueryParam("contractId") String contractId) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         LOGGER.debug("Download the Archive Unit Object with ID {}", id);
-        ObjectData objectData = archivesSearchService.downloadObjectFromUnit(id, buildUiHttpContext());
-        String headerValues =
+        ObjectData objectData = new ObjectData();
+        ResponseEntity<Resource> responseResource =
+            archivesSearchService.downloadObjectFromUnit(id, objectData, buildUiHttpContext(tenantId, contractId))
+                .block();
+        List<String> headersValuesContentDispo = responseResource.getHeaders().get("Content-Disposition");
+        LOGGER.info("Content-Disposition value is {} ", headersValuesContentDispo);
+        String fileNameHeader =
             StringUtils.isNotEmpty(objectData.getFilename()) ? "attachment;filename=" + objectData.getFilename()
                 : "attachment";
+
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM)
-            .header("Content-Disposition", headerValues)
-            .body(objectData.getResource());
+            .header("Content-Disposition", fileNameHeader)
+            .body(responseResource.getBody());
     }
 
     @ApiOperation(value = "export into csv format archive units by criteria")
@@ -201,5 +213,14 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ResponseEntity<JsonNode> jsonNodeResponseEntity =
             archivesSearchService.startEliminationAction(buildUiHttpContext(), searchQuery);
         return jsonNodeResponseEntity.getBody();
+    }
+
+    @ApiOperation(value = "Update Archive Units Rules by criteria")
+    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public String updateArchiveUnitsRules(@RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
+        LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);
+        String result = archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
+        return result;
     }
 }

@@ -10,4 +10,4 @@
   with_items:
     - upstream.j2
     - vhosts.conf.j2
-  become: true
+  notify: reload nginx

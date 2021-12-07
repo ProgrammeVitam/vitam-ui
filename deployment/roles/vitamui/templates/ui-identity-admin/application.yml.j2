@@ -31,7 +31,8 @@ server:
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
-
+  error:
+    path: /error
 {% endif %}
   tomcat:
     accesslog:
@@ -49,7 +50,7 @@ logging:
     config: {{ vitamui_folder_conf }}/logback.xml
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -62,9 +63,9 @@ ui-identity:
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
-    connect-time-out: {{ vitamui.iam_external.connect_timeout }}
-    read-time-out: {{ vitamui.iam_external.read_timeout }}
-    write-time-out: {{ vitamui.iam_external.write_timeout }}
+    connect-time-out: {{ vitamui.iam_external.connect_timeout | default(30) }}
+    read-time-out: {{ vitamui.iam_external.read_timeout | default(30) }}
+    write-time-out: {{ vitamui.iam_external.write_timeout | default(30) }}
 {% if vitamui.iam_external.secure|lower == "true" %}
     secure: true
     ssl-configuration:
@@ -96,6 +97,7 @@ ui-identity:
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
+  user-logo: "{{ vitamui_platform_informations.theme.user_logo }}"
   portal-message: "{{ vitamui_platform_informations.portal_message }}"
   portal-title: "{{ vitamui_platform_informations.portal_title }}"
   theme-colors:

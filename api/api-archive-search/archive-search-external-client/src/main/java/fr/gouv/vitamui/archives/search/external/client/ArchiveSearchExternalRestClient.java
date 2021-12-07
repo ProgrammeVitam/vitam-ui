@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -138,14 +139,6 @@ public class ArchiveSearchExternalRestClient
 
     }
 
-    public ResponseEntity<Resource> downloadObjectFromUnit(String id, String usage, Integer version, ExternalHttpContext context) {
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" + version);
-        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
-        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
-    }
-
-
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(SearchCriteriaDto query,
         ExternalHttpContext context) {
         LOGGER.debug("Calling export to csv search archives units by criteria");
@@ -158,7 +151,8 @@ public class ArchiveSearchExternalRestClient
         return response;
     }
 
-    public ResponseEntity<String> exportDIPCriteria(ExportDipCriteriaDto exportDipCriteriaDto, ExternalHttpContext context) {
+    public ResponseEntity<String> exportDIPCriteria(ExportDipCriteriaDto exportDipCriteriaDto,
+        ExternalHttpContext context) {
         LOGGER.debug("Calling export DIP by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
@@ -182,5 +176,16 @@ public class ArchiveSearchExternalRestClient
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         return restTemplate.exchange(getUrl() + RestApi.ELIMINATION_ACTION, HttpMethod.POST,
             request, JsonNode.class);
+    }
+
+    public ResponseEntity<String> updateArchiveUnitsRules(RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        ExternalHttpContext context) {
+        LOGGER.debug("Calling updateArchiveUnitsRules by criteria");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
+                request, String.class);
+        return response;
     }
 }

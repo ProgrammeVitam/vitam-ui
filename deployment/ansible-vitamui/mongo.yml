@@ -1,0 +1,13 @@
+---
+
+- hosts: hosts_vitamui_mongod
+  roles:
+    - mongo_common
+    - mongo
+    - {
+        role: mongo_init,
+        mongod_source_template_dir: "../scripts/mongod/",
+        tags: mongo_init
+      }
+    - mongo_configure
+    - { role: mongo-express, when: "mongo_express | default(false) | bool == true" }

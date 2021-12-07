@@ -1,7 +1,7 @@
 
 rs.initiate(
     {
-        _id: "shard{{ mongo_shard_id }}",
+        _id: "shard{{ mongo_shard_id | default(0) }}",
         members:
         [
             { _id: 0, host: "{{ ip_service }}:{{ mongodb.mongod_port }}" }

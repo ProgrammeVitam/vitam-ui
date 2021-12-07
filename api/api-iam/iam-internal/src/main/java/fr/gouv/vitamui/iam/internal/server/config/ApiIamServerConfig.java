@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -209,27 +210,27 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public IdentityProviderInternalService identityProviderCrudService(
-        final CustomSequenceRepository sequenceRepository,
-        final IdentityProviderRepository identityProviderRepository, final SpMetadataGenerator spMetadataGenerator,
+    public SequenceGeneratorService sequenceGeneratorService(
+        final CustomSequenceRepository sequenceRepository) {
+        return new SequenceGeneratorService(sequenceRepository);
+    }
+
+    @Bean
+    public IdentityProviderInternalService identityProviderCrudService(final SequenceGeneratorService sequenceGeneratorService,final IdentityProviderRepository identityProviderRepository, final SpMetadataGenerator spMetadataGenerator,
         final CustomerRepository customerRepository, final IamLogbookService iamLogbookService,
         final IdentityProviderConverter idpConverter) {
-        return new IdentityProviderInternalService(sequenceRepository, identityProviderRepository, spMetadataGenerator,
+        return new IdentityProviderInternalService(sequenceGeneratorService, identityProviderRepository, spMetadataGenerator,
             customerRepository, iamLogbookService,
             idpConverter);
     }
 
     @Bean
-    public CustomerInternalService customerCrudService(final CustomSequenceRepository sequenceRepository,
-        final CustomerRepository customerRepository,
-        final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
-        final InternalSecurityService internalSecurityService, final AddressService addressService,
-        final InitCustomerService initCustomerService,
-        final IamLogbookService iamLogbookService, final CustomerConverter customerConverter,
-        final LogbookService logbookService) {
-        return new CustomerInternalService(sequenceRepository, customerRepository, internalOwnerService,
-            userInternalService, internalSecurityService,
-            addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
+    public CustomerInternalService customerCrudService(final SequenceGeneratorService sequenceGeneratorService, final CustomerRepository customerRepository,
+            final OwnerInternalService internalOwnerService, final UserInternalService userInternalService,
+            final InternalSecurityService internalSecurityService, final AddressService addressService, final InitCustomerService initCustomerService,
+            final IamLogbookService iamLogbookService, final CustomerConverter customerConverter, final LogbookService logbookService) {
+        return new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService, userInternalService, internalSecurityService,
+                addressService, initCustomerService, iamLogbookService, customerConverter, logbookService);
     }
 
     @Bean
@@ -238,14 +239,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public OwnerInternalService ownerCrudService(final CustomSequenceRepository sequenceRepository,
+    public OwnerInternalService ownerCrudService(final SequenceGeneratorService sequenceGeneratorService,
         final OwnerRepository ownerRepository,
         final CustomerRepository customerRepository, final AddressService addressService,
         final IamLogbookService iamLogbookService,
         final InternalSecurityService internalSecurityService, final OwnerConverter ownerConverter,
         final LogbookService logbookService,
         final TenantRepository tenantRepository) {
-        return new OwnerInternalService(sequenceRepository, ownerRepository, customerRepository, addressService,
+        return new OwnerInternalService(sequenceGeneratorService, ownerRepository, customerRepository, addressService,
             iamLogbookService, internalSecurityService,
             ownerConverter, logbookService, tenantRepository);
     }
@@ -259,7 +260,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public TenantInternalService tenantCrudService(final CustomSequenceRepository sequenceRepository,
+    public TenantInternalService tenantCrudService(final SequenceGeneratorService sequenceGeneratorService,
         final TenantRepository tenantRepository,
         final CustomerRepository customerRepository, final OwnerRepository ownerRepository,
         final GroupRepository groupRepository,
@@ -273,7 +274,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final LogbookService logbookService,
         final CustomerInitConfig customerInitConfig, final ExternalParametersRepository externalParametersRepository,
         final ExternalParametersInternalService externalParametersInternalService) {
-        return new TenantInternalService(sequenceRepository, tenantRepository, customerRepository, ownerRepository,
+        return new TenantInternalService(sequenceGeneratorService, tenantRepository, customerRepository, ownerRepository,
             groupRepository, profileRepository,
             userRepository, internalGroupService, internalUserService, internalOwnerService, internalProfileService,
             internalSecurityService,
@@ -288,7 +289,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public UserInternalService userService(final CustomSequenceRepository sequenceRepository,
+    public UserInternalService userService(final SequenceGeneratorService sequenceGeneratorService,
         final UserRepository userRepository,
         final ProfileInternalService profileInternalService, final UserEmailInternalService userEmailInternalService,
         final TenantRepository tenantRepository, final InternalSecurityService internalSecurityService,
@@ -300,7 +301,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final LogbookService logbookService, final AddressService addressService,
         final ApplicationInternalService applicationInternalService,
         final PasswordConfiguration passwordConfiguration) {
-        return new UserInternalService(sequenceRepository, userRepository, groupInternalService, profileInternalService,
+        return new UserInternalService(sequenceGeneratorService, userRepository, groupInternalService, profileInternalService,
             userEmailInternalService,
             tenantRepository, internalSecurityService, customerRepository, profilRepository, groupRepository,
             iamLogbookService, userConverter,
@@ -316,36 +317,36 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public GroupInternalService groupInternalService(final CustomSequenceRepository sequenceRepository,
+    public GroupInternalService groupInternalService(final SequenceGeneratorService sequenceGeneratorService,
         final GroupRepository groupRepository,
         final CustomerRepository customerRepository, final ProfileInternalService internalProfileService,
         final UserRepository userRepository,
         final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository,
         final IamLogbookService iamLogbookService,
         final GroupConverter groupConverter, final LogbookService logbookService) {
-        return new GroupInternalService(sequenceRepository, groupRepository, customerRepository, internalProfileService,
+        return new GroupInternalService(sequenceGeneratorService, groupRepository, customerRepository, internalProfileService,
             userRepository,
             internalSecurityService, tenantRepository, iamLogbookService, groupConverter, logbookService);
     }
 
     @Bean
-    public ProfileInternalService profileCrudService(final CustomSequenceRepository sequenceRepository,
+    public ProfileInternalService profileCrudService(final SequenceGeneratorService sequenceGeneratorService,
         final ProfileRepository profileRepository,
         final CustomerRepository customerRepository, final GroupRepository groupRepository,
         final TenantRepository tenantRepository,
         final UserRepository userRepository, final InternalSecurityService internalSecurityService,
         final IamLogbookService iamLogbookService,
         final ProfileConverter profileConverter, final LogbookService logbookService) {
-        return new ProfileInternalService(sequenceRepository, profileRepository, customerRepository, groupRepository,
+        return new ProfileInternalService(sequenceGeneratorService, profileRepository, customerRepository, groupRepository,
             tenantRepository, userRepository,
             internalSecurityService, iamLogbookService, profileConverter, logbookService);
     }
 
     @Bean
-    public ApplicationInternalService applicationInternalService(final CustomSequenceRepository sequenceRepository,
+    public ApplicationInternalService applicationInternalService(final SequenceGeneratorService sequenceGeneratorService,
         final ApplicationRepository applicationRepository, final ApplicationConverter applicationConverter,
         final InternalSecurityService internalSecurityService) {
-        return new ApplicationInternalService(sequenceRepository, applicationRepository, applicationConverter,
+        return new ApplicationInternalService(sequenceGeneratorService, applicationRepository, applicationConverter,
             internalSecurityService);
     }
 
@@ -372,7 +373,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SubrogationInternalService subrogationCrudService(final CustomSequenceRepository sequenceRepository,
+    public SubrogationInternalService subrogationCrudService(final SequenceGeneratorService sequenceGeneratorService,
         final SubrogationRepository subrogationRepository, final UserRepository userRepository,
         final UserInternalService userInternalService,
         final GroupInternalService groupInternalService, final GroupRepository groupRepository,
@@ -380,7 +381,7 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         final InternalSecurityService internalSecurityService, final CustomerRepository customerRepository,
         final SubrogationConverter subrogationConverter,
         final IamLogbookService iamLogbookService) {
-        return new SubrogationInternalService(sequenceRepository, subrogationRepository, userRepository,
+        return new SubrogationInternalService(sequenceGeneratorService, subrogationRepository, userRepository,
             userInternalService, groupInternalService,
             groupRepository, profilRepository, internalSecurityService, customerRepository, subrogationConverter,
             iamLogbookService);

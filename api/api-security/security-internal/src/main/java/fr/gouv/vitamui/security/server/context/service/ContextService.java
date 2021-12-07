@@ -45,7 +45,7 @@ import org.springframework.util.Assert;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.security.common.dto.ContextDto;
 import fr.gouv.vitamui.security.server.certificate.dao.CertificateRepository;
@@ -69,9 +69,9 @@ public class ContextService extends VitamUICrudService<ContextDto, Context> {
     private final CertificateRepository certificateRepository;
 
     @Autowired
-    public ContextService(final CustomSequenceRepository sequenceRepository, final ContextRepository contextRepository,
+    public ContextService(final SequenceGeneratorService sequenceGeneratorService, final ContextRepository contextRepository,
             final CertificateRepository certificateRepository) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.contextRepository = contextRepository;
         this.certificateRepository = certificateRepository;
     }

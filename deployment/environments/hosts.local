@@ -1,9 +1,179 @@
+[hosts]
 
 [hosts:children]
 vitam
 hosts_vitamui
-zone_vitamui_rp
 
+[hosts_vitamui:children]
+zone_vitamui_rp
+zone_vitamui_ui
+zone_vitamui_admin
+zone_vitamui_cas
+zone_vitamui_app
+zone_vitamui_data
+zone_vitamui_infra
+
+################################################################################
+# ZONE ReverseProxy
+################################################################################
+[zone_vitamui_rp:children]
+hosts_vitamui_reverseproxy
+
+[hosts_vitamui_reverseproxy]
+# EDIT: Mandatory
+# WARNING: Do not colocate with [hosts_browse] and [hosts_reverse] from Vitam when using reverse: nginx
+localhost
+
+################################################################################
+# ZONE UI
+################################################################################
+# INFO: Multi-instanciation of hosts on [zone_vitamui_ui] are properly managed only with reverse: nginx
+[zone_vitamui_ui:children]
+hosts_ui_identity
+hosts_ui_portal
+hosts_ui_search
+hosts_ui_ingest
+hosts_ui_archive_search
+hosts_ui_referential
+
+[hosts_ui_identity]
+# EDIT: Mandatory
+localhost
+
+[hosts_ui_ingest]
+# EDIT: Mandatory
+localhost
+
+[hosts_ui_archive_search]
+# EDIT: Mandatory
+localhost
+
+[hosts_ui_referential]
+# EDIT: Mandatory
+localhost
+
+[hosts_ui_portal]
+# EDIT: Mandatory
+localhost
+
+[hosts_ui_search]
+# EDIT: Mandatory
+localhost
+
+################################################################################
+# ZONE ADMIN
+################################################################################
+# INFO: Multi-instanciation of hosts on [zone_vitamui_admin] are properly managed only with reverse: nginx
+[zone_vitamui_admin:children]
+hosts_ui_identity_admin
+
+[hosts_ui_identity_admin]
+# EDIT: Mandatory
+localhost
+
+################################################################################
+# ZONE CAS
+################################################################################
+[zone_vitamui_cas:children]
+hosts_cas_server
+
+[hosts_cas_server]
+# EDIT: Mandatory
+localhost
+
+################################################################################
+# ZONE APP
+################################################################################
+[zone_vitamui_app:children]
+hosts_vitamui_iam_external
+hosts_vitamui_iam_internal
+hosts_vitamui_ingest_external
+hosts_vitamui_ingest_internal
+hosts_vitamui_archive_search_external
+hosts_vitamui_archive_search_internal
+hosts_vitamui_referential_external
+hosts_vitamui_referential_internal
+hosts_vitamui_security_internal
+
+[hosts_vitamui_iam_external]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_iam_internal]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_ingest_external]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_ingest_internal]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_archive_search_external]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_archive_search_internal]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_referential_external]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_referential_internal]
+# EDIT: Mandatory
+localhost
+
+[hosts_vitamui_security_internal]
+# EDIT: Mandatory
+localhost
+
+################################################################################
+# ZONE DATA
+################################################################################
+[zone_vitamui_data:children]
+hosts_vitamui_mongod
+
+[hosts_vitamui_mongod]
+# EDIT: Mandatory
+# WARNING: put only one server for this service, not more !
+# Mandatory params
+#  - mongo_rs_bootstrap=true (default: false)
+# Optional params
+#  - mongo_cluster_name=mongo-vitamui (default: mongo-vitamui)
+#  - mongo_shard_id=0 (default: 0)
+#  - mongo_express=true to deploy mongo_express (default: false)
+# Example:
+# vm-mongo-ui mongo_rs_bootstrap=true mongo_express=true
+localhost mongo_rs_bootstrap=true mongo_express=true
+
+################################################################################
+# ZONE INFRA
+################################################################################
+[zone_vitamui_infra:children]
+hosts_vitamui_logstash
+hosts_vitamui_consul_server
+
+[hosts_vitamui_logstash]
+# EDIT: Optionnal
+# Add nodes in this group if you want to start a dedicated logstash cluster for vitamui
+# otherwise leave this group empty (by default logs will be sent to vitam's logstash cluster)
+
+
+[hosts_vitamui_consul_server]
+# EDIT: Mandatory unless [hosts_consul_server] is defined
+# Choose between [hosts_consul_server] and [hosts_vitamui_consul_server]. If both defined [hosts_vitamui_consul_server] will be used by default.
+#
+# Add nodes in this group if you want to start a dedicated consul cluster for vitamui, don't forget to fill the consul_remote_sites in environments/group_vars/all/consul_vars.yml and define the parameter vitamui_site_name different from vitam_site_name
+# otherwise, if you want to use consul cluster from vitam, leave this group empty and fill the group [hosts_consul_server] instead
+
+
+################################################################################
+# ZONE VITAM
+################################################################################
 [vitam:children]
 hosts_consul_server
 hosts_ingest_external
@@ -13,175 +183,14 @@ hosts_elasticsearch_log
 hosts_functionnal_admin
 hosts_security_internal
 
-
-# SERVER LIST vitamui machines
-[hosts_vitamui:children]
-zone_vitamui_ui
-zone_vitamui_cas
-zone_vitamui_app
-zone_vitamui_data
-zone_vitamui_infra
-zone_vitamui_admin
-
-
-########################################################
-# ZONE Infra
-
-[zone_vitamui_infra:children]
-hosts_vitamui_logstash
-hosts_vitamui_consul_server
-
-[hosts_vitamui_logstash]
-# EDIT
-# not for the moment...
-#localhost
-
-[hosts_vitamui_consul_server]
-# EDIT
-localhost
-
-########################################################
-# ZONE Data
-
-[zone_vitamui_data:children]
-hosts_vitamui_mongod
-
-[hosts_vitamui_mongod]
-# EDIT
-localhost mongo_rs_bootstrap=true mongo_express=true
-
-########################################################
-# ZONE reverseproxy
-
-[zone_vitamui_rp:children]
-hosts_vitamui_reverseproxy
-
-[hosts_vitamui_reverseproxy]
-# EDIT
-localhost
-
-########################################################
-# ZONE APP
-
-[zone_vitamui_app:children]
-hosts_vitamui_iam_internal
-hosts_vitamui_iam_external
-hosts_vitamui_referential_internal
-hosts_vitamui_referential_external
-hosts_vitamui_security_internal
-hosts_vitamui_ingest_internal
-hosts_vitamui_ingest_external
-hosts_vitamui_archive_search_internal
-hosts_vitamui_archive_search_external
-
-[hosts_vitamui_iam_internal]
-localhost
-
-[hosts_vitamui_iam_external]
-localhost
-
-[hosts_vitamui_referential_internal]
-localhost
-
-[hosts_vitamui_referential_external]
-localhost
-
-[hosts_vitamui_ingest_internal]
-localhost
-
-[hosts_vitamui_ingest_external]
-localhost
-
-[hosts_vitamui_archive_search_internal]
-localhost
-
-[hosts_vitamui_archive_search_external]
-localhost
-
-[hosts_vitamui_security_internal]
-localhost
-
-
-########################################################
-# ZONE UI
-########################################################
-
-[zone_vitamui_ui:children]
-hosts_ui_identity
-hosts_ui_portal
-hosts_ui_search
-hosts_ui_referential
-hosts_ui_ingest
-hosts_ui_archive_search
-
-
-[hosts_ui_portal]
-localhost
-
-[hosts_ui_ingest]
-localhost
-
-[hosts_ui_archive_search]
-localhost
-
-[hosts_ui_search]
-localhost
-
-[hosts_ui_referential]
-localhost
-
-########################################################
-# ZONE ADMIN
-########################################################
-
-[zone_vitamui_admin:children]
-hosts_ui_identity_admin
-
-[hosts_ui_identity_admin]
-# EDIT
-localhost
-
-########################################################
-# ZONE CAS
-########################################################
-
-[zone_vitamui_cas:children]
-hosts_cas_server
-
-[hosts_cas_server]
-# EDIT
-localhost
-
-########################################################
-# ZONE TOOLS
-########################################################
-
-# SERVER LIST bastion
-#
-# Jump servers where ssh jump will be installed
-#
-[bastion]
-# EDIT
-
-[hosts_browse]
-# EDIT
-
-#
-# **************************************    ZONES VITAM   ******************************************************
-#
-
 # MINIMUM REQUIRED IN ZONE VITAM
 [hosts_consul_server]
-
+localhost
 
 [hosts_ingest_external]
 localhost
 
-
 [hosts_access_external]
-localhost
-
-[hosts_ihm_demo]
 localhost
 
 [hosts_elasticsearch_log]
@@ -193,23 +202,24 @@ localhost
 [hosts_security_internal]
 localhost
 
-########################################################
+################################################################################
+# ZONE TOOLS
+################################################################################
+[hosts_browse]
+# EDIT
+
+
+################################################################################
 # VARS - common VITAMUI and VITAM
-########################################################
+################################################################################
 [hosts:vars]
 dns_servers=["10.100.211.222", "8.8.8.8"]
-ansible_connection=local
-ansible_become=true
+
 vitam_site_name=local
+vitamui_site_name="{{ vitam_site_name }}-ui"
+
 consul_domain=consul
-url_prefix="https://reverse.service.consul"
-mongo_shard_id=0
+vitam_reverse_external_dns=reverse.service.consul
 
-# Reverse configuration
-vitam_reverse_external_dns=localhost
-vitam_reverse_external_protocol=https
-reverse_proxy_port=443
-http_proxy_environnement=
-
-[hosts_vitamui_mongod:vars]
-mongo_cluster_name=mongo-vitamui
+ansible_become=true
+ansible_connection=local

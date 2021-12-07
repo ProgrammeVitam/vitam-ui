@@ -51,7 +51,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.mongo.utils.MongoUtils;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -125,11 +124,11 @@ public class GroupInternalService extends VitamUICrudService<GroupDto, Group> {
     private LogbookService logbookService;
 
     @Autowired
-    public GroupInternalService(final CustomSequenceRepository sequenceRepository, final GroupRepository groupRepository,
+    public GroupInternalService(final SequenceGeneratorService sequenceGeneratorService, final GroupRepository groupRepository,
             final CustomerRepository customerRepository, final ProfileInternalService internalProfileService, final UserRepository userRepository,
             final InternalSecurityService internalSecurityService, final TenantRepository tenantRepository, final IamLogbookService iamLogbookService,
             final GroupConverter groupConverter, final LogbookService logbookService) {
-        super(sequenceRepository);
+        super(sequenceGeneratorService);
         this.groupRepository = groupRepository;
         this.customerRepository = customerRepository;
         this.internalProfileService = internalProfileService;

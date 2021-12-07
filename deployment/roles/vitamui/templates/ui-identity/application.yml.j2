@@ -6,7 +6,7 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
 server:
   host: {{ vitamui.identity.host }}
@@ -28,6 +28,8 @@ server:
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
 
 {% endif %}
   tomcat:
@@ -46,7 +48,7 @@ logging:
     config: {{ vitamui_folder_conf }}/logback.xml
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -60,6 +62,7 @@ ui-identity:
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
+  user-logo: "{{ vitamui_platform_informations.theme.user_logo }}"
   portal-message: "{{ vitamui_platform_informations.portal_message }}"
   portal-title: "{{ vitamui_platform_informations.portal_title }}"
   theme-colors:

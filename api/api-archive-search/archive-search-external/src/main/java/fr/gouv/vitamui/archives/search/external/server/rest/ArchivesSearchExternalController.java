@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -44,6 +45,7 @@ import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +56,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -90,9 +93,10 @@ public class ArchivesSearchExternalController {
         return archivesSearchExternalService.getFilingHoldingScheme();
     }
 
-    @GetMapping(RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID)
+    @GetMapping(value = RestApi.DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<Resource> downloadObjectFromUnit(final @PathVariable("id") String id,
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
         final @RequestParam("usage") String usage, final @RequestParam("version") Integer version) {
         LOGGER.info("Download the Archive Unit Object with id {} ", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
@@ -149,5 +153,14 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         return archivesSearchExternalService.startEliminationAction(query);
+    }
+
+    @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
+    @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
+    public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto) {
+        LOGGER.info("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", ruleSearchCriteriaDto);
+        SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
+        return archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
     }
 }

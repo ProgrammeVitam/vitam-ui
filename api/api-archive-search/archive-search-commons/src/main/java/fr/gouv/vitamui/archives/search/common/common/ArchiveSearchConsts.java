@@ -79,6 +79,8 @@ public class ArchiveSearchConsts {
     public final static String APPRAISAL_RULE_IDENTIFIER = "APPRAISAL_RULE_IDENTIFIER";
     public final static String APPRAISAL_RULE_TITLE = "APPRAISAL_RULE_TITLE";
     public final static String APPRAISAL_RULE_END_DATE = "APPRAISAL_RULE_END_DATE";
+    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+    public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";

@@ -7,7 +7,7 @@ spring:
       discovery:
         preferIpAddress: true
         tags: {{ consul_tags }}
-        instanceId:  {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
+        instanceId: {{ vitamui_struct.vitamui_component }}-${server.port}-${spring.cloud.client.hostname}
 
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
@@ -26,6 +26,9 @@ server:
     client-auth: need
     enabled-protocols: {{ssl_setting.enabled_protocols}}
     ciphers: {{ssl_setting.ciphers}}
+  error:
+    path: /error
+
 {% endif %}
   tomcat:
     accesslog:
@@ -39,7 +42,7 @@ management:
       enabled: false
 
 server-identity:
-  identityName: {{ vitamui_site_name }}
+  identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}
   identityServerId: 1
 
@@ -56,7 +59,7 @@ iam-external:
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
   iam-internal-client:
@@ -74,7 +77,7 @@ iam-external:
         type: JKS
       truststore:
         key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
-        key-password:  {{ password_truststore }}
+        key-password: {{ password_truststore }}
       hostname-verification: false
 {% endif %}
 

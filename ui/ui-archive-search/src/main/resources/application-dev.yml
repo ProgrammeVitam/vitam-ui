@@ -24,6 +24,9 @@ server:
     enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
   servlet.session.cookie.path: /archive-search-api
+  error:
+    path: /error
+
 management:
   server:
     address: localhost
@@ -36,6 +39,7 @@ ui-archive-search:
   portal-logo: logo_PORTAL.png
   header-logo: logo_HEADER.png
   footer-logo: logo_FOOTER.png
+  user-logo: logo_USER.png
   portal-title: "Portail des applications de l'archivage"
   theme-colors:
     vitamui-primary: "#702382"

@@ -25,6 +25,8 @@ server-identity:
 server:
   host:
   port: 7083
+  error:
+    path: /error
 
 management:
   server:

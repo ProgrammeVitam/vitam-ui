@@ -528,13 +528,12 @@ public class IngestGeneratorODTFile {
     }
 
     private String getStartedDate(List<String> listOfDate) {
-        if(listOfDate.size() > 0) {
 
+        if(listOfDate != null && listOfDate.size() > 0) {
            String firstStartDate =  listOfDate.stream().map(
                startDate ->
                    startDate.substring(0, startDate.indexOf("T")))
                .sorted().findFirst().get();
-
             return transformDate(firstStartDate);
         }
         return "_ _ _ _";

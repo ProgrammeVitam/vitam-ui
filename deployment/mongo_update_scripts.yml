@@ -1,3 +1,0 @@
-- hosts: hosts_vitamui_mongod
-  roles:
-        - { role: init_app_bdd }
