@@ -57,6 +57,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.core.io.Resource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -443,6 +444,20 @@ public class IngestGeneratorODTFile {
         }
     }
 
+    private String getEndDate(List<String> listOfDate) {
+
+        if(!CollectionUtils.isEmpty(listOfDate)) {
+            String lastEndDate = listOfDate.stream().map(
+                endDate ->
+                    manageDateFormat(endDate))
+                .sorted().collect(Collectors.toList())
+                .get(listOfDate.size()-1);
+
+            return transformDate(lastEndDate);
+        }
+        return "_ _ _ _";
+    }
+
     private Map<String, String> getSystemIdValues(Document document) {
 
         Map<String, String> map = new HashMap<>();
@@ -529,16 +544,19 @@ public class IngestGeneratorODTFile {
     }
 
     private String getStartedDate(List<String> listOfDate) {
-        if(listOfDate.size() > 0) {
-            return transformDate(listOfDate.get(0).split("T")[0]);
+
+        if(!CollectionUtils.isEmpty(listOfDate)) {
+           String firstStartDate =  listOfDate.stream().map(
+               startDate ->
+                   manageDateFormat(startDate))
+               .sorted().findFirst().get();
+            return transformDate(firstStartDate);
         }
         return "_ _ _ _";
     }
 
-    private String getEndDate(List<String> listOfDate) {
-        if(listOfDate.size() > 0) {
-            return transformDate(listOfDate.get(listOfDate.size() - 1).split("T")[0]);
-        }
-        return "_ _ _ _";
+    private String manageDateFormat(String date) {
+        return (date.contains("T"))
+            ? date.substring(0, date.indexOf("T")) : date;
     }
 }
