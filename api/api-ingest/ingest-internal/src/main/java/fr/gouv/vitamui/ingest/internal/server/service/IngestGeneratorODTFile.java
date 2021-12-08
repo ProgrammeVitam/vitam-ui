@@ -55,6 +55,7 @@ import org.odftoolkit.simple.table.Table;
 import org.odftoolkit.simple.text.Paragraph;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -431,10 +432,11 @@ public class IngestGeneratorODTFile {
     }
 
     private String getEndDate(List<String> listOfDate) {
-        if(listOfDate.size() > 0) {
 
+        if(!CollectionUtils.isEmpty(listOfDate)) {
             String lastEndDate = listOfDate.stream().map(
-                endDate -> endDate.substring(0, endDate.indexOf("T")))
+                endDate ->
+                    manageDateFormat(endDate))
                 .sorted().collect(Collectors.toList())
                 .get(listOfDate.size()-1);
 
@@ -529,10 +531,10 @@ public class IngestGeneratorODTFile {
 
     private String getStartedDate(List<String> listOfDate) {
 
-        if(listOfDate != null && listOfDate.size() > 0) {
+        if(!CollectionUtils.isEmpty(listOfDate)) {
            String firstStartDate =  listOfDate.stream().map(
                startDate ->
-                   startDate.substring(0, startDate.indexOf("T")))
+                   manageDateFormat(startDate))
                .sorted().findFirst().get();
             return transformDate(firstStartDate);
         }
@@ -543,5 +545,10 @@ public class IngestGeneratorODTFile {
         return element.getElementsByTagName(tagName).getLength() == 0 ?
             "_ _ _ _" :
             element.getElementsByTagName(tagName).item(0).getTextContent();
+    }
+
+    private String manageDateFormat(String date) {
+        return (date.contains("T"))
+            ? date.substring(0, date.indexOf("T")) : date;
     }
 }
