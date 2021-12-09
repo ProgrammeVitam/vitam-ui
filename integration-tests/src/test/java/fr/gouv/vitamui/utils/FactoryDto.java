@@ -32,7 +32,7 @@ import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_ID;
 
 public class FactoryDto {
 
-    private static Integer proofTenantIdentitfier = 10;
+    private static Integer proofTenantIdentitfier = 1;
 
     @Autowired
     public FactoryDto(Environment env) {
