@@ -4,7 +4,6 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.result.InsertOneResult;
 import fr.gouv.vitamui.RegisterRestQueryInterceptor;
 import fr.gouv.vitamui.TestContextConfiguration;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClientFactory;
@@ -24,6 +23,7 @@ import fr.gouv.vitamui.iam.external.client.ApplicationExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
+import fr.gouv.vitamui.iam.external.client.ExternalParamProfileExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.ExternalParametersExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.GroupExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
@@ -31,13 +31,24 @@ import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.OwnerExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.ProfileExternalRestClient;
-import fr.gouv.vitamui.iam.external.client.*;
-import fr.gouv.vitamui.referential.external.client.*;
+import fr.gouv.vitamui.iam.external.client.SubrogationExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.TenantExternalRestClient;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AccessContractExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.AgencyExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.ContextExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.FileFormatExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.IngestContractExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.OntologyExternalWebClient;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.RuleExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.SecurityProfileExternalRestClient;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.utils.TestConstants;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
-import org.bson.BsonValue;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +67,12 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -65,7 +81,8 @@ import static com.mongodb.client.model.Filters.eq;
 public abstract class BaseIntegration {
 
     protected static final String TESTS_CONTEXT_ID = "integration-tests_context";
-
+    //protected static final String TESTS_CONTEXT_ID = "cas_context";
+    //protected static final String TESTS_CERTIFICATE_ID = "localhost_cas-server_cert";
     protected static final String TESTS_CERTIFICATE_ID = "integration-tests_cert";
 
     protected static final String GENERIC_CERTIFICATE = "generic-it";
@@ -84,7 +101,7 @@ public abstract class BaseIntegration {
 
     public static final String ADMIN_USER = "admin_user";
 
-    public static final String ADMIN_USER_GROUP = "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363";
+    public static final String ADMIN_USER_GROUP = "admin_user";
 
     private IamExternalRestClientFactory restClientFactory;
 
@@ -542,6 +559,8 @@ public abstract class BaseIntegration {
 
         // recreate generic certificate
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
+        //Document contextId = getCertificatesCollection().find(eq("contextId", TESTS_CONTEXT_ID)).first();
+        //LOGGER.debug("contextId = : ", contextId.toJson());
         //@formatter:off
         try {
             final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());

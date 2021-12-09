@@ -1,13 +1,5 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.profile;
 
-import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_PROFILES;
-import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
-import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
-import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_NAME;
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Arrays;
-
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.Role;
@@ -19,6 +11,14 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
+import java.util.Arrays;
+
+import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_PROFILES;
+import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_LOGBOOKS;
+import static fr.gouv.vitamui.utils.TestConstants.CLIENT1_CUSTOMER_ID;
+import static fr.gouv.vitamui.utils.TestConstants.SYSTEM_USER_PROFILE_NAME;
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Teste l'API Profiles dans IAM admin : opérations de création.
  *
@@ -28,7 +28,7 @@ public class ApiIamExternalProfileCreationSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_PROFILES ajoute un nouveau profil dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_PROFILES$")
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_PROFILES_ajoute_un_nouveau_profil_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_PROFILES() {
-        testContext.profileDto = getProfileRestClient(true, null, new String[] { ROLE_CREATE_PROFILES }).create(getSystemTenantUserAdminContext(),
+        testContext.profileDto = getProfileRestClient().create(getSystemTenantUserAdminContext(),
                 FactoryDto.buildDto(ProfileDto.class));
     }
 
