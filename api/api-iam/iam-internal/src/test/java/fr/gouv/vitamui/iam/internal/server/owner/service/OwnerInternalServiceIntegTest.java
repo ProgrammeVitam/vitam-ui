@@ -212,7 +212,7 @@ public class OwnerInternalServiceIntegTest extends AbstractLogbookIntegrationTes
         Mockito.when(internalSecurityService.getTenantIdentifier()).thenReturn(tenant.getIdentifier());
         Mockito.when(internalSecurityService.getTenant(eq(tenant.getIdentifier()))).thenReturn(tenant);
         final RequestResponse<LogbookOperation> operationsResponse =
-                new RequestResponseOK<JsonNode>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId").addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
+                new RequestResponseOK<LogbookOperation>().addHeader(GlobalDataRest.X_REQUEST_ID, "requestId").addHeader(GlobalDataRest.X_APPLICATION_ID, "appId")
                         .setHttpCode(Response.Status.OK.getStatusCode());
         Mockito.when(logbookService.findEventsByIdentifierAndCollectionNames(anyString(), anyString(), any())).thenReturn(operationsResponse);
 
