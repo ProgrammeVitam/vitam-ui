@@ -18,3 +18,4 @@ server_ui_ingest_key: changeme
 server_archive_search_internal_key: changeme
 server_archive_search_external_key: changeme
 server_ui_archive_search_key: changeme
+server_trn_certificates_key: changeme

@@ -36,6 +36,7 @@ function generateCerts {
     #Zone externe
     generateHostCertAndStorePassphrase          iam-external        hosts_vitamui_iam_external
     generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
+    generateHostCertAndStorePassphrase          trn-certificates          hosts_cas_server
     generateHostCertAndStorePassphrase          referential-external        hosts_vitamui_referential_external
     generateHostCertAndStorePassphrase          ingest-external     hosts_vitamui_ingest_external
     generateHostCertAndStorePassphrase          archive-search-external     hosts_vitamui_archive_search_external

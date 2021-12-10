@@ -9,9 +9,10 @@ server-identity:
 
 certs-folder: certs/local/
 generic-cert: ${certs-folder}/generic-it.jks
+generic-pswd: w2DalKtV2cNG4eIPBsOp4VxpBJZTIBjTXCxxKMdmnppG6kTU
 jks-password: changeme
 
-# Iam client configuration
+# Iam client configuration w2DalKtV2cNG4eIPBsOp4VxpBJZTIBjTXCxxKMdmnppG6kTU
 iam-client:
   host: localhost
   port: 8083

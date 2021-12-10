@@ -101,7 +101,7 @@ public abstract class BaseIntegration {
 
     public static final String ADMIN_USER = "admin_user";
 
-    public static final String ADMIN_USER_GROUP = "admin_user";
+    public static final String ADMIN_USER_GROUP = "admin_group";
 
     private IamExternalRestClientFactory restClientFactory;
 
@@ -194,6 +194,9 @@ public abstract class BaseIntegration {
 
     @Value("${generic-cert}")
     private String genericCert;
+
+    @Value("${generic-pswd}")
+    private String genericPswd;
 
     @Value("${jks-password}")
     private String jksPassword;
@@ -355,6 +358,26 @@ public abstract class BaseIntegration {
         return sslConfig;
     }
 
+    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String genericPswd, final String iamKeystorePassword, final String trustStorePathname,
+        final String iamTruststorePassword) {
+        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore = new SSLConfiguration.CertificateStoreConfiguration();
+        keyStore.setKeyPath(keystorePath);
+        keyStore.setKeyPassword(genericPswd);
+        keyStore.setType("JKS");
+        final SSLConfiguration.CertificateStoreConfiguration trustStore = new SSLConfiguration.CertificateStoreConfiguration();
+        trustStore.setKeyPath(trustStorePath);
+        trustStore.setKeyPassword(iamTruststorePassword);
+        trustStore.setType("JKS");
+
+        final SSLConfiguration sslConfig = new SSLConfiguration();
+        sslConfig.setKeystore(keyStore);
+        sslConfig.setTruststore(trustStore);
+
+        return sslConfig;
+    }
+
     protected RestClientConfiguration getRestClientConfiguration(final String host, final int port, final boolean secure, final SSLConfiguration sslConfig) {
         final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
         restClientConfiguration.setServerHost(host);
@@ -384,6 +407,17 @@ public abstract class BaseIntegration {
                 getRestClientConfiguration(iamServerHost, iamServerPort, true,
                         getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)),
                 restTemplateBuilder);
+        final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        interceptors.add(new RegisterRestQueryInterceptor());
+        restClientFactory.setRestClientInterceptor(interceptors);
+        return restClientFactory;
+    }
+
+    protected IamExternalRestClientFactory getIamRestClientFactory(final String keystorePrefix, final String genericPswd) {
+        final IamExternalRestClientFactory restClientFactory = new IamExternalRestClientFactory(
+            getRestClientConfiguration(iamServerHost, iamServerPort, true,
+                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", genericPswd, iamKeystorePassword, iamTrustStoreFilePath, iamTruststorePassword)),
+            restTemplateBuilder);
         final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new RegisterRestQueryInterceptor());
         restClientFactory.setRestClientInterceptor(interceptors);
@@ -563,7 +597,7 @@ public abstract class BaseIntegration {
         //LOGGER.debug("contextId = : ", contextId.toJson());
         //@formatter:off
         try {
-            final String certificate = getCertificate("JKS", genericCert, jksPassword.toCharArray());
+            final String certificate = getCertificate("JKS", genericCert, genericPswd.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
                     .append("contextId", TESTS_CONTEXT_ID)
@@ -575,7 +609,7 @@ public abstract class BaseIntegration {
 
         }
         catch (final Exception e) {
-            LOGGER.error("Retrieving generic certificate failed [cert={}, password:{}, exception :{}]", genericCert, jksPassword, e);
+            LOGGER.error("Retrieving generic certificate failed [cert={}, password:{}, exception :{}]", genericCert, genericPswd, e);
         }
         //@formatter:on
     }
@@ -678,7 +712,7 @@ public abstract class BaseIntegration {
 
     protected ProfileExternalRestClient getProfileRestClient(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
         prepareGenericContext(fullAccess, tenants, roles);
-        return getIamRestClientFactory(GENERIC_CERTIFICATE).getProfileExternalRestClient();
+        return getIamRestClientFactory(GENERIC_CERTIFICATE, genericPswd).getProfileExternalRestClient();
     }
 
     protected CasExternalRestClient getCasRestClient() {
