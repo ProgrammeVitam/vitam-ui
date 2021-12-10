@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import fr.gouv.vitam.common.model.administration.FileRulesModel;
+import fr.gouv.vitam.common.model.administration.RuleMeasurementEnum;
+import fr.gouv.vitam.common.model.administration.RuleType;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 
@@ -47,13 +49,15 @@ public class RuleConverter {
 
     public FileRulesModel convertDtoToVitam(final RuleDto dto) {
         final FileRulesModel rule = VitamUIUtils.copyProperties(dto, new FileRulesModel());
-
+        rule.setRuleType(RuleType.getEnumFromName(dto.getRuleType()));
+        rule.setRuleMeasurement(RuleMeasurementEnum.getEnumFromType(dto.getRuleMeasurement()));
         return rule;
     }
 
     public RuleDto convertVitamToDto(final FileRulesModel rule) {
         final RuleDto dto = VitamUIUtils.copyProperties(rule, new RuleDto());
-
+        dto.setRuleMeasurement(rule.getRuleMeasurement().getType());
+        dto.setRuleType(rule.getRuleType().name());
         return dto;
     }
 
