@@ -52,11 +52,9 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import {AppraisalRuleFacets,
-                  ArchiveSearchResultFacets,
+import {
+  ArchiveSearchResultFacets,
   CriteriaValue,
-  PagedResult,
-  ResultFacetList
   PagedResult,
   SearchCriteria,
   SearchCriteriaCategory,
@@ -189,7 +187,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   pending = false;
   included = false;
   canLoadMore = false;
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   appraisalRuleCriteriaForm: FormGroup;
   submited = false;
   searchCriterias: Map<string, SearchCriteria>;

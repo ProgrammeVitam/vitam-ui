@@ -85,8 +85,6 @@ import { AddUpdatePropertyComponent } from './management-rules/add-update-proper
 import { DuaManagementRulesComponent } from './management-rules/dua-management-rules/dua-management-rules.component';
 import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
-import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
-import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
 @NgModule({
@@ -144,12 +142,12 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
     SearchAppraisalRulesFacetsComponent,
-    ArchiveSearchRulesFacetsComponent
+    ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
     DuaManagementRulesComponent,
     AddUpdatePropertyComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ArchiveModule {}

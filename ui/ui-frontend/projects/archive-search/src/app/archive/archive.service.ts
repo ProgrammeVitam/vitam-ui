@@ -57,7 +57,7 @@ import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
   constructor(
@@ -72,30 +72,6 @@ export class ArchiveService extends SearchService<any> {
 
   headers = new HttpHeaders();
 
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0
-    };
-    const resultFacets: ResultFacet[] = [];
-    if (response.$facetResults && response.$facetResults) {
-      for (const facet of response.$facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    //pagedResult.facets = resultFacets;
-    return pagedResult;
-  }
-
   private static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
@@ -107,7 +83,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -136,7 +112,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
@@ -171,7 +147,7 @@ export class ArchiveService extends SearchService<any> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
-            duration: 10000
+            duration: 10000,
           });
         }
       }
@@ -197,7 +173,7 @@ export class ArchiveService extends SearchService<any> {
 
   launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
-   }
+  }
   private buildPagedResults(response: SearchResponse): PagedResult {
     let pagedResult: PagedResult = {
       results: response.$results,
@@ -278,30 +254,6 @@ export class ArchiveService extends SearchService<any> {
     return appraisalRulesFacets;
   }
 
-  downloadObjectFromUnit(id: string, title?: string, title_?: any, headers?: HttpHeaders) {
-    return this.archiveApiService.downloadObjectFromUnit(id, headers).subscribe(
-      (response) => {
-        let filename;
-        if (response.headers.get('content-disposition').includes('filename')) {
-          filename = response.headers.get('content-disposition').split('=')[1];
-        } else {
-          filename = this.normalizeTitle(ArchiveService.fetchTitle(title, title_));
-        }
-
-        const element = document.createElement('a');
-        element.href = window.URL.createObjectURL(response.body);
-        element.download = filename;
-        element.style.visibility = 'hidden';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      },
-      (errors) => {
-        console.log('Error message : ', errors);
-      }
-    );
-  }
-
   normalizeTitle(title: string): string {
     title = title.replace(/[&\/\\|.'":*?<> ]/g, '');
     return title.substring(0, 218);
@@ -350,9 +302,9 @@ export class ArchiveService extends SearchService<any> {
       data: {
         type: 'WorkflowSuccessSnackBar',
         message,
-        serviceUrl
+        serviceUrl,
       },
-      duration: 100000
+      duration: 100000,
     });
   }
 
@@ -372,7 +324,7 @@ export class ArchiveService extends SearchService<any> {
     if (!allunitups || allunitups.length === 0) {
       return of({
         fullPath: '',
-        resumePath: ''
+        resumePath: '',
       });
     }
 
@@ -382,14 +334,14 @@ export class ArchiveService extends SearchService<any> {
         values: allunitups,
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: archiveUnit['#allunitups'].length
+      size: archiveUnit['#allunitups'].length,
     };
 
     return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
@@ -416,7 +368,7 @@ export class ArchiveService extends SearchService<any> {
 
         return {
           fullPath,
-          resumePath
+          resumePath,
         };
       })
     );
