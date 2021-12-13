@@ -21,7 +21,7 @@
   delay: "{{ packages_install_retries_delay }}"
   when:
     - ansible_os_family == "Debian"
-    - disable_internet_repositories_install == false
+    - disable_internet_repositories_install | default(false) | bool == false
 
 - name: "install openjdk only when Debian"
   apt:
@@ -33,7 +33,7 @@
   delay: "{{ packages_install_retries_delay }}"
   when:
     - ansible_os_family == "Debian"
-    - disable_internet_repositories_install == true
+    - disable_internet_repositories_install | default(false) | bool == true
 
 - name: Install logstash package from repo
   package:
