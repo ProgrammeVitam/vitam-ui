@@ -48,7 +48,7 @@ import javax.servlet.ServletException;
 import java.util.Objects;
 
 /**
- * Custom flow action for password complexity configuration.
+ * Custom context initializer for password complexity configuration.
  */
 public class InitPasswordConstraintsConfiguration implements ServletContextInitializer {
 
@@ -126,5 +126,3 @@ public class InitPasswordConstraintsConfiguration implements ServletContextIniti
         }
     }
 }
-
-

@@ -195,15 +195,6 @@ public class WebflowConfig {
     @Value("${theme.vitamui-platform-name:VITAM-UI}")
     private String vitamuiPlatformName;
 
-    @Value("${theme.vitam-logo:#{null}}")
-    private String vitamLogoPath;
-
-    @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLargeLogoPath;
-
-    @Value("${theme.vitamui-favicon:#{null}}")
-    private String vitamuiFaviconPath;
-
     @Bean
     public DispatcherAction dispatcherAction() {
         return new DispatcherAction(providersService, identityProviderHelper, casRestClient, surrogationSeparator, utils,
@@ -254,7 +245,7 @@ public class WebflowConfig {
         return new GeneralTerminateSessionAction(centralAuthenticationService.getObject(),
             ticketGrantingTicketCookieGenerator.getObject(), warnCookieGenerator.getObject(),
             logoutManager, applicationContext, utils, casRestClient, servicesManager, casProperties,
-            frontChannelLogoutAction, vitamLogoPath, vitamuiLargeLogoPath, vitamuiFaviconPath);
+            frontChannelLogoutAction);
     }
 
     @Bean

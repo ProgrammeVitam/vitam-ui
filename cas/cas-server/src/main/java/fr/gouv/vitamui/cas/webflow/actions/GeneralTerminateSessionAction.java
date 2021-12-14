@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -67,19 +66,13 @@ import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
 import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -104,12 +97,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private final Action frontChannelLogoutAction;
 
-    private final String vitamLogoPath;
-
-    private final String vitamuiLargeLogoPath;
-
-    private final String vitamuiFaviconPath;
-
     public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
                                          final CasCookieBuilder ticketGrantingTicketCookieGenerator,
                                          final CasCookieBuilder warnCookieGenerator,
@@ -119,20 +106,13 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                                          final CasExternalRestClient casExternalRestClient,
                                          final ServicesManager servicesManager,
                                          final CasConfigurationProperties casProperties,
-                                         final Action frontChannelLogoutAction,
-                                         final String vitamLogoPath,
-                                         final String vitamuiLargeLogoPath,
-                                         final String vitamuiFaviconPath) {
+                                         final Action frontChannelLogoutAction) {
         super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, casProperties.getLogout(), logoutManager, applicationContext);
         this.utils = utils;
         this.casExternalRestClient = casExternalRestClient;
         this.servicesManager = servicesManager;
         this.casProperties = casProperties;
         this.frontChannelLogoutAction = frontChannelLogoutAction;
-        this.vitamLogoPath = vitamLogoPath;
-        this.vitamuiLargeLogoPath = vitamuiLargeLogoPath;
-        this.vitamuiFaviconPath =vitamuiFaviconPath;
-
     }
 
     @Override @SneakyThrows
@@ -193,39 +173,6 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
             logger.debug("Computing front channel logout URLs");
             frontChannelLogoutAction.execute(context);
-        }
-
-        final MutableAttributeMap<Object> flowScope = context.getFlowScope();
-        if (vitamLogoPath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamLogoPath);
-                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                flowScope.put(Constants.VITAM_LOGO, logo);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam logo", e);
-            }
-        }
-        if (vitamuiLargeLogoPath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamuiLargeLogoPath);
-                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo", e);
-            }
-        }
-
-        if (vitamuiFaviconPath != null) {
-            try {
-                final Path faviconFile = Paths.get(vitamuiFaviconPath);
-                final String favicon = DatatypeConverter.printBase64Binary(Files.readAllBytes(faviconFile));
-                flowScope.put(Constants.VITAM_UI_FAVICON, favicon);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui favicon", e);
-            }
         }
 
         return event;

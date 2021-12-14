@@ -157,7 +157,6 @@ server-identity:
 theme:
   #  vitamui-platform-name: VITAM-UI
   #  vitamui-favicon: /absolute/path/to/favicon.ico
-  #  vitam-logo: /absolute/path/to/logo.png
   #  vitamui-logo-large: /absolute/path/to/logo.png
   primary: '#702382'
   secondary: '#241f63'
