@@ -69,8 +69,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomDelegatedClientAuthenticationAction.class);
 
-    private final DelegatedClientAuthenticationConfigurationContext configContext;
-
     private final IdentityProviderHelper identityProviderHelper;
 
     private final ProvidersService providersService;
@@ -91,7 +89,6 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                                                      final String vitamuiPortalUrl,
                                                      final String surrogationSeparator) {
         super(context);
-        this.configContext = context;
         this.identityProviderHelper = identityProviderHelper;
         this.providersService = providersService;
         this.utils = utils;

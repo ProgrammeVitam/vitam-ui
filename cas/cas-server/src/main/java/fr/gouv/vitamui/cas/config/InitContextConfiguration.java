@@ -41,7 +41,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import javax.servlet.ServletContext;
@@ -53,35 +53,20 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
 /**
- * Custom initial flow action to retrieve pre-filled inputs.
+ * Custom context initializer to pre-fill logo and favicon.
  */
+@RequiredArgsConstructor
 public class InitContextConfiguration implements ServletContextInitializer {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(InitContextConfiguration.class);
 
-    @Value("${theme.vitam-logo:#{null}}")
-    private String vitamLogoPath;
+    private final String vitamuiLargeLogoPath;
 
-    @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLargeLogoPath;
-
-    @Value("${theme.vitamui-favicon:#{null}}")
-    private String vitamuiFaviconPath;
-
+    private final String vitamuiFaviconPath;
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
 
-        if (vitamLogoPath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamLogoPath);
-                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                servletContext.setAttribute(Constants.VITAM_LOGO, logo);
-            } catch (final IOException e) {
-                LOGGER.warn("Can't find vitam logo");
-                e.printStackTrace();
-            }
-        }
         if (vitamuiLargeLogoPath != null) {
             try {
                 final Path logoFile = Paths.get(vitamuiLargeLogoPath);
@@ -105,7 +90,4 @@ public class InitContextConfiguration implements ServletContextInitializer {
 
         }
     }
-
 }
-
-

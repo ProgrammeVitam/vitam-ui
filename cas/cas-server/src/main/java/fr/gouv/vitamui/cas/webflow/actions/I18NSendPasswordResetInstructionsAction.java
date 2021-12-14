@@ -49,7 +49,6 @@ import org.apereo.cas.ticket.TicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.support.WebUtils;
 import org.apereo.inspektr.audit.annotation.Audit;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.webflow.core.collection.MutableAttributeMap;
@@ -108,7 +107,6 @@ public class I18NSendPasswordResetInstructionsAction extends SendPasswordResetIn
         resourceResolverName = AuditResourceResolvers.REQUEST_CHANGE_PASSWORD_RESOURCE_RESOLVER)
     @Override
     protected Event doExecute(final RequestContext requestContext) {
-        communicationsManager.validate();
         if (!communicationsManager.isMailSenderDefined() && !communicationsManager.isSmsSenderDefined()) {
             return getErrorEvent("contact.failed", "Unable to send email as no mail sender is defined", requestContext);
         }

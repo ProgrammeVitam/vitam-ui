@@ -102,7 +102,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
         val principal = optPrincipal.get();
-        val userId = principal.getId();
+        val principalId = principal.getId();
         val requestContext = RequestContextHolder.getRequestContext();
 
         final boolean surrogationCall;
@@ -120,7 +120,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             surrogationCall = true;
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
-            username = userId;
+            username = principalId;
             superUsername = null;
             userProviderId = null;
             technicalUserId = Optional.empty();
@@ -134,7 +134,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             val providerName = clientCredential.getClientName();
             val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
             val mailAttribute = provider.getMailAttribute();
-            String email = userId;
+            String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
                 if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
@@ -142,13 +142,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
+                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, principalId, mail);
                     email = mail;
                 }
             }
 
             val identifierAttribute = provider.getIdentifierAttribute();
-            String identifier = userId;
+            String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
                 if (identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))) {
@@ -156,7 +156,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     return NullPrincipal.getInstance();
                 } else {
                     val identifierAttr = (String) identifiers.get(0);
-                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, userId, identifierAttr);
+                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, principalId, identifierAttr);
                     identifier = identifierAttr;
                 }
             }

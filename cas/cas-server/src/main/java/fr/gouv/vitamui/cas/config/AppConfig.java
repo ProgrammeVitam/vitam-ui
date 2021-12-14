@@ -208,6 +208,12 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${vitamui.cas.identity}")
     private String casIdentity;
 
+    @Value("${theme.vitamui-logo-large:#{null}}")
+    private String vitamuiLargeLogoPath;
+
+    @Value("${theme.vitamui-favicon:#{null}}")
+    private String vitamuiFaviconPath;
+
     // position matters unfortunately: the ticketRegistry must be autowired after (= under) others
     // as it depends on the catalog instantiated above
     @Autowired
@@ -338,7 +344,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public ServletContextInitializer servletContextInitializer() {
-        return new InitContextConfiguration();
+        return new InitContextConfiguration(vitamuiLargeLogoPath, vitamuiFaviconPath);
     }
 
     @Bean
