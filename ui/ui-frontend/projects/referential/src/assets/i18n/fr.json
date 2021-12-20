@@ -102,7 +102,7 @@
     "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Des filtres de recherche avancée sont activées",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entrées",
-      "DATE": "Date",
+      "DATE": "Date de prise en charge",
       "OPERATION_IDENTIFIER": "Identifiant de l'entrée",
       "ORIGINATING_AGENCY": "Service producteur",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",

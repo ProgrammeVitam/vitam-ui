@@ -102,7 +102,7 @@
     "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Some advanced search filters are activated",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entries",
-      "DATE": "Date",
+      "DATE": "Pick-up date",
       "OPERATION_IDENTIFIER": "Operation identifier",
       "ORIGINATING_AGENCY": "Originating Agency",
       "ARCHIVAL_AGREEMENT": "Archival Agreement",
