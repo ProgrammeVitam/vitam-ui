@@ -773,6 +773,9 @@ i.vitamui-icon {
 .vitamui-icon-support-keys:before {
   content: "\e91c";
 }
+.vitamui-icon-bin:before {
+  content: "\e9ac";
+}
 .vitamui-icon-cross:before {
   content: "\ea0f";
 }

@@ -51,7 +51,6 @@ import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
-// import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { SelectLanguageModule } from './components/header/select-language/select-language.module';
@@ -145,7 +144,6 @@ export function startupServiceFactory(startupService: StartupService) {
     DragAndDropModule,
     EditableFieldModule,
     InfiniteScrollModule,
-    // LevelInputModule,
     LogbookModule,
     LoggerModule,
     NavbarModule,
@@ -202,7 +200,6 @@ export function startupServiceFactory(startupService: StartupService) {
     DragAndDropModule,
     EditableFieldModule,
     InfiniteScrollModule,
-    // LevelInputModule,
     LogbookModule,
     LoggerModule,
     NavbarModule,

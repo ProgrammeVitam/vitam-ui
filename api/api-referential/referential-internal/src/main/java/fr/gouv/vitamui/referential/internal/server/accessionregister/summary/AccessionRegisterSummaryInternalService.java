@@ -123,12 +123,13 @@ public class AccessionRegisterSummaryInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.info("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            LOGGER.debug("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
             return AccessionRegisterSummaryConverter.convertVitamsToDtos(accessionRegisterSymbolicResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
+            LOGGER.error("Error when getting Accession Register summaries : {} " , e);
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }
@@ -139,7 +140,8 @@ public class AccessionRegisterSummaryInternalService {
             getCustomAccessionRegisterSummaries(vitamContext, detailsSearchDto);
 
         if(customAccessionRegisterSummaries == null) {
-            throw new InternalServerException("Unable to find accessionRegister Summaries");
+            LOGGER.debug("Unable to find accessionRegister Summaries stats");
+            throw new InternalServerException("Unable to find accessionRegister Summaries stats");
         }
 
         long totalUnits = customAccessionRegisterSummaries.stream().parallel()
@@ -192,6 +194,7 @@ public class AccessionRegisterSummaryInternalService {
 
             return AccessionRegisterSummaryConverter.convertVitamsToDtos(accessionRegisterSummaryResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException | InvalidCreateOperationException | ParseException e) {
+            LOGGER.error("Unable to find accessionRegister Summaries : {} " , e);
             throw new InternalServerException("Unable to find accessionRegister Summaries", e);
         }
     }
@@ -301,7 +304,7 @@ public class AccessionRegisterSummaryInternalService {
         try {
             select.setProjection(JsonHandler.toJsonNode(queryProjection));
         } catch (InvalidParseOperationException e) {
-            LOGGER.info("Error constructing vitam query");
+            LOGGER.error("Error constructing vitam query");
             throw new InvalidCreateOperationException("Error constructing vitam query", e);
         }
         return select.getFinalSelect();

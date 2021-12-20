@@ -106,7 +106,7 @@ public class AccessionRegisterDetailInternalService {
 
         //Fetching data from vitam
         AccessionRegisterDetailResponseDto results = fetchingAllPaginatedDataFromVitam(vitamContext, query);
-        LOGGER.info("Fetched accession register data : {} ", results);
+        LOGGER.debug("Fetched accession register data : {} ", results);
 
         //Fetch agencies to complete return Dto 'originatingAgencyLabel' property
         Map<String, String> agenciesMap = findAgencies(vitamContext, results);
@@ -131,15 +131,17 @@ public class AccessionRegisterDetailInternalService {
         JsonNode query;
         try {
             Map<String, Object> vitamCriteria = new HashMap<>();
-            LOGGER.info("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
             }
             query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
-            LOGGER.info("jsonQuery: {}", query);
+            LOGGER.debug("jsonQuery: {}", query);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
+            LOGGER.error("Can't create dsl query to get paginated accession registers : {}", ioe);
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);
         } catch (IOException e) {
+            LOGGER.error("Can't read value from criteria entries : {}", e);
             throw new InternalServerException("Can't read value from criteria entries", e);
         }
         return query;
@@ -151,8 +153,10 @@ public class AccessionRegisterDetailInternalService {
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
             results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
         } catch (VitamClientException e) {
+            LOGGER.error("Can't fetch data from VITAM : {}", e);
             throw new InternalServerException("Can't fetch data from VITAM", e);
         } catch (JsonProcessingException e) {
+            LOGGER.error("Can't process Json Parsing : {}", e);
             throw new InternalServerException("Can't process Json Parsing", e);
         }
         return results;
@@ -167,10 +171,13 @@ public class AccessionRegisterDetailInternalService {
             RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, originatingAgencyQuery);
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
         } catch (JsonProcessingException e) {
+            LOGGER.error("Error parsing query : {}", e);
             throw new InternalServerException("Error parsing query", e);
         } catch (VitamClientException e) {
+            LOGGER.error("Error fetching agencies from vitam : {}", e);
             throw new InternalServerException("Error fetching agencies from vitam", e);
         } catch (InvalidCreateOperationException e) {
+            LOGGER.error("Invalid Select vitam query : {}", e);
             throw new InternalServerException("Invalid Select vitam query", e);
         }
 

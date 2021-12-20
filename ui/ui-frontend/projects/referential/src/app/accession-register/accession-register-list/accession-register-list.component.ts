@@ -102,7 +102,6 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     this.advancedSearchSub?.unsubscribe();
   }
 
-  // Gestion de la recherche
   searchRequest() {
     const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
     const avancedSearchData: any = this.accessionRegistersService.getAdvancedSearchData().getValue();
@@ -169,13 +168,11 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     }
   }
 
-  // Gestion du tri
   emitOrderChange(event: string) {
     this.orderChange.next(event);
     this.accessionRegistersService.notifyOrderChange();
   }
 
-  // Gestion des filtres
   onFilterChange(key: string, values: any[]) {
     this.filterMap[key] = values;
     this.filterChange.next(this.filterMap);
