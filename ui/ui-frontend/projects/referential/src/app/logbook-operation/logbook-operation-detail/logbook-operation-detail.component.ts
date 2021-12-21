@@ -61,6 +61,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
   canDownload: boolean;
   couldDownload: boolean;
   accessContractId: string;
+  hasAccessContractId = false;
   downloadButtonTitle: string;
 
   constructor(
@@ -77,6 +78,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
       const accessContratId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessContratId && accessContratId.length > 0) {
         this.accessContractId = accessContratId;
+        this.hasAccessContractId = true;
       } else {
         this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utiisateur`, null, {
           panelClass: 'vitamui-snack-bar',
