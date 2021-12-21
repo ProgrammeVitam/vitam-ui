@@ -71,10 +71,27 @@ ui-ingest:
         key-path: ../../dev-deployment/environments/keystores/server/truststore_server.jks
         key-password: changeme
       hostname-verification: false
+  referential-external-client:
+    server-host: localhost
+    server-port: 8087
+    connect-time-out: 30
+    read-time-out: 30
+    write-time-out: 30
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: src/main/resources/dev/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
   base-url:
     portal: "https://dev.vitamui.com:4200"
     archives-search: "https://dev.vitamui.com:4209/archive-search"
     ingest: "https://dev.vitamui.com:4208/ingest"
+    referential: "https://dev.vitamui.com:4202"
   portal-categories:
     ingest_and_consultation:
       title: "Versement & consultation"
