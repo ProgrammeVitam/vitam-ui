@@ -19,7 +19,7 @@
       class="btn btn-primary button-maring"
       *ngIf="!hideDownload || canDownload"
       (click)="downloadReports()"
-      [disabled]="couldDownload && !canDownload"
+      [disabled]="(couldDownload && !canDownload) || !hasAccessContractId"
     >
       {{ downloadButtonTitle }}
     </button>
