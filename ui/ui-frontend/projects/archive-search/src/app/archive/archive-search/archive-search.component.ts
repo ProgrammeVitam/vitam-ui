@@ -432,9 +432,17 @@ export class ArchiveSearchComponent implements OnInit {
     this.filterMapType.Type.forEach((filter) => {
       if (filter === 'Folder') {
         typesFilterValues.push('RecordGrp');
+        typesFilterValues.push('Subfonds');
+        typesFilterValues.push('File');
+        typesFilterValues.push('Class');
+        typesFilterValues.push('Subgrp');
+        typesFilterValues.push('Otherlevel');
+        typesFilterValues.push('Series');
+        typesFilterValues.push('Subseries');
+        typesFilterValues.push('Collection');
+        typesFilterValues.push('Fonds');
       }
       if (filter === 'Document') {
-        typesFilterValues.push('File');
         typesFilterValues.push('Item');
       }
     });
