@@ -27,6 +27,13 @@
   until: result is succeeded
   delay: "{{ packages_install_retries_delay }}"
 
+- name: Configure logs directory symbolic link for Debian
+  file:
+    src: "/var/log/apache2"
+    dest: "/etc/{{ apache_service }}/logs"
+    state: link
+  when: ansible_os_family == "Debian"
+
 - name: Ensure mod_ssl & mod_proxy_html is installed (CentOS)
   package:
     name: ["mod_ssl","mod_proxy_html"]
@@ -46,9 +53,10 @@
     mode: 0644
   notify:
         - reload apache
+  when: ansible_os_family == "RedHat"
 
 # TODO: We could use apache2_module of ansible but it is currently flagged as preview
-- name: Enable mod_ssl & mod_proxy (Debian)
+- name: Enable necessary mods (Debian)
   file:
     src: "/etc/{{ apache_service }}/mods-available/{{ item }}"
     dest: "/etc/{{ apache_service }}/mods-enabled/{{ item }}"
@@ -62,6 +70,9 @@
     - proxy.load
     - proxy_http.load
     - socache_shmcb.load
+    - substitute.load
+    - proxy_html.load
+    - headers.load
   notify:
     - reload apache
 
