@@ -102,7 +102,7 @@
     "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Des filtres de recherche avancée sont activées",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entrées",
-      "DATE": "Date de prise en charge",
+      "DATE": "Date",
       "OPERATION_IDENTIFIER": "Identifiant de l'entrée",
       "ORIGINATING_AGENCY": "Service producteur",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
@@ -123,7 +123,7 @@
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Afficher les filtres de recherche",
       "HIDE_SEARCH_FILTERS": "Masquer les filtres de recherche",
-      "DATE_SEARCH_FILTER_LABEL": "Filter par date d'opération d'entrée entre le",
+      "DATE_SEARCH_FILTER_LABEL": "Filtrer par date de prise en charge entre le",
       "TOTAL_OPERATION_ENTRIES": "Toutes les opérations d'entrées",
       "TOTAL_UNITS": "Toutes les unités archivistiques",
       "TOTAL_OBJECTS_GROUP": "Tous les groupes d'objets",

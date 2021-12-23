@@ -26,7 +26,6 @@ public class AccessionRegisterDetailsSearchStatsDto {
         private List<String> acquisitionInformations;
         private String elimination;
         private String transfer;
-        private String preservation;
     }
 }
 

@@ -108,7 +108,6 @@ public class AccessionRegisterSummaryInternalService {
     private static final String EVENTS_OPTYPE = "Events.OpType";
     private static final String ELIMINATION = "ELIMINATION";
     private static final String TRANSFER = "TRANSFER";
-    private static final String PRESERVATION = "PRESERVATION";
 
     @Autowired
     AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService,
@@ -224,17 +223,10 @@ public class AccessionRegisterSummaryInternalService {
             addQueryFrom(query, advancedSearch.getArchivalAgreements(), ARCHIVAL_AGREEMENT);
             addQueryFrom(query, advancedSearch.getArchivalProfiles(), ARCHIVAL_PROFILE);
 
-            if(CollectionUtils.isNotEmpty(advancedSearch.getAcquisitionInformations())) {
-                List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
-                acquisitionInformations.removeAll(advancedSearch.getAcquisitionInformations());
-                if(!acquisitionInformations.isEmpty()) {
-                    query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
-                }
-            }
+            addAcquisitionInformationsToQuery(query, advancedSearch);
 
             addEventOpTypeQuery(query, advancedSearch.getElimination(), ELIMINATION);
             addEventOpTypeQuery(query, advancedSearch.getElimination(), TRANSFER);
-            addEventOpTypeQuery(query, advancedSearch.getElimination(), PRESERVATION);
 
         }
 
@@ -243,6 +235,24 @@ public class AccessionRegisterSummaryInternalService {
         }
 
         return select.getFinalSelect();
+    }
+
+    private static void addAcquisitionInformationsToQuery(BooleanQuery query,
+        AccessionRegisterDetailsSearchStatsDto.AdvancedSearchData advancedSearch)
+        throws InvalidCreateOperationException {
+        List<String> acquisitionInformationsFromIhm = advancedSearch.getAcquisitionInformations();
+        if(CollectionUtils.isNotEmpty(acquisitionInformationsFromIhm)) {
+            List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
+            acquisitionInformations.removeAll(acquisitionInformationsFromIhm);
+            if(!acquisitionInformations.isEmpty()) {
+                if(acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_AUTRES)
+                    || acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
+                    query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+                } else {
+                    query.add(in(ACQUISITION_INFORMATION, acquisitionInformationsFromIhm.toArray(new String[] {})));
+                }
+            }
+        }
     }
 
     private static void addStartDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)

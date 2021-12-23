@@ -76,8 +76,8 @@
             </div>
             <div class="row py-1">
               <div class="col-2">
-                <strong class="mr-5">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}</strong>
-                <i class="vitamui-icon vitamui-icon-ic24-limination"></i>
+                <strong class="mr-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}</strong>
+                <strong><i class="vitamui-icon vitamui-icon-ic24-limination"></i></strong>
               </div>
               <div class="col-3">
                 <mat-radio-group aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_ELIMINATIONS' | translate }}" id="eliminations" formControlName="elimination">
@@ -89,24 +89,11 @@
             </div>
             <div class="row py-1">
               <div class="col-2">
-                <strong class="mr-5">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}</strong>
-                <i class="vitamui-icon vitamui-icon-ic24-user-transfer"></i>
+                <strong class="mr-3">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}</strong>
+                <strong><i class="vitamui-icon vitamui-icon-ic24-user-transfer"></i></strong>
               </div>
               <div class="col-3">
                 <mat-radio-group aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_TRANSFERTS' | translate }}" id="transferts" formControlName="transfer">
-                  <mat-radio-button class="mr-2" value="true">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button class="mr-2" value="false">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate }}</mat-radio-button>
-                  <mat-radio-button value="all">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate }}</mat-radio-button>
-                </mat-radio-group>
-              </div>
-            </div>
-            <div class="row py-1">
-              <div class="col-2">
-                <strong class="mr-5 text-right">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_PRESERVATIONS' | translate }}</strong>
-                <i class="vitamui-icon vitamui-icon-ic24-prservation"></i>
-              </div>
-              <div class="col-3">
-                <mat-radio-group aria-label="{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATION_PRESERVATIONS' | translate }}" id="preservation" formControlName="preservation">
                   <mat-radio-button class="mr-2" value="true">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_YES_RADIO' | translate }}</mat-radio-button>
                   <mat-radio-button class="mr-2" value="false">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_NO_RADIO' | translate }}</mat-radio-button>
                   <mat-radio-button value="all">{{ 'ACCESSION_REGISTER.ADVANCED_SEARCH.OPERATIONS_ALL_RADIO' | translate }}</mat-radio-button>

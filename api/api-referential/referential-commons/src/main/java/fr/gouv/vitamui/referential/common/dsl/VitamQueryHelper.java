@@ -61,6 +61,7 @@ import java.util.Set;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
@@ -106,12 +107,14 @@ public class VitamQueryHelper {
     private static final String EVENTS_OPTYPE = "Events.OpType";
     private static final String ELIMINATION = "elimination";
     private static final String TRANSFER = "transfer";
-    private static final String PRESERVATION = "preservation";
 
     /* */
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final Collection<String> staticAcquisitionInformations = List.of("Versement", "Protocole", "Achat",
-        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", "Autres", "Non renseigné");
+        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", VitamQueryHelper.ACQUISITION_INFORMATION_AUTRES,
+        VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
+    public static final String ACQUISITION_INFORMATION_AUTRES = "Autres";
+    public static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
 
     private VitamQueryHelper() {
         throw new UnsupportedOperationException("Utility class");
@@ -216,7 +219,6 @@ public class VitamQueryHelper {
                         break;
                     case ELIMINATION:
                     case TRANSFER:
-                    case PRESERVATION:
                         addEventsToQuery(query, (String) entry.getValue(), searchKey.toUpperCase());
                         break;
                     default:
@@ -232,14 +234,14 @@ public class VitamQueryHelper {
         return select.getFinalSelect();
     }
 
-    private static void manageFilters(Optional<String> orderBy, Optional<DirectionDto> direction, Select select)
-        throws InvalidParseOperationException {
+    private static void manageFilters(Optional<String> orderBy, Optional<DirectionDto> direction, Select select) throws InvalidParseOperationException, InvalidCreateOperationException {
         // Manage Filters
         if (orderBy.isPresent()) {
+            String order = orderBy.get();
             if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
-                select.addOrderByDescFilter(orderBy.get());
+                select.addOrderByDescFilter(order);
             } else {
-                select.addOrderByAscFilter(orderBy.get());
+                select.addOrderByAscFilter(order);
             }
         }
     }
@@ -270,8 +272,13 @@ public class VitamQueryHelper {
     private static void addAcquisitionInformationsToQuery(BooleanQuery query, List<String> data) throws InvalidCreateOperationException {
         List<String> acquisitionInformations = new ArrayList<>(staticAcquisitionInformations);
         acquisitionInformations.removeAll(data);
+
         if(!acquisitionInformations.isEmpty()) {
-            query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+            if(data.contains(ACQUISITION_INFORMATION_AUTRES) || data.contains(ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
+                query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+            } else {
+                query.add(in(ACQUISITION_INFORMATION, data.toArray(new String[] {})));
+            }
         }
     }
 

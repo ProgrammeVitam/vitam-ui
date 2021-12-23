@@ -84,6 +84,14 @@ public class AccessionRegisterDetailDto extends AccessionRegisterDto {
 
     private List<String> operationsIds;
 
-    private String messageIdentifier;
+    private String archivalProfile;
+
+    private String operationType;
+
+    private String legalStatus;
+
+    private String obIdIn;
+
+    private List<String> comment;
 
 }

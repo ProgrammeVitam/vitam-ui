@@ -142,10 +142,6 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     if (OjectUtils.valueNotUndefined(avancedSearchData.transfer)) {
       query.transfer = avancedSearchData.transfer;
     }
-
-    if (OjectUtils.valueNotUndefined(avancedSearchData.preservation)) {
-      query.preservation = avancedSearchData.preservation;
-    }
   }
 
   addCriteriaFromDateFilters(query: any, dateInterval: { endDateMin: string; endDateMax: string }) {

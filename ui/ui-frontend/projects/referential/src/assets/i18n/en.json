@@ -102,7 +102,7 @@
     "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Some advanced search filters are activated",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entries",
-      "DATE": "Pick-up date",
+      "DATE": "Date",
       "OPERATION_IDENTIFIER": "Operation identifier",
       "ORIGINATING_AGENCY": "Originating Agency",
       "ARCHIVAL_AGREEMENT": "Archival Agreement",
@@ -122,7 +122,7 @@
     },
     "FACETS": {
       "SHOW_SEARCH_FILTERS": "Show search filters",
-      "DATE_SEARCH_FILTER_LABEL": "Filter by operation date between",
+      "DATE_SEARCH_FILTER_LABEL": "Filter by pick-up date between",
       "TOTAL_OPERATION_ENTRIES": "All operations",
       "TOTAL_UNITS": "All units",
       "TOTAL_OBJECTS_GROUP": "All Objects Groups",
