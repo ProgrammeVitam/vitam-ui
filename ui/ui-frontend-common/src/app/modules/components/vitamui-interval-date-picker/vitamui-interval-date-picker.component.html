@@ -1,0 +1,69 @@
+<form [formGroup]="dateRangeFilterForm" [ngStyle]="{ padding: '10px' }">
+  <div class="col-12">
+    <div class="row">
+      <div class="col-3 filter-text">
+        <span>{{ label }} :</span>
+      </div>
+
+      <div class="col-2">
+        <div class="date-filter">
+          <span *ngIf="!dateRangeFilterForm.get('dateMin').value; else showMin" (click)="pickerStart.open()">
+            {{ 'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate }}
+          </span>
+          <ng-template #showMin>
+            <span (click)="pickerStart.open()">
+              {{ dateRangeFilterForm.get('dateMin').value | date: 'dd/MM/yyyy' }}
+            </span>
+            <i class="material-icons clear-date-icon clickable" (click)="clearDate('dateMin')">clear</i>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerStart"
+            formControlName="dateMin"
+            [max]="dateRangeFilterForm.get('dateMax').value"
+          />
+          <mat-datepicker #pickerStart></mat-datepicker>
+        </div>
+      </div>
+
+      <div class="col-1 filter-text" *ngIf="showDateMax" [ngStyle]="{ flex: '0 5%' }">
+        <span>{{ 'LOGBOOK_OPERATION_PAGE.AND' | translate }}</span>
+      </div>
+
+      <div class="col-2 filter-text" *ngIf="!showDateMax" (click)="showIntervalDate(true)">
+        <span class="clickable cp-text-color">
+          {{ 'LOGBOOK_OPERATION_PAGE.ADD_INTREVAL' | translate }}
+        </span>
+      </div>
+
+      <div class="col-2" *ngIf="showDateMax">
+        <div class="date-filter">
+          <span *ngIf="!dateRangeFilterForm.get('dateMax').value; else showMax" (click)="pickerEnd.open()">
+            {{'LOGBOOK_OPERATION_PAGE.OPERATION_DATE' | translate}}
+          </span>
+          <ng-template #showMax>
+            <span (click)="pickerEnd.open()">
+              {{ dateRangeFilterForm.get('dateMax').value | date: 'dd/MM/yyyy' }}
+            </span>
+            <i class="material-icons clear-date-icon clickable" (click)="clearDate('dateMax')">clear</i>
+          </ng-template>
+          <input
+            class="hidden"
+            size="0"
+            [matDatepicker]="pickerEnd"
+            formControlName="dateMax"
+            [min]="dateRangeFilterForm.get('dateMin').value"
+          />
+          <mat-datepicker #pickerEnd></mat-datepicker>
+        </div>
+      </div>
+
+      <div class="col-2 filter-text" *ngIf="showDateMax" (click)="showIntervalDate(false)">
+        <span class="clickable" [ngStyle]="{ color: '#9c31b5' }">
+          {{ 'LOGBOOK_OPERATION_PAGE.DELETE_INTERVAL' | translate }}
+        </span>
+      </div>
+    </div>
+  </div>
+</form>

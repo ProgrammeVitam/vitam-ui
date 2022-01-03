@@ -25,10 +25,13 @@
  * accept its terms.
  */
 
+import {Colors} from "./facet-colors.enum";
+
 export interface FacetDetails {
   title: string;
   totalResults: number;
   clickable: boolean;
   color: string;
-  filter: string;
+  filter?: string;
+  backgroundColor?: Colors;
 }

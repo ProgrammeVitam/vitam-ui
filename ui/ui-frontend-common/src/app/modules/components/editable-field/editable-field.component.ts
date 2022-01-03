@@ -41,8 +41,9 @@ import { AsyncValidatorFn, ControlValueAccessor, FormControl, ValidatorFn } from
 
 import { VitamUIFieldErrorComponent } from '../vitamui-field-error/vitamui-field-error.component';
 
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
+@Directive({
+  selector: 'editable-field-component'
+})
 export class EditableFieldComponent implements AfterContentInit, ControlValueAccessor {
 
   @Input() label: string;
@@ -142,7 +143,7 @@ export class EditableFieldComponent implements AfterContentInit, ControlValueAcc
     this.cancel();
   }
 
-  @HostListener('document:keydown.enter', ['$event'])
+  @HostListener('keydown.enter', ['$event'])
   onEnter(event: KeyboardEvent) {
     event.preventDefault();
     this.confirm();

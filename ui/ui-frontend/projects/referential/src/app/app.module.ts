@@ -44,15 +44,16 @@ import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ng
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
-import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 
 import { HttpClient } from '@angular/common/http';
-import {ServiceWorkerModule} from '@angular/service-worker';
-import {environment} from '../environments/environment';
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {CoreModule} from './core/core.module';
-import {SharedModule} from './shared/shared.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { SharedModule } from './shared/shared.module';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -63,11 +64,8 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
 
 registerLocaleData(localeFr, 'fr');
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     CoreModule,
     BrowserAnimationsModule,
@@ -79,7 +77,7 @@ registerLocaleData(localeFr, 'fr');
     SharedModule,
     QuicklinkModule,
     TranslateModule.forRoot({
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler},
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
@@ -91,8 +89,10 @@ registerLocaleData(localeFr, 'fr');
   ],
   providers: [
     Title,
-    {provide: LOCALE_ID, useValue: 'fr'},
-    {provide: WINDOW_LOCATION, useValue: window.location}
+    { provide: LOCALE_ID, useValue: 'fr' },
+    { provide: WINDOW_LOCATION, useValue: window.location },
+    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
+    BytesPipe,
   ],
   bootstrap: [AppComponent],
 })

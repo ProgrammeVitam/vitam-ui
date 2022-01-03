@@ -51,7 +51,6 @@ import { ConfirmDialogModule } from './components/confirm-dialog/confirm-dialog.
 import { CustomerSelectContentModule } from './components/customer-select-content/customer-select-content.module';
 import { DownloadSnackBarModule } from './components/download-snack-bar/download-snack-bar.module';
 import { EditableFieldModule } from './components/editable-field/editable-field.module';
-import { LevelInputModule } from './components/editable-field/level-input/level-input.module';
 import { FooterModule } from './components/footer/footer.module';
 import { HeaderModule } from './components/header/header.module';
 import { SelectLanguageModule } from './components/header/select-language/select-language.module';
@@ -100,6 +99,10 @@ import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
 import {SearchBarWithSiblingButtonModule} from "./components/search-bar-with-sibling-button/search-bar-with-sibling-button.module";
+import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {VitamuiMultiInputsModule} from "./components/vitamui-multi-inputs/vitamui-multi-inputs.module";
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -110,7 +113,11 @@ export function startupServiceFactory(startupService: StartupService) {
 }
 
 @NgModule({
-  declarations: [BlankComponent, ErrorDialogComponent],
+  declarations: [
+    BlankComponent,
+    ErrorDialogComponent,
+    VitamuiIntervalDatePickerComponent
+  ],
   imports: [
     CommonModule,
     HttpClientModule,
@@ -137,7 +144,6 @@ export function startupServiceFactory(startupService: StartupService) {
     DragAndDropModule,
     EditableFieldModule,
     InfiniteScrollModule,
-    LevelInputModule,
     LogbookModule,
     LoggerModule,
     NavbarModule,
@@ -169,6 +175,8 @@ export function startupServiceFactory(startupService: StartupService) {
     AutocompletePositionDirectiveModule,
     LogbookOperationFacetModule,
     TranslateModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
   ],
   entryComponents: [ErrorDialogComponent],
   exports: [
@@ -192,7 +200,6 @@ export function startupServiceFactory(startupService: StartupService) {
     DragAndDropModule,
     EditableFieldModule,
     InfiniteScrollModule,
-    LevelInputModule,
     LogbookModule,
     LoggerModule,
     NavbarModule,
@@ -225,6 +232,8 @@ export function startupServiceFactory(startupService: StartupService) {
     ResizeSidebarModule,
     AutocompletePositionDirectiveModule,
     LogbookOperationFacetModule,
+    VitamuiIntervalDatePickerComponent,
+    VitamuiMultiInputsModule
   ],
   providers: [
     { provide: SUBROGRATION_REFRESH_RATE_MS, useValue: 10000 },

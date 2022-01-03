@@ -99,16 +99,17 @@
     "ACCESSION_REGISTER": "Registre des fonds",
     "SEARCH_BAR_BUTTON_LABEL": "Lancer une recherche",
     "SEARCH_BAR_PLACEHOLDER": "Rechercher par service producteur ou par identifiant de l'entrée",
+    "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Des filtres de recherche avancée sont activées",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entrées",
-      "DATE": "Date",
+      "DATE": "Date de prise en charge",
       "OPERATION_IDENTIFIER": "Identifiant de l'entrée",
       "ORIGINATING_AGENCY": "Service producteur",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
       "ACQUISITION_INFORMATION": "Modalité d'entrée",
-      "TOTAL_UNITS": "Nb d'UA",
-      "TOTAL_OBJECTS_GROUPS": "Nb grpe objet",
-      "TOTAL_OBJECTS": "Nb d'objets",
+      "TOTAL_UNITS": "Nbre d’AU initiales",
+      "TOTAL_OBJECTS_GROUPS": "Nbre grpes d’objets initiaux",
+      "TOTAL_OBJECTS": "Nbre d’objets initiaux",
       "OBJECT_SIZE_INGESTED": "Volumétrie",
       "STATUS": "Statut",
       "NO_RESULT": "Aucun résultat",
@@ -118,6 +119,34 @@
       "STORED_AND_UPDATED": "Partiellement éliminée ou transférée",
       "STORED_AND_COMPLETED": "En stock et complète",
       "UNSTORED": "Totalement éliminée ou transférée"
+    },
+    "FACETS": {
+      "SHOW_SEARCH_FILTERS": "Afficher les filtres de recherche",
+      "HIDE_SEARCH_FILTERS": "Masquer les filtres de recherche",
+      "DATE_SEARCH_FILTER_LABEL": "Filter par date d'opération d'entrée entre le",
+      "TOTAL_OPERATION_ENTRIES": "Toutes les opérations d'entrées",
+      "TOTAL_UNITS": "Toutes les unités archivistiques",
+      "TOTAL_OBJECTS_GROUP": "Tous les groupes d'objets",
+      "TOTAL_OBJECTS": "Tous les objets",
+      "TOTAL_SIZE": "Volumétrie totale"
+    },
+    "ADVANCED_SEARCH": {
+      "TITLE": "Filtres de recherche avancée",
+      "ORIGINATING_AGENCY": "Service producteur (code)",
+      "ORIGINATING_AGENCY_LABEL": "Identifiant du service producteur",
+      "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
+      "ARCHIVAL_AGREEMENT_LABEL": "Identifiant du contrat d'entrée",
+      "ARCHIVAL_PROFILE": "Profil d'archivage",
+      "ARCHIVAL_PROFILE_LABEL": "Identifiant du profil d'archivage",
+      "ACQUISITION_INFORMATIONS": "Modalité d'entrée",
+      "ACQUISITION_INFORMATIONS_ALL": "Tous",
+      "OPERATIONS_TITLE": "Entrées ayant subies des opérations",
+      "OPERATIONS_YES_RADIO": "Oui",
+      "OPERATIONS_NO_RADIO": "Non",
+      "OPERATIONS_ALL_RADIO": "Tous",
+      "OPERATION_ELIMINATIONS": "Eliminations",
+      "OPERATION_TRANSFERTS": "Transferts",
+      "OPERATION_PRESERVATIONS": "Préservations"
     }
   }
 }

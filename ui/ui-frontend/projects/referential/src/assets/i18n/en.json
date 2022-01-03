@@ -99,16 +99,17 @@
     "ACCESSION_REGISTER": "Accession Register",
     "SEARCH_BAR_BUTTON_LABEL": "Search",
     "SEARCH_BAR_PLACEHOLDER": "Search for a producer service or an entry identifier",
+    "ADVANCED_SEARCH_FILTERS_ACTIVATED": "Some advanced search filters are activated",
     "LIST": {
       "NB_ENTRIES": "{{nb}} entries",
-      "DATE": "Date",
+      "DATE": "Pick-up date",
       "OPERATION_IDENTIFIER": "Operation identifier",
       "ORIGINATING_AGENCY": "Originating Agency",
       "ARCHIVAL_AGREEMENT": "Archival Agreement",
       "ACQUISITION_INFORMATION": "Acquisition Information",
-      "TOTAL_UNITS": "Total Units",
-      "TOTAL_OBJECTS_GROUPS": "Total Obj groups",
-      "TOTAL_OBJECTS": "Total Obj",
+      "TOTAL_UNITS": "Total initials units",
+      "TOTAL_OBJECTS_GROUPS": "Total initials obj groups",
+      "TOTAL_OBJECTS": "Total initials obj",
       "OBJECT_SIZE_INGESTED": "Size",
       "STATUS": "Status",
       "NO_RESULT": "No result",
@@ -118,6 +119,33 @@
       "STORED_AND_UPDATED": "Partially eliminated or transferred",
       "STORED_AND_COMPLETED": "In stock and complete",
       "UNSTORED": "Completely eliminated or transferred"
+    },
+    "FACETS": {
+      "SHOW_SEARCH_FILTERS": "Show search filters",
+      "DATE_SEARCH_FILTER_LABEL": "Filter by operation date between",
+      "TOTAL_OPERATION_ENTRIES": "All operations",
+      "TOTAL_UNITS": "All units",
+      "TOTAL_OBJECTS_GROUP": "All Objects Groups",
+      "TOTAL_OBJECTS": "All Objects",
+      "TOTAL_SIZE": "Global Size"
+    },
+    "ADVANCED_SEARCH": {
+      "TITLE": "Advanced search filters",
+      "ORIGINATING_AGENCY": "Originating agency (code)",
+      "ORIGINATING_AGENCY_LABEL": "Originating agency identifier",
+      "ARCHIVAL_AGREEMENT": "Archival agreement",
+      "ARCHIVAL_AGREEMENT_LABEL": "Archival agreement identifier",
+      "ARCHIVAL_PROFILE": "Archival profile",
+      "ARCHIVAL_PROFILE_LABEL": "Archival profile identifier",
+      "ACQUISITION_INFORMATIONS": "Acquisition informations",
+      "ACQUISITION_INFORMATIONS_ALL": "All",
+      "OPERATIONS_TITLE": "Entries having undergone operations",
+      "OPERATIONS_YES_RADIO": "Yes",
+      "OPERATIONS_NO_RADIO": "No",
+      "OPERATIONS_ALL_RADIO": "All",
+      "OPERATION_ELIMINATIONS": "Eliminations",
+      "OPERATION_TRANSFERTS": "Transfers",
+      "OPERATION_PRESERVATIONS": "Preservations"
     }
   }
 }

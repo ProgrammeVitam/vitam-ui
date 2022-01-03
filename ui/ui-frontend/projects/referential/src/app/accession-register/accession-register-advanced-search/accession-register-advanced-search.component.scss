@@ -1,0 +1,11 @@
+label, mat-label {
+  color: var(--vitamui-primary);
+  font-weight: 600;
+}
+
+:host::ng-deep {
+  .vitamui-input.ng-invalid.ng-touched,
+  .vitamui-input.ng-valid.ng-touched {
+    border: none !important;
+  }
+}

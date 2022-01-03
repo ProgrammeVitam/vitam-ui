@@ -36,24 +36,41 @@
  */
 package fr.gouv.vitamui.referential.common.dsl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.CompareQuery;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.*;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.range;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.wildcard;
 
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
@@ -78,6 +95,27 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
+    private static final String ORIGINATING_AGENCIES = "originatingAgencies";
+    private static final String END_DATE = "EndDate";
+    private static final String ARCHIVAL_AGREEMENT = "ArchivalAgreement";
+    private static final String ARCHIVAL_AGREEMENTS = "archivalAgreements";
+    private static final String ARCHIVAL_PROFILE = "ArchivalProfile";
+    private static final String ARCHIVAL_PROFILES = "archivalProfiles";
+    private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
+    private static final String ACQUISITION_INFORMATIONS = "acquisitionInformations";
+    private static final String EVENTS_OPTYPE = "Events.OpType";
+    private static final String ELIMINATION = "elimination";
+    private static final String TRANSFER = "transfer";
+    private static final String PRESERVATION = "preservation";
+
+    /* */
+    private static final String DATE_FORMAT = "dd/MM/yyyy";
+    public static final Collection<String> staticAcquisitionInformations = List.of("Versement", "Protocole", "Achat",
+        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", "Autres", "Non renseigné");
+
+    private VitamQueryHelper() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     /**
      * create a valid VITAM DSL Query from a map of criteria
@@ -97,14 +135,7 @@ public class VitamQueryHelper {
         boolean isEmpty = true;
         boolean haveOrParameters = false;
 
-        // Manage Filters
-        if (orderBy.isPresent()) {
-            if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
-                select.addOrderByDescFilter(orderBy.get());
-            } else {
-                select.addOrderByAscFilter(orderBy.get());
-            }
-        }
+        manageFilters(orderBy, direction, select);
         select.setLimitFilter(pageNumber * size, size);
 
         // Manage Query
@@ -126,6 +157,7 @@ public class VitamQueryHelper {
                         queryOr.add(eq(searchKey, stringValue));
                         haveOrParameters = true;
                         break;
+                    case EV_TYPE_PROC:
                     case RULE_TYPE:
                         // string equals operation filter as a and
                         final String ruleType = (String) entry.getValue();
@@ -145,11 +177,6 @@ public class VitamQueryHelper {
                         queryOr.add(matchPhrasePrefix(searchKey, ruleValue));
                         haveOrParameters = true;
                         break;
-                    case EV_TYPE_PROC:
-                        // string equals operation
-                        final String evTypeProc = (String) entry.getValue();
-                        query.add(eq(searchKey, evTypeProc));
-                        break;
                     case EV_TYPE:
                         // Special case EvType can be String or String[]
                         if (entry.getValue() instanceof String) {
@@ -157,6 +184,7 @@ public class VitamQueryHelper {
                             query.add(eq(searchKey, evType));
                             break;
                         }
+                        break;
                     case STATUS:
                         // in list of string operation
                         final List<String> stringValues = (ArrayList<String>) entry.getValue();
@@ -168,6 +196,29 @@ public class VitamQueryHelper {
                     case EV_DATE_TIME_END:
                         query.add(lt("evDateTime", (String) entry.getValue()));
                         break;
+                    case END_DATE:
+                        addEndDateToQuery(query, entry.getValue());
+                        break;
+                    case ORIGINATING_AGENCIES:
+                        List<String> originatingAgencies = (ArrayList<String>) entry.getValue();
+                        query.add(in(ORIGINATING_AGENCY, originatingAgencies.toArray(new String[] {})));
+                        break;
+                    case ARCHIVAL_AGREEMENTS:
+                        List<String> archivalAgreements = (ArrayList<String>) entry.getValue();
+                        query.add(in(ARCHIVAL_AGREEMENT, archivalAgreements.toArray(new String[] {})));
+                        break;
+                    case ARCHIVAL_PROFILES:
+                        List<String> archivalProfiles = (ArrayList<String>) entry.getValue();
+                        query.add(in(ARCHIVAL_PROFILE, archivalProfiles.toArray(new String[] {})));
+                        break;
+                    case ACQUISITION_INFORMATIONS:
+                        addAcquisitionInformationsToQuery(query, (ArrayList<String>) entry.getValue());
+                        break;
+                    case ELIMINATION:
+                    case TRANSFER:
+                    case PRESERVATION:
+                        addEventsToQuery(query, (String) entry.getValue(), searchKey.toUpperCase());
+                        break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);
                         break;
@@ -175,16 +226,80 @@ public class VitamQueryHelper {
             }
         }
 
+        setQuery(select, query, queryOr, isEmpty, haveOrParameters);
+
+        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+        return select.getFinalSelect();
+    }
+
+    private static void manageFilters(Optional<String> orderBy, Optional<DirectionDto> direction, Select select)
+        throws InvalidParseOperationException {
+        // Manage Filters
+        if (orderBy.isPresent()) {
+            if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
+                select.addOrderByDescFilter(orderBy.get());
+            } else {
+                select.addOrderByAscFilter(orderBy.get());
+            }
+        }
+    }
+
+    private static void setQuery(Select select, BooleanQuery query, BooleanQuery queryOr, boolean isEmpty,
+        boolean haveOrParameters) throws InvalidCreateOperationException {
         if (!isEmpty) {
             if (haveOrParameters) {
                 query.add(queryOr);
             }
+            if(!query.getQueries().isEmpty()) {
+                select.setQuery(query);
+            }
+        }
+    }
 
-            select.setQuery(query);
+    private static void addEventsToQuery(BooleanQuery query, String value, String searchKeyUpperCase) throws InvalidCreateOperationException {
+        if(!value.equals("all")) {
+            boolean cond = Boolean.parseBoolean(value);
+            if(cond) {
+                query.add(eq(EVENTS_OPTYPE, searchKeyUpperCase));
+            } else {
+                query.add(ne(EVENTS_OPTYPE, searchKeyUpperCase));
+            }
+        }
+    }
+
+    private static void addAcquisitionInformationsToQuery(BooleanQuery query, List<String> data) throws InvalidCreateOperationException {
+        List<String> acquisitionInformations = new ArrayList<>(staticAcquisitionInformations);
+        acquisitionInformations.removeAll(data);
+        if(!acquisitionInformations.isEmpty()) {
+            query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+        }
+    }
+
+    private static void addEndDateToQuery(BooleanQuery query, Object value) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval = mapper.convertValue(value, new TypeReference<>() {});
+
+            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+            String dateMinStr = dateInterval.getEndDateMin();
+            String dateMaxStr = dateInterval.getEndDateMax();
+
+            if(dateMinStr != null && dateMaxStr == null) {
+                query.add(lte(END_DATE, formatter.parse(dateMinStr)));
+            }
+
+            if(dateMinStr == null && dateMaxStr != null) {
+                query.add(lte(END_DATE, formatter.parse(dateMaxStr)));
+            }
+
+            if(dateMinStr != null && dateMaxStr != null) {
+                query.add(range(END_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+            }
+
+        } catch (InvalidCreateOperationException | ParseException e) {
+            LOGGER.error("Can not find binding for StartDate key: \n {}", e);
         }
 
-        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
-        return select.getFinalSelect();
     }
 
     public static JsonNode getLastOperationQuery(String operationType) throws InvalidCreateOperationException, InvalidParseOperationException {
@@ -199,7 +314,6 @@ public class VitamQueryHelper {
 
         return select.getFinalSelect();
     }
-
 
     public static JsonNode buildOperationQuery(final String obId) throws InvalidCreateOperationException {
         final Select select = new Select();

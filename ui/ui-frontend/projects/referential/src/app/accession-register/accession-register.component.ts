@@ -34,24 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component } from '@angular/core';
-import { AccessionRegisterSummary, AccessionRegisterDetail, SidenavPage } from 'ui-frontend-common';
-import { AccessionRegistersService } from './accession-register.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AccessionRegisterDetail, AccessionRegisterSummary, SidenavPage } from 'ui-frontend-common';
+import { AccessionRegistersService } from './accession-register.service';
 
 @Component({
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
+  styleUrls: ['./accession-register.component.scss'],
 })
-export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> {
+export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
   accessionRegisterSummary: AccessionRegisterSummary[] = [];
-  public search: string;
+  search: string;
+  advancedSearchPanelOpenState$: Observable<boolean>;
+  isAdvancedFormChanged$: Observable<boolean>;
 
-  constructor(accessionRegisterService: AccessionRegistersService, route: ActivatedRoute) {
-    super(route, accessionRegisterService);
+  constructor(private accessionRegistersService: AccessionRegistersService, route: ActivatedRoute) {
+    super(route, accessionRegistersService);
+  }
+
+  ngOnInit(): void {
+    this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();
+    this.isAdvancedFormChanged$ = this.accessionRegistersService.isAdvancedFormChanged();
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
   }
 
   onSearchSubmit(search: string) {
     this.search = search;
+    this.accessionRegistersService.setGlobalSearchButtonEvent(true);
+  }
+
+  openAdvancedSearchPanel() {
+    this.accessionRegistersService.toggleOpenAdvancedSearchPanel();
+  }
+
+  resetAdvancedSearch() {
+    this.accessionRegistersService.setGlobalResetEvent(true);
   }
 }
