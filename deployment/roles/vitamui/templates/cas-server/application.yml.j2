@@ -204,7 +204,7 @@ opentracing:
       port: {{ opentracing.jaeger.udp_sender.port }}
 
 logging:
-  config: ${logback.configurationFile}
+  config: {{ vitamui_folder_conf }}/logback.xml
   level:
     org.reflections.Reflections: ERROR
     org.apereo.cas.web.CasWebApplication: INFO
