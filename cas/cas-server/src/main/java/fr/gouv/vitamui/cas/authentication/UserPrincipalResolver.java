@@ -36,11 +36,15 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
+import java.security.cert.CertificateParsingException;
 import java.util.*;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
+import fr.gouv.vitamui.cas.x509.CertificateParser;
+import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
+import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
 import org.apereo.cas.authentication.SurrogatePrincipal;
@@ -98,6 +102,10 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     private final ProvidersService providersService;
 
+    private final X509AttributeMapping x509EmailAttributeMapping;
+
+    private final X509AttributeMapping x509IdentifierAttributeMapping;
+
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
@@ -110,7 +118,19 @@ public class UserPrincipalResolver implements PrincipalResolver {
         final String superUsername;
         final String userProviderId;
         final Optional<String> technicalUserId;
-        if (credential instanceof SurrogateUsernamePasswordCredential) {
+        // x509 certificate
+        if (credential instanceof X509CertificateCredential) {
+            try {
+                val certificate = ((X509CertificateCredential) credential).getCertificate();
+                username = CertificateParser.extract(certificate, x509EmailAttributeMapping);
+                technicalUserId = Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
+            } catch (final CertificateParsingException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+            superUsername = null;
+            userProviderId = null;
+            surrogationCall = false;
+        } else if (credential instanceof SurrogateUsernamePasswordCredential) {
             // login/password + surrogation
             val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
             username = surrogationCredential.getSurrogateUsername();
@@ -258,7 +278,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
     @Override
     public boolean supports(final Credential credential) {
         return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
-            || credential instanceof SurrogateUsernamePasswordCredential;
+            || credential instanceof SurrogateUsernamePasswordCredential || credential instanceof X509CertificateCredential;
     }
 
     @Override

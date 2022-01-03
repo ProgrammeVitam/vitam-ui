@@ -34,24 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package org.apereo.cas.custom.banner;
-
-import org.apereo.cas.util.spring.boot.AbstractCasBanner;
+package fr.gouv.vitamui.cas.x509;
 
 /**
- * The Vitam UI custom banner.
+ * Attribute mapping definition for X509 authentication
  */
-public class ACustomCasBanner extends AbstractCasBanner {
+public class X509AttributeMapping {
 
-    @Override
-    protected String getTitle() {
-        return "   _______           _____  __      ___ _                  _    _ _______  \n" +
-            "  / / ____|   /\\    / ____| \\ \\    / (_) |                | |  | |_   _\\ \\ \n" +
-            " | | |       /  \\  | (___    \\ \\  / / _| |_ __ _ _ __ ___ | |  | | | |  | |\n" +
-            " | | |      / /\\ \\  \\___ \\    \\ \\/ / | | __/ _` | '_ ` _ \\| |  | | | |  | |\n" +
-            " | | |____ / ____ \\ ____) |    \\  /  | | || (_| | | | | | | |__| |_| |_ | |\n" +
-            " | |\\_____/_/    \\_\\_____/      \\/   |_|\\__\\__,_|_| |_| |_|\\____/|_____|| |\n" +
-            "  \\_\\                                                                  /_/ \n" +
-            "                                                                           \n";
+    private final String name;
+
+    private final String parsing;
+
+    private final String expansion;
+
+    public X509AttributeMapping(final String name, final String parsing, final String expansion) {
+        this.name = name;
+        this.parsing = parsing;
+        this.expansion = expansion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getParsing() {
+        return parsing;
+    }
+
+    public String getExpansion() {
+        return expansion;
     }
 }
