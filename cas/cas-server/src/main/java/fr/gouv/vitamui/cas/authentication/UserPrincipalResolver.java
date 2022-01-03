@@ -221,11 +221,14 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
         attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
-        attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
         UserDto superUser = null;
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
             superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            if (superUser == null) {
+                LOGGER.debug("No super user found for: {}", superUsername);
+                return NullPrincipal.getInstance();
+            }
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
