@@ -174,7 +174,7 @@ opentracing:
 
 #debug: true
 logging:
-  config: ${logback.configurationFile}
+  config: src/main/config/logback-dev.xml
   level:
     org.springframework.amqp: 'OFF'
     org.springframework.context.annotation: 'OFF'

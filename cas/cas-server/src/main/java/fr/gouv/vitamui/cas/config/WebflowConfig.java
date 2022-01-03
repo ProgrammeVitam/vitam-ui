@@ -37,7 +37,9 @@
 package fr.gouv.vitamui.cas.config;
 
 import fr.gouv.vitamui.cas.webflow.configurer.CustomCasSimpleMultifactorWebflowConfigurer;
+import fr.gouv.vitamui.cas.x509.CustomRequestHeaderX509CertificateExtractor;
 import org.apereo.cas.CentralAuthenticationService;
+import org.apereo.cas.authentication.adaptive.AdaptiveAuthenticationPolicy;
 import org.apereo.cas.configuration.CasConfigurationProperties;
 import org.apereo.cas.logout.LogoutManager;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorTokenCommunicationStrategy;
@@ -53,8 +55,11 @@ import org.apereo.cas.ticket.registry.TicketRegistrySupport;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.X509CertificateCredentialsRequestHeaderAction;
 import org.apereo.cas.web.flow.actions.ConsumerExecutionAction;
 import org.apereo.cas.web.flow.actions.StaticEventExecutionAction;
+import org.apereo.cas.web.flow.resolver.CasDelegatingWebflowEventResolver;
+import org.apereo.cas.web.flow.resolver.CasWebflowEventResolver;
 import org.apereo.cas.web.flow.util.MultifactorAuthenticationWebflowUtils;
 import org.pac4j.core.context.session.SessionStore;
 import org.springframework.beans.factory.ObjectProvider;
@@ -186,6 +191,18 @@ public class WebflowConfig {
     @Qualifier("frontChannelLogoutAction")
     private Action frontChannelLogoutAction;
 
+    @Autowired
+    @Qualifier("adaptiveAuthenticationPolicy")
+    private ObjectProvider<AdaptiveAuthenticationPolicy> adaptiveAuthenticationPolicy;
+
+    @Autowired
+    @Qualifier("serviceTicketRequestWebflowEventResolver")
+    private ObjectProvider<CasWebflowEventResolver> serviceTicketRequestWebflowEventResolver;
+
+    @Autowired
+    @Qualifier("initialAuthenticationAttemptWebflowEventResolver")
+    private ObjectProvider<CasDelegatingWebflowEventResolver> initialAuthenticationAttemptWebflowEventResolver;
+
     @Value("${vitamui.portal.url}")
     private String vitamuiPortalUrl;
 
@@ -194,6 +211,12 @@ public class WebflowConfig {
 
     @Value("${theme.vitamui-platform-name:VITAM-UI}")
     private String vitamuiPlatformName;
+
+    @Value("${vitamui.authn.x509.enabled:false}")
+    private boolean x509AuthnEnabled;
+
+    @Value("${vitamui.authn.x509.mandatory:false}")
+    private boolean x509AuthnMandatory;
 
     @Bean
     public DispatcherAction dispatcherAction() {
@@ -293,5 +316,21 @@ public class WebflowConfig {
     @RefreshScope
     public Action delegatedAuthenticationClientFinishLogoutAction() {
         return new ConsumerExecutionAction(ctx -> {});
+    }
+
+    @Bean
+    @RefreshScope
+    public Action x509Check() {
+        if (x509AuthnEnabled) {
+            val sslHeaderName = casProperties.getAuthn().getX509().getSslHeaderName();
+            val certificateExtractor = new CustomRequestHeaderX509CertificateExtractor(sslHeaderName, x509AuthnMandatory);
+
+            return new X509CertificateCredentialsRequestHeaderAction(initialAuthenticationAttemptWebflowEventResolver.getObject(),
+                serviceTicketRequestWebflowEventResolver.getObject(),
+                adaptiveAuthenticationPolicy.getObject(),
+                certificateExtractor, casProperties);
+        } else {
+            return new StaticEventExecutionAction("error");
+        }
     }
 }

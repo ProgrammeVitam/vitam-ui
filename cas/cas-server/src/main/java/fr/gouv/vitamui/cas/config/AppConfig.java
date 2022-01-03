@@ -45,6 +45,7 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.ticket.CustomOAuth20DefaultAccessTokenFactory;
 import fr.gouv.vitamui.cas.ticket.DynamicTicketGrantingTicketFactory;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityConfiguration;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -214,6 +215,24 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${theme.vitamui-favicon:#{null}}")
     private String vitamuiFaviconPath;
 
+    @Value("${vitamui.authn.x509.emailAttribute:}")
+    private String x509EmailAttribute;
+
+    @Value("${vitamui.authn.x509.emailAttributeParsing:}")
+    private String x509EmailAttributeParsing;
+
+    @Value("${vitamui.authn.x509.emailAttributeExpansion:}")
+    private String x509EmailAttributeExpansion;
+
+    @Value("${vitamui.authn.x509.identifierAttribute:}")
+    private String x509IdentifierAttribute;
+
+    @Value("${vitamui.authn.x509.identifierAttributeParsing:}")
+    private String x509IdentifierAttributeParsing;
+
+    @Value("${vitamui.authn.x509.identifierAttributeExpansion:}")
+    private String x509IdentifierAttributeExpansion;
+
     // position matters unfortunately: the ticketRegistry must be autowired after (= under) others
     // as it depends on the catalog instantiated above
     @Autowired
@@ -232,8 +251,16 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Bean
     @RefreshScope
     public PrincipalResolver surrogatePrincipalResolver() {
-        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore, identityProviderHelper(),
-                providersService());
+        val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
+        val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
+        return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
+            identityProviderHelper(), providersService(), emailMapping, identifierMapping);
+    }
+
+    @Bean
+    @RefreshScope
+    public PrincipalResolver x509SubjectDNPrincipalResolver() {
+        return surrogatePrincipalResolver();
     }
 
     @Bean

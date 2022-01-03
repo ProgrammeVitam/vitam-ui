@@ -149,7 +149,7 @@ theme:
   background: '#FFFFFF'
 
 logging:
-  config: ${logback.configurationFile}
+  config: src/main/config/logback-dev.xml
   level:
     org.springframework: 'DEBUG'
     fr.gouv: 'DEBUG'

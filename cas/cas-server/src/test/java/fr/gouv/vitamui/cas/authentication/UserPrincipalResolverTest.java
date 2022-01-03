@@ -4,6 +4,7 @@ import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
+import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AddressDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -19,6 +20,7 @@ import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.val;
+import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.ClientCredential;
@@ -33,6 +35,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.security.Principal;
+import java.security.cert.X509Certificate;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.IDENTIFIER_ATTRIBUTE;
@@ -94,8 +98,10 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         sessionStore = mock(SessionStore.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);
         providersService = mock(ProvidersService.class);
+        val emailMapping = new X509AttributeMapping("subject_dn", null, null);
+        val identifierMapping = new X509AttributeMapping("issuer_dn", null, null);
         resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore,
-            identityProviderHelper, providersService);
+            identityProviderHelper, providersService, emailMapping, identifierMapping);
     }
 
     @Test
@@ -104,6 +110,28 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
                 eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
 
         val principal = resolver.resolve(new UsernamePasswordCredential(USERNAME, PWD),
+            Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
+
+        assertEquals(USERNAME_ID, principal.getId());
+        final Map<String, List<Object>> attributes = principal.getAttributes();
+        assertEquals(USERNAME, attributes.get(CommonConstants.EMAIL_ATTRIBUTE).get(0));
+        assertEquals(Arrays.asList(ROLE_NAME), attributes.get(CommonConstants.ROLES_ATTRIBUTE));
+        assertNull(attributes.get(SUPER_USER_ATTRIBUTE));
+    }
+
+    @Test
+    public void testResolveX509() {
+        when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(null), eq(Optional.of(IDENTIFIER)),
+            eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
+        val cert = mock(X509Certificate.class);
+        val subjectDn = mock(Principal.class);
+        when(subjectDn.getName()).thenReturn(USERNAME);
+        when(cert.getSubjectDN()).thenReturn(subjectDn);
+        val issuerDn = mock(Principal.class);
+        when(issuerDn.getName()).thenReturn(IDENTIFIER);
+        when(cert.getIssuerDN()).thenReturn(issuerDn);
+
+        val principal = resolver.resolve(new X509CertificateCredential(new X509Certificate[] { cert }),
             Optional.of(principalFactory.createPrincipal(USERNAME)), Optional.empty());
 
         assertEquals(USERNAME_ID, principal.getId());
