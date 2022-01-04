@@ -256,10 +256,11 @@ public final class CasControllerTest extends AbstractServerIdentityBuilder {
     }
 
     @Test
-    public void testLoginKoNullPasswords() {
+    public void testLoginKoBlankPasswords() {
         user.setType(UserTypeEnum.NOMINATIVE);
         final LoginRequestDto request = new LoginRequestDto();
         request.setUsername(EMAIL);
+        request.setPassword("");
         try {
             controller.login(request);
             fail("should fail");
