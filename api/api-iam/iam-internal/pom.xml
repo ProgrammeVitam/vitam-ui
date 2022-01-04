@@ -133,6 +133,10 @@
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-saml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
 
         <!-- Spring Data Mongo-->
         <!-- TODO adapt this library to be conforme with spring boot versions in futur spring stack bumps-->
