@@ -67,7 +67,7 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <!-- Dependencies version -->
-        <apache.commons.codec.version>1.14</apache.commons.codec.version>
+        <apache.commons.codec.version>1.15</apache.commons.codec.version>
         <apache.pdfbox.version>2.0.24</apache.pdfbox.version>
         <apache.pdfbox.xmpbox.version>2.0.16</apache.pdfbox.xmpbox.version>
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
