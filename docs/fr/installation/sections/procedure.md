@@ -180,7 +180,6 @@ ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_
 > Attention ! Dans le cas d'un déploiement avec 2 interfaces, il subsiste un bug avec consul et la résolution DNS de mongo dans Vitam-UI. Un ticket de support est en cours de résolution pour résoudre ce problème rapidement.
 
 ---
----
 
 ## Gestion des certificats
 

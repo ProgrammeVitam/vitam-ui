@@ -63,7 +63,7 @@ Dans ce cas précis il y a une incohérence/mismatch sur les certificats des ser
 
 Les identifiants sont les suivants:
 
-~~~yml
+~~~yaml
 user admin:
 login: admin@change-it.fr
 mdp : Change-it0!
