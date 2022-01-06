@@ -1,12 +1,14 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.owner;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+
+import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_GET_OWNERS;
 
 /**
  * Teste l'API Owners dans IAM admin : opérations de vérification.
@@ -29,7 +31,7 @@ public class ApiIamExternalOwnerCheckSteps extends CommonSteps {
     @When("^un utilisateur avec le rôle ROLE_GET_OWNERS vérifie l'existence d'un propriétaire par son code dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_OWNERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_GET_OWNERS_vérifie_l_existence_d_un_propriétaire_par_son_code_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_GET_OWNERS() {
         final String criteria = QueryDto.criteria("code", TestConstants.SYSTEM_OWNER_CODE, CriterionOperator.EQUALS).toJson();
-        testContext.bResponse = getOwnerRestClient().checkExist(getSystemTenantUserAdminContext(), criteria);
+        testContext.bResponse = getOwnerRestClient(true, new Integer[]{1}, new String[] { ROLE_GET_OWNERS }).checkExist(getSystemTenantUserAdminContext(), criteria);
     }
 
     @Given("^deux tenants et un rôle par défaut pour la vérification de l'existence d'un propriétaire par son code$")

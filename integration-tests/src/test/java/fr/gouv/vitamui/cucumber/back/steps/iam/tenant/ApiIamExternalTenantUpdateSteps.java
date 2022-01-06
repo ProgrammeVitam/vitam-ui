@@ -1,14 +1,16 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.tenant;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API Tenants dans IAM admin : opérations de mise à jour.
@@ -22,6 +24,11 @@ public class ApiIamExternalTenantUpdateSteps extends CommonSteps {
         testContext.tenantDto = createOwnerAndBuildTenant();
         testContext.savedTenantDto = getTenantRestClient().create(getSystemTenantUserAdminContext(),
                 testContext.tenantDto);
+    }
+
+    @Given("^un tenant existant est chargé$")
+    public void un_tenant_a_est_chargé() {
+        testContext.savedTenantDto = getTenantRestClient().getOne(getSystemTenantUserAdminContext(), TestConstants.SYSTEM_TENANT_ID, Optional.empty());
     }
 
     @Then("^le serveur refuse la mise à jour du tenant$")
@@ -46,6 +53,11 @@ public class ApiIamExternalTenantUpdateSteps extends CommonSteps {
     public void le_serveur_retourne_le_tenant_mis_à_jour() {
         assertThat(testContext.tenantDto.getName())
                 .isEqualTo(TestConstants.UPDATED + testContext.savedTenantDto.getName());
+    }
+
+    @Then("^le serveur retourne le tenant système mis à jour$")
+    public void le_serveur_retourne_le_tenant_systeme_mis_à_jour() {
+        assertThat(testContext.tenantDto.getName()).isEqualTo(testContext.savedTenantDto.getName());
     }
 
     @When("^un utilisateur avec le rôle ROLE_UPDATE_TENANTS met à jour un tenant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_UPDATE_TENANTS$")

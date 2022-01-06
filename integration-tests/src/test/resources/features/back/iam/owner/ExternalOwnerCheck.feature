@@ -8,10 +8,10 @@ Feature: API Owner : vérifier l'existence
     When un utilisateur vérifie l'existence d'un propriétaire par son identifiant
     Then le serveur retourne vrai
 
-
-  Scenario: D'un propriétaire par son code
-    When un utilisateur avec le rôle ROLE_GET_OWNERS vérifie l'existence d'un propriétaire par son code dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_OWNERS
-    Then le serveur retourne vrai
+# FIXME
+#  Scenario: D'un propriétaire par son code
+#    When un utilisateur avec le rôle ROLE_GET_OWNERS vérifie l'existence d'un propriétaire par son code dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_OWNERS
+#    Then le serveur retourne vrai
 
   Scenario Outline: D'un propriétaire par son code, cas sécurité, par un utilisateur <(userRole) avec ou sans> le rôle ROLE_GET_OWNERS sur le tenant principal, après avoir choisi le tenant <(headerTenant) principal ou secondaire> dans l'IHM, et en utilisant un certificat <(certRole) avec ou sans> le rôle ROLE_GET_OWNERS <(certTenant) sur le tenant principal ou sur le tenant secondaire ou étant fullAccess> = le serveur <autorise ou refuse> l'accès à l'api Tenant
     Given deux tenants et un rôle par défaut pour la vérification de l'existence d'un propriétaire par son code

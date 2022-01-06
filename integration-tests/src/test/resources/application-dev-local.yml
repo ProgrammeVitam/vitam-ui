@@ -7,61 +7,57 @@ server-identity:
   identityRole: integration-tests
   identityServerId: 1
 
-#certs-folder: /home/centos/keystore
-#generic-cert: keystore_vitamui-iam-external.jks
-#jks-password: changeme
-certs-folder: certs/meu/
-generic-cert: ${certs-folder}/generic-it.jks #from keystore-vitamui-archive-search-external.jks
-generic-pswd: changeme-Tc3jx3HqFCvJyq5C
+certs-folder: certs/local/
+generic-cert: ${certs-folder}/generic-it.jks
+generic-pswd: w2DalKtV2cNG4eIPBsOp4VxpBJZTIBjTXCxxKMdmnppG6kTU
 jks-password: changeme
 
-# Iam client configuration
+# Iam client configuration w2DalKtV2cNG4eIPBsOp4VxpBJZTIBjTXCxxKMdmnppG6kTU
 iam-client:
-  host: 172.18.96.80
-  port: 8101
+  connect-time-out: 30
+  read-time-out: 30
+  write-time-out: 30
+  host: localhost
+  port: 8083
   ssl:
     keystore:
-      #path: ${certs-folder}/keystore_vitamui-iam-external.jks
-      path: ${certs-folder}/keystore_vitamui-ui-identity.jks
-      #password: changeme-Mc7Y8QBKAYn4zGQQ
-      password: changeme-jLF4REdGnUP9EsHX
+      path: ${certs-folder}/keystore_ui-identity.jks
+      password: ${jks-password}
     truststore:
       path: ${certs-folder}/truststore_server.jks
-      password: changeme-Tc3jx3HqFCvJyq5C
-
+      password: ${jks-password}
 
 # Referential client configuration
 referential-client:
-  host: 172.18.96.80
-  port: 8105
+  host: localhost
+  port: 8087
   ssl:
     keystore:
-      path: ${certs-folder}/keystore_vitamui-ui-referential.jks
-      password: changeme-K4MakBLEHNPjCCwx
+      path: ${certs-folder}/keystore_ui-referential.jks
+      password: ${jks-password}
     truststore:
-      path: ${certs-folder}/keystore/truststore_server.jks
-      password: changeme-Tc3jx3HqFCvJyq5C
+      path: ${certs-folder}/truststore_server.jks
+      password: ${jks-password}
 
 # Archive search externalclient configuration
 archive-search-client:
-  host: 172.18.96.80
-  port: 8109
+  host: localhost
+  port: 8089
   ssl:
     keystore:
-      path: ${certs-folder}/keystore_vitamui-ui-archive-search.jks
-      password: changeme-Tc3jx3HqFCvJyq5C
+      path: ${certs-folder}/keystore_ui-archive-search.jks
+      password: ${jks-password}
     truststore:
       path: ${certs-folder}/truststore_server.jks
-      password: changeme-Tc3jx3HqFCvJyq5C
-
+      password: ${jks-password}
 
 # Mongo
 mongo:
-  host: 172.18.96.80
-  port: 27017
-  iam.uri: mongodb://api-iam:api-iam@172.18.96.80:27017/iam?connectTimeoutMS=2000
-  security.uri: mongodb://api-security:api-security@172.18.96.80:27017/security?connectTimeoutMS=2000
-  archivesearch.uri: mongodb://api-archive-search:api-archive-search@172.18.96.80:27017/archivesearch?connectTimeoutMS=2000
+  host: localhost
+  port: 27018
+  iam.uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
+  security.uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
+  archivesearch.uri: mongodb://mongod_dbuser_archivesearch:mongod_dbpwd_security@localhost:27018/archivesearch?connectTimeoutMS=2000
 # Workspace configuration
 workspace:
   workspace.path: /tmp/workspace-vitamui

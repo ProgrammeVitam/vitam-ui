@@ -9,6 +9,7 @@ import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -42,6 +43,8 @@ public class TestContext {
     public CustomerDto basicCustomerDto;
 
     public CustomerDto savedBasicCustomerDto;
+
+    public CustomerCreationFormData savedBasicCustomerCreationFormData;
 
     public IdentityProviderDto identityProviderDto;
 

@@ -18,9 +18,10 @@ Feature: API Groups : création d'un nouveau groupe
     When un utilisateur avec le rôle ROLE_CREATE_GROUPS mais avec un mauvais client ajoute un nouveau groupe dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS
     Then le serveur refuse la création du groupe à cause du mauvais client
 
-  Scenario: Cas client désactivé de l'utilisateur
-    When un utilisateur avec le rôle ROLE_CREATE_GROUPS et un client désactivé ajoute un nouveau groupe dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS
-    Then le serveur refuse la création du groupe à cause du client désactivé
+# TODO: blocking request to handle later
+#  Scenario: Cas client désactivé de l'utilisateur
+#    When un utilisateur avec le rôle ROLE_CREATE_GROUPS et un client désactivé ajoute un nouveau groupe dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS
+#    Then le serveur refuse la création du groupe à cause du client désactivé
 
   Scenario: Cas nom existant du groupe
     When un utilisateur avec le rôle ROLE_CREATE_GROUPS ajoute un nouveau groupe avec un nom existant dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_GROUPS

@@ -168,12 +168,6 @@ Feature: API clients : récupérer
     | avec | secondaire | sans | étant fullAccess | refuse |
     | sans | secondaire | sans | étant fullAccess | refuse |
 
-
-  Scenario: Tous les clients par code ou nom
-    Given un client a été créé
-    When un utilisateur avec le rôle ROLE_GET_CUSTOMERS récupère tous les clients par code ou nom dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_GET_CUSTOMERS
-    Then le serveur retourne les clients par code ou nom
-
   Scenario Outline: Tous les clients par code ou nom, cas sécurité, par un utilisateur <(userRole) avec ou sans> le rôle ROLE_GET_CUSTOMERS sur le tenant principal, après avoir choisi le tenant <(headerTenant) principal ou secondaire> dans l'IHM, et en utilisant un certificat <(certRole) avec ou sans> le rôle ROLE_GET_CUSTOMERS <(certTenant) sur le tenant principal ou sur le tenant secondaire ou étant fullAccess> = le serveur <autorise ou refuse> l'accès à l'api customers
     Given deux tenants et un rôle par défaut pour la récupération de clients
     And un utilisateur <(userRole) avec ou sans> le rôle ROLE_GET_CUSTOMERS sur le tenant principal

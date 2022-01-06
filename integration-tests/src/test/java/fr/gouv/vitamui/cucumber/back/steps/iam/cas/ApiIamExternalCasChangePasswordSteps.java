@@ -1,12 +1,5 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.cas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.OffsetDateTime;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -15,6 +8,13 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import java.time.OffsetDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API CAS dans IAM admin : opération de changement de mot de passe.
@@ -23,7 +23,7 @@ import fr.gouv.vitamui.utils.TestConstants;
  */
 public class ApiIamExternalCasChangePasswordSteps extends CommonSteps {
 
-    private static final String NEW_PASSWORD = "newPassword";
+    private static final String NEW_PASSWORD = "Change-it0!Change-it0!";
 
     private OffsetDateTime pwdExpirationDate;
 

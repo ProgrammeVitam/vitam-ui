@@ -1,21 +1,20 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.cas;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
-import java.util.Optional;
-
-import org.bson.Document;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+import org.bson.Document;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 /**
  * Teste l'API CAS dans IAM admin : opérations liées au logout.
@@ -61,7 +60,7 @@ public class ApiIamExternalCasLogoutSteps extends CommonSteps {
     @When("^cet utilisateur fait un logout$")
     public void cet_utilisateur_fait_un_logout() {
         createSubrogationByUserStatus(false);
-        surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier },
+        surrogateUser = (AuthUserDto) getCasRestClient(false, new Integer[] { casTenantIdentifier, 1 },
                 new String[] { ServicesData.ROLE_CAS_USERS }).getUserByEmail(getContext(casTenantIdentifier, TestConstants.TOKEN_USER_CAS),
                         surrogateUser.getEmail(), Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER));
         try {

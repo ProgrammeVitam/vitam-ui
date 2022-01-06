@@ -1,17 +1,5 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.customer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -21,13 +9,26 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.utils.ResourcesUtils;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API Customers dans IAM admin : opérations de création.
@@ -38,9 +39,42 @@ import fr.gouv.vitamui.utils.TestConstants;
 public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS$")
-    public void un_utilisateur_avec_le_rôle_ROLE_CREATE_CUSTOMERS_ajoute_un_nouveau_client_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_CUSTOMERS() {
+    public void un_utilisateur_avec_le_rôle_ROLE_CREATE_CUSTOMERS_ajoute_un_nouveau_client_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_CUSTOMERS()
+        throws Exception {
         testContext.savedBasicCustomerDto = FactoryDto.buildDto(CustomerDto.class);
-        testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerDto, Optional.empty());
+        final CustomerCreationFormData creationFormData = new CustomerCreationFormData();
+        creationFormData.setCustomerDto(testContext.savedBasicCustomerDto);
+        creationFormData.setHeader(Optional.empty());
+        creationFormData.setFooter(Optional.empty());
+        creationFormData.setPortal(Optional.empty());
+        creationFormData.setLogo(Optional.empty());
+        creationFormData.setTenantName(String.valueOf(proofTenantIdentifier));
+        testContext.savedBasicCustomerCreationFormData = creationFormData;
+
+        try {
+            testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerCreationFormData);
+        } catch (RuntimeException ex) {
+            Thread.sleep(10000L);
+            boolean b = checkCustomer(testContext.savedBasicCustomerDto);
+            if(!b) {
+                int i = 3;
+                while (i > 0) {
+                    LOGGER.debug("first_check : {}", i);
+                    Thread.sleep(10000L);
+                    boolean b1 = checkCustomer(testContext.savedBasicCustomerDto);
+                    i--;
+                    if(b1) break;
+                }
+            }
+            testContext.exception = ex;
+        }
+    }
+
+    private boolean checkCustomer(CustomerDto savedBasicCustomerDto) {
+        final QueryDto criteria = QueryDto.criteria("emailDomains", Arrays.asList(savedBasicCustomerDto.getDefaultEmailDomain()), CriterionOperator.IN)
+                                          .addCriterion("code",savedBasicCustomerDto.getCode(), CriterionOperator.EQUALS);
+        testContext.bResponse = getCustomerRestClient(true).checkExist(getSystemTenantUserAdminContext(), criteria.toJson());
+        return testContext.bResponse;
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec son logo dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS$")
@@ -48,7 +82,7 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
             throws IOException {
         testContext.savedBasicCustomerDto = FactoryDto.buildDto(CustomerDto.class);
         testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerDto,
-                Optional.of(ResourcesUtils.getResourcePath("data/vitamui-logo.png")));
+                Optional.empty());
     }
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_CUSTOMERS ajoute un nouveau client avec un thème personnalisé dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_CUSTOMERS$")
@@ -63,7 +97,7 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
         testContext.savedBasicCustomerDto.setThemeColors(themeColors);
 
         testContext.basicCustomerDto = create(getSystemTenantUserAdminContext(), testContext.savedBasicCustomerDto,
-            Optional.of(ResourcesUtils.getResourcePath("data/vitamui-logo.png")));
+            Optional.empty());
     }
 
 
@@ -75,8 +109,15 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
         return iamExternalWebClientFactory.getCustomerWebClient().create(context, customerDto, logoPath);
     }
 
+    public CustomerDto create(final ExternalHttpContext context, final CustomerCreationFormData customerCreationFormData) {
+        final IamExternalWebClientFactory iamExternalWebClientFactory = getIamWebClientFactory(true, new Integer[]{6}, new String[] { ServicesData.ROLE_CREATE_CUSTOMERS });
+        LOGGER.debug("Create {}", customerCreationFormData);
+        return iamExternalWebClientFactory.getCustomerWebClient().create(context, customerCreationFormData);
+    }
+
     @Then("^le serveur retourne le client créé$")
     public void le_status_de_la_réponse_doit_etre() {
+        LOGGER.debug("created_client: {}", testContext.basicCustomerDto.toString());
         assertThat(testContext.basicCustomerDto).overridingErrorMessage("la réponse retournée est null").isNotNull();
     }
 
@@ -98,6 +139,16 @@ public class ApiIamExternalCustomerCreationSteps extends CommonSteps {
 
         assertThat(tenants).overridingErrorMessage("Aucun tenant trouvé pour le customer %s", testContext.basicCustomerDto.getId()).isNotNull().isNotEmpty()
                 .hasSize(1);
+        testContext.tenantDto = tenants.get(0);
+    }
+
+    @Then("^un tenant par défaut est créé dans vitamui$")
+    public void un_tenant_par_défaut_est_cree_dans_vitamui() {
+        final QueryDto criteria = QueryDto.criteria("customerId", testContext.basicCustomerDto.getId(), CriterionOperator.EQUALS);
+
+        final List<TenantDto> tenants = getTenantRestClient().getAll(getSystemTenantUserAdminContext(), criteria.toOptionalJson(), Optional.empty());
+
+        assertThat(tenants).hasSize(1);
         testContext.tenantDto = tenants.get(0);
     }
 

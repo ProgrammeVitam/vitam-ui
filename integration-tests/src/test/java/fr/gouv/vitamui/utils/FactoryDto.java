@@ -125,7 +125,7 @@ public class FactoryDto {
 
     private static UserDto buildBasicUserDto() {
         final UserDto user = IamDtoBuilder.buildUserDto(null, randomString().toLowerCase() + "@test.com",
-                "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363", SYSTEM_CUSTOMER_ID, ADMIN_LEVEL);
+                "admin_group", SYSTEM_CUSTOMER_ID, ADMIN_LEVEL);
         user.setIdentifier(null);
         return user;
     }

@@ -1,17 +1,16 @@
 package fr.gouv.vitamui.cucumber.back.runners;
 
+import fr.gouv.vitamui.AbstractIntegrationTest;
+import io.cucumber.junit.CucumberOptions;
+import net.serenitybdd.cucumber.CucumberWithSerenity;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 
-import fr.gouv.vitamui.AbstractIntegrationTest;
-import io.cucumber.junit.CucumberOptions;
-import net.serenitybdd.cucumber.CucumberWithSerenity;
-
 @RunWith(CucumberWithSerenity.class)
 //@formatter:off
 @CucumberOptions(
-        plugin = { "pretty" },
+        plugin = { "pretty", "json:target/cucumber-report.json", "html:target/html"},
         features = "src/test/resources/features/back/iam",
         //        tags = "@Traces",
         glue = {
@@ -26,12 +25,17 @@ public class IamIntegrationTest extends AbstractIntegrationTest {
 
     @BeforeClass
     public static void startServersAndSetData() {
-
+        // add temporary profile to admin_group to be able to tets owner features
+        //BaseIntegration.updateGroupAddProfile(BaseIntegration.ADMIN_USER_GROUP, BaseIntegration.SYSTEM_CUSTOMER_PROFILE, MongoActionOperation.INSERT);
     }
 
     @AfterClass
     public static void someStuff() {
+        // example of cleaning tests after tests
+        //BaseIntegration.updateGroupAddProfile(BaseIntegration.ADMIN_USER_GROUP, BaseIntegration.SYSTEM_CUSTOMER_PROFILE, MongoActionOperation.REMOVE);
 
+        // TODO: Cleaning: differentiate data created automatically by FactoryDtos, and clean them by a simple select
+        //  request over each collection !
     }
 
 }

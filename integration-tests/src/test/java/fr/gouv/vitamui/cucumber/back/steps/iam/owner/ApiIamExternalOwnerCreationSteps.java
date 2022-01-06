@@ -1,15 +1,16 @@
 package fr.gouv.vitamui.cucumber.back.steps.iam.owner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.cucumber.common.CommonSteps;
 import fr.gouv.vitamui.utils.FactoryDto;
 import fr.gouv.vitamui.utils.TestConstants;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import static fr.gouv.vitamui.commons.api.domain.ServicesData.ROLE_CREATE_OWNERS;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Teste l'API Owners dans IAM admin : opérations de création.
@@ -20,7 +21,7 @@ public class ApiIamExternalOwnerCreationSteps extends CommonSteps {
 
     @When("^un utilisateur avec le rôle ROLE_CREATE_OWNERS ajoute un nouveau propriétaire dans un tenant auquel il est autorisé en utilisant un certificat full access avec le rôle ROLE_CREATE_OWNERS$")
     public void un_utilisateur_avec_le_rôle_ROLE_CREATE_OWNERS_ajoute_un_nouveau_propriétaire_dans_un_tenant_auquel_il_est_autorisé_en_utilisant_un_certificat_full_access_avec_le_rôle_ROLE_CREATE_OWNERS() {
-        testContext.ownerDto = getOwnerRestClient().create(getSystemTenantUserAdminContext(),
+        testContext.ownerDto = getOwnerRestClient(true, new Integer[]{-1,1}, new String[] { ROLE_CREATE_OWNERS }).create(getSystemTenantUserAdminContext(),
                 FactoryDto.buildDto(OwnerDto.class));
     }
 
