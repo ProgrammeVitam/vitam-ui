@@ -6,10 +6,7 @@
 # repositories.yml
 vitam_repositories:
   - key: vitamui
-    value: https://download.programmevitam.fr/vitamui/5.rc.1/rpm/vitamui/
-    proxy: ""
-  - key: vitamui-cots
-    value: https://download.programmevitam.fr/vitamui/5.rc.1/rpm/cots/
+    value: https://download.programmevitam.fr/vitamui/5.rc.1/rpm/
     proxy: ""
   - key: vitam-product
     value: https://download.programmevitam.fr/vitam_repository/5.rc.1/rpm/vitam-product/
