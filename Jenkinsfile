@@ -80,6 +80,7 @@ pipeline {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
                 JAVA_TOOL_OPTIONS=""
+                NODE_OPTIONS="--max_old_space_size=4096"
             }
             steps {
                 sh 'node -v'                
