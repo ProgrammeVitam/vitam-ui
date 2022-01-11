@@ -35,9 +35,7 @@ vitamui_platform_informations:
 # repositories.yml
 vitam_repositories:
   - key: vitamui
-    value: https://download.programmevitam.fr/vitamui/4.0.4/rpm/vitamui/
-  - key: vitamui-cots
-    value: https://download.programmevitam.fr/vitamui/4.0.4/rpm/cots/
+    value: https://download.programmevitam.fr/vitamui/4.0.4/rpm/
   - key: vitam-product
     value: https://download.programmevitam.fr/vitam_repository/4.0.4/rpm/vitam-product/
   - key: vitam-external
