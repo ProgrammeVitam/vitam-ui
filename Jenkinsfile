@@ -80,12 +80,12 @@ pipeline {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
                 JAVA_TOOL_OPTIONS=""
-                NODE_OPTIONS="--max_old_space_size=4096"
+                NODE_OPTIONS="--max_old_space_size=8192"
             }
             steps {
                 sh 'node -v'                
                 sh 'npmrc default'
-                sh 'export NODE_OPTIONS="--max-old-space-size=8192"'
+                //sh 'export NODE_OPTIONS="--max-old-space-size=8192"'
 
 //                sh '''
 //                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
