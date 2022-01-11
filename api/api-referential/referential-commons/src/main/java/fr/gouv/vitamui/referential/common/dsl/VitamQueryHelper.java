@@ -50,8 +50,9 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -61,11 +62,9 @@ import java.util.Set;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
@@ -286,24 +285,24 @@ public class VitamQueryHelper {
             ObjectMapper mapper = new ObjectMapper();
             AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval = mapper.convertValue(value, new TypeReference<>() {});
 
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT).withZone(ZoneOffset.UTC);
             String dateMinStr = dateInterval.getEndDateMin();
             String dateMaxStr = dateInterval.getEndDateMax();
 
-            if(dateMinStr != null && dateMaxStr == null) {
-                query.add(lte(END_DATE, formatter.parse(dateMinStr)));
+            if (dateMinStr != null && dateMaxStr == null) {
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.now().toString(), true));
             }
 
-            if(dateMinStr == null && dateMaxStr != null) {
-                query.add(lte(END_DATE, formatter.parse(dateMaxStr)));
+            if (dateMinStr == null && dateMaxStr != null) {
+                query.add(range(END_DATE, LocalDate.now().toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
 
-            if(dateMinStr != null && dateMaxStr != null) {
-                query.add(range(END_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+            if (dateMinStr != null && dateMaxStr != null) {
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
 
-        } catch (InvalidCreateOperationException | ParseException e) {
-            LOGGER.error("Can not find binding for StartDate key: \n {}", e);
+        } catch (InvalidCreateOperationException e) {
+            LOGGER.error("Can not find binding for EndDate key: \n {}", e);
         }
 
     }

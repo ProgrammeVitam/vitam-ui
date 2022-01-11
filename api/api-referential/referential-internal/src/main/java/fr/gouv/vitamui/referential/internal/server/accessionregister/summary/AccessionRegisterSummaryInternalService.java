@@ -68,7 +68,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +82,6 @@ import java.util.stream.Collectors;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.range;
@@ -214,7 +215,7 @@ public class AccessionRegisterSummaryInternalService {
             query.add(in(STATUS, stringValues.toArray(new String[] {})));
         }
 
-        addStartDateToQuery(query, detailsSearchDto.getDateInterval());
+        addEndDateToQuery(query, detailsSearchDto.getDateInterval());
 
         if(detailsSearchDto.getAdvancedSearch() != null) {
             AccessionRegisterDetailsSearchStatsDto.AdvancedSearchData advancedSearch = detailsSearchDto.getAdvancedSearch();
@@ -254,24 +255,24 @@ public class AccessionRegisterSummaryInternalService {
         }
     }
 
-    private static void addStartDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)
-        throws ParseException, InvalidCreateOperationException {
+    private static void addEndDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)
+        throws InvalidCreateOperationException {
 
         if(dateInterval != null) {
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT).withZone(ZoneOffset.UTC);
             String dateMinStr = dateInterval.getEndDateMin();
             String dateMaxStr = dateInterval.getEndDateMax();
 
             if (dateMinStr != null && dateMaxStr == null) {
-                query.add(lte(END_DATE, formatter.parse(dateMinStr)));
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.now().toString(), true));
             }
 
             if (dateMinStr == null && dateMaxStr != null) {
-                query.add(lte(END_DATE, formatter.parse(dateMaxStr)));
+                query.add(range(END_DATE, LocalDate.now().toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
 
             if (dateMinStr != null && dateMaxStr != null) {
-                query.add(range(END_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
         }
     }

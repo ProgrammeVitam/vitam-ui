@@ -56,7 +56,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   filterDebounceTimeMs = 400;
   direction = Direction.DESCENDANT;
-  orderBy = 'StartDate';
+  orderBy = 'EndDate';
 
   private filterChange = new BehaviorSubject<{ [key: string]: any[] }>({});
   private searchChange = new BehaviorSubject<string>(null);
