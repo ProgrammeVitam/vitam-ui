@@ -140,10 +140,18 @@ public class IdentityProviderInternalIntegrationTest extends AbstractLogbookInte
         service.patch(partialDto);
         partialDto.remove("autoProvisioningEnabled");
 
+        partialDto.put("clientId", "1");
+        service.patch(partialDto);
+        partialDto.remove("clientId");
+
+        partialDto.put("discoveryUrl", "http://url");
+        service.patch(partialDto);
+        partialDto.remove("discoveryUrl");
+
         final Criteria criteria = Criteria.where("obId").is(dto.getIdentifier()).and("obIdReq").is(MongoDbCollections.PROVIDERS).and("evType")
                 .is(EventType.EXT_VITAMUI_UPDATE_IDP);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
-        assertThat(events).hasSize(6);
+        assertThat(events).hasSize(8);
     }
 
     private IdentityProviderDto createIdp() {
