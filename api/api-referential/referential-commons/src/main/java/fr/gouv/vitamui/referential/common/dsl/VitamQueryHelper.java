@@ -111,9 +111,8 @@ public class VitamQueryHelper {
     /* */
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final Collection<String> staticAcquisitionInformations = List.of("Versement", "Protocole", "Achat",
-        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", VitamQueryHelper.ACQUISITION_INFORMATION_AUTRES,
+        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", "Autres",
         VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
-    public static final String ACQUISITION_INFORMATION_AUTRES = "Autres";
     public static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
 
     private VitamQueryHelper() {
@@ -274,7 +273,7 @@ public class VitamQueryHelper {
         acquisitionInformations.removeAll(data);
 
         if(!acquisitionInformations.isEmpty()) {
-            if(data.contains(ACQUISITION_INFORMATION_AUTRES) || data.contains(ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
+            if(data.contains(ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
                 query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
             } else {
                 query.add(in(ACQUISITION_INFORMATION, data.toArray(new String[] {})));

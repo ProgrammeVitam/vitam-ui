@@ -245,8 +245,7 @@ public class AccessionRegisterSummaryInternalService {
             List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
             acquisitionInformations.removeAll(acquisitionInformationsFromIhm);
             if(!acquisitionInformations.isEmpty()) {
-                if(acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_AUTRES)
-                    || acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
+                if(acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
                     query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
                 } else {
                     query.add(in(ACQUISITION_INFORMATION, acquisitionInformationsFromIhm.toArray(new String[] {})));
