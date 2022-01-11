@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.idp.domain;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -66,6 +67,7 @@ import lombok.ToString;
 @ToString(callSuper = true, exclude = { "keystoreBase64", "keystorePassword", "privateKeyPassword", "idpMetadata", "spMetadata" })
 public class IdentityProvider extends CustomerIdDocument {
 
+    // Common data to all providers
     @NotNull
     @Length(min = 1, max = 12)
     private String identifier;
@@ -87,6 +89,18 @@ public class IdentityProvider extends CustomerIdDocument {
     @Size(min = 1)
     private List<String> patterns;
 
+    private boolean readonly;
+
+
+    // Common data to external providers (SAML + OIDC)
+    private String mailAttribute;
+
+    private String identifierAttribute;
+
+    private boolean autoProvisioningEnabled;
+
+
+    // SAML provider data
     private String keystoreBase64;
 
     private String keystorePassword;
@@ -99,13 +113,25 @@ public class IdentityProvider extends CustomerIdDocument {
 
     private Integer maximumAuthenticationLifetime;
 
-    private boolean readonly;
-
-    private String mailAttribute;
-
-    private String identifierAttribute;
-
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
-    private boolean autoProvisioningEnabled;
+
+    // OIDC provider data
+    private String clientId;
+
+    private String clientSecret;
+
+    private String discoveryUrl;
+
+    private String scope;
+
+    private String preferredJwsAlgorithm;
+
+    private Map<String, String> customParams;
+
+    private Boolean useState;
+
+    private Boolean useNonce;
+
+    private Boolean usePkce;
 }
