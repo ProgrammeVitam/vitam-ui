@@ -83,7 +83,7 @@ pipeline {
                 NODE_OPTIONS="--max_old_space_size=8192"
             }
             steps {
-                sh 'node -v'                
+                sh 'node -v'
                 sh 'npmrc default'
                 //sh 'export NODE_OPTIONS="--max-old-space-size=8192"'
 
