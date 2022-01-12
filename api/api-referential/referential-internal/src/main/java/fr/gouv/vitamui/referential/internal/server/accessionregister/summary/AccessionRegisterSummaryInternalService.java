@@ -108,7 +108,7 @@ public class AccessionRegisterSummaryInternalService {
     private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
     private static final String EVENTS_OPTYPE = "Events.OpType";
     private static final String ELIMINATION = "ELIMINATION";
-    private static final String TRANSFER = "TRANSFER";
+    private static final String TRANSFER_REPLY = "TRANSFER_REPLY";
 
     @Autowired
     AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService,
@@ -169,6 +169,7 @@ public class AccessionRegisterSummaryInternalService {
             LOGGER.debug("Context application Session ID : {} ", context.getApplicationSessionId());
 
             JsonNode detailsQuery = buildCustomAccessionRegisterDetailsQuery(detailsSearchDto);
+            LOGGER.debug("Final query Summary: {}", detailsQuery.toPrettyString());
 
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient
                 .findAccessionRegisterDetails(context, detailsQuery);
@@ -227,7 +228,7 @@ public class AccessionRegisterSummaryInternalService {
             addAcquisitionInformationsToQuery(query, advancedSearch);
 
             addEventOpTypeQuery(query, advancedSearch.getElimination(), ELIMINATION);
-            addEventOpTypeQuery(query, advancedSearch.getElimination(), TRANSFER);
+            addEventOpTypeQuery(query, advancedSearch.getTransferReply(), TRANSFER_REPLY);
 
         }
 

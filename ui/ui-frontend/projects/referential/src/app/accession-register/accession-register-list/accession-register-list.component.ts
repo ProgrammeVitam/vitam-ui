@@ -139,8 +139,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
       query.elimination = avancedSearchData.elimination;
     }
 
-    if (OjectUtils.valueNotUndefined(avancedSearchData.transfer)) {
-      query.transfer = avancedSearchData.transfer;
+    if (OjectUtils.valueNotUndefined(avancedSearchData.transfer_reply)) {
+      query.transfer_reply = avancedSearchData.transfer_reply;
     }
   }
 

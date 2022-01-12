@@ -105,7 +105,7 @@ public class VitamQueryHelper {
     private static final String ACQUISITION_INFORMATIONS = "acquisitionInformations";
     private static final String EVENTS_OPTYPE = "Events.OpType";
     private static final String ELIMINATION = "elimination";
-    private static final String TRANSFER = "transfer";
+    private static final String TRANSFER_REPLY = "transfer_reply";
 
     /* */
     private static final String DATE_FORMAT = "dd/MM/yyyy";
@@ -216,7 +216,7 @@ public class VitamQueryHelper {
                         addAcquisitionInformationsToQuery(query, (ArrayList<String>) entry.getValue());
                         break;
                     case ELIMINATION:
-                    case TRANSFER:
+                    case TRANSFER_REPLY:
                         addEventsToQuery(query, (String) entry.getValue(), searchKey.toUpperCase());
                         break;
                     default:
@@ -228,7 +228,7 @@ public class VitamQueryHelper {
 
         setQuery(select, query, queryOr, isEmpty, haveOrParameters);
 
-        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+        LOGGER.debug("Final query Details: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
     }
 
