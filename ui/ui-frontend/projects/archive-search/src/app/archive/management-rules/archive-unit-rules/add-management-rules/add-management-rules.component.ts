@@ -123,7 +123,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
         [this.managementRulesValidatorService.uniqueRuleId(), this.managementRulesValidatorService.checkRuleIdExistence()],
       ],
       name: [{ value: null, disabled: true }, Validators.required],
-      startDate: [null, Validators.required],
+      startDate: [null],
       endDate: [{ value: null, disabled: true }],
     });
 
@@ -141,12 +141,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.ruleDetailsForm.get('startDate').valueChanges.subscribe((date) => {
       this.cancelStep.emit();
       this.isShowCheckButton = true;
-      this.isDisabled = true;
       this.selectedStartDate = date;
-    });
-
-    this.ruleDetailsForm.get('rule').valueChanges.subscribe(() => {
-      this.cancelStep.emit();
     });
   }
 
@@ -157,6 +152,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
           this.rule = ruleResponse;
           this.ruleDetailsForm.patchValue({ name: ruleResponse.ruleValue });
         });
+        this.cancelStep.emit();
+        this.isDisabled = false;
         return true;
       }
     }
@@ -211,40 +208,42 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   addRuleAndStartDateToQuery() {
     this.isWarningLoading = true;
     this.initDSLQuery();
-    const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_IDENTIFIER,
-      values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
-      operator: CriteriaOperator.EQ,
-      dataType: CriteriaDataType.STRING,
-    };
-    const criteriaWithDate: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_START_DATE,
-      values: [
-        {
-          id: this.ruleDetailsForm.get('startDate').value,
-          value: this.ruleDetailsForm.get('startDate').value,
-        },
-      ],
-      category: SearchCriteriaTypeEnum.FIELDS,
-      operator: CriteriaOperator.EQ,
-      dataType: CriteriaDataType.STRING,
-    };
-    const onlyManagementRules: SearchCriteriaEltDto = {
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
-      criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
-      dataType: CriteriaDataType.STRING,
-      operator: CriteriaOperator.EQ,
-      values: [{ id: 'true', value: 'true' }],
-    };
-    this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
-    this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithDate);
-    this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
+    if (this.ruleDetailsForm.get('startDate').value) {
+      const criteriaWithId: SearchCriteriaEltDto = {
+        criteria: APPRAISAL_RULE_IDENTIFIER,
+        values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
+        category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+        operator: CriteriaOperator.EQ,
+        dataType: CriteriaDataType.STRING,
+      };
+      const criteriaWithDate: SearchCriteriaEltDto = {
+        criteria: APPRAISAL_RULE_START_DATE,
+        values: [
+          {
+            id: this.ruleDetailsForm.get('startDate').value,
+            value: this.ruleDetailsForm.get('startDate').value,
+          },
+        ],
+        category: SearchCriteriaTypeEnum.FIELDS,
+        operator: CriteriaOperator.EQ,
+        dataType: CriteriaDataType.STRING,
+      };
+      const onlyManagementRules: SearchCriteriaEltDto = {
+        category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+        criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
+        dataType: CriteriaDataType.STRING,
+        operator: CriteriaOperator.EQ,
+        values: [{ id: 'true', value: 'true' }],
+      };
+      this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
+      this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithDate);
+      this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-      this.itemsWithSameRuleAndDate = data.totalResults;
-      this.isWarningLoading = false;
-    });
+      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+        this.itemsWithSameRuleAndDate = data.totalResults;
+        this.isWarningLoading = false;
+      });
+    }
   }
 
   patchForm(data: any): boolean {
@@ -279,7 +278,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       endDate: this.ruleDetailsForm.get('endDate').value,
     };
     if (this.rule && this.rule.ruleMeasurement) {
-      const startDateSelected = new Date(this.selectedStartDate);
+      const startDateSelected = new Date(this.ruleDetailsForm.get('startDate').value);
       switch (this.rule.ruleMeasurement.toUpperCase()) {
         case 'YEAR':
           startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(this.rule.ruleDuration));
@@ -354,7 +353,9 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
 
     this.addRuleToQuery();
-    this.addRuleAndStartDateToQuery();
+    if (this.ruleDetailsForm.get('startDate').value) {
+      this.addRuleAndStartDateToQuery();
+    }
     this.confirmStep.emit();
 
     this.lastRuleId = this.ruleDetailsForm.get('rule').value;
