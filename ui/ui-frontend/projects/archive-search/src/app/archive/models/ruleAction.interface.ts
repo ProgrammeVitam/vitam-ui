@@ -57,9 +57,21 @@ export interface RuleSearchCriteriaDto {
 
 export interface RuleAction {
   rule: string;
-  name: string;
-  startDate: string;
-  endDate: string;
+  name?: string;
+  startDate?: string;
+  endDate?: string;
+  oldRule?: string;
+  deleteStartDate?: boolean;
+  holdEndDate?: string;
+  deleteHoldEndDate?: boolean;
+  holdOwner?: string;
+  deleteHoldOwner?: boolean;
+  holdReason?: string;
+  deleteHoldReason?: boolean;
+  holdReassessingDate?: string;
+  deleteHoldReassessingDate?: boolean;
+  preventRearrangement?: boolean;
+  deletePreventRearrangement?: boolean;
 }
 
 export interface RuleCategoryAction {
@@ -101,9 +113,11 @@ export interface VitamUiRuleActions {
 export interface ManagementRules {
   category: string;
   ruleCategoryAction: RuleCategoryAction;
+  actionType: string;
 }
 
 export enum RuleActionsEnum {
   ADD_RULES = 'ADD_RULES',
   UPDATE_PROPERTY = 'UPDATE_PROPERTY',
+  UPDATE_RULES = 'UPDATE_RULES',
 }

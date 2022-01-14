@@ -69,12 +69,23 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
-      this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction.finalAction =
-        this.rulePropertyName;
+    if (
+      this.managementRules.findIndex(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      ) !== -1
+    ) {
+      this.managementRules.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      ).ruleCategoryAction.finalAction = this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
-      const managementRule: ManagementRules = { category: RuleTypeEnum.APPRAISALRULE, ruleCategoryAction: this.ruleTypeDUA };
+      const managementRule: ManagementRules = {
+        category: RuleTypeEnum.APPRAISALRULE,
+        ruleCategoryAction: this.ruleTypeDUA,
+        actionType: RuleActionsEnum.ADD_RULES,
+      };
       this.managementRules.push(managementRule);
     }
 

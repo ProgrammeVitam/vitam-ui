@@ -78,10 +78,11 @@ import { ArchiveComponent } from './archive.component';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
-import { AddManagementRulesComponent } from './management-rules/add-management-rules/add-management-rules.component';
+import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/add-update-property/add-update-property.component';
-import { DuaManagementRulesComponent } from './management-rules/dua-management-rules/dua-management-rules.component';
+import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
 import { ManagementRulesComponent } from './management-rules/management-rules.component';
+import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 
@@ -141,8 +142,9 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     DipRequestCreateComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
-    DuaManagementRulesComponent,
+    ArchiveUnitRulesComponent,
     AddUpdatePropertyComponent,
+    UpdateUnitRulesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
