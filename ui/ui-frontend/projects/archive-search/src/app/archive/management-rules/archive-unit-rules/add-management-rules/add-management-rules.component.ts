@@ -308,6 +308,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   submit() {
     this.isDisabled = true;
     this.showText = true;
+    this.isLoading = !this.isLoading;
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
       startDate: this.ruleDetailsForm.get('startDate').value,
