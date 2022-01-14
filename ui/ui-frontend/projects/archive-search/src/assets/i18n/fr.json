@@ -301,13 +301,13 @@
       "UA_CONTROL" : {
         "UA_FINAL_ACTION_MESSAGE" : "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
         "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.", 
-        "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
+        "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
         "UA_WITH_SAME_RULE_AND_DATE" : "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
 
       },
       "DIALOG_MESSAGE" : {
         "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",       
-        "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer le bloc de mise à jour des règles ?",
+        "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
         "UPDATE_CONFIRM_MESSAGE" : "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
         "EXIT_CONFIRM_MESSAGE" : "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
       },
