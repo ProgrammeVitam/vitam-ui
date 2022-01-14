@@ -66,7 +66,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
-  private ruleCategoryDuaActions: RuleCategoryAction = {
+  private ruleCategoryDuaActionsToAdd: RuleCategoryAction = {
+    rules: [],
+    finalAction: '',
+  };
+  private ruleCategoryDuaActionsToUpdate: RuleCategoryAction = {
     rules: [],
     finalAction: '',
   };
@@ -88,6 +92,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   isRuleCategorySelected = false;
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
+  isAddValidActions = true;
+  isUpdateValidActions = true;
+  messageNotUpdate: string;
+  messageNotAdd: string;
+
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
   @ViewChild('confirmLeaveRuleActionsDialog', { static: true }) confirmLeaveRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
@@ -102,7 +111,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private translateService: TranslateService,
     private logger: Logger
-  ) {}
+  ) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      this.isUpdateValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === RuleTypeEnum.APPRAISALRULE &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+      this.isAddValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === RuleTypeEnum.APPRAISALRULE &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.UPDATE_RULES
+        ).length !== 0;
+    });
+  }
 
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
@@ -117,6 +143,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.initializeParameters();
       this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
     }
+    this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
+    this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
   }
 
   initializeParameters() {
@@ -217,16 +245,40 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const dialogToOpen = this.confirmRuleActionsDialog;
     const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
+    const actionUpdateOnRules: any = {};
 
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.ruleCategoryDuaActions = data.find((rule) => rule.category === RuleTypeEnum.APPRAISALRULE)?.ruleCategoryAction;
-    });
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
 
-    actionAddOnRules.AppraisalRule = { rules: this.ruleCategoryDuaActions.rules, finalAction: this.ruleCategoryDuaActions?.finalAction };
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            finalAction: null,
+          };
+        }
+      }
+    });
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
-      update: [],
+      update: this.objectToArray(actionUpdateOnRules),
       delete: [],
     };
 

@@ -42,12 +42,11 @@ import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
-import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { ArchiveService } from '../../archive.service';
-import { RuleTypeEnum } from '../../models/rule-type-enum';
-import { ManagementRules, RuleAction, RuleCategoryAction } from '../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
-import { ManagementRulesValidatorService } from '../../validators/management-rules-validator.service';
+import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
+import { ArchiveService } from '../../../archive.service';
+import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
+import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
+import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
@@ -67,6 +66,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   accessContract: string;
   @Input()
   selectedItem: number;
+  @Input()
+  ruleCategory: string;
   ruleDetailsForm: FormGroup;
   ruleTypeDUA: RuleCategoryAction;
   public previousRuleDetails: {
@@ -319,19 +320,34 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+    if (
+      this.managementRules.findIndex(
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      ) !== -1
+    ) {
       this.ruleTypeDUA = this.managementRules.find(
-        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
       ).ruleCategoryAction;
       if (this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule) === -1) {
         this.ruleTypeDUA.rules.push(rule);
         this.ruleTypeDUA.rules = this.ruleTypeDUA.rules.filter((item) => item.rule !== this.lastRuleId);
-        this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction =
-          this.ruleTypeDUA;
+        this.managementRules.find(
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        ).ruleCategoryAction = this.ruleTypeDUA;
+      } else {
+        const index = this.ruleTypeDUA.rules.findIndex((item) => item.rule === rule.rule);
+        this.ruleTypeDUA.rules[index] = rule;
+        this.managementRules.find(
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        ).ruleCategoryAction = this.ruleTypeDUA;
       }
     } else {
       this.ruleTypeDUA = { finalAction: '', rules: [rule] };
-      const managementRule: ManagementRules = { category: RuleTypeEnum.APPRAISALRULE, ruleCategoryAction: this.ruleTypeDUA };
+      const managementRule: ManagementRules = {
+        category: this.ruleCategory,
+        ruleCategoryAction: this.ruleTypeDUA,
+        actionType: RuleActionsEnum.ADD_RULES,
+      };
       this.managementRules.push(managementRule);
     }
 
