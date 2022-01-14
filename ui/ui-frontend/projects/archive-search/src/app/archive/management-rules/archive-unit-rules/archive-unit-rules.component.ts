@@ -39,13 +39,12 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { RuleTypeEnum } from '../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../models/ruleAction.interface';
 
 @Component({
-  selector: 'app-dua-management-rules',
-  templateUrl: './dua-management-rules.component.html',
-  styleUrls: ['./dua-management-rules.component.css'],
+  selector: 'app-archive-unit-rules',
+  templateUrl: './archive-unit-rules.component.html',
+  styleUrls: ['./archive-unit-rules.component.css'],
   animations: [
     trigger('collapse', [
       state('false', style({ height: AUTO_STYLE, visibility: AUTO_STYLE })),
@@ -55,14 +54,17 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
     ]),
   ],
 })
-export class DuaManagementRulesComponent implements OnInit, OnDestroy {
+export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   @Input()
   accessContract: string;
   @Input()
   selectedItem: string;
+  @Input()
+  ruleCategory: string;
   ruleActions: ActionsRules[];
   ruleActionsSubscription: Subscription;
   collapsed = false;
+  updateRuleCollapsed = false;
   updatePropertyCollapsed = false;
   deletePropertyCollapsed = false;
   ruleCategoryDuaActions: RuleCategoryAction;
@@ -86,50 +88,73 @@ export class DuaManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
   }
 
-  getActionByRuleType(ruleType: string): string[] {
+  getActionByRuleType(): string[] {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    const rules: string[] = this.ruleActions.filter((actionRules) => actionRules.ruleType === ruleType).map((action) => action.actionType);
+    const rules: string[] = this.ruleActions
+      .filter((actionRules) => actionRules.ruleType === this.ruleCategory)
+      .map((action) => action.actionType);
     return rules.filter((ruleName, index) => rules.indexOf(ruleName) === index);
   }
-  getActions(category: string): ActionsRules[] {
+  getActions(): ActionsRules[] {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    return this.ruleActions.filter((ruleAction) => ruleAction.ruleType === category);
+    return this.ruleActions.filter((ruleAction) => ruleAction.ruleType === this.ruleCategory);
   }
 
   showAddRuleBloc() {
     this.collapsed = !this.collapsed;
   }
 
-  deleteForm(id: number, ruleId: string) {
+  showUpdateRuleBloc() {
+    this.updateRuleCollapsed = !this.updateRuleCollapsed;
+  }
+
+  deleteForm(id: number, ruleId: string, actionType: string) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data.filter((ruleAction) => ruleAction.id !== id);
     });
     this.ruleActions = this.ruleActions.filter((ruleAction) => ruleAction.id !== id);
-    if (this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.ADD_RULES) === -1) {
+    if (
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.ADD_RULES) === -1 &&
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_RULES) === -1
+    ) {
       this.ruleActions = [];
     }
+
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.managementRules = data;
     });
 
-    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === this.ruleCategory) !== -1) {
       this.ruleCategoryDuaActions = this.managementRules.find(
-        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
-      ).ruleCategoryAction;
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+      )?.ruleCategoryAction;
+      if (
+        actionType === RuleActionsEnum.ADD_RULES &&
+        this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId).length === 0
+      ) {
+        this.ruleCategoryDuaActions = {
+          rules: [],
+          finalAction: null,
+        };
+      } else {
+        this.ruleCategoryDuaActions = {
+          rules:
+            actionType === RuleActionsEnum.UPDATE_RULES
+              ? this.ruleCategoryDuaActions.rules.filter((rule) => rule.oldRule !== ruleId)
+              : this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId),
+          finalAction: this.ruleCategoryDuaActions.finalAction,
+        };
+      }
 
-      this.ruleCategoryDuaActions = {
-        rules: this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId),
-        finalAction: this.ruleCategoryDuaActions.finalAction,
-      };
-
-      this.managementRules.find((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE).ruleCategoryAction =
-        this.ruleCategoryDuaActions;
+      this.managementRules.find(
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+      ).ruleCategoryAction = this.ruleCategoryDuaActions;
     }
 
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);

@@ -225,13 +225,16 @@
       "EXECUTE_RULE_UPDATE_MESSAGE" : "The operation to update the management rules has been launched",
       "ACTION_ON_RULES": "Action on the rules",
       "UA_SELECTED": "{{ua_selected}} selected archival units",
-      "RULES_TO_ADD": "Rule (s) to add",
+      "RULES_TO_ADD": "Rule(s) to add",
+      "RULES_TO_UPDATE" : "Rule(s) to update",
       "ACTIONS": {
         "ADD_RULE": "Add a rule",
         "DELETE_RULE": "Delete a rule",
         "BLOCK_RULE_INHERITANCE": "Block rule inheritance",
         "DELETE_BLOCK_RULE_INHERITANCE": "Delete the inheritance block from a rule",
-        "UPDATE_RULE": "Modify a rule"
+        "UPDATE_RULE": "Modify a rule",
+        "NOT_TO_ADD" : "Action impossible for this type of rule: a modification is already in progress",
+        "NOT_TO_UPDATE" : "Impossible action for this type of rule: an addition is already in progress"
       },
       "MORE_ACTIONS": {
         "UPDATE_PROPERTY": "Add or modify a property",
@@ -246,7 +249,14 @@
         "END_DATE": "End date",
         "RULE_ID": "Code",
         "SAME_RULE_ID" : "Code identical to the previous action",
-        "RULE_NOT_EXIST" :"The rule code entered does not exist"
+        "RULE_NOT_EXIST" :"The rule code entered does not exist",
+        "TARGET_RULE" : "Target management rule",
+        "SOURCE_RULE" : "Source management rule*",
+        "UPDATED" : "Updated",
+        "TARGET_START_DATE" : "Target startDate",
+        "UA_TO_UPDATE" :"UA selected will be taken into account during the update",
+        "UA_TO_IGNORE" :"of the UAs selected do not carry this administrative useful life rule and will be ignored"
+
 
       },
       "FINAL_ACTION": {

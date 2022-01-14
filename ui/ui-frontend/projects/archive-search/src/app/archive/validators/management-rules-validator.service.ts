@@ -46,10 +46,10 @@ import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interf
 
 @Injectable()
 export class ManagementRulesValidatorService {
+  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private ruleService: RuleService) {}
   debounceTime = 400;
   ruleActions: RuleCategoryAction;
   managementRules: ManagementRules[];
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private ruleService: RuleService) {}
 
   filterRuleActions(ruleId: string): boolean {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
@@ -60,7 +60,7 @@ export class ManagementRulesValidatorService {
       this.ruleActions = this.managementRules.find(
         (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
       ).ruleCategoryAction;
-      return this.ruleActions.rules?.filter((action) => action.rule === ruleId).length !== 0 ? true : false;
+      return this.ruleActions.rules?.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length !== 0 ? true : false;
     }
     return false;
   }

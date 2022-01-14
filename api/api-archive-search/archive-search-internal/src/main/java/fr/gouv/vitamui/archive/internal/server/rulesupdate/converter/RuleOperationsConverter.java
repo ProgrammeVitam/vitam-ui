@@ -80,11 +80,13 @@ public class RuleOperationsConverter {
     public RuleAction convertToVitamRuleAction(VitamUiRuleAction vitamUiRuleAction) {
         final RuleAction ruleAction = VitamUIUtils.
             copyProperties(vitamUiRuleAction, new RuleAction());
+     if(vitamUiRuleAction.getStartDate() != null) {
+    LocalDateTime startDate =
+        LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+            .withMinute(0).withSecond(0).withNano(0);
+    ruleAction.setStartDate(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)));
+}
 
-        LocalDateTime startDate =
-            LocalDateTime.parse(vitamUiRuleAction.getStartDate(), ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                .withMinute(0).withSecond(0).withNano(0);
-        ruleAction.setStartDate(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)));
         return ruleAction;
     }
 
