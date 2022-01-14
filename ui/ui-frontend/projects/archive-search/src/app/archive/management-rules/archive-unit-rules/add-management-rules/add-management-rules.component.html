@@ -85,24 +85,8 @@
         >
       </vitamui-common-input>
     </div>
-    <div *ngIf="showText" class="row message-text-ok">
-      <div class="col-1" *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
-      <div class="col-11">
-        {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
-      </div>
-    </div>
-    <div *ngIf="showText" class="row message-text-ko">
-      <div class="col-1" *ngIf="isLoading; then loadingMode; else warningTotalFound"></div>
-      <div class="col-11">
-        {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
-      </div>
-    </div>
-    <div *ngIf="showText" class="row message-text-ko">
-      <div class="col-1" *ngIf="isWarningLoading; then loadingMode; else warningTotalFound"></div>
-      <div class="col-11">
-        {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
-      </div>
-    </div>
+
+    <div *ngIf="isLoading; then loadingMode; else resultsFound"></div>
 
     <div class="d-flex mt-4">
       <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
@@ -128,12 +112,27 @@
   </mat-dialog-actions>
 </ng-template>
 
-<ng-template #okTotalFound>
-  <div class="col-1"><i class="material-icons">check_circle</i></div>
-</ng-template>
-<ng-template #warningTotalFound>
-  <div class="col-1"><i class="material-icons">error</i></div>
-</ng-template>
 <ng-template #loadingMode>
-  <mat-spinner class="vitamui-spinner small"></mat-spinner>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner large"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #resultsFound>
+  <div *ngIf="showText && itemsToUpdate > 0" class="row message-text-ok">
+    <div class="col-1"><i class="material-icons">check_circle</i></div>
+    <div class="col-11">{{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}</div>
+  </div>
+  <div *ngIf="showText && itemsWithSameRule > 0" class="row message-text-ko">
+    <div class="col-1"><i class="material-icons">error</i></div>
+    <div class="col-11">
+      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}
+    </div>
+  </div>
+  <div *ngIf="showText && itemsWithSameRuleAndDate > 0" class="row message-text-ko">
+    <div class="col-1"><i class="material-icons">error</i></div>
+    <div class="col-11">
+      {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE_AND_DATE' | translate: { itemsWithSameRuleAndDate: itemsWithSameRuleAndDate } }}
+    </div>
+  </div>
 </ng-template>
