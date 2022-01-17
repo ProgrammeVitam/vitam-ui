@@ -233,6 +233,9 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
     @Value("${vitamui.authn.x509.identifierAttributeExpansion:}")
     private String x509IdentifierAttributeExpansion;
 
+    @Value("${vitamui.authn.x509.defaultDomain:}")
+    private String x509DefaultDomain;
+
     // position matters unfortunately: the ticketRegistry must be autowired after (= under) others
     // as it depends on the catalog instantiated above
     @Autowired
@@ -254,7 +257,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
         val emailMapping = new X509AttributeMapping(x509EmailAttribute, x509EmailAttributeParsing, x509EmailAttributeExpansion);
         val identifierMapping = new X509AttributeMapping(x509IdentifierAttribute, x509IdentifierAttributeParsing, x509IdentifierAttributeExpansion);
         return new UserPrincipalResolver(principalFactory, casRestClient(), utils(), delegatedClientDistributedSessionStore,
-            identityProviderHelper(), providersService(), emailMapping, identifierMapping);
+            identityProviderHelper(), providersService(), emailMapping, identifierMapping, x509DefaultDomain);
     }
 
     @Bean
