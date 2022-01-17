@@ -145,8 +145,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         dto.setPrivateKeyPassword(dto.getKeystorePassword());
         provider.setIdpMetadata(dto.getIdpMetadata());
         provider.setAuthnRequestBinding(dto.getAuthnRequestBinding());
-        final String spMetadata = spMetadataGenerator.generate(dto);
-        provider.setSpMetadata(spMetadata);
+        provider.setSpMetadata(spMetadataGenerator.generate(dto));
         provider.setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
         // OIDC
         provider.setClientId(dto.getClientId());
