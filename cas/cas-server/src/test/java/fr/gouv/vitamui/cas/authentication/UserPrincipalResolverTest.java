@@ -101,7 +101,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         val emailMapping = new X509AttributeMapping("subject_dn", null, null);
         val identifierMapping = new X509AttributeMapping("issuer_dn", null, null);
         resolver = new UserPrincipalResolver(principalFactory, casExternalRestClient, utils, sessionStore,
-            identityProviderHelper, providersService, emailMapping, identifierMapping);
+            identityProviderHelper, providersService, emailMapping, identifierMapping, "");
     }
 
     @Test

@@ -38,12 +38,14 @@ package fr.gouv.vitamui.cas.authentication;
 
 import java.security.cert.CertificateParsingException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.x509.CertificateParser;
 import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
 import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
@@ -85,6 +87,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
+    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -106,6 +109,8 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     private final X509AttributeMapping x509IdentifierAttributeMapping;
 
+    private final String x509DefaultDomain;
+
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
@@ -114,9 +119,9 @@ public class UserPrincipalResolver implements PrincipalResolver {
         val requestContext = RequestContextHolder.getRequestContext();
 
         final boolean surrogationCall;
-        final String username;
+        String username;
         final String superUsername;
-        final String userProviderId;
+        String userProviderId;
         final Optional<String> technicalUserId;
         // x509 certificate
         if (credential instanceof X509CertificateCredential) {
@@ -130,6 +135,19 @@ public class UserPrincipalResolver implements PrincipalResolver {
             superUsername = null;
             userProviderId = null;
             surrogationCall = false;
+
+            String userDomain = username;
+
+            // If the certificate does not contain the user mail, then we use the default domain configured
+            if (StringUtils.isBlank(userDomain) || !Pattern.matches(EMAIL_VALID_REGEXP, userDomain)) {
+                userDomain = String.format("@%s", x509DefaultDomain);
+                username = null;
+            }
+
+            val userProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), userDomain);
+            if (userProvider.isPresent()) {
+                userProviderId = userProvider.get().getId();
+            }
         } else if (credential instanceof SurrogateUsernamePasswordCredential) {
             // login/password + surrogation
             val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
