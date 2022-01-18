@@ -53,7 +53,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.config.password.PasswordConfiguration;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
@@ -317,12 +317,12 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public ProvidersService providersService() {
-        return new ProvidersService(builtClients(), identityProviderCrudRestClient(), saml2ClientBuilder(), utils());
+        return new ProvidersService(builtClients(), identityProviderCrudRestClient(), pac4jClientBuilder(), utils());
     }
 
     @Bean
-    public Saml2ClientBuilder saml2ClientBuilder() {
-        return new Saml2ClientBuilder();
+    public Pac4jClientBuilder pac4jClientBuilder() {
+        return new Pac4jClientBuilder();
     }
 
     @Bean

@@ -27,7 +27,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.execution.Event;
 
-import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
+import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
@@ -57,7 +57,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     private DispatcherAction action;
 
-    private SamlIdentityProviderDto provider;
+    private Pac4jClientIdentityProviderDto provider;
 
     @Override
     @Before
@@ -72,7 +72,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
         action = new DispatcherAction(providersService, identityProviderHelper, casExternalRestClient, ",", utils, mock(SessionStore.class));
 
         final SAML2Client client = new SAML2Client();
-        provider = new SamlIdentityProviderDto(new IdentityProviderDto(), client);
+        provider = new Pac4jClientIdentityProviderDto(new IdentityProviderDto(), client);
         provider.setInternal(true);
         when(identityProviderHelper.findByUserIdentifier(any(LinkedList.class), eq(USERNAME)))
                 .thenReturn(Optional.of(provider));

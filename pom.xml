@@ -552,6 +552,11 @@
                 <version>${pac4j.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>pac4j-oidc</artifactId>
+                <version>${pac4j.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-cas</artifactId>
                 <version>${spring.security.version}</version>

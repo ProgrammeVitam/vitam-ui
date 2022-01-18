@@ -46,9 +46,9 @@ import org.apereo.cas.CasProtocolConstants;
 import org.apereo.cas.configuration.model.support.cookie.TicketGrantingCookieProperties;
 import org.apereo.cas.web.flow.CasWebflowConstants;
 import org.apereo.cas.web.support.WebUtils;
+import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.util.Pac4jConstants;
 import org.pac4j.core.util.CommonHelper;
-import org.pac4j.saml.client.SAML2Client;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.webflow.context.ExternalContext;
@@ -92,7 +92,7 @@ public class Utils {
         return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
     }
 
-    public Event performClientRedirection(final Action action, final SAML2Client client, final RequestContext requestContext) throws IOException {
+    public Event performClientRedirection(final Action action, final IndirectClient client, final RequestContext requestContext) throws IOException {
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         val service = WebUtils.getService(requestContext);
 
