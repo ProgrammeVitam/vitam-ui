@@ -34,17 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {AccessContract, ConfirmActionComponent} from 'projects/vitamui-library/src/public-api';
-import {Observable} from 'rxjs';
-import {AccessContractService} from '../access-contract.service';
-import {AccessContractInformationTabComponent} from './access-contract-information-tab/access-contract-information-tab.component';
-import {
-  AccessContractUsageAndServicesTabComponent
-} from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
-import {AccessContractWriteAccessTabComponent} from './access-contract-write-access-tab/access-contract-write-access-tab.component';
+import { AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTab, MatTabGroup, MatTabHeader } from '@angular/material/tabs';
+import { AccessContract, ConfirmActionComponent } from 'projects/vitamui-library/src/public-api';
+import { Observable } from 'rxjs';
+import { AccessContractService } from '../access-contract.service';
+import { AccessContractInformationTabComponent } from './access-contract-information-tab/access-contract-information-tab.component';
+import { AccessContractUsageAndServicesTabComponent } from './access-contract-usage-and-services-tab/access-contract-usage-and-services-tab.component';
+import { AccessContractWriteAccessTabComponent } from './access-contract-write-access-tab/access-contract-write-access-tab.component';
 
 @Component({
   selector: 'app-access-contract-preview',
@@ -60,14 +58,14 @@ export class AccessContractPreviewComponent implements AfterViewInit {
 
   // tab indexes: info = 0; usage = 1; write = 2; node = 3; history = 4;
   tabUpdated: boolean[] = [false, false, false, false, false];
-  @ViewChild('tabs', {static: false}) tabs: MatTabGroup;
+  @ViewChild('tabs', { static: false }) tabs: MatTabGroup;
 
-  tabLinks: Array<AccessContractInformationTabComponent |
-    AccessContractUsageAndServicesTabComponent |
-    AccessContractWriteAccessTabComponent> = [];
-  @ViewChild('infoTab', {static: false}) infoTab: AccessContractInformationTabComponent;
-  @ViewChild('usageTab', {static: false}) usageTab: AccessContractUsageAndServicesTabComponent;
-  @ViewChild('writeTab', {static: false}) writeTab: AccessContractWriteAccessTabComponent;
+  tabLinks: Array<
+    AccessContractInformationTabComponent | AccessContractUsageAndServicesTabComponent | AccessContractWriteAccessTabComponent
+  > = [];
+  @ViewChild('infoTab', { static: false }) infoTab: AccessContractInformationTabComponent;
+  @ViewChild('usageTab', { static: false }) usageTab: AccessContractUsageAndServicesTabComponent;
+  @ViewChild('writeTab', { static: false }) writeTab: AccessContractWriteAccessTabComponent;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler(event: any) {
@@ -85,14 +83,14 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     this.tabLinks[2] = this.writeTab;
   }
 
-  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {
-  }
+  constructor(private matDialog: MatDialog, private accessContractService: AccessContractService) {}
 
   filterEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('STP_UPDATE_ACCESS_CONTRACT') ||
-      event.outDetail.includes('STP_IMPORT_ACCESS_CONTRACT') ||
-      event.outDetail.includes('STP_BACKUP_ACCESS_CONTRACT')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('STP_UPDATE_ACCESS_CONTRACT') ||
+        event.outDetail.includes('STP_IMPORT_ACCESS_CONTRACT') ||
+        event.outDetail.includes('STP_BACKUP_ACCESS_CONTRACT'))
     );
   }
 
@@ -105,11 +103,9 @@ export class AccessContractPreviewComponent implements AfterViewInit {
       const submitAccessContractUpdate: Observable<AccessContract> = this.tabLinks[this.tabs.selectedIndex].prepareSubmit();
 
       submitAccessContractUpdate.subscribe(() => {
-        this.accessContractService.get(this.accessContract.identifier).subscribe(
-          response => {
-            this.accessContract = response;
-          }
-        );
+        this.accessContractService.get(this.accessContract.identifier).subscribe((response) => {
+          this.accessContract = response;
+        });
       });
     } else {
       this.tabLinks[this.tabs.selectedIndex].resetForm(this.accessContract);
@@ -126,7 +122,7 @@ export class AccessContractPreviewComponent implements AfterViewInit {
   }
 
   async confirmAction(): Promise<boolean> {
-    const dialog = this.matDialog.open(ConfirmActionComponent, {panelClass: 'vitamui-confirm-dialog'});
+    const dialog = this.matDialog.open(ConfirmActionComponent, { panelClass: 'vitamui-confirm-dialog' });
     dialog.componentInstance.dialogType = 'changeTab';
     return await dialog.afterClosed().toPromise();
   }
@@ -137,5 +133,4 @@ export class AccessContractPreviewComponent implements AfterViewInit {
     }
     this.previewClose.emit();
   }
-
 }
