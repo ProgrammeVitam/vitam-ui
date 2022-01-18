@@ -305,6 +305,17 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         partialDto.put("keystorePassword", "keyspwd");
         partialDto.put("idpMetadata", "<xml></xml>");
         partialDto.put("autoProvisioningEnabled", true);
+        partialDto.put("clientId", "1");
+        partialDto.put("clientSecret", "secret");
+        partialDto.put("discoveryUrl", "http://url");
+        partialDto.put("scope", "openid");
+        partialDto.put("preferredJwsAlgorithm", "HS256");
+        Map<String, String> customParams = new HashMap<>();
+        customParams.put("prompt", "login");
+        partialDto.put("customParams", customParams);
+        partialDto.put("useState", true);
+        partialDto.put("useNonce", true);
+        partialDto.put("usePkce", true);
 
         service.processPatch(idp, partialDto);
         assertThat(idp.getName()).isEqualTo("nameTest");
@@ -315,6 +326,15 @@ public class IdentityProviderInternalServiceTest extends AbstractServerIdentityB
         assertThat(idp.getIdpMetadata()).isEqualTo("<xml></xml>");
         assertThat(idp.getPatterns()).isEqualTo(Arrays.asList(".*@vitamui.com", ".*@vitamui.com"));
         assertThat(idp.isAutoProvisioningEnabled()).isTrue();
+        assertThat(idp.getClientId()).isEqualTo("1");
+        assertThat(idp.getClientSecret()).isEqualTo("secret");
+        assertThat(idp.getDiscoveryUrl()).isEqualTo("http://url");
+        assertThat(idp.getScope()).isEqualTo("openid");
+        assertThat(idp.getPreferredJwsAlgorithm()).isEqualTo("HS256");
+        assertThat(idp.getCustomParams()).isEqualTo(customParams);
+        assertThat(idp.getUseState()).isTrue();
+        assertThat(idp.getUseNonce()).isTrue();
+        assertThat(idp.getUsePkce()).isTrue();
     }
 
     @Test

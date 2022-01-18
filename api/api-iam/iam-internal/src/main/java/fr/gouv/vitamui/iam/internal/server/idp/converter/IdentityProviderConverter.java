@@ -79,6 +79,24 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     public static final String AUTO_PROVISIONING_ENABLED_KEY = "Mise à jour automatique des utilisateurs";
 
+    public static final String CLIENT_ID_KEY = "Identifiant client";
+
+    public static final String CLIENT_SECRET_KEY = "Secret client";
+
+    public static final String DISCOVERY_URL_KEY = "URL de découverte des metadata";
+
+    public static final String SCOPE_KEY = "Périmètre";
+
+    public static final String PREFERRED_JWS_ALGORITHM_KEY = "Algorithme JWS préféré";
+
+    public static final String CUSTOM_PARAMS_KEY = "Paramètres spécifiques";
+
+    public static final String USE_STATE_KEY = "Avec state";
+
+    public static final String USE_NONCE_KEY = "Avec nonce";
+
+    public static final String USE_PKCE_KEY = "Avec PKCE";
+
     private final SpMetadataGenerator spMetadataGenerator;
 
     public IdentityProviderConverter(final SpMetadataGenerator spMetadataGenerator) {
@@ -98,12 +116,15 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         logbookData.put(AUTHENTICATION_REQUEST_BINDING_KEY, String.valueOf(dto.getAuthnRequestBinding()));
         logbookData.put(MAXIMUM_AUTHENTICATION_LIFE_TIME, String.valueOf(dto.getMaximumAuthenticationLifetime()));
         logbookData.put(AUTO_PROVISIONING_ENABLED_KEY, String.valueOf(dto.isAutoProvisioningEnabled()));
+        logbookData.put(CLIENT_ID_KEY, String.valueOf(dto.getClientId()));
+        logbookData.put(DISCOVERY_URL_KEY, String.valueOf(dto.getDiscoveryUrl()));
         return ApiUtils.toJson(logbookData);
     }
 
     @Override
     public IdentityProvider convertDtoToEntity(final IdentityProviderDto dto) {
         final IdentityProvider provider = new IdentityProvider();
+        // Common
         provider.setId(dto.getId());
         provider.setIdentifier(dto.getIdentifier());
         provider.setName(dto.getName());
@@ -111,20 +132,31 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         provider.setInternal(dto.getInternal());
         provider.setTechnicalName(dto.getTechnicalName());
         convertPatterns(dto, provider);
+        provider.setReadonly(dto.isReadonly());
+        provider.setCustomerId(dto.getCustomerId());
+        // SAML + OIDC
+        provider.setMailAttribute(dto.getMailAttribute());
+        provider.setIdentifierAttribute(dto.getIdentifierAttribute());
+        provider.setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
+        // SAML
         provider.setKeystoreBase64(dto.getKeystoreBase64());
         provider.setKeystorePassword(dto.getKeystorePassword());
         provider.setPrivateKeyPassword(dto.getKeystorePassword());
         dto.setPrivateKeyPassword(dto.getKeystorePassword());
         provider.setIdpMetadata(dto.getIdpMetadata());
-        provider.setMailAttribute(dto.getMailAttribute());
-        provider.setIdentifierAttribute(dto.getIdentifierAttribute());
         provider.setAuthnRequestBinding(dto.getAuthnRequestBinding());
-        final String spMetadata = spMetadataGenerator.generate(dto);
-        provider.setSpMetadata(spMetadata);
-        provider.setCustomerId(dto.getCustomerId());
+        provider.setSpMetadata(spMetadataGenerator.generate(dto));
         provider.setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
-        provider.setReadonly(dto.isReadonly());
-        provider.setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
+        // OIDC
+        provider.setClientId(dto.getClientId());
+        provider.setClientSecret(dto.getClientSecret());
+        provider.setDiscoveryUrl(dto.getDiscoveryUrl());
+        provider.setScope(dto.getScope());
+        provider.setPreferredJwsAlgorithm(dto.getPreferredJwsAlgorithm());
+        provider.setCustomParams(dto.getCustomParams());
+        provider.setUseState(dto.getUseState());
+        provider.setUseNonce(dto.getUseNonce());
+        provider.setUsePkce(dto.getUsePkce());
         return provider;
     }
 

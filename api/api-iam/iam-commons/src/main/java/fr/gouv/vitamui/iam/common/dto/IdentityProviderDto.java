@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.common.dto;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -67,6 +68,7 @@ public class IdentityProviderDto extends CustomerIdDto {
      */
     private static final long serialVersionUID = 2372968720503585884L;
 
+    // Common data to all providers
     private String identifier;
 
     @NotNull
@@ -85,6 +87,18 @@ public class IdentityProviderDto extends CustomerIdDto {
     @Size(min = 1)
     private List<String> patterns;
 
+    private boolean readonly;
+
+
+    // Common data to external providers (SAML + OIDC)
+    private String mailAttribute;
+
+    private String identifierAttribute;
+
+    private boolean autoProvisioningEnabled;
+
+
+    // SAML provider data
     private String keystoreBase64;
 
     private String keystorePassword;
@@ -97,13 +111,25 @@ public class IdentityProviderDto extends CustomerIdDto {
 
     private Integer maximumAuthenticationLifetime;
 
-    private boolean readonly;
-
-    private String mailAttribute;
-
-    private String identifierAttribute;
-
     private AuthnRequestBindingEnum authnRequestBinding = AuthnRequestBindingEnum.POST;
 
-    private boolean autoProvisioningEnabled;
+
+    // OIDC provider data
+    private String clientId;
+
+    private String clientSecret;
+
+    private String discoveryUrl;
+
+    private String scope;
+
+    private String preferredJwsAlgorithm;
+
+    private Map<String, String> customParams;
+
+    private Boolean useState;
+
+    private Boolean useNonce;
+
+    private Boolean usePkce;
 }

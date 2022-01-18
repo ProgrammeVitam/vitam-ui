@@ -248,6 +248,18 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     }
 
                     break;
+                case "mailAttribute" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setMailAttribute(CastUtils.toString(entry.getValue()));
+                    break;
+                case "identifierAttribute" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
+                    break;
+                case "autoProvisioningEnabled" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTO_PROVISIONING_ENABLED_KEY, entity.isAutoProvisioningEnabled(), entry.getValue()));
+                    entity.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
+                    break;
                 case "keystoreBase64" :
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.KEYSTORE_BASE_64_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
                     entity.setKeystoreBase64(CastUtils.toString(entry.getValue()));
@@ -271,23 +283,48 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                             maximumAuthenticationLifeTime));
                     entity.setMaximumAuthenticationLifetime(maximumAuthenticationLifeTime);
                     break;
-                case "mailAttribute" :
-                    logbooks.add(new EventDiffDto(IdentityProviderConverter.MAIL_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
-                    entity.setMailAttribute(CastUtils.toString(entry.getValue()));
-                    break;
-                case "identifierAttribute" :
-                    logbooks.add(new EventDiffDto(IdentityProviderConverter.IDENTIFIER_ATTRIBUTE_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
-                    entity.setIdentifierAttribute(CastUtils.toString(entry.getValue()));
-                    break;
                 case "authnRequestBinding" :
                     final String authnRequestBindingAsString = CastUtils.toString(entry.getValue());
                     final AuthnRequestBindingEnum newAuthnRequestBinding = EnumUtils.stringToEnum(AuthnRequestBindingEnum.class, authnRequestBindingAsString);
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTHENTICATION_REQUEST_BINDING_KEY, entity.getAuthnRequestBinding(), newAuthnRequestBinding));
                     entity.setAuthnRequestBinding(newAuthnRequestBinding);
                     break;
-                case "autoProvisioningEnabled" :
-                    logbooks.add(new EventDiffDto(IdentityProviderConverter.AUTO_PROVISIONING_ENABLED_KEY, entity.isAutoProvisioningEnabled(), entry.getValue()));
-                    entity.setAutoProvisioningEnabled(CastUtils.toBoolean(entry.getValue()));
+                case "clientId" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.CLIENT_ID_KEY, entity.getClientId(), entry.getValue()));
+                    entity.setClientId(CastUtils.toString(entry.getValue()));
+                    break;
+                case "clientSecret" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.CLIENT_SECRET_KEY, StringUtils.EMPTY, StringUtils.EMPTY));
+                    entity.setClientSecret(CastUtils.toString(entry.getValue()));
+                    break;
+                case "discoveryUrl" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.DISCOVERY_URL_KEY, entity.getDiscoveryUrl(), entry.getValue()));
+                    entity.setDiscoveryUrl(CastUtils.toString(entry.getValue()));
+                    break;
+                case "scope" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.SCOPE_KEY, entity.getScope(), entry.getValue()));
+                    entity.setScope(CastUtils.toString(entry.getValue()));
+                    break;
+                case "preferredJwsAlgorithm" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.PREFERRED_JWS_ALGORITHM_KEY, entity.getPreferredJwsAlgorithm(), entry.getValue()));
+                    entity.setPreferredJwsAlgorithm(CastUtils.toString(entry.getValue()));
+                    break;
+                case "customParams" :
+                    Map<String, String> customParams = CastUtils.toMap(entry.getValue());
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.CUSTOM_PARAMS_KEY, entity.getCustomParams(), customParams));
+                    entity.setCustomParams(customParams);
+                    break;
+                case "useState" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.USE_STATE_KEY, entity.getUseState(), entry.getValue()));
+                    entity.setUseState(CastUtils.toBoolean(entry.getValue()));
+                    break;
+                case "useNonce" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.USE_NONCE_KEY, entity.getUseNonce(), entry.getValue()));
+                    entity.setUseNonce(CastUtils.toBoolean(entry.getValue()));
+                    break;
+                case "usePkce" :
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.USE_PKCE_KEY, entity.getUsePkce(), entry.getValue()));
+                    entity.setUsePkce(CastUtils.toBoolean(entry.getValue()));
                     break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");

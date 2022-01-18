@@ -12,7 +12,7 @@ Ce profil est nommé `anssi`, l'exploitant peut le changer en choisissant le pro
 
 Exemple de profil custom pouvant être surchargé dans le fichier `environments/vitamui_extra_vars.yml`.
 
-```yml
+```yaml
 # Custom password configuration
 vitamui_password_configurations:
   customPolicyPattern: '^(?=.*[$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`])(?=.*[a-z])(?=.*[A-Z])(?=.*[\d])[A-Za-zÀ-ÿ0-9$@!%*#£?&=\-\/:;\(\)"\.,\?!''\[\]{}^\+\=_\\\|~<>`]{${password.length},}$'
