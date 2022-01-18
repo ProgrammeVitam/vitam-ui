@@ -243,7 +243,8 @@
         "DELETE_BLOCK_RULE_INHERITANCE": "Delete the inheritance block from a rule",
         "UPDATE_RULE": "Modify a rule",
         "NOT_TO_ADD" : "Action impossible for this type of rule: a modification is already in progress",
-        "NOT_TO_UPDATE" : "Impossible action for this type of rule: an addition is already in progress"
+        "NOT_TO_UPDATE" : "Impossible action for this type of rule: an addition is already in progress",
+        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible for this type of rule: A final action is already added"
       },
       "MORE_ACTIONS": {
         "UPDATE_PROPERTY": "Add or modify a property",

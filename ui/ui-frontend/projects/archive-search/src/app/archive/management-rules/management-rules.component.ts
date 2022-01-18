@@ -92,10 +92,13 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   isRuleCategorySelected = false;
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
-  isAddValidActions = true;
-  isUpdateValidActions = true;
+  isAddValidActions = false;
+  isUpdateValidActions = false;
+  isAddPropertyValidActions = false;
+  isUpdateValidActionsWithProperty = false;
   messageNotUpdate: string;
   messageNotAdd: string;
+  messageNotAddProperty: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -116,16 +119,30 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.isUpdateValidActions =
         data.filter(
           (rule) =>
-            rule.category === RuleTypeEnum.APPRAISALRULE &&
+            rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+      this.isUpdateValidActionsWithProperty =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length === 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
       this.isAddValidActions =
         data.filter(
           (rule) =>
-            rule.category === RuleTypeEnum.APPRAISALRULE &&
+            rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
             rule.actionType === RuleActionsEnum.UPDATE_RULES
+        ).length !== 0;
+      this.isAddPropertyValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
     });
   }
@@ -145,6 +162,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
     this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
     this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
+    this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
   }
 
   initializeParameters() {
@@ -256,6 +274,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
           };
         }
