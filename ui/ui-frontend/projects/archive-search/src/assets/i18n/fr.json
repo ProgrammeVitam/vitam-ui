@@ -261,7 +261,8 @@
         "DELETE_BLOCK_RULE_INHERITANCE" : "Supprimer le blocage d’héritage d’une règle",
         "UPDATE_RULE" : "Modifier une règle",
         "NOT_TO_ADD" : "Action impossible pour ce type de règle : une modification est déjà en cours",
-        "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout est déjà en cours"
+        "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout est déjà en cours",
+        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible pour ce type de règle : Un sort final est déjà ajouté"
         
       },
       "MORE_ACTIONS" : {

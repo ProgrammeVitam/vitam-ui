@@ -35,11 +35,12 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
-import { RuleTypeEnum } from '../../models/rule-type-enum';
-import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../models/ruleAction.interface';
+import { filter } from 'rxjs/operators';
+import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
+import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
 
 @Component({
   selector: 'app-add-update-property',
@@ -47,19 +48,32 @@ import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } fr
   styleUrls: ['./add-update-property.component.css'],
 })
 export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
+  @Input()
+  ruleCategory: string;
   rulePropertyName: string;
   ruleTypeDUA: RuleCategoryAction;
   ruleActions: ActionsRules[];
   ruleActionsSubscription: Subscription;
+  showConfirmDeleteAddRulePropertySuscription: Subscription;
   managementRules: ManagementRules[] = [];
   managementRulesSubscription: Subscription;
   isValidValue = true;
   showText = false;
-  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
+  isButtonCanceled = false;
+
+  @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
+  confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
+
+  constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {
+    this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+      this.isButtonCanceled = data.filter((rule) => rule.actionType === RuleActionsEnum.ADD_RULES).length !== 0;
+    });
+  }
 
   ngOnDestroy() {
     this.managementRulesSubscription?.unsubscribe();
     this.ruleActionsSubscription?.unsubscribe();
+    this.showConfirmDeleteAddRulePropertySuscription?.unsubscribe();
   }
 
   ngOnInit() {}
@@ -71,18 +85,16 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
     if (
       this.managementRules.findIndex(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
       ) !== -1
     ) {
       this.managementRules.find(
-        (managementRule) =>
-          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === RuleActionsEnum.ADD_RULES
       ).ruleCategoryAction.finalAction = this.rulePropertyName;
     } else {
       this.ruleTypeDUA = { finalAction: this.rulePropertyName, rules: [] };
       const managementRule: ManagementRules = {
-        category: RuleTypeEnum.APPRAISALRULE,
+        category: this.ruleCategory,
         ruleCategoryAction: this.ruleTypeDUA,
         actionType: RuleActionsEnum.ADD_RULES,
       };
@@ -107,5 +119,26 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).stepValid = false;
     this.isValidValue = false;
     this.showText = false;
+  }
+
+  onCancelAddRuleProperty() {
+    const dialogToOpen = this.confirmDeleteAddRulePropertyDialog;
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+
+    this.showConfirmDeleteAddRulePropertySuscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+          this.ruleActions = data.filter((action) => action.actionType !== RuleActionsEnum.UPDATE_PROPERTY);
+        });
+        this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
+        this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+          this.managementRules = data.filter(
+            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.ADD_RULES
+          );
+        });
+        this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
+      });
   }
 }
