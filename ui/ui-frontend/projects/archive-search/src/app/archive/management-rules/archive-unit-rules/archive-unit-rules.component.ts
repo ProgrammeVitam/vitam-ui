@@ -119,7 +119,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
     this.ruleActions = this.ruleActions.filter((ruleAction) => ruleAction.id !== id);
     if (
       this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.ADD_RULES) === -1 &&
-      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_RULES) === -1
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_RULES) === -1 &&
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY) === -1
     ) {
       this.ruleActions = [];
     }
@@ -140,7 +141,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
       ) {
         this.ruleCategoryDuaActions = {
           rules: [],
-          finalAction: null,
+          finalAction: this.ruleCategoryDuaActions.finalAction,
         };
       } else {
         this.ruleCategoryDuaActions = {

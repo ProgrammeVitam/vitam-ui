@@ -41,7 +41,7 @@
     </i>
   </div>
 
-  <div *ngIf="action === 'ADD_RULES'">
+  <div *ngIf="action === 'UPDATE_PROPERTY'">
     <div class="action-style">
       {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
       <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showUpdatePropertyBloc()">
@@ -50,7 +50,7 @@
     </div>
 
     <div class="collapsible" [@collapse]="updatePropertyCollapsed">
-      <app-add-update-property></app-add-update-property>
+      <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
     </div>
   </div>
 
