@@ -157,7 +157,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   addCriteriaFromSearch(query: any) {
-    if (this.entryToSearch !== undefined && this.entryToSearch.length > 0) {
+    if (this.entryToSearch !== undefined && this.entryToSearch !== null && this.entryToSearch.length > 0) {
       this.searchKeys.forEach((key) => {
         query[key] = this.entryToSearch;
       });

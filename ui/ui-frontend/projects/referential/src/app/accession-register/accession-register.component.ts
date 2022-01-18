@@ -64,8 +64,11 @@ export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDet
     super.ngOnDestroy();
   }
 
-  onSearchSubmit(search: string) {
+  onSearchTextChanged(search: string) {
     this.search = search;
+  }
+
+  onSearchSubmit() {
     this.accessionRegistersService.setGlobalSearchButtonEvent(true);
   }
 

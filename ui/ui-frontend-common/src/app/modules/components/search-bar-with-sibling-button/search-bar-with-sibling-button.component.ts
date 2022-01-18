@@ -67,8 +67,7 @@ export class SearchBarWithSiblingButtonComponent {
   @HostListener('keydown.escape')
   reset() {
     this.searchValue = null;
-    this.clear.emit();
-    this.search.emit(this.searchValue);
+    this.clear.emit(this.searchValue);
   }
 
   public onFocus() {

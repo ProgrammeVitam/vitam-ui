@@ -7,7 +7,9 @@
       <search-bar-with-sibling-button
         buttonLabel="{{ 'ACCESSION_REGISTER.SEARCH_BAR_BUTTON_LABEL' | translate }}"
         placeholder="{{ 'ACCESSION_REGISTER.SEARCH_BAR_PLACEHOLDER' | translate }}"
-        (search)="onSearchSubmit($event)"
+        (search)="onSearchSubmit()"
+        (searchChanged)="onSearchTextChanged($event)"
+        (clear)="onSearchTextChanged($event)"
       >
         <div class="d-flex div-btn-delete ml-3">
           <button class="mat-boutton">
