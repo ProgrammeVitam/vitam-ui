@@ -37,37 +37,51 @@
 package fr.gouv.vitamui.cas.provider;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import org.pac4j.saml.client.SAML2Client;
+import org.pac4j.core.client.IndirectClient;
 
 /**
- * SAML identity provider.
+ * Pac4j client identity provider.
  *
  *
  */
-public class SamlIdentityProviderDto extends IdentityProviderDto {
+public class Pac4jClientIdentityProviderDto extends IdentityProviderDto {
 
-    private final SAML2Client saml2Client;
+    private final IndirectClient client;
 
-    public SamlIdentityProviderDto(final IdentityProviderDto dto, final SAML2Client saml2Client) {
+    public Pac4jClientIdentityProviderDto(final IdentityProviderDto dto, final IndirectClient client) {
         setId(dto.getId());
         setName(dto.getName());
         setTechnicalName(dto.getTechnicalName());
         setInternal(dto.getInternal());
+        setEnabled(dto.getEnabled());
         setPatterns(dto.getPatterns());
+        setReadonly(dto.isReadonly());
+
+        setMailAttribute(dto.getMailAttribute());
+        setIdentifierAttribute(dto.getIdentifierAttribute());
+        setAutoProvisioningEnabled(dto.isAutoProvisioningEnabled());
+
         setKeystoreBase64(dto.getKeystoreBase64());
         setKeystorePassword(dto.getKeystorePassword());
         setPrivateKeyPassword(dto.getPrivateKeyPassword());
         setIdpMetadata(dto.getIdpMetadata());
         setSpMetadata(dto.getSpMetadata());
-        setPatterns(dto.getPatterns());
         setMaximumAuthenticationLifetime(dto.getMaximumAuthenticationLifetime());
-        setMailAttribute(dto.getMailAttribute());
-        setIdentifierAttribute(dto.getIdentifierAttribute());
         setAuthnRequestBinding(dto.getAuthnRequestBinding());
-        this.saml2Client = saml2Client;
+
+        setClientId(dto.getClientId());
+        setClientSecret(dto.getClientSecret());
+        setDiscoveryUrl(dto.getDiscoveryUrl());
+        setScope(dto.getScope());
+        setPreferredJwsAlgorithm(dto.getPreferredJwsAlgorithm());
+        setCustomParams(dto.getCustomParams());
+        setUseState(dto.getUseState());
+        setUseNonce(dto.getUseNonce());
+        setUsePkce(dto.getUsePkce());
+        this.client = client;
     }
 
-    public SAML2Client getSaml2Client() {
-        return saml2Client;
+    public IndirectClient getClient() {
+        return client;
     }
 }

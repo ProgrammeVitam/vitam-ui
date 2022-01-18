@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
+import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -152,7 +152,7 @@ public class CustomDelegatedClientAuthenticationAction extends DelegatedClientAu
                     if (optProvider.isPresent()) {
                         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(context);
                         response.addCookie(utils.buildIdpCookie(idp, configContext.getCasProperties().getTgc()));
-                        val client = ((SamlIdentityProviderDto) optProvider.get()).getSaml2Client();
+                        val client = ((Pac4jClientIdentityProviderDto) optProvider.get()).getClient();
                         LOGGER.debug("Force redirect to the SAML IdP: {}", client.getName());
                         try {
                             return utils.performClientRedirection(this, client, context);

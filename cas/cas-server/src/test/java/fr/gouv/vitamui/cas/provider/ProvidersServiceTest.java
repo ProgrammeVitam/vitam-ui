@@ -7,7 +7,7 @@ import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import lombok.val;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +50,7 @@ public final class ProvidersServiceTest {
     @Before
     public void setUp() {
         val clients = new Clients();
-        val builder = mock(Saml2ClientBuilder.class);
+        val builder = mock(Pac4jClientBuilder.class);
         restClient = mock(IdentityProviderExternalRestClient.class);
         val utils = new Utils(null, 0, null, null);
         service = new ProvidersService(clients, restClient, builder, utils);
@@ -62,7 +62,7 @@ public final class ProvidersServiceTest {
 
         saml2Client = new SAML2Client();
         saml2Client.setName("testSAML2Client");
-        when(builder.buildSaml2Client(provider)).thenReturn(Optional.of(saml2Client));
+        when(builder.buildClient(provider)).thenReturn(Optional.of(saml2Client));
 
         identityProviderHelper = new IdentityProviderHelper();
     }
@@ -80,7 +80,7 @@ public final class ProvidersServiceTest {
         val userProvider = identityProviderHelper.findByUserIdentifier(service.getProviders(), "jerome@company.com");
         assertTrue(userProvider.isPresent());
         assertEquals(PROVIDER_ID, userProvider.get().getId());
-        assertEquals(saml2Client, ((SamlIdentityProviderDto) userProvider.get()).getSaml2Client());
+        assertEquals(saml2Client, ((Pac4jClientIdentityProviderDto) userProvider.get()).getClient());
     }
 
     @Test
