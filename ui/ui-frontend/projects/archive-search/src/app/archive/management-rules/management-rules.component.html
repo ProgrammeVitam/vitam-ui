@@ -42,9 +42,9 @@
                 </mat-option>
                 <mat-option
                   value="UPDATE_RULES"
-                  [disabled]="!isRuleCategorySelected || isUpdateValidActions"
+                  [disabled]="!isRuleCategorySelected || isUpdateValidActions || isUpdateValidActionsWithProperty"
                   (click)="onSelectAction(actionSelected)"
-                  matTooltip="{{ isUpdateValidActions ? messageNotUpdate : '' }}"
+                  matTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
                 >
                   {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}</mat-option
@@ -70,8 +70,20 @@
           </div>
 
           <mat-form-field class="vitamui-mat-select select-more-actions">
-            <mat-select placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}" [disabled]="true" (valueChange)="onSelectAction($event)">
-              <mat-option value="UPDATE_PROPERTY" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option>
+            <mat-select
+              placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
+              [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
+              [(value)]="actionSelected"
+            >
+              <mat-option
+                value="UPDATE_PROPERTY"
+                [disabled]="!isRuleCategorySelected || isAddPropertyValidActions || isAddValidActions || isUpdateValidActionsWithProperty"
+                (click)="onSelectAction(actionSelected)"
+                matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
+                matTooltipClass="vitamui-tooltip-rules"
+              >
+                {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option
+              >
               <mat-option value="deleteProperty" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option>
               <mat-option value="BlockPropertyInheritance" [disabled]="true">
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
