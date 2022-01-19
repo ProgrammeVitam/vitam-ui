@@ -38,6 +38,14 @@
     "RULES_ACTION" : {
       "UPDATE_RULE" : "Update rules"
     },
+    "COMPUTED_INHERITED_RULES" : {
+      "EXECUTION_ACTION" : "Launch the inheritance calculation",
+      "OPERATION_MESSAGE" : "The inheritance calculation has been launched on the selected units",
+      "TITLE" : "Inheritance computed launch validation",
+      "CONFIRMATION_MESSAGE" : "You are about to launch an inheritance calculation on {{itemSelected}} archival unit(s). Do you want to confirm?",
+      "CONFIRM" : "Confirm",
+      "CANCEL" :"Cancel"
+    },
 
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
     "SHOW_TREES_PLANS": "Show trees and plans",

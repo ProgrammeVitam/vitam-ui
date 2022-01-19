@@ -223,4 +223,13 @@ public class ArchivesSearchController extends AbstractUiRestController {
         String result = archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
         return result;
     }
+
+    @ApiOperation(value = "computed Inherited Rules by criteria")
+    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public String computedInheritedRules(@RequestBody final SearchCriteriaDto searchCriteriaDto) {
+        LOGGER.debug("Computed Inherited Rules with criteria {}", searchCriteriaDto);
+        String result = archivesSearchService.computedInheritedRules(searchCriteriaDto, buildUiHttpContext()).getBody();
+        return result;
+    }
 }

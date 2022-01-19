@@ -231,15 +231,20 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   hasDipExportRole = false;
   hasUpdateManagementRuleRole = false;
   hasEliminationAnalysisOrActionRole = false;
+  hasComputedInheritedRulesRole = false;
   openDialogSubscription: Subscription;
   analysisliminationSuscription: Subscription;
   showConfirmEliminationSuscription: Subscription;
   actionliminationSuscription: Subscription;
+  showConfirmComputedInheritedRulesSuscription: Subscription;
+  computedInheritedRulesSuscription: Subscription;
 
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
 
   @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('confirmComputedInheritedRulesDialog', { static: true })
+  confirmComputedInheritedRulesDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -306,6 +311,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
     this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
+    this.checkUserHasRole('ComputedInheritedRulesRole', VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
 
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
@@ -908,6 +914,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.showConfirmEliminationSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
+    this.showConfirmComputedInheritedRulesSuscription?.unsubscribe();
+    this.computedInheritedRulesSuscription?.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
@@ -1067,6 +1075,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         case 'UpdateRule':
           this.hasUpdateManagementRuleRole = result;
           break;
+        case 'ComputedInheritedRulesRole':
+          this.hasComputedInheritedRulesRole = result;
+          break;
         default:
           break;
       }
@@ -1203,5 +1214,34 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
 
     this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+  }
+
+  launchComputedInheritedRules() {
+    const dialogToOpen = this.confirmComputedInheritedRulesDialog;
+    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+    this.showConfirmComputedInheritedRulesSuscription = dialogRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+        const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+        const computedInheritedRulesSearchCriteria = {
+          criteriaList: this.listOfUACriteriaSearch,
+          pageNumber: this.currentPage,
+          size: PAGE_SIZE,
+          sortingCriteria,
+          language: this.translateService.currentLang,
+        };
+        this.computedInheritedRulesSuscription = this.archiveService
+          .launchComputedInheritedRules(computedInheritedRulesSearchCriteria, this.accessContract)
+          .subscribe((operationId) => {
+            const guid = operationId;
+            const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
+            const serviceUrl =
+              this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+            this.openSnackBarForWorkflow(message, serviceUrl);
+          });
+      });
   }
 }

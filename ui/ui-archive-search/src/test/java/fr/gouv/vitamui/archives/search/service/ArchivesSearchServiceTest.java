@@ -32,7 +32,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.ProcessQuery;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
@@ -67,7 +66,6 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
@@ -368,5 +366,21 @@ public class ArchivesSearchServiceTest {
         verify(archiveSearchExternalRestClient,Mockito.times(1))
             .updateArchiveUnitsRules(any(RuleSearchCriteriaDto.class), ArgumentMatchers.any());
 
+    }
+
+    @Test
+    public void launch_computed_inherited_rules_should_call_appropriate_rest_client() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(archiveSearchExternalRestClient.computedInheritedRules(any(SearchCriteriaDto.class), ArgumentMatchers.any()))
+            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+
+        // When
+        archivesSearchService.computedInheritedRules(searchCriteriaDto, context);
+
+        // Then
+        verify(archiveSearchExternalRestClient, Mockito.times(1))
+            .computedInheritedRules(any(SearchCriteriaDto.class), ArgumentMatchers.any());
     }
 }

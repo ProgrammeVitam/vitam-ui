@@ -707,4 +707,21 @@ public class ArchiveSearchInternalService {
 
         return massUpdateUnitsRules(vitamContext, updateQuery);
     }
+
+    public String computedInheritedRules(final VitamContext vitamContext, final SearchCriteriaDto searchCriteriaDto )
+        throws VitamClientException {
+        LOGGER.debug("Computed Inherited Rules by criteria {} ", searchCriteriaDto.toString());
+        JsonNode jsonNode = mapRequestToDslQuery(searchCriteriaDto);
+        ObjectNode dslRequest = (ObjectNode) jsonNode;
+        rulesUpdateCommonService.deleteAttributesFromObjectNode(dslRequest, "$projection" ,"$filter","$facets");
+        LOGGER.debug("Computed Inherited Rules final dslQuery : {}", dslRequest);
+        JsonNode response = computedInheritedRules(vitamContext, dslRequest);
+        return response.findValue(OPERATION_IDENTIFIER).textValue();
+    }
+
+    private JsonNode computedInheritedRules( final VitamContext vitamContext,  final JsonNode dslQuery)
+        throws VitamClientException {
+        RequestResponse<JsonNode> response = unitService.computedInheritedRules( vitamContext, dslQuery);
+        return response.toJsonNode();
+    }
 }

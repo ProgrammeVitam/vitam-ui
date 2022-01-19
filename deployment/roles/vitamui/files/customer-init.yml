@@ -194,6 +194,7 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
         - ROLE_UPDATE_MANAGEMENT_RULES
+        - ROLE_COMPUTED_INHERITED_RULES
 
     - name: Registre des fonds
       description: Visualisation de l'ensemble des données du registre des fonds

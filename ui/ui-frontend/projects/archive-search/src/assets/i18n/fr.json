@@ -38,6 +38,14 @@
     "RULES_ACTION" : {
       "UPDATE_RULE" : "Mettre à jour des règles"
     },
+    "COMPUTED_INHERITED_RULES" : {
+      "EXECUTION_ACTION" : "Lancer le calcul d'héritage",
+      "OPERATION_MESSAGE" : "Le calcul des héritages a bien été lancé sur les unités sélectionnées",
+      "TITLE" : "Validation de lancement du calcul d'héritage",
+      "CONFIRMATION_MESSAGE" : "Vous êtes sur le point de lancer un calcul d'héritage sur {{itemSelected}} unité(s) archivistique(s). Voulez-vous confirmer ?",
+      "CONFIRM" : "Confirmer",
+      "CANCEL" :"Annuler"
+    },
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",

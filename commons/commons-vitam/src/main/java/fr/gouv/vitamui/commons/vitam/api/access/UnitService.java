@@ -295,4 +295,19 @@ public class UnitService {
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
             }
+
+    /**
+     * computed Inherited Rules
+     *
+     * @param vitamContext
+     * @param dslQuery
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> computedInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
+        throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.computedInheritedRules(vitamContext, dslQuery);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+    }
 }
