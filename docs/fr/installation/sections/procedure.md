@@ -263,7 +263,6 @@ Par exemple:
 
 > Attention ! Après cette étape, il sera nécessaire de regénérer les stores de la zone Vitam, suite à l'ajout des certificats de Vitam-UI, et de reconfigurer Vitam en utilisant le `--tags update_vitam_certificates`.
 > Voir Le chapitre : [Reconfiguration de Vitam](#reconfiguration-de-vitam)
-​
 
 ### Génération des stores (dans Vitam-UI)
 
@@ -290,7 +289,7 @@ Se placer dans le répertoire `deployment/` des sources Vitam et exécuter la co
 ### MAJ des certificats (dans Vitam)
 
 ~~~sh
-ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_vitamui> ansible-vitam/vitam.yml --tags update_vitam_certificates
+ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_vitam> ansible-vitam/vitam.yml --tags update_vitam_certificates
 ~~~
 
 ### Ajout du contexte Vitam-UI
@@ -321,7 +320,7 @@ Le certificat client `vitamui.crt` doit être présent au niveau du répertoire 
 Puis lancer la commande suivante pour ajouter ce nouveau contexte :
 
 ~~~sh
-ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_vitamui> ansible-vitam-exploitation/add_contexts.yml
+ansible-playbook --vault-password-file vault_pass.txt -i environments/<hostfile_vitam> ansible-vitam-exploitation/add_contexts.yml
 ~~~
 
 Ce playbook prend en paramétre le contenu du fichier `postinstall_param.yml`. Il réalise la création du security-profile, du contexte et l'ajout en base de données du certificat.
