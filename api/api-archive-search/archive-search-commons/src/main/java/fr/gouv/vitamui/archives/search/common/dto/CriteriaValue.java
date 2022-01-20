@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CriteriaValue {
+    private String id;
     private String value;
     private String beginInterval;
     private String endInterval;
