@@ -16,3 +16,7 @@
 .margin-btn {
   margin-right: 140px;
 }
+
+::ng-deep.mat-menu-panel {
+  max-width: fit-content !important;
+}
