@@ -51,6 +51,7 @@
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
     "SHOW_MORE_RESULTS": "Show more results...",
     "NO_MORE_RESULTS": "No more results",
+    "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
     "SEARCH_CRITERIA_FILTER": {
       "TITLE": "Search filters",
       "DUA_TITLE": "Administrative useful life",
