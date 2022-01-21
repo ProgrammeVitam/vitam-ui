@@ -1,5 +1,8 @@
 # DAT VITAMUI
 
+** This document is deprecated.**
+Check docs/fr/architecture instead
+
 Vitamui DAT with markdown.
 
 Command to build PDF as output:
