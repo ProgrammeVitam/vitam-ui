@@ -1,0 +1,33 @@
+@import 'colors';
+
+  $input-border-colors:(
+    enabled:  1px solid map-get($input-colors, 'enabled'),
+    disabled:1px solid map-get($input-colors, 'disabled'),
+    hover :1px solid map-get($input-colors, 'hover'),
+    activated : 1px solid map-get($input-colors, 'activated'),
+    error: 1px solid map-get($input-colors, 'error'),
+    valid: 1px solid map-get($input-colors, 'valid'),
+);
+
+$input-box-shadow:(
+    enabled: (0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.14)),
+    disabled: none,
+    hover : (0px 1px 10px rgba(0, 0, 0, 0.2), 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14)),
+    activated : none,
+    error: none,
+    valid: none,
+);
+
+
+.pastis-table-input-border{
+  border-radius: 5px;
+  border: 1px solid #E0E0E0;
+  box-sizing: border-box; 
+  box-shadow: 0px 0px 2px rgba(33, 33, 33, 0.2), 0px 1px 4px rgba(33, 33, 33, 0.05);
+}
+
+
+
+
+
+

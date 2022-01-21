@@ -1,0 +1,10 @@
+"definitions": {
+"pattern-simple-date": {
+"type": "string",
+"pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+},
+"pattern-date": {
+"type": "string",
+"pattern": "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$"
+}
+}

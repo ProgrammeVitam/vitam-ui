@@ -1,0 +1,28 @@
+db = db.getSiblingDB('{{ mongodb.security.db }}')
+
+print("START 224_security.populate_certificates_pastis.js.j2");
+
+{% macro insertCertificate(pemFile, contextId) -%}
+db.certificates.remove(
+    {"_id" : "{{ pemFile | basename | replace('.pem','_cert')}}"},
+    { justOne: true }
+)
+db.certificates.insert({
+    "_id": "{{ pemFile | basename | replace('.pem','_cert')}}",
+    "contextId": "{{ contextId }}",
+    "subjectDN": "subjectDN",
+    "issuerDN": "issuerDN",
+    "serialNumber": "serialNumberAdmin",
+    "data": "{{ lookup('file', pemFile) | cert_to_str() }}"
+})
+{%- endmacro %}
+
+{% macro process(keyPath, contextId, groupName) -%}
+    {% for host in groups[groupName] %}
+        {{ insertCertificate(keyPath | replace('%host%', host), contextId) }}
+    {% endfor %}
+{%- endmacro %}
+
+{{ process('{{ pki_dir }}/server/hosts/%host%/ui-pastis.pem', 'ui_pastis_context', 'hosts_ui_pastis') }}
+
+print("END 224_security.populate_certificates_pastis.js.j2");

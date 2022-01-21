@@ -1,0 +1,390 @@
+@import 'mixins';
+
+
+
+
+//Pastis class header without sidebar
+/// @author Paulo Pimenta
+.pastis-header-no-sidebar {
+  position: absolute;
+  width: 1440px;
+  height: 288px;
+  left: 0px;
+  top: -2px;
+  background: #ECEEF3;
+}
+
+//Pastis class header with sidebar
+/// @author Paulo Pimenta
+.pastis-header-with-sidebar {
+  @extend .pastis-header-no-sidebar;
+  width: 952px;
+}
+
+.pastis-content-metadata {
+  position: absolute;
+  width: 778px;
+  height: 60px;
+  top: 359px;
+  right: 116px;
+  left: 58px;
+  background: #FFFFFF;
+}
+
+.pastis-slide-nav-profile {
+
+  max-width: 480px;
+  height: auto;
+
+  //bottom: 100px;
+  background: #FFFFFF;
+}
+
+.pastis-slide-nav-header {
+  position: absolute;
+  height: 200px;
+  background: #5CBAA9;
+}
+
+.pastis-page-container {
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pastis-tab-container {
+  right: 40px;
+  left: 40px;
+  // Compensate the header of 200px + the space in beetween
+  //height: auto;
+  height: 500px;
+
+  //overflow: auto;
+  width: 100%;
+}
+
+.pastis-table {
+  width: 80%;
+  height: 612px;
+  left: 150px;
+  margin-right: 120px;
+  /*Material*/
+  height: auto;
+  overflow: auto;
+  background: #FFFFFF !important;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.14) !important;
+  border-radius: 5px !important;
+}
+
+
+.pastis-metadata-table {
+  background: #FFFFFF;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.14);
+  border-radius: 5px;
+}
+
+.pastis-col{
+  text-align: left;
+
+}
+
+.pastis-col:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.pastis-col:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.pastis-metadata-table-col-large {
+  @extend .pastis-col;
+  width: 203px;
+  height: 50px;
+
+}
+
+.pastis-metadata-table-col-medium {
+  @extend .pastis-col;
+  width: 140px;
+  height: 50px;
+
+}
+
+
+
+.pastis-metadata-table-col-small {
+  @extend .pastis-col;
+  width: 120px;
+  height: 50px;
+
+}
+
+.pastis-side-nav {
+  background: #FFFFFF;
+  box-shadow: 20px 20px 80px rgba(168, 153, 153, 0.5);
+}
+
+.pastis-ico-svg {
+  display: block;
+  margin: auto;
+}
+
+.pastis-ico-arrow-right{
+
+  font-size: 14px;
+  line-height: 22px;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.pastis-popup-modal-box{
+  mat-dialog-container {
+    //padding: 0px !important;
+    //width: 100%;
+    //max-height: 100%;
+    background: #F7F8FB;
+    /* Elevation 3 */
+    box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.1), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 24px 38px rgba(0, 0, 0, 0.07);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background:  var(--vitamui-primary-50);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+ // background:  var(--vitamui-primary-50);
+ // background: #F7F8FB;
+  border-radius: 100px;
+
+  background : var(--vitamui-primary);
+ // background: #C1C1C1
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vitamui-primary-700) ;
+}
+
+/*For non webkit browsers, such as Firefox/*
+
+/* (values chosen for visual consistency with Firefox) */
+:root{
+  //Thumb and track colors
+  scrollbar-color: var(--vitamui-primary) !important;
+  scrollbar-width: thin !important;
+  scrollbar-base-color: var(--vitamui-primary-50) !important;
+}
+
+.mat-checkbox .mat-checkbox-ripple{
+  display: none !important;
+}
+
+/* PASTIS Tooltip */
+
+.pastis-tooltip-class {
+  /* Black - Medium */
+  background-color: var(--vitamui-primary) !important;
+  border-radius: 5px !important;
+  padding: 15px !important;
+  /* Caption - Roboto Regular */
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  /* or 133% */
+  letter-spacing: 0.4px;
+  /* Surface - White */
+  color: #FFFFFF;
+}
+
+
+/* style de la flèche du tooltip*/
+.tooltip-right::after{
+  border-color: transparent var(--vitamui-primary) transparent transparent !important
+}
+
+.tooltip-left::after{
+  border-color: transparent transparent transparent var(--vitamui-primary) !important
+}
+
+.tooltip-top::after{
+  border-color: var(--vitamui-primary) transparent transparent transparent !important
+}
+
+.tooltip-bottom::after{
+  border-color: transparent  transparent var(--vitamui-primary) transparent !important
+}
+
+.pastis-text-area {
+  height: 40px;
+  background: #FFFFFF;
+  outline: none;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.25px;
+  resize: none;
+  color: #757575;;
+}
+
+
+
+
+
+/* Hide the browser's default checkbox */
+
+/* Styling Pastis Checkbox Starts */
+.checkbox-label {
+  display: inline;
+  position: relative;
+  margin: auto;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 24px;
+  clear: both;
+  vertical-align: middle !important;
+
+}
+
+
+//Pastis checkbox
+.checkbox-label input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-label .checkbox-custom {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 16px;
+  width: 16px;
+  background-color: transparent;
+  border-radius: 3px;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  border: 1px solid  var(--vitamui-secondary-300);
+}
+
+
+.checkbox-label input:checked ~ .checkbox-custom {
+  background-color: #FFFFFF;
+  border-radius: 3px;
+  -webkit-transform: rotate(0deg) scale(1);
+  -ms-transform: rotate(0deg) scale(1);
+  transform: rotate(0deg) scale(1);
+  opacity:1;
+  border: 1px solid  var(--vitamui-secondary-300);
+}
+
+
+.checkbox-label .checkbox-custom::after {
+  position: absolute;
+  content: "";
+  left: 12px;
+  top: 12px;
+  height: 0px;
+  width: 0px;
+  border-radius: 3px;
+  border: 1px solid  var(--vitamui-secondary-300);
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(0deg) scale(0);
+  -ms-transform: rotate(0deg) scale(0);
+  transform: rotate(0deg) scale(0);
+  opacity:1;
+  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.3s ease-out;
+  -moz-transition: all 0.3s ease-out;
+  -ms-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+}
+
+
+.checkbox-label input:checked ~ .checkbox-custom::after {
+  -webkit-transform: rotate(45deg) scale(1);
+  -ms-transform: rotate(45deg) scale(1);
+  transform: rotate(45deg) scale(1);
+  opacity:1;
+  left: 6px;
+  top: 1px;
+  width: 3px;
+  height: 10px;
+  border: 1px solid  var(--vitamui-secondary-300);
+  border-width: 0 2px 2px 0;
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.list-profile-table {
+  width: 100%;
+  max-height: 365px;
+  border-spacing: 0 5px;
+  border-radius: 5px;
+  background-color: transparent;
+
+}
+.pastis-table-row-header {
+  border-width: 5px;
+  border-color: transparent;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  height: 60px !important;
+}
+
+.pastis-table-row {
+  @extend .pastis-table-row-header;
+}
+
+.pastis-table-row:hover{
+  @extend .pastis-table-row;
+  background-color: #F6F3FB;
+  box-shadow: 0px 1px 4px rgba(33, 33, 33, 0.2), 0px 2px 8px rgba(33, 33, 33, 0.05);
+  cursor: pointer;
+}
+
+
+ .pastis-panel-shadow-primary-500 {
+  box-shadow: 0px 1px 4px rgba(112, 35, 130, 0.4), 0px 2px 8px rgba(112, 35, 130, 0.2);
+ }
+
+ .pastis-panel-shadow {
+  box-shadow: 0px 2px 8px rgba(33, 33, 33, 0.2), 0px 4px 16px rgba(33, 33, 33, 0.05);
+ }
+
+ .pastis-panel-radius-5 {
+   border-radius: 5px;
+ }
+
+ .pastis-panel-radius-10 {
+  border-radius: 10px;
+}
+
+.pastis-entete-1-separator {
+  position: absolute;
+  width: 3px;
+  left: 90px;
+  top: 0.83%;
+  bottom: 0.83%;
+  @extend .pastis-bgcolor-grey-400;
+}
+

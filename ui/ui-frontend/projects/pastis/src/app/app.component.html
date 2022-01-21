@@ -1,0 +1,10 @@
+<vitamui-common-header *ngIf="!isStandalone && !sedaviewRoute" [hasLangSelection]="true"></vitamui-common-header>
+<mat-toolbar *ngIf="isStandalone" class="header" color="primary"></mat-toolbar>
+<div *ngIf="isStandalone" class="separator"></div>
+<vitamui-common-body>
+  <router-outlet></router-outlet>
+</vitamui-common-body>
+
+<vitamui-common-footer *ngIf="!isStandalone"></vitamui-common-footer>
+
+<vitamui-common-subrogation-banner *ngIf="!isStandalone"></vitamui-common-subrogation-banner>

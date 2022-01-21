@@ -1,0 +1,241 @@
+//Generate Pastis colors
+/// @author Paulo Pimenta
+
+@import "colors";
+@import "buttons";
+@import "dropdown";
+@import "input";
+@import "font";
+/// Generate base colors for PASTIS
+/// @author Paulo Pimenta
+/// @see $colors
+
+@mixin color-modifiers($attribute) {
+    @each $name, $hex in $colors {
+      &-#{$name} {
+        #{$attribute}: $hex;
+      }
+    }
+}
+
+/// Generate inputs for PASTIS
+/// @author Paulo Pimenta
+/// @see $buttons
+/// @output Pastis buttons
+
+@mixin input-modifiers($attribute, $list) {
+  @each $name, $value in $list {
+    &-#{$name} {
+      @extend .pastis-input;
+      #{$attribute}: map-get($list,$name);
+    }
+  }
+}
+
+
+/// Generate buttons for PASTIS
+/// @author Paulo Pimenta
+/// @see $buttons
+/// @output Pastis buttons
+
+
+@mixin button-modifiers($attribute, $prefix: '-', $separator: '-') {
+  //@debug $name'....'#{$k}':'$v;
+  @each $name, $button in $buttons {
+    &#{$prefix}#{$name} {
+      @each $type, $value in $button {
+        &#{$separator}#{$type} {
+          //Text-colors and border
+          @if $name == leading {
+            #{color}:map-get($buttons-text-color-leading,$type);
+            #{border}: map-get($buttons-border-leading,$type);
+          }
+          #{color}:map-get($buttons-text-color,$name);
+          #{border}: map-get($buttons-border,$name);
+          //Box-shadow
+          #{box-shadow}:map-get($buttons-box-shadow,$type);
+          // Font-button - has sub-items
+          @each $k, $v in map-get($buttons-font-text,$name){#{$k}:$v;}
+          @extend .pastis-btn;
+          #{$attribute}: $value;
+        }
+      }
+    }
+  }
+}
+
+@mixin rounded-standard-button-modifiers($attribute, $prefix: '-', $separator: '-') {
+  @each $name, $button in $rounded-standard-buttons {
+    &#{$prefix}#{$name} {
+      @each $type, $value in $button {
+        &#{$separator}#{$type} {
+          //Box-shadow (reused from button)
+          #{box-shadow}:map-get($buttons-box-shadow,$type);
+          #{border}:map-get($rounded-buttons-border,$name);
+          //Box-shadow (mini-white-only)rounded-buttons-border
+          @if $name == mini-white{
+            #{box-shadow}:none;
+          }
+          //Rounded button Border
+         @each $k, $v in map-get($buttons-font-text,$name){#{$k}:$v; }
+          @extend .pastis-btn-rounded;
+          #{$attribute}: $value;
+        }
+      }
+    }
+  }
+}
+
+@mixin rounded-mini-button-modifiers($attribute, $prefix: '-', $separator: '-') {
+  @each $name, $button in $rounded-mini-buttons {
+    &#{$prefix}#{$name} {
+      @each $type, $value in $button {
+        &#{$separator}#{$type} {
+          //Box-shadow (reused from button)
+          #{box-shadow}:map-get($buttons-box-shadow,$type);
+          #{border}:map-get($rounded-buttons-border,$name);
+          //Box-shadow (mini-white-only)rounded-buttons-border
+          @if $name == mini-white{
+            #{box-shadow}:none;
+          }
+          //Rounded button Border
+         @each $k, $v in map-get($buttons-font-text,$name){#{$k}:$v; }
+          @extend .pastis-btn-rounded-mini;
+          #{$attribute}: $value;
+        }
+      }
+    }
+  }
+}
+
+
+
+@mixin dropdown-modifiers($attribute, $class-iterator, $prefix: '-', $separator: '-') {
+    @each $name, $dropdown in $class-iterator {
+      &#{$prefix}#{$name} {
+        @each $type, $value in $dropdown {
+          &#{$separator}#{$type} {
+            #{box-shadow}: map-get($dropdowns-box-shadow, $type);
+            #{$attribute}: $value;
+        }
+      }
+    }
+  }
+}
+
+@mixin dropdown-text-modifiers($attribute, $class-iterator, $prefix: '-', $separator: '-') {
+  @each $name, $dropdown in $class-iterator {
+    &#{$prefix}#{$name} {
+      @each $type, $value in $dropdown {
+        &#{$separator}#{$type} {
+          #{$attribute}: $value;
+      }
+    }
+  }
+}
+}
+
+@mixin mat-table-columns($columns)
+{
+  .mat-column-
+  {
+    @each $colName, $props in $columns {
+      $width: map-get($props, 'width');
+      &#{$colName}
+      {
+        flex: $width;
+        width: $width;
+
+        @if map-has-key($props, 'color')
+        {
+          color: map-get($props, 'color');
+        }
+      }
+    }
+  }
+}
+
+
+/* Generates colors for Pastis.
+Ex : .pastis-secondary-200 {
+      }
+See _colors.scss */
+
+.pastis {
+  @include color-modifiers('color');
+}
+
+/* Generates background colors for Pastis.
+Ex : .pastis-bg-secondary-200 {
+      }
+See _colors.scss */
+.pastis-bg {
+  @include color-modifiers('background');
+}
+
+.pastis-bgcolor {
+  @include color-modifiers('background-color');
+}
+/* Generates buttons for Pastis.
+Buttons can be primary, secondary;
+Additionally they can be :
+activated, disabled, hover and focus
+Ex : .pastis-btn-primary-hover {}
+See _buttons.scss */
+
+.pastis-btn {
+  border-radius: 100px !important;
+  border : 0px;
+  outline: none;
+  @include button-modifiers('background');
+}
+
+
+//Ex : .pastis-btn-rounded-primary-focus {}
+//Ex : .pastis-btn-rounded-mini-white-hover {}
+
+.pastis-btn-rounded {
+  border-radius: 67px;
+  text-align: center;
+  width: 50px;
+  height: 50px;
+  outline-style: none;
+  @include rounded-standard-button-modifiers('background');
+}
+
+.pastis-btn-rounded-mini {
+  border-radius: 67px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  outline-style: none;
+  @include rounded-mini-button-modifiers('background');
+}
+
+.pastis-dropdown-border {
+  @extend .dropdown;
+  @include dropdown-modifiers('border',$dropdowns-border);
+  }
+
+
+.pastis-dropdown-background {
+  @extend .dropdown;
+  @include dropdown-modifiers('background-color',$dropdowns-background);
+}
+
+.pastis-dropdown-text {
+  @extend .dropdown-font-text;
+  @include dropdown-text-modifiers('color',$dropdowns-text);
+}
+
+
+//Generate inputs. Ex : pastis-input-enabled, pastis-input-active
+.pastis-input {
+  @include input-modifiers('border', $input-border-colors);
+  @include input-modifiers('box-shadow', $input-box-shadow);
+  @extend .pastis-input-text;
+  outline: none;
+  height: 50px;
+  box-sizing: border-box;
+  border-radius: 87px;
+}

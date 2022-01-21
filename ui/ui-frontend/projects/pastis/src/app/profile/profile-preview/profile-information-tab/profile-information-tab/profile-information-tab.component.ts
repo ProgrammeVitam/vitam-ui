@@ -1,0 +1,144 @@
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {diff} from "ui-frontend-common";
+import {Observable, of} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ProfileService} from "../../../../core/services/profile.service";
+import {ProfileDescription} from "../../../../models/profile-description.model";
+import {ArchivalProfileUnit} from "../../../../models/archival-profile-unit";
+import {Profile} from "../../../../models/profile";
+import {NotificationService} from "../../../../core/services/notification.service";
+
+@Component({
+  selector: 'profile-information-tab',
+  templateUrl: './profile-information-tab.component.html',
+  styleUrls: ['./profile-information-tab.component.scss']
+})
+export class ProfileInformationTabComponent implements OnInit {
+
+  @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() close: EventEmitter<boolean> = new EventEmitter<boolean>();
+  form: FormGroup;
+
+  statusProfile = new FormControl();
+
+  submited = false;
+
+  isProfileAttache: boolean;
+
+  typeProfile: string;
+
+  archivalProfileUnit: ArchivalProfileUnit;
+
+  profile: Profile;
+
+
+  private _inputProfile: ProfileDescription;
+
+  previousValue = (): ProfileDescription => {
+    return this._inputProfile;
+  }
+  pending: boolean = false;
+
+  @Input()
+  set inputProfile(profileDescription: ProfileDescription) {
+    this._inputProfile = profileDescription;
+
+    this.resetForm(this.inputProfile);
+    this.updated.emit(false);
+  }
+
+  get inputProfile(): ProfileDescription {
+    return this._inputProfile;
+  }
+
+
+  @Input()
+  set readOnly(readOnly: boolean) {
+    if (readOnly && this.form.enabled) {
+      this.form.disable({emitEvent: false});
+    } else if (this.form.disabled) {
+      this.form.enable({emitEvent: false});
+      this.form.get('identifier').disable({emitEvent: false});
+    }
+  }
+
+
+  constructor(private formBuilder: FormBuilder,
+              private profileService: ProfileService, private loggingService: NotificationService) {
+    this.form = this.formBuilder.group({
+      identifier: [null, Validators.required],
+      id: [null, Validators.required],
+      type: [null],
+      description: [null],
+      name: [null, Validators.required],
+      creationDate: [null],
+      status: [null, Validators.required]
+    });
+
+    this.statusProfile.valueChanges.subscribe((value) => {
+      this.form.controls.status.setValue(value = (value === false) ? 'INACTIVE' : 'ACTIVE');
+    });
+  }
+
+  isInvalid(): boolean {
+    return false;
+  }
+
+  unchanged(): boolean {
+    const unchanged = JSON.stringify(diff(this.form.getRawValue(), this.previousValue())) === '{}';
+    this.updated.emit(!unchanged);
+    return unchanged;
+  }
+
+  prepareSubmit(inputProfile: ProfileDescription): Observable<ProfileDescription> {
+    console.log(JSON.stringify(inputProfile) + " inputProfile")
+
+    console.log(this.form.getRawValue())
+
+   // let diffValue = diff(this.form.getRawValue(), this.previousValue());
+
+
+        if (inputProfile.type == 'PA') {
+          this.profile = Object.assign(this.form.value, this.profile)
+          console.log(JSON.stringify(this.profile))
+            return this.profileService.updateProfilePa(this.profile).pipe(catchError(() => of(null)));
+        } else {
+          this.archivalProfileUnit = Object.assign( this.form.value, this.archivalProfileUnit)
+           return this.profileService.updateProfilePua(this.archivalProfileUnit).pipe(catchError(() => of(null)));
+        }
+      };
+
+  onSubmit() {
+    this.submited = true;
+    this.prepareSubmit(this.inputProfile).subscribe((result) => {
+      this.submited = false;
+      this.pending = !this.pending;
+      this.inputProfile = this._inputProfile;
+      console.log(JSON.stringify(result))
+      this.loggingService.showSuccess("La modification du profil a bien été effectué");
+      this.profileService.refreshListProfiles();
+      this.close.emit(true);
+
+    }, () => {
+      this.submited = false;
+      this.pending = !this.pending;
+      this.loggingService.showSuccess("Echec de la modification du profil");
+    });
+  }
+
+  resetForm(profileDescription: ProfileDescription) {;
+    this.form.reset(profileDescription, {emitEvent: false});
+  }
+
+  ngOnInit(): void {
+  }
+
+  isProfilAttached(inputProfile: ProfileDescription) : boolean {
+    return !!(inputProfile.controlSchema && inputProfile.controlSchema.length != 2 || inputProfile.path);
+  }
+
+  enregistrement() {
+    this.pending = !this.pending
+  }
+}

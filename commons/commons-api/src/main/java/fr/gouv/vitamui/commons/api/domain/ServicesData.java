@@ -232,6 +232,18 @@ public class ServicesData {
 
     public static final String ROLE_UPDATE_ACCESS_CONTRACTS = UPDATE_ROLE_PREFIX + SERVICE_ACCESS_CONTRACT;
 
+    //------------------------------------ PASTIS -----------------------------------------
+
+    public static final String SERVICE_PASTIS = "PASTIS";
+
+    public static final String ROLE_GET_PASTIS = GET_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_CREATE_PASTIS = CREATE_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_UPDATE_PASTIS =  UPDATE_ROLE_PREFIX + SERVICE_PASTIS;
+
+    public static final String ROLE_DELETE_PASTIS =  DELETE_ROLE_PREFIX + SERVICE_PASTIS;
+
     //------------------------------------ INGEST CONTRACT -----------------------------------------
 
     public static final String SERVICE_INGEST_CONTRACT = "INGEST_CONTRACTS";
@@ -356,7 +368,28 @@ public class ServicesData {
 
     //------------------------------ PROFILES (ARCHIVE PROFILES) --------------------------------------
 
-    public static final String ROLE_GET_ARCHIVE_PROFILES = ROLE_PREFIX + "GET_ARCHIVE_PROFILES";
+    public static final String SERVICE_ARCHIVE_PROFILES = "ARCHIVE_PROFILES";
+
+    public static final String ROLE_GET_ARCHIVE_PROFILES = GET_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_UPDATE_ARCHIVE_PROFILES = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES;
+
+    //------------------------------------ ARCHIVE PROFILES UNIT -----------------------------------
+
+    public static final String SERVICE_ARCHIVE_PROFILES_UNIT = "ARCHIVE_PROFILES_UNIT";
+
+    public static final String ROLE_GET_ARCHIVE_PROFILES_UNIT = GET_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_UPDATE_ARCHIVE_PROFILES_UNIT = CREATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_CREATE_ARCHIVE_PROFILES_UNIT =  UPDATE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
+    public static final String ROLE_IMPORT_ARCHIVE_PROFILES_UNIT =  DELETE_ROLE_PREFIX + SERVICE_ARCHIVE_PROFILES_UNIT;
+
 
     //------------------------------------ INGESTS -----------------------------------------
 

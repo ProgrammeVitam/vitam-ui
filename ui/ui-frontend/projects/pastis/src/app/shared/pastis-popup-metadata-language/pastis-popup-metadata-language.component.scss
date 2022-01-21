@@ -1,0 +1,80 @@
+@import '~ui-frontend-common/sass/icons/vitamui-icons';
+.pastis-vitamui-language-seda-container{
+  width: 245px;
+  height: 150px;
+  position: absolute;
+
+  /* Basics/White */
+
+  background: #FFFFFF;
+  /* Grey/Grey-400 */
+
+  border: 1px solid #BDBDBD;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.pastis-vitamui-language-seda-choice{
+  position: relative;
+  margin: 20px 15px 0 15px;
+  display: inline-flex;
+}
+
+
+.pastis-vitamui-language-seda-title{
+  position: relative;
+  width: 155px;
+  height: 16px;
+  left: 15px;
+  top: 10px;
+
+  /* Caption/Caption-bold */
+
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  /* identical to box height, or 133% */
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: -0.2px;
+  color: var(--vitamui-primary);
+}
+.pastis-vitamui-language-seda-button{
+  width: 107px;
+  height: 34px;
+  border: 1px solid var(--vitamui-primary);
+  border-radius: 5px 0 0 5px;
+  background-color: #FFFFFF;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  /* identical to box height, or 157% */
+  text-align: center;
+  letter-spacing: 0.1px;
+  /* X_Basics/White */
+  color: var(--vitamui-grey-900);
+}
+.pastis-vitamui-language-seda-button-selected{
+  @extend .pastis-vitamui-language-seda-button;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: var(--vitamui-primary);
+}
+.pastis-vitamui-language-seda-button:focus{
+  outline: none !important;
+}
+.pastis-vitamui-language-fr-button{
+  @extend .pastis-vitamui-language-seda-button;
+  border-radius: 0 5px 5px 0;
+}
+.pastis-vitamui-language-fr-button-selected{
+  @extend .pastis-vitamui-language-fr-button;
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: var(--vitamui-primary);
+}

@@ -76,6 +76,10 @@ public class ReferentialExternalRestClientFactory extends BaseRestClientFactory 
         return new FileFormatExternalRestClient(getRestTemplate(), getBaseUrl());
     }
 
+    public ArchivalProfileUnitExternalRestClient getArchivalProfileExternalRestClient(){
+        return new ArchivalProfileUnitExternalRestClient(getRestTemplate(), getBaseUrl());
+    }
+
     public ContextExternalRestClient getContextExternalRestClient() {
         return new ContextExternalRestClient(getRestTemplate(), getBaseUrl());
     }

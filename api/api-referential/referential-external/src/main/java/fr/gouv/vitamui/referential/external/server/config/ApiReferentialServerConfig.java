@@ -154,6 +154,11 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
+    public ArchivalProfileUnitInternalRestClient archivalProfileInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
+        return referentialInternalRestClientFactory.getArchivalProfileInternalRestClient();
+    }
+
+    @Bean
     public ContextInternalRestClient contextInternalRestClient(final ReferentialInternalRestClientFactory referentialInternalRestClientFactory) {
         return referentialInternalRestClientFactory.getContextInternalRestClient();
     }
@@ -206,6 +211,16 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     @Bean
     public FileFormatInternalWebClient fileFormatInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
     	return referentialInternalWebClientFactory.getFileFormatInternalWebClient();
+    }
+
+    @Bean
+    public ArchivalProfileInternalWebClient archivalProfileInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
+        return referentialInternalWebClientFactory.getArchivalProfileInternalWebClient();
+    }
+
+    @Bean
+    public ProfileInternalWebClient profileInternalWebClient(final ReferentialInternalWebClientFactory referentialInternalWebClientFactory) {
+        return referentialInternalWebClientFactory.getProfileInternalWebClient();
     }
 
     @Bean
