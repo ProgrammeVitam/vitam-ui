@@ -7,9 +7,11 @@ import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.web.flow.DelegatedClientAuthenticationConfigurationContext;
+import org.apereo.cas.web.flow.DelegatedClientIdentityProviderConfigurationProducer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +20,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Tests {@link CustomDelegatedClientAuthenticationAction}.
@@ -40,8 +44,10 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
     public void setUp() {
         super.setUp();
 
-        action = new CustomDelegatedClientAuthenticationAction(mock(DelegatedClientAuthenticationConfigurationContext.class),
-                            mock(IdentityProviderHelper.class), mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
+        val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
+        when(configContext.getDelegatedClientIdentityProvidersProducer()).thenReturn(mock(DelegatedClientIdentityProviderConfigurationProducer.class));
+        action = new CustomDelegatedClientAuthenticationAction(configContext, mock(IdentityProviderHelper.class),
+            mock(ProvidersService.class), mock(Utils.class), mock(TicketRegistry.class), "", ",");
     }
 
     @Test

@@ -101,9 +101,9 @@ cas.ticket.tst.timeToKillInSeconds: 86400
 cas.authn.pm.enabled: true
 
 {% if vitamui_password_configurations.anssiPolicyPattern is defined and vitamui_password_configurations.password.profile == "anssi"  %}
-cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern | replace("'","''") }}'
+cas.authn.pm.core.policyPattern: '{{ vitamui_password_configurations.anssiPolicyPattern  | replace("'","''") }}'
 {% else %}
-cas.authn.pm.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
+cas.authn.pm.core.policyPattern: '{{ vitamui_password_configurations.customPolicyPattern | replace("'","''") }}'
 {% endif %}
 
 cas.authn.pm.reset.mail.subject: Requete de reinitialisation de mot de passe

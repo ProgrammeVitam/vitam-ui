@@ -129,7 +129,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private PasswordManagementProperties passwordManagementProperties;
 
-    @Value("${cas.authn.pm.policyPattern}")
+    @Value("${cas.authn.pm.core.policyPattern}")
     private String policyPattern;
 
     private PasswordConfiguration passwordConfiguration;

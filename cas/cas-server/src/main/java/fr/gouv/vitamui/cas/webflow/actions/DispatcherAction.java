@@ -140,7 +140,7 @@ public class DispatcherAction extends AbstractAction {
             return new Event(this, BAD_CONFIGURATION);
         }
         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val webContext = new JEEContext(request, response, sessionStore);
+        val webContext = new JEEContext(request, response);
         if (isInternal) {
             sessionStore.set(webContext, Constants.SURROGATE, null);
             LOGGER.debug("Redirect the user to the password page...");

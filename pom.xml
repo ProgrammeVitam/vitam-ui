@@ -117,7 +117,7 @@
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <mockito.version>3.11.2</mockito.version>
         <nio.multipart.parser.version>1.1.0</nio.multipart.parser.version>
-        <pac4j.version>4.0.0</pac4j.version>
+        <pac4j.version>5.1.4</pac4j.version>
         <poi.version>4.1.2</poi.version>
         <org.odftoolkit.version>0.8.7</org.odftoolkit.version>
         <org.apache.odftoolkit.version>0.8.2-incubating</org.apache.odftoolkit.version>
@@ -548,7 +548,7 @@
             <!-- Security -->
             <dependency>
                 <groupId>org.pac4j</groupId>
-                <artifactId>pac4j-saml-opensamlv3</artifactId>
+                <artifactId>pac4j-saml</artifactId>
                 <version>${pac4j.version}</version>
             </dependency>
             <dependency>
