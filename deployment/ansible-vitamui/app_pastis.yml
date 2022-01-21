@@ -1,4 +1,4 @@
-# Archive Search external calls archive internal
+# Pastis external calls pastis internal
 - hosts: hosts_vitamui_pastis_external
   gather_facts: no
   any_errors_fatal: true
@@ -12,7 +12,7 @@
     password_truststore: "{{ truststores_client_external }}"
     consul_tags: "pastis-external, api, external"
 
-# UI archive search calls archive external
+# UI Pastis calls pastis external
 
 - hosts: hosts_ui_pastis
   gather_facts: no
@@ -26,4 +26,3 @@
     password_keystore: "{{ keystores_server_ui_pastis }}"
     password_truststore: "{{ truststores_server }}"
     consul_tags: "ui-pastis, ui"
-
