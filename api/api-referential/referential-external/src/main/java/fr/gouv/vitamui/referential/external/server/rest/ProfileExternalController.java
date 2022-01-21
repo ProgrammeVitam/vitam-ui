@@ -36,24 +36,36 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.api.utils.ApiUtils;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ProfileExternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.PROFILES_URL)
@@ -67,11 +79,142 @@ public class ProfileExternalController {
     private ProfileExternalService profileExternalService;
 
     @GetMapping()
-    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all profile criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         return profileExternalService.getAll(criteria);
     }
+
+    //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+                                                          @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+                                                          @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        return profileExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+    }
+
+    //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
+    public ProfileDto getOne(final @PathVariable("identifier") String identifier) {
+        LOGGER.debug("get profile identifier={}");
+        ParameterChecker.checkParameter("Identifier is mandatory : ", identifier);
+        return profileExternalService.getOne(identifier);
+    }
+
+    @GetMapping(RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
+    public ResponseEntity<Resource> download(final @PathVariable("id") String id) {
+        LOGGER.debug("download profile with id :{}", id);
+        ParameterChecker.checkParameter("Event Identifier is mandatory : ", id);
+        return profileExternalService.download(id);
+    }
+
+
+    /**
+     * Import a Profile file document (xsd or rng, ...)
+     *
+     * @param id id of the archival profile
+     * @param file MultipartFile representing the data to import
+     * @return The jaxRs Response
+     */
+    //@Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
+    @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
+    public ResponseEntity<JsonNode> importProfileFile(final @PathVariable("id") String id,
+                                                      @RequestParam("file") MultipartFile file) throws IOException {
+        LOGGER.debug("Update {}  profile file with id :{}", id);
+        LOGGER.debug("Import profile file {}", file);
+        ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        return profileExternalService.updateProfileFile(id, file);
+    }
+
+
+    /**
+     * Update an Archival Profile
+     * @param id id of the archival Profile
+     * @param dto Entity to update
+     * @return entity updated
+     */
+    //@Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
+    @PutMapping(CommonConstants.PATH_ID)
+    public ResponseEntity<JsonNode> update(final @PathVariable("id") String id, final @Valid @RequestBody ProfileDto dto) {
+        LOGGER.debug("Update {} with {}", id, dto);
+        SanityChecker.check(id);
+        Assert.isTrue(StringUtils.equals(id, dto.getId()), "Unable to update profile : the DTO id must match the path id");
+        return profileExternalService.updateProfile(dto);
+    }
+
+    /**
+     * Create an Archival Profile
+     * @param ProfileDto Entity to create
+     * @return entity created
+     */
+    ////@Secured(ServicesData.ROLE_CREATE_ARCHIVE_PROFILES)
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public ProfileDto create(final @Valid @RequestBody ProfileDto ProfileDto) {
+        LOGGER.debug("Create {}", ProfileDto);
+        ApiUtils.checkValidity(ProfileDto);
+        return profileExternalService.create(ProfileDto);
+    }
+
+
+    /***
+     * Import profile
+     * @param fileName the file name
+     * @param file the agency csv file to import
+     * @return the vitam response
+     */
+    // //@Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES)
+    @PostMapping(CommonConstants.PATH_IMPORT)
+    public ResponseEntity<JsonNode> importArchivalProfiles(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
+        LOGGER.debug("Import file archivalProfile {}", fileName);
+        ParameterChecker.checkParameter("The fileName is mandatory parameter :", fileName);
+        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        return profileExternalService.importProfiles(fileName, file);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    ////@Secured({ ServicesData.ROLE_GET_ARCHIVE_PROFILES })
+    @PostMapping(CommonConstants.PATH_CHECK)
+    public ResponseEntity<Void> check(@RequestBody ProfileDto ProfileDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("check exist accessContract={}", ProfileDto);
+        ApiUtils.checkValidity(ProfileDto);
+        final boolean exist = profileExternalService.check(ProfileDto);
+        return RestUtils.buildBooleanResponse(exist);
+    }
+
+
+
+    @PatchMapping(CommonConstants.PATH_ID)
+    //@Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES)
+    public ProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        return profileExternalService.patch(partialDto);
+    }
+
+    // //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    @GetMapping("/{id}/history")
+    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+        LOGGER.debug("get logbook for accessContract with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        return profileExternalService.findHistoryById(id);
+    }
+
+
+
 
 }

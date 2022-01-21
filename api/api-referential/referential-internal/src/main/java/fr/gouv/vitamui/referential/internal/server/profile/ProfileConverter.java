@@ -36,16 +36,14 @@
  */
 package fr.gouv.vitamui.referential.internal.server.profile;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import fr.gouv.vitam.common.model.administration.ProfileModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 
-public class ProfileConverter {
+import java.util.List;
+import java.util.stream.Collectors;
 
-    // TODO : Make a model DTO able to be converted as XML Droid format ?
+public class ProfileConverter {
 
     public ProfileModel convertDtoToVitam(final ProfileDto dto) {
         final ProfileModel Profile = VitamUIUtils.copyProperties(dto, new ProfileModel());
@@ -55,7 +53,10 @@ public class ProfileConverter {
 
     public ProfileDto convertVitamToDto(final ProfileModel profile) {
         final ProfileDto dto = VitamUIUtils.copyProperties(profile, new ProfileDto());
-
+        dto.setActivationDate(profile.getActivationdate());
+        dto.setCreationDate(profile.getCreationdate());
+        dto.setDeactivationDate(profile.getDeactivationdate());
+        dto.setLastUpdate(profile.getLastupdate());
         return dto;
     }
 

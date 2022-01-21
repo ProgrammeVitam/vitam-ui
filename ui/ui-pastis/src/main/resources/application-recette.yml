@@ -1,0 +1,13 @@
+spring:
+  profiles: recette
+
+ui-pastis:
+  base-url:
+    portal: "https://dev.vitamui.com:9000"
+    admin-identity: "https://dev.vitamui.com:9001/identity"
+    identity: "https://dev.vitamui.com:9001/identity"
+
+ui:
+  url: "https://dev.vitamui.com:9015"
+  redirect-url: ${ui.url}
+

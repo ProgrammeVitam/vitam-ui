@@ -1,0 +1,884 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<rng:grammar xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns:seda="fr:gouv:culture:archivesdefrance:seda:v2.1"
+             xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+             ns="fr:gouv:culture:archivesdefrance:seda:v2.1"
+             xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1"
+>
+    <!-- Profil RNG avec 1 objet numérique déclaré (en O-N), et 1 AU racine (en O-n) qui déclare un AU fille (en O-N)-->
+    <rng:start>
+        <rng:element name="ArchiveTransfer">
+            <rng:optional>
+                <rng:attribute name="xml:id">
+                    <rng:data type="ID"/>
+                </rng:attribute>
+            </rng:optional>
+            <rng:optional>
+                <rng:element name="Comment">
+                    <xsd:annotation>
+                        <xsd:documentation>Commentaire sur le versement</xsd:documentation>
+                    </xsd:annotation>
+                    <rng:data type="string"/>
+                </rng:element>
+            </rng:optional>
+            <rng:element name="Date">
+                <rng:data type="dateTime"/>
+            </rng:element>
+            <rng:element name="MessageIdentifier">
+                <rng:data type="token"/>
+            </rng:element>
+            <rng:element name="ArchivalAgreement">
+                <xsd:annotation>
+                    <xsd:documentation>Déclaration du contrat d'entrée</xsd:documentation>
+                </xsd:annotation>
+                <rng:data type="token"/>
+            </rng:element>
+            <rng:element name="CodeListVersions">
+                <rng:data type="token"/>
+            </rng:element>
+            <rng:element name="DataObjectPackage">
+                <rng:attribute name="xml:id">
+                    <rng:data type="ID"/>
+                </rng:attribute>
+                <rng:element name="DataObjectGroup">
+                    <rng:attribute name="id">
+                        <rng:data type="ID"/>
+                    </rng:attribute>
+                    <rng:zeroOrMore>
+                        <rng:element name="BinaryDataObject">
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:optional>
+                                <rng:element name="DataObjectGroupId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Sert à lier un fichier à l'ArchiveUnit auquel il correspond.
+                                            Exemple: ID7
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:optional>
+                            <rng:element name="DataObjectVersion">
+                                <rng:data type="token"/>
+                                <xsd:annotation>
+                                    <xsd:documentation>BinaryMaster par défaut</xsd:documentation>
+                                </xsd:annotation>
+                            </rng:element>
+                            <rng:element name="Uri">
+                                <rng:data type="anyURI"/>
+                            </rng:element>
+                            <rng:element name="MessageDigest">
+                                <rng:data type="base64Binary"/>
+                                <rng:attribute name="algorithm">
+                                    <rng:data type="token"/>
+                                </rng:attribute>
+                            </rng:element>
+                            <rng:element name="Size">
+                                <rng:data type="positiveInteger"/>
+                            </rng:element>
+                            <rng:element name="FormatIdentification">
+                                <rng:element name="FormatLitteral">
+                                    <rng:data type="string"/>
+                                </rng:element>
+                                <rng:optional>
+                                    <rng:element name="MimeType">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="FormatId">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="Encoding">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                            </rng:element>
+                            <rng:element name="FileInfo">
+                                <rng:element name="Filename">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Nom du fichier. Exemple:
+                                            22100005200011_20091118_144251_1.pdf
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="string"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:optional>
+                                <rng:element name="Metadata">
+                                    <rng:optional>
+                                        <rng:element name="Video">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="Audio">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:optional>
+                                </rng:element>
+                            </rng:optional>
+                        </rng:element>
+                    </rng:zeroOrMore>
+                </rng:element>
+                <rng:element name="DescriptiveMetadata">
+                    <rng:zeroOrMore>
+                        <rng:element name="ArchiveUnit">
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:optional>
+                                <rng:element name="ArchiveUnitProfile">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:optional>
+                            <rng:optional>
+                                <rng:element name="Management">
+                                    <rng:optional>
+                                        <rng:element name="UpdateOperation">
+                                            <rng:element name="ArchiveUnitIdentifierKey">
+                                                <rng:element name="MetadataName">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                                <rng:element name="MetadataValue">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="AppraisalRule">
+                                            <rng:element name="Rule">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="StartDate">
+                                                <rng:data type="date"/>
+                                            </rng:element>
+                                            <rng:element name="FinalAction">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="AccessRule">
+                                            <rng:element name="Rule">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="StartDate">
+                                                <rng:data type="date"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="DisseminationRule">
+                                            <rng:element name="Rule">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="StartDate">
+                                                <rng:data type="date"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:optional>
+                                </rng:element>
+                            </rng:optional>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                                <rng:oneOrMore>
+                                    <rng:element name="Title">
+                                        <rng:attribute name="xml:lang">
+                                            <rng:data type="language"/>
+                                        </rng:attribute>
+                                        <rng:data type="string"/>
+                                    </rng:element>
+                                </rng:oneOrMore>
+                                <rng:optional>
+                                    <rng:element name="FilePlanPosition">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="OriginatingAgencyArchiveUnitIdentifier">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="TransferringAgencyArchiveUnitIdentifier">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="Description">
+                                        <rng:attribute name="xml:lang">
+                                            <rng:data type="language"/>
+                                        </rng:attribute>
+                                        <rng:data type="string"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="CustodialHistory">
+                                        <rng:oneOrMore>
+                                            <rng:element name="CustodialHistoryItem">
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                        </rng:oneOrMore>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="Type">
+                                        <rng:data type="string"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:oneOrMore>
+                                    <rng:element name="Language">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Langue du contenu du sous-ensemble de l'archive
+                                                exprimée au format ISO 639-3
+                                            </xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:data type="language"/>
+                                    </rng:element>
+                                </rng:oneOrMore>
+                                <rng:optional>
+                                    <rng:element name="DescriptionLanguage">
+                                        <rng:data type="language"/>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:zeroOrMore>
+                                    <rng:element name="Tag">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                                <rng:zeroOrMore>
+                                    <rng:element name="Keyword">
+                                        <rng:element name="KeywordContent">
+                                            <rng:data type="string"/>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                                <rng:optional>
+                                    <rng:element name="OriginatingAgency">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Service producteur</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:element name="Identifier">
+                                            <rng:data type="string"/>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="SubmissionAgency">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Service versant</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:element name="Identifier">
+                                            <rng:data type="string"/>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:optional>
+                                    <rng:element name="RelatedObjectReference">
+                                        <rng:zeroOrMore>
+                                            <rng:element name="IsVersionOf">
+                                                <rng:optional>
+                                                    <rng:element name="ArchiveUnitRefId">
+                                                        <rng:data type="NCName"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="DataObjectReference">
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReferenceId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectGroupReferenceId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryArchiveUnitPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryObjectPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="ExternalReference">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                        <rng:optional>
+                                            <rng:element name="Replaces">
+                                                <rng:optional>
+                                                    <rng:element name="ArchiveUnitRefId">
+                                                        <rng:data type="NCName"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="DataObjectReference">
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReferenceId"
+                                                                         a:defaultValue="id76745">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectGroupReferenceId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryArchiveUnitPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryObjectPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="ExternalReference">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="IsPartOf">
+                                                <rng:optional>
+                                                    <rng:element name="ArchiveUnitRefId">
+                                                        <rng:data type="NCName"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="DataObjectReference">
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReferenceId"
+                                                                         a:defaultValue="id76745">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectGroupReferenceId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryArchiveUnitPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryObjectPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="ExternalReference">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="References">
+                                                <rng:optional>
+                                                    <rng:element name="ArchiveUnitRefId">
+                                                        <rng:data type="NCName"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="DataObjectReference">
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReferenceId"
+                                                                         a:defaultValue="id76745">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectGroupReferenceId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryArchiveUnitPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="RepositoryObjectPID">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="ExternalReference">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:optional>
+                                            </rng:element>
+                                        </rng:optional>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:element name="StartDate">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Date du document le plus ancien dans
+                                            l'ArchiveUnit
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="date"/>
+                                </rng:element>
+                                <rng:element name="EndDate">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Date du document le plus récent dans
+                                            l'ArchiveUnit.
+                                        </xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="date"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:zeroOrMore>
+                                <rng:element name="ArchiveUnit">
+                                    <rng:attribute name="id">
+                                        <rng:data type="ID"/>
+                                    </rng:attribute>
+                                    <rng:optional>
+                                        <rng:element name="ArchiveUnitProfile">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="Management">
+                                            <rng:optional>
+                                                <rng:element name="UpdateOperation">
+                                                    <rng:element name="ArchiveUnitIdentifierKey">
+                                                        <rng:element name="MetadataName">
+                                                            <rng:data type="token"/>
+                                                        </rng:element>
+                                                        <rng:element name="MetadataValue">
+                                                            <rng:data type="token"/>
+                                                        </rng:element>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:optional>
+                                            <rng:optional>
+                                                <rng:element name="AppraisalRule">
+                                                    <rng:element name="Rule">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                    <rng:element name="StartDate">
+                                                        <rng:data type="date"/>
+                                                    </rng:element>
+                                                    <rng:element name="FinalAction">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:optional>
+                                            <rng:optional>
+                                                <rng:element name="AccessRule">
+                                                    <rng:element name="Rule">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                    <rng:element name="StartDate">
+                                                        <rng:data type="date"/>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:optional>
+                                            <rng:optional>
+                                                <rng:element name="DisseminationRule">
+                                                    <rng:element name="Rule">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                    <rng:element name="StartDate">
+                                                        <rng:data type="date"/>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:optional>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:element name="Content">
+                                        <rng:element name="DescriptionLevel">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                        <rng:oneOrMore>
+                                            <rng:element name="Title">
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:data type="language"/>
+                                                </rng:attribute>
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                        </rng:oneOrMore>
+                                        <rng:optional>
+                                            <rng:element name="FilePlanPosition">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="OriginatingAgencyArchiveUnitIdentifier">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="TransferringAgencyArchiveUnitIdentifier">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="Description">
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:data type="language"/>
+                                                </rng:attribute>
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="CustodialHistory">
+                                                <rng:oneOrMore>
+                                                    <rng:element name="CustodialHistoryItem">
+                                                        <rng:data type="string"/>
+                                                    </rng:element>
+                                                </rng:oneOrMore>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="Type">
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:oneOrMore>
+                                            <rng:element name="Language">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>Langue du contenu du sous-ensemble de l'archive
+                                                        exprimée au format ISO 639-3
+                                                    </xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:data type="language"/>
+                                            </rng:element>
+                                        </rng:oneOrMore>
+                                        <rng:optional>
+                                            <rng:element name="DescriptionLanguage">
+                                                <rng:data type="language"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="Tag">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="Keyword">
+                                                <rng:element name="KeywordContent">
+                                                    <rng:data type="string"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                        <rng:optional>
+                                            <rng:element name="OriginatingAgency">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>Service producteur</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:element name="Identifier">
+                                                    <rng:data type="string"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="SubmissionAgency">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>Service versant</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:element name="Identifier">
+                                                    <rng:data type="string"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:optional>
+                                            <rng:element name="RelatedObjectReference">
+                                                <rng:zeroOrMore>
+                                                    <rng:element name="IsVersionOf">
+                                                        <rng:optional>
+                                                            <rng:element name="ArchiveUnitRefId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReference">
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectReferenceId">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryArchiveUnitPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryObjectPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="ExternalReference">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:zeroOrMore>
+                                                <rng:optional>
+                                                    <rng:element name="Replaces">
+                                                        <rng:optional>
+                                                            <rng:element name="ArchiveUnitRefId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReference">
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectReferenceId"
+                                                                                 a:defaultValue="id76745">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryArchiveUnitPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryObjectPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="ExternalReference">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="IsPartOf">
+                                                        <rng:optional>
+                                                            <rng:element name="ArchiveUnitRefId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReference">
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectReferenceId"
+                                                                                 a:defaultValue="id76745">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryArchiveUnitPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryObjectPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="ExternalReference">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                                <rng:optional>
+                                                    <rng:element name="References">
+                                                        <rng:optional>
+                                                            <rng:element name="ArchiveUnitRefId">
+                                                                <rng:data type="NCName"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="DataObjectReference">
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectReferenceId"
+                                                                                 a:defaultValue="id76745">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                                <rng:optional>
+                                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                                        <rng:data type="NCName"/>
+                                                                    </rng:element>
+                                                                </rng:optional>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryArchiveUnitPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="RepositoryObjectPID">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                        <rng:optional>
+                                                            <rng:element name="ExternalReference">
+                                                                <rng:data type="token"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                </rng:optional>
+                                            </rng:element>
+                                        </rng:optional>
+                                        <rng:element name="StartDate">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Date du document le plus ancien dans
+                                                    l'ArchiveUnit
+                                                </xsd:documentation>
+                                            </xsd:annotation>
+                                            <rng:data type="date"/>
+                                        </rng:element>
+                                        <rng:element name="EndDate">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Date du document le plus récent dans
+                                                    l'ArchiveUnit.
+                                                </xsd:documentation>
+                                            </xsd:annotation>
+                                            <rng:data type="date"/>
+                                        </rng:element>
+                                    </rng:element>
+                                    <rng:optional>
+                                        <rng:element name="DataObjectReference">
+                                            <rng:element name="DataObjectGroupReferenceId">
+                                                <rng:data type="NCName"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:optional>
+                                </rng:element>
+                            </rng:zeroOrMore>
+                            <rng:optional>
+                                <rng:element name="DataObjectReference">
+                                    <rng:element name="DataObjectGroupReferenceId">
+                                        <rng:data type="NCName"/>
+                                    </rng:element>
+                                </rng:element>
+                            </rng:optional>
+                        </rng:element>
+                    </rng:zeroOrMore>
+                </rng:element>
+                <rng:element name="ManagementMetadata">
+                    <rng:element name="ArchivalProfile">
+                        <rng:data type="token"/>
+                    </rng:element>
+                    <rng:element name="OriginatingAgencyIdentifier">
+                        <rng:data type="token"/>
+                    </rng:element>
+                    <rng:element name="SubmissionAgencyIdentifier">
+                        <rng:data type="token"/>
+                    </rng:element>
+                    <rng:optional>
+                        <rng:element name="AppraisalRule">
+                            <rng:element name="Rule">
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="StartDate">
+                                <rng:data type="date"/>
+                            </rng:element>
+                            <rng:element name="FinalAction">
+                                <rng:data type="token"/>
+                            </rng:element>
+                        </rng:element>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:element name="AccessRule">
+                            <rng:element name="Rule">
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="StartDate">
+                                <rng:data type="date"/>
+                            </rng:element>
+                        </rng:element>
+                    </rng:optional>
+                    <rng:optional>
+                        <rng:element name="DisseminationRule">
+                            <rng:element name="Rule">
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="StartDate">
+                                <rng:data type="date"/>
+                            </rng:element>
+                        </rng:element>
+                    </rng:optional>
+                </rng:element>
+            </rng:element>
+            <rng:element name="ArchivalAgency">
+                <rng:element name="Identifier">
+                    <rng:value>19341594000017</rng:value>
+                    <rng:attribute name="schemeName">
+                        <rng:value>SIRET</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="schemeAgencyName">
+                        <rng:value>INSEE</rng:value>
+                    </rng:attribute>
+                </rng:element>
+            </rng:element>
+            <rng:element name="TransferringAgency">
+                <xsd:annotation>
+                    <xsd:documentation>Doit permettre d'identifier l'opérateur technique réalisant le
+                        versement de manière unique et non équivoque
+                    </xsd:documentation>
+                </xsd:annotation>
+                <rng:element name="Identifier">
+                    <rng:data type="token"/>
+                    <rng:attribute name="schemeName">
+                        <rng:value>SIRET</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="schemeAgencyName">
+                        <rng:value>INSEE</rng:value>
+                    </rng:attribute>
+                </rng:element>
+            </rng:element>
+        </rng:element>
+    </rng:start>
+</rng:grammar>

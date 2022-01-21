@@ -1,0 +1,189 @@
+@import "colors";
+/// Pastis background button colors
+/// @author Paulo Pimenta
+
+
+/*
+---
+name: Button
+category: Components
+---
+
+Buttons can be used with `<a>`, `<button>`, and `<input>` elements.
+
+Types of buttons:
+- Default: Standard button
+- Primary: Provides extra visual weight and identifies the primary action in a set of buttons
+- Success: Indicates a successful or positive action
+
+```types.html
+
+<md-button class="md-raised pastis-btn-primary-hover">Pastis Basic</md-button>
+<md-button cclass="md-warn">Pastis Bootstrap</md-button>
+<md-button class="md-raised md-warn">Pastis button</md-button>
+
+```
+*/
+$buttons: (
+    primary:(
+        enabled:   var(--vitamui-primary),
+        disabled:  var(--vitamui-primary-50),
+        hover: var(--vitamui-primary),
+        focus: var(--vitamui-primary)
+    ),
+    secondary:(
+        enabled:    var(--vitamui-secondary),
+        disabled:  var(--vitamui-secondary-50),
+        hover:  var(--vitamui-secondary),
+        focus:  var(--vitamui-secondary)
+    ),
+    variant:(
+        enabled:   map-get($colors, 'black-low'),
+        disabled:  map-get($colors, 'black-disabled'),
+        hover: map-get($colors, ' black-low'),
+        focus: map-get($colors, 'black-low')
+    ),
+    leading:(
+        enabled:   #FFFFFF,
+        disabled:  map-get($colors, 'white-disabled'),
+        hover: #FFFFFF,
+        focus: #FFFFFF
+    )
+);
+
+$rounded-standard-buttons: (
+    standard-primary:(
+        enabled:   var(--vitamui-primary),
+        disabled:  map-get($colors, 'primay-disabled'),
+        hover: --vitamui-primary-200,
+        focus: --vitamui-primary-400
+    ),
+    standard-secondary:(
+        enabled:    var(--vitamui-secondary),
+        disabled:  map-get($colors, 'secondary-disabled'),
+        hover:  var(--vitamui-secondary),
+        focus:  var(--vitamui-secondary)
+    ),
+    standard-white:(
+        enabled:   #FFFFFF,
+        disabled: map-get($colors, 'white-disabled'),
+        hover: #FFFFFF,
+        focus: #FFFFFF
+    )
+);
+
+$rounded-mini-buttons:(
+    neutral:(
+        enabled:   #FFFFFF,
+        disabled:  map-get($colors, 'white-disabled'),
+        hover: #FFFFFF,
+        focus: #FFFFFF
+    ),
+    primary:(
+        enabled:   var(--vitamui-primary),
+        disabled:  var(--vitamui-primary),
+        hover: var(--vitamui-primary),
+        focus: var(--vitamui-primary)
+    ),
+    secondary:(
+        enabled:    var(--vitamui-secondary-300),
+        disabled:  var(--vitamui-secondary-50),
+        hover: map-get($colors, 'secondary-secondary'),
+        focus: map-get($colors, 'secondary-secondary')
+    )
+);
+
+ /////////////////////////* Standard buttons */\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+/*Defines buttons border*/
+$buttons-border:(
+    primary: none,
+    secondary: none,
+    variant: none,
+);
+$buttons-border-leading:(
+    enabled: 1px solid  var(--vitamui-secondary-300),
+    disabled: 1px solid  var(--vitamui-secondary-300),
+    hover: 1px solid  var(--vitamui-secondary-300),
+    focus: 1px solid  var(--vitamui-secondary-300),
+);
+
+/*Defines buttons text-color*/
+$buttons-text-color:(
+    primary:  map-get($colors, 'white-highlight'),
+    secondary: map-get($colors, 'white-highlight'),
+    variant: map-get($colors, 'white-highlight'),
+);
+
+/*Defines buttons text-color for leading button types*/
+$buttons-text-color-leading:(
+    enabled:   var(--vitamui-secondary-300),
+    disabled: map-get($colors, 'secondary-disabled'),
+    hover:  var(--vitamui-secondary-300),
+    focus:  var(--vitamui-secondary-300),
+);
+
+
+/*Defines buttons box-shadow*/
+$buttons-box-shadow:(
+    enabled: (0px 1px 3px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.12), 0px 0px 2px rgba(0, 0, 0, 0.14)),
+    disabled: none,
+    hover: (0px 1px 10px rgba(0, 0, 0, 0.2), 0px 4px 5px rgba(0, 0, 0, 0.12), 0px 2px 4px rgba(0, 0, 0, 0.14)),
+    focus: none,
+);
+
+/*Defines buttons box-shadow*/
+$buttons-font-text:(
+    primary: (font-family: Roboto,font-style: normal,font-weight: 500,font-size: 14px,line-height: 16px,text-align:center),
+    secondary: (font-family: Roboto,font-style: normal,font-weight: 500,font-size: 14px,line-height: 16px,text-align:center),
+    variant: (font-family: Roboto,font-style: normal,font-weight: 500,font-size: 14px,line-height: 16px,text-align:center),
+    leading: (font-family: Roboto,font-style: normal,font-weight: 500,font-size: 14px,line-height: 16px,text-align:center),
+);
+ /////////////////////////\\\\\\\\\\\\///////////////////\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+/////////////////////////* Rounded buttons */\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+ $rounded-buttons-border:(
+    standard-primary: none,
+    standard-secondary: none,
+    standard-white: none,
+    mini-white: 1px solid var(--vitamui-primary),
+    mini-red: none,
+    mini-blue: none,
+);
+
+.pastis-btn-rounded-mini-primary{
+    @extend .pastis-btn-rounded-mini-primary-enabled;
+}
+
+.pastis-btn-rounded-mini-primary:hover{
+    @extend .pastis-btn-rounded-mini-primary-hover;
+}
+
+.pastis-btn-rounded-mini-primary:disabled{
+    @extend .pastis-btn-rounded-mini-primary-disabled;
+}
+
+.pastis-btn-rounded-mini-primary:active {
+    @extend .pastis-btn-rounded-mini-primary-focus;
+}
+
+.pastis-btn-rounded-mini-neutral{
+    @extend .pastis-btn-rounded-mini-neutral-enabled;
+}
+
+.pastis-btn-rounded-mini-neutral:hover{
+    @extend .pastis-btn-rounded-mini-neutral-hover;
+}
+
+.pastis-btn-rounded-mini-neutral:disabled{
+    @extend .pastis-btn-rounded-mini-neutral-disabled;
+}
+
+.pastis-btn-rounded-mini-neutral:active {
+    @extend .pastis-btn-rounded-mini-neutral-focus;
+}
+
+
+

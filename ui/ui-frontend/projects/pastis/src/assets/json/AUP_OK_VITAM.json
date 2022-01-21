@@ -1,0 +1,180 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "definitions": {
+    "one-one": {
+      "type": "string",
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "one-many": {
+      "type": "array",
+      "minItems": 1
+    },
+    "zero-one": {
+      "type": "string",
+      "minItems": 0,
+      "maxItems": 1
+    },
+    "zero-one2": {
+      "type": "object",
+      "minItems": 0,
+      "maxItems": 1
+    },
+    "zero-many": {
+      "type": "array",
+      "minItems": 0
+    },
+    "zero-many2": {
+      "type": "object",
+      "minItems": 0
+    },
+    "non-empty-token": {
+      "type": [
+        "array"
+      ],
+      "minLength": 1
+    },
+    "non-empty-token-array": {
+      "type": [
+        "object"
+      ],
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "simple-date": {
+      "type": "string",
+      "pattern": "[0-9]{4}-[0-9]{2}-[0-9]{2}"
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$"
+    }
+  },
+  "properties": {
+    "ArchiveUnitProfile": {
+      "$ref": "#/definitions/one-one"
+    },
+    "#management": {
+      "properties": {
+        "AppraisalRule": {
+          "description": "Appraise : cardinalité 0-1 / contient obligatoirement Rule et FinalAction",
+          "$ref": "#/definitions/zero-one2",
+          "properties": {
+            "Rules": {
+              "items": {
+                "properties": {
+                  "Rule": {
+                    "description": "Rule : cardinalité 1",
+                    "$ref": "#/definitions/one-one"
+                  },
+                  "StartDate": {
+                    "description": "StartDate : cardinalité 0-1 / valeur date libre",
+                    "$ref": "#/definitions/zero-one"
+                  }
+                }
+              }
+            },
+            "FinalAction": {
+              "description": "FinalAction : cardinalité 1-1 / valeur au choix",
+              "$ref": "#/definitions/one-one",
+              "enum": [
+                "Keep",
+                "Destroy"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DescriptionLevel": {
+      "$ref": "#/definitions/zero-one",
+      "enum": [
+        "Fonds",
+        "Subfonds",
+        "Class",
+        "Collection",
+        "Series",
+        "Subseries",
+        "RecordGrp",
+        "SubGrp",
+        "File",
+        "Item",
+        "OtherLevel"
+      ]
+    },
+    "Title_": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token-array"
+        },
+        {
+          "$ref": "#/definitions/zero-many2"
+        }
+      ]
+    },
+    "FilePlanPosition": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    },
+    "SystemId": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    },
+    "OriginatingSystemId": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    },
+    "ArchivalAgencyArchiveUnitIdentifier": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    },
+    "OriginatingAgencyArchiveUnitIdentifier": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    },
+    "TransferringAgencyArchiveUnitIdentifier": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/non-empty-token"
+        },
+        {
+          "$ref": "#/definitions/zero-many"
+        }
+      ]
+    }
+  }
+}

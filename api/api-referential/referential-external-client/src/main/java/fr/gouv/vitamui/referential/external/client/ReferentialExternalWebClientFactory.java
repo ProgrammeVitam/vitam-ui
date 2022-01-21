@@ -52,15 +52,23 @@ public class ReferentialExternalWebClientFactory extends BaseWebClientFactory  {
     public AgencyExternalWebClient getAgencyExternalWebClient() {
         return new AgencyExternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
     public FileFormatExternalWebClient getFileFormatExternalWebClient() {
         return new FileFormatExternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
+    public ArchivalProfileUnitExternalWebClient getArchivalProfileExternalWebClient() {
+        return new ArchivalProfileUnitExternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    public ProfileExternalWebClient getProfileExternalWebClient() {
+        return new ProfileExternalWebClient(getWebClient(), getBaseUrl());
+    }
+
     public OntologyExternalWebClient getOntologyExternalWebClient() {
         return new OntologyExternalWebClient(getWebClient(), getBaseUrl());
     }
-    
+
     public RuleExternalWebClient getRuleExternalWebClient() {
         return new RuleExternalWebClient(getWebClient(), getBaseUrl());
     }

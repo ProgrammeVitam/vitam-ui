@@ -55,4 +55,6 @@ public class BaseUrl {
 
     private String identity;
 
+    private String pastis;
+
 }

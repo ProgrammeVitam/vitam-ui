@@ -22,6 +22,7 @@
         <module>ui-referential</module>
         <module>ui-ingest</module>
         <module>ui-archive-search</module>
+        <module>ui-pastis</module>
     </modules>
 
 </project>

@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitam.common.model.administration.ProfileFormat;
 import fr.gouv.vitam.common.model.administration.ProfileStatus;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
@@ -58,8 +57,8 @@ public class ProfileDto extends IdDto {
     private ProfileStatus status;
     private ProfileFormat format;
     private String path;
-    private String creationdate;
-    private String lastupdate;
-    private String activationdate;
-    private String deactivationdate;
+    private String creationDate;
+    private String lastUpdate;
+    private String activationDate;
+    private String deactivationDate;
 }

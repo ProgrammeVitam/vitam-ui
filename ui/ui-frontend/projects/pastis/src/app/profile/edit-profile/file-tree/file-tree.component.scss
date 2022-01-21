@@ -1,0 +1,106 @@
+@import "../../../../assets/css/mixins";
+@import "../../../../assets/css/layout";
+@import "../../../../assets/css/colors";
+
+.pastis-btn-container-add-ua{
+  background-color: #F6F3FB;
+  height: 70px;
+  margin-left: 40px;
+}
+
+.primary {
+  @extend .primary;
+  background-color: var(--vitamui-primary) !important;
+  box-shadow: none !important;
+}
+
+.pastis-tree-node-root-name{
+  @extend .pastis-black-height;
+  @extend .pastis-font-headline-6;
+  line-height: 50px;
+  cursor: pointer;
+  font-weight: 500;
+  margin-bottom: -15px;
+}
+
+.pastis-divider{
+  max-width: 100%;
+  height: 1px;
+}
+
+.pastis-tree-node-name{
+  @extend .pastis-surface-snackbar;
+  @extend .pastis-font-label;
+  line-height: 50px;
+  cursor: pointer;
+}
+
+.pastis-chevron-icon{
+  margin-right: 10px;
+}
+
+.pastis-chevron-icon-selected{
+  @extend .pastis-chevron-icon;
+  color: var(--vitamui-primary);
+}
+
+.pastis-btn-add-ua{
+  background-color: transparent;
+  border: none;
+}
+
+.pastis-btn-add-ua-text{
+  color: var(--vitamui-primary);
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 16px;
+  align-items: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-left: 7px;
+}
+
+.pastis-tree-ul {
+  margin-top: 5px;
+  padding-left: 0;
+}
+
+.buttons {
+  position: relative;
+  height: 35px;
+ }
+
+
+/* PASTIS File tree Item list*/
+.mat-list-item{
+  display: block !important;
+  text-align-last:left;
+  background-color: #FFFF;
+  margin-top: 5px;
+  margin-left:40px;
+  margin-right:40px;
+}
+.list-item-select{
+  @extend .list-item;
+  border-left: solid var(--vitamui-primary);
+}
+.list-item:hover{
+  background: #F6F3FB;
+}
+
+.pastis-tree{
+  display: inline-block;
+  min-width: 100%;
+  background-color: #F6F3FB;
+}
+
+
+.text-medium-normal {
+  @extend .text-text-medium;
+}
+.text-medium-primary {
+  @extend .text-text-medium;
+  color: var(--vitamui-primary);
+}
