@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.provider.SamlIdentityProviderDto;
+import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
@@ -133,14 +133,14 @@ public class DispatcherAction extends AbstractAction {
 
         val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
         boolean isInternal;
-        val provider = (SamlIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
+        val provider = (Pac4jClientIdentityProviderDto) identityProviderHelper.findByUserIdentifier(providersService.getProviders(), dispatchedUser).orElse(null);
         if (provider != null) {
             isInternal = provider.getInternal();
         } else {
             return new Event(this, BAD_CONFIGURATION);
         }
         val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-        val webContext = new JEEContext(request, response, sessionStore);
+        val webContext = new JEEContext(request, response);
         if (isInternal) {
             sessionStore.set(webContext, Constants.SURROGATE, null);
             LOGGER.debug("Redirect the user to the password page...");
@@ -153,7 +153,7 @@ public class DispatcherAction extends AbstractAction {
                 sessionStore.set(webContext, Constants.SURROGATE, surrogate);
             }
 
-            return utils.performClientRedirection(this, provider.getSaml2Client(), requestContext);
+            return utils.performClientRedirection(this, provider.getClient(), requestContext);
         }
     }
 

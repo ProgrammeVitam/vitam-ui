@@ -64,6 +64,7 @@ public abstract class BaseWebflowActionTest {
 
         when(context.getActiveFlow()).thenReturn(flow);
         when(context.getRequestScope()).thenReturn(flowParameters);
+        when(context.getFlashScope()).thenReturn(flowParameters);
         when(context.getConversationScope()).thenReturn(flowParameters);
 
         final ServletExternalContext servletExternalContext = mock(ServletExternalContext.class);

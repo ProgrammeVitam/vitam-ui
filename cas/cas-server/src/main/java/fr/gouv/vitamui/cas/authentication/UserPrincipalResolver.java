@@ -36,14 +36,20 @@
  */
 package fr.gouv.vitamui.cas.authentication;
 
+import java.security.cert.CertificateParsingException;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.cas.x509.CertificateParser;
+import fr.gouv.vitamui.cas.x509.X509AttributeMapping;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.StringUtils;
+import org.apereo.cas.adaptors.x509.authentication.principal.X509CertificateCredential;
 import org.apereo.cas.authentication.AuthenticationHandler;
 import org.apereo.cas.authentication.Credential;
+import org.apereo.cas.authentication.SurrogatePrincipal;
 import org.apereo.cas.authentication.SurrogateUsernamePasswordCredential;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.apereo.cas.authentication.principal.ClientCredential;
@@ -81,6 +87,7 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 @RequiredArgsConstructor
 public class UserPrincipalResolver implements PrincipalResolver {
 
+    public static final String EMAIL_VALID_REGEXP = "^[_a-z0-9]+(((\\.|-)[_a-z0-9]+))*@[a-z0-9-]+(\\.[a-z0-9-]+)*(\\.[a-z]{2,})$";
     public static final String SUPER_USER_ID_ATTRIBUTE = "superUserId";
     public static final String COMPUTED_OTP = "computedOtp";
 
@@ -98,19 +105,50 @@ public class UserPrincipalResolver implements PrincipalResolver {
 
     private final ProvidersService providersService;
 
+    private final X509AttributeMapping x509EmailAttributeMapping;
+
+    private final X509AttributeMapping x509IdentifierAttributeMapping;
+
+    private final String x509DefaultDomain;
+
     @Override
     public Principal resolve(final Credential credential, final Optional<Principal> optPrincipal, final Optional<AuthenticationHandler> handler) {
 
         val principal = optPrincipal.get();
-        val userId = principal.getId();
+        val principalId = principal.getId();
         val requestContext = RequestContextHolder.getRequestContext();
 
         final boolean surrogationCall;
-        final String username;
+        String username;
         final String superUsername;
-        final String userProviderId;
+        String userProviderId;
         final Optional<String> technicalUserId;
-        if (credential instanceof SurrogateUsernamePasswordCredential) {
+        // x509 certificate
+        if (credential instanceof X509CertificateCredential) {
+            try {
+                val certificate = ((X509CertificateCredential) credential).getCertificate();
+                username = CertificateParser.extract(certificate, x509EmailAttributeMapping);
+                technicalUserId = Optional.ofNullable(CertificateParser.extract(certificate, x509IdentifierAttributeMapping));
+            } catch (final CertificateParsingException e) {
+                throw new RuntimeException(e.getMessage());
+            }
+            superUsername = null;
+            userProviderId = null;
+            surrogationCall = false;
+
+            String userDomain = username;
+
+            // If the certificate does not contain the user mail, then we use the default domain configured
+            if (StringUtils.isBlank(userDomain) || !Pattern.matches(EMAIL_VALID_REGEXP, userDomain)) {
+                userDomain = String.format("@%s", x509DefaultDomain);
+                username = null;
+            }
+
+            val userProvider = identityProviderHelper.findByUserIdentifier(providersService.getProviders(), userDomain);
+            if (userProvider.isPresent()) {
+                userProviderId = userProvider.get().getId();
+            }
+        } else if (credential instanceof SurrogateUsernamePasswordCredential) {
             // login/password + surrogation
             val surrogationCredential = (SurrogateUsernamePasswordCredential) credential;
             username = surrogationCredential.getSurrogateUsername();
@@ -120,7 +158,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
             surrogationCall = true;
         } else if (credential instanceof UsernamePasswordCredential) {
             // login/password
-            username = userId;
+            username = principalId;
             superUsername = null;
             userProviderId = null;
             technicalUserId = Optional.empty();
@@ -129,12 +167,12 @@ public class UserPrincipalResolver implements PrincipalResolver {
             // authentication delegation (+ surrogation)
             val request = WebUtils.getHttpServletRequestFromExternalWebflowContext(requestContext);
             val response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
-            val webContext = new JEEContext(request, response, sessionStore);
+            val webContext = new JEEContext(request, response);
             val clientCredential = (ClientCredential) credential;
             val providerName = clientCredential.getClientName();
             val provider = identityProviderHelper.findByTechnicalName(providersService.getProviders(), providerName).get();
             val mailAttribute = provider.getMailAttribute();
-            String email = userId;
+            String email = principalId;
             if (CommonHelper.isNotBlank(mailAttribute)) {
                 val mails = principal.getAttributes().get(mailAttribute);
                 if (mails == null || mails.size() == 0 || CommonHelper.isBlank((String) mails.get(0))) {
@@ -142,13 +180,13 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     return NullPrincipal.getInstance();
                 } else {
                     val mail = (String) mails.get(0);
-                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, userId, mail);
+                    LOGGER.info("Provider: '{}' requested specific mail attribute: '{}' for id: '{}' replaced by: '{}'", providerName, mailAttribute, principalId, mail);
                     email = mail;
                 }
             }
 
             val identifierAttribute = provider.getIdentifierAttribute();
-            String identifier = userId;
+            String identifier = principalId;
             if (CommonHelper.isNotBlank(identifierAttribute)) {
                 val identifiers = principal.getAttributes().get(identifierAttribute);
                 if (identifiers == null || identifiers.size() == 0 || CommonHelper.isBlank((String) identifiers.get(0))) {
@@ -156,7 +194,7 @@ public class UserPrincipalResolver implements PrincipalResolver {
                     return NullPrincipal.getInstance();
                 } else {
                     val identifierAttr = (String) identifiers.get(0);
-                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, userId, identifierAttr);
+                    LOGGER.info("Provider: '{}' requested specific identifier attribute: '{}' for id: '{}' replaced by: '{}'", providerName, identifierAttribute, principalId, identifierAttr);
                     identifier = identifierAttr;
                 }
             }
@@ -221,10 +259,14 @@ public class UserPrincipalResolver implements PrincipalResolver {
         attributes.put(ADDRESS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAddress())));
         attributes.put(ANALYTICS_ATTRIBUTE, Collections.singletonList(new CasJsonWrapper(user.getAnalytics())));
         attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
-        attributes.put(INTERNAL_CODE, Collections.singletonList(user.getInternalCode()));
+        UserDto superUser = null;
         if (surrogationCall) {
             attributes.put(SUPER_USER_ATTRIBUTE, Collections.singletonList(superUsername));
-            final UserDto superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            superUser = casExternalRestClient.getUser(utils.buildContext(superUsername), superUsername, null, Optional.empty(), Optional.empty());
+            if (superUser == null) {
+                LOGGER.debug("No super user found for: {}", superUsername);
+                return NullPrincipal.getInstance();
+            }
             attributes.put(SUPER_USER_IDENTIFIER_ATTRIBUTE, Collections.singletonList(superUser.getIdentifier()));
             attributes.put(SUPER_USER_ID_ATTRIBUTE, Collections.singletonList(superUser.getId()));
         }
@@ -242,13 +284,19 @@ public class UserPrincipalResolver implements PrincipalResolver {
             profiles.forEach(profile -> profile.getRoles().forEach(role -> roles.add(role.getName())));
             attributes.put(ROLES_ATTRIBUTE, new ArrayList(roles));
         }
-        return principalFactory.createPrincipal(user.getId(), attributes);
+        val createdPrincipal = principalFactory.createPrincipal(user.getId(), attributes);
+        if (surrogationCall) {
+            val createdSuperPrincipal = principalFactory.createPrincipal(superUser.getId());
+            return new SurrogatePrincipal(createdSuperPrincipal, createdPrincipal);
+        } else {
+            return createdPrincipal;
+        }
     }
 
     @Override
     public boolean supports(final Credential credential) {
         return credential instanceof UsernamePasswordCredential || credential instanceof ClientCredential
-            || credential instanceof SurrogateUsernamePasswordCredential;
+            || credential instanceof SurrogateUsernamePasswordCredential || credential instanceof X509CertificateCredential;
     }
 
     @Override

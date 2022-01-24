@@ -10,10 +10,10 @@ import org.springframework.core.io.ClassPathResource;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderBuilder;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 
 /**
- * Tests {@link Saml2ClientBuilder} and {@link SpMetadataGenerator}.
+ * Tests {@link Pac4jClientBuilder} and {@link SpMetadataGenerator}.
  *
  *
  */
@@ -21,17 +21,17 @@ public final class SpMetadataGeneratorTest {
 
     private static final String CAS_URL = "http://cas/login";
 
-    private Saml2ClientBuilder builder;
+    private Pac4jClientBuilder builder;
 
     @Before
     public void setUp() {
-        builder = new Saml2ClientBuilder();
+        builder = new Pac4jClientBuilder();
         builder.setCasLoginUrl(CAS_URL);
     }
 
     @Test
     public void testSimpleProvider() {
-        assertFalse(builder.buildSaml2Client(new IdentityProviderDto()).isPresent());
+        assertFalse(builder.buildClient(new IdentityProviderDto()).isPresent());
     }
 
     @Test
@@ -40,7 +40,7 @@ public final class SpMetadataGeneratorTest {
                 new ClassPathResource("test-idp/sp-test-keystore.jks"), "password", "password", new ClassPathResource("test-idp/idp-test-metadata.xml"),
                 "clientId", false, "mailAttribute", "identifierAttribute", AuthnRequestBindingEnum.POST, false).build();
         final SpMetadataGenerator generator = new SpMetadataGenerator();
-        generator.setSaml2ClientBuilder(builder);
+        generator.setPac4jClientBuilder(builder);
         final String metadata = generator.generate(provider);
         assertTrue(metadata.contains("entityID=\"http://cas/login/idp0\""));
         assertTrue(metadata.contains(

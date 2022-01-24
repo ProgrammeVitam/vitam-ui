@@ -63,7 +63,7 @@ public class PmTransientSessionTicketExpirationPolicyBuilder extends TransientSe
         val attributes = RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             try {
-                val expInMinutes = (Integer) attributes.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, 0);
+                val expInMinutes = (Long) attributes.getAttribute(PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, 0);
                 if (expInMinutes != null) {
                     return new HardTimeoutExpirationPolicy(expInMinutes * 60);
                 }

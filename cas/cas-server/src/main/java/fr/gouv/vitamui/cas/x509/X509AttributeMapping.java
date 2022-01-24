@@ -34,26 +34,34 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.webflow.actions;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.webflow.action.AbstractAction;
-import org.springframework.webflow.execution.Event;
-import org.springframework.webflow.execution.RequestContext;
+package fr.gouv.vitamui.cas.x509;
 
 /**
- * A no-op action returning a specific result.
+ * Attribute mapping definition for X509 authentication
  */
-@RequiredArgsConstructor
-public class NoOpAction extends AbstractAction {
+public class X509AttributeMapping {
 
-    private final String eventId;
+    private final String name;
 
-    @Override
-    protected Event doExecute(final RequestContext requestContext) {
-        if (eventId != null) {
-            return getEventFactorySupport().event(this, eventId);
-        }
-        return null;
+    private final String parsing;
+
+    private final String expansion;
+
+    public X509AttributeMapping(final String name, final String parsing, final String expansion) {
+        this.name = name;
+        this.parsing = parsing;
+        this.expansion = expansion;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getParsing() {
+        return parsing;
+    }
+
+    public String getExpansion() {
+        return expansion;
     }
 }

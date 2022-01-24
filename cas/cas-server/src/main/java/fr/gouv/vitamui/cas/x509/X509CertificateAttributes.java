@@ -34,70 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.cas.util;
+package fr.gouv.vitamui.cas.x509;
 
 /**
- * Enum StatusCode
- *
- * different constants status code for workflow , action handler and process
+ * X509 certificate attributes
  */
-public enum VitamStatusCode {
-
-    /**
-     * UNKNOWN : indicates that the workflow or the action handler or the process is in unknown status!
-     */
-    UNKNOWN,
-
-    /**
-     * STARTED : indicates that the workflow or the action handler or the process has been started
-     */
-    STARTED,
-
-    /**
-     * ALREADY_EXECUTED : indicates that a particular step / action has already been processed
-     */
-    ALREADY_EXECUTED,
-    /**
-     * OK : indicates the successful without warning
-     */
-    OK,
-
-    /**
-     * WARNING : indicates successful with a general warning. Warning are often useful in preventing future Action
-     * problems
-     */
-    WARNING,
-
-    /**
-     * KO : indicates the failed execution of the action
-     */
-    KO,
-
-    /**
-     * FATAL : indicates a critical error such as technical Exception ( runtime exception, illegal argument exception,
-     * null pointer exception ...)
-     */
-    FATAL;
-
-    /**
-     * @return Status Level
-     */
-    public int getStatusLevel() {
-        return ordinal();
-    }
-
-    /**
-     * @return True if the status is greater or equal to OK
-     */
-    public boolean isGreaterOrEqualToKo() {
-        return compareTo(KO) >= 0;
-    }
-
-    /**
-     * @return True if the status is greater or equal to FATAL
-     */
-    public boolean isGreaterOrEqualToFatal() {
-        return compareTo(FATAL) >= 0;
-    }
-
+public enum X509CertificateAttributes {
+    ISSUER_DN, SUBJECT_DN, SUBJECT_ALTERNATE_NAME
 }

@@ -12,17 +12,19 @@
 
     <properties>
         <assertj-core.version>3.11.1</assertj-core.version>
-        <jackson.version>2.10.0</jackson.version>
-        <lombok.version>1.18.10</lombok.version>
-        <micrometer.version>1.3.0</micrometer.version>
-        <mockito.version>1.10.19</mockito.version>
-        <spring.boot.version>2.2.0.RELEASE</spring.boot.version>
-        <spring.cloud.consul.version>2.2.2.RELEASE</spring.cloud.consul.version>
-        <spring.security.version>5.2.0.RELEASE</spring.security.version>
-        <spring.test.version>5.2.0.RELEASE</spring.test.version>
-        <spring.version>5.2.0.RELEASE</spring.version>
-        <swagger.version>1.5.18</swagger.version>
-        <thymeleaf-spring5.version>3.0.11.RELEASE</thymeleaf-spring5.version>
+        <jackson.version>2.12.4</jackson.version>
+        <lombok.version>1.18.20</lombok.version>
+        <micrometer.version>1.7.3</micrometer.version>
+        <mockito.version>3.12.1</mockito.version>
+        <spring.boot.version>2.5.4</spring.boot.version>
+        <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
+        <spring.security.version>5.5.2</spring.security.version>
+        <spring.test.version>5.3.9</spring.test.version>
+        <spring.version>5.3.9</spring.version>
+        <swagger.version>2.1.10</swagger.version>
+        <mongo.version>4.3.1</mongo.version>
+        <spring-webmvc-pac4j.version>5.0.0</spring-webmvc-pac4j.version>
+        <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
@@ -45,6 +47,14 @@
                 <exclusion>
                     <groupId>com.fasterxml.jackson.dataformat</groupId>
                     <artifactId>jackson-dataformat-xml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -87,6 +97,11 @@
                     <artifactId>metrics-core</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver-sync</artifactId>
+            <version>${mongo.version}</version>
         </dependency>
 
         <!-- authentication delegation -->
@@ -139,11 +154,11 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spring-webmvc-pac4j</artifactId>
-            <version>${pac4j.version}</version>
+            <version>${spring-webmvc-pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
-            <artifactId>pac4j-saml-opensamlv3</artifactId>
+            <artifactId>pac4j-saml</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -155,6 +170,18 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-hazelcast-ticket-registry</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+
+        <!-- X509 authentication -->
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-x509-webflow</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-x509-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
 
@@ -196,6 +223,11 @@
             <artifactId>cas-server-support-pm-core</artifactId>
             <version>${cas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-notifications</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
 
         <!-- multi-factor authentication -->
         <dependency>
@@ -221,6 +253,11 @@
         <dependency>
             <groupId>org.apereo.cas</groupId>
             <artifactId>cas-server-support-sms-twilio</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-core-authentication-mfa-api</artifactId>
             <version>${cas.version}</version>
         </dependency>
 
@@ -282,8 +319,6 @@
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
         </dependency>
 
-
-
         <!-- OAuth support -->
         <dependency>
             <groupId>org.apereo.cas</groupId>
@@ -335,6 +370,16 @@
 
         <!-- logs -->
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-to-slf4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
@@ -348,6 +393,11 @@
             <artifactId>jul-to-slf4j</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.gandon.tomcat</groupId>
+            <artifactId>juli-to-slf4j</artifactId>
+            <version>1.1.1</version>
+        </dependency>
 
         <!-- UTIL -->
         <dependency>
@@ -358,6 +408,21 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
             <version>${thymeleaf-spring5.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.11.2</version>
         </dependency>
 
         <!-- TEST -->
@@ -425,6 +490,7 @@
                                 <exclude>WEB-INF/lib/log4j-web-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j-impl-*.jar</exclude>
                                 <exclude>WEB-INF/lib/log4j-slf4j18-impl-*.jar</exclude>
+                                <exclude>WEB-INF/lib/log4j-layout-template-json-*.jar</exclude>
                                 <exclude>WEB-INF/lib/spring-boot-starter-log4j2-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-1.8.0-beta4.jar</exclude>
                                 <exclude>WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar</exclude>
@@ -432,6 +498,8 @@
                                 <exclude>WEB-INF/lib/jackson-core-2.8.10.jar</exclude>
                                 <exclude>WEB-INF/lib/jackson-databind-2.8.10.jar</exclude>
                                 <exclude>WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar</exclude>
+                                <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
@@ -444,13 +512,16 @@
                         WEB-INF/lib/log4j-web-*.jar,
                         WEB-INF/lib/log4j-slf4j-impl-*.jar,
                         WEB-INF/lib/log4j-slf4j18-impl-*.jar,
+                        WEB-INF/lib/log4j-layout-template-json-*.jar,
                         WEB-INF/lib/spring-boot-starter-log4j2-*.jar,
                         WEB-INF/lib/slf4j-api-1.8.0-beta4.jar,
                         WEB-INF/lib/jcl-over-slf4j-1.8.0-beta4.jar,
                         WEB-INF/lib/jul-to-slf4j-1.8.0-beta4.jar,
                         WEB-INF/lib/jackson-core-2.8.10.jar,
                         WEB-INF/lib/jackson-databind-2.8.10.jar,
-                        WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar
+                        WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar,
+                        WEB-INF/lib/cas-server-core-logging-api-*.jar,
+                        WEB-INF/lib/slf4j-api-*.jar
                     </packagingExcludes>
                 </configuration>
             </plugin>

@@ -14,9 +14,8 @@
 
     <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
 
-    <script type="text/javascript" th:src="@{#{webjars.jquerymin.js}}"></script>
+    <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
     <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
-    <script src="//www.google.com/recaptcha/api.js" async defer th:if="${recaptchaSiteKey}"></script>
 
     <script th:inline="javascript">
         /*<![CDATA[*/

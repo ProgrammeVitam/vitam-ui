@@ -37,14 +37,17 @@
 package fr.gouv.vitamui.iam.common.utils;
 
 import java.util.Base64;
+import java.util.Map;
 import java.util.Optional;
 
+import com.nimbusds.jose.JWSAlgorithm;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.pac4j.core.util.Pac4jConstants;
+import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.exception.TechnicalException;
-import org.pac4j.core.util.CommonHelper;
+import org.pac4j.oidc.client.OidcClient;
+import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.config.SAML2Configuration;
 import org.springframework.beans.factory.annotation.Value;
@@ -59,24 +62,29 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * A pac4j SAML2 client builder.
+ * A pac4j client builder.
  *
  *
  */
 @Getter
 @Setter
-public class Saml2ClientBuilder {
+public class Pac4jClientBuilder {
 
     @Value("${login.url}")
     @NotNull
     private String casLoginUrl;
 
-    public Optional<SAML2Client> buildSaml2Client(final IdentityProviderDto provider) {
+    public Optional<IndirectClient> buildClient(final IdentityProviderDto provider) {
         final String technicalName = provider.getTechnicalName();
         final String keystoreBase64 = provider.getKeystoreBase64();
         final String keystorePassword = provider.getKeystorePassword();
         final String privateKeyPassword = provider.getPrivateKeyPassword();
         final String idpMetadata = provider.getIdpMetadata();
+
+        final String clientId = provider.getClientId();
+        final String clientSecret = provider.getClientSecret();
+        final String discoveryUrl = provider.getDiscoveryUrl();
+
         try {
             if (technicalName != null && keystoreBase64 != null && keystorePassword != null
                     && privateKeyPassword != null && idpMetadata != null
@@ -105,14 +113,59 @@ public class Saml2ClientBuilder {
                 }
 
                 final SAML2Client saml2Client = new SAML2Client(saml2Config);
-                saml2Client.setName(technicalName);
-                final String callbackUrl = CommonHelper.addParameter(casLoginUrl, Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, technicalName);
-                saml2Client.setCallbackUrl(callbackUrl);
+                setCallbackUrl(saml2Client, technicalName);
 
                 saml2Client.init();
                 return Optional.of(saml2Client);
+
+            } else if (clientId != null && clientSecret != null && discoveryUrl != null) {
+
+                final OidcConfiguration oidcConfiguration = new OidcConfiguration();
+                oidcConfiguration.setClientId(clientId);
+                oidcConfiguration.setSecret(clientSecret);
+                oidcConfiguration.setDiscoveryURI(discoveryUrl);
+
+                final String scope = provider.getScope();
+                if (scope != null) {
+                    oidcConfiguration.setScope(scope);
+                } else {
+                    oidcConfiguration.setScope("openid");
+                }
+                final String algo = provider.getPreferredJwsAlgorithm();
+                if (algo != null) {
+                    oidcConfiguration.setPreferredJwsAlgorithm(JWSAlgorithm.parse(algo));
+                }
+                final Map<String, String> customParams = provider.getCustomParams();
+                if (customParams != null) {
+                    oidcConfiguration.setCustomParams(customParams);
+                }
+                final Boolean useState = provider.getUseState();
+                if (useState != null) {
+                    oidcConfiguration.setWithState(useState);
+                } else {
+                    oidcConfiguration.setWithState(true);
+                }
+                final Boolean useNonce = provider.getUseNonce();
+                if (useNonce != null) {
+                    oidcConfiguration.setUseNonce(useNonce);
+                } else {
+                    oidcConfiguration.setUseNonce(true);
+                }
+                final Boolean usePkce = provider.getUsePkce();
+                if (usePkce != null) {
+                    oidcConfiguration.setDisablePkce(!usePkce);
+                } else {
+                    oidcConfiguration.setDisablePkce(true);
+                }
+
+                final OidcClient oidcClient = new OidcClient();
+                setCallbackUrl(oidcClient, technicalName);
+
+                oidcClient.init();
+                return Optional.of(oidcClient);
+
             }
-        } catch(final TechnicalException e) {
+        } catch (final TechnicalException e) {
             if(e.getMessage().contains("Error loading keystore")) {
                 throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_KEYSPWD);
             } else if(e.getMessage().contains("Can't obtain SP private key")) {
@@ -122,5 +175,10 @@ public class Saml2ClientBuilder {
             }
         }
         return Optional.empty();
+    }
+
+    private void setCallbackUrl(final IndirectClient client, final String technicalName) {
+        client.setName(technicalName);
+        client.setCallbackUrl(casLoginUrl);
     }
 }

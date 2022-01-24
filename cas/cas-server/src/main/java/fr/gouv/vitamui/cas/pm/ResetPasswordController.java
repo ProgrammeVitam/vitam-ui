@@ -44,12 +44,13 @@ import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.configuration.CasConfigurationProperties;
+import org.apereo.cas.notifications.CommunicationsManager;
+import org.apereo.cas.pm.PasswordManagementQuery;
 import org.apereo.cas.pm.PasswordManagementService;
 import org.apereo.cas.pm.web.flow.PasswordManagementWebflowUtils;
 import org.apereo.cas.ticket.factory.DefaultTransientSessionTicketFactory;
 import org.apereo.cas.ticket.registry.TicketRegistry;
 import org.apereo.cas.util.CollectionUtils;
-import org.apereo.cas.util.io.CommunicationsManager;
 import org.apereo.cas.web.flow.CasWebflowConfigurer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.HierarchicalMessageSource;
@@ -105,23 +106,23 @@ public class ResetPasswordController {
             return false;
         }
 
-        communicationsManager.validate();
         if (!communicationsManager.isMailSenderDefined()) {
             LOGGER.warn("CAS is unable to send password-reset emails given no settings are defined to account for email servers");
             return false;
         }
         val usernameLower = username.toLowerCase().trim();
-        val email = passwordManagementService.findEmail(usernameLower);
+        val query = PasswordManagementQuery.builder().username(usernameLower).build();
+        val email = passwordManagementService.findEmail(query);
         if (StringUtils.isBlank(email)) {
             LOGGER.warn("No recipient is provided");
             return false;
         }
 
-        final String url = buildPasswordResetUrl(usernameLower, casProperties);
         final Locale locale = new Locale(language);
         final long expMinutes = PmMessageToSend.ONE_DAY.equals(ttl) ? 24 * 60L : casProperties.getAuthn().getPm().getReset().getExpirationMinutes();
-        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
         request.setAttribute(PmTransientSessionTicketExpirationPolicyBuilder.PM_EXPIRATION_IN_MINUTES_ATTRIBUTE, expMinutes);
+        final String url = buildPasswordResetUrl(usernameLower, casProperties);
+        final PmMessageToSend messageToSend = PmMessageToSend.buildMessage(messageSource, firstname, lastname, String.valueOf(expMinutes), url, vitamuiPlatformName, locale);
 
         LOGGER.debug("Generated password reset URL [{}] for: {} ({}); Link is only active for the next [{}] minute(s)", utils.sanitizePasswordResetUrl(url),
             email, messageToSend.getSubject(), expMinutes);
@@ -130,7 +131,8 @@ public class ResetPasswordController {
     }
 
     protected String buildPasswordResetUrl(final String username, final CasConfigurationProperties casProperties) {
-        val token = passwordManagementService.createToken(username);
+        val query = PasswordManagementQuery.builder().username(username).build();
+        val token = passwordManagementService.createToken(query);
 
         val properties = CollectionUtils.<String, Serializable>wrap(PasswordManagementWebflowUtils.FLOWSCOPE_PARAMETER_NAME_TOKEN, token);
         val ticket = pmTicketFactory.create((Service) null, properties);
