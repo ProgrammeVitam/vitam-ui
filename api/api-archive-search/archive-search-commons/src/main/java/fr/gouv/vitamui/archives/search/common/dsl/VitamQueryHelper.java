@@ -37,10 +37,14 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -57,6 +61,13 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
+
+    public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
+    public static final DateTimeFormatter ISO_FRENCH_FORMATER =
+        DateTimeFormatter.ofPattern(ISO_DATE_FORMAT, Locale.FRENCH);
+    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATER =
+        DateTimeFormatter.ofPattern(ONLY_DATE_FORMAT, Locale.FRENCH);
 
 
     /*
@@ -150,10 +161,10 @@ public class VitamQueryHelper {
                         isValid = addParameterCriteria(query, CRITERIA_OPERATORS.EQ, searchKey, entry.getValue());
                         break;
                     case START_DATE:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.GE, searchKey, entry.getValue());
+                        query.add(buildStartDateEndDateQuery(searchKey, entry.getValue(), CRITERIA_OPERATORS.GE));
                         break;
                     case END_DATE:
-                        isValid = addParameterCriteria(query, CRITERIA_OPERATORS.LE, searchKey, entry.getValue());
+                        query.add(buildStartDateEndDateQuery(searchKey, entry.getValue(), CRITERIA_OPERATORS.LE));
                         break;
                     case TITLE_OR_DESCRIPTION:
                         query.add(buildTitleAndDescriptionQuery(entry.getValue(), CRITERIA_OPERATORS.EQ));
@@ -249,6 +260,29 @@ public class VitamQueryHelper {
             }
             subQueryAnd.add(subQueryOr);
         }
+        return subQueryAnd;
+    }
+
+    private static Query buildStartDateEndDateQuery(String searchCriteria, final List<String> searchValues,
+        CRITERIA_OPERATORS operator)
+        throws InvalidCreateOperationException, InvalidParseOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+
+        LOGGER.debug("The search criteria Date is {} ", searchCriteria);
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+                LocalDateTime searchDate =
+                    LocalDateTime.parse(value, ISO_FRENCH_FORMATER).withHour(0)
+                        .withMinute(0).withSecond(0).withNano(0);
+                subQueryOr
+                    .add(buildSubQueryByOperator(searchCriteria,
+                        ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
+            }
+
+            subQueryAnd.add(subQueryOr);
+        }
+
         return subQueryAnd;
     }
 
