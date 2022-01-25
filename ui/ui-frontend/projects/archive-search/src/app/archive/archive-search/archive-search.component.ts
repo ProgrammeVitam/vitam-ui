@@ -71,6 +71,7 @@ const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const MAX_ELIMINATION_ANALYSIS_THRESHOLD = 10000;
+const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 
 @Component({
   selector: 'app-archive-search',
@@ -395,6 +396,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   removeCriteriaByCategory(category: string) {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
+      if (category === 'APPRAISAL_RULE') {
+        this.searchCriterias.forEach((criteriaValues, key) => {
+          if (key === ELIMINATION_TECHNICAL_ID) {
+            criteriaValues.values.forEach((value) => {
+              this.removeCriteria(key, value.value, true);
+            });
+          }
+        });
+      }
       this.searchCriterias.forEach((val, key) => {
         if (SearchCriteriaTypeEnum[val.category] === category) {
           val.values.forEach((value) => {
