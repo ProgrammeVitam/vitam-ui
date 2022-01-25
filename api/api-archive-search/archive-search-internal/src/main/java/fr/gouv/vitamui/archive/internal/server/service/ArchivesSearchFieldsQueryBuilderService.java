@@ -36,6 +36,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,7 +80,12 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                         searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
                             Collectors.toList()),
                         ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
-                } else {
+                }  else if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
+                   queryToFill.add(buildStartDateEndDateQuery(searchCriteria.getCriteria(),
+                       searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                           Collectors.toList()),
+                       ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
+               } else {
                     String mappedCriteriaName =
                         ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
                             ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
@@ -169,6 +175,33 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
             }
             subQueryAnd.add(subQueryOr);
         }
+        return subQueryAnd;
+    }
+
+    private Query buildStartDateEndDateQuery(String searchCriteria, final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryAnd = and();
+        BooleanQuery subQueryOr = or();
+        String criteria = ArchiveSearchConsts.START_DATE_CRITERIA.equals(searchCriteria) ?
+            ArchiveSearchConsts.START_DATE :
+            (ArchiveSearchConsts.END_DATE_CRITERIA.equals(searchCriteria) ?
+                ArchiveSearchConsts.END_DATE : null);
+
+        LOGGER.info("The search criteria Date is {} ", criteria);
+        if (!CollectionUtils.isEmpty(searchValues)) {
+                for (String value : searchValues) {
+                    LocalDateTime searchDate =
+                        LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+                            .withMinute(0).withSecond(0).withNano(0);
+                    subQueryOr
+                        .add(VitamQueryHelper.buildSubQueryByOperator(criteria,
+                            ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
+                }
+
+                subQueryAnd.add(subQueryOr);
+        }
+
         return subQueryAnd;
     }
 
