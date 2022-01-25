@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import fr.gouv.vitam.common.model.administration.RegisterValueDetailModel;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Getter;
 import lombok.Setter;

@@ -9,3 +9,16 @@ label, mat-label {
     border: none !important;
   }
 }
+
+.register-icon {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.register-title {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  line-height: 20px;
+}

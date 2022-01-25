@@ -68,7 +68,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +82,6 @@ import java.util.stream.Collectors;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.range;
@@ -107,8 +108,7 @@ public class AccessionRegisterSummaryInternalService {
     private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
     private static final String EVENTS_OPTYPE = "Events.OpType";
     private static final String ELIMINATION = "ELIMINATION";
-    private static final String TRANSFER = "TRANSFER";
-    private static final String PRESERVATION = "PRESERVATION";
+    private static final String TRANSFER_REPLY = "TRANSFER_REPLY";
 
     @Autowired
     AccessionRegisterSummaryInternalService(AccessionRegisterService accessionRegisterService,
@@ -169,6 +169,7 @@ public class AccessionRegisterSummaryInternalService {
             LOGGER.debug("Context application Session ID : {} ", context.getApplicationSessionId());
 
             JsonNode detailsQuery = buildCustomAccessionRegisterDetailsQuery(detailsSearchDto);
+            LOGGER.debug("Final query Summary: {}", detailsQuery.toPrettyString());
 
             RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient
                 .findAccessionRegisterDetails(context, detailsQuery);
@@ -215,7 +216,7 @@ public class AccessionRegisterSummaryInternalService {
             query.add(in(STATUS, stringValues.toArray(new String[] {})));
         }
 
-        addStartDateToQuery(query, detailsSearchDto.getDateInterval());
+        addEndDateToQuery(query, detailsSearchDto.getDateInterval());
 
         if(detailsSearchDto.getAdvancedSearch() != null) {
             AccessionRegisterDetailsSearchStatsDto.AdvancedSearchData advancedSearch = detailsSearchDto.getAdvancedSearch();
@@ -224,17 +225,10 @@ public class AccessionRegisterSummaryInternalService {
             addQueryFrom(query, advancedSearch.getArchivalAgreements(), ARCHIVAL_AGREEMENT);
             addQueryFrom(query, advancedSearch.getArchivalProfiles(), ARCHIVAL_PROFILE);
 
-            if(CollectionUtils.isNotEmpty(advancedSearch.getAcquisitionInformations())) {
-                List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
-                acquisitionInformations.removeAll(advancedSearch.getAcquisitionInformations());
-                if(!acquisitionInformations.isEmpty()) {
-                    query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
-                }
-            }
+            addAcquisitionInformationsToQuery(query, advancedSearch);
 
             addEventOpTypeQuery(query, advancedSearch.getElimination(), ELIMINATION);
-            addEventOpTypeQuery(query, advancedSearch.getElimination(), TRANSFER);
-            addEventOpTypeQuery(query, advancedSearch.getElimination(), PRESERVATION);
+            addEventOpTypeQuery(query, advancedSearch.getTransferReply(), TRANSFER_REPLY);
 
         }
 
@@ -245,24 +239,41 @@ public class AccessionRegisterSummaryInternalService {
         return select.getFinalSelect();
     }
 
-    private static void addStartDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)
-        throws ParseException, InvalidCreateOperationException {
+    private static void addAcquisitionInformationsToQuery(BooleanQuery query,
+        AccessionRegisterDetailsSearchStatsDto.AdvancedSearchData advancedSearch)
+        throws InvalidCreateOperationException {
+        List<String> acquisitionInformationsFromIhm = advancedSearch.getAcquisitionInformations();
+        if(CollectionUtils.isNotEmpty(acquisitionInformationsFromIhm)) {
+            List<String> acquisitionInformations = new ArrayList<>(VitamQueryHelper.staticAcquisitionInformations);
+            acquisitionInformations.removeAll(acquisitionInformationsFromIhm);
+            if(!acquisitionInformations.isEmpty()) {
+                if(acquisitionInformationsFromIhm.contains(VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
+                    query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
+                } else {
+                    query.add(in(ACQUISITION_INFORMATION, acquisitionInformationsFromIhm.toArray(new String[] {})));
+                }
+            }
+        }
+    }
+
+    private static void addEndDateToQuery(BooleanQuery query, AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval)
+        throws InvalidCreateOperationException {
 
         if(dateInterval != null) {
-            SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT).withZone(ZoneOffset.UTC);
             String dateMinStr = dateInterval.getEndDateMin();
             String dateMaxStr = dateInterval.getEndDateMax();
 
             if (dateMinStr != null && dateMaxStr == null) {
-                query.add(lte(END_DATE, formatter.parse(dateMinStr)));
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.now().toString(), true));
             }
 
             if (dateMinStr == null && dateMaxStr != null) {
-                query.add(lte(END_DATE, formatter.parse(dateMaxStr)));
+                query.add(range(END_DATE, LocalDate.now().toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
 
             if (dateMinStr != null && dateMaxStr != null) {
-                query.add(range(END_DATE, formatter.parse(dateMinStr), true, formatter.parse(dateMaxStr), false));
+                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
             }
         }
     }

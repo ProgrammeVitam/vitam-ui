@@ -41,12 +41,6 @@
         </div>
         <div class="col-1">
           <span>{{ 'ACCESSION_REGISTER.LIST.ACQUISITION_INFORMATION' | translate }}</span>
-          <vitamui-common-order-by-button
-            orderByKey="AcquisitionInformation"
-            [(orderBy)]="orderBy"
-            [(direction)]="direction"
-            (orderChange)="emitOrderChange($event)"
-          ></vitamui-common-order-by-button>
         </div>
         <div class="col-1">
           <span>{{ 'ACCESSION_REGISTER.LIST.TOTAL_UNITS' | translate }}</span>
