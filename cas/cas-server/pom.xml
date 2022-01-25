@@ -147,6 +147,11 @@
             <version>${cas.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.apereo.cas</groupId>
+            <artifactId>cas-server-support-saml-core-api</artifactId>
+            <version>${cas.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
@@ -509,6 +514,7 @@
                                 <exclude>WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar</exclude>
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
+                                <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
@@ -530,7 +536,8 @@
                         WEB-INF/lib/jackson-databind-2.8.10.jar,
                         WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar,
                         WEB-INF/lib/cas-server-core-logging-api-*.jar,
-                        WEB-INF/lib/slf4j-api-*.jar
+                        WEB-INF/lib/slf4j-api-*.jar,
+                        WEB-INF/lib/oauth2-oidc-sdk-*.jar
                     </packagingExcludes>
                 </configuration>
             </plugin>
