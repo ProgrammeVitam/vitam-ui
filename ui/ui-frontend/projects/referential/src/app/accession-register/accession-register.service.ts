@@ -37,8 +37,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {BehaviorSubject, EMPTY, Observable, of, Subject} from 'rxjs';
-import {catchError, exhaustMap, map, withLatestFrom} from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
+import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
   AccessionRegisterStats,

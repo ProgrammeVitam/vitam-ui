@@ -61,6 +61,7 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.surrogate.SurrogateAuthenticationService;
 import org.apereo.cas.configuration.model.support.pm.PasswordManagementProperties;
 import org.apereo.cas.pm.PasswordChangeRequest;
+import org.apereo.cas.pm.PasswordManagementQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -128,7 +129,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
 
     private PasswordManagementProperties passwordManagementProperties;
 
-    @Value("${cas.authn.pm.policyPattern}")
+    @Value("${cas.authn.pm.core.policy-pattern}")
     private String policyPattern;
 
     private PasswordConfiguration passwordConfiguration;
@@ -144,7 +145,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         identityProviderDto = new IdentityProviderDto();
         identityProviderDto.setInternal(true);
         passwordManagementProperties = new PasswordManagementProperties();
-        passwordManagementProperties.setPolicyPattern(encode(policyPattern));
+        passwordManagementProperties.getCore().setPolicyPattern(encode(policyPattern));
         passwordConfiguration = new PasswordConfiguration();
         passwordConfiguration.setCheckOccurrence(true);
         passwordConfiguration.setOccurrencesCharsNumber(4);
@@ -307,7 +308,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(Optional.empty())))
                 .thenReturn(user(UserStatusEnum.ENABLED));
 
-        assertEquals(EMAIL, service.findEmail(EMAIL));
+        assertEquals(EMAIL, service.findEmail(PasswordManagementQuery.builder().username(EMAIL).build()));
     }
 
     @Test
@@ -315,7 +316,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(Optional.empty())))
                 .thenThrow(new BadRequestException("error"));
 
-        assertNull(service.findEmail(EMAIL));
+        assertNull(service.findEmail(PasswordManagementQuery.builder().username(EMAIL).build()));
     }
 
     @Test
@@ -323,7 +324,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(Optional.empty())))
                 .thenReturn(null);
 
-        assertNull(service.findEmail(EMAIL));
+        assertNull(service.findEmail(PasswordManagementQuery.builder().username(EMAIL).build()));
     }
 
     @Test
@@ -331,7 +332,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(Optional.empty())))
                 .thenReturn(user(UserStatusEnum.DISABLED));
 
-        assertNull(service.findEmail(EMAIL));
+        assertNull(service.findEmail(PasswordManagementQuery.builder().username(EMAIL).build()));
     }
 
     @Test(expected = UnsupportedOperationException.class)
@@ -339,7 +340,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), eq(Optional.empty())))
                 .thenReturn(user(UserStatusEnum.ENABLED));
 
-        service.getSecurityQuestions(EMAIL);
+        service.getSecurityQuestions(PasswordManagementQuery.builder().username(EMAIL).build());
     }
 
     private UserDto user(final UserStatusEnum status) {

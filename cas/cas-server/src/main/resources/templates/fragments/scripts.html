@@ -1,9 +1,9 @@
 <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
-<script src="//www.google.com/recaptcha/api.js" async defer th:if="${recaptchaSiteKey != null and recaptchaVersion=='v2'}"></script>
-<script th:src="${'//www.google.com/recaptcha/api.js?render=' + recaptchaSiteKey}" th:if="${recaptchaSiteKey != null and recaptchaVersion == 'v3'}"></script>
 
 <script type="text/javascript" th:src="@{#{webjars.headmin.js}}"></script>
-<script type="text/javascript" th:src="@{${#themes.code('cas.javascript.file')}}"></script>
+<span th:remove="tag" th:each="file : ${#strings.arraySplit(#themes.code('cas.standard.js.file'), ',')}">
+    <script type="text/javascript" th:src="@{${file}}"></script>
+</span>
 
 <script th:inline="javascript">
 head.ready(document, function () {
@@ -53,25 +53,3 @@ function notifyResourcesAreLoaded(callback) {
 
     /*]]>*/
 </script>
-
-<span th:if="${recaptchaVersion=='v2'}" th:remove="tag">
-    <script type="text/javascript" th:if="${recaptchaSiteKey != null AND recaptchaInvisible != null AND recaptchaInvisible}" th:inline="javascript">
-        function onRecaptchaV2Submit(token) {
-            $('#fm1').submit();
-        }
-    </script>
-</span>
-
-<span th:if="${recaptchaVersion=='v3'}" th:remove="tag">
-    <script type="text/javascript" th:if="${recaptchaSiteKey != null}" th:inline="javascript">
-         grecaptcha.ready(function() {
-             grecaptcha.execute(/*[[${recaptchaSiteKey}]]*/, {action: 'login'})
-                 .then(function(token) {
-                    $("#g-recaptcha-token").val(token)
-                 });
-         });
-    </script>
-</span>
-
-
-

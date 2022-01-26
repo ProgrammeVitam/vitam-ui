@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.commons.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class AccessionRegisterDetailsSearchStatsDto {
         private List<String> archivalProfiles;
         private List<String> acquisitionInformations;
         private String elimination;
-        private String transfer;
-        private String preservation;
+        @JsonProperty("transfer_reply")
+        private String transferReply;
     }
 }
 

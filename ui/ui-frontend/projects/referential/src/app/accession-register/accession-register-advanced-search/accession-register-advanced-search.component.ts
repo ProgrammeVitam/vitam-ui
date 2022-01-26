@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { AccessionRegistersService } from '../accession-register.service';
   templateUrl: './accession-register-advanced-search.component.html',
   styleUrls: ['./accession-register-advanced-search.component.scss'],
 })
-export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy {
+export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
 
   advancedSearchForm: FormGroup;
@@ -22,7 +22,15 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
   valuesChangedSub: Subscription;
   resetSub: Subscription;
 
-  constructor(private formBuilder: FormBuilder, private accessionRegistersService: AccessionRegistersService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private accessionRegistersService: AccessionRegistersService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngAfterViewChecked(): void {
+    this.cdr.detectChanges();
+  }
 
   ngOnInit(): void {
     this.acquisitionInformations = this.accessionRegistersService.getAcquisitionInformations();
@@ -42,8 +50,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
             this.advancedSearchForm.reset({
               acquisitionInformations: this.acquisitionInformations,
               elimination: 'all',
-              transfer: 'all',
-              preservation: 'all',
+              transfer_reply: 'all',
             });
           }
         })
@@ -58,8 +65,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
       OjectUtils.arrayNotUndefined(values.archivalProfiles) ||
       values.acquisitionInformations.length !== this.acquisitionInformations.length ||
       values.elimination !== 'all' ||
-      values.transfer !== 'all' ||
-      values.preservation !== 'all';
+      values.transfer_reply !== 'all';
 
     this.accessionRegistersService.setAdvancedFormHaveChanged(haveChanged);
     this.accessionRegistersService.setGlobalSearchButtonEvent(false);
@@ -72,8 +78,7 @@ export class AccessionRegisterAdvancedSearchComponent implements OnInit, OnDestr
       archivalProfiles: [[], []],
       acquisitionInformations: this.acquisitionInformationsControl,
       elimination: ['all', []],
-      transfer: ['all', []],
-      preservation: ['all', []],
+      transfer_reply: ['all', []],
     });
   }
 

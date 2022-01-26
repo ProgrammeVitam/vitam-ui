@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import fr.gouv.vitamui.cas.util.Constants;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -44,7 +43,6 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.apereo.cas.CentralAuthenticationService;
@@ -55,9 +53,9 @@ import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.authentication.principal.Service;
 import org.apereo.cas.authentication.principal.SimpleWebApplicationServiceImpl;
 import org.apereo.cas.configuration.CasConfigurationProperties;
-import org.apereo.cas.configuration.model.core.logout.LogoutProperties;
 import org.apereo.cas.logout.LogoutManager;
-import org.apereo.cas.logout.slo.SingleLogoutRequest;
+import org.apereo.cas.logout.SingleLogoutExecutionRequest;
+import org.apereo.cas.logout.slo.SingleLogoutRequestContext;
 import org.apereo.cas.services.RegisteredService;
 import org.apereo.cas.services.ServicesManager;
 import org.apereo.cas.ticket.InvalidTicketException;
@@ -65,23 +63,16 @@ import org.apereo.cas.ticket.TicketGrantingTicket;
 import org.apereo.cas.ticket.TicketGrantingTicketImpl;
 import org.apereo.cas.ticket.expiration.NeverExpiresExpirationPolicy;
 import org.apereo.cas.web.cookie.CasCookieBuilder;
-import org.apereo.cas.web.flow.logout.FrontChannelLogoutAction;
 import org.apereo.cas.web.flow.logout.TerminateSessionAction;
 import org.apereo.cas.web.support.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.webflow.core.collection.MutableAttributeMap;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.webflow.execution.Action;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 import static fr.gouv.vitamui.commons.api.CommonConstants.*;
@@ -91,44 +82,37 @@ import static fr.gouv.vitamui.commons.api.CommonConstants.*;
  *
  *
  */
-@Setter
 @Getter
 public class GeneralTerminateSessionAction extends TerminateSessionAction {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(GeneralTerminateSessionAction.class);
 
-    @Autowired
-    private Utils utils;
+    private final Utils utils;
 
-    @Autowired
-    private CasExternalRestClient casExternalRestClient;
+    private final CasExternalRestClient casExternalRestClient;
 
-    @Autowired
-    private LogoutManager logoutManager;
+    private final ServicesManager servicesManager;
 
-    @Autowired
-    private ServicesManager servicesManager;
+    private final CasConfigurationProperties casProperties;
 
-    @Autowired
-    private CasConfigurationProperties casProperties;
-
-    @Autowired
-    private FrontChannelLogoutAction frontChannelLogoutAction;
-
-    @Value("${theme.vitam-logo:#{null}}")
-    private String vitamLogoPath;
-
-    @Value("${theme.vitamui-logo-large:#{null}}")
-    private String vitamuiLargeLogoPath;
-
-    @Value("${theme.vitamui-favicon:#{null}}")
-    private String vitamuiFaviconPath;
+    private final Action frontChannelLogoutAction;
 
     public GeneralTerminateSessionAction(final CentralAuthenticationService centralAuthenticationService,
                                          final CasCookieBuilder ticketGrantingTicketCookieGenerator,
                                          final CasCookieBuilder warnCookieGenerator,
-                                         final LogoutProperties logoutProperties) {
-        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, logoutProperties);
+                                         final LogoutManager logoutManager,
+                                         final ConfigurableApplicationContext applicationContext,
+                                         final Utils utils,
+                                         final CasExternalRestClient casExternalRestClient,
+                                         final ServicesManager servicesManager,
+                                         final CasConfigurationProperties casProperties,
+                                         final Action frontChannelLogoutAction) {
+        super(centralAuthenticationService, ticketGrantingTicketCookieGenerator, warnCookieGenerator, casProperties.getLogout(), logoutManager, applicationContext);
+        this.utils = utils;
+        this.casExternalRestClient = casExternalRestClient;
+        this.servicesManager = servicesManager;
+        this.casProperties = casProperties;
+        this.frontChannelLogoutAction = frontChannelLogoutAction;
     }
 
     @Override @SneakyThrows
@@ -176,58 +160,25 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
         // fallback cases:
         // no CAS cookie -> general logout
         if (tgtId == null) {
-            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout("nocookie");
+            final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout("nocookie");
             WebUtils.putLogoutRequests(context, logoutRequests);
 
             // no ticket or expired -> general logout
         } else if (ticket == null || ticket.isExpired()) {
-            final List<SingleLogoutRequest> logoutRequests = performGeneralLogout(tgtId);
+            final List<SingleLogoutRequestContext> logoutRequests = performGeneralLogout(tgtId);
             WebUtils.putLogoutRequests(context, logoutRequests);
         }
 
         // if we are in the login webflow, compute the logout URLs
         if ("login".equals(context.getFlowExecutionContext().getDefinition().getId())) {
             logger.debug("Computing front channel logout URLs");
-            frontChannelLogoutAction.doExecute(context);
-        }
-
-        final MutableAttributeMap<Object> flowScope = context.getFlowScope();
-        if (vitamLogoPath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamLogoPath);
-                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                flowScope.put(Constants.VITAM_LOGO, logo);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam logo", e);
-            }
-        }
-        if (vitamuiLargeLogoPath != null) {
-            try {
-                final Path logoFile = Paths.get(vitamuiLargeLogoPath);
-                final String logo = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile));
-                flowScope.put(Constants.VITAM_UI_LARGE_LOGO, logo);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui large logo", e);
-            }
-        }
-
-        if (vitamuiFaviconPath != null) {
-            try {
-                final Path faviconFile = Paths.get(vitamuiFaviconPath);
-                final String favicon = DatatypeConverter.printBase64Binary(Files.readAllBytes(faviconFile));
-                flowScope.put(Constants.VITAM_UI_FAVICON, favicon);
-            }
-            catch (final IOException e) {
-                LOGGER.warn("Can't find vitam ui favicon", e);
-            }
+            frontChannelLogoutAction.execute(context);
         }
 
         return event;
     }
 
-    protected List<SingleLogoutRequest> performGeneralLogout(final String tgtId) {
+    protected List<SingleLogoutRequestContext> performGeneralLogout(final String tgtId) {
         try {
 
             final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
@@ -254,7 +205,10 @@ public class GeneralTerminateSessionAction extends TerminateSessionAction {
                 }
             }
 
-            return logoutManager.performLogout(fakeTgt);
+            return logoutManager.performLogout(
+                SingleLogoutExecutionRequest.builder()
+                    .ticketGrantingTicket(fakeTgt)
+                    .build());
 
         } catch (final RuntimeException e) {
             logger.error("Unable to perform general logout", e);

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+	<meta charset="UTF-8"/>
+    <title th:text="${@environment.getProperty('theme.vitamui-platform-name')}">VITAM-UI</title>
+
+    <meta http-equiv="refresh" th:attr="content=${'1; url=' + portalUrl}" />
+
+    <link rel="icon" type="image/x-icon" th:href="${application.vitamuiFavicon} ? 'data:image/png;base64,' + ${application.vitamuiFavicon} : @{/images/favicon.ico}"/>
+
+    <link th:href="@{/css/cas.css}" rel="stylesheet"/>
+
+    <script type="text/javascript" th:src="@{#{webjars.jquery.js}}"></script>
+    <script type="text/javascript" th:src="@{#{webjars.jqueryui.js}}"></script>
+
+</head>
+<body class="bg-portal" th:styleappend="${@environment.getProperty('theme.body.style')}">
+    <div class="background bg-success"></div>
+    <div class="flex-justify-content-center">
+        <img th:src="${application.vitamuiLargeLogo} ? 'data:image/png;base64,' + ${application.vitamuiLargeLogo} : @{/images/vitamui-logo-large.png}">
+    </div>
+    <div class="fex-align-center flex-justify-content-center marging-top-form">
+            <div class="loader"></div>
+    </div>
+
+</body>
+</html>

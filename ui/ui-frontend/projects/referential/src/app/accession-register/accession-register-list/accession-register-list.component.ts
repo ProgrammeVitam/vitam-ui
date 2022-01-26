@@ -56,7 +56,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   filterDebounceTimeMs = 400;
   direction = Direction.DESCENDANT;
-  orderBy = 'StartDate';
+  orderBy = 'EndDate';
 
   private filterChange = new BehaviorSubject<{ [key: string]: any[] }>({});
   private searchChange = new BehaviorSubject<string>(null);
@@ -139,12 +139,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
       query.elimination = avancedSearchData.elimination;
     }
 
-    if (OjectUtils.valueNotUndefined(avancedSearchData.transfer)) {
-      query.transfer = avancedSearchData.transfer;
-    }
-
-    if (OjectUtils.valueNotUndefined(avancedSearchData.preservation)) {
-      query.preservation = avancedSearchData.preservation;
+    if (OjectUtils.valueNotUndefined(avancedSearchData.transfer_reply)) {
+      query.transfer_reply = avancedSearchData.transfer_reply;
     }
   }
 
@@ -161,7 +157,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   addCriteriaFromSearch(query: any) {
-    if (this.entryToSearch !== undefined && this.entryToSearch.length > 0) {
+    if (this.entryToSearch !== undefined && this.entryToSearch !== null && this.entryToSearch.length > 0) {
       this.searchKeys.forEach((key) => {
         query[key] = this.entryToSearch;
       });

@@ -53,7 +53,7 @@ import fr.gouv.vitamui.commons.vitam.api.administration.IngestContractService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.converter.ApplicationConverter;
 import fr.gouv.vitamui.iam.internal.server.application.dao.ApplicationRepository;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
@@ -200,8 +200,8 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public Saml2ClientBuilder saml2ClientBuilder() {
-        return new Saml2ClientBuilder();
+    public Pac4jClientBuilder pac4jClientBuilder() {
+        return new Pac4jClientBuilder();
     }
 
     @Bean

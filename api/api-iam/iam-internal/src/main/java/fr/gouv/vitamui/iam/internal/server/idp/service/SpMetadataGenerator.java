@@ -36,14 +36,12 @@
  */
 package fr.gouv.vitamui.iam.internal.server.idp.service;
 
-import java.io.IOException;
-import java.util.Optional;
-
+import org.pac4j.core.client.IndirectClient;
 import org.pac4j.saml.client.SAML2Client;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 
 /**
  * A service provider metadata generator.
@@ -53,25 +51,21 @@ import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
 public class SpMetadataGenerator {
 
     @Autowired
-    private Saml2ClientBuilder saml2ClientBuilder;
+    private Pac4jClientBuilder pac4jClientBuilder;
 
     public String generate(final IdentityProviderDto provider) {
-        final Optional<SAML2Client> optionalSaml2Client = saml2ClientBuilder.buildSaml2Client(provider);
-        if (optionalSaml2Client.isPresent()) {
-            try {
-                return optionalSaml2Client.get().getServiceProviderMetadataResolver().getMetadata();
-            } catch (final IOException e) {
-                throw new RuntimeException(e);
-            }
+        final IndirectClient client = pac4jClientBuilder.buildClient(provider).orElse(null);
+        if (client instanceof SAML2Client) {
+            return ((SAML2Client) client).getServiceProviderMetadataResolver().getMetadata();
         }
         return null;
     }
 
-    public Saml2ClientBuilder getSaml2ClientBuilder() {
-        return saml2ClientBuilder;
+    public Pac4jClientBuilder getPac4jClientBuilder() {
+        return pac4jClientBuilder;
     }
 
-    public void setSaml2ClientBuilder(final Saml2ClientBuilder saml2ClientBuilder) {
-        this.saml2ClientBuilder = saml2ClientBuilder;
+    public void setPac4jClientBuilder(final Pac4jClientBuilder pac4jClientBuilder) {
+        this.pac4jClientBuilder = pac4jClientBuilder;
     }
 }

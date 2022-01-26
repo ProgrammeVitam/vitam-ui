@@ -36,20 +36,16 @@
  */
 package fr.gouv.vitamui.cas.provider;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.pac4j.core.client.Client;
 import org.pac4j.core.client.Clients;
-import org.pac4j.saml.client.SAML2Client;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.pac4j.core.client.IndirectClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
@@ -58,10 +54,9 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
-import fr.gouv.vitamui.iam.common.utils.Saml2ClientBuilder;
+import fr.gouv.vitamui.iam.common.utils.Pac4jClientBuilder;
 import fr.gouv.vitamui.iam.external.client.IdentityProviderExternalRestClient;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Retrieve all the identity providers from the IAM API.
@@ -69,29 +64,20 @@ import lombok.Setter;
  *
  */
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class ProvidersService {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProvidersService.class);
 
     private List<IdentityProviderDto> providers = new ArrayList<>();
 
-    @Autowired
-    @Qualifier("builtClients")
-    private Clients clients;
+    private final Clients clients;
 
-    @Autowired
-    private IdentityProviderExternalRestClient identityProviderExternalRestClient;
+    private final IdentityProviderExternalRestClient identityProviderExternalRestClient;
 
-    @Autowired
-    private Saml2ClientBuilder saml2ClientBuilder;
+    private final Pac4jClientBuilder pac4jClientBuilder;
 
-    @Autowired
-    private Utils utils;
-
-    public ProvidersService() {
-        // do nothing
-    }
+    private final Utils utils;
 
     @PostConstruct
     public void afterPropertiesSet() {
@@ -114,18 +100,18 @@ public class ProvidersService {
         final List<IdentityProviderDto> temporaryProviders = identityProviderExternalRestClient.getAll(utils.buildContext(null), Optional.empty(),
                 Optional.of(ProviderEmbeddedOptions.KEYSTORE + "," + ProviderEmbeddedOptions.IDPMETADATA));
         // sort by identifier. This is needed in order to take the internal provider first.
-        Collections.sort(temporaryProviders, (provider1, provider2) -> provider1.getIdentifier().compareTo(provider2.getIdentifier()));
+        Collections.sort(temporaryProviders, Comparator.comparing(IdentityProviderDto::getIdentifier));
         LOGGER.debug("Reloaded {} providers: {}", temporaryProviders.size(),
                 StringUtils.join(temporaryProviders.stream().map(IdentityProviderDto::getId).collect(Collectors.toList()), ", "));
 
         final List<Client> newClients = new ArrayList<>();
         final List<IdentityProviderDto> newProviders = new ArrayList<>();
         temporaryProviders.forEach(p -> {
-            final SAML2Client saml2Client = saml2ClientBuilder.buildSaml2Client(p).orElse(null);
-            if (saml2Client != null) {
-                newClients.add(saml2Client);
+            final IndirectClient client = pac4jClientBuilder.buildClient(p).orElse(null);
+            if (client != null) {
+                newClients.add(client);
             }
-            newProviders.add(new SamlIdentityProviderDto(p, saml2Client));
+            newProviders.add(new Pac4jClientIdentityProviderDto(p, client));
         });
         clients.setClients(newClients);
         providers = newProviders;

@@ -62,8 +62,8 @@ pipeline {
                 sh 'sudo yum install -y gcc-c++ make'
                 sh 'sudo yum remove -y nodejs'
                 sh 'curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -'
-          //      sh 'sudo yum install -y nodejs'
-                sh 'sudo yum install -y nodejs-16.9.0-1nodesource'
+                sh 'sudo yum install -y nodejs'
+         //       sh 'sudo yum install -y nodejs-16.9.0-1nodesource'
                 sh 'node -v'
                 sh '/usr/bin/node -v'
                 sh 'npm -v'
@@ -80,10 +80,13 @@ pipeline {
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
                 JAVA_TOOL_OPTIONS=""
+                NODE_OPTIONS="--max_old_space_size=12288"
             }
             steps {
-                sh 'node -v'
+                sh 'node -v'                
                 sh 'npmrc default'
+                //sh 'export NODE_OPTIONS="--max-old-space-size=12288"'
+
 //                sh '''
 //                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
 //                '''

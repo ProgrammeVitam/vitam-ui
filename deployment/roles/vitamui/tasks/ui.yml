@@ -12,7 +12,7 @@
     dest: "{{ vitamui_defaults.folder.root_path}}/conf/assets"
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission }}"
   with_fileglob:
     - ../files/ui/assets/*
   tags:
