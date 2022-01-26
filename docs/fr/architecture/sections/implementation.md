@@ -1,15 +1,13 @@
-Implémentation
-==============
+# Implémentation
 
-Technologies 
-------------
+## Technologies
 
-### Briques techniques 
+### Briques techniques
 
 La solution est développée principalement avec les briques technologies suivantes :
 
-* Java 1.8+ (Java 11) 
-* Angular 8 : framework front 
+* Java 1.8+ (Java 11)
+* Angular 8 : framework front
 * Spring Boot 2 : framework applicatif
 * MongoDB : base de données NoSQL
 * Swagger : documentation API
@@ -18,38 +16,40 @@ La solution est développée principalement avec les briques technologies suivan
 
 Les composants suivant sont utilisés dans la solution :
 
-* CAS : gestionnaire d'authentification centralisé (IAM) 
+* CAS : gestionnaire d'authentification centralisé (IAM)
 * VITAM : socle d'archivage développé par le programme VITAM
 * MongoDB : base de données orientée documents
 * Curator : maintenance des index d’elasticsearch
 * ELK : agrégation et traitement des logs et dashboards et recherche des logs techniques
 * Consul : annuaire de services
 
-Les solutions CAS et VITAM sont également développées en Java dans des technologies proches ou similaires. 
+Les solutions CAS et VITAM sont également développées en Java dans des technologies proches ou similaires.
 
 En fonction du choix de l'implémentation de la solution, il est possible de partager des dépendances logicielles avec la solution VITAM.
+
+---
 
 ## Services
 
 La solution est bâtie selon une architecture de type micro-services. Ces services communiquent entre eux en HTTPS via des API REST.
 
-* Les services externes exposés publiquement sont sécurisés par la mise en oeuvre d'un protocole M2M nécessitant l'utilisation de certificats X509 client et serveur reconnus mutuellement lors de la connexion. 
+* Les services externes exposés publiquement sont sécurisés par la mise en oeuvre d'un protocole M2M nécessitant l'utilisation de certificats X509 client et serveur reconnus mutuellement lors de la connexion.
 
 * Les services internes, ne sont jamais exposés publiquement. Ils sont accessibles uniquement en HTTPS par les services externes ou par d'autres services internes.
- 
+
 * Les accès aux bases de données MongoDb ou aux socles techniques externes (ie. VITAM) se font uniquement via les services internes.
 
-* Les utilisateurs sont authentifiés via CAS et disposent d'un token, validé à chaque appel, qui les identifient durant toute la chaîne de traitement des requêtes.  
+* Les utilisateurs sont authentifiés via CAS et disposent d'un token, validé à chaque appel, qui les identifient durant toute la chaîne de traitement des requêtes.
 
 ### Identification des services
 
-Il est primordial que chaque service de la solution puisse être identifié de manière unique sur le système. A cet effet, les services disposent des différents identifiants suivant :
- 
-* ID de service (ou service_id) : c’est une chaîne de caractères qui nomme de manière unique un service. Cette chaîne de caractère doit respecter l’expression régulière suivante : [a-z][a-z-]*. Chaque cluster de service possède un ID unique de service.
+Il est primordial que chaque service de la solution puisse être identifié de manière unique sur le système. À cet effet, les services disposent des différents identifiants suivant :
 
-* ID d’instance (ou instance_id) : c’est l’ID d’un service instancié dans un environnement ; ainsi, pour un même service, il peut exister plusieurs instances de manière concurrente dans un environnement donné. Cet ID a la forme suivante : <service_id>-<instance_number>, avec <instance_number> respectant l’expression régulière suivante : [0-9]{2}. Chaque instance dans ce cluster possède un id d’instance (instance_id).
+* ID de service (ou service_id) : c’est une chaîne de caractères qui nomme de manière unique un service. Cette chaîne de caractère doit respecter l’expression régulière suivante : `[a-z][a-z-]*`. Chaque cluster de service possède un ID unique de service.
 
-* ID de package (ou package_id) : il est de la forme vitamui<service_id>. C’est le nom du package à déployer.
+* ID d’instance (ou instance_id) : c’est l’ID d’un service instancié dans un environnement ; ainsi, pour un même service, il peut exister plusieurs instances de manière concurrente dans un environnement donné. Cet ID a la forme suivante : `<service_id>-<instance_number>`, avec `<instance_number>` respectant l’expression régulière suivante : `[0-9]{2}`. Chaque instance dans ce cluster possède un id d’instance (instance_id).
+
+* ID de package (ou package_id) : il est de la forme `vitamui-<service_id>`. C’est le nom du package à déployer.
 
 ### Communications inter-services
 
@@ -59,18 +59,19 @@ Les services VITAMUI suivent les principes suivants lors d’un appel entre deux
 
 2. L’annuaire de service lui retourne une liste ordonnée d’instance_id. C’est de la responsabilité de l’annuaire de service de trier cette liste dans l’ordre préférentiel d’appel (en fonction de l’état des différents services, et avec un algorithme d’équilibrage dont il a la charge)
 
-3. Le composant amont appelle la première instance présente dans la liste. En cas d’échec de cet appel, il recommence depuis le point 1. La communication vers une instance cible de type Service API utilise nécessairement le protocole sécurisé HTTPS. 
+3. Le composant amont appelle la première instance présente dans la liste. En cas d’échec de cet appel, il recommence depuis le point 1. La communication vers une instance cible de type Service API utilise nécessairement le protocole sécurisé HTTPS.
 
 Ces principes ont pour but de garantir les trois points suivants :
+
 * Les clients des services doivent être agnostiques de la topologie de déploiement, et notamment du nombre d’instances de chaque service dans chaque cluster. La connaissance de cette topologie est déléguée à l’annuaire de service.
 
 * Le choix de l’instance cible d’un appel doit être décorrélé de l’appel effectif afin d’optimiser les performances et la résilience.
 
-* La garantie de la confidentialité des informations transmises entre les services (hors COTS) 
+* La garantie de la confidentialité des informations transmises entre les services (hors COTS)
 
 Dans le cas des COTS, la gestion de l’équilibrage de charge et de la haute disponibilité doit être intégrée de manière native dans le COTS utilisé. D'autre part, la sécurisation de la transmission dépend du COTS. Dans le cas où le chiffrement des données transmises n'est pas assuré, il est alors recommandé d'isoler le COTS dans une zone réseau spécifique.
 
-### Cloisonnement des services  
+### Cloisonnement des services
 
 Le cloisonnement applicatif permet de séparer les services de manière physique (subnet/port) et ainsi  limiter la portée d’une attaque en cas d’intrusion dans une des zones. Ce cloisonnement applique le principe de défense en profondeur préconisé par l’ANSI.
 
@@ -85,54 +86,66 @@ Dans cet exemple, il est prévu pour respecter les contraintes de flux inter-zon
 * les services de la zone IHM et IHM-ADMIN communiquent avec les services de la zone API-EXTERNAL
 * les services de la zone API-EXTERNAL communiquent avec les services de la zone API-INTERNAL
 * les services de la zone API-INTERNAL communiquent avec les services de la zone DATA
-* les services de toutes les zones communiquent avec les services déployés dans la zone INFRA 
+* les services de toutes les zones communiquent avec les services déployés dans la zone INFRA
 * les exploitants techniques accédent aux services de la zone EXPLOITATION puis intervenir dans toutes les zones
 
-#### Les différentes zones:
- ##### zone IHM:
- La zone IHM se compose de plusieurs services:
- - UI Identity
- - UI Portal
- - UI Referential
- - UI Ingest
- - UI Archive Search
- ##### zone API-EXTERNAL:
- La zone API-EXTERNAL se compose de plusieurs services:
-- IAM EXTERNAL
-- REFERENTIAL EXTERNAL
-- INGEST EXTERNAL
-- ARCHIVE SEARCH EXTERNAL
- ##### zone API-INTERNAL:
- La zone API-INTERNAL se compose de plusieurs services:
- - IAM INTERNAL
- - REFERENTIAL INTERNAL
- - INGEST INTERNAL
- - ARCHIVE SEARCH INTERNAL
- ##### zone DATA:
- La zone stockage: MongoDB
- ##### zone INFRA:
- Les services consul, kibana, elk etc..
+#### Les différentes zones
+
+##### zone IHM
+
+La zone IHM se compose de plusieurs services:
+
+* UI Identity
+* UI Portal
+* UI Referential
+* UI Ingest
+* UI Archive Search
+
+##### zone API-EXTERNAL
+
+La zone API-EXTERNAL se compose de plusieurs services:
+
+* IAM EXTERNAL
+* REFERENTIAL EXTERNAL
+* INGEST EXTERNAL
+* ARCHIVE SEARCH EXTERNAL
+
+##### zone API-INTERNAL
+
+La zone API-INTERNAL se compose de plusieurs services:
+
+* IAM INTERNAL
+* REFERENTIAL INTERNAL
+* INGEST INTERNAL
+* ARCHIVE SEARCH INTERNAL
+
+##### zone DATA
+
+La zone stockage: MongoDB
+
+##### zone INFRA
+
+Les services consul, kibana, elk etc..
 
 Tous les serveurs cibles doivent avoir accès aux dépôts de binaires contenant les paquets des logiciels VITAMUI et des composants externes requis pour l’installation. Les autres éléments d’installation (playbook ansible, ...) doivent être disponibles sur la machine ansible orchestrant le déploiement de la solution dans la zone INFRA.
 
-    Schéma de zoning :
-  
+Schéma de zoning :
+
 ![Architecture IAM CAS](../images/dat_zoning.png)
 
+---
 
-
-Intégration système
--------------------
+## Intégration système
 
 ### Utilisateurs et groupes d’exécution
 
 La segmentation des droits utilisateurs permet de respecter les contraintes suivantes :
 
-* Assurer une séparation des utilisateurs humains du système et des utilisateurs système sous lesquels tournent les processus 	
+* Assurer une séparation des utilisateurs humains du système et des utilisateurs système sous lesquels tournent les processus
 * Séparer les droits des rôles d’exploitation différents suivants :
-    * Les administrateurs système (OS) ;
-    * Les administrateurs techniques des logiciels VITAMUI;
-    * Les administrateurs des bases de données VITAMUI
+  * Les administrateurs système (OS) ;
+  * Les administrateurs techniques des logiciels VITAMUI;
+  * Les administrateurs des bases de données VITAMUI
 
 Les utilisateurs et groupes décrits dans les paragraphes suivants doivent être ajoutés par les scripts d’installation de la solution VITAMUI. En outre, les règles de sudoer associées aux groupes vitamui*-admin doivent également être mis en place par les scripts d’installation.
 
@@ -147,11 +160,11 @@ Les utilisateurs suivant sont définis :
 * vitamui(UID : 4000) : user pour les services ne stockant pas les données
 * vitamuidb (UID : 4001) : user pour les services stockant des données (Ex : MongoDB)
 
-Les processus VITAMUI tournent sous ces utilisateurs. Leurs logins sont désactivés. 
+Les processus VITAMUI tournent sous ces utilisateurs. Leurs logins sont désactivés.
 
 #### Groupes
 
-Les groupes suivant sont définis : 
+Les groupes suivant sont définis :
 
 * vitamui(GID : 4000) : groupe primaire des utilisateurs de service
 * vitamui-admin (GID : 5000) : groupe d’utilisateurs ayant les droits “sudo” permettant le lancement des services VITAMUI
@@ -163,16 +176,16 @@ L’arborescence /vitamui héberge les fichiers propres aux différents services
 
 Pour un service d’id service_id, les fichiers et dossiers impactés par VITAMUI sont les suivants.
 
-* service_id est l’id du service auquel appartient les fichiers 
+* service_id est l’id du service auquel appartient les fichiers
 * folder-type est le type de fichiers contenu par le dossier :
-    * app : fichiers de ressources (non-jar) requis pour l’application (ex: .war)
-    * bin : binaires (le cas échéant)
-    * script : Répertoire des scripts d’exploitation du module (start/stop/status/backup)
-    * conf : Fichiers de configuration
-    * lib : Fichiers binaires (ex: jar)
-    * log : Logs du composant
-    * data : Données sauvegardes du composant
-    * tmp : Données temporaires produites par l’application
+  * app : fichiers de ressources (non-jar) requis pour l’application (ex: .war)
+  * bin : binaires (le cas échéant)
+  * script : Répertoire des scripts d’exploitation du module (start/stop/status/backup)
+  * conf : Fichiers de configuration
+  * lib : Fichiers binaires (ex: jar)
+  * log : Logs du composant
+  * data : Données sauvegardes du composant
+  * tmp : Données temporaires produites par l’application
 
 Les dossiers /vitamui et /vitamui/<folder_type> ont les droits suivants :
 
@@ -180,19 +193,19 @@ Les dossiers /vitamui et /vitamui/<folder_type> ont les droits suivants :
 * Group owner : root
 * Droits : 0555
 
-A l’intérieur de ces dossiers, les droits par défaut sont les suivants :
+À l’intérieur de ces dossiers, les droits par défaut sont les suivants :
 
 * Fichiers standards :
-    * Owner : vitamui (ou vitamuidb)
-    * Group owner : vitamui
-    * Droits : 0640
+  * Owner : vitamui (ou vitamuidb)
+  * Group owner : vitamui
+  * Droits : 0440
 
 * Fichiers exécutables et répertoires :
-    * Owner : vitamui (ou vitamuidb)
-    * Group owner : vitamui
-    * Droits : 0750
+  * Owner : vitamui (ou vitamuidb)
+  * Group owner : vitamui
+  * Droits : 0750
 
-Cette arborescence ne doit pas contenir de caractère spécial. Les éléments du chemin (notamment le service_id) doivent respecter l’expression régulière suivante : [0-9A-Za-z-_]+
+Cette arborescence ne doit pas contenir de caractère spécial. Les éléments du chemin (notamment le service_id) doivent respecter l’expression régulière suivante : `[0-9A-Za-z-_]+`
 
 Le système de déploiement et de gestion de configuration de la solution est responsable de la bonne définition de cette arborescence (tant dans sa structure que dans les droits utilisateurs associés).
 
@@ -205,8 +218,9 @@ L’intégration est réalisée par l’utilisation du système d’initialisati
 
 Les COTS utilisent la même nomenclature de répertoires et utilisateurs que les services VITAMUI, à l’exception des fichiers binaires et bibliothèques qui utilisent les dossiers de l’installation du paquet natif.
 
-Sécurisation
-------------
+---
+
+## Sécurisation
 
 ### Sécurisation des accès aux services externes
 
@@ -218,9 +232,9 @@ Les services exposants publiquement des API REST implémentent les mesures de s�
 
 * authentification par certificat X509 requise des applications externes (authentification M2M) basée sur une liste blanche de certificats valides
 
-* mise à jour des droits utilisateurs grâce aux contextes applicatifs, associés certificats clients, stockés dans la collections XXX de base MongoDb gérée par le service SECURITY INTERNAL. 
+* mise à jour des droits utilisateurs grâce aux contextes applicatifs, associés certificats clients, stockés dans la collections XXX de base MongoDb gérée par le service SECURITY INTERNAL.
 
-* un service batch contrôle régulièrement l'expéritaion des certificats stockés dans le truststore des services et dans le référentiel de certificats clients (MongoDb) géré par le service SECURITY INTERNAL. 
+* un service batch contrôle régulièrement l'expéritaion des certificats stockés dans le truststore des services et dans le référentiel de certificats clients (MongoDb) géré par le service SECURITY INTERNAL.
 
 ### Sécurisation des communications internes
 
@@ -235,7 +249,7 @@ En cas d’échec, la requête est refusée et la connexion est fermée.
 
 ### Sécurisation des accès aux bases de données
 
-Les bases de données de MongoDB sont sécurisées via un cloisonnement physique (réseau) et/ou logique (compte utilisateur) des différentes bases de données qui les constituent. 
+Les bases de données de MongoDB sont sécurisées via un cloisonnement physique (réseau) et/ou logique (compte utilisateur) des différentes bases de données qui les constituent.
 
 ### Sécurisation des secrets de déploiement
 
@@ -252,12 +266,12 @@ Les secrets nécessaires au bon déploiement de VITAMUI sont les suivants :
 
 * Certificats x509 serveur (comprenant la clé privée) pour les modules de la zone d’accès (services *-external), ainsi que les CA (finales et intermédiaires) et CRL associées. Ces certificats seront déployés dans des keystores java en tant qu’élément de configuration de ces services
 
-* Certificats x509 client pour les clients du SAE (ex: les applications métier, le service ihm-admin), ainsi que les CA (finales et intermédiaires) et CRL associées. Ces certificats seront déployés dans des keystores java en tant qu’élément de configuration de ces services 
+* Certificats x509 client pour les clients du SAE (ex: les applications métier, le service ihm-admin), ainsi que les CA (finales et intermédiaires) et CRL associées. Ces certificats seront déployés dans des keystores java en tant qu’élément de configuration de ces services
 
 Les secrets définis lors de l’installation de VITAM sont les suivants :
 
 * Mots de passe des keystores ;
-* Mots de passe des administrateurs fonctionnels de l’application VITAMUI 
+* Mots de passe des administrateurs fonctionnels de l’application VITAMUI
 * Mots de passe d’administration de base de données MongoDB ;
 * Mots de passe des comptes d’accès aux bases de données MongoDB.
 
@@ -266,16 +280,18 @@ Note. Les secrets de VITAMUI sont différents de ceux VITAM
 ### Authentification du compte SSH
 
 Il existe plusieurs méthodes envisageables pour authentifier le compte utilisateur utilisé pour la connexion SSH :
+
 * par clé SSH avec passphrase
 * par login/mot de passe
 * par clé SSH sans passphrase
 
 La méthode d’authentification retenue dépend de plusieurs paramètres :
+
 * criticité des serveurs (services)
 * zone de confiance
 * technologie de déploiement
 
-Dans un contexte sensible, il est fortement recommandé d'utiliser un bastion logiciel (par ex. https://www.wallix.com/bastion-privileged-access-management/) pour authentifier et tracer les actions des administrateurs du système.  
+Dans un contexte sensible, il est fortement recommandé d'utiliser un bastion logiciel (par ex. <https://www.wallix.com/bastion-privileged-access-management/>) pour authentifier et tracer les actions des administrateurs du système.
 
 ### Authentification des hôtes
 
@@ -288,13 +304,14 @@ Il existe différentes méthodes pour remplir ce fichier (vérification humaine 
 Plusieurs solutions sont envisageables :
 
 * par sudo avec mot de passe
-    * Au lancement de la commande ansible, le mot de passe sera demandé par sudo
-* par su 
-    * Au lancement de la commande ansible, le mot de passe root sera demandé
-    * par sudo sans mot de passe
+  * Au lancement de la commande ansible, le mot de passe sera demandé par sudo
+* par su
+  * Au lancement de la commande ansible, le mot de passe root sera demandé
+  * par sudo sans mot de passe
 
-Certificats et PKI
-------------------
+---
+
+## Certificats et PKI
 
 La PKI permet de gérer de manière robuste les certificats de la solution VITAMUI. Une PKI est une architecture de
 confiance constituée d’un ensemble de systèmes fournissant des services permettant la gestion des cycles de vie des
@@ -316,9 +333,9 @@ Les principes de fonctionnement de la PKI sont les suivants :
 * Gestion du cycle de vie (révocation) des certificats
 * Publication des certificats et des clés (.crt et .key)
 * Déploiement :
-    * Génération des magasins de certificats VITAMUI (les certificats .crt et .key sont utilisés pour construire un
+  * Génération des magasins de certificats VITAMUI (les certificats .crt et .key sont utilisés pour construire un
       magasin de certificats qui contient des certificats .p12 et .jks)
-    * Déploiement dans VITAMUI des certificats .p12 et .jks par Ansible
+  * Déploiement dans VITAMUI des certificats .p12 et .jks par Ansible
 
     Schéma de la PKI :
 
@@ -326,177 +343,156 @@ Les principes de fonctionnement de la PKI sont les suivants :
 
 ### Explication avancée du fonctionnement
 
-Le fonctionnement de la PKI de la solution *VitamUI* est basée à celle de Vitam - la logique d'architecture reste
-identique.
+Le fonctionnement de la PKI de la solution VitamUI est basé sur la même logique d'architecture que celle de Vitam.
 
 Lien des documentations existantes :
-PKI
-VITAM : <http://www.programmevitam.fr/ressources/DocCourante/html/installation/annexes/10-overview_certificats.html?highlight=pki>
 
-PKI VITAM suite : <https://www.programmevitam.fr/ressources/DocCourante/html/installation/annexes/15-certificates.html#>
+* PKI VITAM : <http://www.programmevitam.fr/ressources/DocCourante/html/installation/annexes/10-overview_certificats.html> & <https://www.programmevitam.fr/ressources/DocCourante/html/installation/annexes/15-certificates.html>
 
 La PKI voit ses fichiers répartis à deux emplacements:
 
-- deployment/pki
+* deployment/pki
 
-  A cet emplacement se trouvent les scripts et fichiers de configuration associés à la génération des assets (
-  certificats, clés privées ...)
+  À cet emplacement se trouvent les scripts et fichiers de configuration associés à la génération des assets (certificats, clés privées ...)
 
-  Fichier       | Description  |
-    ------------ | :----------- |
-  pki/ca        |  Répertoire dans lequel sont stockés les CA de chaque zone    |
-  pki/config        |  Répertoire dans lequel sont stockées les configurations pour la génération des CA/certificats     |
-  pki/config/scripts        |  Répertoire dans lequel sont stockées les scripts de génération de la PKI. |
+  | Fichier            | Description                                                                                   |
+  | ------------------ | --------------------------------------------------------------------------------------------- |
+  | pki/ca             | Répertoire dans lequel sont stockés les CA de chaque zone                                     |
+  | pki/config         | Répertoire dans lequel sont stockées les configurations pour la génération des CA/certificats |
+  | pki/config/scripts | Répertoire dans lequel sont stockées les scripts de génération de la PKI.                     |
 
 ### Génération des certificats
 
 Revenons en détails sur les scripts de génération des différents éléments de la PKI:
 
-- generate_ca*.sh:
-    - Paramètre(s):
-        - ERASE [Facultatif]: Booléen indiquant si les CA et fichiers associés existants doivent être supprimés avant
+* generate_ca*.sh:
+  * Paramètre(s):
+    * ERASE [Facultatif]: Booléen indiquant si les CA et fichiers associés existants doivent être supprimés avant
           génération - Valeur par défaut: **false**
-    - Description:
+  * Description:
       Permet de générer les certificats d'autorité mentionnées dans le script de génération. Attention, toute autorité
       existante n'est pas regénérée, l'utilisation du paramètre **ERASE** sera recommandée lors de la première
       génération de la PKI.
 
-- generate_certs*.sh
-    - Paramètre(s):
-        - ENVIRONNEMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être
+* generate_certs*.sh
+  * Paramètre(s):
+    * ENVIRONNEMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être
           générés
-        - ERASE [Facultatif]: Booléen indiquant si les certificats et fichiers associés existants doivent être supprimés
+    * ERASE [Facultatif]: Booléen indiquant si les certificats et fichiers associés existants doivent être supprimés
           avant génération - Valeur par défaut: **false**
-    - Description:
+  * Description:
       Permet de générer les certificats (serveur, client) mentionnés dans le script de génération. Attention, tout
       certificat existant n'est pas regénéré, l'utilisation du paramètre **ERASE** sera recommandée lors de la première
       génération de la PKI. Deux types de fichiers seront modifiés lors de cette exécution:
-        - les fichiers de configuration des CA (serial, index.txt ...)
-        - les fichiers générés (`deployment/environment/certs`)
+    * les fichiers de configuration des CA (serial, index.txt ...)
+    * les fichiers générés (`deployment/environment/certs`)
 
-Les scripts suffixés par **_dev** concernent le matériel SSL utilisé pour le lancement de l'application en local sur l'
-environnement de developpement. L'ensemble des fichiers générés se trouveront dans l'arborescence **dev-deployment** du
-projet. Il faudra par la suite copier les fichiers générés associés à chaque module dans le repertoire /resources/dev du
+Les scripts suffixés par **_dev** concernent le matériel SSL utilisé pour le lancement de l'application en local sur l'environnement de développement. L'ensemble des fichiers générés se trouveront dans l'arborescence **dev-deployment** du projet. Il faudra par la suite copier les fichiers générés associés à chaque module dans le repertoire /resources/dev du
 projet associé.
 
-- deployment/environment/certs
+* deployment/environment/certs
 
-A cet emplacement figure l'ensemble de la PKI de la solution. Par défaut, on retrouvera trois zones (une par autorité):
+À cet emplacement figure l'ensemble de la PKI de la solution. Par défaut, on retrouvera trois zones (une par autorité):
 
-- server: l'ensemble du certificats permettant la communication HTTPS entre les différentes applications de la solution
-- client-vitam: certificats utilisés par l'application pour communiquer avec Vitam. Avec le script **generate_certs.sh**
+* server: l'ensemble du certificats permettant la communication HTTPS entre les différentes applications de la solution
+* client-vitam: certificats utilisés par l'application pour communiquer avec Vitam. Avec le script **generate_certs.sh**
   fournis par la PKI, un certificat sera généré pour s'interfacer avec Vitam.
-- client-external: certificats des clients autorisés à solliciter les API externes
+* client-external: certificats des clients autorisés à solliciter les API externes
 
 ### Cas pratiques
 
-- Instaurer la communication entre la solution VitamUI <-> Vitam
+* Instaurer la communication entre la solution VitamUI <-> Vitam
 
   Quelques rappels:
-    - au sein de la solution VitamUI, vous avez:
+  * au sein de la solution VitamUI, vous avez:
 
-        - un client Vitam Java (access-external, ingest-external) permettant de réaliser des requêtes aurpès de Vitam.
-          Ce client se base sur un fichier de configuration dans lesquels sont référencés un **keystore** (concenant le
-          certificat utilisé pour chiffrer la requête) et un **trustore** (contenant le(s) CA(s) utilisé(s) pour les
-          échanges avec les applications à l'extérieur de VitamUI)
-        - `deployment/environement/certs/client-vitam/ca`: certificat d'autorité intervenant dans la communication
-          VitamUI <-> Vitam. /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore
-          exploités par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
+    * un client Vitam Java (access-external, ingest-external) permettant de réaliser des requêtes aurpès de Vitam.
+      Ce client se base sur un fichier de configuration dans lesquels sont référencés un **keystore** (concenant le certificat utilisé pour chiffrer la requête) et un **trustore** (contenant le(s) CA(s) utilisé(s) pour les échanges avec les applications à l'extérieur de VitamUI)
 
-        - `deployment/environement/certs/client-vitam/clients/vitamui`: certificat utilisé pour la communication
-          VitamUI <-> Vitam. /!\ Le certificat sera embarqué dans le keystore utilisé par le client Vitam Java lors de
-          l'exécution du script *generate_keystores.sh*.
+    * `deployment/environement/certs/client-vitam/ca`: certificat d'autorité intervenant dans la communication VitamUI <-> Vitam.
+      /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore exploité par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
 
-    - au sein de la solution Vitam, vous avez:
+    * `deployment/environement/certs/client-vitam/clients/vitamui`: certificat utilisé pour la communication VitamUI <-> Vitam.
+      /!\ Le certificat sera embarqué dans le keystore utilisé par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
 
-        - au sein du modèle de données, un certificat est associé à un contexte de sécurité (restriction d'actions par
-          tenant à travers des contrats), lui-même associé à un profile de sécurité (permission sur les API externes).
-          Cette association s'effectue dans le fichier `environment/group_vars/all/postinstall_param.yml`
+  * au sein de la solution Vitam, vous avez:
 
-        - la structure de la PKI VitamUI étant identique à celle de Vitam, le comportement est le suivant:
+    * au sein du modèle de données, un certificat est associé à un contexte de sécurité (restriction d'actions par tenant à travers des contrats), lui-même associé à un profile de sécurité (permission sur les API externes).
+      Cette association s'effectue dans le fichier `environment/group_vars/all/postinstall_param.yml`
 
-            - tout CA utilisé par un client pour solliciter les API externes et nécessaire à la chaine de vérification
-              de son certificat doit se trouver dans le répertoire `envionment/certs/client-external/ca`
-              /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore exploités par les API
-              externes lors de l'exécution du script *generate_keystores.sh*.
+    * la structure de la PKI VitamUI étant identique à celle de Vitam, le comportement est le suivant:
 
-            - le certificat d'un client accédant aux API externes doit figurer à
-              l'emplacement `envionment/certs/client-external/clients/external`
+      * tout CA utilisé par un client pour solliciter les API externes et nécessaire à la chaine de vérification de son certificat doit se trouver dans le répertoire `envionment/certs/client-external/ca`
+        /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore exploités par les API externes lors de l'exécution du script *generate_keystores.sh*.
+
+      * le certificat d'un client accédant aux API externes doit figurer à l'emplacement `envionment/certs/client-external/clients/external`
 
   De ce fait, vous devez synchroniser vos PKI et vos solutions pour assurer une bonne communication:
-    - VitamUI -> Vitam
-        - Copier le CA du certificat VitamUI `{vitamui_inventory_dir}/certs/client-vitam/ca/ca-*.crt`
-          dans `{vitam_inventory_dir}/certs/client-external/ca`
-        - Copier le certificat VitamUI `{vitamui_inventory_dir}/certs/client-vitam/clients/vitamui/vitamui.crt`
-          dans `{vitam_inventory_dir}/certs/client-external/clients/external`
-        - Mise à jour de la PKI Vitam:
-            - `./generate_stores.sh`
-            - `ansible-playbook ansible-vitam/vitam.yml ${ANSIBLE_OPTS} --tags update_vitam_certificates`
-        - Création du contexte VitamUI:
-            - Population du fichier postinstall_param.yml:
+  * VitamUI -> Vitam
+    * Copier le CA du certificat VitamUI `{vitamui_inventory_dir}/certs/client-vitam/ca/ca-*.crt` dans `{vitam_inventory_dir}/certs/client-external/ca`
+    * Copier le certificat VitamUI `{vitamui_inventory_dir}/certs/client-vitam/clients/vitamui/vitamui.crt` dans `{vitam_inventory_dir}/certs/client-external/clients/external`
+    * Mise à jour de la PKI Vitam:
+      * `./generate_stores.sh`
+      * `ansible-playbook ansible-vitam/vitam.yml ${ANSIBLE_OPTS} --tags update_vitam_certificates`
+    * Création du contexte VitamUI:
+      * Population du fichier postinstall_param.yml:
 
-          ```yaml
-            vitam_additional_securityprofiles:
-            - name: vitamui-security-profile
-              identifier: vitamui-security-profile
-              hasFullAccess: true
-              permissions: "null"
-              contexts:
-                - name: vitamui-context
-                  identifier: vitamui-context
-                  status: ACTIVE
-                  enable_control: false
-                  # No control, idc about permissions, VitamUI will do it :)
-                  permissions: "[ { \"tenant\": 0, \"AccessContracts\": [], \"IngestContracts\": [] }, { \"tenant\": 1, \"AccessContracts\": [], \"IngestContracts\": [] }]"
-                  certificates: ['external/vitamui.crt']
-          ```
+        ```yaml
+          vitam_additional_securityprofiles:
+          - name: vitamui-security-profile
+            identifier: vitamui-security-profile
+            hasFullAccess: true
+            permissions: "null"
+            contexts:
+              - name: vitamui-context
+                identifier: vitamui-context
+                status: ACTIVE
+                enable_control: false
+                # No control, idc about permissions, VitamUI will do it :)
+                permissions: "[ { \"tenant\": 0, \"AccessContracts\": [], \"IngestContracts\": [] }, { \"tenant\": 1, \"AccessContracts\": [], \"IngestContracts\": [] }]"
+                certificates: ['external/vitamui.crt']
+        ```
 
-            - Exécution du playbook de mise à jour:
-              `ansible-playbook ansible-vitam-exploitation/add_contexts.yml`
+      * Exécution du playbook de mise à jour :
+        `ansible-playbook ansible-vitam-exploitation/add_contexts.yml`
 
-    - Vitam -> VitamUI
-        - Copier le(s) CA(s) de Vitam `{vitam_inventory_dir}/certs/client-vitam/ca`
-          dans `{vitamui_inventory_dir}/certs/client-vitam/ca/`
-        - Mise à jour de la PKI VitamUI:
-            - `./generate_stores.sh`
-            - `ansible-playbook vitamui_apps.yml --tags update_vitamui_certificates`
+  * Vitam -> VitamUI
+    * Copier le(s) CA(s) de Vitam `{vitam_inventory_dir}/certs/client-vitam/ca` dans `{vitamui_inventory_dir}/certs/client-vitam/ca/`
+    * Mise à jour de la PKI VitamUI :
+      * `./generate_stores.sh`
+      * `ansible-playbook vitamui_apps.yml --tags update_vitamui_certificates`
 
-- Instaurer la communication entre la solution VitamUI <-> *Le monde extérieur*
-
+* Instaurer la communication entre la solution VitamUI <-> *Le monde extérieur*
   TODO (le process n'est pas encore industrialisé)
 
 ### PKI de test
 
-VITAMUI propose de générer à partir d’une PKI de tests les autorités de certification root et intermédiaires pour les
-clients et les serveurs. Cette PKI de test permet de connaître facilement l’ensemble des certificats nécessaires au bon
-fonctionnement de la solution. Attention, la PKI de test ne doit être utilisée que pour faire des tests, et ne doit
-surtout pas être utilisée en environnement de production.
+VITAMUI propose de générer à partir d’une PKI de tests les autorités de certification root et intermédiaires pour les clients et les serveurs. Cette PKI de test permet de connaître facilement l’ensemble des certificats nécessaires au bon fonctionnement de la solution. Attention, la PKI de test ne doit être utilisée que pour faire des tests, et ne doit surtout pas être utilisée en environnement de production.
 
 ### Liste des certificats utilisés
 
 Le tableau ci-dessous détail l’ensemble du contenu des keystores et truststores par service.
 
-|Composants  |  Keystores  |Truststores|
-|------------|-------------|-----------|
-|**ui-portal**  |  ui-portal.crt, ui-portal.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-identity**  |  ui-identity.crt, ui-identity.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-identity-admin**  |  ui-identity-admin.crt, ui-identity-admin.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-referential**  |  ui-referential.crt, ui-referential.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-ingest**  |  ui-ingest.crt, ui-ingest.key  | ca-root.crt, ca-intermediate.crt |
-|**ui-archive-search**  |  ui-archive-search.crt, ui-archive-search.key  | ca-root.crt, ca-intermediate.crt |
-|**cas-server**  |  cas-server.crt, cas-server.key  | ca-root.crt, ca-intermediate.crt |
-|**iam-external**  |  iam-external.crt, iam-external.key  | ca-root.crt |
-|**iam-internal**  |  iam-internal.crt, iam-internal.key  | ca-root.crt |
-|**referential-external**  |  referential-external.crt, referential-external.key  | ca-root.crt |
-|**referential-internal**  |  referential-internal.crt, referential-internal.key  | ca-root.crt |
-|**ingest-external**  |  ingest-external.crt, ingest-external.key  | ca-root.crt |
-|**ingest-internal**  |  ingest-internal.crt, ingest-internal.key  | ca-root.crt |
-|**archive-search-external**  |  archive-search-external.crt, archive-external.key  | ca-root.crt |
-|**archive-search-internal**  |  archive-search-internal.crt, archive-internal.key  | ca-root.crt |
-|**security-server**  |  security-server.crt, security-server | ca-root.crt |
+| Composants                  |  Keystores                                         | Truststores                      |
+| --------------------------- | -------------------------------------------------- | -------------------------------- |
+| **ui-portal**               | ui-portal.crt, ui-portal.key                       | ca-root.crt, ca-intermediate.crt |
+| **ui-identity**             | ui-identity.crt, ui-identity.key                   | ca-root.crt, ca-intermediate.crt |
+| **ui-identity-admin**       | ui-identity-admin.crt, ui-identity-admin.key       | ca-root.crt, ca-intermediate.crt |
+| **ui-referential**          | ui-referential.crt, ui-referential.key             | ca-root.crt, ca-intermediate.crt |
+| **ui-ingest**               | ui-ingest.crt, ui-ingest.key                       | ca-root.crt, ca-intermediate.crt |
+| **ui-archive-search**       | ui-archive-search.crt, ui-archive-search.key       | ca-root.crt, ca-intermediate.crt |
+| **cas-server**              | cas-server.crt, cas-server.key                     | ca-root.crt, ca-intermediate.crt |
+| **iam-external**            | iam-external.crt, iam-external.key                 | ca-root.crt                      |
+| **iam-internal**            | iam-internal.crt, iam-internal.key                 | ca-root.crt                      |
+| **referential-external**    | referential-external.crt, referential-external.key | ca-root.crt                      |
+| **referential-internal**    | referential-internal.crt, referential-internal.key | ca-root.crt                      |
+| **ingest-external**         | ingest-external.crt, ingest-external.key           | ca-root.crt                      |
+| **ingest-internal**         | ingest-internal.crt, ingest-internal.key           | ca-root.crt                      |
+| **archive-search-external** | archive-search-external.crt, archive-external.key  | ca-root.crt                      |
+| **archive-search-internal** | archive-search-internal.crt, archive-internal.key  | ca-root.crt                      |
+| **security-server**         | security-server.crt, security-server               | ca-root.crt                      |
 
-La liste des certificats utilisées par VITAM est décrite à cette
-adresse : http://www.programmevitam.fr/ressources/DocCourante/html/archi/securite/20-certificates.html
+La liste des certificats utilisées par VITAM est décrite à cette adresse : <http://www.programmevitam.fr/ressources/DocCourante/html/archi/securite/20-certificates.html>
 
 ### Procédure d’ajout d’un certificat client externe
 
@@ -511,91 +507,94 @@ d'ajout d’un certificat client externe aux truststores des services de VITAMUI
 
 * Exécuter le playbook pour redéployer les keystores sur la solution VITAMUI :
 
-```console 
+```sh
 ansible-playbook vitamui_apps.yml -i environments/hosts --vault-password-file vault_pass.txt --tags update_vitamui_certificates
 ```
 
 L’utilisation d’un certificat client sur les environnements VITAMUI nécessite également de vérifier que le certificat
 soit présent dans la base de données VITAMUI et rattaché à un contexte de sécurité du client.
 
-Clusterisation
---------------
+---
 
-A compléter
+## Clusterisation
 
-Détail des services
--------------------
+À compléter
+
+---
+
+## Détail des services
 
 ### Service 1
 
-* Description  
-* Contraintes  
+* Description
+* Contraintes
 
 ### Service 2
 
-* Description  
+* Description
 * Contraintes
 
+---
 
-
-Détail des COTS
----------------
+## Détail des COTS
 
 ### CAS
 
-* Description  
-* Contraintes  
+* Description
+* Contraintes
 
 ### Annuaire de services Consul
 
-* Description  
-* Contraintes  
+* Description
+* Contraintes
 
 La découverte des services est réalisée avec Consul via l’utilisation du protocole DNS. Le service DNS configuré lors du déploiement doit pouvoir résoudre les noms DNS associés à la fois aux service_id et aux instance_id. Tout hôte portant un service VITAMUI doit utiliser ce service DNS par défaut. L’installation et la configuration du service DNS applicatif sont intégrées à VITAMUI.
 
 La résilience est assurée par l’annuaire de service Consul. Il est partagé avec VITAM.
+
 * Les services sont enregistrés au démarrage dans Consul
-* Les clients utilisent Consul (mode DNS) pour localiser les services 
+* Les clients utilisent Consul (mode DNS) pour localiser les services
 * Consul effectue régulièrement des health checks sur les services enregistrés. Ces informations sont utilisées pour router les demandes des clients sur les services actifs
 
-La solution de DNS applicatif intégrée à VITAMUI et VITAM est présentée plus en détails dans la section dédiée à Consul dans la documentation VITAM. 
+La solution de DNS applicatif intégrée à VITAMUI et VITAM est présentée plus en détails dans la section dédiée à Consul dans la documentation VITAM.
 
 ### Base NOSQL MongoDB
 
-* Description  
-* Contraintes 
+* Description
+* Contraintes
 
+---
 
-
-Multi instanciation des micro services
---------------------------------------
+## Multi instanciation des micro services
 
 ### Multi instanciation
 
-Les services vitamui multi instanciable à ce jour sont:
-  - Service IAM Internal
-  - Service IAM External
-  - Service UI Identity
-  - Service Portal
-  - Service Referential Internal
-  - Service Referential External
-  - Service UI Referential
-  - Service Ingest Internal
-  - Service Ingest External
-  - Service UI Ingest
-  - Service Archive Search Internal
-  - Service Archive Search External
-  - Service UI Archive Search
-  - Service Mongod (en cours de mise à niveau/!\\)
- 
-Un load balancer/reverse proxy (à défaut Consul) est installé et configuré pour la répartition de charge entre 
-différentes instances (cette configurtion est en cours de réalisation).
+Les services vitamui multi instanciable à ce jour sont :
+
+* Service IAM Internal
+* Service IAM External
+* Service UI Identity
+* Service Portal
+* Service Referential Internal
+* Service Referential External
+* Service UI Referential
+* Service Ingest Internal
+* Service Ingest External
+* Service UI Ingest
+* Service Archive Search Internal
+* Service Archive Search External
+* Service UI Archive Search
+* Service Mongod (en cours de mise à niveau/!\\)
+
+Un load balancer/reverse proxy (à défaut Consul) est installé et configuré pour la répartition de charge entre différentes instances (cette configurtion est en cours de réalisation).
 
 La configuration de la mémoire des services est par défaut:
+
+```conf
+Xms=512m et Xmx=512m
 ```
- Xms=512m et Xmx=512m
-```
-cette configuration est modifiable, pour plus d'informations (cf: DEX).
+
+Cette configuration est modifiable dans les jvm_opts de l'ansiblerie, pour plus d'informations (cf: DEX).
 
 ### Mono instanciation
 
