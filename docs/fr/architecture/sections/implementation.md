@@ -232,9 +232,9 @@ Les services exposants publiquement des API REST implémentent les mesures de s�
 
 * authentification par certificat X509 requise des applications externes (authentification M2M) basée sur une liste blanche de certificats valides
 
-* mise à jour des droits utilisateurs grâce aux contextes applicatifs, associés certificats clients, stockés dans la collections XXX de base MongoDb gérée par le service SECURITY INTERNAL.
+* mise à jour des droits utilisateurs grâce aux contextes applicatifs, associés certificats clients, stockés dans la collections XXX de base MongoDB gérée par le service SECURITY INTERNAL.
 
-* un service batch contrôle régulièrement l'expéritaion des certificats stockés dans le truststore des services et dans le référentiel de certificats clients (MongoDb) géré par le service SECURITY INTERNAL.
+* un service batch contrôle régulièrement l'expiration des certificats stockés dans le truststore des services et dans le référentiel de certificats clients (MongoDB) géré par le service SECURITY INTERNAL.
 
 ### Sécurisation des communications internes
 
@@ -297,9 +297,9 @@ Dans un contexte sensible, il est fortement recommandé d'utiliser un bastion lo
 
 Pour éviter les attaques de type MitM, le client SSH cherche à authentifier le serveur sur lequel il se connecte. Ceci se base généralement sur le stockage des clés publiques des serveurs auxquels il faut faire confiance (~/.ssh/known_hosts).
 
-Il existe différentes méthodes pour remplir ce fichier (vérification humaine à la première connexion, gestion centralisée, DNSSEC). La gestion du fichier known_hosts  est un  pré-requis pour le lancement d’ansible.
+Il existe différentes méthodes pour remplir ce fichier (vérification humaine à la première connexion, gestion centralisée, DNSSEC). La gestion du fichier known_hosts est un pré-requis pour le lancement d’ansible.
 
-### Elévation de privilèges
+### Élévation de privilèges
 
 Plusieurs solutions sont envisageables :
 
@@ -313,9 +313,7 @@ Plusieurs solutions sont envisageables :
 
 ## Certificats et PKI
 
-La PKI permet de gérer de manière robuste les certificats de la solution VITAMUI. Une PKI est une architecture de
-confiance constituée d’un ensemble de systèmes fournissant des services permettant la gestion des cycles de vie des
-certificats numériques :
+La PKI permet de gérer de manière robuste les certificats de la solution VITAMUI. Une PKI est une architecture de confiance constituée d’un ensemble de systèmes fournissant des services permettant la gestion des cycles de vie des certificats numériques :
 
 * émission de certificats à des entités préalablement authentifiées
 * déploiement des certificats
@@ -324,12 +322,11 @@ certificats numériques :
 
 ### Principes de fonctionnement PKI de VITAMUI
 
-La PKI VITAMUI gère les certificats nécessaires à l'authentification des services VITAMUI et des entités extérieurs. La
-logique de fonctionnement de la PKI VITAMUI est similaire à celle utilisée par la solution VITAM.
+La PKI VITAMUI gère les certificats nécessaires à l'authentification des services VITAMUI et des entités extérieurs. La logique de fonctionnement de la PKI VITAMUI est similaire à celle utilisée par la solution VITAM.
 
 Les principes de fonctionnement de la PKI sont les suivants :
 
-* Emission des certificats VITAMUI (les dates de création et de fin de validité des CA sont générées dans cette phase).
+* Émission des certificats VITAMUI (les dates de création et de fin de validité des CA sont générées dans cette phase).
 * Gestion du cycle de vie (révocation) des certificats
 * Publication des certificats et des clés (.crt et .key)
 * Déploiement :
@@ -343,7 +340,7 @@ Les principes de fonctionnement de la PKI sont les suivants :
 
 ### Explication avancée du fonctionnement
 
-Le fonctionnement de la PKI de la solution VitamUI est basé sur la même logique d'architecture que celle de Vitam.
+Le fonctionnement de la PKI de la solution VITAMUI est basé sur la même logique d'architecture que celle de Vitam.
 
 Lien des documentations existantes :
 
@@ -353,7 +350,7 @@ La PKI voit ses fichiers répartis à deux emplacements:
 
 * deployment/pki
 
-  À cet emplacement se trouvent les scripts et fichiers de configuration associés à la génération des assets (certificats, clés privées ...)
+  À cet emplacement se trouve les scripts et fichiers de configuration associés à la génération des assets (certificats, clés privées ...)
 
   | Fichier            | Description                                                                                   |
   | ------------------ | --------------------------------------------------------------------------------------------- |
@@ -367,36 +364,27 @@ Revenons en détails sur les scripts de génération des différents éléments 
 
 * generate_ca*.sh:
   * Paramètre(s):
-    * ERASE [Facultatif]: Booléen indiquant si les CA et fichiers associés existants doivent être supprimés avant
-          génération - Valeur par défaut: **false**
+    * ERASE [Facultatif]: Booléen indiquant si les CA et fichiers associés existants doivent être supprimés avant génération - Valeur par défaut: **false**
   * Description:
-      Permet de générer les certificats d'autorité mentionnées dans le script de génération. Attention, toute autorité
-      existante n'est pas regénérée, l'utilisation du paramètre **ERASE** sera recommandée lors de la première
-      génération de la PKI.
+      Permet de générer les certificats d'autorité mentionnées dans le script de génération. Attention, toute autorité existante n'est pas regénérée, l'utilisation du paramètre **ERASE** sera recommandée lors de la première génération de la PKI.
 
 * generate_certs*.sh
   * Paramètre(s):
-    * ENVIRONNEMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être
-          générés
-    * ERASE [Facultatif]: Booléen indiquant si les certificats et fichiers associés existants doivent être supprimés
-          avant génération - Valeur par défaut: **false**
+    * ENVIRONNEMENT_FILE [Obligatoire]: Chemin vers le fichier d'environnement pour lequel les certificats vont être générés
+    * ERASE [Facultatif]: Booléen indiquant si les certificats et fichiers associés existants doivent être supprimés avant génération - Valeur par défaut: **false**
   * Description:
-      Permet de générer les certificats (serveur, client) mentionnés dans le script de génération. Attention, tout
-      certificat existant n'est pas regénéré, l'utilisation du paramètre **ERASE** sera recommandée lors de la première
-      génération de la PKI. Deux types de fichiers seront modifiés lors de cette exécution:
+      Permet de générer les certificats (serveur, client) mentionnés dans le script de génération. Attention, tout certificat existant n'est pas regénéré, l'utilisation du paramètre **ERASE** sera recommandée lors de la première génération de la PKI. Deux types de fichiers seront modifiés lors de cette exécution:
     * les fichiers de configuration des CA (serial, index.txt ...)
     * les fichiers générés (`deployment/environment/certs`)
 
-Les scripts suffixés par **_dev** concernent le matériel SSL utilisé pour le lancement de l'application en local sur l'environnement de développement. L'ensemble des fichiers générés se trouveront dans l'arborescence **dev-deployment** du projet. Il faudra par la suite copier les fichiers générés associés à chaque module dans le repertoire /resources/dev du
-projet associé.
+Les scripts suffixés par **_dev** concernent le matériel SSL utilisé pour le lancement de l'application en local sur l'environnement de développement. L'ensemble des fichiers générés se trouveront dans l'arborescence **dev-deployment** du projet. Il faudra par la suite copier les fichiers générés associés à chaque module dans le répertoire /resources/dev du projet associé.
 
 * deployment/environment/certs
 
 À cet emplacement figure l'ensemble de la PKI de la solution. Par défaut, on retrouvera trois zones (une par autorité):
 
 * server: l'ensemble du certificats permettant la communication HTTPS entre les différentes applications de la solution
-* client-vitam: certificats utilisés par l'application pour communiquer avec Vitam. Avec le script **generate_certs.sh**
-  fournis par la PKI, un certificat sera généré pour s'interfacer avec Vitam.
+* client-vitam: certificats utilisés par l'application pour communiquer avec Vitam. Avec le script **generate_certs.sh** fournis par la PKI, un certificat sera généré pour s'interfacer avec Vitam.
 * client-external: certificats des clients autorisés à solliciter les API externes
 
 ### Cas pratiques
@@ -410,7 +398,7 @@ projet associé.
       Ce client se base sur un fichier de configuration dans lesquels sont référencés un **keystore** (concenant le certificat utilisé pour chiffrer la requête) et un **trustore** (contenant le(s) CA(s) utilisé(s) pour les échanges avec les applications à l'extérieur de VitamUI)
 
     * `deployment/environement/certs/client-vitam/ca`: certificat d'autorité intervenant dans la communication VitamUI <-> Vitam.
-      /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore exploité par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
+      /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le truststore exploité par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
 
     * `deployment/environement/certs/client-vitam/clients/vitamui`: certificat utilisé pour la communication VitamUI <-> Vitam.
       /!\ Le certificat sera embarqué dans le keystore utilisé par le client Vitam Java lors de l'exécution du script *generate_keystores.sh*.
@@ -422,8 +410,8 @@ projet associé.
 
     * la structure de la PKI VitamUI étant identique à celle de Vitam, le comportement est le suivant:
 
-      * tout CA utilisé par un client pour solliciter les API externes et nécessaire à la chaine de vérification de son certificat doit se trouver dans le répertoire `envionment/certs/client-external/ca`
-        /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le trustore exploités par les API externes lors de l'exécution du script *generate_keystores.sh*.
+      * tout CA utilisé par un client pour solliciter les API externes et nécessaire à la chaîne de vérification de son certificat doit se trouver dans le répertoire `envionment/certs/client-external/ca`
+        /!\ L'ensemble des CA présents dans ce répertoire seront embarqués dans le truststore exploités par les API externes lors de l'exécution du script *generate_keystores.sh*.
 
       * le certificat d'un client accédant aux API externes doit figurer à l'emplacement `envionment/certs/client-external/clients/external`
 
@@ -453,8 +441,7 @@ projet associé.
                 certificates: ['external/vitamui.crt']
         ```
 
-      * Exécution du playbook de mise à jour :
-        `ansible-playbook ansible-vitam-exploitation/add_contexts.yml`
+      * Exécution du playbook de mise à jour : `ansible-playbook ansible-vitam-exploitation/add_contexts.yml`
 
   * Vitam -> VitamUI
     * Copier le(s) CA(s) de Vitam `{vitam_inventory_dir}/certs/client-vitam/ca` dans `{vitamui_inventory_dir}/certs/client-vitam/ca/`
@@ -496,8 +483,7 @@ La liste des certificats utilisées par VITAM est décrite à cette adresse : <h
 
 ### Procédure d’ajout d’un certificat client externe
 
-Le certificat ou l’autorité de certification doit présent dans les truststores des APIs external VITAMUI. La procédure
-d'ajout d’un certificat client externe aux truststores des services de VITAMUI est la suivante :
+Le certificat ou l’autorité de certification doit présent dans les truststores des APIs external VITAMUI. La procédure d'ajout d’un certificat client externe aux truststores des services de VITAMUI est la suivante :
 
 * Déposer le(s) CA(s) du client dans le répertoire deployment/environment/certs/client-external/ca
 
@@ -511,8 +497,7 @@ d'ajout d’un certificat client externe aux truststores des services de VITAMUI
 ansible-playbook vitamui_apps.yml -i environments/hosts --vault-password-file vault_pass.txt --tags update_vitamui_certificates
 ```
 
-L’utilisation d’un certificat client sur les environnements VITAMUI nécessite également de vérifier que le certificat
-soit présent dans la base de données VITAMUI et rattaché à un contexte de sécurité du client.
+L’utilisation d’un certificat client sur les environnements VITAMUI nécessite également de vérifier que le certificat soit présent dans la base de données VITAMUI et rattaché à un contexte de sécurité du client.
 
 ---
 
@@ -598,4 +583,4 @@ Cette configuration est modifiable dans les jvm_opts de l'ansiblerie, pour plus 
 
 ### Mono instanciation
 
-Le fameux service mono instanciable dans vitamui est le serveur CAS.
+Le service CAS est actuellement mono-instanciable.
