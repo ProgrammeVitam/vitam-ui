@@ -21,7 +21,7 @@ Ce document est séparé en deux parties distinctes :
   * les principes d’architecture technique à destination des architectes d’infrastructure
   * les choix d’architecture et de composants techniques, à destination des architectes d’infrastructure et des exploitants
 
-Les principes et règles de sécurité appliquées et applicables à la solution sont réparties dans les différents chapîtres.
+Les principes et règles de sécurité appliquées et applicables à la solution sont réparties dans les différents chapitres.
 
 ## Objectifs de la solution
 
@@ -37,4 +37,4 @@ La solution VITAMUI s'inscrit aujourd'hui dans le cadre du [Programme VITAM](htt
 
 Les différentes couches et services internes de la solution VITAMUI communiquent avec les clients externes java de la solution VITAM, ces derniers sont publiés sous la licence [CeCILL-C](https://cecill.info/licences/Licence_CeCILL-C_V1-fr.html).
 
-Si vous souhaitez contribuer au développement officiel de la solution, merci de [contacter le Programmme VITAM](contact@programmevitam.fr).
+Si vous souhaitez contribuer au développement officiel de la solution, merci de [contacter le Programme VITAM](contact@programmevitam.fr).
