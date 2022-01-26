@@ -1,18 +1,15 @@
-Gestion du système
-==================
+# Gestion du système
 
-Chaîne de déploiement
----------------------
+## Chaîne de déploiement
 
-* Les composants de la solution VITAM UI sont installés et configurés par un outil de déploiement automatique (ansible) dans des systèmes d’exploitation cibles (VM, container..). 
+* Les composants de la solution VITAM UI sont installés et configurés par un outil de déploiement automatique (ansible) dans des systèmes d’exploitation cibles (VM, container..).
 
-* La procédure d’installation et de configuration se fait à travers un ensemble de scripts dont le source code est stocké dans le repository GIT. 
+* La procédure d’installation et de configuration se fait à travers un ensemble de scripts dont le source code est stocké dans le repository GIT.
 
 * L’outil de déploiement (yum) utilise exclusivement les dépôts de packages pour installer les softs, afin de se décharger des étapes d’installation des dépendances et la gestion de conflit de fichiers.
 
+Schéma du processus de déploiement
 
-    Schéma du processus de déploiement
-    
 ![Pocessus de déploiment](../images/dat_chaine_deploiement.png)
 
 ### Packaging
@@ -21,8 +18,8 @@ Les packages VITAMUI sont disponibles au format RPM (CentOS).
 
 Chaque package respecte les principes suivants :
 
-* Nom des packages : vitamui<id> du package
-* Version du package : Numéro de “release” du projet 
+* Nom des packages : `vitamui-<id>` du package
+* Version du package : Numéro de “release” du projet
 * Les dossiers (ainsi que les droits associés) compris dans les packages respectent les principes dictés dans la section dédiée aux utilisateurs, dossiers et droits.
 * Les fichiers de configuration sont gérés par l’outil de déploiement de manière externe aux packages et ne sont pas inclus dans les packages.
 
@@ -43,7 +40,7 @@ Les limitations associés au format de packaging choisi sont :
 
 ### Dépôts
 
-L’installation de VITAMUI s’appuie sur des dépôts Nexus et dans le Repository RPM; ou tout autre repository mis en oeuvr suite au build.  Il est également possible de déployer VitamUI en générant des dépôts locaux sur les machines cibles.
+L’installation de VITAMUI s’appuie sur des dépôts Nexus et dans le Repository RPM; ou tout autre repository mis en oeuvre suite au build.  Il est également possible de déployer VitamUI en générant des dépôts locaux sur les machines cibles.
 
 ### Principes de déploiement
 
@@ -59,10 +56,10 @@ Les principes généraux de déploiement sont les suivants :
 
 * Le déploiement s’effectue à partir d’un point central. Les commandes passées sur chaque serveur à partir de ce point central utilisent le protocole SSH.
 
-Les service de déploiement fourni permet le déploiement de la solution VITAMUI. 
+Les services de déploiement fourni permet le déploiement de la solution VITAMUI.
 
 * Gestion des binaires d’installations (version, intégrité)
-* Gestion des éléments de configuration spécifiques à chaque plate-forme 
+* Gestion des éléments de configuration spécifiques à chaque plate-forme
 * Pilotage de l’installation des services sur les éléments d’infrastructure (VM/containers) de manière cohérente
 
 Données gérées :
@@ -72,24 +69,22 @@ Données gérées :
 
 ## Cloisonnement
 
-TODO 
+TODO
 
-## Logs techniques  
+## Logs techniques
 
- La gestion des logs techniques dans VITAMUI est similaire à celle de VITAM. Pour une description complète du fonctionnement des  logs et d'ELK, il est possible de se référer à la documentation VITAM.
+La gestion des logs techniques dans VITAMUI est similaire à celle de VITAM. Pour une description complète du fonctionnement des  logs et d'ELK, il est possible de se référer à la documentation VITAM.
 
-* [Doc VITAM : Chaîne de log - rsyslog / ELK ](http://www.programmevitam.fr/ressources/DocCourante/html/exploitation/composants/elasticsearch_log/_toc.html)
+* [Doc VITAM : Chaîne de log - rsyslog / ELK](http://www.programmevitam.fr/ressources/DocCourante/html/archi/archi-exploit-infra/05-logs-architecture.html)
 
-
-## Supervision  
+## Supervision
 
 TODO
 
-## Métriques  
+## Métriques
 
 TODO
 
 ## PRA
 
 TODO
-
