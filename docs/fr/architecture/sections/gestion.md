@@ -2,19 +2,19 @@
 
 ## Chaîne de déploiement
 
-* Les composants de la solution VITAM UI sont installés et configurés par un outil de déploiement automatique (ansible) dans des systèmes d’exploitation cibles (VM, container..).
+* Les composants de la solution VITAMUI sont installés et configurés par un outil de déploiement automatique (ansible) dans des systèmes d’exploitation cibles (VM, container..).
 
-* La procédure d’installation et de configuration se fait à travers un ensemble de scripts dont le source code est stocké dans le repository GIT.
+* La procédure d’installation et de configuration se fait à travers un ensemble de scripts dont le code source est stocké dans le repository GIT.
 
-* L’outil de déploiement (yum) utilise exclusivement les dépôts de packages pour installer les softs, afin de se décharger des étapes d’installation des dépendances et la gestion de conflit de fichiers.
+* L’outil de déploiement (yum) utilise exclusivement les dépôts de packages pour installer les logiciels, afin de se décharger des étapes d’installation des dépendances et de la gestion de conflit de fichiers.
 
 Schéma du processus de déploiement
 
-![Pocessus de déploiment](../images/dat_chaine_deploiement.png)
+![Processus de déploiement](../images/dat_chaine_deploiement.png)
 
 ### Packaging
 
-Les packages VITAMUI sont disponibles au format RPM (CentOS).
+Les packages VITAMUI sont disponibles au format RPM (CentOS) et DEB (Debian).
 
 Chaque package respecte les principes suivants :
 
@@ -40,13 +40,13 @@ Les limitations associés au format de packaging choisi sont :
 
 ### Dépôts
 
-L’installation de VITAMUI s’appuie sur des dépôts Nexus et dans le Repository RPM; ou tout autre repository mis en oeuvre suite au build.  Il est également possible de déployer VitamUI en générant des dépôts locaux sur les machines cibles.
+L’installation de VITAMUI s’appuie sur des dépôts Nexus et dans le Repository RPM; ou tout autre repository mis en oeuvre suite au build.  Il est également possible de déployer VITAMUI en générant des dépôts locaux sur les machines cibles.
 
 ### Principes de déploiement
 
 Les principes généraux de déploiement sont les suivants :
 
-* Les packages d’installation (rpm) sont identiques pour tous les environnements. Seule leur configuration change.
+* Les packages d’installation (rpm/deb) sont identiques pour tous les environnements. Seule leur configuration change.
 
 * La configuration des services est externalisée et gérée par l’outillage de déploiement.
 
@@ -56,7 +56,7 @@ Les principes généraux de déploiement sont les suivants :
 
 * Le déploiement s’effectue à partir d’un point central. Les commandes passées sur chaque serveur à partir de ce point central utilisent le protocole SSH.
 
-Les services de déploiement fourni permet le déploiement de la solution VITAMUI.
+Le service de déploiement fourni permet le déploiement de la solution VITAMUI.
 
 * Gestion des binaires d’installations (version, intégrité)
 * Gestion des éléments de configuration spécifiques à chaque plate-forme
