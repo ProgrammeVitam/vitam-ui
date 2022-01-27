@@ -31,7 +31,7 @@ Les services externes s'auto-déclarent au démarrage dans l'annuaire de service
 
 Les services disposent d'API REST pour suivre leur état et leur activité. Ces API ne sont pas accessibles publiquement.
 
-* API Status pour connaitre la disponibilité du service (utilisé par Consul)
+* API Status pour connaître la disponibilité du service (utilisé par Consul)
 * API Health (basée sur SpringBoot) pour suivre l'activité
 
 Les services génèrent les logs techniques dans la solution de log centralisée basée sur ELK.
@@ -52,7 +52,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 * Description : service externe pour la gestion des référentiels de la solution logicielle VITAM.
 
-  Le service de référentiel externe a pour responsabilité la réception, la sécurisation des resources internes de gestion des référentiels, et la communication sécurisée avec les couches internes.
+  Le service de référentiel externe a pour responsabilité la réception, la sécurisation des ressources internes de gestion des référentiels, et la communication sécurisée avec les couches internes.
 
   Le service de référentiel externe est composé de plusieurs points d'APIs:
 
@@ -72,7 +72,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 * Description : service externe pour la gestion des opérations d'entrées d'archives de la solution logicielle VITAM.
 
-  Le service d'ingest externe a pour responsabilité la réception, la sécurisation des resources internes de versement, et la communication sécurisée avec les couches internes.
+  Le service d'ingest externe a pour responsabilité la réception, la sécurisation des ressources internes de versement, et la communication sécurisée avec les couches internes.
 
   Le service d'ingest externe est composé de plusieurs points d'APIs:
 
@@ -87,7 +87,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 * Description : service externe pour la gestion d'accès et la recherche d'archives de la solution logicielle VITAM.
 
-  Le service d'archive externe a pour responsabilité la réception, la sécurisation des resources internes, et la communication sécurisée avec les couches internes d'accès aux archives.
+  Le service d'archive externe a pour responsabilité la réception, la sécurisation des ressources internes, et la communication sécurisée avec les couches internes d'accès aux archives.
 
   Le service d'archive externe est composé de plusieurs points d'APIs:
 
@@ -103,13 +103,13 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 Les services internes offrent des API REST accessibles en HTTPS uniquement depuis les services externes ou internes. Les API de ces services ne sont donc pas exposées publiquement. Les services internes implémentent les fonctionnalités de base de la solution ainsi que les fonctionnalités métiers. En fonction des besoins, les services internes peuvent être amenés à journaliser des évènements dans le logbook des opérations du socle VITAM.
 
-Les utilisateurs sont identifiés dans les services internes grâce au token transmis dans les headers des requêtes HTTPS. L'utililisation du protocole HTTPS permet de chiffrer les tokens et les informations sensibles qui sont transportées dans les requêtes. Les services internes peuvent éventuellement vérifier les droits d'accès de l'utilisateur avant d'accéder aux ressources.
+Les utilisateurs sont identifiés dans les services internes grâce au token transmis dans les headers des requêtes HTTPS. L'utilisation du protocole HTTPS permet de chiffrer les tokens et les informations sensibles qui sont transportées dans les requêtes. Les services internes peuvent éventuellement vérifier les droits d'accès de l'utilisateur avant d'accéder aux ressources.
 
 Les services internes s'auto-déclarent au démarrage dans l'annuaire de service Consul.
 
 Les services disposent d'API REST pour suivre leur état et leur activité.
 
-* API Status pour connaitre la disponibilité du service (utilisé par Consul)
+* API Status pour connaître la disponibilité du service (utilisé par Consul)
 * API Health (basée sur SpringBoot) pour suivre l'activité du service
 
 Les services génèrent les logs techniques dans la solution de log centralisée basée sur ELK.
@@ -132,7 +132,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
 * Description : service interne pour la gestion des référentiels de la solution logicielle VITAM.
 
-  Le service de référentiel interne reçoit les requtes du client référentiel externe, et communique avec VITAM via les clients Admin/Access pour la récupération des données.
+  Le service de référentiel interne reçoit les requêtes du client référentiel externe, et communique avec VITAM via les clients Admin/Access pour la récupération des données.
 
   Le service de référentiel interne est composé de plusieurs points d'APIs:
 
@@ -177,7 +177,7 @@ Les services génèrent les logs techniques dans la solution de log centralisée
 
   Le service d'archive interne est composé de plusieurs points d'APIs:
 
-  * API de recherche des archive par requetes (/archive-search/search)
+  * API de recherche des archive par requêtes (/archive-search/search)
   * API de recherche des unités archivistiques (/archive-search/archiveunit/{id})
   * API de recherche des arbres de positionnement et plans de classement (/archive-search/filingholdingscheme)
   * API de téléchargement des objets (/archive-search/downloadobjectfromunit/{id})
@@ -237,12 +237,12 @@ La cinématique est la suivante :
 2. Vérification du certificat client transmis par l'application
 3. Vérification du contexte de sécurité associé au certificat
 4. Récupération des profils (rôles & tenants) de l'utilisateur
-5. Intersection des rôles et tenants entre le conexte de sécurité et les profils
+5. Intersection des rôles et tenants entre le contexte de sécurité et les profils
 6. L'utilisateur peut accéder aux ressources autorisées
 
 Il est ainsi possible de limiter les risques d'élévations de privilèges en dissociant les contextes applicatifs de 2 instances d'une même application.
 
-Par exemple, dans une première instance de l'application exposée sur un réseau public et associé à un contexte applicatif possédant des droits limités, un administrateur ne pourra pas accéder à des fonctions d'admnistration. En revanche, une deuxième instance, bénéficiant d'un contexte applicatif adéquat, sur un réseau protégé et accessible à ce même administrateur permettra d'effectuer des opérations à haut privilège.
+Par exemple, dans une première instance de l'application exposée sur un réseau public et associé à un contexte applicatif possédant des droits limités, un administrateur ne pourra pas accéder à des fonctions d'administration. En revanche, une deuxième instance, bénéficiant d'un contexte applicatif adéquat, sur un réseau protégé et accessible à ce même administrateur permettra d'effectuer des opérations à haut privilège.
 
 ### Service d'authentification centralisé CAS
 
@@ -270,7 +270,7 @@ La [documentation de CAS](https://www.apereo.org/projects/cas) est disponible su
 
 Les principes généraux de l'implémentation de CAS dans VITAMUI sont les suivants :
 
-* l'email de l'utilisateur assure l'indification de l'utilisateur dans le système
+* l'email de l'utilisateur assure l'identification de l'utilisateur dans le système
 * les applications VITAMUI (ie. Service Provider) raccordées au serveur CAS utilisent le protocole CAS. (Dans VITAMUI, la bibliothèque Spring Security fournit cette fonctionnalité)
 * les applications VITAMUI faisant office de services providers sont déclarées dans CAS
 * la délégation d’authentification du serveur CAS aux IDP des clients se fait en SAML 2.0
@@ -310,7 +310,7 @@ Pour un utilisateur, non préalablement authentifiés, l'authentification dans C
 
 6. l'application récupère le profil de l'utilisateur et son token API
 
-7. lors d'un apple à l'API VITAM, le token est transmis dans le header de la requête.
+7. lors d'un appel à l'API VITAM, le token est transmis dans le header de la requête.
 
 ![Protocole détaillé CAS](../images/dat_cas_4.png)
 
@@ -318,13 +318,13 @@ Pour un utilisateur, non préalablement authentifiés, l'authentification dans C
 
 Si l'utilisateur est déjà authentifié auprès du CAS, aucune page de login ne s'affiche et l'utilisateur est redirigé vers l'application souhaitée, en étant authentifié dans cette application. Suivant les utilisateurs / applications demandées, une authentification multi-facteurs peut être jouée.
 
-### Délégation d'authentification
+### Présentation de la délégation d'authentification dans CAS
 
-La délégation d'authentification est prise en charge par CAS. Actuellement seul le protocol SAML v2 est supporté.
+La délégation d'authentification est prise en charge par CAS. Actuellement, seul le protocole SAML v2 est supporté.
 
 Les étapes suivantes expliquent comment fonctionne la délégation d'authentification selon le protocole SAML v2 dans le cadre de VITAMUI.
 
-En amont de ce processus, l’ IDP (SSO) doit fournir à VITAMUI l'URL associée à son service d'authentification unique (SSO), ainsi que la clé publique qui lui sera nécessaire pour valider les réponses SAML.
+En amont de ce processus, l’IDP (SSO) doit fournir à VITAMUI l'URL associée à son service d'authentification unique (SSO), ainsi que la clé publique qui lui sera nécessaire pour valider les réponses SAML.
 
 Le schéma ci-dessous illustre les étapes et le mécanisme de connexion d'un utilisateur à une application VITAMUI, via un service d'authentification unique basé sur le protocole SAML. La liste numérotée qui suit le diagramme revient en détail sur chacune des étapes.
 
@@ -350,61 +350,58 @@ L'utilisateur est redirigé vers l'URL de destination. Il est désormais connect
 
 ### Sécurisation de CAS
 
-En production, le serveur CAS sera composé de plusieurs noeuds. Il est nécessaire d'acyiver la sécurité et de configurer :
+En production, le serveur CAS sera composé de plusieurs noeuds. Il est nécessaire d'activer la sécurité et de configurer :
 
 * une définition de services (dans MongoDB) propres aux URLs de production
 * une configuration Hazelcast adéquate (stockage des sessions SSO).
-
-### Activation de la sécurité
 
 #### Configuration des propriétés de sécurité
 
 La configuration de CAS se trouve dans le fichier YAML applicatif (en développement : cas-server-application-dev.yml). Elle concerne d’abord les trois propriétés suivantes :
 
 ```yaml
-cas.tgc.secure : cookie de session SSO en HTTPS
-cas.tgc.crypto.enabled : cryptage / signature du cookie SSO
-cas.webflow.crypto.enabled : cryptage / signature du webflow
+cas.tgc.secure: true # cookie de session SSO en HTTPS
+cas.tgc.crypto.enabled: true # cryptage / signature du cookie SSO
+cas.webflow.crypto.enabled: true # cryptage / signature du webflow
 ```
 
-En production, il est absolument nécessaire que ces trois propriétés soient à true.
+> En production, il est absolument nécessaire que ces trois propriétés soient à `true`.
 
-Pour la propriété cas.tgc.crypto.enabled à true, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
+Pour la propriété `cas.tgc.crypto.enabled: true`, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
 
 ```yaml
-cas.tgc.crypto.encryption.key : clé de cryptage (ex. Jq-ZSJXTtrQ...)
-cas.tgc.crypto.signing.key : clé de signature (ex. Qoc3V8oyK98a2Dr6...)
+cas.tgc.crypto.encryption.key: clé de cryptage (ex. Jq-ZSJXTtrQ...)
+cas.tgc.crypto.signing.key: clé de signature (ex. Qoc3V8oyK98a2Dr6...)
 ```
 
-Pour la propriété cas.webflow.crypto.enabled à true, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
+Pour la propriété `cas.webflow.crypto.enabled: true`, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
 
 ```yaml
-cas.webflow.crypto.encryption.key : clé de cryptage
-cas.webflow.crypto.signing.key : clé de signature
+cas.webflow.crypto.encryption.key: clé de cryptage
+cas.webflow.crypto.signing.key: clé de signature
 ```
 
 Si aucune clé n’est définie, le serveur CAS va les créer lui-même, ce qui ne fonctionnera pas car les clés générées seront différentes sur chaque noeud.
 
-En outre, pour la délégation d’authentification et la gestion du du mot de passe, il existe deux propriétés qui sont déjà à true, mais pour lesquelles aucune clé n’a été définie :
+En outre, pour la délégation d’authentification et la gestion du mot de passe, il existe deux propriétés qui sont déjà à true, mais pour lesquelles aucune clé n’a été définie :
 
 ```yaml
-cas.authn.pac4j.cookie.crypto.enabled : chiffrement & signature pour la délégation d’authentification
-
-cas.authn.pm.reset.crypto.enabled : chiffrement & signature pour la gestion du mot de passe.
+cas.authn.pac4j.cookie.crypto.enabled: chiffrement & signature pour la délégation d’authentification
+cas.authn.pm.reset.crypto.enabled: chiffrement & signature pour la gestion du mot de passe.
 ```
 
 Pour la délégation d’authentification, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
 
 ```yaml
-cas.authn.pac4j.cookie.crypto.encryption.key : clé de cryptage
-cas.authn.pac4j.cookie.crypto.signing.key : clé de signature
+cas.authn.pac4j.cookie.crypto.encryption.key: clé de cryptage
+cas.authn.pac4j.cookie.crypto.signing.key: clé de signature
 ```
 
 Pour la gestion du mot de passe, il faut définir la clé de cryptage et de signature via les propriétés suivantes :
 
 ```yaml
-cas.authn.pm.reset.crypto.encryption.key : clé de cryptage
-cas.authn.pm.reset.crypto.signing.key : clé de signature
+cas.authn.pm.reset.crypto.encryption.key: clé de cryptage
+cas.authn.pm.reset.crypto.signing.key: clé de signature
 ```
 
 #### Suppression des accès aux URLs d'auto-administration
@@ -440,8 +437,7 @@ Ci-dessous sont listées des propriétés permettant une gestion avancée d'Haze
 
 ```yaml
 cas.ticket.registry.hazelcast.cluster.tcpipEnabled: true
-cas.ticket.registry.hazelcast.cluster.partitionMemberGroupType:
-    HOST_AWARE|CUSTOM|PER_MEMBER|ZONE_AWARE|SPI
+cas.ticket.registry.hazelcast.cluster.partitionMemberGroupType: HOST_AWARE|CUSTOM|PER_MEMBER|ZONE_AWARE|SPI
 cas.ticket.registry.hazelcast.cluster.evictionPolicy: LRU
 cas.ticket.registry.hazelcast.cluster.maxNoHeartbeatSeconds: 300
 cas.ticket.registry.hazelcast.cluster.loggingType: slf4j
@@ -533,7 +529,7 @@ Le temps de session SSO est allongée dans le cas d'une subrogation générique 
 
 #### Interface graphique customisée
 
-L'interface graphique du serveur CAS est adapté au look and feel VITAMUI.
+L'interface graphique du serveur CAS est adapté au graphisme de VITAMUI.
 
 Les pages HTML modifiées sont dans le répertoire `src/main/resources/templates` et les ressources statiques (JS, CSS, images) sont dans le répertoire `src/main/resources/static`.
 
@@ -549,9 +545,7 @@ Dans certains cas, l'authentification nécessite un second facteur sous forme de
 
 Cela est géré par la dépendance `cas-server-support-simple-mfa`.
 
-Un webflow spécifique est géré dans `src/main/resources/webflow/mfa-simple/mfa-simple-custom-webflow.xml`
-pour gérer le cas où l'utilisateur n'a pas de téléphone (`casSmsMissingPhoneView`, classe `CustomSendTokenAction`),
-le cas du code expiré (`casSmsCodeExpiredView`, classe `CheckMfaTokenAction`) et le fait que le token n'a pas de format CAS spécifique ("CASMFA-").
+Un webflow spécifique est géré dans `src/main/resources/webflow/mfa-simple/mfa-simple-custom-webflow.xml` pour gérer le cas où l'utilisateur n'a pas de téléphone (`casSmsMissingPhoneView`, classe `CustomSendTokenAction`), le cas du code expiré (`casSmsCodeExpiredView`, classe `CheckMfaTokenAction`) et le fait que le token n'a pas de format CAS spécifique ("CASMFA-").
 
 #### Gestion du mot de passe
 
@@ -571,7 +565,7 @@ La classe `TriggerChangePasswordAction` permet de provoquer le changement de mot
 
 La classe `CustomVerifyPasswordResetRequestAction` gère proprement les demandes de réinit de mot de passe expirées.
 
-La durée de vie des tickets transient est réglée à 1 jour (classe `HazelcastTicketRegistryTicketCatalogConfiguration`) pour gérer les demandes de réinit de mot de passe lors de la création d'un compte.
+La durée de vie des tickets transient est réglée à 1 jour (classe `HazelcastTicketRegistryTicketCatalogConfiguration`) pour gérer les demandes de réinitialisation des mots de passe lors de la création d'un compte.
 
 #### Support serveur OAuth
 
@@ -654,7 +648,7 @@ La session de l’IDP (Identiy Provider) est propre à chaque IDP SAML. Il exist
 
 L'utilisateur doit obligatoirement se reconnecter si la session SAML a expiré.
 
-### Expiration et cloture des sessions
+### Expiration et clôture des sessions
 
 Il existe deux politiques d'expiration possibles :
 
@@ -717,11 +711,11 @@ Un profil ne peut être rattaché qu'à un groupe de profils de même niveau.
 
 Dans une instance VITAMUI partagée, il convient de limiter les droits des administrateurs d'une organisation afin qu’ils ne puissent pas réaliser certains actions sur des ressources sensibles. (ie. customer, idp, tenant, etc.). Les profils créés à l’initialisation d’une nouvelle organisation ne doivent donc jamais comporter certains rôles (gestion des organisations, idp, tenants, etc. ) afin d'interdire à l'administrateur d'une organisation d'utiliser ou de créer de nouveaux profils avec ces rôles pour réaliser des opérations multi-tenants.
 
-Généralement l'adminitrateur de l'instance possède tous les droits (et donc tous les rôles).
+Généralement l'administrateur de l'instance possède tous les droits (et donc tous les rôles).
 
 ### Rôles
 
-Le crôle constitue la granularité la plus fine dans le système de gestion des droits. Un rôle donne des droits d’accès à des endpoints (API) correspondants à des services. Un rôle peut être affecté à un ou plusieurs profils. Dans l'implémentation VITAMUI, l’accès à un endpoint est contrôlé par l’annotation @Secured. Il existe des rôles (dénommés sous-rôles) qui donnent accès à des fonctions protégées du service. Ces “sous-rôles” sont généralement contrôlés dans le corps de la méthode par le contexte de sécurité.
+Le rôle constitue la granularité la plus fine dans le système de gestion des droits. Un rôle donne des droits d’accès à des endpoints (API) correspondants à des services. Un rôle peut être affecté à un ou plusieurs profils. Dans l'implémentation VITAMUI, l’accès à un endpoint est contrôlé par l’annotation @Secured. Il existe des rôles (dénommés sous-rôles) qui donnent accès à des fonctions protégées du service. Ces “sous-rôles” sont généralement contrôlés dans le corps de la méthode par le contexte de sécurité.
 
 ```java
     @Secured(ROLE_CREATE_XXX)
@@ -748,7 +742,7 @@ Schéma de l’arbre de niveaux :
 
 ![Arbre des niveaux](../images/dat_level.png)
 
-* Une entité dispose d'un niveau représenté par une chaine de caractère
+* Une entité dispose d'un niveau représenté par une chaîne de caractère
 * Une ressource est un objet (user, group, profile, etc.) appartenant à une entité
 * Le manageur est un utilisateur qui a autorité sur des entités et leurs ressources associées
 
@@ -778,7 +772,7 @@ Un utilisateur avec un niveau vide (administrateur) :
 Un administrateur d'une organisation possède donc des droits limités aux rôles qui ont été affectés à l'initialisation du système. Il ne peut pas par exemple créer une nouvelle organisation, si ce rôle ne lui pas été donné à l'origine. D'autre part, les droits de l'administrateur restent également limités par les droits associés à ceux du contexte de sécurité de l'application qu'il utilise.
 
 * un profil ou un groupe de profils ne peuvent être supprimés que s'ils ne sont plus utilisés
-* un profil avec un niveau ne peut être rattaché qu’à un groupe de un même niveau.
+* un profil avec un niveau ne peut être rattaché qu’à un groupe de même niveau.
 
 ### Matrice des droits
 
@@ -808,7 +802,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
 
   Oui(1) : oui mais uniquement si le profil est présent dans son groupe de profils
   Lors de la modification du niveau du profil. Il faut vérifier qu’il n’est associé à aucun groupe.
-  L'utilisateur ne peut affecter à un profil que les rôles et un tenant qu'il possède
+  L'utilisateur ne peut affecter à un profil que les rôles et un tenant qu'il possède.
 
 * Matrice des droits d'un utilisateur de niveau N pour réaliser des actions sur un groupe de profils de niveau cible N+1, N, N-1 :
 
@@ -821,7 +815,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
   | Supprimer      | Non   | Non     | Oui   |
 
   Oui(1) : oui mais uniquement s'il s'agit de son groupe.
-  Lors de la modification du niveau d'un groupe. Il faut vérifier qu’il n’a pas de profils
+  Lors de la modification du niveau d'un groupe, il faut vérifier qu’il n’a pas de profils.
 
 * Matrice des droits d'un administrateur de niveau racine (niveau vide) pour réaliser des actions sur une ressource de niveau cible N+1, N, N-1 :
 
@@ -839,7 +833,7 @@ Les tableaux ci-dessous indiquent les droits d'un utilisateur en fonction du niv
 
 #### Vérification générale
 
-Le processus de sécurisation des ressources est systématique et identique quelque soit l’utilisateur appelant la ressource. Ce processus, implémenté dans Spring Security, est essentiel car il permet de s’assurer qu’un utilisateur ne sorte jamais de son tenant. Ce processus de sécurisation est réalisé sur les accès aux ressources des services externals.
+Le processus de sécurisation des ressources est systématique et identique quel que soit l’utilisateur appelant la ressource. Ce processus, implémenté dans Spring Security, est essentiel car il permet de s’assurer qu’un utilisateur ne sorte jamais de son tenant. Ce processus de sécurisation est réalisé sur les accès aux ressources des services externals.
 
 Les étapes du processus de sécurisation sont les suivantes :
 
@@ -866,7 +860,7 @@ La vérification du rôle UPDATE_USER_EMAIL est réalisée dans le service de mi
 
 #### Vérification du tenant
 
-En règle générale, le tenant concerné par la requête est vérifié par le processus de vérification générale. Il existe néanmoins des cas où le tenant est fourni en paramètre ou dans le corps de la requête.
+En règle générale, le tenant concerné par la requête est vérifié par le processus de vérification général. Il existe néanmoins des cas où le tenant est fourni en paramètre ou dans le corps de la requête.
 
 Dans ce cas, les étapes de sécurisation sont les suivantes :
 
@@ -884,14 +878,14 @@ L'ensemble des rôles autorisés dans une organisation sont définis à la créa
 
 ### External Parameter Profile
 
-Un profil de paramétrage externe est une entité fictive, contient les informations suivantes :
+Un profil de paramétrage externe est une entité fictive contenant les informations suivantes :
 
 * le nom du profil (nom)
 * la description du profil (description)
 * le contrat d'accès associé (accessContract: voir external parameters)
 * le statut du profil (enabled)
 
-Un profil de paramétrage externe permet d'associer un et unique profil à un contrat d'accès qui est lui meme lié à un paramétrage externe (ExternalParameters).
+Un profil de paramétrage externe permet d'associer un et unique profil à un contrat d'accès qui est lui même lié à un paramétrage externe (ExternalParameters).
 
 ### Profil
 
@@ -969,23 +963,23 @@ TODO voir section concernée.
 
 ### Événement lors de la mise à jour
 
-La mise à jour du profil de paramétrage externe peut générer jusqu'à trois événements de journalisations.
+La mise à jour du profil de paramétrage externe peut générer jusqu'à trois événements de journalisation.
 
 Premier cas:
 
-* Modification des données liés aux données du profil
+* Modification des données liées aux données du profil
   * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_PROFILE`.
   * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`
 
 Deuxième cas:
 
-* Modification des données liés à la donnée du paramétrage externe
+* Modification des données liées à la donnée du paramétrage externe
   * Dans ce cas de figure, on émet un événement de journal externe de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
   * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
 
 Troisième cas:
 
-* Modification des données liés aux données du profil et du paramétrage externe, dans ce cas de figure, on émet 3 événements de journalisation :
+* Modification des données liées aux données du profil et du paramétrage externe, dans ce cas de figure, on émet 3 événements de journalisation :
   * événement de type `EXT_VITAMUI_UPDATE_PROFILE`.
   * événement de type `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM`.
   * et un événement de modification du profil de paramétrage externe `EXT_VITAMUI_UPDATE_EXTERNAL_PARAM_PROFILE`.
@@ -1039,17 +1033,17 @@ La journalisation des événements VITAMUI a pour objectifs :
   * Primary : événement initial
     * les champs sont contrôlés par VITAM
     * Marque le début de la transaction au sens VITAM
-    * L’heure de l’événement et mise par VITAM (cohérence des journeaux)
+    * L’heure de l’événement émise par VITAM (cohérence des journeaux)
   * Secondary : note un sous événement réalisé suite à l’action principale
     * possède les mêmes champs que l’événement Master mais VITAM ne procède à aucun contrôle
-    * l’heure de l’êvénement est à l’appréciation du client
-  * Fin de la transaction : le dernier sous événement doit posséder le même champs “eventType” que l’événement Master pour finir la transaction.
+    * l’heure de l’événement est à l’appréciation du client
+  * Fin de la transaction : le dernier sous événement doit posséder le même champ “eventType” que l’événement Master pour finir la transaction.
 
 #### VITAMUI
 
-* Primaire et Secondaire => Un event VITAMUI cf : fr.gouv.vitamui.commons.logbook.domain.event
-* Un appel REST => Une ou plusieurs opération métier => ensemble d’events => le premier sera l'evénement primaire (Primary) et les suivants secondaires (Secondary)
-* Stocker dans le tenant des éléments de preuves du client
+* Primaire et Secondaire => Un event VITAMUI (cf : `fr.gouv.vitamui.commons.logbook.domain.event`)
+* Un appel REST => Une ou plusieurs opération métier => ensemble d’events => le premier sera l'événement primaire (Primary) et les suivants secondaires (Secondary)
+* Stocker dans le tenant des éléments de preuve du client
 
 ![Journalisation](../images/journalisation_transaction.png)
 
@@ -1070,17 +1064,17 @@ La journalisation des événements VITAMUI a pour objectifs :
 ### Création
 
 * L’ensemble des modifications de la base de données se font dans une unique transaction.
-* Centralisation de la création des traces dans chaque module (IamLogbookService, ArchiveLogbookService, FlowLogbookService) (Responsable de la cohérence de la génération d’un event à partir d’un objet métier
-* Chaque objet de notre modèle de données possède un converter associé (Capable de convertir un objet en json et qui sera mis dans le evDetData de l’event)
+* Centralisation de la création des traces dans chaque module (IamLogbookService, ArchiveLogbookService, FlowLogbookService) (Responsable de la cohérence de la génération d’un event à partir d’un objet métier).
+* Chaque objet de notre modèle de données possède un converter associé (Capable de convertir un objet en json qui sera mis dans le evDetData de l’event).
 
 ### Sauvegarde
 
 * Réalisation par les tâches asynchrones (Cf : SendEventToVitamTasks.java et DeleteSynchronizedEventsTasks.java)
 * Les événements sont regroupés par rapport à leur X-Request-Id et triés par ordre chronologique croissant.
-* Le premier événements du groupe devient le Primary et les autres des sous-events.
-* Le premier est recopier a la fin des sous-events afin de fermer la “transaction au sens VITAM”
-* Envoit vers vitam (La reponse vitam et la date d'envoi sont toujours stocké) :
-  * Succès -> Les events sont conservés X jours et sont marqué au status “SUCCESS”
+* Le premier événement du groupe devient le Primary et les autres des sous-events.
+* Le premier est recopié à la fin des sous-events afin de fermer la “transaction au sens VITAM”.
+* Envoi vers vitam (La réponse Vitam et la date d'envoi sont toujours stockés) :
+  * Succès -> Les events sont conservés X jours et sont marqué au statut “SUCCESS”
   * Erreur -> Les events sont marqués au statut “ERROR” et un retry sera effectué dans X heure.
 
 ---
@@ -1120,7 +1114,7 @@ La journalisation des événements VITAMUI a pour objectifs :
 | _id             | String  | Clé Primaire               |                                                                      |
 | identifier      | String  | minimum = 1, maximum = 100 | L'identifiant (unique) de l'application                              |
 | url             | String  | minimum = 1, maximum = 100 |                                                                      |
-| serviceId       | String  | minimum = 1, maximum = 100 | Le meme serviceId que nous avons au niveau de la collection services |
+| serviceId       | String  | minimum = 1, maximum = 100 | Le même serviceId que nous avons au niveau de la collection services |
 | icon            | String  | minimum = 1, maximum = 50  | Logo de l'application                                                |
 | name            | String  | minimum = 1, maximum = 50  | Nom de l'application                                                 |
 | category        | String  | minimum = 1, maximum = 12  | La catégorie de l'application                                        |
@@ -1260,7 +1254,7 @@ Un groupe de profil ne peut contenir qu’un seul profil par “app:tenant”. P
 #### Collection profiles
 
 Le profil définit les permissions (rôles) données à un utilisateur et l’accès à une application (applicationName), généralement une IHM qui regroupe un ensemble de fonctionnalités selon une logique métier et appelant des API backoffice.
-Un profil appartient à une groupe (de profils). Il ne peut y avoir qu’un seule et unique profile par tenant, applicationName dans un groupe.
+Un profil appartient à un groupe (de profils). Il ne peut y avoir qu’un seul et unique profile par tenant, applicationName dans un groupe.
 
 | Nom              | Type         | Contrainte(s)             | Remarque(s) |
 | ---------------- | ------------ | ------------------------- | ----------- |
@@ -1301,7 +1295,7 @@ L’IDP interne est CAS lui même et les utilisateurs sont alors gérés uniquem
 
 #### Collection sequences
 
-La collection sequence permet de stocker les différentes séquences utilisés.
+La collection sequence permet de stocker les différentes séquences utilisées.
 
 | Nom      | Type   | Contrainte(s) | Remarque(s)        |
 | -------- | ------ | ------------- | ------------------ |
@@ -1336,7 +1330,7 @@ La liste des noms de séquences :
 Le tenant correspond à un container (ie. espace de travail) logique.
 Chaque tenant est unique dans le système et appartient à un seul et unique client.
 Un client peut posséder plusieurs tenants.
-Un client ne doit jamais pouvoir accéder au tenant d’un autre client.
+Un client ne doit jamais pouvoir accéder aux tenants d’un autre client.
 Les tenants VITAMUI correspondent aux tenants VITAM.
 Toutes les requêtes HTTP dans VITAMUI doivent renseigner le tenant dans le header.
 Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (certificat et contexte) et utilisateurs (profils).
@@ -1418,7 +1412,7 @@ Dans VITAMUI, le tenant permet de vérifier les autorisations applicatives (cert
 
 #### Collection certificates
 
-La collection certificat permet de stocker les certificats correspondant à un contexte.
+La collection certificat permet de stocker les certificats correspondants à un contexte.
 Le certificat est transmis par l’application client lors de la connexion SSL.
 
 | Nom          | Type   | Contrainte(s) | Remarque(s)                                                            |
@@ -1462,7 +1456,7 @@ Cette base est initialisée à la création de l'environnement. Elle est uniquem
 
 ### Base archivesearch
 
-Cette base est utilisé pour stocker les critères de filtres de recherche des utilisateurs, Aujourd'hui, elle est utilisée uniquement par le service Archive-Search, en particulier l'application de consultation et de recherche d'archives.
+Cette base est utilisée pour stocker les critères de filtres de recherche des utilisateurs. Aujourd'hui, elle est utilisée uniquement par le service Archive-Search, en particulier l'application de consultation et de recherche d'archives.
 
 * Collections
   * searchCriteriaHistories
