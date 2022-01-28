@@ -58,6 +58,9 @@ archive-search-external:
     server-host: localhost
     server-port: 7089
     secure: false
+    connect-time-out: 30
+    read-time-out: 30
+    write-time-out: 30
 
 # Jaeger
 opentracing:

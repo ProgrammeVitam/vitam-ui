@@ -348,6 +348,9 @@ vitamui:
     store_name: "ui-archive-search"
     port_service: 8009
     port_admin: 7009
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -368,6 +371,9 @@ vitamui:
     port_service: 8109
     port_admin: 7109
     secure: true
+    connect_timeout: 30
+    read_timeout: 30
+    write_timeout: 30
     jvm_log: false
     logging_level: "INFO"
     log:

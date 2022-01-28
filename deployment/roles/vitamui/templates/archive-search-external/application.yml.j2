@@ -75,6 +75,9 @@ archive-search-external:
   archive-search-internal-client:
     server-host: {{ vitamui.archive_search_internal.host }}
     server-port: {{ vitamui.archive_search_internal.port_service }}
+    connect-time-out: {{ vitamui.archive_search_external.connect_timeout | default(30) }}
+    read-time-out: {{ vitamui.archive_search_external.read_timeout | default(30) }}
+    write-time-out: {{ vitamui.archive_search_external.write_timeout | default(30) }}
 {% if vitamui.archive_search_internal.secure | lower == "true" %}
     secure: {{ vitamui.archive_search_internal.secure | lower }}
     ssl-configuration:

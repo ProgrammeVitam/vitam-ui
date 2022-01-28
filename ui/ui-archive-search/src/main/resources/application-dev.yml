@@ -65,6 +65,9 @@ ui-archive-search:
     server-host: localhost
     server-port: 8089
     secure: true
+    connect-time-out: 30
+    read-time-out: 30
+    write-time-out: 30
     ssl-configuration:
       keystore:
         key-path: src/main/resources/dev/keystore_ui-archive-search.jks
