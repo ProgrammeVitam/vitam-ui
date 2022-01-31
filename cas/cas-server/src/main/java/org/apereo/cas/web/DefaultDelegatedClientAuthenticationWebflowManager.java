@@ -23,7 +23,6 @@ import org.pac4j.core.context.WebContext;
 import org.pac4j.core.redirect.RedirectionActionBuilder;
 import org.pac4j.oauth.client.OAuth10Client;
 import org.pac4j.oauth.client.OAuth20Client;
-import org.pac4j.oauth.config.OAuth20Configuration;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.saml.client.SAML2Client;
 import org.pac4j.saml.state.SAML2StateGenerator;
@@ -37,6 +36,7 @@ import java.util.Optional;
 
 /**
  * Copy/paste of the original CAS class with customisations/fixes in the TST transport.
+ * To be removed when upgrading to a version greater than or equals to 6.4.6.
  */
 @RequiredArgsConstructor
 @Slf4j
@@ -300,17 +300,17 @@ public class DefaultDelegatedClientAuthenticationWebflowManager implements Deleg
         }
 
         // CUSTO:
-        clientId = getDelegatedClientIdFromStorage(webContext, client, clientId, OAuth20Client.class, OAUTH20_CLIENT_ID_SESSION_KEY);
-        clientId = getDelegatedClientIdFromStorage(webContext, client, clientId, OidcClient.class, OIDC_CLIENT_ID_SESSION_KEY);
-        clientId = getDelegatedClientIdFromStorage(webContext, client, clientId, OAuth10Client.class, OAUTH10_CLIENT_ID_SESSION_KEY);
-        clientId = getDelegatedClientIdFromStorage(webContext, client, clientId, CasClient.class, CAS_CLIENT_ID_SESSION_KEY);
+        clientId = getDelegatedClientIdFromSessionStore(webContext, client, clientId, OAuth20Client.class, OAUTH20_CLIENT_ID_SESSION_KEY);
+        clientId = getDelegatedClientIdFromSessionStore(webContext, client, clientId, OidcClient.class, OIDC_CLIENT_ID_SESSION_KEY);
+        clientId = getDelegatedClientIdFromSessionStore(webContext, client, clientId, OAuth10Client.class, OAUTH10_CLIENT_ID_SESSION_KEY);
+        clientId = getDelegatedClientIdFromSessionStore(webContext, client, clientId, CasClient.class, CAS_CLIENT_ID_SESSION_KEY);
 
         LOGGER.debug("Located delegated client identifier [{}]", clientId);
         return clientId;
     }
 
     // CUSTO:
-    protected String getDelegatedClientIdFromStorage(final WebContext webContext, final Client client, final String clientId,
+    protected String getDelegatedClientIdFromSessionStore(final WebContext webContext, final Client client, final String clientId,
                                                      final Class clientClass, final String key) {
         if (StringUtils.isBlank(clientId) && clientClass.isAssignableFrom(client.getClass())) {
             LOGGER.debug("Client identifier could not be found in request parameters. Looking at session store for the {} client", clientClass);

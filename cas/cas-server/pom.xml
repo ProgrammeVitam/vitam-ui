@@ -23,7 +23,7 @@
         <spring.version>5.3.9</spring.version>
         <swagger.version>2.1.10</swagger.version>
         <mongo.version>4.3.1</mongo.version>
-        <spring-webmvc-pac4j.version>5.0.0</spring-webmvc-pac4j.version>
+        <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
 
         <rpm.skip>false</rpm.skip>
@@ -153,6 +153,31 @@
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-jee</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-http</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-config</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-cas</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
+            <artifactId>pac4j-oauth</artifactId>
+            <version>${pac4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.pac4j</groupId>
             <artifactId>pac4j-core</artifactId>
             <version>${pac4j.version}</version>
         </dependency>
@@ -168,11 +193,6 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>pac4j-oidc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>oauth2-oidc-sdk</artifactId>
-            <version>9.22</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -331,6 +351,11 @@
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>1.6.5</version>
         </dependency>
 
         <!-- OAuth support -->
@@ -515,6 +540,8 @@
                                 <exclude>WEB-INF/lib/cas-server-core-logging-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                                 <exclude>WEB-INF/lib/oauth2-oidc-sdk-*.jar</exclude>
+                                <exclude>WEB-INF/lib/pac4j-*.jar</exclude>
+                                <exclude>WEB-INF/lib/spring-webmvc-pac4j-*.jar</exclude>
                             </excludes>
                         </overlay>
                     </overlays>
@@ -537,7 +564,9 @@
                         WEB-INF/lib/jackson-dataformat-yaml-2.8.10.jar,
                         WEB-INF/lib/cas-server-core-logging-api-*.jar,
                         WEB-INF/lib/slf4j-api-*.jar,
-                        WEB-INF/lib/oauth2-oidc-sdk-*.jar
+                        WEB-INF/lib/oauth2-oidc-sdk-*.jar,
+                        WEB-INF/lib/pac4j-*.jar,
+                        WEB-INF/lib/spring-webmvc-pac4j-*.jar
                     </packagingExcludes>
                 </configuration>
             </plugin>
