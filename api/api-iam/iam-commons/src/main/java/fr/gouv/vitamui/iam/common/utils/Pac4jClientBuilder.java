@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.openid.connect.sdk.Nonce;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
@@ -48,7 +49,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.core.exception.TechnicalException;
-import org.pac4j.core.util.generator.RandomValueGenerator;
 import org.pac4j.oidc.client.OidcClient;
 import org.pac4j.oidc.config.OidcConfiguration;
 import org.pac4j.saml.client.SAML2Client;
@@ -162,7 +162,7 @@ public class Pac4jClientBuilder {
                     } else {
                         oidcConfiguration.setDisablePkce(true);
                     }
-                    oidcConfiguration.setStateGenerator(new RandomValueGenerator(32));
+                    oidcConfiguration.setStateGenerator((context, store) -> new Nonce().toString());
                     oidcConfiguration.setTokenValidator(new CustomTokenValidator(oidcConfiguration));
 
                     final OidcClient oidcClient = new OidcClient(oidcConfiguration);
