@@ -63,6 +63,7 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 import {TranslateModule} from '@ngx-translate/core';
 import {NgxUiLoaderModule} from "ngx-ui-loader";
 import {ProfilePreviewModule} from "./profile-preview/profile-preview.module";
+import { CreateNoticeChoiceComponent } from './create-notice-choice/create-notice-choice.component';
 
 
 @NgModule({
@@ -85,7 +86,7 @@ import {ProfilePreviewModule} from "./profile-preview/profile-preview.module";
   ],
   exports: [CreateProfileComponent,EditProfileComponent,ListProfileComponent],
   providers:[],
-  declarations: [ProfileComponent,CreateProfileComponent,EditProfileComponent,ListProfileComponent,FilterByTypePipe,FilterByStringNamePipe],
+  declarations: [ProfileComponent,CreateProfileComponent,EditProfileComponent,ListProfileComponent,FilterByTypePipe,FilterByStringNamePipe, CreateNoticeChoiceComponent],
 
 })
 export class ProfileModule {

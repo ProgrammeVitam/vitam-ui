@@ -100,7 +100,18 @@
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Sélectionner un profil d'archivage :"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choisir le type de notice à créer :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choix du type de notice",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Création d'une notice",
+      "POPUP_CREATION_OK_LABEL": "TERMINER"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",

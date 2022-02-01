@@ -1,22 +1,22 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { environment } from 'projects/pastis/src/environments/environment';
-import { Subscription } from 'rxjs';
-import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
-import { ProfileService } from '../../core/services/profile.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
-import { FileNode } from '../../models/file-node';
-import { Profile } from '../../models/profile';
-import { ProfileDescription } from '../../models/profile-description.model';
-import { CreateProfileComponent } from '../../profile/create-profile/create-profile.component';
-import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
-import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
-import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {FileUploader} from 'ng2-file-upload';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {environment} from 'projects/pastis/src/environments/environment';
+import {Subscription} from 'rxjs';
+import {NoticeService} from '../../core/services/notice.service';
+import {NotificationService} from '../../core/services/notification.service';
+import {ProfileService} from '../../core/services/profile.service';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {FileNode} from '../../models/file-node';
+import {Profile} from '../../models/profile';
+import {ProfileDescription} from '../../models/profile-description.model';
+import {CreateNoticeComponent} from '../../user-actions/create-notice/create-notice.component';
+import {PastisDialogDataCreate} from '../../user-actions/save-profile/save-profile.component';
+import {PastisDialogData} from '../pastis-dialog/classes/pastis-dialog-data';
+import {CreateNoticeChoiceComponent} from "../../profile/create-notice-choice/create-notice-choice.component";
 
 
 function constantToTranslate(edit: boolean) {
@@ -33,10 +33,10 @@ function constantToTranslate(edit: boolean) {
   this.popupSaveOkLabel = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_SAVE_OK_LABEL');
   this.popupSaveCreateNoticeCancelLabel = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_CANCEL_LABEL');
   this.popupSaveCreateNoticeOkLabel = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_OK_LABEL');
-  this.popupCreationCancelLabel = this.translated('PROFILE.POP_UP_CREATION.POPUP_CREATION_CANCEL_LABEL');
-  this.popupCreationTitleDialog = this.translated('PROFILE.POP_UP_CREATION.POPUP_CREATION_TITLE_DIALOG');
-  this.popupCreationSubTitleDialog = this.translated('PROFILE.POP_UP_CREATION.POPUP_CREATION_SUBTITLE_DIALOG');
-  this.popupCreationOkLabel = this.translated('PROFILE.POP_UP_CREATION.POPUP_CREATION_OK_LABEL');
+  this.popupCreationNoticeChoiceCancelLabel = this.translated('PROFILE.POP_UP_CREATION_NOTICE_CHOICE.POPUP_CREATION_CANCEL_LABEL');
+  this.popupCreationNoticeChoiceTitleDialog = this.translated('PROFILE.POP_UP_CREATION_NOTICE_CHOICE.POPUP_CREATION_TITLE_DIALOG');
+  this.popupCreationNoticeChoiceSubTitleDialog = this.translated('PROFILE.POP_UP_CREATION_NOTICE_CHOICE.POPUP_CREATION_SUBTITLE_DIALOG');
+  this.popupCreationNoticeChoiceOkLabel = this.translated('PROFILE.POP_UP_CREATION_NOTICE_CHOICE.POPUP_CREATION_OK_LABEL');
 }
 @Component({
   selector: 'pastis-popup-option',
@@ -61,10 +61,10 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   _uploadProfileSub: Subscription;
   subscriptions: Subscription[] = [];
   isStandalone: boolean = environment.standalone;
-  popupCreationCancelLabel: string;
-  popupCreationTitleDialog: string;
-  popupCreationSubTitleDialog: string;
-  popupCreationOkLabel: string;
+  popupCreationNoticeChoiceCancelLabel: string;
+  popupCreationNoticeChoiceTitleDialog: string;
+  popupCreationNoticeChoiceSubTitleDialog: string;
+  popupCreationNoticeChoiceOkLabel: string;
 
   donnees:string[];
 
@@ -130,16 +130,16 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   changeExpand(){
     this.expanded = !this.expanded;
   }
-  async createProfile() {
+  async createNotice() {
     this.loaderService.start();
     let dataToSendToPopUp = <PastisDialogData>{};
-    dataToSendToPopUp.titleDialog = this.popupCreationTitleDialog;
-    dataToSendToPopUp.subTitleDialog = this.popupCreationSubTitleDialog;
+    dataToSendToPopUp.titleDialog = this.popupCreationNoticeChoiceTitleDialog;
+    dataToSendToPopUp.subTitleDialog = this.popupCreationNoticeChoiceSubTitleDialog;
     dataToSendToPopUp.width = '800px';
     dataToSendToPopUp.height = '800px';
-    dataToSendToPopUp.okLabel = this.popupCreationOkLabel;
-    dataToSendToPopUp.cancelLabel = this.popupCreationCancelLabel;
-    const dialogRef = this.dialog.open(CreateProfileComponent, {
+    dataToSendToPopUp.okLabel = this.popupCreationNoticeChoiceOkLabel;
+    dataToSendToPopUp.cancelLabel = this.popupCreationNoticeChoiceCancelLabel;
+    const dialogRef = this.dialog.open(CreateNoticeChoiceComponent, {
         width: '800px',
         panelClass: 'pastis-popup-modal-box',
         data: dataToSendToPopUp

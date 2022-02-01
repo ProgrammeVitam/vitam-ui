@@ -102,8 +102,8 @@
                                      class="status-badge-green ml-3"></i>
                   <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
                 </div>
-                <div (click)="showProfile(element)" class="col-3 clickable">{{element.identifier}}</div>
-                <div (click)="showProfile(element)" class="col-3 clickable">{{element.name}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.identifier}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.name}}</div>
                 <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{element.lastUpdate}}</div>
                 <div class="col-2  actions">
                   <div>

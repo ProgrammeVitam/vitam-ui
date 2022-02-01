@@ -100,7 +100,18 @@
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Select an archive profile"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choose the type of record to create :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choice of record type",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a record",
+      "POPUP_CREATION_OK_LABEL": "TERMINATE"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
