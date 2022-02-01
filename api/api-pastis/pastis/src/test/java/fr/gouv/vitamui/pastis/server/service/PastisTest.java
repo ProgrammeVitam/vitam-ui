@@ -63,7 +63,7 @@ import java.net.URISyntaxException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class PastisTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PastisTest.class);
