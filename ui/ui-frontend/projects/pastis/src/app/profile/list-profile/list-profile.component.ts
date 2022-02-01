@@ -58,6 +58,7 @@ import {ProfileInformationTabComponent} from "../profile-preview/profile-informa
 import { Profile } from '../../models/profile';
 import { NoticeService } from '../../core/services/notice.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -128,6 +129,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   expanded: boolean;
 
+  pending: boolean;
+
+  pendingSub: Subscription;
+
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
 
   popupCreationCancelLabel: string;
@@ -136,12 +141,15 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   popupCreationOkLabel: string;
   profilesChargees: boolean = false;
 
-  constructor(private profileService: ProfileService, private noticeService: NoticeService,
+  constructor(private profileService: ProfileService, private noticeService: NoticeService,private sideNavService : ToggleSidenavService,
     private ngxLoader:NgxUiLoaderService, private router:Router, private dialog: MatDialog,
     private startupService: StartupService, private pastisConfig: PastisConfiguration, route: ActivatedRoute, globalEventService: GlobalEventService,
               private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService) {
     super(route, globalEventService);
     this.expanded = false;
+    this.pendingSub = this.sideNavService.isPending.subscribe(status=>{
+      this.pending = status;
+    })
   }
 
   ngOnInit() {
@@ -286,6 +294,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   ngOnDestroy(){
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe())
+    if(this.pendingSub) this.pendingSub.unsubscribe();
   }
 
 

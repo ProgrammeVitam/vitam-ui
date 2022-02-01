@@ -63,6 +63,8 @@ export class MainComponent implements OnInit, OnDestroy {
   editProfileComponent: EditProfileComponent;
 
   opened: boolean;
+  pending: boolean;
+  pendingSub: Subscription;
   events: string[] = [];
 
   uploadedProfileResponse: ProfileResponse;
@@ -78,6 +80,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.sideNavService.isOpened.subscribe(status=>{
       this.opened = status;
+    })
+    this.pendingSub = this.sideNavService.isPending.subscribe(status=>{
+      this.pending = status;
     })
   }
 
@@ -140,6 +145,7 @@ export class MainComponent implements OnInit, OnDestroy {
     if(this._routeParamsSubscription!= null){
       this._routeParamsSubscription.unsubscribe();
     }
+    if(this.pendingSub) this.pendingSub.unsubscribe();
   }
 
 }
