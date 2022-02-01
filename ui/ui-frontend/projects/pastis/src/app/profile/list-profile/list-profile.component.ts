@@ -37,7 +37,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {Component, Input, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {ProfileService} from '../../core/services/profile.service';
 import {ProfileDescription} from '../../models/profile-description.model';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -55,10 +54,10 @@ import {CreateProfileComponent} from "../create-profile/create-profile.component
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {MatDialog} from "@angular/material/dialog";
 import {ProfileInformationTabComponent} from "../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component";
-import { Profile } from '../../models/profile';
-import { NoticeService } from '../../core/services/notice.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
-import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
+import {Profile} from '../../models/profile';
+import {NoticeService} from '../../core/services/notice.service';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {ToggleSidenavService} from '../../core/services/toggle-sidenav.service';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -142,9 +141,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   profilesChargees: boolean = false;
 
   constructor(private profileService: ProfileService, private noticeService: NoticeService,private sideNavService : ToggleSidenavService,
-    private ngxLoader:NgxUiLoaderService, private router:Router, private dialog: MatDialog,
+    private router:Router, private dialog: MatDialog,
     private startupService: StartupService, private pastisConfig: PastisConfiguration, route: ActivatedRoute, globalEventService: GlobalEventService,
-              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService) {
+              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
+              private toggleService : ToggleSidenavService) {
     super(route, globalEventService);
     this.expanded = false;
     this.pendingSub = this.sideNavService.isPending.subscribe(status=>{
@@ -173,14 +173,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   private refreshListProfiles() {
-    this.ngxLoader.startLoader('table-profiles'); // start non-master loader
+    this.toggleService.showPending();
     this.profileService.refreshListProfiles();
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
         this.retrievedProfiles = profileList;
         console.log("Profiles: ", this.retrievedProfiles);
         this.profilesChargees = true;
-        this.ngxLoader.stopLoader('table-profiles');
+        this.toggleService.hidePending();
       }
       this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
       this.numPA = this.retrievePAorPUA("PA", false);

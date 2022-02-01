@@ -1,12 +1,3 @@
-<div  *ngIf="pending then loadingSpinner"></div>
-
-
-<ng-template #loadingSpinner>
-  <div class="steackhouse">
-    <mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>
-  </div>
-</ng-template>
-
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
     <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone"
@@ -38,7 +29,7 @@
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' |
              translate}}" placement="top"
              show-delay="0">
-          <pastis-user-action-save-profile (pendingValue)="loader($event)"></pastis-user-action-save-profile>
+          <pastis-user-action-save-profile></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' |

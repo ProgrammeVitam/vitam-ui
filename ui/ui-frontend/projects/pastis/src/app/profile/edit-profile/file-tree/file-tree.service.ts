@@ -47,7 +47,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 export class FileTreeService {
 
   updateMedataTable:Subject<FileNode>;
-  nestedDataSource:MatTreeNestedDataSource<FileNode>;;
+  nestedDataSource:MatTreeNestedDataSource<FileNode>;
   nestedTreeControl:NestedTreeControl<FileNode>;
 
   constructor() {
