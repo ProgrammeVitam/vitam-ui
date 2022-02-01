@@ -11,6 +11,18 @@
 @import '~ui-frontend-common/sass/editable-field';
 
 
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: var(--vitamui-primary) !important;
+}
+
+.steackhouse{
+  display: block;
+  position: absolute;
+  right: 50%;
+  top: 30%;
+  z-index: 1000;
+}
+
 td {
   padding-right: 20px !important;
 }

@@ -188,10 +188,11 @@ export class FileTreeMetadataComponent {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  pending: boolean = false;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService, 
+    private router: Router, private startupService: StartupService, public profileService: ProfileService,
     private fileTreeService:FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService) {
 
@@ -690,4 +691,13 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
+  loader($event: boolean) {
+    if($event){
+      this.pending = true;
+    }
+    else{
+      this.pending = false;
+    }
+
+  }
 }
