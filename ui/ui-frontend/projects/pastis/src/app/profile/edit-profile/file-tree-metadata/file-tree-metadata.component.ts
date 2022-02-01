@@ -690,14 +690,4 @@ export class FileTreeMetadataComponent {
   isDuplicated(nomDuChamp: any) {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
-
-  loader($event: boolean) {
-    if($event){
-      this.pending = true;
-    }
-    else{
-      this.pending = false;
-    }
-
-  }
 }

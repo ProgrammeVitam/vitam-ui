@@ -25,6 +25,19 @@
   }
 }
 
+::ng-deep .vitamui-spinner.mat-progress-spinner circle, .vitamui-spinner .mat-spinner circle{
+  stroke: var(--vitamui-primary) !important;
+}
+
+.steackhouse{
+  display: block;
+  position: absolute;
+  right: 50%;
+  top: 30%;
+  z-index: 1000;
+}
+
+
 ::ng-deep .modifierToolTip{
   display: flex;
   flex-direction: row;
@@ -32,7 +45,7 @@
   align-items: center;
   padding: 0;
   background: var(--vitamui-primary);
-  font-family: Mulish;
+  font-family: Mulish, sans-serif;
   font-style: normal;
   font-weight: normal;
   font-size: 12px;
