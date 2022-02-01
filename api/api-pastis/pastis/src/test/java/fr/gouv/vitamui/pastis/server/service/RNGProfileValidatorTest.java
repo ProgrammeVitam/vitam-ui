@@ -75,7 +75,7 @@ import java.io.OutputStreamWriter;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class RNGProfileValidatorTest {
 
     @Rule

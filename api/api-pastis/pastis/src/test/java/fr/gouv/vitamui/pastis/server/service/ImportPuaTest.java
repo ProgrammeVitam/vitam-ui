@@ -61,7 +61,7 @@ import java.io.InputStreamReader;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class ImportPuaTest {
 
     PuaPastisValidator puaPastisValidator = new PuaPastisValidator();

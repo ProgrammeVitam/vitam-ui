@@ -57,7 +57,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
 
     @MockBean(name = "adminExternalClient")

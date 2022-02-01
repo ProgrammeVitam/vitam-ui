@@ -67,7 +67,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @Import(value = {ServerIdentityConfiguration.class, SwaggerConfiguration.class})
-@ActiveProfiles("test, swagger")
+@ActiveProfiles("dev, swagger")
 public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenerationTest {
     @MockBean
     public ContextRestClient contextCrudRestClient;
