@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DataGeneriquePopupService } from '../data-generique-popup.service';
 
 import { PastisGenericPopupComponent } from './pastis-generic-popup.component';
+import { PastisPopupSelectionService } from './pastis-popup-selection.service';
 
 describe('PastisGenericPopupComponent', () => {
   let component: PastisGenericPopupComponent;
@@ -8,7 +10,11 @@ describe('PastisGenericPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PastisGenericPopupComponent ]
+      declarations: [ PastisGenericPopupComponent ],
+      providers: [
+        DataGeneriquePopupService,
+        PastisPopupSelectionService
+      ]
     })
     .compileComponents();
   });

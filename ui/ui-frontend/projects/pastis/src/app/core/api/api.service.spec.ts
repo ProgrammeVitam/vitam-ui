@@ -35,12 +35,23 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-
+import { BASE_URL } from 'ui-frontend-common';
 import { PastisApiService } from './api.pastis.service';
 
 describe('ApiService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+      HttpClientTestingModule,
+      //InjectorModule,
+      //LoggerModule.forRoot()
+    ],
+    providers: [
+      { provide: BASE_URL, useValue: '/pastis-api' },
+      //{ provide: ENVIRONMENT, useValue: environment }
+    ]
+  }));
 
   it('should be created', () => {
     const service: PastisApiService = TestBed.get(PastisApiService);

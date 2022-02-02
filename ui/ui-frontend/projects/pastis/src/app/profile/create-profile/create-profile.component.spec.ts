@@ -36,16 +36,32 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
 
 import { CreateProfileComponent } from './create-profile.component';
 
+
+const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
+  matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
+const matDialogData = jasmine.createSpyObj('MAT_DIALOG_DATA', ['open']);
+  matDialogData.open.and.returnValue({ afterClosed: () => of(true) });
+  
 describe('CreateProfileComponent', () => {
   let component: CreateProfileComponent;
   let fixture: ComponentFixture<CreateProfileComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateProfileComponent ]
+      declarations: [ CreateProfileComponent ],
+      imports: [
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: matDialogRefSpy },
+        { provide: MAT_DIALOG_DATA, useValue: matDialogData }
+      ]
     })
     .compileComponents();
   }));

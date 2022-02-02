@@ -48,6 +48,7 @@
     "test:ingest": "ng test ingest --watch=false",
     "test:referential": "ng test referential --watch=false",
     "test:archive-search": "ng test archive-search --watch=false",
+    "test:pastis": "ng test pastis --watch=false",
     "test:vitamui-library": "ng test vitamui-library --watch=false",
     "test:conf-ci": "ng test --watch=false --karma-config=karma.conf.ci.js",
     "test:sonar": "ng test --code-coverage --watch=false",
@@ -101,6 +102,7 @@
     "bootstrap": "^4.5.0",
     "bufferutil": "^4.0.1",
     "classlist.js": "^1.1.20150312",
+    "colors": "1.4.0",
     "core-js": "^2.6.11",
     "d3": "^3.5.17",
     "d3-svg-legend": "^1.13.0",
@@ -129,8 +131,7 @@
     "utf-8-validate": "^5.0.2",
     "uuid": "^7.0.2",
     "web-animations-js": "^2.3.2",
-    "zone.js": "~0.10.3",
-    "colors": "1.4.0"
+    "zone.js": "~0.10.3"
   },
   "devDependencies": {
     "@angular-builders/custom-webpack": "^8.4.1",
@@ -153,7 +154,7 @@
     "jasmine-marbles": "^0.4.1",
     "jasmine-spec-reporter": "~4.2.1",
     "json-server": "^0.16.3",
-    "karma": "^5.0.9",
+    "karma": "^6.3.12",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage-istanbul-reporter": "~2.1.1",
     "karma-jasmine": "^2.0.1",

@@ -80,11 +80,11 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'Archive Search Application'`, async(() => {
+  it(`should have as title 'Pastis Application'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     console.log('Title App: ', app);
-    expect(app.title).toEqual('Archive Search Application');
+    expect(app.title).toEqual('Pastis Application');
   }));
 
 

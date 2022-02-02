@@ -35,7 +35,10 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BASE_URL } from 'ui-frontend-common';
+import { PastisConfiguration } from '../core/classes/pastis-configuration';
 
 import { SedaVisualizerComponent } from './seda-visualizer.component';
 
@@ -45,7 +48,14 @@ describe('SedaVisualizerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SedaVisualizerComponent ]
+      imports: [
+        HttpClientTestingModule
+      ],
+      declarations: [ SedaVisualizerComponent ],
+      providers: [
+        PastisConfiguration,
+        { provide: BASE_URL, useValue: '/pastis-api' },
+      ]
     })
     .compileComponents();
   }));
