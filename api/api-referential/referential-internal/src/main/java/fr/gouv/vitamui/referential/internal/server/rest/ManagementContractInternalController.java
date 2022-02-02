@@ -36,7 +36,14 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -53,6 +60,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -72,8 +92,59 @@ public class ManagementContractInternalController {
     @GetMapping()
     public Collection<ManagementContractDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all management contract criteria={}", criteria);
-        SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return managementContractInternalService.getAll(vitamContext);
+    }
+
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+                                                                 @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+                                                                 @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities managementContract page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return managementContractInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+    }
+
+    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
+    public ManagementContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+        ParameterChecker.checkParameter("Identifier is mandatory : " , identifier);
+        LOGGER.debug("get managementContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return managementContractInternalService.getOne(vitamContext, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+    }
+
+    @PostMapping(CommonConstants.PATH_CHECK)
+    public ResponseEntity<Void> checkExist(@RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("check exist managementContract={}", managementContractDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        managementContractDto.setTenant(tenant);
+        final boolean exist = managementContractInternalService.check(vitamContext, managementContractDto);
+        return RestUtils.buildBooleanResponse(exist);
+    }
+
+    @PostMapping
+    public ManagementContractDto create(@Valid @RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("create managementContract={}", managementContractDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        managementContractDto.setTenant(tenant);
+        return managementContractInternalService.create(vitamContext,managementContractDto);
+    }
+
+    @PatchMapping(CommonConstants.PATH_ID)
+    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        return managementContractInternalService.patch(vitamContext, partialDto);
+    }
+
+    @GetMapping("/{id}/history")
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException {
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for managementContract with id :{}", id);
+        return managementContractInternalService.findHistoryByIdentifier(vitamContext, id);
     }
 }

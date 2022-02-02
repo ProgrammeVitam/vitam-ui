@@ -36,34 +36,37 @@
  */
 package fr.gouv.vitamui.referential.internal.server.managementcontract;
 
+import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
+import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
+import fr.gouv.vitamui.referential.common.dto.StorageDto;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
-import fr.gouv.vitam.common.model.administration.ManagementContractModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
-
 public class ManagementContractConverter {
 
-    // TODO : Make a model DTO able to be converted as XML Droid format ?
+    public ManagementContractVitamDto convertDtoToVitam(final ManagementContractDto dto) {
 
-    public ManagementContractModel convertDtoToVitam(final ManagementContractDto dto) {
-        final ManagementContractModel ManagementContract = VitamUIUtils.copyProperties(dto, new ManagementContractModel());
+        final ManagementContractVitamDto managementContract = VitamUIUtils.copyProperties(dto, new ManagementContractVitamDto());
 
-        return ManagementContract;
+        return managementContract;
     }
 
-    public ManagementContractDto convertVitamToDto(final ManagementContractModel managementContract) {
+    public ManagementContractDto convertVitamToDto(final ManagementContractVitamDto managementContract) {
         final ManagementContractDto dto = VitamUIUtils.copyProperties(managementContract, new ManagementContractDto());
-
+        dto.setStorage(new StorageDto(managementContract.getStorage()));
+        dto.setVersionRetentionPolicy(new VersionRetentionPolicyDto(managementContract.getVersionRetentionPolicy()));
         return dto;
     }
 
-    public List<ManagementContractModel> convertDtosToVitams(final List<ManagementContractDto> dtos) {
+    public List<ManagementContractModelDto> convertDtosToVitams(final List<ManagementContractDto> dtos) {
         return dtos.stream().map(this::convertDtoToVitam).collect(Collectors.toList());
     }
 
-    public List<ManagementContractDto> convertVitamsToDtos(final List<ManagementContractModel> managementContracts) {
+    public List<ManagementContractDto> convertVitamsToDtos(final List<ManagementContractVitamDto> managementContracts) {
         return managementContracts.stream().map(this::convertVitamToDto).collect(Collectors.toList());
     }
 

@@ -303,6 +303,10 @@
       "NAME": "Accession Register",
       "TOOLTIP": "View all of the accession register data"
     },
+    "MANAGEMENT_CONTRACT_APP" : {
+      "NAME": "Management contract",
+      "TOOLTIP": "Management contract application"
+    },
     "TRANSACTIONS_MONITORING": {
       "NAME": "Transactions monitoring",
       "TOOLTIP": "Transactions monitoring"

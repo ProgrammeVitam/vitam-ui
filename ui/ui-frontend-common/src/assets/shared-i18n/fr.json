@@ -330,6 +330,10 @@
     "TRANSACTIONS_MONITORING": {
       "NAME": "Suivi des versements",
       "TOOLTIP": "Suivi des versements"
+    },
+    "MANAGEMENT_CONTRACT_APP" : {
+      "NAME": "Contrats de gestion",
+      "TOOLTIP": "Application des contrats de gestion"
     }
   },
   "FOOTER": {

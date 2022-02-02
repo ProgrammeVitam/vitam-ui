@@ -36,18 +36,70 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitamui.commons.api.domain.StorageDetailDto;
+import lombok.*;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-public class StorageDto {
+@NoArgsConstructor
+public class StorageDto implements Serializable {
+
     private String unitStrategy;
+
     private String objectGroupStrategy;
+
     private String objectStrategy;
+
+    public StorageDto (StorageDetailDto storageDetailDto){
+        if (storageDetailDto != null) {
+            this.unitStrategy = storageDetailDto.getUnitStrategy();
+            this.objectGroupStrategy = storageDetailDto.getObjectGroupStrategy();
+            this.objectStrategy = storageDetailDto.getObjectStrategy();
+        }
+    }
+
+    @JsonCreator
+    public StorageDto (@JsonProperty("UnitStrategy") String unitStrategy,
+                       @JsonProperty("ObjectGroupStrategy") String objectGroupStrategy,
+                       @JsonProperty("ObjectStrategy") String objectStrategy){
+        this.unitStrategy = unitStrategy;
+        this.objectGroupStrategy = objectGroupStrategy;
+        this.objectStrategy = objectStrategy;
+    }
+
+    @JsonProperty("unitStrategy")
+    public String getUnitStrategy() {
+        return unitStrategy;
+    }
+
+    @JsonProperty("unitStrategy")
+    public void setUnitStrategy(String unitStrategy) {
+        this.unitStrategy = unitStrategy;
+    }
+
+    @JsonProperty("objectGroupStrategy")
+    public String getObjectGroupStrategy() {
+        return objectGroupStrategy;
+    }
+
+    @JsonProperty("objectGroupStrategy")
+    public void setObjectGroupStrategy(String objectGroupStrategy) {
+        this.objectGroupStrategy = objectGroupStrategy;
+    }
+
+    @JsonProperty("objectStrategy")
+    public String getObjectStrategy() {
+        return objectStrategy;
+    }
+
+    @JsonProperty("objectStrategy")
+    public void setObjectStrategy(String objectStrategy) {
+        this.objectStrategy = objectStrategy;
+    }
 }

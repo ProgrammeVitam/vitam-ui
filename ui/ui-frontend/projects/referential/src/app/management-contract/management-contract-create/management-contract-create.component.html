@@ -1,0 +1,105 @@
+<div class="header">
+    <mat-progress-bar mode="determinate" [value]="stepProgress" class="stepper-progress-bar"></mat-progress-bar>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" (keydown.enter)="$event.preventDefault()">
+    <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+      <cdk-step>
+        <div class="content">
+          <h5>Création d'un contrat de gestion</h5>
+          <h4>Informations</h4>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <vitamui-common-slide-toggle [formControl]="statusControl">Contrat de gestion actif </vitamui-common-slide-toggle>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8 form-control">
+                <vitamui-common-input formControlName="name" minlength="2" maxlength="100" required placeholder="Nom">
+                  <ng-container *ngIf="form.get('name')?.touched">
+                    <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">Champ requis </vitamui-common-input-error>
+                    <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.nameExists">Nom déjà utilisé </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-input>
+              </div>
+
+              <div class="col-8 form-control" *ngIf="isSlaveMode">
+                <vitamui-common-input
+                  formControlName="identifier"
+                  minlength="2"
+                  maxlength="100"
+                  required
+                  placeholder="Identifiant"
+                  i18n-placeholder="Identifier@@ingectContractCreateIdentifierPlaceholder"
+                >
+                  <ng-container *ngIf="form.get('identifier')?.touched">
+                    <vitamui-common-input-error
+                      *ngIf="!!form.get('identifier')?.errors?.required"
+                      i18n="Required field error hint@@formErrorRequiredField"
+                      >Champ requis
+                    </vitamui-common-input-error>
+                    <vitamui-common-input-error
+                      *ngIf="!!form?.get('identifier')?.errors?.identifierExists"
+                      i18n="Name exists error hint@@formErrorIdentifierExists"
+                      >Identifiant déjà utilisé
+                    </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-input>
+              </div>
+
+              <div class="col-12 form-control">
+                <vitamui-common-textarea formControlName="description" placeholder="Description" [rows]="4" required="required">
+                  <ng-container *ngIf="form.get('description')?.touched">
+                    <vitamui-common-input-error *ngIf="!!form.get('description')?.errors?.required">
+                      {{ 'COMMON.REQUIRED' | translate }}
+                    </vitamui-common-input-error>
+                  </ng-container>
+                </vitamui-common-textarea>
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          </div>
+        </div>
+      </cdk-step>
+
+      <cdk-step>
+        <div class="content">
+          <h5>Création d'un contrat de gestion</h5>
+          <h4>Paramétrage des stratégies de stockage</h4>
+          <i class="vitamui-icon vitamui-icon-info" vitamuicommontooltip="RIGHT" type="RIGHT" outline="true" ng-reflect-text="Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques." ng-reflect-type="RIGHT" ng-reflect-outline="true"></i>
+
+          <div class="form-group">
+            <div class="row">
+              <div formGroupName="storage" style="width: 100%;">
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="unitStrategy" placeholder="Pour les métadonnées décrivant des unités d’archives (et leur journal du cycle de vie)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
+                </div>
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="objectGroupStrategy" placeholder="Pour les métadonnées décrivant des groupes d’objets techniques (et leur journal du cycle de vie)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
+                </div>
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="objectStrategy" placeholder="Pour les fichiers numériques (objets binaires)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
+            <button type="submit" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          </div>
+        </div>
+      </cdk-step>
+    </vitamui-common-stepper>
+  </form>

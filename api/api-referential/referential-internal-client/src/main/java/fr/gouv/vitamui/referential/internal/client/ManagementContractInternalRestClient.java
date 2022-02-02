@@ -36,16 +36,21 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import java.util.List;
-
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.web.client.RestTemplate;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 public class ManagementContractInternalRestClient extends BasePaginatingAndSortingRestClient<ManagementContractDto, InternalHttpContext> {
 
@@ -54,7 +59,7 @@ public class ManagementContractInternalRestClient extends BasePaginatingAndSorti
     }
 
     @Override protected ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ManagementContractDto>>() { };
+        return new ParameterizedTypeReference<>() { };
     }
 
     @Override
@@ -67,7 +72,14 @@ public class ManagementContractInternalRestClient extends BasePaginatingAndSorti
     }
 
     protected ParameterizedTypeReference<List<ManagementContractDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ManagementContractDto>>() { };
+        return new ParameterizedTypeReference<>() { };
     }
 
+    public boolean check(InternalHttpContext context, ManagementContractDto managementContractDto) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl() + CommonConstants.PATH_CHECK);
+        final HttpEntity<ManagementContractDto> request = new HttpEntity<>(managementContractDto, buildHeaders(context));
+        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
+            request, Boolean.class);
+        return response.getStatusCode() == HttpStatus.OK;
+    }
 }

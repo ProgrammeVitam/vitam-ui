@@ -211,6 +211,15 @@ const routes: Routes = [
     data: { appId: 'ACCESSION_REGISTER_APP' },
   },
   // =====================================================
+  //                    MANAGEMENT_CONTRACT_APP
+  // =====================================================
+  {
+    path: 'management-contract',
+    loadChildren: () => import('./management-contract/management-contract.module').then(m => m.ManagementContractModule),
+    canActivate: [AuthGuard, AppGuard],
+    data: { appId: 'MANAGEMENT_CONTRACT_APP' }
+  },
+  // =====================================================
   //                      unknown path
   // =====================================================
   { path: '**', redirectTo: '' },
@@ -225,4 +234,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: [ActiveTenantGuard, AuthGuard],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

@@ -107,10 +107,14 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-
     public VitamAgencyService vitamAgencyService(final AdminExternalClient adminClient, final AgencyService agencyService, ObjectMapper objectMapper, final
     AccessExternalClient accessClient) {
         return new VitamAgencyService(adminClient, agencyService, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamUIManagementContractService getVitamUIManagementContractService(final AdminExternalClient adminClient) {
+        return new VitamUIManagementContractService(adminClient);
     }
 
     @Bean
