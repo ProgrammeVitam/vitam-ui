@@ -39,7 +39,14 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
+import {
+  AccessContract,
+  AccessContractApiService,
+  CriteriaDataType,
+  CriteriaOperator,
+  SearchService,
+  SecurityService
+} from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
@@ -58,7 +65,8 @@ export class ArchiveService extends SearchService<any> {
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private accessContractApiService: AccessContractApiService
   ) {
     super(http, archiveApiService, 'ALL');
   }
@@ -232,6 +240,16 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
+  }
+
+  getAccessContractById(accessContract: string): Observable<AccessContract> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.accessContractApiService.getAccessContractById(accessContract, headers);
+  }
+
+  hasAccessContractPermissions(accessContract: AccessContract): boolean {
+    return accessContract.writingPermission;
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

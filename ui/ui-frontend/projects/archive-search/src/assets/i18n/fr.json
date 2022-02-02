@@ -46,6 +46,7 @@
       "CONFIRM" : "Confirmer",
       "CANCEL" :"Annuler"
     },
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
@@ -250,10 +251,10 @@
       "WRONG_FORMAT": "Mauvais format de règle"
     }
   },
-  "RULES" : {   
-      "TITLE" : "Changer une règle",   
+  "RULES" : {
+      "TITLE" : "Changer une règle",
       "SELECT_RULE_CATEGORY" : "Sélectionnez une catégorie de règle",
-      "SELECT_RULE_ACTION" : "Sélectionnez une action",     
+      "SELECT_RULE_ACTION" : "Sélectionnez une action",
       "OTHER_ACTIONS" : "Autres actions",
       "BACK" : "RETOUR",
       "EXECUTE_RULE_UPDATE" : "Lancer la mise à jour",
@@ -297,13 +298,13 @@
       },
       "UA_CONTROL" : {
         "UA_FINAL_ACTION_MESSAGE" : "L'ensemble des UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
-        "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée (s) portent déjà cette règle et seront ignorées.", 
+        "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée (s) portent déjà cette règle et seront ignorées.",
         "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
         "UA_WITH_SAME_RULE_AND_DATE" : "{{ itemsWithSameRuleAndDate }} des UA sélectionnée (s) portent déjà cette règle et cette date de début et seront ignorées."
 
       },
       "DIALOG_MESSAGE" : {
-        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",       
+        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",
         "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer le bloc de mise à jour des règles ?",
         "UPDATE_CONFIRM_MESSAGE" : "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
         "EXIT_CONFIRM_MESSAGE" : "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
@@ -318,7 +319,7 @@
         "REUSE_RULE" : "Réutilisation",
         "CLASSIFICATION_RULE" : "Classification"
       }
-    }  
+    }
 
 
 }

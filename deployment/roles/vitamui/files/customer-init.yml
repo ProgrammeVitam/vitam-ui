@@ -195,6 +195,7 @@ customer-init:
         - ROLE_ELIMINATION
         - ROLE_UPDATE_MANAGEMENT_RULES
         - ROLE_COMPUTED_INHERITED_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
 
     - name: Registre des fonds
       description: Visualisation de l'ensemble des données du registre des fonds

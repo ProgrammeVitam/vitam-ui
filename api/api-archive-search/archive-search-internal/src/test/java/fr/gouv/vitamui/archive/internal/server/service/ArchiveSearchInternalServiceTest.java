@@ -42,42 +42,55 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
 import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
+import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
+import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class ArchiveSearchInternalServiceTest {
-
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchInternalServiceTest.class);
 
     @MockBean(name = "objectMapper")
     private ObjectMapper objectMapper;
@@ -94,11 +107,12 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "archiveSearchRulesInternalService")
     private ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
 
-    @MockBean(name = "archivesSearchFieldsQueryBuilderService")
+    @InjectMocks
     private ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
 
-    @MockBean(name = "archivesSearchAppraisalQueryBuilderService")
+    @InjectMocks
     private ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
+
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
@@ -111,13 +125,16 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name="ruleOperationsConverter")
     private RuleOperationsConverter ruleOperationsConverter;
 
-    @MockBean(name="rulesUpdateCommonService")
+    @InjectMocks
     private RulesUpdateCommonService rulesUpdateCommonService;
 
+    @MockBean(name="accessContractService")
+    private AccessContractService accessContractService;
+
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
+    public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
     public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
-    public final String ELIMINATION_ANALYSIS_FINAL_RESPONSE = "data/elimination/elimination_analysis_response.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
 
     @BeforeEach
@@ -126,7 +143,7 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                exportDipV2Service, archivesSearchAppraisalQueryBuilderService, eliminationService, ruleOperationsConverter, rulesUpdateCommonService);
+                exportDipV2Service, archivesSearchAppraisalQueryBuilderService, eliminationService, ruleOperationsConverter, rulesUpdateCommonService, accessContractService);
     }
 
     @Test
@@ -185,4 +202,162 @@ public class ArchiveSearchInternalServiceTest {
         Assertions.assertThat(expectedQuery.toString()).isEqualTo(String.valueOf(givenQuery));
         Assertions.assertThat(givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken()).has("Title")).isTrue();
     }
+
+    @Test
+    public void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
+        // Given
+        when(unitService.massUpdateUnitsRules(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
+
+        RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
+        response1.setHttpCode(200);
+        response1.setHits(1,1,1,1);
+        response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, true));
+
+        when(accessContractService.findAccessContractById(any(), any()))
+            .thenReturn(response1);
+
+        RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
+        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(requestResponse);
+        List<AccessContractModelDto> results = List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, true));
+        JsonHandler.toJsonNode(results);
+        AccessContractResponseDto response = new AccessContractResponseDto();
+        response.setResults(results);
+        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
+            .thenReturn(response);
+
+        // Configure the mapper
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, true));
+
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("CODE1")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        criteriaList.add(agencyCodeCriteria);
+        agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("ANY_LABEL")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+
+        SearchCriteriaEltDto searchCriteriaElementsNodes = new SearchCriteriaEltDto();
+        searchCriteriaElementsNodes.setCriteria("NODE");
+        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        searchCriteriaElementsNodes.setValues(
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+        criteriaList.add(agencyCodeCriteria);
+        criteriaList.add(searchCriteriaElementsNodes);
+        searchQuery.setSize(20);
+        searchQuery.setPageNumber(20);
+        searchQuery.setCriteriaList(criteriaList);
+        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
+        ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
+
+        //When //Then
+        String expectingGuid = archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+        assertThatCode(() -> {
+            archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+        }).doesNotThrowAnyException();
+
+        Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+    }
+
+
+    @Test
+    public void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
+        // Given
+        when(unitService.massUpdateUnitsRules(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
+
+        RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
+        response1.setHttpCode(200);
+        response1.setHits(1,1,1,1);
+        response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, false));
+
+        when(accessContractService.findAccessContractById(any(), any()))
+            .thenReturn(response1);
+
+       RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
+        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
+            .thenReturn(requestResponse);
+        List<AccessContractModelDto> results = List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, false));
+        JsonHandler.toJsonNode(results);
+        AccessContractResponseDto response = new AccessContractResponseDto();
+        response.setResults(results);
+        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
+            .thenReturn(response);
+
+        // Configure the mapper
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, false));
+
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("CODE1")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        criteriaList.add(agencyCodeCriteria);
+        agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("ANY_LABEL")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+
+        SearchCriteriaEltDto searchCriteriaElementsNodes = new SearchCriteriaEltDto();
+        searchCriteriaElementsNodes.setCriteria("NODE");
+        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        searchCriteriaElementsNodes.setValues(
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+        criteriaList.add(agencyCodeCriteria);
+        criteriaList.add(searchCriteriaElementsNodes);
+        searchQuery.setSize(20);
+        searchQuery.setPageNumber(20);
+        searchQuery.setCriteriaList(criteriaList);
+        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
+        ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
+
+        //When //Then
+        assertThatCode(() -> {
+            archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
+        }).hasMessage("the access contract using to update unit rules has no writing permission to update units");
+
+    }
+
+    AccessContractModel createAccessContractModel(String identifier, String name, Integer tenant, Boolean writingPermission) {
+        AccessContractModel accessContractModel = new AccessContractModel();
+        accessContractModel.setIdentifier(identifier);
+        accessContractModel.setName(name);
+        accessContractModel.setTenant(tenant);
+        accessContractModel.setWritingPermission(writingPermission);
+        return accessContractModel;
+    }
+
+    AccessContractsResponseDto createAccessContractsResponseDto(String identifier, String name, Integer tenant, Boolean writingPermission) {
+        AccessContractsResponseDto accessContractModel = new AccessContractsResponseDto();
+        accessContractModel.setResults(List.of(createAccessContractsVitamDto(identifier, name, tenant, writingPermission)));
+        return accessContractModel;
+    }
+
+    AccessContractsVitamDto createAccessContractsVitamDto(String identifier, String name, Integer tenant, Boolean writingPermission) {
+        AccessContractsVitamDto accessContractModel = new AccessContractsVitamDto();
+        accessContractModel.setIdentifier(identifier);
+        accessContractModel.setName(name);
+        accessContractModel.setTenant(tenant);
+        accessContractModel.setWritingPermission(writingPermission);
+        return accessContractModel;
+    }
+
+    AccessContractModelDto createAccessContractModelDto(String identifier, String name, Integer tenant, Boolean writingPermission) {
+        AccessContractModelDto accessContractModel = new AccessContractModelDto();
+        accessContractModel.setIdentifier(identifier);
+        accessContractModel.setName(name);
+        accessContractModel.setTenant(tenant);
+        accessContractModel.setWritingPermission(writingPermission);
+        return accessContractModel;
+    }
+
+
 }
