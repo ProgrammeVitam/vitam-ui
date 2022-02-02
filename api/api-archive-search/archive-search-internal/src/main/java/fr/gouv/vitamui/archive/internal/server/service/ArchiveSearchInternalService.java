@@ -47,6 +47,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.dip.DataObjectVersions;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitam.common.model.export.dip.DipExportType;
@@ -69,6 +70,7 @@ import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
@@ -78,9 +80,11 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.model.UnitTypeEnum;
+import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,6 +150,7 @@ public class ArchiveSearchInternalService {
     private final ExportDipV2Service exportDipV2Service;
     private final RuleOperationsConverter ruleOperationsConverter;
     private final RulesUpdateCommonService rulesUpdateCommonService;
+    private final AccessContractService accessContractService;
 
 
     @Autowired
@@ -157,7 +162,8 @@ public class ArchiveSearchInternalService {
         final ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService,
         final EliminationService eliminationService,
         final RuleOperationsConverter ruleOperationsConverter,
-        final RulesUpdateCommonService rulesUpdateCommonService
+        final RulesUpdateCommonService rulesUpdateCommonService,
+        final AccessContractService accessContractService
 
     ) {
         this.unitService = unitService;
@@ -170,6 +176,7 @@ public class ArchiveSearchInternalService {
         this.eliminationService = eliminationService;
         this.ruleOperationsConverter = ruleOperationsConverter;
         this.rulesUpdateCommonService = rulesUpdateCommonService;
+        this.accessContractService = accessContractService;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
@@ -690,8 +697,14 @@ public class ArchiveSearchInternalService {
     public String updateArchiveUnitsRules(final VitamContext vitamContext, final RuleSearchCriteriaDto ruleSearchCriteriaDto)
         throws VitamClientException {
 
-        LOGGER.info("Add Rules to Units VitamUI Rules : {}", ruleSearchCriteriaDto.getRuleActions());
-        LOGGER.info("Add Rules to Units VitamUI search Criteria : {}", ruleSearchCriteriaDto.getSearchCriteriaDto().toString());
+        LOGGER.info("Add Rules to ArchiveUnits using query : {} and DSL actions : {}", ruleSearchCriteriaDto.getSearchCriteriaDto().toString(), ruleSearchCriteriaDto.getRuleActions());
+        boolean hasAccessContractWritePermission = checkAccessContractWritePermission(vitamContext);
+
+        if(!hasAccessContractWritePermission) {
+            LOGGER.error("the access contract : {} ,using to update unit rules has no writing permission to update units", vitamContext.getAccessContract());
+            throw new ForbiddenException("the access contract using to update unit rules has no writing permission to update units");
+        }
+
         RuleActions ruleActions = ruleOperationsConverter.convertToVitamRuleActions(ruleSearchCriteriaDto.getRuleActions());
 
         MassUpdateUnitRuleRequest massUpdateUnitRuleRequest = new MassUpdateUnitRuleRequest();
@@ -723,5 +736,26 @@ public class ArchiveSearchInternalService {
         throws VitamClientException {
         RequestResponse<JsonNode> response = unitService.computedInheritedRules( vitamContext, dslQuery);
         return response.toJsonNode();
+    }
+
+    public boolean checkAccessContractWritePermission(final VitamContext vitamContext) {
+        LOGGER.debug("Check access contract writing permissions : {}", vitamContext.getAccessContract());
+        AccessContractsResponseDto accessContractResponseDto;
+        try {
+            RequestResponse<AccessContractModel> response =
+                this.accessContractService.findAccessContractById(vitamContext, vitamContext.getAccessContract());
+
+            accessContractResponseDto = objectMapper
+                .treeToValue(response.toJsonNode(), AccessContractsResponseDto.class);
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new InternalServerException("Error while parsing Vitam response", e);
+        }
+
+        if (Objects.nonNull(accessContractResponseDto) && !CollectionUtils.isEmpty(accessContractResponseDto.getResults())) {
+            return accessContractResponseDto.getResults().get(0).getWritingPermission();
+        } else {
+            LOGGER.error("the access contract {} using to update unit rules is not found in vitam", vitamContext.getAccessContract());
+            throw new ForbiddenException("the access contract is not found, update unit rules will fail.");
+        }
     }
 }

@@ -181,7 +181,7 @@
           <button mat-menu-item (click)="openExportDIPRequestCreateDialog()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="updateManagementRule()" [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0">
+          <button mat-menu-item (click)="updateManagementRule()" [disabled]="(!hasUpdateManagementRuleRole || itemSelected === 0) || (!hasAccessContractPermissions || itemSelected === 0)">
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
           </button>
           <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">

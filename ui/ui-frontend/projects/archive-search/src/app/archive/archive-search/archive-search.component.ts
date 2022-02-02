@@ -44,7 +44,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
+import { AccessContract, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -52,16 +52,7 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import {
-  CriteriaValue,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
+import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -230,6 +221,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   isIndeterminate: boolean;
   hasDipExportRole = false;
   hasUpdateManagementRuleRole = false;
+  hasAccessContractPermissions = false;
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
   openDialogSubscription: Subscription;
@@ -307,6 +299,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     searchCriteriaChange.subscribe(() => {
       this.submit();
     });
+
+    this.archiveService.getAccessContractById(this.accessContract).subscribe((ac: AccessContract) => {
+      this.hasAccessContractPermissions = this.archiveService.hasAccessContractPermissions(ac);
+    },
+      (error: any) => {
+        console.error('AccessContract not found', error);
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
+        this.snackBar.open(message + ': '+ this.accessContract, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        });
+      })
 
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
