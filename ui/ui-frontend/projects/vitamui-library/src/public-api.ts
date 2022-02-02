@@ -42,6 +42,7 @@ export * from './lib/models/security-profile';
 export * from './lib/models/unit.interface';
 export * from './lib/models/year-month-query.interface';
 export * from './lib/models/dsl-query-type.enum';
+export * from './lib/models/management-contract';
 
 /* SERVICES */
 export * from './lib/services/metadata.service';

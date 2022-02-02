@@ -36,14 +36,14 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import java.io.Serializable;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -68,6 +68,10 @@ public class ManagementContractDto extends IdDto implements Serializable {
 
     private String activationDate;
 
+    private String deactivationDate;
+
     private StorageDto storage;
+
+    private VersionRetentionPolicyDto versionRetentionPolicy;
 
 }

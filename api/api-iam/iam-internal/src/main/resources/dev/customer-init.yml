@@ -40,6 +40,17 @@ customer-init:
         - ROLE_GET_CONTEXTS
         - ROLE_CREATE_CONTEXTS
         - ROLE_UPDATE_CONTEXTS
+
+    - name: Profil pour les contrats de gestion
+      description: Contrats de gestion
+      app-name: MANAGEMENT_CONTRACT_APP
+      level:
+      roles:
+        - ROLE_GET_MANAGEMENT_CONTRACT
+        - ROLE_CREATE_MANAGEMENT_CONTRACT
+        - ROLE_UPDATE_MANAGEMENT_CONTRACT
+        - ROLE_DELETE_MANAGEMENT_CONTRACT
+
   #- name: profileName
   #  description: desc
   #  level: 1

@@ -57,7 +57,7 @@ public abstract class RestApi {
 
     public static final String INGEST_CONTRACTS_URL = PREFIX + "/ingestcontract";
 
-    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/managementcontract";
+    public static final String MANAGEMENT_CONTRACTS_URL = PREFIX + "/management-contract";
 
     public static final String AGENCIES_URL = PREFIX + "/agency";
 
