@@ -120,7 +120,9 @@ export class FileService implements OnDestroy {
    */
   linkFileNodeToSedaData(parent: FileNode, nodes: FileNode[], sedaData: SedaData[]){
     Array.prototype.forEach.call(nodes, (node: FileNode) => {
-      node.parent = parent;
+      if(parent){
+        node.parent = parent;
+      }      
       let nodeName : string = (node.name === 'xml:id') ? 'id' : node.name;
       if (nodeName)  {
         let sedaDataMatch: SedaData;

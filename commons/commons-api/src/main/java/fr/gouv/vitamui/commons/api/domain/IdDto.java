@@ -55,7 +55,6 @@ import lombok.ToString;
 @ToString
 public abstract class IdDto implements Serializable {
 
-    @JsonProperty("id")
     private String id;
 
 }

@@ -1,7 +1,7 @@
 {
   "xliffmergeOptions": {
-    "srcDir": "projects/pastis-test/src/locale",
-    "genDir": "projects/pastis-test/src/locale",
+    "srcDir": "projects/pastis/src/locale",
+    "genDir": "projects/pastis/src/locale",
     "i18nFile": "messages.xlf",
     "i18nBaseFile": "messages",
     "i18nFormat": "xlf",

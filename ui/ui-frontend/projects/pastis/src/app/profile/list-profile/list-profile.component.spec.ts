@@ -35,9 +35,21 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import { BASE_URL, InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
+import { PastisConfiguration } from '../../core/classes/pastis-configuration';
+import { ProfileService } from '../../core/services/profile.service';
 
 import { ListProfileComponent } from './list-profile.component';
+
+
+const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
 describe('ListProfileComponent', () => {
   let component: ListProfileComponent;
@@ -45,7 +57,21 @@ describe('ListProfileComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ListProfileComponent ]
+      declarations: [ ListProfileComponent ],
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule,
+        LoggerModule.forRoot(),
+        InjectorModule,
+        TranslateModule.forRoot()
+      ],
+      providers: [
+        ProfileService,
+        PastisConfiguration,
+        { provide: BASE_URL, useValue: '/pastis-api' },
+        { provide: MatDialog, useValue: matDialogSpy },
+        { provide: StartupService, useValue: { getPortalUrl: () => '', getTenantIdentifier: () => ''}  }
+      ]
     })
     .compileComponents();
   }));

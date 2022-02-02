@@ -7,7 +7,7 @@ module.exports = function(config){
     // Override base config dir
     config.set({
         coverageIstanbulReporter: {
-            dir: 'target/coverage/pastis-test',
+            dir: 'target/coverage/pastis',
             fixWebpackSourcePaths: true
         }
     });
