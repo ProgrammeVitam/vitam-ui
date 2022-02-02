@@ -43,15 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static fr.gouv.vitamui.commons.api.CommonConstants.CHECK_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.CREATE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.DELETE_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.EXPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.IMPORT_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.GET_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ME_ROLE_PREFIX;
-import static fr.gouv.vitamui.commons.api.CommonConstants.UPDATE_ROLE_PREFIX;
+import static fr.gouv.vitamui.commons.api.CommonConstants.*;
 
 /**
  * All the services.
@@ -418,6 +410,18 @@ public class ServicesData {
 
     public static final String ROLE_GET_ACCESSION_REGISTER_DETAIL = GET_ROLE_PREFIX + ACCESSION_REGISTER_DETAIL;
 
+    //------------------------------------ MANAGEMENT CONTRACT -------------------------------------------
+    public static final String SERVICE_MANAGEMENT_CONTRACT = "MANAGEMENT_CONTRACT";
+
+    public static final String ROLE_GET_MANAGEMENT_CONTRACT = CREATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_CREATE_MANAGEMENT_CONTRACT = GET_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_DELETE_MANAGEMENT_CONTRACT = DELETE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+
     //@formatter:off
 
     /**
@@ -533,7 +537,12 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER_DETAIL
+            ROLE_GET_ACCESSION_REGISTER_DETAIL,
+
+            ROLE_GET_MANAGEMENT_CONTRACT,
+            ROLE_CREATE_MANAGEMENT_CONTRACT,
+            ROLE_DELETE_MANAGEMENT_CONTRACT,
+            ROLE_UPDATE_MANAGEMENT_CONTRACT
 
             );
 
@@ -677,7 +686,13 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER_DETAIL
+            ROLE_GET_ACCESSION_REGISTER_DETAIL,
+
+            ROLE_GET_MANAGEMENT_CONTRACT,
+            ROLE_CREATE_MANAGEMENT_CONTRACT,
+            ROLE_DELETE_MANAGEMENT_CONTRACT,
+            ROLE_UPDATE_MANAGEMENT_CONTRACT
+
             );
     //@formatter:on
 

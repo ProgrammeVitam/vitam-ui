@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,10 +34,46 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {ComponentFixture,TestBed,waitForAsync} from '@angular/core/testing';
+import {of,Subject} from 'rxjs';
+import {ManagementContractService} from '../management-contract.service';
+import {ManagementContractListComponent} from './management-contract-list.component';
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
+describe('ManagementContractListComponent',() => {
+  let component: ManagementContractListComponent;
+  let fixture: ComponentFixture<ManagementContractListComponent>;
 
-}
+  const managementContractServiceSpy={
+    search: () => of([]),
+    canLoadMore: true,
+    loadMore: () => of([]),
+    updated: new Subject()
+  };
+
+  beforeEach(
+    waitForAsync(() => {
+      const managementContractServiceMock={
+        search: () => of(null),
+      };
+
+      TestBed.configureTestingModule({
+        declarations: [ManagementContractListComponent],
+        providers: [{provide: ManagementContractService,useValue: managementContractServiceMock},
+        {provide: ManagementContractService,useValue: managementContractServiceSpy}],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
+
+  beforeEach(() => {
+    fixture=TestBed.createComponent(ManagementContractListComponent);
+    component=fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create',() => {
+    expect(component).toBeTruthy();
+  });
+});

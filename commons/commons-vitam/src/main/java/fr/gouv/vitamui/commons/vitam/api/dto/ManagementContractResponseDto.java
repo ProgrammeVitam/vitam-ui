@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
+public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractModelDto> {
 
 }

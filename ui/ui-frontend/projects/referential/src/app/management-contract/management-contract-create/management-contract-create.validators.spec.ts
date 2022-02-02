@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import { ManagementContractCreateValidators } from './management-contract-create.validators';
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
-
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
-
-}
+describe('ManagementContractCreateValidators', () => {
+  it('should create an instance', () => {
+    const managementContractServiceSpy = jasmine.createSpyObj('ManagementContractService', ['existsProperties']);
+    expect(new ManagementContractCreateValidators(managementContractServiceSpy)).toBeTruthy();
+  });
+});

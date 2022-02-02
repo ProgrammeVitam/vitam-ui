@@ -36,8 +36,15 @@
  */
 package fr.gouv.vitamui.referential.common.dto;
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
+import lombok.ToString;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
+import java.io.Serializable;
+
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ManagementContractVitamDto extends ManagementContractModelDto implements Serializable {
 
 }
+

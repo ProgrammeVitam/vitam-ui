@@ -34,10 +34,35 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+package fr.gouv.vitamui.referential.common.service;
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
+public class VitamUIManagementContractService {
+
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManagementContractService.class);
+
+    private final AdminExternalClient adminExternalClient;
+
+    @Autowired
+    public VitamUIManagementContractService(AdminExternalClient adminExternalClient) {
+        this.adminExternalClient = adminExternalClient;
+    }
+
+    public RequestResponse<?> patchManagementContract(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws InvalidParseOperationException, AccessExternalClientException {
+        LOGGER.debug("patch: {}, {}", id, jsonNode);
+        LOGGER.info("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        return adminExternalClient.updateManagementContract(vitamContext,id,jsonNode);
+    }
+
 
 }

@@ -36,15 +36,11 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -54,6 +50,19 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.ManagementContractExternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.MANAGEMENT_CONTRACTS_URL)
@@ -67,11 +76,61 @@ public class ManagementContractExternalController {
     private ManagementContractExternalService managementContractExternalService;
 
     @GetMapping()
-    @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACTS)
+    @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all management contracts criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         return managementContractExternalService.getAll(criteria);
+    }
+
+    @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
+    @GetMapping(params = { "page", "size" })
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+                                                                 @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+                                                                 @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        return managementContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+    }
+
+    @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
+    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
+    public ManagementContractDto getOne(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+        LOGGER.debug("get managementcontract  identifier={}", identifier);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        return managementContractExternalService.getOne(identifier);
+    }
+
+    @Secured({ ServicesData.SERVICE_MANAGEMENT_CONTRACT })
+    @PostMapping(CommonConstants.PATH_CHECK)
+    public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
+        LOGGER.debug("check exist managementContract={}", managementContractDto);
+        final boolean exist = managementContractExternalService.check(managementContractDto);
+        return RestUtils.buildBooleanResponse(exist);
+    }
+
+    @Secured(ServicesData.ROLE_CREATE_MANAGEMENT_CONTRACT)
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public ManagementContractDto create(final @Valid @RequestBody ManagementContractDto managementContractDto) {
+        LOGGER.debug("Create {}", managementContractDto);
+        return managementContractExternalService.create(managementContractDto);
+    }
+
+    @PatchMapping(CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_CONTRACT)
+    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch {} with {}", id, partialDto);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        return managementContractExternalService.patch(partialDto);
+    }
+
+    @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
+    @GetMapping("/{id}/history")
+    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+        LOGGER.debug("get logbook for ManagementContract with id :{}", id);
+        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        return managementContractExternalService.findHistoryById(id);
     }
 
 }

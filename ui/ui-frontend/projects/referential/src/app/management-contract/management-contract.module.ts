@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,10 +34,44 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterModule } from '@angular/router';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import { SharedModule } from '../shared/shared.module';
+import { ManagementContractCreateModule } from './management-contract-create/management-contract-create.module';
+import { ManagementContractListComponent } from './management-contract-list/management-contract-list.component';
+import { ManagementContractPreviewModule } from './management-contract-preview/management-contract-preview.module';
+import { ManagementContractRoutingModule } from './management-contract-routing.module';
+import { ManagementContractComponent } from './management-contract.component';
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
-
-}
+@NgModule({
+  declarations: [ManagementContractComponent, ManagementContractListComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    SharedModule,
+    MatMenuModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    ManagementContractRoutingModule,
+    ManagementContractPreviewModule,
+    ManagementContractCreateModule,
+    TableFilterModule,
+  ],
+})
+export class ManagementContractModule {}

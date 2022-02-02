@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.internal.server.config;
 
 import fr.gouv.vitamui.commons.vitam.api.administration.VitamOperationService;
+import fr.gouv.vitamui.referential.common.service.*;
 import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -61,17 +62,6 @@ import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalAuthentificationService;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
-import fr.gouv.vitamui.referential.common.service.IngestContractService;
-import fr.gouv.vitamui.referential.common.service.OntologyService;
-import fr.gouv.vitamui.referential.common.service.OperationService;
-import fr.gouv.vitamui.referential.common.service.VitamAgencyService;
-import fr.gouv.vitamui.referential.common.service.VitamContextService;
-import fr.gouv.vitamui.referential.common.service.VitamFileFormatService;
-import fr.gouv.vitamui.referential.common.service.VitamRuleService;
-import fr.gouv.vitamui.referential.common.service.VitamBatchReportService;
-import fr.gouv.vitamui.referential.common.service.VitamSecurityProfileService;
-import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.internal.server.security.WebSecurityConfig;
 
 @Configuration
@@ -117,10 +107,14 @@ public class ApiReferentialServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-
     public VitamAgencyService vitamAgencyService(final AdminExternalClient adminClient, final AgencyService agencyService, ObjectMapper objectMapper, final
     AccessExternalClient accessClient) {
         return new VitamAgencyService(adminClient, agencyService, objectMapper, accessClient);
+    }
+
+    @Bean
+    public VitamUIManagementContractService getVitamUIManagementContractService(final AdminExternalClient adminClient) {
+        return new VitamUIManagementContractService(adminClient);
     }
 
     @Bean

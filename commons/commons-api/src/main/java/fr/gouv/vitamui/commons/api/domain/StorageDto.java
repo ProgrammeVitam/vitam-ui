@@ -34,10 +34,19 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.common.dto;
+package fr.gouv.vitamui.commons.api.domain;
 
-import fr.gouv.vitamui.commons.vitam.api.dto.AbstractVitamUIResponseDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-public class ManagementContractResponseDto extends AbstractVitamUIResponseDto<ManagementContractVitamDto> {
-
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Getter
+@Setter
+public class StorageDto {
+    private String unitStrategy;
+    private String objectGroupStrategy;
+    private String objectStrategy;
 }

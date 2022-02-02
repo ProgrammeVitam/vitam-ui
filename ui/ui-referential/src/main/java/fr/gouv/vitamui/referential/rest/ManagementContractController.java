@@ -36,27 +36,35 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.service.ManagementContractService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "managementcontract")
 @RestController
@@ -81,5 +89,60 @@ public class ManagementContractController extends AbstractUiRestController {
         LOGGER.debug("Get all with criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
+    }
+
+    @ApiOperation(value = "Get entities paginated")
+    @GetMapping(params = { "page", "size" })
+    @ResponseStatus(HttpStatus.OK)
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
+                                                                 @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
+        return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
+    }
+
+    @ApiOperation(value = "Get management contract by ID")
+    @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
+    public ManagementContractDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+        return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+    }
+
+    /**
+     * Check management contract.
+     *
+     * @param managementContractDto
+     * @return
+     */
+    @ApiOperation(value = "Check ability to create entity")
+    @PostMapping(path = CommonConstants.PATH_CHECK)
+    public ResponseEntity<Void> check(@RequestBody  ManagementContractDto managementContractDto) {
+        LOGGER.debug("check ability to create managementContract={}", managementContractDto);
+        final boolean exist = service.check(buildUiHttpContext(), managementContractDto);
+        LOGGER.debug("response value={}" + exist);
+        return RestUtils.buildBooleanResponse(exist);
+    }
+
+    @ApiOperation(value = "Create entity")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public ManagementContractDto create(@Valid @RequestBody  ManagementContractDto managementContractDto) {
+        LOGGER.debug("create managementContract={}", managementContractDto);
+        return service.create(buildUiHttpContext(), managementContractDto);
+    }
+
+    @ApiOperation(value = "Patch entity")
+    @PatchMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+        LOGGER.debug("Patch managementContract {} with {}", id, partialDto);
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch managementContract : the DTO id must match the path id.");
+        return service.patch(buildUiHttpContext(), partialDto, id);
+    }
+
+    @ApiOperation(value = "get history by managementContract's id")
+    @GetMapping(CommonConstants.PATH_LOGBOOK)
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+        LOGGER.debug("get logbook for managementContract with id :{}", id);
+        return service.findHistoryById(buildUiHttpContext(), id);
     }
 }

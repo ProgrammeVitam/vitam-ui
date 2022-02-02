@@ -116,7 +116,7 @@
     },
     "AGENCIES_APP": {
       "NAME": "Services Agent",
-      "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les services agents"
+      "TOOLTIP": "Accéders, Créer, Modifier ou Supprimer les services agents"
     },
     "CONTEXTS_APP": {
       "NAME": "Contextes applicatifs",
@@ -293,6 +293,10 @@
     "ACCESSION_REGISTER_APP": {
       "NAME": "Registre des fonds",
       "TOOLTIP": "Visualiser l'ensemble des données du registre des fonds"
+    },
+    "MANAGEMENT_CONTRACT_APP" : {
+      "NAME": "Contrats de gestion",
+      "TOOLTIP": "Application des contrats de gestion"
     }
   },
   "FOOTER": {

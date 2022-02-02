@@ -35,26 +35,45 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 package fr.gouv.vitamui.referential.internal.server.managementcontract;
-import java.util.List;
 
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.single.Select;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.RequestResponse;
+import fr.gouv.vitam.common.model.administration.ManagementContractModel;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.ConflictException;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
+import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
+import fr.gouv.vitamui.commons.vitam.api.administration.ManagementContractService;
+import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
+import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
+import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
+import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
+import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
+import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
+import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import fr.gouv.vitam.access.external.client.AdminExternalClient;
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.single.Select;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.administration.ManagementContractModel;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
-import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class ManagementContractInternalService {
@@ -65,26 +84,191 @@ public class ManagementContractInternalService {
 
     private ManagementContractConverter converter;
 
-    private final AdminExternalClient adminExternalClient;
+    private final ManagementContractService managementContractService;
+
+    private VitamUIManagementContractService vitamUIManagementContractService;
+
+    private LogbookService logbookService;
 
     @Autowired
-    public ManagementContractInternalService(ObjectMapper objectMapper, ManagementContractConverter converter, AdminExternalClient adminExternalClient) {
+    public ManagementContractInternalService(ManagementContractService managementContractService, VitamUIManagementContractService vitamUIManagementContractService, ObjectMapper objectMapper, ManagementContractConverter converter, LogbookService logbookService) {
+        this.managementContractService = managementContractService;
+        this.vitamUIManagementContractService = vitamUIManagementContractService;
         this.objectMapper = objectMapper;
-        this.adminExternalClient = adminExternalClient;
         this.converter = converter;
+        this.logbookService = logbookService;
     }
 
     public List<ManagementContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<ManagementContractModel> requestResponse;
         try {
             LOGGER.info("All Management Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
-            requestResponse = adminExternalClient.findManagementContracts(vitamContext, new Select().getFinalSelect());
+            requestResponse = managementContractService.findManagementContracts(vitamContext, new Select().getFinalSelect());
             final ManagementContractResponseDto managementContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
 
             return converter.convertVitamsToDtos(managementContractResponseDto.getResults());
         } catch (VitamClientException | JsonProcessingException e) {
             throw new InternalServerException("Unable to find Management Contracts", e);
+        }
+    }
+
+    public ManagementContractDto getOne(VitamContext vitamContext, String identifier) {
+        try {
+            LOGGER.info("Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            RequestResponse<ManagementContractModel> requestResponse = managementContractService.findManagementContractById(vitamContext, identifier);
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+            if (managementContractResponseDto.getResults().size() == 0) {
+                return null;
+            } else {
+                return converter.convertVitamToDto(managementContractResponseDto.getResults().get(0));
+            }
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new InternalServerException("Unable to get Management Contract", e);
+        }
+    }
+
+    public PaginatedValuesDto<ManagementContractDto> getAllPaginated(final Integer pageNumber, final Integer size,
+                                                                 final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
+                                                                 Optional<String> criteria) {
+        Map<String, Object> vitamCriteria = new HashMap<>();
+        JsonNode query;
+        LOGGER.info("All Management Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        try {
+            if (criteria.isPresent()) {
+                TypeReference<HashMap<String, Object>> typRef = new TypeReference<>() {
+                };
+                vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+            }
+
+            query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
+        } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
+            throw new InternalServerException("Can't create dsl query to get paginated management contracts", ioe);
+        } catch (IOException e) {
+            throw new InternalServerException("Can't parse criteria as Vitam query", e);
+        }
+
+        ManagementContractResponseDto results = this.findAll(vitamContext, query);
+        boolean hasMore = pageNumber * size + results.getHits().getSize() < results.getHits().getTotal();
+
+        final List<ManagementContractDto> valuesDto = converter.convertVitamsToDtos(results.getResults());
+        LOGGER.debug("Vitam UI DTO: {}", valuesDto);
+        return new PaginatedValuesDto<>(valuesDto, pageNumber, results.getHits().getSize(), hasMore);
+    }
+
+    public ManagementContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
+        final RequestResponse<ManagementContractModel> requestResponse;
+        try {
+            LOGGER.info("All Management Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            requestResponse = managementContractService.findManagementContracts(vitamContext, query);
+            LOGGER.debug("VITAM Response: {}", requestResponse.toJsonNode().toPrettyString());
+            final ManagementContractResponseDto managementContractResponseDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+            LOGGER.debug("VITAM DTO: {}", managementContractResponseDto);
+
+            return managementContractResponseDto;
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new InternalServerException("Unable to find Management Contracts", e);
+        }
+    }
+
+    public Boolean check(VitamContext vitamContext, ManagementContractDto managementContractDto) {
+        try {
+            LOGGER.info("Management Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            Integer managementContractCheckedTenant = managementContractService.checkAbilityToCreateManagementContractInVitam(converter.convertDtosToVitams(Arrays.asList(managementContractDto)), vitamContext.getApplicationSessionId());
+            return !vitamContext.getTenantId().equals(managementContractCheckedTenant);
+        } catch (ConflictException e) {
+            return true;
+        }
+    }
+
+    public ManagementContractDto create(VitamContext vitamContext, ManagementContractDto managementContractDto) {
+        try {
+            LOGGER.info("Create Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            RequestResponse requestResponse = managementContractService.createManagementContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(managementContractDto)));
+            final ManagementContractVitamDto managementContractModelDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), ManagementContractVitamDto.class);
+            return converter.convertVitamToDto(managementContractModelDto);
+        } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
+            throw new InternalServerException("Can't create management contract", e);
+        }
+    }
+
+    private JsonNode convertMapPartialDtoToUpperCaseVitamFields(Map<String, Object> partialDto) {
+
+        ObjectNode propertiesToUpdate = JsonHandler.createObjectNode();
+
+        // Transform Vitam-UI fields into Vitam fields
+        if (partialDto.get("name") != null) {
+            propertiesToUpdate.put("Name", (String) partialDto.get("name"));
+        }
+        if (partialDto.get("description") != null) {
+            propertiesToUpdate.put("Description", (String) partialDto.get("description"));
+        }
+        if (partialDto.get("status") != null) {
+            propertiesToUpdate.put("Status", (String) partialDto.get("status"));
+        }
+        if (partialDto.get("activationDate") != null) {
+            propertiesToUpdate.put("ActivationDate", (String) partialDto.get("activationDate"));
+        }
+        if (partialDto.get("deactivationDate") != null) {
+            propertiesToUpdate.put("DeactivationDate", (String) partialDto.get("deactivationDate"));
+        }
+        if (partialDto.get("lastUpdate") != null) {
+            propertiesToUpdate.put("LastUpdate", (String) partialDto.get("lastUpdate"));
+        }
+        if (partialDto.get("creationDate") != null) {
+            propertiesToUpdate.put("CreationDate", (String) partialDto.get("creationDate"));
+        }
+        if (partialDto.get("storage") != null) {
+            propertiesToUpdate.put("Storage", (String) partialDto.get("storage"));
+        }
+        return propertiesToUpdate;
+    }
+
+    public ManagementContractDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
+        String id = (String) partialDto.get("identifier");
+        if (id == null) {
+            throw new BadRequestException("id must be one the the update criteria");
+        }
+        partialDto.remove("id");
+        partialDto.remove("identifier");
+
+        try {
+            LOGGER.info("Patch Management Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);
+
+            ObjectNode action = JsonHandler.createObjectNode();
+            action.set("$set", fieldsUpdated);
+
+            ArrayNode actions = JsonHandler.createArrayNode();
+            actions.add(action);
+
+            ObjectNode query = JsonHandler.createObjectNode();
+            query.set("$action", actions);
+
+            LOGGER.debug("Send ManagementContract update request: {}", query);
+
+            RequestResponse<?> requestResponse = vitamUIManagementContractService.patchManagementContract(vitamContext, id, query);
+
+            if(Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
+                throw new AccessExternalClientException("Can't patch management contract");
+            }
+
+            return getOne(vitamContext, id);
+
+        } catch (InvalidParseOperationException | AccessExternalClientException  e) {
+            throw new InternalServerException("Can't patch management contract", e);
+        }
+    }
+
+    public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String id) throws VitamClientException {
+        try {
+            LOGGER.info("Management Contract History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            return logbookService.selectOperations(VitamQueryHelper.buildOperationQuery(id),vitamContext).toJsonNode();
+        } catch (InvalidCreateOperationException e) {
+            throw new InternalServerException("Unable to fetch history", e);
         }
     }
 
