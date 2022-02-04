@@ -247,4 +247,21 @@ public class ArchiveSearchInternalController {
         String result = archiveInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    public ResponseEntity<String> computedInheritedRules(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchCriteriaDto)
+        throws VitamClientException {
+        LOGGER.info("Computed Inherited Rules  by criteria {}", searchCriteriaDto);
+        SanityChecker.sanitizeCriteria(searchCriteriaDto);
+        ParameterChecker
+            .checkParameter(
+                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.computedInheritedRules(vitamContext, searchCriteriaDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }

@@ -205,4 +205,17 @@ public class ArchiveInternalRestClient
         return response.getBody();
 
     }
+
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.info("Calling computedInheritedRules with query {} ", searchCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
+
+    }
 }

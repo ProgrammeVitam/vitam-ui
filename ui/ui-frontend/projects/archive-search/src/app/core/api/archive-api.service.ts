@@ -137,4 +137,11 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       headers,
     });
   }
+
+  launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/computed-inherited-rules`, criteriaDto, {
+      responseType: 'text',
+      headers,
+    });
+  }
 }

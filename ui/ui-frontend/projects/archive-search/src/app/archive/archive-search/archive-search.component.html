@@ -190,6 +190,9 @@
           <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
+          <button mat-menu-item (click)="launchComputedInheritedRules()" [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0">
+            {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
+          </button>
         </vitamui-common-menu-button>
       </div>
     </div>
@@ -406,3 +409,21 @@
     <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
+
+<ng-template #confirmComputedInheritedRulesDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.TITLE' | translate }}</div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRMATION_MESSAGE' | translate: { itemSelected: itemSelected } }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CANCEL' | translate }}</button>
+  </mat-dialog-actions></ng-template
+>

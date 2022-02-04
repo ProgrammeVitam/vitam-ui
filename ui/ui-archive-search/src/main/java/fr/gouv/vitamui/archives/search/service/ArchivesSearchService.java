@@ -32,7 +32,6 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -49,7 +48,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -191,5 +189,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,ExternalHttpContext context) {
         LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
         return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
+    }
+
+    public ResponseEntity<String> computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("computed Inherited Rules with criteria {}", searchCriteriaDto);
+        return archiveSearchExternalRestClient.computedInheritedRules(searchCriteriaDto, context);
     }
 }

@@ -210,4 +210,20 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
         Assertions.assertEquals(response, expectedResponse);
     }
+
+    @Test
+    public void testLaunchComputedInheritedRulesThenReturnVitamOperationId() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        String expectedResponse = EXPECTED_RESPONSE;
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.computedInheritedRules(searchCriteriaDto))
+            .thenReturn(expectedResponse);
+        String response = archivesSearchExternalController.computedInheritedRules(searchCriteriaDto);
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
 }
