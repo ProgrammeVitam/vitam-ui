@@ -172,7 +172,7 @@
       <div class="col-3 area-download">
         <i
           (click)="exportArchiveUnitsToCsvFile()"
-          *ngIf="totalResults > 0"
+          *ngIf="totalResults > 0 && itemSelected > 0"
           class="vitamui-icon vitamui-icon-download-basic vitamui-row-icon icon-download clickable"
         ></i>
       </div>
