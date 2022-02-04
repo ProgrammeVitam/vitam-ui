@@ -163,7 +163,7 @@ public class ArchiveSearchAgenciesInternalService {
         List<String> originAgenciesCodes) throws VitamClientException {
         List<AgencyModelDto> agencies = new ArrayList<>();
         if (originAgenciesCodes != null && !originAgenciesCodes.isEmpty()) {
-            LOGGER.info("Finding origin agencies by field {}  values {} ", field, originAgenciesCodes);
+            LOGGER.info("Finding originating agencies by field {}  values {} ", field, originAgenciesCodes);
             Map<String, Object> searchCriteriaMap = new HashMap<>();
             searchCriteriaMap.put(field, originAgenciesCodes);
             try {

@@ -72,6 +72,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.ForbiddenException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.InvalidTypeException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
@@ -137,6 +138,8 @@ public class ArchiveSearchInternalService {
     public static final String NEW_LINE_1 = "\r\n";
     public static final String OPERATION_IDENTIFIER = "itemId";
     public static final String SPACE = " ";
+    public static final String FILING_UNIT = "FILING_UNIT";
+    public static final String HOLDING_UNIT = "HOLDING_UNIT";
     private static final String[] FILING_PLAN_PROJECTION =
         new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
 
@@ -353,7 +356,7 @@ public class ArchiveSearchInternalService {
      * @return
      * @throws VitamClientException
      */
-    public Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(final SearchCriteriaDto searchQuery, final
+    private Resource exportToCsvSearchArchiveUnitsByCriteriaAndParams(final SearchCriteriaDto searchQuery, final
     ExportSearchResultParam exportSearchResultParam, final VitamContext vitamContext)
         throws VitamClientException {
         try {
@@ -394,7 +397,7 @@ public class ArchiveSearchInternalService {
                         LOGGER.error("Error parsing end date {} ", archiveUnitCsv.getEndDate());
                     }
                 }
-                csvWriter.writeNext(new String[] {archiveUnitCsv.getId(), archiveUnitCsv.getOriginatingAgencyName(),
+                csvWriter.writeNext(new String[] {archiveUnitCsv.getId(), archiveUnitCsv.getArchiveUnitType(), archiveUnitCsv.getOriginatingAgencyName(),
                     exportSearchResultParam.getDescriptionLevelMap().get(archiveUnitCsv.getDescriptionLevel()),
                     archiveUnitCsv.getTitle(),
                     startDt, endDt,
@@ -424,7 +427,8 @@ public class ArchiveSearchInternalService {
                 objectMapper.treeToValue(archiveUnitsResult, VitamUISearchResponseDto.class);
             LOGGER.info("archivesResponse found {} ", archivesResponse.getResults().size());
             Set<String> originesAgenciesCodes = archivesResponse.getResults().stream().map(
-                archiveUnit -> archiveUnit.getOriginatingAgency()).collect(Collectors.toSet());
+                    ResultsDto::getOriginatingAgency).
+                filter(Objects::nonNull).collect(Collectors.toSet());
 
             List<AgencyModelDto> originAgenciesFound =
                 archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originesAgenciesCodes);
@@ -435,7 +439,7 @@ public class ArchiveSearchInternalService {
                 archivesFilled = archivesResponse.getResults().stream().map(
                     archiveUnit -> archiveSearchAgenciesInternalService
                         .fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
-                ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit)).collect(Collectors.toList());
+                ).map(archiveUnit -> cleanAndMapArchiveUnitResult(archiveUnit, searchQuery.getLanguage())).collect(Collectors.toList());
             }
             return archivesFilled;
         } catch (IOException e) {
@@ -463,7 +467,7 @@ public class ArchiveSearchInternalService {
     }
 
 
-    private ArchiveUnitCsv cleanAndMapArchiveUnitResult(ArchiveUnit archiveUnit) {
+    private ArchiveUnitCsv cleanAndMapArchiveUnitResult(ArchiveUnit archiveUnit, String language) {
         if (archiveUnit == null) {
             return null;
         }
@@ -473,11 +477,34 @@ public class ArchiveSearchInternalService {
             archiveUnit.getDescription() != null ? cleanString(archiveUnit.getDescription()) : null);
         archiveUnitCsv.setDescriptionLevel(
             archiveUnit.getDescriptionLevel() != null ? cleanString(archiveUnit.getDescriptionLevel()) : null);
+        archiveUnitCsv.setArchiveUnitType(getArchiveUnitType(archiveUnit, language));
         archiveUnitCsv.setTitle(cleanString(getArchiveUnitTitle(archiveUnit)));
         archiveUnitCsv.setOriginatingAgencyName(
             archiveUnit.getOriginatingAgencyName() != null ? cleanString(archiveUnit.getOriginatingAgencyName()) :
                 null);
         return archiveUnitCsv;
+    }
+
+    private String getArchiveUnitType(ArchiveUnit archiveUnit, String language) {
+        if (archiveUnit != null) {
+            if (!StringUtils.isEmpty(archiveUnit.getUnitType())) {
+                switch (archiveUnit.getUnitType()) {
+                    case FILING_UNIT:
+                        return language.equals(Locale.FRENCH.getLanguage()) ? ExportSearchResultParam.FR_AU_FILING_SCHEME : ExportSearchResultParam.EN_AU_FILING_SCHEME;
+                    case HOLDING_UNIT:
+                        return language.equals(Locale.FRENCH.getLanguage()) ? ExportSearchResultParam.FR_AU_HOLDING_SCHEME : ExportSearchResultParam.EN_AU_HOLDING_SCHEME;
+                    case INGEST_ARCHIVE_TYPE:
+                        if(StringUtils.isEmpty(archiveUnit.getUnitObject())) {
+                            return language.equals(Locale.FRENCH.getLanguage()) ? ExportSearchResultParam.FR_AU_WITHOUT_OBJECT : ExportSearchResultParam.EN_AU_WITHOUT_OBJECT;
+                        } else {
+                            return language.equals(Locale.FRENCH.getLanguage()) ? ExportSearchResultParam.FR_AU_WITH_OBJECT : ExportSearchResultParam.EN_AU_WITH_OBJECT;
+                        }
+                    default:
+                        throw new InvalidTypeException("Description Level Type is Unknown !");
+                }
+            }
+        }
+        return null;
     }
 
     private String cleanString(String initialValue) {

@@ -41,6 +41,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.ByteStreams;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.configuration.BuilderToken;
@@ -50,15 +52,18 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
+import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
+import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
@@ -66,9 +71,12 @@ import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsVitamDto;
+import lombok.SneakyThrows;
+import org.apache.commons.lang.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,14 +84,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
+import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
@@ -103,6 +116,9 @@ public class ArchiveSearchInternalServiceTest {
 
     @MockBean(name = "archiveSearchAgenciesInternalService")
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
+
+    @InjectMocks
+    private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalServiceInjected;
 
     @MockBean(name = "archiveSearchRulesInternalService")
     private ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
@@ -136,6 +152,37 @@ public class ArchiveSearchInternalServiceTest {
     public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
     public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
+
+    // CSV Export data tests
+    public final String FR_ARCHIVE_UNITS_RESULTS_CSV = "data/export-csv/vitam_archive_units_response_fr.csv";
+    public final String EN_ARCHIVE_UNITS_RESULTS_CSV = "data/export-csv/vitam_archive_units_response_en.csv";
+    public final String VITAM_UNIT_RESULTS = "data/export-csv/vitam_units_response.json";
+    public final String VITAM_UNIT_ONE_RESULTS = "data/export-csv/vitam_units_one_response.json";
+
+    // Tests encode special weired chars
+    public final String VITAM_UNIT_ONE_RESULT_TO_ENCODE = "data/export-csv/vitam_units_one_response_to_encode_end_to_end.json";
+    public final String ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY = "data/export-csv/vitam_archive_units_response_correctly_encoded.csv";
+    public final String VITAM_UNIT_RESULTS_TO_ENCODE = "data/export-csv/vitam_units_response_to_encode.json";
+
+    // Filing Unit
+    public final String ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT = "data/export-csv/filing-unit/vitam_archive_units_response_fr.csv";
+    public final String VITAM_UNIT_RESULTS_FILING_UNIT = "data/export-csv/filing-unit/vitam_units_one_response.json";
+    public final String VITAM_UNIT_ONE_RESULT_FILING_UNIT = "data/export-csv/filing-unit/vitam_units_response.json";
+
+    // Holding Unit
+    public final String ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT = "data/export-csv/holding-unit/vitam_archive_units_response_fr.csv";
+    public final String VITAM_UNIT_RESULTS_HOLDING_UNIT = "data/export-csv/holding-unit/vitam_units_one_response.json";
+    public final String VITAM_UNIT_ONE_RESULT_HOLDING_UNIT = "data/export-csv/holding-unit/vitam_units_response.json";
+
+    // Unit With Object
+    public final String ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT = "data/export-csv/unit-with-object/vitam_archive_units_response_fr.csv";
+    public final String VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT = "data/export-csv/unit-with-object/vitam_units_one_response.json";
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT = "data/export-csv/unit-with-object/vitam_units_response.json";
+
+    // Unit Without Object
+    public final String ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT = "data/export-csv/unit-without-object/vitam_archive_units_response_fr.csv";
+    public final String VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT = "data/export-csv/unit-without-object/vitam_units_one_response.json";
+    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT = "data/export-csv/unit-without-object/vitam_units_response.json";
 
     @BeforeEach
     public void setUp() {
@@ -360,4 +407,409 @@ public class ArchiveSearchInternalServiceTest {
     }
 
 
+
+    @Test
+    public void testExportCSVWithFrThenReturnTheExactExpectedFile() throws Exception {
+        // Given
+        setUpData();
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(FR_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithEnThenReturnTheExactExpectedFile() throws Exception {
+        // Given
+        setUpData();
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.ENGLISH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(EN_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithFrAndSpecialCharsThenReturnTheExactExpectedContentCorrectlyEncoded() throws Exception {
+        // Given
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_TO_ENCODE);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+        Assertions.assertThat(inputStream.available()).isPositive();
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsFilingUnit() throws Exception {
+        // Given
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_FILING_UNIT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+        Assertions.assertThat(inputStream.available()).isPositive();
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsHoldingUnit() throws Exception {
+        // Given
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_HOLDING_UNIT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+        Assertions.assertThat(inputStream.available()).isPositive();
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithObject() throws Exception {
+        // Given
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+        Assertions.assertThat(inputStream.available()).isPositive();
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    @Test
+    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithoutObject() throws Exception {
+        // Given
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
+        // query
+        SearchCriteriaDto query = new SearchCriteriaDto();
+        query.setLanguage(Locale.FRENCH.getLanguage());
+        query.setSize(20);
+        query.setPageNumber(20);
+
+        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
+            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT).readAllBytes());
+        // When
+        Resource responseCsv =
+            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
+
+        // Then
+        Assertions.assertThat(responseCsv).isNotNull();
+        InputStream inputStream = responseCsv.getInputStream();
+
+
+        // The exact match of available bytes number
+        Assertions.assertThat(GivenResourceCsv.getInputStream().available()).isEqualTo(responseCsv.getInputStream().available());
+        Assertions.assertThat(inputStream.available()).isPositive();
+        // Read the CSV InputStream
+        List<String[]> results = readCSVFromInputStream(inputStream);
+        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
+
+        // Two expecting entries here
+        //1: The CSV Header
+        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
+        //2: The first line content
+        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
+        Assertions.assertThat(responseCsv).isNotNull();
+    }
+
+    private void setUpData() throws  Exception {
+        when(unitService.searchUnits(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_RESULTS));
+        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
+
+        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
+            .thenReturn(List.of(buildAgencyModelDtos()));
+
+        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
+        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
+
+        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
+            .thenReturn(buildArchiveUnits(resultsDto));
+
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
+    }
+
+    @SneakyThrows
+    private List<String[]> readCSVFromInputStream(InputStream inputStream) {
+        List<String[]> results;
+        try (CSVReader reader = new CSVReader(new InputStreamReader(inputStream))) {
+            results = reader.readAll();
+        } catch (IOException | CsvException e) {
+            throw e;
+        }
+        return results;
+    }
+
+    private ArchiveUnit buildArchiveUnits(ResultsDto resultsDto) {
+        ArchiveUnit archiveUnit = new ArchiveUnit();
+        BeanUtils.copyProperties(resultsDto, archiveUnit);
+        return archiveUnit;
+    }
+
+    private RequestResponse<JsonNode> buildArchiveUnit(String filename) throws IOException, InvalidParseOperationException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
+            .getResourceAsStream(filename);
+        return RequestResponseOK
+            .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
+    }
+
+    private ResultsDto buildResults(RequestResponse<JsonNode> jsonNodeRequestResponse) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String re = StringUtils.chop(jsonNodeRequestResponse.toJsonNode().get("$results").toString().substring(1));
+        return objectMapper.readValue(re, ResultsDto.class);
+    }
+
+    private AgencyModelDto buildAgencyModelDtos() {
+        AgencyModelDto agencyModelDto = new AgencyModelDto();
+        agencyModelDto.setIdentifier("FRAN_NP_009915");
+        agencyModelDto.setName("name");
+        agencyModelDto.setTenant(1);
+        return agencyModelDto;
+    }
+
+    AgenciesModel createAgencyModel(String identifier, String name, Integer tenant) {
+
+        AgenciesModel agency = new AgenciesModel();
+        agency.setIdentifier(identifier);
+        agency.setName(name);
+        agency.setTenant(tenant);
+        return agency;
+    }
+
+    private VitamUISearchResponseDto buildVitamUISearchResponseDto(String filename) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
+            .getResourceAsStream(filename);
+        return objectMapper.readValue(ByteStreams.toByteArray(inputStream), VitamUISearchResponseDto.class);
+    }
+
+    private RequestResponse<AgenciesModel> buildAgenciesResponse() {
+        JsonNode query = null;
+        List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("FRAN_NP_009915", "Service producteur1", 0));
+        RequestResponseOK response =
+            new RequestResponseOK<>(query, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
+
+        return response;
+    }
 }
