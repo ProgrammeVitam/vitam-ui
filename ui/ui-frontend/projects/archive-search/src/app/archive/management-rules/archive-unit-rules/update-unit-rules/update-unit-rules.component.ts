@@ -158,6 +158,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         this.previousRuleDetails.newRule = null;
         this.previousRuleDetails.newRuleName = null;
         this.ruleDetailsForm.patchValue({ newRuleName: null });
+        this.ruleDetailsForm.patchValue({ endDate: null });
+        this.newRule = null;
       }
     });
 
@@ -202,9 +204,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         this.getOldRuleSuscription = this.ruleService.get(formData.oldRule.trim()).subscribe((ruleResponse) => {
           this.oldRule = ruleResponse;
           this.ruleDetailsForm.patchValue({ oldRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
         });
         this.ruleDetailsForm.controls.startDateUpdated.enable();
         this.ruleDetailsForm.controls.ruleUpdated.enable();
+        this.isShowCheckButton = true;
         return true;
       }
 
@@ -213,7 +217,9 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
         this.getNewRuleSuscription = this.ruleService.get(formData.newRule.trim()).subscribe((ruleResponse) => {
           this.newRule = ruleResponse;
           this.ruleDetailsForm.patchValue({ newRuleName: ruleResponse.ruleValue });
+          this.ruleDetailsForm.patchValue({ endDate: null });
         });
+        this.isShowCheckButton = true;
         return true;
       }
     }
@@ -326,16 +332,18 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   addStartDate() {
     this.isDateValidated = true;
     if (this.oldRule && this.oldRule.ruleMeasurement) {
+      const durationToAdd = this.newRule && this.newRule.ruleMeasurement ? this.newRule.ruleDuration : this.oldRule.ruleDuration;
+
       const startDateSelected = new Date(this.ruleDetailsForm.get('startDate').value);
       switch (this.oldRule.ruleMeasurement.toUpperCase()) {
         case 'YEAR':
-          startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(this.oldRule.ruleDuration));
+          startDateSelected.setFullYear(startDateSelected.getFullYear() + Number(durationToAdd));
           break;
         case 'MONTH':
-          startDateSelected.setMonth(startDateSelected.getMonth() + Number(this.oldRule.ruleDuration));
+          startDateSelected.setMonth(startDateSelected.getMonth() + Number(durationToAdd));
           break;
         case 'DAY':
-          startDateSelected.setDate(startDateSelected.getDay() + Number(this.oldRule.ruleDuration));
+          startDateSelected.setDate(startDateSelected.getDay() + Number(durationToAdd));
           break;
       }
 
