@@ -4,6 +4,7 @@ import com.nimbusds.jose.JWSAlgorithm;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.pac4j.core.client.IndirectClient;
 import org.pac4j.oidc.client.OidcClient;
@@ -33,6 +34,7 @@ public class Pac4jClientBuilderTest {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
+    @Ignore
     @Test
     public void testOidcProviderCreationSuccessful() {
         final IdentityProviderDto provider = new IdentityProviderDto();
