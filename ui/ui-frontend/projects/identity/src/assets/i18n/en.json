@@ -44,6 +44,13 @@
       "PASSWORD_PLACEHOLDER": "Password",
       "WRONG_PASSWORD": "Wrong password"
     },
+    "EDITABLE_PARAMS": {
+      "KEY":"Key",
+      "VALUE":"Value",
+      "KEY_PLACEHOLDER": "Custom param.: key",
+      "VALUE_PLACEHOLDER": "Custom Param.: value",
+      "CUSTOM_SETTINGS":"Custom Settings"
+    },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(Already used)",
     "SNACKBAR": {
@@ -156,6 +163,15 @@
       "IDP_METADATA": "IDP Metadata",
       "MAIL_ATTRIBUTE": "Attribute of the email",
       "IDENTIFIER_ATTRIBUTE": "Attribute of the identifier",
+      "CLIENT_IDENTIFIER": "Customer ID",
+      "CLIENT_SECRET":"Customer secret",
+      "URL_DISCOVERY":"URL Discovery",
+      "PERIMETER":"Perimeter",
+      "JWS_ALGORITHME":" JWS algorithm",
+      "STATEFUL":"Use Etat",
+      "USE_NONCE":"Use Nonce",
+      "USE_PKCE":"Use Pkce",
+      "PROTOCOL_TYPE":"protocol type",
       "MODAL": {
         "TITLE": "IDP Creation for",
         "KEYSTORE_PWD": "Keystore password",

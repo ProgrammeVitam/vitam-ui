@@ -44,6 +44,13 @@
       "PASSWORD_PLACEHOLDER": "Mot de passe",
       "WRONG_PASSWORD": "Mot de passe incorrect"
     },
+    "EDITABLE_PARAMS": {
+      "KEY":"clé",
+      "VALUE":"valeur",
+      "KEY_PLACEHOLDER": "Param. custom: clé",
+      "VALUE_PLACEHOLDER": "Param. custom: valeur",
+      "CUSTOM_SETTINGS":"Paramétrages custom"
+    },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(déjà utilisé)",
     "SNACKBAR": {
@@ -156,6 +163,15 @@
       "IDP_METADATA": "Metadata de l'IDP",
       "MAIL_ATTRIBUTE": "Attribut de l'e-mail",
       "IDENTIFIER_ATTRIBUTE": "Attribut de l'id. utilisateur",
+      "CLIENT_IDENTIFIER": "Identifiant du client",
+      "CLIENT_SECRET":"Secret du client",
+      "URL_DISCOVERY":"URL Discovery",
+      "PERIMETER":"Périmètre",
+      "JWS_ALGORITHME":"Algorithme jws",
+      "STATEFUL":"Avec Etat",
+      "USE_NONCE":"Utilise Nonce",
+      "USE_PKCE":"Avec Pkce",
+      "PROTOCOL_TYPE":"Type de protocole",
       "MODAL": {
         "TITLE": "Création d'un IDP pour",
         "KEYSTORE_PWD": "Mot de passe du keystore",
@@ -284,7 +300,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fixe"
       },
-      "CENTER_CODE":"Code du centre",
+      "CENTER_CODE": "Code du centre",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",
@@ -428,7 +444,7 @@
         "SAFE": "Coffre",
         "PROFILE": "Profil"
       }
-  },
+    },
     "UNITS_FORM": {
       "INPUT_PLACEHOLDER": "Unité d'appartenance",
       "UNIT_ALREADY_EXIST": "Unité déjà associée à un groupe",

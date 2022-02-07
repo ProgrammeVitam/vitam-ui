@@ -1,149 +1,224 @@
 <div class="header">
-  <mat-progress-bar
-    mode="determinate"
-    value="100"
-    class="stepper-progress-bar"
-  ></mat-progress-bar>
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
 </div>
+<form [formGroup]="form">
+  <vitamui-common-stepper (selectionChange)="stepIndex = $event.selectedIndex">
+    <cdk-step>
+      <div class="content">
+        <div class="text large bold">{{ 'CUSTOMER.SSO.MODAL.TITLE' | translate }} "{{ data?.customer?.name }}"</div>
+        <div>
+          <vitamui-common-slide-toggle class="col-4 p-0" formControlName="enabled">{{
+            'CUSTOMER.SSO.ACTIVE_SWITCH' | translate
+          }}</vitamui-common-slide-toggle>
+        </div>
+        <div class="mt-3 d-flex">
+          <mat-button-toggle-group formControlName="protocoleType" #group="matButtonToggleGroup" class="vitamui-button-toggle-group mr-4">
+            <mat-button-toggle (change)="onProtocoleTypeChange($event.value)" value="SAML">
+              <span>SAML</span>
+            </mat-button-toggle>
+            <mat-button-toggle (change)="onProtocoleTypeChange($event.value)" value="OIDC">
+              <span>OIDC</span>
+            </mat-button-toggle>
+            <mat-button-toggle (change)="onProtocoleTypeChange($event.value)" value="CERTIFICAT">
+              <span>Certificat</span>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div class="mt-3 d-flex align-items-start justify-content-between">
+          <vitamui-common-input formControlName="name" maxlength="100" required [placeholder]="'CUSTOMER.SSO.NAME' | translate">
+            <ng-container *ngIf="form.get('name')?.touched">
+              <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.required">{{
+                'COMMON.REQUIRED' | translate
+              }}</vitamui-common-input-error>
+            </ng-container>
+          </vitamui-common-input>
+        </div>
+        <div class="row mt-3">
+          <vitamui-common-input class="col-6" formControlName="mailAttribute" [placeholder]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate">
+          </vitamui-common-input>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="content">
-    <div
-      class="text large bold"
-    >
-    {{'CUSTOMER.SSO.MODAL.TITLE' | translate}} "{{ data?.customer?.name }}"
-    </div>
-
-    <div>
-      <vitamui-common-slide-toggle
-        class="col-4 p-0"
-        formControlName="enabled"
-        >{{'CUSTOMER.SSO.ACTIVE_SWITCH' | translate}}</vitamui-common-slide-toggle
-      >
-    </div>
-
-    <div class="mt-4 d-flex align-items-start justify-content-between">
-      <vitamui-common-input
-        formControlName="name"
-        maxlength="100"
-        required
-        [placeholder]="'CUSTOMER.SSO.NAME' | translate"
-      >
-        <ng-container *ngIf="form.get('name')?.touched">
-          <vitamui-common-input-error
-            *ngIf="!!form?.get('name')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+          <vitamui-common-input
+            class="col-6"
+            formControlName="identifierAttribute"
+            [placeholder]="'CUSTOMER.SSO.IDENTIFIER_ATTRIBUTE' | translate"
           >
-        </ng-container>
-      </vitamui-common-input>
-      <mat-button-toggle-group
-        formControlName="authnRequestBinding"
-        #group="matButtonToggleGroup"
-        class="vitamui-button-toggle-group"
-      >
-        <mat-button-toggle
-          value="GET"
-          >GET
-        </mat-button-toggle>
-        <mat-button-toggle
-          value="POST"
-          >POST
-        </mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
+          </vitamui-common-input>
+        </div>
 
-    <div class="row mt-3 align-items-center">
-      <div class="col-6 vitamui-input-file">
-        <label for="keystore">
-          <span
-            class="text link bold primary"
-            >{{'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate}}</span
-          >
-          <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
-        </label>
-        <input
-          id="keystore"
-          type="file"
-          accept=".jks"
-          (change)="setKeystore($event.target.files)"
-        />
+        <div class="mt-3">
+          <app-pattern formControlName="patterns" [options]="data?.domains"></app-pattern>
+        </div>
+
+        <div class="mt-3">
+          <vitamui-common-slide-toggle class="p-0" formControlName="autoProvisioningEnabled">{{
+            'CUSTOMER.SSO.AUTO_PROVISIONING' | translate
+          }}</vitamui-common-slide-toggle>
+        </div>
+
+        <div class="actions mt-3">
+          <button (click)="onSubmit()" class="btn primary" [disabled]="disableNextButton" *ngIf="!displayNextButton">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button cdkStepperNext class="btn primary" [disabled]="disableNextButton" *ngIf="displayNextButton">
+            {{ 'COMMON.NEXT' | translate }}
+          </button>
+          <button type="button" class="btn cancel link" (click)="onCancelCommonScreen()">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
       </div>
-
-      <vitamui-common-input
-        class="col-6"
-        formControlName="keystorePassword"
-        type="password"
-        required
-        maxlength="50"
-        [placeholder]="'CUSTOMER.SSO.MODAL.KEYSTORE_PWD' | translate"
-      >
-        <ng-container *ngIf="form.get('keystorePassword')?.touched">
-          <vitamui-common-input-error
-            *ngIf="!!form?.get('keystorePassword')?.errors?.required"
-            >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+    </cdk-step>
+    <cdk-step *ngIf="form.get('protocoleType').value !== 'CERTIFICAT'">
+      <div class="content" *ngIf="form.get('protocoleType').value === 'SAML'; else specific_oidc">
+        <div class="text large bold">{{ 'CUSTOMER.SSO.MODAL.TITLE' | translate }} "{{ data?.customer?.name }}"</div>
+        <div class="row mt-3 align-items-center">
+          <div class="col-6 vitamui-input-file">
+            <mat-button-toggle-group
+              formControlName="authnRequestBinding"
+              #group="matButtonToggleGroup"
+              class="vitamui-button-toggle-group"
+            >
+              <mat-button-toggle value="GET">GET </mat-button-toggle>
+              <mat-button-toggle value="POST">POST </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
+        </div>
+        <div class="row mt-3 align-items-center">
+          <div class="col-6 vitamui-input-file">
+            <label for="keystore">
+              <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_KEYSTORE' | translate }}</span>
+              <div class="vitamui-input-file-filename">{{ keystore?.name }}</div>
+            </label>
+            <input id="keystore" type="file" accept=".jks" (change)="setKeystore($event.target.files)" />
+          </div>
+        </div>
+        <div class="row mt-3 align-items-center">
+          <vitamui-common-input
+            class="col-6"
+            formControlName="keystorePassword"
+            type="password"
+            required
+            maxlength="50"
+            [placeholder]="'CUSTOMER.SSO.MODAL.KEYSTORE_PWD' | translate"
           >
-          <vitamui-common-input-error
-            *ngIf="!!form?.get('keystorePassword')?.errors?.badPassword"
-            >{{'CUSTOMER.SSO.MODAL.WRONG_PASSWORD' | translate}}</vitamui-common-input-error
+            <ng-container *ngIf="form.get('keystorePassword')?.touched">
+              <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.required">{{
+                'COMMON.REQUIRED' | translate
+              }}</vitamui-common-input-error>
+              <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.badPassword">{{
+                'CUSTOMER.SSO.MODAL.WRONG_PASSWORD' | translate
+              }}</vitamui-common-input-error>
+            </ng-container>
+          </vitamui-common-input>
+        </div>
+
+        <div class="mt-3 vitamui-input-file">
+          <label for="idpMetadata">
+            <span class="text link bold primary">{{ 'CUSTOMER.SSO.MODAL.UPLOAD_METADATA' | translate }}</span>
+            <div class="vitamui-input-file-filename">{{ idpMetadata?.name }}</div>
+          </label>
+          <input id="idpMetadata" type="file" accept=".xml" (change)="setIdpMetadata($event.target.files)" />
+        </div>
+        <div class="actions mt-3">
+          <button (click)="onSubmit()" type="submit" class="btn primary" [disabled]="!isFormValid">
+            {{ 'COMMON.SUBMIT' | translate }}
+          </button>
+          <button type="button" class="btn cancel link" (click)="onCancelCommonScreen()">
+            {{ 'COMMON.UNDO' | translate }}
+          </button>
+        </div>
+
+        <button type="button" class="btn link" cdkStepperPrevious>
+          <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+          <ng-container
+            ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
           >
-        </ng-container>
-      </vitamui-common-input>
-  </div>
+        </button>
+      </div>
+      <ng-template #specific_oidc>
+        <div class="content">
+          <div class="text large bold">
+            {{ 'GROUP.INFORMATIONS.MODAL.PROVISIONNING_GROUP' | translate }}
+          </div>
+          <div class="text medium bold mb-4">{{ 'GROUP.INFORMATIONS.LEVEL' | translate }} :</div>
+          <div>
+            <vitamui-common-input
+              class="col-11 p-0"
+              formControlName="clientId"
+              required
+              [placeholder]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
+            >
+            </vitamui-common-input>
+          </div>
+          <div>
+            <vitamui-common-input
+              class="col-11 p-0"
+              formControlName="clientSecret"
+              required
+              [placeholder]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
+            >
+            </vitamui-common-input>
+          </div>
+          <div>
+            <vitamui-common-input class="col-11 p-0" formControlName="discoveryUrl" required [placeholder]="'CUSTOMER.SSO.URL_DISCOVERY' | translate">
+            </vitamui-common-input>
+          </div>
+          <div>
+            <vitamui-common-input class="col-11 p-0" formControlName="scope" [placeholder]="'CUSTOMER.SSO.PERIMETER' | translate"> </vitamui-common-input>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="vitamui-mat-select">
+                <mat-select
+                  formControlName="preferredJwsAlgorithm"
+                  [required]="false"
+                  panelclass="vitamui-mat-select"
+                  [placeholder]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate"
+                >
+                  <mat-option *ngFor="let algorithm of jwsAlgorithms" [value]="algorithm">{{ algorithm }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <vitamui-common-slide-toggle formControlName="useState" class="mr-4">
+                <span>{{'CUSTOMER.SSO.STATEFUL' | translate}}</span>
+              </vitamui-common-slide-toggle>
+              <vitamui-common-slide-toggle formControlName="useNonce" class="mr-4">
+                <span>{{'CUSTOMER.SSO.USE_NONCE' | translate}}</span>
+              </vitamui-common-slide-toggle>
+              <vitamui-common-slide-toggle formControlName="usePkce">
+                <span>{{'CUSTOMER.SSO.USE_PKCE' | translate}}</span>
+              </vitamui-common-slide-toggle>
+            </div>
+          </div>
+          <br />
+          <div>
+            <vitamui-common-editable-tags
+              class="col-11 p-0"
+              formControlName="customParams"
+              [keyPlaceholder]="'SHARED.EDITABLE_PARAMS.KEY_PLACEHOLDER'"
+              [valuePlaceholder]="'SHARED.EDITABLE_PARAMS.VALUE_PLACEHOLDER'"
+            >
+            </vitamui-common-editable-tags>
+          </div>
+          <br />
+          <div class="actions">
+            <button type="button" (click)="onSubmit()" class="btn primary" [disabled]="!form.valid">
+              {{ 'COMMON.SUBMIT' | translate }}
+            </button>
+            <button type="button" class="btn cancel link" (click)="onCancelCommonScreen()">
+              {{ 'COMMON.UNDO' | translate }}
+            </button>
+          </div>
 
-    <div class="mt-3 vitamui-input-file">
-      <label for="idpMetadata">
-        <span
-          class="text link bold primary"
-          >{{'CUSTOMER.SSO.MODAL.UPLOAD_METADATA' | translate}}</span
-        >
-        <div class="vitamui-input-file-filename">{{ idpMetadata?.name }}</div>
-      </label>
-      <input
-        id="idpMetadata"
-        type="file"
-        accept=".xml"
-        (change)="setIdpMetadata($event.target.files)"
-      />
-    </div>
-
-    <div class="row mt-3">
-        <vitamui-common-input
-          class="col-6"
-          formControlName="mailAttribute"
-          [placeholder]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
-        >
-        </vitamui-common-input>
-  
-        <vitamui-common-input
-          class="col-6"
-          formControlName="identifierAttribute"
-          [placeholder]="'CUSTOMER.SSO.IDENTIFIER_ATTRIBUTE' | translate"
-        >
-        </vitamui-common-input>
-    </div>
-
-    <div class="mt-2">
-      <app-pattern
-        formControlName="patterns"
-        [options]="data?.domains"
-      ></app-pattern>
-    </div>
-
-    <div class="mt-3">
-      <vitamui-common-slide-toggle
-        class="p-0"
-        formControlName="autoProvisioningEnabled"
-        >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
-      >
-    </div>
-
-    <div class="actions mt-4">
-      <button type="submit" class="btn primary" [disabled]="!isFormValid">
-        {{ "COMMON.SUBMIT" | translate }}
-      </button>
-      <button type="button" class="btn cancel link" (click)="onCancel()">
-        {{ "COMMON.UNDO" | translate }}
-      </button>
-    </div>
-  </div>
+          <button type="button" class="btn link" cdkStepperPrevious>
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <ng-container
+              ><span class="underline">{{ 'COMMON.BACK' | translate }}</span></ng-container
+            >
+          </button>
+        </div>
+      </ng-template>
+    </cdk-step>
+  </vitamui-common-stepper>
 </form>

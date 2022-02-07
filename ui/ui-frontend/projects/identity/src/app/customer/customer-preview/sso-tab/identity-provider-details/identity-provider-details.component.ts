@@ -38,21 +38,22 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map, switchMap } from 'rxjs/operators';
+import { isEqual, isObject, mapObject, omit } from 'underscore';
 
-import { diff, IdentityProvider, newFile } from 'ui-frontend-common';
+import { AuthnRequestBindingEnum, IdentityProvider, newFile } from 'ui-frontend-common';
 import { IdentityProviderService } from '../identity-provider.service';
 
 import { extend, isEmpty } from 'underscore';
+import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 
 const UPDATE_DEBOUNCE_TIME = 200;
 
 @Component({
   selector: 'app-identity-provider-details',
   templateUrl: './identity-provider-details.component.html',
-  styleUrls: ['./identity-provider-details.component.scss']
+  styleUrls: ['./identity-provider-details.component.scss'],
 })
 export class IdentityProviderDetailsComponent implements OnInit {
-
   @Input()
   set identityProvider(identityProvider: IdentityProvider) {
     this._identityProvider = identityProvider;
@@ -60,15 +61,19 @@ export class IdentityProviderDetailsComponent implements OnInit {
     if (!this._identityProvider.internal) {
       this.idpMetadata.enable({ emitEvent: false });
     }
-    this.form.reset(identityProvider, { emitEvent: false });
+    if (identityProvider) {
+      this.manageForm(identityProvider);
+    }
     this.previousValue = this.form.value;
   }
-  get identityProvider(): IdentityProvider { return this._identityProvider; }
+  get identityProvider(): IdentityProvider {
+    return this._identityProvider;
+  }
   private _identityProvider: IdentityProvider;
 
   @Input()
-  set domains(domains: Array<{ value: string, disabled: boolean }>) {
-    this._domains = domains.map((domain: { value: string, disabled: boolean }) => {
+  set domains(domains: Array<{ value: string; disabled: boolean }>) {
+    this._domains = domains.map((domain: { value: string; disabled: boolean }) => {
       if (this.identityProvider.patterns.includes(domain.value)) {
         return { value: domain.value, disabled: false };
       }
@@ -76,17 +81,29 @@ export class IdentityProviderDetailsComponent implements OnInit {
       return domain;
     });
   }
-  get domains(): Array<{ value: string, disabled: boolean }> { return this._domains; }
-  private _domains: Array<{ value: string, disabled: boolean }> = [];
-
+  get domains(): Array<{ value: string; disabled: boolean }> {
+    return this._domains;
+  }
+  private _domains: Array<{ value: string; disabled: boolean }> = [];
+  displayOIDCSAMLBLOCKS = false;
   private previousValue: {
-    id: string,
-    identifier?: string,
-    enabled: boolean,
-    name: string,
+    protocoleType: string;
+    id: string;
+    identifier?: string;
+    enabled: boolean;
+    name: string;
     internal: boolean;
     patterns: string[];
     autoProvisioningEnabled: boolean;
+    clientId: string;
+    clientSecret: string;
+    discoveryUrl: string;
+    scope: string;
+    preferredJwsAlgorithm: string;
+    customParams: any;
+    useState: boolean;
+    useNonce: boolean;
+    usePkce: boolean;
   };
 
   @Input()
@@ -108,35 +125,81 @@ export class IdentityProviderDetailsComponent implements OnInit {
       }
     }
   }
-  get readOnly(): boolean { return this._readOnly; }
+  get readOnly(): boolean {
+    return this._readOnly;
+  }
   private _readOnly: boolean;
-
+  jwsAlgorithms = JWS_ALGORITHMS;
   form: FormGroup;
+  specificOidcControls: FormGroup;
+  specificSamlControls: FormGroup;
+  commonsControls: FormGroup;
   idpMetadata: FormControl;
 
   constructor(private formBuilder: FormBuilder, private identityProviderService: IdentityProviderService) {
+    this.commonsControls = this.initializeCommonControls();
+    this.specificSamlControls = this.initializeSamlControls();
+    this.specificOidcControls = this.initializeOidcControls();
     this.form = this.formBuilder.group({
-      id: [null, Validators.required],
-      identifier: [{value: null, disabled : true}, Validators.required],
+      ...this.commonsControls.controls,
+      ...this.specificOidcControls.controls,
+      ...this.specificSamlControls.controls,
+    });
+    this.idpMetadata = new FormControl({ value: newFile([''], 'metadata.xml'), disabled: true });
+  }
+  updateForm() {
+    if (this.form.value?.protocoleType !== this.previousValue?.protocoleType) {
+      this.displayOIDCSAMLBLOCKS = false;
+      this.manageForm(this.form.getRawValue());
+    }
+  }
+  ngOnInit() {}
+
+  initializeCommonControls() {
+    return this.formBuilder.group({
+      protocoleType: [ProtocoleType.SAML, Validators.required],
+      identifier: [{ value: null, disabled: true }, Validators.required],
       enabled: [true, Validators.required],
       name: [null, Validators.required],
-      internal: [{ value: false, disabled: true }, Validators.required],
+      internal: [{ value: null, disabled: true }, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],
       identifierAttribute: [null],
-      authnRequestBinding: [null, Validators.required],
-      autoProvisioningEnabled: [null, Validators.required],
+      autoProvisioningEnabled: [false, Validators.required],
     });
-    this.idpMetadata = new FormControl({value: newFile([''], 'metadata.xml'), disabled: true});
+  }
+  initializeSamlControls() {
+    return this.formBuilder.group({
+      keystorePassword: [null, Validators.required],
+      authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
+    });
+  }
 
+  initializeOidcControls() {
+    return this.formBuilder.group({
+      clientId: [null, Validators.required],
+      clientSecret: [null, Validators.required],
+      discoveryUrl: [null, Validators.required],
+      scope: [],
+      preferredJwsAlgorithm: [],
+      customParams: [],
+      useState: [true],
+      useNonce: [true],
+      usePkce: [false],
+    });
+  }
+  manageChanges() {
     merge(this.form.statusChanges, this.form.valueChanges)
       .pipe(
+        filter(() => {
+          this.updateForm();
+          return this.form.valid;
+        }),
         debounceTime(UPDATE_DEBOUNCE_TIME),
-        filter(() => this.form.valid),
-        map(() => diff(this.form.value, this.previousValue)),
+        map(() => this.diff(this.form.value, this.previousValue)),
         filter((formData) => !isEmpty(formData)),
         map((formData) => extend({ id: this.identityProvider.id }, formData)),
-        switchMap((formData) => this.identityProviderService.patch(formData)),
+        switchMap((formData) => this.identityProviderService.patch(formData))
       )
       .subscribe(() => {
         this.previousValue = this.form.value;
@@ -150,7 +213,58 @@ export class IdentityProviderDetailsComponent implements OnInit {
       .subscribe();
   }
 
-  ngOnInit() {
+  /**
+   * The ui-frontend-common diff method causes problem with the customparams attribute, because it's a
+   * recursive method and it'll compare the key of the json and it'll do the same for inner json.
+   * in our case, we need to do only first level comparaison
+   */
+  diff(o1: { [key: string]: any }, o2: { [key: string]: any }): { [key: string]: any } {
+    const diffObj = omit(o1, (value: any, key: string) => {
+      if ((o2 as Object).hasOwnProperty(key)) {
+        return isObject(value) ? isEqual(o2[key], value) : o2[key] === value;
+      }
+
+      return true;
+    });
+
+    return mapObject(diffObj, (value: any) => value);
   }
 
+  manageForm(formValue: any) {
+    this.displayOIDCSAMLBLOCKS = false;
+    switch (formValue.protocoleType) {
+      case ProtocoleType.CERTIFICAT:
+        this.form = this.formBuilder.group({
+          ...this.commonsControls.controls,
+        });
+        break;
+      case ProtocoleType.SAML:
+        this.form = this.formBuilder.group({
+          ...this.commonsControls.controls,
+          ...this.specificSamlControls.controls,
+        });
+        //set default value if it is not defined
+        if (!formValue.authnRequestBinding) {
+          formValue.authnRequestBinding = AuthnRequestBindingEnum.POST;
+        }
+        break;
+      case ProtocoleType.OIDC:
+        this.form = this.formBuilder.group({
+          ...this.commonsControls.controls,
+          ...this.specificOidcControls.controls,
+        });
+        //set default value if it is not defined
+        if (formValue.useState == undefined || formValue.useState == null) {
+          formValue.useState = true;
+          formValue.useNonce = true;
+          formValue.usePkce = false;
+        }
+        break;
+    }
+
+    this.form.reset(formValue, { emitEvent: false });
+    this.manageChanges();
+
+    this.displayOIDCSAMLBLOCKS = true;
+  }
 }
