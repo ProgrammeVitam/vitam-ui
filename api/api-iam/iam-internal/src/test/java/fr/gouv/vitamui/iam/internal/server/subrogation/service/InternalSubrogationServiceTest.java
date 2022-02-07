@@ -26,7 +26,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.enums.SubrogationStatusEnum;
-import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.customer.dao.CustomerRepository;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.group.dao.GroupRepository;

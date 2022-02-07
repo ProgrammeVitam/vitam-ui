@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.iam.commons.utils;
+package fr.gouv.vitamui.iam.common.utils;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;

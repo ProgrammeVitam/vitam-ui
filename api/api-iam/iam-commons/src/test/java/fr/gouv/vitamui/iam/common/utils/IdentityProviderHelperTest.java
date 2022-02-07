@@ -1,4 +1,4 @@
-package fr.gouv.vitamui.iam.commons.utils;
+package fr.gouv.vitamui.iam.common.utils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.junit.Test;
 
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 
 /**
  * Tests {@link IdentityProviderHelper}.
