@@ -8,3 +8,66 @@
     font-size: 26px;
     font-weight: bold;
 }
+
+.title-text {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--vitamui-primary) !important;
+}
+.margin-row {
+    margin-left: 10px;
+}
+
+.padding-row {
+    padding-left: 15px;
+}
+
+.criteria-checkbox-choice {
+    display: inline-flex;
+    position: relative;
+}
+
+.criteria-checkbox-choice > span {
+    font-family: Mulish;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 0.5rem 0.25rem;
+    padding-top: 4px;
+}
+
+.criteria-checkbox-choice > input {
+    height: 20px;
+    width: 20px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: 1px solid #34495e;
+    border-radius: 4px;
+    outline: none;
+    transition-duration: 0.3s;
+    background-color: white;
+    cursor: pointer;
+}
+
+.criteria-checkbox-choice > input:checked {
+    border: 1px solid var(--vitamui-primary);
+    background-color: var(--vitamui-primary);
+}
+
+.criteria-checkbox-choice > input:checked + span::before {
+    content: "\2713";
+    font-size: 20px;
+    color: white;
+    position: absolute;
+    left: 0.4rem;
+    bottom: 0.15rem;
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    font-weight: bolder;
+
+    transform-origin: center center;
+}

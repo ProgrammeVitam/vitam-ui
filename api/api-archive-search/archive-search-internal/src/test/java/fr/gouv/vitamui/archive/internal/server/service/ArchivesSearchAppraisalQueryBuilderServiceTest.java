@@ -31,7 +31,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
@@ -39,7 +38,6 @@ import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +47,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -64,6 +61,15 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalQueryBuilderServiceTest.class);
+
+    public static String SEARCH_QUERY_WITH_UNIT_TYPE = "data/queries/search_query_with_unit_type.json";
+    public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER = "data/queries/search_query_with_object_parameter.json";
+    public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE =
+        "data/queries/search_query_with_object_and_unit_type.json";
+    public static String ARCHIVE_UNIT_WITH_OBJECTS = "ARCHIVE_UNIT_WITH_OBJECTS";
+    public static String ARCHIVE_UNIT_WITHOUT_OBJECTS = "ARCHIVE_UNIT_WITHOUT_OBJECTS";
+    public static String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
+    public static String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
 
 
     @InjectMocks
@@ -475,6 +481,75 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("vitam_query_with_start_date.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery() throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT), new CriteriaValue(ARCHIVE_UNIT_FILING_UNIT)));
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchFieldsQueryBuilderService
+            .fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_UNIT_TYPE));
+        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery() throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT)));
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchFieldsQueryBuilderService
+            .fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_OBJECT_PARAMETER));
+        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery() throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_WITHOUT_OBJECTS)));
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchFieldsQueryBuilderService
+            .fillQueryFromCriteriaList(query, criteriaList);
+
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        JsonNode expectedQuery =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE));
+        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
 
     }
 

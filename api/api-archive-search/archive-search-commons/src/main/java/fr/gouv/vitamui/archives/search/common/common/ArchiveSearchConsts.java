@@ -143,7 +143,8 @@ public class ArchiveSearchConsts {
             ORIGINATING_AGENCY_ID_FIELD, "#originating_agency",
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
-            "SP_LABEL", "originating_agency_label"
+            "SP_LABEL", "originating_agency_label",
+            "ARCHIVE_UNIT_HOLDING_UNIT","#unitType"
         );
 
 
@@ -161,6 +162,14 @@ public class ArchiveSearchConsts {
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
     public static final String ELIMINATION_TECHNICAL_ID = "ELIMINATION_TECHNICAL_ID";
     public static final String ELIMINATION_GUID = "#elimination.OperationId";
+    public static final String ALL_ARCHIVE_UNIT_TYPES = "#unitType";
+    public static final String ALL_ARCHIVE_UNIT_TYPES_CRITERIA = "ALL_ARCHIVE_UNIT_TYPES";
+    public static final String DESCRIPTION_LEVEL_CRITERIA = "DESCRIPTION_LEVEL";
+    public static final String DESCRIPTION_LEVEL = "DescriptionLevel";
+    public static final String ARCHIVE_UNIT_OBJECTS = "#object";
+    public static final String ARCHIVE_UNIT_HOLDING_UNIT = "HOLDING_UNIT";
+    public static final String ARCHIVE_UNIT_FILING_UNIT = "FILING_UNIT";
+
 
     /* Query fields */
     public static final String ID = "#id";

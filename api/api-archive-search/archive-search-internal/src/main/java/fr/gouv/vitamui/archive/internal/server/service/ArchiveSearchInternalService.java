@@ -60,7 +60,6 @@ import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitCsv;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
@@ -103,7 +102,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -197,7 +195,8 @@ public class ArchiveSearchInternalService {
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(vitamResponse, VitamUISearchResponseDto.class);
         Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
-            archiveUnit -> archiveUnit.getOriginatingAgency()).collect(Collectors.toSet());
+            archiveUnit -> archiveUnit.getOriginatingAgency()).
+            filter(originatingAgency -> originatingAgency != null).collect(Collectors.toSet());
         List<AgencyModelDto> originAgenciesFound =
             archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
         Map<String, AgencyModelDto> agenciesMapByIdentifier =
@@ -253,8 +252,7 @@ public class ArchiveSearchInternalService {
                 .flatMap(criteria -> criteria.getValues().stream()).map(valueCriteria -> valueCriteria.getValue())
                 .collect(
                     Collectors.toList());
-            List<String> archiveUnitsTypes = Arrays.asList(INGEST_ARCHIVE_TYPE);
-            query = createQueryDSL(archiveUnitsTypes, nodesCriteriaList, simpleCriteriaList,
+            query = createQueryDSL(nodesCriteriaList, simpleCriteriaList,
                 appraisalMgtRulesCriteriaList,
                 searchQuery.getPageNumber(),
                 searchQuery.getSize(), orderBy, direction, searchQuery.isTrackTotalHits());
@@ -545,11 +543,10 @@ public class ArchiveSearchInternalService {
     /**
      * create a valid VITAM DSL Query from a map of criteria
      *
-     * @param unitTypes the input criteria. Should match pattern Map(FieldName, SearchValue)
      * @return The JsonNode required by VITAM external API for a DSL query
      * @throws InvalidParseOperationException
      */
-    public JsonNode createQueryDSL(List<String> unitTypes, List<String> nodes,
+    public JsonNode createQueryDSL( List<String> nodes,
         List<SearchCriteriaEltDto> simpleCriteriaList, List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList,
         final Integer pageNumber, final Integer size, final Optional<String> orderBy,
         final Optional<DirectionDto> direction, final boolean trackTotalHits)
@@ -558,12 +555,8 @@ public class ArchiveSearchInternalService {
         final SelectMultiQuery select = new SelectMultiQuery();
         //Handle roots
         LOGGER.debug(
-            "Call create Query DSL for unitTypes {} nodes {} simpleCriteriaList {} appraisalMgtRulesCriteriaList {} ",
-            unitTypes, nodes, simpleCriteriaList, appraisalMgtRulesCriteriaList);
-        if (CollectionUtils.isEmpty(unitTypes)) {
-            LOGGER.error("Error on validation of criteria , units types is mandatory ");
-            throw new InvalidParseOperationException("Error on validation of criteria,  units types is mandatory ");
-        }
+            "Call create Query DSL for nodes {} simpleCriteriaList {} appraisalMgtRulesCriteriaList {} ",
+             nodes, simpleCriteriaList, appraisalMgtRulesCriteriaList);
         if (!CollectionUtils.isEmpty(nodes)) {
             select.addRoots(nodes.toArray(new String[nodes.size()]));
             query.setDepthLimit(ArchiveSearchConsts.DEFAULT_DEPTH);
@@ -572,12 +565,6 @@ public class ArchiveSearchInternalService {
 
         select.addFacets(FacetHelper.terms("COUNT_BY_NODE", ArchiveSearchConsts.UNITS_UPS,
             (nodes.size() + 1) * ArchiveSearchConsts.FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
-        SearchCriteriaEltDto unitTypesCriteria = new SearchCriteriaEltDto();
-        unitTypesCriteria.setCriteria(ArchiveSearchConsts.UNIT_TYPE);
-        unitTypesCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.IN.name());
-        unitTypesCriteria.setValues(unitTypes.stream().map(type -> new CriteriaValue(
-            type)).collect(Collectors.toList()));
-        simpleCriteriaList.add(unitTypesCriteria);
 
         // Manage Filters
         if (orderBy.isPresent()) {

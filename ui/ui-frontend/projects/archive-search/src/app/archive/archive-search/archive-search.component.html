@@ -39,7 +39,7 @@
         <mat-menu #menu="matMenu" class="my-menu">
           <button
             mat-menu-item
-            [disabled]="!searchCriterias || searchCriterias.size <= 0"
+            [disabled]="!searchCriterias || searchCriterias.size === 0"
             (click)="mapSearchCriteriaHistory()"
             class="btn-new-save"
           >
@@ -200,12 +200,8 @@
         </ng-container>
       </div>
 
-      <div class="col-3 area-download">
-        <i
-          (click)="exportArchiveUnitsToCsvFile()"
-          *ngIf="totalResults > 0 && itemSelected > 0"
-          class="vitamui-icon vitamui-icon-download-basic vitamui-row-icon icon-download clickable"
-        ></i>
+      <div class="col-3 area-download" [ngClass]="totalResults > 0 && itemSelected > 0 ? 'enabled-div' : 'disabled-div'">
+        <i (click)="exportArchiveUnitsToCsvFile()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
@@ -250,34 +246,12 @@
           (change)="checkParentBoxChange($event)"
         />
       </div>
-      <div class="col-1 d-flex align-items-center">
-        <button
-          class="vitamui-filter-button"
-          [vitamuiCommonTableFilter]="typeFilterTemplate"
-          [class.active]="filterMapType['Type'] && filterMapType['Type'].length > 0"
-        >
-          <i class="material-icons vitamui-row-icon">filter_list</i>
-        </button>
 
-        <ng-template #typeFilterTemplate>
-          <vitamui-common-table-filter [(filter)]="filterMapType['Type']" (filterChange)="onFilterChange('Type', $event)">
-            <vitamui-common-table-filter-option value="Document">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.DOCUMENT' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-            <vitamui-common-table-filter-option value="Folder">
-              <div class="table-filter-icon">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-                {{ 'ARCHIVE_SEARCH.FOLDER' | translate }}
-              </div>
-            </vitamui-common-table-filter-option>
-          </vitamui-common-table-filter>
-        </ng-template>
+      <div class="col-1 d-flex align-items-center">
+        <span>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT.FIELDS.TYPE' | translate }}</span>
 
         <vitamui-common-order-by-button
-          orderByKey="DescriptionLevel"
+          orderByKey="#unitType"
           [(orderBy)]="orderBy"
           [(direction)]="direction"
           (orderChange)="emitOrderChange()"
@@ -342,37 +316,47 @@
             />
           </div>
           <div class="col-1 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
-              <ng-container *ngSwitchCase="'RecordGrp'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+            <span class="table-filter-icon" [ngSwitch]="getArchiveUnitType(archiveUnit)">
+              <ng-container *ngSwitchCase="'INGEST'">
+                <span class="table-filter-icon" [ngSwitch]="archiveUnit?.DescriptionLevel">
+                  <ng-container *ngSwitchCase="'RecordGrp'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'File'">
+                    <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Item'">
+                    <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i> </ng-container
+                  ><ng-container *ngSwitchCase="'Collection'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Subfonds'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Class'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'Subgrp'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
+                  ><ng-container *ngSwitchCase="'Otherlevel'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
+                  ><ng-container *ngSwitchCase="'Series'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
+                  ><ng-container *ngSwitchCase="'Subseries'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
+                  ><ng-container *ngSwitchCase="'Fonds'">
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                  <ng-container *NgSwitchDefault>
+                    <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+                  </ng-container>
+                </span>
               </ng-container>
-              <ng-container *ngSwitchCase="'File'">
-                <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i>
+              <ng-container *ngSwitchCase="'HOLDING_UNIT'">
+                <i class="vitamui-icon vitamui-icon-icone-arbre vitamui-row-icon status-badge"></i>
               </ng-container>
-              <ng-container *ngSwitchCase="'Item'">
-                <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Collection'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-              </ng-container>
-              <ng-container *ngSwitchCase="'Subfonds'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-              </ng-container>
-              <ng-container *ngSwitchCase="'Class'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-              </ng-container>
-              <ng-container *ngSwitchCase="'Subgrp'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Otherlevel'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Series'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Subseries'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i> </ng-container
-              ><ng-container *ngSwitchCase="'Fonds'">
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
-              </ng-container>
-              <ng-container *NgSwitchDefault>
-                <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge"></i>
+              <ng-container *ngSwitchCase="'FILING_UNIT'">
+                <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge"></i>
               </ng-container>
             </span>
           </div>
@@ -472,3 +456,95 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
+
+<ng-template #updateArchiveUnitAlerteMessageDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}</div>
+    <br />
+
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'RULES.ALERTE_MESSAGES.UPDATE_RULES_ALERTE_SECOND_MESSAGE' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #launchComputeInheritedRuleAlerteMessageDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}</div>
+    <br />
+
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'RULES.ALERTE_MESSAGES.ACTION_ALERTE_FIRST_MESSAGE' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'RULES.ALERTE_MESSAGES.COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<!-- <ng-template #confirmComputedInheritedRulesDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.TITLE' | translate }}</div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRMATION_MESSAGE' | translate: { itemSelected: itemSelected } }}
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRM' | translate }}
+    </button>
+    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CANCEL' | translate }}</button>
+  </mat-dialog-actions></ng-template
+> -->

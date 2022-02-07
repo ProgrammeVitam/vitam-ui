@@ -78,6 +78,8 @@
     "NO_MORE_RESULTS": "No more results",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
     "SEARCH_CRITERIA_FILTER": {
+      "DATES" : "Dates",
+      "UA_TYPE" : "Type of archival units",
       "TITLE": "Search filters",
       "DUA_TITLE": "Administrative useful life",
       "OTHER_FILED_SELECTION": "Select another criteria",
@@ -130,6 +132,14 @@
         "ID_DUA": "Id",
         "START_DATE_DUA": "End Date",
         "END_DATE_DUA": "Start Date",
+        "ARCHIVE_UNIT_FILING_UNIT" : "Filing plan",
+        "ARCHIVE_UNIT_HOLDING_UNIT" : "Positioning tree",
+        "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive with objects",
+        "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive without objects",
+        "HOLDING_UNIT" : "Positioning tree",
+        "FILING_UNIT" : "Filing plan",
+        "DESCRIPTION_LEVEL" : "Archive unit type",
+        "ALL_ARCHIVE_UNIT_TYPES" :"Type",
         "ORIGIN": {
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
@@ -137,7 +147,15 @@
           "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Is waiting for rule recalculation",
           "SELECT_ALL_APPRAISAL_RULE": "Select all"
         },
-        "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier"
+        "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier",
+        "UNIT_TYPE" : {
+          "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive with objects",
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive without objects",
+          "ARCHIVE_UNIT_HOLDING_UNIT" : "Positioning tree",
+          "ARCHIVE_UNIT_FILING_UNIT" : "Filing plan",
+          "ARCHIVE_UNIT_PLAN" : "Plan",
+          "ARCHIVE_UNIT_HOLDING" : "Tree"
+        }
       }
     },
     "ARCHIVE_UNIT": {
@@ -155,7 +173,8 @@
         "OTHER_FIELD": "Another criteria",
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
-        "SP_COMM_DT": "Originating agency Comm DT"
+        "SP_COMM_DT": "Originating agency Comm DT",
+        "TYPE" : "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -319,6 +338,14 @@
         "DISSEMINATION_RULE" : "Diffusion",
         "REUSE_RULE" : "Reuse",
         "CLASSIFICATION_RULE" : "Classification"
+      },
+
+      "ALERTE_MESSAGES" : {
+        "BACK_TO_SELECTION" : "Return to selection",
+        "ACTION_ALERTE_TITLE" : "The requested action is not possible for this selection",
+        "ACTION_ALERTE_FIRST_MESSAGE" : "Your selection includes at least one positioning tree type archival unit.",
+        "UPDATE_RULES_ALERTE_SECOND_MESSAGE" : "Change rule action is not allowed for this one(s). Please remove the corresponding archival units.",
+        "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
       }
     }
 }
