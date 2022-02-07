@@ -131,11 +131,7 @@ public class Pac4jClientBuilder {
                     oidcConfiguration.setDiscoveryURI(discoveryUrl);
 
                     final String scope = provider.getScope();
-                    if (scope != null) {
-                        oidcConfiguration.setScope(scope);
-                    } else {
-                        oidcConfiguration.setScope("openid");
-                    }
+                    oidcConfiguration.setScope(scope != null ? scope : "openid");
                     final String algo = provider.getPreferredJwsAlgorithm();
                     if (StringUtils.isNotBlank(algo)) {
                         oidcConfiguration.setPreferredJwsAlgorithm(JWSAlgorithm.parse(algo));
@@ -145,23 +141,11 @@ public class Pac4jClientBuilder {
                         oidcConfiguration.setCustomParams(customParams);
                     }
                     final Boolean useState = provider.getUseState();
-                    if (useState != null) {
-                        oidcConfiguration.setWithState(useState);
-                    } else {
-                        oidcConfiguration.setWithState(true);
-                    }
+                    oidcConfiguration.setWithState(useState != null ? useState : true);
                     final Boolean useNonce = provider.getUseNonce();
-                    if (useNonce != null) {
-                        oidcConfiguration.setUseNonce(useNonce);
-                    } else {
-                        oidcConfiguration.setUseNonce(true);
-                    }
+                    oidcConfiguration.setUseNonce(useNonce != null ? useNonce : true);
                     final Boolean usePkce = provider.getUsePkce();
-                    if (usePkce != null) {
-                        oidcConfiguration.setDisablePkce(!usePkce);
-                    } else {
-                        oidcConfiguration.setDisablePkce(true);
-                    }
+                    oidcConfiguration.setDisablePkce(usePkce != null ? !usePkce : true);
                     oidcConfiguration.setStateGenerator((context, store) -> new Nonce().toString());
                     oidcConfiguration.setTokenValidator(new CustomTokenValidator(oidcConfiguration));
 
@@ -174,11 +158,12 @@ public class Pac4jClientBuilder {
                 }
             }
         } catch (final TechnicalException e) {
-            if(e.getMessage().contains("Error loading keystore")) {
+            final String message = e.getMessage();
+            if (message.contains("Error loading keystore")) {
                 throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_KEYSPWD);
-            } else if(e.getMessage().contains("Can't obtain SP private key")) {
+            } else if (message.contains("Can't obtain SP private key")) {
                 throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_PRIVATE_KEYSPWD);
-            } else if(e.getMessage().equals("Error parsing idp Metadata")) {
+            } else if (message.equals("Error parsing idp Metadata")) {
                 throw new InvalidFormatException(e.getMessage(), ErrorsConstants.ERRORS_VALID_IDP_METADATA);
             }
             LOGGER.error("Cannot build pac4j client", e);
