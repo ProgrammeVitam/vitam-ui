@@ -201,7 +201,7 @@
           </p>
         </div>
 
-        <div class="row criteria-choice sub-choice">
+        <div class="row criteria-choice">
           <input
             class="criteria-choice-input"
             id="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE"
@@ -214,7 +214,7 @@
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_APPRAISAL_RULE' | translate }}</label
           >
         </div>
-        <div class="row criteria-choice sub-choice">
+        <div class="row criteria-choice">
           <input
             class="criteria-choice-input"
             type="checkbox"
@@ -235,7 +235,7 @@
           </p>
         </div>
 
-        <div class="row criteria-choice sub-choice">
+        <div class="row criteria-choice">
           <input
             class="criteria-choice-input"
             type="checkbox"
@@ -248,7 +248,7 @@
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.ELIMINATION_APPRAISAL_RULE' | translate }}
           </label>
         </div>
-        <div class="row criteria-choice sub-choice">
+        <div class="row criteria-choice">
           <input
             class="criteria-choice-input"
             id="KEEP_APPRAISAL_RULE_FINAL_ACTION"
@@ -259,19 +259,6 @@
 
           <label for="KEEP_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.KEEP_APPRAISAL_RULE' | translate }}</label
-          >
-        </div>
-        <div class="row criteria-choice sub-choice">
-          <input
-            class="criteria-choice-input"
-            id="NC_APPRAISAL_RULE_FINAL_ACTION"
-            type="checkbox"
-            (change)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED', $event)"
-            [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED')"
-          />
-
-          <label for="NC_APPRAISAL_RULE_FINAL_ACTION" class="form-check-label">
-            {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.NC_APPRAISAL_RULE' | translate }}</label
           >
         </div>
       </div>
