@@ -1,0 +1,14 @@
+<div class ="ok">
+ <span>
+  <span *ngIf="editText ; else elseBlock">{{editText}}</span>
+  <ng-template #elseBlock> {{ text }}</ng-template>
+  <input [(ngModel)]="editText" *ngIf="editmode" type="text" />
+</span>
+
+  <button *ngIf="!editmode" (click)="edit()">edit</button>
+  <button *ngIf="editmode" (click)="save()">save</button>
+  <button *ngIf="editmode" (click)="cancel()">cancel</button>
+</div>
+
+
+

@@ -94,6 +94,7 @@ export enum ValueOrDataConstants {
 }
 
 export interface FileNode {
+  editName?: string;
   id: number;
   parentId: number;
   name: string;
@@ -110,6 +111,7 @@ export interface FileNode {
   parent: FileNode;
   sedaData: SedaData;
   puaData?: PUA;
+  nonEditFileNode ?: boolean;
 }
 
 export interface FileNodeInsertParams {

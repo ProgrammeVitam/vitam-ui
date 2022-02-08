@@ -51,6 +51,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
 import { PastisGenericPopupComponent } from './pastis-generic-popup/pastis-generic-popup.component';
 import { PastisPopupOptionComponent } from './pastis-popup-option/pastis-popup-option.component';
+import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { PastisPopupOptionComponent } from './pastis-popup-option/pastis-popup-o
     PastisBreadcrumbComponent,
     PastisTitleBreadcrumbComponent,
     PastisGenericPopupComponent,
-    PastisPopupOptionComponent
+    PastisPopupOptionComponent,
+    ModifyTextButtonComponent
   ],
   imports: [CommonModule,
     FormsModule,
@@ -72,17 +74,18 @@ import { PastisPopupOptionComponent } from './pastis-popup-option/pastis-popup-o
     TranslateModule
   ],
   entryComponents: [PastisDialogConfirmComponent, PastisUnderConstructionComponent],
-  exports: [
-    PastisUnderConstructionComponent,
-    MatTooltipModule,
-    PastisMaterialModule,
-    PastisDialogConfirmComponent,
-    CenterMatmenuDirective,
-    PastisPopupMetadataLanguageComponent,
-    PastisBreadcrumbComponent,
-    PastisTitleBreadcrumbComponent,
-    PastisGenericPopupComponent,
-    PastisPopupOptionComponent
-  ],
+    exports: [
+        PastisUnderConstructionComponent,
+        MatTooltipModule,
+        PastisMaterialModule,
+        PastisDialogConfirmComponent,
+        CenterMatmenuDirective,
+        PastisPopupMetadataLanguageComponent,
+        PastisBreadcrumbComponent,
+        PastisTitleBreadcrumbComponent,
+        PastisGenericPopupComponent,
+        PastisPopupOptionComponent,
+        ModifyTextButtonComponent
+    ],
 })
 export class SharedModule {}

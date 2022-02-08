@@ -690,4 +690,14 @@ export class FileTreeMetadataComponent {
   isDuplicated(nomDuChamp: any) {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
+
+  isElementEdit(clickedNode: FileNode) : boolean {
+    if (clickedNode.nonEditFileNode){
+      console.log(clickedNode.editName + "TEST EDIT")
+    return true;
+    }
+    else{
+      return false
+    }
+  }
 }

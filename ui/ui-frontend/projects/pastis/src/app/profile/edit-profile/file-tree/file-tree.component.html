@@ -1,6 +1,7 @@
 <mat-tree #treeSelector
           *ngIf="fileTreeService.nestedTreeControl && fileTreeService.nestedDataSource"
-          [dataSource]="fileTreeService.nestedDataSource" [treeControl]="fileTreeService.nestedTreeControl" class="pastis-tree">
+          [dataSource]="fileTreeService.nestedDataSource" [treeControl]="fileTreeService.nestedTreeControl"
+          class="pastis-tree">
 
   <!-- Nested tree node-->
   <mat-nested-tree-node *matTreeNodeDef="let node;when:hasNestedChild">
@@ -29,7 +30,8 @@
         <!--Root children without children-->
         <span (click)="updateMedataTable(node);$event.stopPropagation()"
               *ngIf="!node.children.length && node.name !== rootElementName
-                    && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)" [ngStyle]="{'margin-left': calculateNodePosition(node)  + 'px'}"
+                    && isPartOfCollection(node) && shouldBeOnTab(node) && !isAttribute(node)"
+              [ngStyle]="{'margin-left': calculateNodePosition(node)  + 'px'}"
               class="pastis-tree-node-name">
           <span class="text text-medium">{{onResolveName(node)}}</span>
           <mat-divider class="pastis-divider"></mat-divider>
@@ -49,16 +51,22 @@
               </button>
               <span class="pastis-tree-node-name">
                 <span [ngClass]="{'text-medium-normal':!selectedItem(node),'text-medium-primary':selectedItem(node)}"
-                      class="text text-medium">{{onResolveName(node)}}</span>
-                <span *ngIf="node.name === 'ArchiveUnit'"
+                      class="text text-medium" *ngIf="node.nonEditFileNode || node.name==='ArchiveUnit'; else elseBlock">
+                    <modify-text-button  (textEdit)="changeFileNode($event, node)" [text]="node.name"></modify-text-button>
+                  </span>
+                <ng-template #elseBlock>{{onResolveName(node)}}</ng-template>
+                <span *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'"
                       matTooltip="Ajouter une UA"
                       matTooltipClass="pastis-tooltip-class"
                       style="float: right;">
+
+
                   <!--Button plus-->
                   <button (click)="addArchiveUnit(node)" *ngIf="this.profileService.profileMode === 'PA'"
                           class="pastis-btn-add-ua">
                     <i class="vitamui-icon vitamui-icon-add" style="color: var(--vitamui-primary);"></i>
-                    <span class="pastis-btn-add-ua-text">{{'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate}}</span>
+                    <span
+                      class="pastis-btn-add-ua-text">{{'PROFILE.EDIT_PROFILE.FILE_TREE.AJOUTER_UA_ICON' | translate}}</span>
                   </button>
                 </span>
               </span>
