@@ -42,9 +42,6 @@ public class ArchiveSearchConsts {
     public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION =
         "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION";
     public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP = "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED =
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED";
-
 
     public enum CriteriaDataType {
         STRING, DATE, INTERVAL
@@ -135,8 +132,7 @@ public class ArchiveSearchConsts {
 
     public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING =
         Map.of(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP, "Keep",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED, "???"
+            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP, "Keep"
         );
 
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
