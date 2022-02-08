@@ -155,6 +155,9 @@ export class FileTreeComponent implements OnDestroy {
   popupDuplicateSousTitreMetadonnee: string;
   popupDuplicateDeleteTypeTextM: string;
   popupDuplicateDeleteTypeTextF: string ;
+  text: string;
+
+  nonEditFileNode: boolean= false;
 
   static archiveUnits: FileNode;
   static archiveUnitsNumber: number;
@@ -446,7 +449,7 @@ export class FileTreeComponent implements OnDestroy {
     }
     let counter = 0;
     archiveUnit.children.forEach(child => {
-      if (child.name === 'ArchiveUnit') {
+      if (child.name === 'ArchiveUnit' || child.nonEditFileNode) {
         counter++;
         const archiveUnitLevel = archiveUnit.level - 1 + "." + counter;
         FileTreeComponent.uaIdAndPosition.set(archiveUnitLevel, child.id);
@@ -715,7 +718,7 @@ export class FileTreeComponent implements OnDestroy {
   }
 
   addArchiveUnit(node: FileNode) {
-    if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit') {
+    if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit' || node.nonEditFileNode) {
       console.log("Clicked seda node : ", node.sedaData);
       this.insertItem(node, ['ArchiveUnit']);
       // Refresh the metadata tree and the metadatatable
@@ -789,5 +792,13 @@ export class FileTreeComponent implements OnDestroy {
     if(this._fileTreeServiceUpdateMedataTable!= null){
       this._fileTreeServiceUpdateMedataTable.unsubscribe();
     }
+  }
+
+  changeFileNode($event: string, node:FileNode) {
+    node.nonEditFileNode = true;
+    node.editName = $event;
+    this.fileService.nodeChange.next(node)
+
+    this.updateMedataTable(node);
   }
 }

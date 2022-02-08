@@ -37,24 +37,26 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ApplicationService } from './application.service';
+
 import { ApplicationApiService } from './api/application-api.service';
 import { SecurityApiService } from './api/security-api.service';
 import { ApplicationId } from './application-id.enum';
-import { ApplicationService } from './application.service';
 import { AuthService } from './auth.service';
 import { WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
-import { AppConfiguration, AttachmentType, AuthUser } from './models';
-import { ThemeService } from './theme.service';
+import { AppConfiguration, AttachmentType, AuthUser, Color } from './models';
+import {ThemeService} from './theme.service';
 
 const WARNING_DURATION = 2000;
 const CUSTOMER_TECHNICAL_REFERENT_KEY = 'technical-referent-email';
 const CUSTOMER_WEBSITE_URL_KEY = 'website-url';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class StartupService {
+
   private configurationData: AppConfiguration;
 
   userRefresh = new Subject<any>();
@@ -63,48 +65,30 @@ export class StartupService {
 
   private CURRENT_TENANT_IDENTIFIER: string;
 
+
   constructor(
     private logger: Logger,
     private authService: AuthService,
     private securityApi: SecurityApiService,
-    private applicationApi: ApplicationApiService,
     private themeService: ThemeService,
-    private applicationService: ApplicationService,
     @Inject(WINDOW_LOCATION) private location: any
-  ) {}
+  ) { }
 
-  load(): Promise<any> {
+  load(): any {
     this.configurationData = null;
 
-    return this.applicationApi
-      .getConfiguration()
-      .toPromise()
-      .then((data: any) => {
-        this.configurationData = data;
-        this.authService.loginUrl = this.configurationData.CAS_URL;
-        this.authService.logoutUrl = this.configurationData.CAS_LOGOUT_URL;
-        this.authService.logoutRedirectUiUrl = this.configurationData.LOGOUT_REDIRECT_UI_URL;
-      })
-      .then(() => this.refreshUser().toPromise())
-      .then(() =>
-        this.applicationApi.getAsset([AttachmentType.Header, AttachmentType.Footer, AttachmentType.User, AttachmentType.Portal]).toPromise()
-      )
-      .then((data) => {
-        this.configurationData.HEADER_LOGO = data[AttachmentType.Header];
-        this.configurationData.FOOTER_LOGO = data[AttachmentType.Footer];
-        this.configurationData.PORTAL_LOGO = data[AttachmentType.Portal];
-        this.configurationData.USER_LOGO = data[AttachmentType.User];
-        this.configurationData.LOGO = data[AttachmentType.Portal];
-      })
-      .then(() => {
-        let customerColorMap = null;
-
-        if (this.authService.user.basicCustomer.graphicIdentity.hasCustomGraphicIdentity) {
-          customerColorMap = this.authService.user.basicCustomer.graphicIdentity.themeColors;
-        }
-        this.themeService.init(this.configurationData, customerColorMap);
-      })
-      .then(() => this.applicationService.list().toPromise());
+    let appConf: AppConfiguration = {
+      THEME_COLORS: {
+        "vitamui-background" : "#F5F7FC",
+        "vitamui-header-footer" : "#ffffff",
+        "vitamui-primary" : "#702382",
+        "vitamui-secondary" : "#2563A9",
+        "vitamui-tertiary" : "#C22A40"
+      }
+    };
+    this.configurationData = appConf;
+    this.themeService.init(this.configurationData, this.configurationData.THEME_COLORS);
+    return appConf;
   }
 
   setTenantIdentifier(tenantIdentifier?: string) {
@@ -133,7 +117,7 @@ export class StartupService {
   }
 
   configurationLoaded(): boolean {
-    return this.configurationData != null && this.configurationData.PORTAL_URL != null;
+    return null;
   }
 
   printConfiguration(): void {
@@ -145,13 +129,7 @@ export class StartupService {
   }
 
   getLogo(): string {
-    if (this.configurationLoaded()) {
-      if (this.configurationData.APP_LOGO) {
-        return this.configurationData.APP_LOGO;
-      } else {
-        return this.configurationData.LOGO;
-      }
-    }
+    return null;
   }
 
   getAppLogoURL(): string {
@@ -179,63 +157,28 @@ export class StartupService {
   }
 
   getPortalUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.PORTAL_URL;
-    }
-
     return null;
   }
 
   getLoginUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.CAS_URL;
-    }
-
     return null;
   }
 
   getLogoutUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.CAS_LOGOUT_URL;
-    }
 
     return null;
   }
 
   getCasUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.CAS_URL;
-    }
 
     return null;
   }
 
   getSearchUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.SEARCH_URL;
-    }
-
     return null;
   }
 
-  getArchivesSearchUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.ARCHIVES_SEARCH_URL;
-    }
-
-    return null;
-  }
-
-  getReferentialUrl(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.REFERENTIAL_URL;
-    }
-    return null;
-  }
   getConfigStringValue(key: string): string {
-    if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
-      return this.configurationData[key];
-    }
 
     return null;
   }
@@ -249,21 +192,16 @@ export class StartupService {
    * @param url URL to be redirected to.
    */
   redirect(url?: string) {
-    setTimeout(() => (this.location.href = url ? url : this.getPortalUrl()), WARNING_DURATION);
+    setTimeout(() => this.location.href = url ? url : this.getPortalUrl(), WARNING_DURATION);
   }
 
   getPlatformName(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.PLATFORM_NAME;
-    }
 
     return null;
   }
 
   public getCustomer(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.CUSTOMER;
-    }
+    return null;
   }
 
   public getCustomerTechnicalReferentEmail(): string {
@@ -280,19 +218,4 @@ export class StartupService {
     }
   }
 
-  public getDefaultPortalTitle(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.PORTAL_TITLE;
-    }
-
-    return null;
-  }
-
-  public getDefaultPortalMessage(): string {
-    if (this.configurationLoaded()) {
-      return this.configurationData.PORTAL_MESSAGE;
-    }
-
-    return null;
-  }
 }

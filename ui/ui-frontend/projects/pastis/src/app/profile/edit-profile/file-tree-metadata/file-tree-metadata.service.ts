@@ -86,6 +86,7 @@ export class FileTreeMetadataService {
           child.type !== TypeConstants.attribute) {
 
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -93,10 +94,11 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, child),
             commentaire: child.documentation,
             type: child.dataType,
-            enumeration: child.sedaData.Enumeration,
+            enumeration: child.sedaData.Enumeration
           })
         } else if (!childrenToExclude && child.type !== TypeConstants.attribute) {
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -111,6 +113,7 @@ export class FileTreeMetadataService {
         // (and only once)
         else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple){
           data.push({
+            nomDuChampEdit: child.editName,
             id: clickedNode.id,
             nomDuChamp: clickedNode.name,
             nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),
@@ -118,7 +121,7 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, clickedNode),
             commentaire: clickedNode.documentation,
             type: clickedNode.dataType,
-            enumeration: clickedNode.sedaData.Enumeration,
+            enumeration: clickedNode.sedaData.Enumeration
           })
           break;
         }
@@ -127,6 +130,7 @@ export class FileTreeMetadataService {
     //  It this case, the retrieved data is the current clicked node data
     else {
       data.push({
+        nomDuChampEdit: clickedNode.editName,
         id: clickedNode.id,
         nomDuChamp: clickedNode.name,
         nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),
@@ -134,7 +138,7 @@ export class FileTreeMetadataService {
         cardinalite: this.findSedaAllowedCardinalityList(sedaChild, clickedNode),
         commentaire: clickedNode.documentation,
         type: clickedNode.dataType,
-        enumeration: clickedNode.sedaData.Enumeration,
+        enumeration: clickedNode.sedaData.Enumeration
       })
     }
     this.allowedSedaCardinalities.next(allowedCardList);
@@ -157,6 +161,7 @@ export class FileTreeMetadataService {
       if (node.NameFr) {
         return node.NameFr
       }
+      else if(node.e)
       return node.Name
     }
     return elementName;

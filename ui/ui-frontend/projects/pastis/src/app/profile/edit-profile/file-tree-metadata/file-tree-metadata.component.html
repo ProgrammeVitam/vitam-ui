@@ -79,8 +79,11 @@
                ><span class="path5"></span>
             </i>
 
+              <span *ngIf="isElementEdit(clickedNode) else nonEdit">{{clickedNode.editName}}
+              Edit</span>
+              <ng-template #nonEdit>  {{onResolveName(element.nomDuChamp)}}</ng-template>
 
-              {{onResolveName(element.nomDuChamp)}}
+
               <mat-icon *ngIf="!isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])"
                         matTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
                         matTooltipClass="pastis-table-content"
