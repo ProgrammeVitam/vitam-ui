@@ -49,7 +49,7 @@ import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadat
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {VitamUIInputModule} from "vitamui-library";
+import {VitamUIInputModule} from 'projects/vitamui-library/src/lib/components/vitamui-input/vitamui-input.module';
 import {CreateNoticeComponent} from "./create-notice/create-notice.component";
 import {CoreModule} from "../core/core.module";
 import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';

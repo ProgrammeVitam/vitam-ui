@@ -43,8 +43,7 @@ import{IEnvironment} from './IEnvironment'
 
 export const environment: IEnvironment= {
   production: false,
-  apiServerUrl: "http://localhost:8096",
-  standalone: true
+  standalone: false
 };
 
 /*
