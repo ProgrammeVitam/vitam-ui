@@ -48,6 +48,7 @@ import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -100,7 +101,9 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
             case PAYLOAD_TOO_LARGE:
                 exception = new RequestEntityTooLargeException(source.getMessage(), source.getError());
                 break;
-            default:
+            case EXPECTATION_FAILED:
+                exception = new UnexpectedSettingsException(source.getMessage(), source.getError());
+                break;default:
                 LOGGER.error("Error Source {}", source);
                 exception = new ApplicationServerException(source.getMessage());
                 break;

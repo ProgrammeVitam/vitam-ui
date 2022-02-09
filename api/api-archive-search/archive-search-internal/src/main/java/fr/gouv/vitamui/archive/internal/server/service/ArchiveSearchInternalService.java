@@ -127,8 +127,6 @@ public class ArchiveSearchInternalService {
     private static final String INGEST_ARCHIVE_TYPE = "INGEST";
     private static final String ARCHIVE_UNIT_DETAILS = "$results";
     private static final Integer EXPORT_ARCHIVE_UNITS_MAX_ELEMENTS = 10000;
-    private static final Integer EXPORT_DIP_AND_ELIMINATION_MAX_ELEMENTS = 10000;
-    private static final Integer ELIMINATION_ANALYSIS_THRESHOLD = 10000;
     public static final String SEMI_COLON = ";";
     public static final String COMMA = ",";
     public static final String DOUBLE_QUOTE = "\"";
@@ -259,7 +257,8 @@ public class ArchiveSearchInternalService {
             query = createQueryDSL(archiveUnitsTypes, nodesCriteriaList, simpleCriteriaList,
                 appraisalMgtRulesCriteriaList,
                 searchQuery.getPageNumber(),
-                searchQuery.getSize(), orderBy, direction);
+                searchQuery.getSize(), orderBy, direction, searchQuery.isTrackTotalHits());
+
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
         } catch (InvalidParseOperationException e) {
@@ -553,7 +552,7 @@ public class ArchiveSearchInternalService {
     public JsonNode createQueryDSL(List<String> unitTypes, List<String> nodes,
         List<SearchCriteriaEltDto> simpleCriteriaList, List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList,
         final Integer pageNumber, final Integer size, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction)
+        final Optional<DirectionDto> direction, final boolean trackTotalHits)
         throws InvalidParseOperationException, InvalidCreateOperationException {
         final BooleanQuery query = and();
         final SelectMultiQuery select = new SelectMultiQuery();
@@ -588,12 +587,12 @@ public class ArchiveSearchInternalService {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
-
         select.setLimitFilter(pageNumber * size, size);
+        select.trackTotalHits(trackTotalHits);
         archivesSearchFieldsQueryBuilderService.fillQueryFromCriteriaList(query, simpleCriteriaList);
         archivesSearchAppraisalQueryBuilderService.fillQueryFromCriteriaList(query, appraisalMgtRulesCriteriaList);
         select.setQuery(query);
-        LOGGER.info("Final query: {}", select.getFinalSelect().toPrettyString());
+        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
     }
 
@@ -655,8 +654,6 @@ public class ArchiveSearchInternalService {
         ObjectNode query = JsonHandler.createObjectNode();
         query.set(BuilderToken.GLOBAL.ROOTS.exactToken(), updateSet.get(BuilderToken.GLOBAL.ROOTS.exactToken()));
         query.set(BuilderToken.GLOBAL.QUERY.exactToken(), updateSet.get(BuilderToken.GLOBAL.QUERY.exactToken()));
-        query.put(BuilderToken.GLOBAL.THRESOLD.exactToken(), ELIMINATION_ANALYSIS_THRESHOLD);
-
         EliminationRequestBody requestBody = new EliminationRequestBody();
         requestBody.setDate(new SimpleDateFormat(ArchiveSearchConsts.ONLY_DATE_FORMAT).format(new Date()));
         requestBody.setDslRequest(query);
@@ -666,7 +663,6 @@ public class ArchiveSearchInternalService {
     private JsonNode prepareDslQuery(final SearchCriteriaDto searchQuery, final VitamContext vitamContext)
         throws VitamClientException {
         searchQuery.setPageNumber(0);
-        searchQuery.setSize(EXPORT_DIP_AND_ELIMINATION_MAX_ELEMENTS);
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);

@@ -51,4 +51,5 @@ public class SearchCriteriaDto implements Serializable {
     private Integer pageNumber;
     private Integer size;
     private String language = Locale.FRENCH.getLanguage();
+    private boolean trackTotalHits;
 }
