@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.exception.RequestEntityTooLargeException;
+import fr.gouv.vitamui.commons.api.exception.TimeOutOperationException;
 import fr.gouv.vitamui.commons.api.exception.TooManyRequestsException;
 import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.VitamUIException;
@@ -99,6 +100,9 @@ public class VitamUIErrorConverter implements Converter<VitamUIError, VitamUIExc
                 break;
             case PAYLOAD_TOO_LARGE:
                 exception = new RequestEntityTooLargeException(source.getMessage(), source.getError());
+                break;
+            case REQUEST_TIMEOUT:
+                exception = new TimeOutOperationException(source.getMessage(), source.getError());
                 break;
             default:
                 LOGGER.error("Error Source {}", source);
