@@ -101,6 +101,7 @@ export interface SearchCriteriaDto {
   size: number;
   sortingCriteria?: SearchCriteriaSort;
   language?: string;
+  trackTotalHits?: boolean;
 }
 
 export interface PagedResult {

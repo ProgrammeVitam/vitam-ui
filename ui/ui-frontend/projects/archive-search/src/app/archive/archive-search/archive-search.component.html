@@ -162,13 +162,44 @@
 <div vitamuiCommonInfiniteScroll (vitamuiScroll)="loadMore()" *ngIf="submited">
   <div class="vitamui-table">
     <div class="vitamui-table-head">
-      <div class="col-8" *ngIf="totalResults > 1 || totalResults === 0">
-        {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.SELECTED' | translate }}
+      <div class="col-8" *ngIf="waitingToGetFixedCount">
+        <mat-spinner *ngIf="pendingGetFixedCount" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+        <ng-container *ngIf="!pendingGetFixedCount">
+          <a
+            class="link-without-underline"
+            (click)="callVitamApiServiceToGetExactCount()"
+            matTooltip="{{ 'ARCHIVE_SEARCH.RETRIVE_EXACT_COUNT' | translate }}"
+            matTooltipClass="vitamui-tooltip"
+            [matTooltipShowDelay]="300"
+            >{{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalResults }}
+          </a>
+          <ng-container *ngIf="isAllchecked">
+            <span
+              >{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ 'ARCHIVE_SEARCH.MORE_THAN' | translate }} {{ totalResults }}
+              {{ 'ARCHIVE_SEARCH.DIP.SELECTED' | translate }}</span
+            >
+          </ng-container>
+          <ng-container *ngIf="!isAllchecked">
+            <span>{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.SELECTED' | translate }}</span>
+          </ng-container>
+        </ng-container>
       </div>
-      <div class="col-8" *ngIf="totalResults === 1">
-        {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
-        {{ 'ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate }}
+      <div class="col-8" *ngIf="!waitingToGetFixedCount">
+        <ng-container *ngIf="totalResults > 1 || totalResults === 0">
+          <span
+            >{{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
+
+            {{ itemSelected === 1 ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate) : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate) }}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="totalResults === 1">
+          <span>
+            {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
+            {{ itemSelected === 1 ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate) : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate) }}
+          </span>
+        </ng-container>
       </div>
+
       <div class="col-3 area-download">
         <i
           (click)="exportArchiveUnitsToCsvFile()"
@@ -178,16 +209,28 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="openExportDIPRequestCreateDialog()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="prepareToLaunchExportDIP()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
-          <button mat-menu-item (click)="updateManagementRule()" [disabled]="(!hasUpdateManagementRuleRole || itemSelected === 0) || (!hasAccessContractPermissions || itemSelected === 0)">
+          <button
+            mat-menu-item
+            (click)="updateManagementRule()"
+            [disabled]="!hasUpdateManagementRuleRole || itemSelected === 0 || !hasAccessContractPermissions || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.RULES_ACTION.UPDATE_RULE' | translate }}
           </button>
-          <button mat-menu-item (click)="startEliminationAnalysis()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="prepareToLaunchEliminationAnalysis()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button mat-menu-item (click)="launchEliminationAction()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="prepareToLaunchElimination()"
+            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button mat-menu-item (click)="launchComputedInheritedRules()" [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0">
@@ -385,45 +428,47 @@
   </div>
 </div>
 
-<ng-template #confirmEliminationActionDialog>
+<ng-template #confirmSecondActionBigNumberOfResultsActionDialog>
   <mat-dialog-content>
     <br />
-
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}</div>
-    <div class="text large bold" *ngIf="itemSelected > 1">
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.TO_ELIMINATE' | translate }} {{ itemSelected }}
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.SELECTED_ITEMS' | translate }}
+    <div class="text-title" *ngIf="!selectedItemCountKnown()">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT' | translate }}
     </div>
-    <div class="text large bold" *ngIf="itemSelected === 1">
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.ONE_SELECTED' | translate }}
+    <div class="text-title" *ngIf="selectedItemCountKnown()">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT' | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+      <span *ngIf="itemSelected === 1">
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE' }}</span
+      >
+    </div>
+    <div class="text large bold" *ngIf="!selectedItemCountKnown()">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT' | translate }}
+    </div>
+    <div class="text large bold" *ngIf="selectedItemCountKnown()">
+      <span *ngIf="itemSelected > 1">
+        {{
+          'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT'
+            | translate: { elementsSize: itemSelected }
+        }}</span
+      >
+      <span *ngIf="itemSelected === 1">
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE' | translate }}</span
+      >
+    </div>
+    <div class="text large bold">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_MESSAGE_2' | translate }}
     </div>
   </mat-dialog-content>
   <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" *ngIf="itemSelected > 1" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE' | translate }}
+  <mat-dialog-actions class="mat-dialog-actions-right">
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CONFIRM' | translate }}
     </button>
-    <button [matDialogClose]="true" *ngIf="itemSelected === 1" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTE_ONE' | translate }}
+    <button matDialogClose class="btn cancel" cdkFocusInitial>
+      {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.CANCEL' | translate }}
     </button>
-    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}</button>
   </mat-dialog-actions>
 </ng-template>
-
-<ng-template #confirmComputedInheritedRulesDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.TITLE' | translate }}</div>
-    <div class="text large bold">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRMATION_MESSAGE' | translate: { itemSelected: itemSelected } }}
-    </div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRM' | translate }}
-    </button>
-    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CANCEL' | translate }}</button>
-  </mat-dialog-actions></ng-template
->

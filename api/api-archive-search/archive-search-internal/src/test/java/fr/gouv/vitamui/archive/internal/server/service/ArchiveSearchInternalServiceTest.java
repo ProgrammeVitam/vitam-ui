@@ -232,7 +232,6 @@ public class ArchiveSearchInternalServiceTest {
 
         JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
         Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
-        Assertions.assertThat(resultExpected.get(BuilderToken.GLOBAL.THRESOLD.exactToken()).asDouble()).isEqualTo(10000);
     }
 
 

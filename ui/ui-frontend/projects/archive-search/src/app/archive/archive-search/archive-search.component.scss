@@ -20,3 +20,14 @@
 ::ng-deep.mat-menu-panel {
   max-width: fit-content !important;
 }
+.link-without-underline {
+  cursor: pointer;
+  color: #702382;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+ }
+
+ .mat-dialog-actions-right {
+    justify-content: flex-end;
+}

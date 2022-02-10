@@ -52,19 +52,25 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
+import {
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
-const MAX_DIP_EXPORT_THRESHOLD = 10000;
-const MAX_ELIMINATION_ACTION_THRESHOLD = 10000;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
-const MAX_ELIMINATION_ANALYSIS_THRESHOLD = 10000;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 
 @Component({
@@ -73,6 +79,8 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
+  DEFAULT_RESULT_THRESHOLD = 10000;
+
   constructor(
     private archiveService: ArchiveService,
     private translateService: TranslateService,
@@ -176,6 +184,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   pageNumbers = 0;
   totalResults = 0;
   pending = false;
+  pendingGetFixedCount = false;
+  submitedGetFixedCount = false;
   included = false;
   canLoadMore = false;
   tenantIdentifier: string;
@@ -227,16 +237,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   openDialogSubscription: Subscription;
   analysisliminationSuscription: Subscription;
   showConfirmEliminationSuscription: Subscription;
+  showConfirmBigNumberOfResultsSuscription: Subscription;
   actionliminationSuscription: Subscription;
   showConfirmComputedInheritedRulesSuscription: Subscription;
   computedInheritedRulesSuscription: Subscription;
 
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
+  trackTotalHits: boolean;
+  waitingToGetFixedCount = false;
 
-  @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
-  @ViewChild('confirmComputedInheritedRulesDialog', { static: true })
-  confirmComputedInheritedRulesDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
+  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -300,17 +312,19 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.submit();
     });
 
-    this.archiveService.getAccessContractById(this.accessContract).subscribe((ac: AccessContract) => {
-      this.hasAccessContractPermissions = this.archiveService.hasAccessContractPermissions(ac);
-    },
+    this.archiveService.getAccessContractById(this.accessContract).subscribe(
+      (ac: AccessContract) => {
+        this.hasAccessContractPermissions = this.archiveService.hasAccessContractPermissions(ac);
+      },
       (error: any) => {
         console.error('AccessContract not found', error);
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-        this.snackBar.open(message + ': '+ this.accessContract, null, {
+        this.snackBar.open(message + ': ' + this.accessContract, null, {
           panelClass: 'vitamui-snack-bar',
           duration: 10000,
         });
-      })
+      }
+    );
 
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
@@ -527,6 +541,39 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  loadExactCount() {
+    this.pendingGetFixedCount = true;
+    this.submitedGetFixedCount = true;
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.callVitamApiServiceToGetExactCount();
+    }
+  }
+
+  private callVitamApiServiceToGetExactCount() {
+    this.pendingGetFixedCount = true;
+    const searchCriteria = {
+      criteriaList: this.criteriaSearchList,
+      pageNumber: this.currentPage,
+      size: 1,
+      trackTotalHits: true,
+    };
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
+      (pagedResult: PagedResult) => {
+        this.totalResults = pagedResult.totalResults;
+
+        if (this.isAllchecked) {
+          this.itemSelected = this.totalResults - this.itemNotSelected;
+        }
+        this.pendingGetFixedCount = false;
+        this.waitingToGetFixedCount = false;
+      },
+      (error: HttpErrorResponse) => {
+        this.pendingGetFixedCount = false;
+        console.log('error : ', error.message);
+      }
+    );
+  }
+
   getNodesId(): CriteriaValue[] {
     const nodesIdList: CriteriaValue[] = [];
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
@@ -656,13 +703,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   private callVitamApiService() {
     this.pending = true;
-
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       sortingCriteria,
+      trackTotalHits: false,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
@@ -670,6 +717,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.archiveUnits = pagedResult.results;
           this.archiveExchangeDataService.emitFacets(pagedResult.facets);
           this.hasResults = true;
+          this.totalResults = pagedResult.totalResults;
         } else {
           if (pagedResult.results) {
             this.hasResults = true;
@@ -678,7 +726,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.pageNumbers = pagedResult.pageNumbers;
-        this.totalResults = pagedResult.totalResults;
+
+        if (this.totalResults === this.DEFAULT_RESULT_THRESHOLD) {
+          this.waitingToGetFixedCount = true;
+        } else {
+          this.waitingToGetFixedCount = false;
+        }
         if (this.isAllchecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
@@ -916,6 +969,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
     this.openDialogSubscription?.unsubscribe();
     this.showConfirmEliminationSuscription?.unsubscribe();
+    this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
     this.showConfirmComputedInheritedRulesSuscription?.unsubscribe();
@@ -1089,16 +1143,26 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  openExportDIPRequestCreateDialog() {
-    if (this.itemSelected > MAX_DIP_EXPORT_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'exportDIPLimitReached' },
-        duration: 10000,
-      });
-      return;
-    }
+  prepareToLaunchExportDIP() {
+    if (!this.isAllchecked && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
+      this.launchExportDIP();
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+        { panelClass: 'vitamui-dialog' }
+      );
 
+      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchExportDIP();
+        });
+    }
+  }
+
+  launchExportDIP() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
@@ -1117,6 +1181,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         exportDIPSearchCriteria,
         accessContract: this.accessContract,
         tenantIdentifier: this.tenantIdentifier,
+        selectedItemCountKnown: this.selectedItemCountKnown(),
       },
     });
     this.openDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
@@ -1126,16 +1191,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  startEliminationAnalysis() {
-    if (this.itemSelected > MAX_ELIMINATION_ANALYSIS_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
-        duration: 10000,
-      });
-      return;
-    }
+  selectedItemCountKnown(): boolean {
+    return !this.waitingToGetFixedCount || !this.isAllchecked;
+  }
 
+  prepareToLaunchEliminationAnalysis() {
+    if (this.selectedItemCountKnown() && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
+      this.launchEliminationAnalysis();
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+        { panelClass: 'vitamui-dialog' }
+      );
+
+      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchEliminationAnalysis();
+        });
+    }
+  }
+
+  launchEliminationAnalysis() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
@@ -1162,46 +1241,45 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  launchEliminationAction() {
-    if (this.itemSelected > MAX_ELIMINATION_ACTION_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
-        duration: 10000,
-      });
-      return;
-    }
-    const dialogToOpen = this.confirmEliminationActionDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+  prepareToLaunchElimination() {
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+      { panelClass: 'vitamui-dialog' }
+    );
 
-    this.showConfirmEliminationSuscription = dialogRef
+    this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-        const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-        const exportDIPSearchCriteria = {
-          criteriaList: this.listOfUACriteriaSearch,
-          pageNumber: this.currentPage,
-          size: PAGE_SIZE,
-          sortingCriteria,
-          language: this.translateService.currentLang,
-        };
+        this.launchEliminationAction();
+      });
+  }
 
-        this.actionliminationSuscription = this.archiveService
-          .launchEliminationAction(exportDIPSearchCriteria, this.accessContract)
-          .subscribe((response) => {
-            this.eliminationActionResponse = response.$results;
+  private launchEliminationAction() {
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const exportDIPSearchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      sortingCriteria,
+      language: this.translateService.currentLang,
+    };
 
-            if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
-              const guid = this.eliminationActionResponse[0].itemId;
-              const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-              const serviceUrl =
-                this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+    this.actionliminationSuscription = this.archiveService
+      .launchEliminationAction(exportDIPSearchCriteria, this.accessContract)
+      .subscribe((response) => {
+        this.eliminationActionResponse = response.$results;
 
-              this.openSnackBarForWorkflow(message, serviceUrl);
-            }
-          });
+        if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
+          const guid = this.eliminationActionResponse[0].itemId;
+          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+          const serviceUrl =
+            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+          this.openSnackBarForWorkflow(message, serviceUrl);
+        }
       });
   }
 
@@ -1222,31 +1300,42 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   launchComputedInheritedRules() {
-    const dialogToOpen = this.confirmComputedInheritedRulesDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    this.showConfirmComputedInheritedRulesSuscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-        const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-        const computedInheritedRulesSearchCriteria = {
-          criteriaList: this.listOfUACriteriaSearch,
-          pageNumber: this.currentPage,
-          size: PAGE_SIZE,
-          sortingCriteria,
-          language: this.translateService.currentLang,
-        };
-        this.computedInheritedRulesSuscription = this.archiveService
-          .launchComputedInheritedRules(computedInheritedRulesSearchCriteria, this.accessContract)
-          .subscribe((operationId) => {
-            const guid = operationId;
-            const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
-            const serviceUrl =
-              this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+    if (this.selectedItemCountKnown() && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
+      this.launchComputedInheritedRulesAction();
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+        { panelClass: 'vitamui-dialog' }
+      );
 
-            this.openSnackBarForWorkflow(message, serviceUrl);
-          });
+      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchComputedInheritedRulesAction();
+        });
+    }
+  }
+
+  private launchComputedInheritedRulesAction() {
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const computedInheritedRulesSearchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      sortingCriteria,
+      language: this.translateService.currentLang,
+    };
+    this.computedInheritedRulesSuscription = this.archiveService
+      .launchComputedInheritedRules(computedInheritedRulesSearchCriteria, this.accessContract)
+      .subscribe((operationId) => {
+        const guid = operationId;
+        const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
+        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+        this.openSnackBarForWorkflow(message, serviceUrl);
       });
   }
 }
