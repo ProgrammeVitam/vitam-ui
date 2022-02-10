@@ -72,6 +72,7 @@ const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 
 @Component({
   selector: 'app-archive-search',
@@ -103,10 +104,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           { id: node.id, value: node.id },
           node.title,
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           false
         );
       } else {
@@ -200,9 +201,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   selectedValueOntolonogy: any;
   archiveUnits: Unit[];
   ontologies: any;
-  filterMapType: { [key: string]: string[] } = {
-    status: ['Folder', 'Document'],
-  };
   shouldShowPreviewArchiveUnit = false;
 
   criteriaSearchList: SearchCriteriaEltDto[] = [];
@@ -239,7 +237,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   showConfirmEliminationSuscription: Subscription;
   showConfirmBigNumberOfResultsSuscription: Subscription;
   actionliminationSuscription: Subscription;
-  showConfirmComputedInheritedRulesSuscription: Subscription;
+  updateArchiveUnitAlerteMessageDialogSubscription: Subscription;
+  launchComputeInheritedRuleAlerteMessageDialogSubscription: Subscription;
   computedInheritedRulesSuscription: Subscription;
 
   eliminationAnalysisResponse: any;
@@ -249,6 +248,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
+  numberOfHoldingUnitType = 0;
+  numberOfHoldingUnitTypeOnComputedRules = 0;
+
+  @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
+  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
+  updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
+  launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
@@ -304,8 +312,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
-    this.filterMapType.Type = ['Folder', 'Document'];
-
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
@@ -341,11 +347,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.show = true;
       this.archiveExchangeDataService.emitToggle(this.show);
     }
-  }
-
-  onFilterChange(key: string, values: any[]) {
-    this.filterMapType[key] = values;
-    this.filterChange.next(this.filterMapType);
   }
 
   showHidePanel(show: boolean) {
@@ -398,6 +399,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
           if (emit === true && val.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
             this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: 'REMOVE',
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === 'ALL_ARCHIVE_UNIT_TYPES') {
+            this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,
               action: 'REMOVE',
@@ -472,7 +480,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           const filtredValues = values.filter((elt) =>
-            criteria.dataType === 'STRING' || criteria.dataType === 'DATE'
+            criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
               ? elt.value.value === valueElt.value
               : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
           );
@@ -586,18 +594,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return nodesIdList;
   }
 
-  addAllDescriptionLevelValues(typesFilterValues: CriteriaValue[]) {
-    typesFilterValues.push({ id: 'Item', value: 'Item' });
-    typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
-    typesFilterValues.push({ id: 'File', value: 'File' });
-    typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
-    typesFilterValues.push({ id: 'Class', value: 'Class' });
-    typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
-    typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
-    typesFilterValues.push({ id: 'Series', value: 'Series' });
-    typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
-    typesFilterValues.push({ id: 'Collection', value: 'Collection' });
-    typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
+  getArchiveUnitType(archiveUnit: any) {
+    if (archiveUnit) {
+      return archiveUnit['#unitType'];
+    }
   }
 
   buildNodesListForQUery() {
@@ -632,38 +632,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     });
-
-    if (this.filterMapType.Type.length !== 2) {
-      const typesFilterValues: CriteriaValue[] = [];
-      if (this.filterMapType.Type.length === 0) {
-        this.addAllDescriptionLevelValues(typesFilterValues);
-      }
-
-      this.filterMapType.Type.forEach((filterType) => {
-        if (filterType === 'Document') {
-          typesFilterValues.push({ id: 'Item', value: 'Item' });
-        } else if (filterType === 'Folder') {
-          typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
-          typesFilterValues.push({ id: 'File', value: 'File' });
-          typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
-          typesFilterValues.push({ id: 'Class', value: 'Class' });
-          typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
-          typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
-          typesFilterValues.push({ id: 'Series', value: 'Series' });
-          typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
-          typesFilterValues.push({ id: 'Collection', value: 'Collection' });
-          typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
-        }
-      });
-
-      this.criteriaSearchList.push({
-        criteria: 'DescriptionLevel',
-        values: typesFilterValues,
-        operator: CriteriaOperator.EQ,
-        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING,
-      });
-    }
   }
 
   buildAppraisalCriteriaListForQUery() {
@@ -678,7 +646,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             this.criteriaSearchList.push({
               criteria: key.value,
               values: [...new Array({ id: value, value })],
-              operator: 'EQ',
+              operator: CriteriaOperator.EQ,
               category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
               dataType: criteria.dataType,
             });
@@ -809,10 +777,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           { id: nodeId, value: nodeId },
           node.title,
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           false
         );
       } else if (node.children.length > 0) {
@@ -972,12 +940,13 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
-    this.showConfirmComputedInheritedRulesSuscription?.unsubscribe();
+    this.updateArchiveUnitAlerteMessageDialogSubscription?.unsubscribe();
+    this.launchComputeInheritedRuleAlerteMessageDialogSubscription?.unsubscribe();
     this.computedInheritedRulesSuscription?.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
-    if(this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
@@ -1083,9 +1052,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         listOfUACriteriaSearch.push({
           criteria: 'GUID',
           values: listOfUAIdToInclude,
-          operator: 'EQ',
+          operator: CriteriaOperator.EQ,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: 'String',
+          dataType: CriteriaDataType.STRING,
         });
       }
 
@@ -1093,9 +1062,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         listOfUACriteriaSearch.push({
           criteria: 'GUID',
           values: listOfUAIdToExclude,
-          operator: 'NOT_EQ',
+          operator: CriteriaOperator.NOT_EQ,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: 'String',
+          dataType: CriteriaDataType.STRING,
         });
       }
     }
@@ -1285,57 +1254,96 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   updateManagementRule() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+
+    this.listOfUACriteriaSearch.push({
+      criteria: ARCHIVE_UNIT_HOLDING_UNIT,
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      dataType: CriteriaDataType.STRING,
+    });
+
     const criteriaSearchDSLQuery = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
+    this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+      this.numberOfHoldingUnitType = data.totalResults;
+      if (this.numberOfHoldingUnitType > 0) {
+        const dialogToOpen = this.updateArchiveUnitAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        this.updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {});
+      } else {
+        this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
+        this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
+        this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
 
-    this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
-    this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
-    this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
-
-    this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+        this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+      }
+    });
   }
 
   launchComputedInheritedRules() {
-    if (this.selectedItemCountKnown() && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
-      this.launchComputedInheritedRulesAction();
-    } else {
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
-      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
-        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' }
-      );
-
-      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
-        .afterClosed()
-        .pipe(filter((result) => !!result))
-        .subscribe(() => {
-          this.launchComputedInheritedRulesAction();
-        });
-    }
-  }
-
-  private launchComputedInheritedRulesAction() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    this.listOfUACriteriaSearch.push({
+      criteria: ARCHIVE_UNIT_HOLDING_UNIT,
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      dataType: CriteriaDataType.STRING,
+    });
     const computedInheritedRulesSearchCriteria = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
-      sortingCriteria,
       language: this.translateService.currentLang,
     };
-    this.computedInheritedRulesSuscription = this.archiveService
-      .launchComputedInheritedRules(computedInheritedRulesSearchCriteria, this.accessContract)
-      .subscribe((operationId) => {
-        const guid = operationId;
-        const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
-        const serviceUrl = this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
 
-        this.openSnackBarForWorkflow(message, serviceUrl);
-      });
+    this.archiveService.searchArchiveUnitsByCriteria(computedInheritedRulesSearchCriteria, this.accessContract).subscribe((response) => {
+      this.numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
+      if (this.numberOfHoldingUnitTypeOnComputedRules > 0) {
+        const dialogToOpen = this.launchComputeInheritedRuleAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        this.launchComputeInheritedRuleAlerteMessageDialogSubscription = dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {});
+      } else {
+        const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+        const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+          dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+          { panelClass: 'vitamui-dialog' }
+        );
+
+        this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {
+            const computedInheritedRulesDSLQuery = {
+              criteriaList: computedInheritedRulesSearchCriteria.criteriaList.filter(
+                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT
+              ),
+              pageNumber: this.currentPage,
+              size: PAGE_SIZE,
+              language: this.translateService.currentLang,
+            };
+            this.computedInheritedRulesSuscription = this.archiveService
+              .launchComputedInheritedRules(computedInheritedRulesDSLQuery, this.accessContract)
+              .subscribe((operationId) => {
+                const guid = operationId;
+                const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
+                const serviceUrl =
+                  this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+                this.openSnackBarForWorkflow(message, serviceUrl);
+              });
+          });
+      }
+    });
   }
 }

@@ -2,12 +2,7 @@
   <form [formGroup]="simpleCriteriaForm">
     <div class="row">
       <div class="col-11">
-        <div class="row justify-content-around">
-          <div class="col-11 form-control">
-            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.TITLE' | translate }}</h5>
-          </div>
-        </div>
-        <div class="row justify-content-around">
+        <div class="row justify-content-around margin-row">
           <div class="col-6 form-control">
             <vitamui-common-editable-input
               formControlName="title"
@@ -16,7 +11,78 @@
             >
             </vitamui-common-editable-input>
           </div>
-          <div class="col-4 form-control">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="description"
+              [validator]="simpleCriteriaForm?.get('description')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="guidopi"
+              [validator]="simpleCriteriaForm?.get('guidopi')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_OPI' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="guid"
+              [validator]="simpleCriteriaForm?.get('guid')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
+            >
+            </vitamui-common-editable-input>
+            <i
+              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
+              [matTooltip]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
+              matTooltipClass="vitamui-tooltip"
+              [matTooltipShowDelay]="300"
+            ></i>
+          </div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
+            <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}</p>
+          </div>
+          <div class="col-6 form-control"></div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="serviceProdCode"
+              [validator]="simpleCriteriaForm?.get('serviceProdCode')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+
+          <div class="col-6 form-control">
+            <vitamui-common-editable-input
+              formControlName="serviceProdLabel"
+              [validator]="simpleCriteriaForm?.get('serviceProdLabel')?.validator"
+              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate }}"
+            >
+            </vitamui-common-editable-input>
+          </div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
+            <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DATES' | translate }}</p>
+          </div>
+          <div class="col-6 form-control"></div>
+        </div>
+
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
             <div class="vitamui-input" (click)="pickerBegin.open()">
               <span
                 *ngIf="!simpleCriteriaForm.get('beginDt').value; else showBeginDt"
@@ -37,18 +103,8 @@
               <mat-datepicker #pickerBegin></mat-datepicker>
             </div>
           </div>
-        </div>
 
-        <div class="row justify-content-around">
           <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="description"
-              [validator]="simpleCriteriaForm?.get('description')?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.DESCRIPTION' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-          <div class="col-4 form-control">
             <div class="vitamui-input" (click)="pickerEnd.open()">
               <span *ngIf="!simpleCriteriaForm.get('endDt').value; else showEndDt" (click)="pickerEnd.open()" class="search-date-label">{{
                 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_SEARCH' | translate
@@ -67,55 +123,40 @@
             </div>
           </div>
         </div>
-        <div class="row justify-content-around">
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="guidopi"
-              [validator]="simpleCriteriaForm?.get('guidopi')?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUID_OPI' | translate }}"
-            >
-            </vitamui-common-editable-input>
-          </div>
-          <div class="col-4 form-control"></div>
-        </div>
-        <div class="row justify-content-around">
-          <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="guid"
-              [validator]="simpleCriteriaForm?.get('guid')?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UAID' | translate }}"
-            >
-            </vitamui-common-editable-input>
-            <i
-              class="vitamui-icon vitamui-icon-info-circle vitamui-row-icon icon-information"
-              [matTooltip]="'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.GUIDS_SEPARATED' | translate"
-              matTooltipClass="vitamui-tooltip"
-              [matTooltipShowDelay]="300"
-            ></i>
-          </div>
-          <div class="col-4 form-control"></div>
-        </div>
 
-        <div class="row justify-content-around">
+        <div class="row justify-content-around margin-row">
           <div class="col-6 form-control">
-            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP' | translate }}</h5>
+            <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.UA_TYPE' | translate }}</p>
           </div>
-          <div class="col-4 form-control">
-            <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}</h5>
+          <div class="col-6 form-control">
+            <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.OTHER_FIELD' | translate }}</p>
           </div>
         </div>
+        <div class="row justify-content-around margin-row">
+          <div class="col-6 form-control">
+            <div class="row padding-row">
+              <label class="criteria-checkbox-choice">
+                <input
+                  type="checkbox"
+                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITH_OBJECTS', $event)"
+                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITH_OBJECTS')"
+                />
+                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
+              </label>
+            </div>
 
-        <div class="row justify-content-around">
-          <div class="col-3 form-control">
-            <vitamui-common-editable-input
-              formControlName="serviceProdCode"
-              [validator]="simpleCriteriaForm?.get('serviceProdCode')?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_CODE' | translate }}"
-            >
-            </vitamui-common-editable-input>
+            <div class="row padding-row">
+              <label class="criteria-checkbox-choice">
+                <input
+                  type="checkbox"
+                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_WITHOUT_OBJECTS', $event)"
+                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_WITHOUT_OBJECTS')"
+                />
+                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
+              </label>
+            </div>
           </div>
-          <div class="col-2 form-control"></div>
-          <div class="col-4 form-control">
+          <div class="col-6 form-control">
             <mat-form-field class="vitamui-mat-select search-input-criteria">
               <mat-select
                 formControlName="otherCriteria"
@@ -145,18 +186,35 @@
                 <i class="material-icons">keyboard_arrow_down</i>
               </div>
             </mat-form-field>
+            <br />
           </div>
         </div>
-        <div class="row justify-content-around">
+
+        <div class="row justify-content-around margin-row">
           <div class="col-6 form-control">
-            <vitamui-common-editable-input
-              formControlName="serviceProdLabel"
-              [validator]="simpleCriteriaForm?.get('serviceProdLabel')?.validator"
-              label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.SP_LABEL' | translate }}"
-            >
-            </vitamui-common-editable-input>
+            <div class="row padding-row">
+              <label class="criteria-checkbox-choice">
+                <input
+                  type="checkbox"
+                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_HOLDING_UNIT', $event)"
+                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_HOLDING_UNIT')"
+                />
+                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
+              </label>
+            </div>
+
+            <div class="row padding-row">
+              <label class="criteria-checkbox-choice">
+                <input
+                  type="checkbox"
+                  (click)="addArchiveUnitTypeCriteria('ARCHIVE_UNIT_FILING_UNIT', $event)"
+                  [checked]="archiveUnitTypesCriteria.get('ARCHIVE_UNIT_FILING_UNIT')"
+                />
+                <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>
+              </label>
+            </div>
           </div>
-          <div class="col-4 form-control">
+          <div class="col-6 form-control" [ngStyle]="{ 'margin-top': '10px' }">
             <vitamui-common-editable-input
               formControlName="otherCriteriaValue"
               *ngIf="
@@ -199,6 +257,7 @@
             </div>
           </div>
         </div>
+        <br />
       </div>
     </div>
   </form>

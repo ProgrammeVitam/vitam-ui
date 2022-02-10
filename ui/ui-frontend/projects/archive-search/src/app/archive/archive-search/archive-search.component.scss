@@ -26,8 +26,32 @@
   font-weight: bold;
   margin-top: 10px;
   margin-bottom: 10px;
- }
+}
 
- .mat-dialog-actions-right {
-    justify-content: flex-end;
+.mat-dialog-actions-right {
+  justify-content: flex-end;
+}
+
+.red-text {
+  color: red;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.icon-style {
+  font-size: 50px;
+  line-height: 5px;
+}
+.vertical-line {
+  border-left: 2px solid red;
+  display: block;
+  height: 100%;
+  margin: 0 22px;
+}
+
+.disabled-div {
+  pointer-events: none;
+}
+.enabled-div {
+  pointer-events: painted;
 }

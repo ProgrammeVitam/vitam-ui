@@ -412,10 +412,18 @@ public class ArchiveSearchInternalServiceTest {
         // Given
         setUpData();
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(FR_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
@@ -447,10 +455,18 @@ public class ArchiveSearchInternalServiceTest {
         // Given
         setUpData();
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.ENGLISH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(EN_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
@@ -496,10 +512,18 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY).readAllBytes());
@@ -546,10 +570,18 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT).readAllBytes());
@@ -596,10 +628,18 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT).readAllBytes());
@@ -646,10 +686,18 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT).readAllBytes());
@@ -696,10 +744,18 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
         // query
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
+        criteriaList.add(searchCriteriaEltDto);
+
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
         query.setSize(20);
         query.setPageNumber(20);
+        query.setCriteriaList(criteriaList);
 
         Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT).readAllBytes());

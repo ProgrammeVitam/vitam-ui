@@ -36,9 +36,20 @@
  */
 
 export enum CriteriaOperator {
-  EQ = 'EQ'
+  EQ = 'EQ',
+  NOT_EQ = 'NOT_EQ',
+  EXISTS = 'EXISTS',
+  MISSING = 'MISSING',
+  GTE = 'GTE',
+  LTE = 'LTE',
 }
 
 export enum CriteriaDataType {
-  STRING = 'STRING'
+  STRING = 'STRING',
+  DATE = 'DATE',
+}
+
+export enum ActionOnCriteria {
+  REMOVE = 'REMOVE',
+  ADD = 'ADD',
 }

@@ -48,6 +48,8 @@ import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto } from '../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+
 @Component({
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
@@ -194,7 +196,13 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   loadCriteriaSearchDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
-      this.criteriaSearchDSLQuery = response;
+      this.criteriaSearchDSLQuery = {
+        criteriaList: response.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+        pageNumber: response?.pageNumber,
+        size: response?.size,
+        sortingCriteria: response?.sortingCriteria,
+        language: response?.language,
+      };
     });
   }
 

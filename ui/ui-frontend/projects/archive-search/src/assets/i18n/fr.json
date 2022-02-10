@@ -80,6 +80,8 @@
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
     "NO_MORE_RESULTS": "Fin des résultats",
     "SEARCH_CRITERIA_FILTER": {
+      "DATES" : "Dates",
+      "UA_TYPE" : "Type d'unités archivistiques",
       "TITLE": "Filtre de recherche",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
@@ -138,6 +140,14 @@
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
         "GUID_OPI": "Identifiant technique du versement",
+        "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
+        "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre ",
+        "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive avec objets",
+        "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive sans objets",
+        "HOLDING_UNIT" : "Arbre de positionnement",
+        "FILING_UNIT" : "Plan de classement",
+        "DESCRIPTION_LEVEL" : "Type d'unité archivistique",
+        "ALL_ARCHIVE_UNIT_TYPES" :"Type",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
@@ -164,7 +174,15 @@
           "INCLUDE": "Inclure",
           "EXCLUDE": "Exclure"
         },
-        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
+        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
+        "UNIT_TYPE" : {
+          "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive avec objets",
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive sans objets",
+          "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre de positionnement",
+          "ARCHIVE_UNIT_FILING_UNIT" : "Plan de classement",
+          "ARCHIVE_UNIT_PLAN" : "Plan",
+          "ARCHIVE_UNIT_HOLDING" : "Arbre"
+        }
       }
     },
     "ARCHIVE_UNIT": {
@@ -182,7 +200,8 @@
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP_COMM": "Service Prod Comm",
-        "SP_COMM_DT": "Service Prod Comm DT"
+        "SP_COMM_DT": "Service Prod Comm DT",
+        "TYPE" : "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -346,8 +365,15 @@
         "DISSEMINATION_RULE" : "Diffusion",
         "REUSE_RULE" : "Réutilisation",
         "CLASSIFICATION_RULE" : "Classification"
+      },
+
+      "ALERTE_MESSAGES" : {
+        "BACK_TO_SELECTION" : "Revenir à la sélection",
+        "ACTION_ALERTE_TITLE" : "L'action demandée n'est pas possible pour cette sélection",
+        "ACTION_ALERTE_FIRST_MESSAGE" : "Votre sélection comporte au moins une unité archivistique de type arbre de positionnement.",
+        "UPDATE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
+        "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
       }
+
     }
-
-
 }

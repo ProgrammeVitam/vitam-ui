@@ -1,0 +1,14 @@
+{
+  "$and": [
+    {
+      "$or": [
+        {
+            "$exists": "#object"
+        },
+        {
+          "$missing" : "#object"
+        }
+      ]
+    }
+  ]
+}
