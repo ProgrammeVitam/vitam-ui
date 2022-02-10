@@ -163,11 +163,12 @@
   <div class="vitamui-table">
     <div class="vitamui-table-head">
       <div class="col-8" *ngIf="waitingToGetFixedCount">
-        <mat-spinner *ngIf="pendingGetFixedCount" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
-        <ng-container *ngIf="!pendingGetFixedCount">
+        <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+
+        <ng-container *ngIf="!pendingGetFixedCount && !pending">
           <a
             class="link-without-underline"
-            (click)="callVitamApiServiceToGetExactCount()"
+            (click)="loadExactCount()"
             matTooltip="{{ 'ARCHIVE_SEARCH.RETRIVE_EXACT_COUNT' | translate }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
@@ -185,7 +186,9 @@
         </ng-container>
       </div>
       <div class="col-8" *ngIf="!waitingToGetFixedCount">
-        <ng-container *ngIf="totalResults > 1 || totalResults === 0">
+        <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+
+        <ng-container *ngIf="(totalResults > 1 || totalResults === 0) && !pendingGetFixedCount && !pending">
           <span
             >{{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
 
