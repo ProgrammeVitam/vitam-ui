@@ -251,7 +251,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   numberOfHoldingUnitType = 0;
   numberOfHoldingUnitTypeOnComputedRules = 0;
 
-  @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
   @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
   updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
@@ -550,36 +549,27 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   loadExactCount() {
-    this.pendingGetFixedCount = true;
-    this.submitedGetFixedCount = true;
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
-      this.callVitamApiServiceToGetExactCount();
-    }
-  }
+      this.pendingGetFixedCount = true;
+      this.submitedGetFixedCount = true;
 
-  private callVitamApiServiceToGetExactCount() {
-    this.pendingGetFixedCount = true;
-    const searchCriteria = {
-      criteriaList: this.criteriaSearchList,
-      pageNumber: this.currentPage,
-      size: 1,
-      trackTotalHits: true,
-    };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
-      (pagedResult: PagedResult) => {
-        this.totalResults = pagedResult.totalResults;
-
-        if (this.isAllchecked) {
-          this.itemSelected = this.totalResults - this.itemNotSelected;
+      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract).subscribe(
+        (exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
+            }
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.pendingGetFixedCount = false;
+          console.log('error : ', error.message);
         }
-        this.pendingGetFixedCount = false;
-        this.waitingToGetFixedCount = false;
-      },
-      (error: HttpErrorResponse) => {
-        this.pendingGetFixedCount = false;
-        console.log('error : ', error.message);
-      }
-    );
+      );
+    }
   }
 
   getNodesId(): CriteriaValue[] {
@@ -1113,6 +1103,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareToLaunchExportDIP() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchExportDipMoadal();
+          });
+      }
+    } else {
+      this.launchExportDipMoadal();
+    }
+  }
+
+  launchExportDipMoadal() {
     if (!this.isAllchecked && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
       this.launchExportDIP();
     } else {
@@ -1130,7 +1144,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
   }
-
   launchExportDIP() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
@@ -1165,6 +1178,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareToLaunchEliminationAnalysis() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchEliminationAnalysisMoadal();
+          });
+      }
+    } else {
+      this.launchEliminationAnalysisMoadal();
+    }
+  }
+
+  launchEliminationAnalysisMoadal() {
     if (this.selectedItemCountKnown() && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
       this.launchEliminationAnalysis();
     } else {
@@ -1211,6 +1248,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   prepareToLaunchElimination() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchEliminationMoadal();
+          });
+      }
+    } else {
+      this.launchEliminationMoadal();
+    }
+  }
+
+  launchEliminationMoadal() {
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
     const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
@@ -1253,6 +1314,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   updateManagementRule() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.goToUpdateManagementRule();
+          });
+      }
+    } else {
+      this.goToUpdateManagementRule();
+    }
+  }
+
+  goToUpdateManagementRule() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
 
     this.listOfUACriteriaSearch.push({
@@ -1289,6 +1374,30 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   launchComputedInheritedRules() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchComputedInheritedRulesModal();
+          });
+      }
+    } else {
+      this.launchComputedInheritedRulesModal();
+    }
+  }
+
+  launchComputedInheritedRulesModal() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     this.listOfUACriteriaSearch.push({
       criteria: ARCHIVE_UNIT_HOLDING_UNIT,
