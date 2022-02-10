@@ -45,14 +45,14 @@ import {
   CriteriaDataType,
   CriteriaOperator,
   SearchService,
-  SecurityService
+  SecurityService,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
@@ -334,6 +334,23 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.launchComputedInheritedRules(criteriaDto, headers);
+  }
+
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], accessContract: string): Observable<number> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: true,
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        return pagedResult.totalResults;
+      }),
+      catchError(() => {
+        return of(-1);
+      })
+    );
   }
 }
 
