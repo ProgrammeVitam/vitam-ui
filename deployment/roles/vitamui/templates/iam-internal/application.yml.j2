@@ -105,6 +105,12 @@ logbook:
 
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
 
+{% if inventory_hostname == groups['hosts_vitamui_iam_internal'] | first %}
+instance.primary: true
+{% else %}
+instance.primary: false
+{% endif %}
+
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
