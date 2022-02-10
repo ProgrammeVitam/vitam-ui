@@ -19,8 +19,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div layout:fragment="content">
         <div>
-            <h4 th:utext="#{screen.error.page.notfound}">Page Not Found</h4>
-            <p th:utext="#{screen.error.page.doesnotexist}">The page you are attempting to access does not exist at the
+            <h4 th:text="#{screen.error.page.notfound}">Page Not Found</h4>
+            <p th:text="#{screen.error.page.doesnotexist}">The page you are attempting to access does not exist at the
                 moment.</p>
         </div>
     </div>
