@@ -61,8 +61,6 @@ import org.springframework.webflow.execution.RequestContext;
 
 import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
 
-import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
-
 /**
  * The custom action to send SMS for the MFA simple token.
  */
