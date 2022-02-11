@@ -1,7 +1,7 @@
 .icon-information {
-    position: relative;
+    position: absolute;
     float: right;
-    top: -55px;
+    top: 15px;
     right: -45px;
     width: 30px;
     height: 31px;
@@ -18,11 +18,14 @@
 .margin-row {
     margin-left: 10px;
 }
-
-.padding-row {
-    padding-left: 15px;
+.margin-bottom {
+    margin-bottom: 15px;
 }
 
+.padding-row {
+    padding-left: 13px;
+}
+/* 
 .criteria-checkbox-choice {
     display: inline-flex;
     position: relative;
@@ -70,4 +73,4 @@
     font-weight: bolder;
 
     transform-origin: center center;
-}
+} */
