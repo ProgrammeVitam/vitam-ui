@@ -81,7 +81,7 @@
           <div class="col-6 form-control"></div>
         </div>
 
-        <div class="row justify-content-around margin-row">
+        <div class="row justify-content-around margin-row margin-bottom">
           <div class="col-6 form-control">
             <div class="vitamui-input" (click)="pickerBegin.open()">
               <span
@@ -143,6 +143,7 @@
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS' | translate }}</span>
               </label>
+              <i class="vitamui-icon vitamui-icon-file vitamui-row-icon status-badge icon-large"></i>
             </div>
 
             <div class="row padding-row">
@@ -154,6 +155,7 @@
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS' | translate }}</span>
               </label>
+              <i class="vitamui-icon vitamui-icon-folder vitamui-row-icon status-badge icon-large"></i>
             </div>
           </div>
           <div class="col-6 form-control">
@@ -201,6 +203,8 @@
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING_UNIT' | translate }}</span>
               </label>
+
+              <i class="vitamui-icon vitamui-icon-icone-arbre vitamui-row-icon status-badge icon-large"></i>
             </div>
 
             <div class="row padding-row">
@@ -212,6 +216,7 @@
                 />
                 <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_FILING_UNIT' | translate }}</span>
               </label>
+              <i class="vitamui-icon vitamui-icon-plan-classement vitamui-row-icon status-badge icon-large"></i>
             </div>
           </div>
           <div class="col-6 form-control" [ngStyle]="{ 'margin-top': '10px' }">
