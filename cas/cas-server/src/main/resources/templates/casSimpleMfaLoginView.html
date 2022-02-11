@@ -13,14 +13,14 @@
 
     <div class="mfa-login">
 
-        <p class="text1" th:utext="#{screen.mfa.sms.login.text1(${mobile})}"/>
+        <p class="text1" th:text="#{screen.mfa.sms.login.text1(${mobile})}"/>
 
         <div class="information">
             <div class="bckicon">
                 <span class="icon">i</span>
             </div>
             <div>
-                <p class="text2" th:utext="#{screen.mfa.sms.login.text2}"/>
+                <p class="text2" th:text="#{screen.mfa.sms.login.text2}"/>
             </div>
         </div>
 
@@ -34,15 +34,15 @@
                             <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
                         </div>
                         <div>
-                            <div class="error-field" th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                            <div class="error-field" th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
                         </div>
                     </div>
                 </div>
                 <div class="buttonbckgrnd">
-                    <a class="submittoken" th:utext="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
+                    <a class="submittoken" th:text="#{screen.mfa.sms.login.ok}" href="javascript:void(0)" onclick="$('#loginForm').submit();"/>
                 </div>
                 <div class="countdown">
-                    <span th:utext="#{screen.mfa.sms.login.countdown}"/>
+                    <span th:text="#{screen.mfa.sms.login.countdown}"/>
                 </div>
             </div>
             <div>
@@ -53,14 +53,14 @@
         </form>
 
         <div class="missingphone">
-            <p class="text3" th:utext="#{screen.mfa.sms.login.text3}"/>
+            <p class="text3" th:text="#{screen.mfa.sms.login.text3}"/>
         </div>
 
         <form method="post" id="resendCodeForm">
             <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
             <input type="hidden" name="_eventId" value="resend"/>
             <input type="hidden" name="token" value="ignored"/>
-            <span class="reset1" th:utext="#{screen.mfa.sms.login.resetcode1}" /> <a class="reset2" th:utext="#{screen.mfa.sms.login.resetcode2(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
+            <span class="reset1" th:text="#{screen.mfa.sms.login.resetcode1}" /> <a class="reset2" th:text="#{screen.mfa.sms.login.resetcode2(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
         </form>
 
     </div>
