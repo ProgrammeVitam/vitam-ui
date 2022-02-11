@@ -2,7 +2,7 @@
   <form [formGroup]="appraisalRuleCriteriaForm">
     <div class="row justify-content-start">
       <div class="form-control">
-        <h5>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DUA_TITLE' | translate }}</h5>
+        <p class="title-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.DUA_TITLE' | translate }}</p>
       </div>
     </div>
 
@@ -85,7 +85,7 @@
       </div>
 
       <div class="col-4 form-control">
-        <p *ngIf="!endDateInterval" class="text medium text-primary bold text-clicable-uppercase" (click)="updateEndDateInterval(true)">
+        <p *ngIf="!endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(true)">
           {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.CREATE_INTERVAL' | translate }}
         </p>
 
@@ -127,7 +127,7 @@
         </button>
       </div>
       <div class="col-1 form-control">
-        <p *ngIf="endDateInterval" class="text medium text-primary bold text-clicable-uppercase" (click)="updateEndDateInterval(false)">
+        <p *ngIf="endDateInterval" class="title-text text-clicable-uppercase" (click)="updateEndDateInterval(false)">
           {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.APPRAISAL_RULE.DELETE_INTERVAL' | translate }}
         </p>
       </div>
@@ -136,7 +136,7 @@
     <div class="row justify-content-around">
       <div class="col-4 form-control">
         <div class="row criteria-choice">
-          <p class="text medium text-primary bold">
+          <p class="title-text">
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.TITLE' | translate }}
           </p>
         </div>
@@ -188,7 +188,7 @@
       </div>
       <div class="col-4 form-control">
         <div class="row criteria-choice">
-          <p class="text medium text-primary bold">
+          <p class="title-text">
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.TITLE' | translate }}
           </p>
         </div>
@@ -204,7 +204,6 @@
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_APPRAISAL_RULE' | translate }}</span>
           </label>
         </div>
-
         <div class="row">
           <label class="criteria-checkbox-choice">
             <input
@@ -219,7 +218,7 @@
       </div>
       <div class="col-3 form-control">
         <div class="row criteria-choice">
-          <p class="text medium text-primary bold">
+          <p class="title-text">
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.TITLE' | translate }}
           </p>
         </div>
