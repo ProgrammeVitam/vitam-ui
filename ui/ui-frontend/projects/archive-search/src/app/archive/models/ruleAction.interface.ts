@@ -76,7 +76,7 @@ export interface RuleAction {
 
 export interface RuleCategoryAction {
   rules: RuleAction[];
-  finalAction: string;
+  finalAction?: string;
 }
 
 export interface RuleCat {
@@ -120,4 +120,5 @@ export enum RuleActionsEnum {
   ADD_RULES = 'ADD_RULES',
   UPDATE_PROPERTY = 'UPDATE_PROPERTY',
   UPDATE_RULES = 'UPDATE_RULES',
+  DELETE_RULES = 'DELETE_RULES',
 }

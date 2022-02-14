@@ -85,6 +85,7 @@ import { ManagementRulesComponent } from './management-rules/management-rules.co
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
+import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 
 @NgModule({
   imports: [
@@ -145,6 +146,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     ArchiveUnitRulesComponent,
     AddUpdatePropertyComponent,
     UpdateUnitRulesComponent,
+    DeleteUnitRulesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

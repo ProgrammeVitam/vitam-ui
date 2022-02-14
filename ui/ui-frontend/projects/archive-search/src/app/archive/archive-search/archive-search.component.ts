@@ -44,7 +44,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { AccessContract, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
+import {
+  AccessContract,
+  ActionOnCriteria,
+  CriteriaDataType,
+  CriteriaOperator,
+  Direction,
+  StartupService,
+  VitamuiRoles,
+} from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -73,6 +81,7 @@ const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 
 @Component({
   selector: 'app-archive-search',
@@ -169,69 +178,68 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
     });
   }
-  @Output() archiveUnitClick = new EventEmitter<any>();
 
-  private readonly orderChange = new Subject<string>();
-  orderBy = 'Title';
   direction = Direction.ASCENDANT;
   @Input()
   accessContract: string;
-  nbQueryCriteria = 0;
-  subscriptionNodes: Subscription;
-  subscriptionSimpleSearchCriteriaAdd: Subscription;
-  subscriptionEntireNodes: Subscription;
-  subscriptionFilingHoldingSchemeNodes: Subscription;
-  currentPage = 0;
-  pageNumbers = 0;
-  totalResults = 0;
-  pending = false;
-  pendingGetFixedCount = false;
-  submitedGetFixedCount = false;
-  included = false;
-  canLoadMore = false;
+  @Output() archiveUnitClick = new EventEmitter<any>();
+
   tenantIdentifier: string;
   appraisalRuleCriteriaForm: FormGroup;
-  submited = false;
+  nodeData: NodeData;
   searchCriterias: Map<string, SearchCriteria>;
-  searchCriteriaKeys: string[];
-  otherCriteriaValueEnabled = false;
-  otherCriteriaValueType = 'DATE';
-  showCriteriaPanel = true;
-  showSearchCriteriaPanel = false;
-  selectedValueOntolonogy: any;
-  archiveUnits: Unit[];
-  ontologies: any;
-  shouldShowPreviewArchiveUnit = false;
-
-  criteriaSearchList: SearchCriteriaEltDto[] = [];
-  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
-
-  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
-  additionalSearchCriteriaCategoryIndex = 0;
-  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  showDuaEndDate = false;
-  searchCriteriaHistory: SearchCriteriaHistory[] = [];
   searchCriteriaHistoryToSave: Map<string, SearchCriteriaHistory>;
-  searchCriteriaHistoryLength: number = null;
-  hasResults = false;
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
+  private readonly orderChange = new Subject<string>();
 
+  orderBy = 'Title';
+  otherCriteriaValueType = 'DATE';
+
+  isIndeterminate: boolean;
+  trackTotalHits: boolean;
+  isAllchecked: boolean;
+  hasResults = false;
   show = true;
   showUnitPreviewBlock = false;
-  nodeArray: FilingHoldingSchemeNode[] = [];
-  nodeData: NodeData;
-  entireNodesIds: string[];
-
-  itemSelected = 0;
-  itemNotSelected = 0;
-  isAllchecked: boolean;
-  listOfUAIdToInclude: CriteriaValue[] = [];
-  listOfUAIdToExclude: CriteriaValue[] = [];
-  isIndeterminate: boolean;
   hasDipExportRole = false;
   hasUpdateManagementRuleRole = false;
   hasAccessContractPermissions = false;
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
+  waitingToGetFixedCount = false;
+  showDuaEndDate = false;
+  otherCriteriaValueEnabled = false;
+  pending = false;
+  submited = false;
+  pendingGetFixedCount = false;
+  submitedGetFixedCount = false;
+  included = false;
+  canLoadMore = false;
+  shouldShowPreviewArchiveUnit = false;
+  showCriteriaPanel = true;
+  showSearchCriteriaPanel = false;
+
+  currentPage = 0;
+  pageNumbers = 0;
+  totalResults = 0;
+  itemSelected = 0;
+  itemNotSelected = 0;
+  numberOfHoldingUnitType = 0;
+  numberOfHoldingUnitTypeOnComputedRules = 0;
+  additionalSearchCriteriaCategoryIndex = 0;
+  nbQueryCriteria = 0;
+
+  listOfUAIdToInclude: CriteriaValue[] = [];
+  listOfUAIdToExclude: CriteriaValue[] = [];
+  nodeArray: FilingHoldingSchemeNode[] = [];
+  entireNodesIds: string[];
+  archiveUnits: Unit[];
+  searchCriteriaHistory: SearchCriteriaHistory[] = [];
+  criteriaSearchList: SearchCriteriaEltDto[] = [];
+  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
+  searchCriteriaKeys: string[];
+  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
+
   openDialogSubscription: Subscription;
   analysisliminationSuscription: Subscription;
   showConfirmEliminationSuscription: Subscription;
@@ -240,16 +248,18 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   updateArchiveUnitAlerteMessageDialogSubscription: Subscription;
   launchComputeInheritedRuleAlerteMessageDialogSubscription: Subscription;
   computedInheritedRulesSuscription: Subscription;
+  subscriptionNodes: Subscription;
+  subscriptionSimpleSearchCriteriaAdd: Subscription;
+  subscriptionEntireNodes: Subscription;
+  subscriptionFilingHoldingSchemeNodes: Subscription;
 
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
-  trackTotalHits: boolean;
-  waitingToGetFixedCount = false;
+  ontologies: any;
+  selectedValueOntolonogy: any;
 
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
-  numberOfHoldingUnitType = 0;
-  numberOfHoldingUnitTypeOnComputedRules = 0;
 
   @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
   updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
@@ -400,14 +410,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: 'REMOVE',
+              action: ActionOnCriteria.REMOVE,
             });
           }
-          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === 'ALL_ARCHIVE_UNIT_TYPES') {
+          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: 'REMOVE',
+              action: ActionOnCriteria.REMOVE,
             });
           }
         }
@@ -525,7 +535,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.searchCriterias.set(keyElt, criteriaToAdd);
         }
         if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
+          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
       }
     }
@@ -584,6 +594,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return nodesIdList;
   }
 
+  // à modifier pour bien trier en fonction des 4 types qui existent
+  // c'est compliqué et non cohérent parce qu'on fait un filtre sur 2 paramètres différents.
   getArchiveUnitType(archiveUnit: any) {
     if (archiveUnit) {
       return archiveUnit['#unitType'];
@@ -1364,9 +1376,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           .pipe(filter((result) => !!result))
           .subscribe(() => {});
       } else {
+        const criteriaSearchDSLQueryToSend = {
+          criteriaList: this.listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+          pageNumber: this.currentPage,
+          size: PAGE_SIZE,
+          language: this.translateService.currentLang,
+        };
         this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
         this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
-        this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
+        this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
         this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
       }
