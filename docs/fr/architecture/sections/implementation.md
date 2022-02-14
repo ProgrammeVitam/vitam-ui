@@ -503,7 +503,11 @@ L’utilisation d’un certificat client sur les environnements VITAMUI nécessi
 
 ## Clusterisation
 
-À compléter
+### Multi-instanciation du service iam-internal
+
+Si le service `iam-internal` est déployé sur plusieurs machines, les timers permettant la journalisation des évènements métiers de Vitam-UI seront lancés sur la première instance du groupe `[hosts_vitamui_iam_internal]`. Seul une machine doit être déclarée primaire afin d'éviter la duplication des actions de journalisation.
+
+Pour plus d'informations, se référer au DEX.
 
 ---
 
