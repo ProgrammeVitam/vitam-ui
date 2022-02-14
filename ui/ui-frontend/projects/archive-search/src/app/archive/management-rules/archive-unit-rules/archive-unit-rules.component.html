@@ -34,11 +34,25 @@
     </i>
   </div>
 
-  <div class="action-style" *ngIf="action === 'deleteRules'">
-    {{ action }}
-    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
-      {{ collapsed ? 'expand_more' : 'expand_less' }}
-    </i>
+  <div *ngIf="action === 'DELETE_RULES'">
+    <div class="action-style">
+      {{ 'RULES.RULES_TO_DELETE' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showDeleteRuleBloc()">
+        {{ deleteRuleCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
+      <app-delete-unit-rules
+        *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
+        [accessContract]="accessContract"
+        [selectedItem]="selectedItem"
+        [ruleCategory]="ruleCategory"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+      ></app-delete-unit-rules>
+    </div>
   </div>
 
   <div *ngIf="action === 'UPDATE_PROPERTY'">

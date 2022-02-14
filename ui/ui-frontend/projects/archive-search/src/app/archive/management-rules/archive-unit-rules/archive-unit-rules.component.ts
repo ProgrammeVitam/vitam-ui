@@ -61,15 +61,20 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: string;
   @Input()
   ruleCategory: string;
+  ruleCategoryDuaActions: RuleCategoryAction;
+
+  managementRules: ManagementRules[] = [];
   ruleActions: ActionsRules[];
+
+  managementRulesSubscription: Subscription;
   ruleActionsSubscription: Subscription;
+
   collapsed = false;
   updateRuleCollapsed = false;
   updatePropertyCollapsed = false;
   deletePropertyCollapsed = false;
-  ruleCategoryDuaActions: RuleCategoryAction;
-  managementRules: ManagementRules[] = [];
-  managementRulesSubscription: Subscription;
+  deleteRuleCollapsed = false;
+
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
   ngOnDestroy() {
@@ -111,6 +116,9 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   showUpdateRuleBloc() {
     this.updateRuleCollapsed = !this.updateRuleCollapsed;
   }
+  showDeleteRuleBloc() {
+    this.deleteRuleCollapsed = !this.deleteRuleCollapsed;
+  }
 
   deleteForm(id: number, ruleId: string, actionType: string) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
@@ -120,7 +128,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
     if (
       this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.ADD_RULES) === -1 &&
       this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_RULES) === -1 &&
-      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY) === -1
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY) === -1 &&
+      this.ruleActions.findIndex((action) => action.actionType === RuleActionsEnum.DELETE_RULES) === -1
     ) {
       this.ruleActions = [];
     }
@@ -137,6 +146,14 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
       )?.ruleCategoryAction;
       if (
         actionType === RuleActionsEnum.ADD_RULES &&
+        this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId).length === 0
+      ) {
+        this.ruleCategoryDuaActions = {
+          rules: [],
+          finalAction: this.ruleCategoryDuaActions.finalAction,
+        };
+      } else if (
+        actionType === RuleActionsEnum.DELETE_RULES &&
         this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId).length === 0
       ) {
         this.ruleCategoryDuaActions = {
