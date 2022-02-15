@@ -45,7 +45,7 @@
            <span id="capslock-on" style="display:none;">
                <p>
                    <i class="fa fa-exclamation-circle"></i>
-                   <span th:utext="#{screen.capslock.on}"/>
+                   <span th:text="#{screen.capslock.on}"/>
                </p>
            </span>
 	       <button type="submit" class="vitamui-primary" name="submit" id="submit" accesskey="s" th:value="#{screen.pm.button.submit}" disabled="true">
@@ -55,36 +55,36 @@
 
         <br>
         <div th:if="${#fields.hasErrors('*')}">
-			<span th:each="err : ${#fields.errors('*')}" th:utext="${err}">Error text</span>
+			<span th:each="err : ${#fields.errors('*')}" th:text="${err}">Error text</span>
         </div>
 
 		<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
 		<input type="hidden" name="_eventId" value="submit"/>
 
 
-		<p th:unless="${passwordManagementEnabled}" th:utext="${expiredPass} ? #{screen.expiredpass.message} : #{screen.mustchangepass.message}">
+		<p th:unless="${passwordManagementEnabled}" th:text="${expiredPass} ? #{screen.expiredpass.message} : #{screen.mustchangepass.message}">
  			Expired/Must Change Password text
 	    </p>
 
 	</form>
 
 	<div class="helper password-helper">
-		<span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
+		<span th:text="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
 		<ul>
 			<li id="security-one">
-				<span th:utext="#{screen.pm.init.security.one}"></span>
+				<span th:text="#{screen.pm.init.security.one}"></span>
 				<i class="material-icons">check</i>
 			</li>
 			<li id="security-two">
-				<span th:utext="#{screen.pm.init.security.two}"></span>
+				<span th:text="#{screen.pm.init.security.two}"></span>
 				<i class="material-icons">check</i>
 			</li>
 			<li id="security-three">
-				<span th:utext="#{screen.pm.init.security.three}"></span>
+				<span th:text="#{screen.pm.init.security.three}"></span>
 				<i class="material-icons">check</i>
 			</li>
 			<li id="security-four">
-				<span th:utext="#{screen.pm.init.security.four}"></span>
+				<span th:text="#{screen.pm.init.security.four}"></span>
 				<i class="material-icons">check</i>
 			</li>
 		</ul>

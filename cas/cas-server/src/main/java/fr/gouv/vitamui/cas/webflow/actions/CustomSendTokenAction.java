@@ -41,6 +41,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apereo.cas.authentication.principal.Principal;
 import org.apereo.cas.configuration.model.support.mfa.CasSimpleMultifactorProperties;
 import org.apereo.cas.mfa.simple.CasSimpleMultifactorAuthenticationHandler;
@@ -102,7 +103,7 @@ public class CustomSendTokenAction extends AbstractAction {
             requestContext.getMessageContext().addMessage(resolver);
 
             // custo
-            requestContext.getFlowScope().put("mobile", obfuscateMobile(mobile));
+            requestContext.getFlowScope().put("mobile", StringEscapeUtils.escapeHtml4(obfuscateMobile(mobile)));
 
             val attributes = new LocalAttributeMap("token", token.getId());
             return new EventFactorySupport().event(this, CasWebflowConstants.TRANSITION_ID_SUCCESS, attributes);

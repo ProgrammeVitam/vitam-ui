@@ -6,8 +6,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
-        <h5 th:utext="#{screen.accountbadconfiguration.heading}">This account has not properly configured.</h5>
-        <div class="text large normal" th:utext="#{screen.accountbadconfiguration.message(${@environment.getProperty('theme.vitamui-platform-name')})}">Please contact the system administrator to regain access.</div>
+        <h5 th:text="#{screen.accountbadconfiguration.heading}">This account has not properly configured.</h5>
+        <div class="text large normal" th:text="#{screen.accountbadconfiguration.message(${@environment.getProperty('theme.vitamui-platform-name')})}">Please contact the system administrator to regain access.</div>
     </div>
 </div>
 </body>
