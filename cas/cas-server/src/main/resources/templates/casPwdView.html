@@ -30,7 +30,7 @@
                     Bon retour parmi nous [[${superUser}]] !
                 </h5>
 
-                <h5 th:if="${#strings.isEmpty(superUser)}" th:utext="#{cas.authentication.welcomeback.msg (${credential.username})}">
+                <h5 th:if="${#strings.isEmpty(superUser)}" th:text="#{cas.authentication.welcomeback.msg (${credential.username})}">
                     Bon retour parmi nous [[${credential.username}]] !<br>
                 </h5>
             </div>
@@ -68,7 +68,7 @@
                     <span id="capslock-on" style="display:none;">
                     <p>
                         <i class="fa fa-exclamation-circle"></i>
-                        <span th:utext="#{screen.capslock.on}"/>
+                        <span th:text="#{screen.capslock.on}"/>
                     </p>
                 </span>
 

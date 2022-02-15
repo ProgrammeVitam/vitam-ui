@@ -59,6 +59,11 @@ import org.springframework.webflow.core.collection.LocalAttributeMap;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
+
+/**
+ * The custom action to send SMS for the MFA simple token.
+ */
 @Slf4j
 @RequiredArgsConstructor
 public class CustomSendTokenAction extends AbstractAction {
@@ -102,7 +107,7 @@ public class CustomSendTokenAction extends AbstractAction {
             requestContext.getMessageContext().addMessage(resolver);
 
             // custo
-            requestContext.getFlowScope().put("mobile", obfuscateMobile(mobile));
+            requestContext.getFlowScope().put("mobile", escapeHtml4(obfuscateMobile(mobile)));
 
             val attributes = new LocalAttributeMap("token", token.getId());
             return new EventFactorySupport().event(this, CasWebflowConstants.TRANSITION_ID_SUCCESS, attributes);

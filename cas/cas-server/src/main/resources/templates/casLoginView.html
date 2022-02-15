@@ -58,14 +58,14 @@
                         <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
                     </div>
                     <div>
-                        <div class="error-field" th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                        <div class="error-field" th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
                     </div>
                 </div>
 
 	        </div>
 	        <div class="form-control" th:if="${!#strings.isEmpty(superUser)}">
-	            <label for="surrogate" th:utext="#{screen.welcome.label.surrogate}"/> <span th:utext="${surrogate}" /><br />
-	            <label for="superUser" th:utext="#{screen.welcome.label.superuser}"/> <span th:utext="${superUser}" /><br />
+	            <label for="surrogate" th:text="#{screen.welcome.label.surrogate}"/> <span th:text="${surrogate}" /><br />
+	            <label for="superUser" th:text="#{screen.welcome.label.superuser}"/> <span th:text="${superUser}" /><br />
                 <input type="hidden" id="username" name="username" th:value="${surrogate + ',' + superUser}" />
 
 				<br><br>
@@ -74,7 +74,7 @@
                         <img class="picto-attention" th:src="@{/images/picto-attention.svg}">
                     </div>
                     <div>
-                        <div class="error-field text normal bold"  th:each="err : ${#fields.errors('*')}" th:utext="${err}"/>
+                        <div class="error-field text normal bold"  th:each="err : ${#fields.errors('*')}" th:text="${err}"/>
                     </div>
                 </div>
 
