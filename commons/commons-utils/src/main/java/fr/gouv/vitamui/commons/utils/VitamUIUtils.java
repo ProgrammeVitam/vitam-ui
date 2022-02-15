@@ -286,6 +286,12 @@ public final class VitamUIUtils {
         return Collections.unmodifiableList(unionList);
     }
 
+    /**
+     * @Deprecated
+     * This method is no longer acceptable to calculate SHA print.
+     * Use {@link #getSha512Print(InputStream)} instead.
+     */
+    @Deprecated
     public static String getSha512Print(final byte[] data)
         throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         Security.addProvider(new BouncyCastleProvider());
@@ -295,6 +301,19 @@ public final class VitamUIUtils {
         mdbytes = digest.digest(data);
 
         return DatatypeConverter.printHexBinary(mdbytes);
+    }
+
+    public static String getSha512Print(final InputStream is) throws IOException, NoSuchAlgorithmException, NoSuchProviderException {
+        Security.addProvider(new BouncyCastleProvider());
+        final MessageDigest messageDigest = MessageDigest.getInstance(PRINT_ALGORITHM, "BC");
+        int bytesRead = 0;
+        final byte[] buffer = new byte[2048];
+        while ((bytesRead = is.read(buffer)) != -1) {
+            messageDigest.update(buffer, 0, bytesRead);
+        }
+        final byte[] mdBytes = messageDigest.digest();
+
+        return DatatypeConverter.printHexBinary(mdBytes);
     }
 
     public static String secureFormatHeadersLogging(HttpHeaders headers) {

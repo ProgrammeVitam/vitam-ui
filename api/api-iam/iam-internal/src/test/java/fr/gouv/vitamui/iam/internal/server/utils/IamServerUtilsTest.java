@@ -1,5 +1,12 @@
 package fr.gouv.vitamui.iam.internal.server.utils;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import fr.gouv.vitamui.commons.api.domain.ApplicationDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
@@ -46,6 +53,8 @@ public final class IamServerUtilsTest {
     public static final String USER_ID = "userId";
 
     public static final String USER_MAIL = "user@supermail.fr";
+
+    public static final String USER_INFOS_IDENTIFIER = "1000";
 
     public static final String CUSTOMER_ID = "customerId";
 
@@ -415,6 +424,7 @@ public final class IamServerUtilsTest {
     public static UserInfoDto buildUserInfoDto() {
         UserInfoDto userInfoDto = new UserInfoDto();
         userInfoDto.setId("id");
+        userInfoDto.setIdentifier(USER_INFOS_IDENTIFIER);
         userInfoDto.setLanguage("FRENCH");
         return userInfoDto;
     }

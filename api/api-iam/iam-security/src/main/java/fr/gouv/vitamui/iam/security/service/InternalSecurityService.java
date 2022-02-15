@@ -205,4 +205,10 @@ public class InternalSecurityService {
     public VitamContext buildVitamContext(final Integer tenantId, final String accessContractId) {
         return new VitamContext(tenantId).setAccessContract(accessContractId).setApplicationSessionId(getApplicationId());
     }
+
+    public boolean hasRole(final String role) {
+        final AuthUserDto user = getAuthentication().getPrincipal();
+        final List<Role> roles = getRoles(user);
+        return roles != null && roles.stream().anyMatch(r -> r.getName().equals(role));
+    }
 }

@@ -47,34 +47,41 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.validation.constraints.NotNull;
+
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.ProxyProperties;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -123,13 +130,49 @@ public class BaseRestClientFactory implements RestClientFactory {
         final Registry<ConnectionSocketFactory> csfRegistry = useSSL ? buildRegistry(restClientConfig.getSslConfiguration()) : null;
         final PoolingHttpClientConnectionManager connectionManager = buildConnectionManager(myPoolConfig, csfRegistry);
         final RequestConfig requestConfig = buildRequestConfig();
-        final CloseableHttpClient httpClient = HttpClientBuilder.create()
+        final HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
             .setConnectionManager(connectionManager)
-            .setDefaultRequestConfig(requestConfig)
-            .build();
+            .setDefaultRequestConfig(requestConfig);
 
+        final var proxyConfiguration = restClientConfig.getProxy();
+        if(Objects.nonNull(proxyConfiguration) && proxyConfiguration.isEnabled()) {
+            addProxy(httpClientBuilder, proxyConfiguration);
+        }
+
+        final var httpClient = httpClientBuilder.build();
         restTemplate = restTemplateBuilder.errorHandler(new ErrorHandler()).build();
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new CustomHttpComponentsClientHttpRequestFactory(httpClient, UUID.randomUUID().toString())));
+    }
+
+    /**
+     * Add proxy configuration to httpClientBuilder
+     * @param httpClientBuilder
+     * @param proxyProperties
+     */
+    private void addProxy(final HttpClientBuilder httpClientBuilder, final @NotNull ProxyProperties proxyProperties) {
+        ParameterChecker.checkParameter("Proxy properties must not be null", proxyProperties);
+
+        final var proxy = new HttpHost(proxyProperties.getHost(), proxyProperties.getPort(), proxyProperties.getType().toString());
+        httpClientBuilder.setProxy(proxy);
+
+        final String username = proxyProperties.getUsername();
+        addCredentialsIfNeeded(httpClientBuilder, proxy, username, proxyProperties.getPassword());
+    }
+
+    /**
+     * Used for attached proxy's credential
+     * @param httpClientBuilder
+     * @param proxy
+     * @param username
+     * @param password
+     */
+    private void addCredentialsIfNeeded(final HttpClientBuilder httpClientBuilder, HttpHost proxy,
+        final String username, final String password) {
+        if(StringUtils.isBlank(username)) return;
+
+        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(new AuthScope(proxy.getHostName(), proxy.getPort()), new UsernamePasswordCredentials(username, password));
+        httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
     }
 
     /*

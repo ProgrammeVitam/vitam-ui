@@ -40,6 +40,7 @@ import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.ProxyProperties;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -59,6 +60,8 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import reactor.netty.tcp.TcpClient;
+import reactor.netty.transport.ProxyProvider;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -71,6 +74,8 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * A factory using Spring WebFlux {@link WebClient} to create each domain specific REST client.
@@ -156,7 +161,6 @@ public class BaseWebClientFactory implements WebClientFactory {
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(restClientConfig.getMaxInMemorySize()))
             .build())
             .build();
-        ;
     }
 
     private String buildBaseUrl(final RestClientConfiguration restClientConfig, final boolean useSSL) {
@@ -168,30 +172,42 @@ public class BaseWebClientFactory implements WebClientFactory {
             final boolean useSSL = restClientConfig.isSecure();
             final SslContext sslContext = useSSL ? buildSSLContext(restClientConfig) : null;
 
-            HttpClient httpClient = null;
-
-            if (useSSL) {
+            HttpClient httpClient = HttpClient.create();
+            if(useSSL) {
                 // secure must precede tcpConfiguration in order for sslContext configuration to be applied.
-                httpClient = HttpClient.create().secure(sslSpec -> sslSpec.sslContext(sslContext))
-                    .tcpConfiguration(client -> client
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
-                        .doOnConnected(connection -> connection
-                            .addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
-                            .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
-            } else {
-                httpClient = HttpClient.create()
-                    .tcpConfiguration(client -> client
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
-                        .doOnConnected(connection -> connection
-                            .addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
-                            .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut()))));
+                httpClient = httpClient.secure(sslSpec -> sslSpec.sslContext(sslContext));
             }
+            httpClient = httpClient.tcpConfiguration(getTcpMapper(restClientConfig));
 
             return new ReactorClientHttpConnector(httpClient);
         } catch (final Exception e) {
             throw new ApplicationServerException(e);
         }
 
+    }
+
+    private Function<TcpClient, TcpClient> getTcpMapper(final RestClientConfiguration restClientConfig) {
+            return client -> getTcpClient(restClientConfig, restClientConfig.getProxy(), client);
+    }
+
+    private TcpClient getTcpClient(final RestClientConfiguration restClientConfig, final ProxyProperties proxyProperties, final TcpClient client) {
+        var tcpClient = client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, restClientConfig.getConnectTimeOut() * 1000)
+            .doOnConnected(connection ->  connection.addHandlerLast(new ReadTimeoutHandler(restClientConfig.getReadTimeOut()))
+                .addHandlerLast(new WriteTimeoutHandler(restClientConfig.getWriteTimeOut())));
+
+        if(Objects.nonNull(proxyProperties) && proxyProperties.isEnabled()) {
+            tcpClient = tcpClient.proxy(proxy -> getProxyBuilder(proxyProperties, proxy));
+        }
+
+        return tcpClient;
+    }
+
+    private ProxyProvider.Builder getProxyBuilder(final ProxyProperties proxyProperties, final ProxyProvider.TypeSpec proxySpec) {
+        return proxySpec.type(proxyProperties.getType())
+                  .host(proxyProperties.getHost())
+                  .port(proxyProperties.getPort())
+                  .username(proxyProperties.getUsername())
+                  .password(user -> proxyProperties.getPassword());
     }
 
     /*

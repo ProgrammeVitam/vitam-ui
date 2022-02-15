@@ -11,15 +11,20 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class IdentityApplicationPropertiesTest {
 
-    @Autowired
-    private IdentityApplicationProperties applicationProperties;
+    @MockBean
+    private CasLogoutUrl casLogoutUrl;
 
     @MockBean
-    BuildProperties buildProperties;
+    private BuildProperties buildProperties;
+
+    @Autowired
+    private IdentityApplicationProperties applicationProperties;
 
     @Test
     public void testApplicationProperties() {

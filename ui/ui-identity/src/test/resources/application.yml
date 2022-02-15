@@ -48,7 +48,16 @@ ui-identity:
     admin-identity: "${ui.url}"
     identity: "${ui.url}"
 
+max-street-length: 250
+
 ui-prefix: identity-api
+
+address:
+  max-street-length: 250
+
+portal:
+  message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics."
+  title: "Portail des applications de l'archivage"
 
 server-identity:
   identityName: vitamui

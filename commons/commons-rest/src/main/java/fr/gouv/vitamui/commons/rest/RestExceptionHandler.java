@@ -164,6 +164,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         if (ex instanceof AuthenticationException) {
             return handleVitamUIException(new InvalidAuthenticationException(ex.getMessage(), ex), request);
         }
+        if (ex instanceof RuntimeException) {
+            return handleVitamUIException(new InternalServerException(ex.getMessage(), ex), request);
+        }
         logException(ex, request);
         final VitamUIError apiErrors = buildApiErrors(ex);
 

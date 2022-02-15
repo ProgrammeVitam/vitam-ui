@@ -215,10 +215,8 @@ public class UserExternalService extends AbstractResourceClientService<UserDto, 
 
     public void checkLogbookRight(final String id) {
         final boolean hasRoleGetUsers = externalSecurityService.hasRole(ServicesData.ROLE_GET_USERS);
-        if (!hasRoleGetUsers) {
-            if (!StringUtils.equals(externalSecurityService.getUser().getId(), id)) {
+        if (!hasRoleGetUsers && !StringUtils.equals(externalSecurityService.getUser().getId(), id)) {
                 throw new ForbiddenException(String.format("Unable to access user with id: %s", id));
-            }
         }
         final UserDto usersDto = super.getOne(id);
         if (usersDto == null) {

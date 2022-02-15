@@ -180,10 +180,8 @@ public class ProfileInternalService extends VitamUICrudService<ProfileDto, Profi
                 dto.setTenantName(tenant.getName());
 
                 final Collection<Group> groups = getGroupsByProfileIds(dto.getId());
-                long usersCount = 0;
-                for (final Group p : groups) {
-                    usersCount += userRepository.countByGroupId(p.getId());
-                }
+                List<String> groupIds = groups.stream().map(Group::getId).collect(Collectors.toList());
+                long usersCount = userRepository.countByGroupIdIn(groupIds);
                 dto.setUsersCount(usersCount);
 
                 dto.setGroupsCount((long) groups.size());

@@ -61,6 +61,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -305,13 +306,15 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
         if (HttpMethod.POST == httpMethod) {
             return webClient.post().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
+                .body(BodyInserters.fromMultipartData(multiValueMap))
+                .retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
                 .block();
         } else {
             return webClient.patch().uri(url).headers(addHeaders(headers)).headers(addHeaders(buildHeaders(context)))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
-                .syncBody(multiValueMap).retrieve()
+                .body(BodyInserters.fromMultipartData(multiValueMap))
+                .retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(), BaseWebClient::createResponseException).bodyToMono(clazz)
                 .block();
         }
