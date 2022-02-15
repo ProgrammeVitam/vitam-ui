@@ -45,7 +45,7 @@
            <span id="capslock-on" style="display:none;">
                <p>
                    <i class="fa fa-exclamation-circle"></i>
-                   <span th:utext="#{screen.capslock.on}"/>
+                   <span th:text="#{screen.capslock.on}"/>
                </p>
            </span>
 	       <button type="submit" class="vitamui-primary" name="submit" id="submit" accesskey="s" th:value="#{screen.pm.button.submit}" disabled="true">
@@ -55,10 +55,10 @@
 
         <br>
         <div id="password-policy-text" class="error-field" hidden>
-            <span th:utext="#{screen.pm.init.security.policy}"></span>
+            <span th:text="#{screen.pm.init.security.policy}"></span>
         </div>
         <div th:if="${#fields.hasErrors('*')}" class="error-field">
-			<span th:each="err : ${#fields.errors('*')}" th:utext="${err}">Error text</span>
+			<span th:each="err : ${#fields.errors('*')}" th:text="${err}">Error text</span>
         </div>
 		<input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
 		<input type="hidden" name="_eventId" value="submit"/>
@@ -71,14 +71,14 @@
 	</form>
 
 <div class="helper password-helper">
-    <span th:utext="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
+		<span th:text="#{screen.pm.init.security.title}">For security reasons, your should have :</span>
     <ul>
         <li id="security-valid-password">
-            <span th:utext="#{screen.pm.init.security.valid.password}"></span>
+            <span th:text="#{screen.pm.init.security.valid.password}"></span>
             <i class="material-icons">check</i>
         </li>
         <li id="security-four">
-            <span th:utext="#{screen.pm.init.security.four}"></span>
+            <span th:text="#{screen.pm.init.security.four}"></span>
             <i class="material-icons">check</i>
         </li>
     </ul>
@@ -86,7 +86,7 @@
         <span th:utext="#{screen.pm.init.security.password.check.internal.anssi(${application.maxOldPassword}, ${application.occurrencesCharsNumber})}"></span>
     </div>
     <div th:if="${application.maxOldPassword != null && application.passwordCustomConstraints != null }">
-        <span th:utext="#{screen.pm.init.security.password.check.internal(${application.maxOldPassword})}"></span>
+        <span th:text="#{screen.pm.init.security.password.check.internal(${application.maxOldPassword})}"></span>
     </div>
     <br/>
 </div>
@@ -190,7 +190,7 @@
                         </li>
 
                         <li th:if="${application.passwordAnssiConstraints.defaults.get('en') != null && application.passwordAnssiConstraints.defaults.get('en').specialChars != null && application.passwordAnssiConstraints.defaults.get('en').specialChars.title != null}"
-                            th:utext="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
+                            th:text="${application.passwordAnssiConstraints.defaults.get('en').specialChars.title}">
                         </li>
 
                         <ul>
