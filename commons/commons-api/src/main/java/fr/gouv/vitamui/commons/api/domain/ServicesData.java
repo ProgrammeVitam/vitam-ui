@@ -423,6 +423,10 @@ public class ServicesData {
 
     //@formatter:off
 
+    //------------------------------ PROVISIONING USERS ------------------------------------------------
+
+    public static final String ROLE_PROVISIONING_USER = ROLE_PREFIX + "PROVISIONING_USER";
+
     /**
      * List of the admin roles for the VITAMUI application.
      */

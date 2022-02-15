@@ -121,7 +121,11 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
 
     @Test
     public void testResolveX509() {
-        when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(null), eq(Optional.of(IDENTIFIER)),
+        val provider = new IdentityProviderDto();
+        provider.setId(PROVIDER_ID);
+        when(identityProviderHelper.findByUserIdentifier(providersService.getProviders(), USERNAME)).thenReturn(Optional.of(provider));
+
+        when(casExternalRestClient.getUser(any(ExternalHttpContext.class), eq(USERNAME), eq(PROVIDER_ID), eq(Optional.of(IDENTIFIER)),
             eq(Optional.of(CommonConstants.AUTH_TOKEN_PARAMETER)))).thenReturn(userProfile(UserStatusEnum.ENABLED));
         val cert = mock(X509Certificate.class);
         val subjectDn = mock(Principal.class);

@@ -39,6 +39,8 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -141,6 +143,12 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return userInfoInternalService.patch(partialDto);
+    }
+
+    @GetMapping("/{id}/history")
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+        LOGGER.debug("get logbook for user info with id :{}", id);
+        return userInfoInternalService.findHistoryById(id);
     }
 
 }

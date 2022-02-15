@@ -1,5 +1,23 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.when;
+
+import java.util.*;
+
+import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
+import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.*;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
@@ -169,6 +187,11 @@ public final class CustomerCrudControllerTest {
         initCustomerService.setOwnerConverter(ownerConverter);
         initCustomerService.setIdpConverter(identityProviderConverter);
         initCustomerService.setExternalParametersInternalService(externalParametersInternalService);
+        internalCustomerService =
+            new CustomerInternalService(sequenceGeneratorService, customerRepository, internalOwnerService,
+                userInternalService,
+                internalSecurityService, addressService, initCustomerService, iamLogbookService, customerConverter,
+                logbookService);
         controller = new CustomerInternalController(internalCustomerService);
         Mockito.when(ownerRepository.generateSuperId()).thenReturn(UUID.randomUUID().toString());
         Mockito.when(ownerRepository.save(ArgumentMatchers.any(Owner.class)))

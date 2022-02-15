@@ -34,53 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.model;
+package fr.gouv.vitamui.commons.rest.client.configuration;
+
+import javax.annotation.Nullable;
+
+import lombok.Getter;
+import lombok.Setter;
+import reactor.netty.transport.ProxyProvider;
 
 /**
- * Enum for Rule Type
+ * Used for mapping proxy properties defined in application.yml
  */
-public enum RuleTypeEnum {
+@Getter
+@Setter
+public class ProxyProperties {
 
     /**
-     * AppraisalRule
+     * Enable/disable given proxy configuration
      */
-    APPRAISALRULE("AppraisalRule"),
-    /**
-     * AccessRule
-     */
-    ACCESSRULE("AccessRule"),
-    /**
-     * StorageRule
-     */
-    STORAGERULE("StorageRule"),
-    /**
-     * DisseminationRule
-     */
-    DISSEMINATIONRULE("DisseminationRule"),
-    /**
-     * ClassificationRule
-     */
-    CLASSIFICATIONRULE("ClassificationRule"),
-    /**
-     * ReuseRule
-     */
-    REUSERULE("ReuseRule");
-
-    private final String type;
+    private boolean enabled = true;
 
     /**
-     * Constructor
+     * Proxy type
      */
-    private RuleTypeEnum(String ruleType) {
-        type = ruleType;
-    }
+    private ProxyProvider.Proxy type = ProxyProvider.Proxy.HTTP;
 
     /**
-     *
-     * @return the type of the rule
+     * Proxy host
+     * example : api1.vitamui.com
      */
-    public String getType() {
-        return type;
-    }
+    private String host;
+
+    /**
+     * Proxy port
+     * example : 80
+     */
+    private int port;
+
+    /**
+     * Username used for proxy authentication
+     */
+    private @Nullable String username;
+
+    /**
+     * Password used for proxy authentication
+     */
+    private @Nullable String password;
 
 }

@@ -14,12 +14,13 @@ spring:
   jackson:
     serialization:
       write-dates-as-timestamps: false
+  jmx:
+    unique-names: true
 
 management:
   endpoints:
     jmx:
       domain: ${server-identity.identityRole}
-      unique-names: true
     web.exposure.include: '*'
   endpoint:
     health:

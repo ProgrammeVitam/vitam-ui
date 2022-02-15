@@ -34,27 +34,51 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.api.domain;
+package fr.gouv.vitamui.identity.service;
 
+import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
+import fr.gouv.vitamui.ui.commons.service.ApplicationService;
 import javax.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
+import org.springframework.stereotype.Service;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * A user info DTO with an identifier.
- */
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class UserInfoDto extends IdDto {
+@Service(value = "applicationService")
+public class UiIdentityApplicationService extends ApplicationService {
 
+    public static final String MAX_STREET_LENGTH = "MAX_STREET_LENGTH";
+    public static final String PORTAL_TITLE = "PORTAL_TITLE";
+    public static final String PORTAL_MESSAGE = "PORTAL_MESSAGE";
+
+    @Value("${address.max-street-length}")
     @NotNull
-    private String language;
+    private Integer maxStreetLength;
 
-    // no validations for identifier. Because during the creation step, the identifier is set by the backend.
-    private String identifier;
+    @Value("${portal.title}")
+    @NotNull
+    private String portalTitle;
+
+    @Value("${portal.message}")
+    @NotNull
+    private String portalMessage;
+
+    public UiIdentityApplicationService(final UIProperties properties, final CasLogoutUrl casLogoutUrl,
+                                        final IamExternalRestClientFactory factory, final BuildProperties buildProperties) {
+        super(properties, casLogoutUrl, factory, buildProperties);
+    }
+
+    @Override
+    public Map<String, Object> getConf() {
+        final Map<String, Object> configurationData = new HashMap<>(super.getConf());
+        configurationData.put(MAX_STREET_LENGTH, maxStreetLength);
+        configurationData.put(PORTAL_TITLE, portalTitle);
+        configurationData.put(PORTAL_MESSAGE, portalMessage);
+        return configurationData;
+    }
+
 }

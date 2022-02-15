@@ -62,6 +62,12 @@ public class RestClientConfiguration {
     private SSLConfiguration sslConfiguration;
 
     /**
+     * Proxy configuration
+     * Used this object if you want to call an application behind a proxy
+     */
+    private ProxyProperties proxy;
+
+    /**
      * Connection timeout in seconds.
      */
     private int connectTimeOut = 10;

@@ -47,6 +47,10 @@ ui-portal:
       hostname-verification: false
 ui-prefix: portal-api
 
+portal:
+  message: "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toute sécurité et pour imprimer des étiquettes en quelques clics."
+  title: "Portail des applications de l'archivage"
+
 controller:
   subrogation:
     enabled: true

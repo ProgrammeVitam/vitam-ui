@@ -46,6 +46,8 @@ public class SequencesConstants {
 
     public static final String USER_IDENTIFIER = "userIdentifier";
 
+    public static final String USER_INFOS_IDENTIFIER = "userInfosIdentifier";
+
     public static final String GROUP_IDENTIFIER = "groupIdentifier";
 
     public static final String PROFILE_IDENTIFIER = "profileIdentifier";

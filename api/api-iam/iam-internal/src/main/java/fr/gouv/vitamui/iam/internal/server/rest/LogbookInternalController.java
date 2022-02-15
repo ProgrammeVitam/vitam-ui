@@ -102,9 +102,10 @@ public class LogbookInternalController {
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final JsonNode select) throws VitamClientException {
         SanityChecker.sanitizeJson(select);
-        final VitamContext vitamContext = securityService.buildVitamContext(tenantId);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId,accessContractId);
         return VitamRestUtils.responseMapping(logbookService.selectOperations(select, vitamContext).toJsonNode(),
             LogbookOperationsResponseDto.class);
     }
