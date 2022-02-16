@@ -92,20 +92,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
-  ruleCategorySelected: string;
-  isRuleCategorySelected = false;
+
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
+  isRuleCategorySelected = false;
   isAddValidActions = false;
   isUpdateValidActions = false;
   isAddPropertyValidActions = false;
   isUpdateValidActionsWithProperty = false;
   isDeleteValidActions = false;
   isDeleteValidActionsWithProperty = false;
+  isDeletePropertyDisabled = false;
+
   messageNotUpdate: string;
   messageNotAdd: string;
+  ruleCategorySelected: string;
   messageNotAddProperty: string;
   messageNotDelete: string;
+  messageNotToDeleteProperty: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -186,6 +190,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
     this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
     this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
+    this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
   }
 
   initializeParameters() {
@@ -205,6 +210,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   }
 
   selectRule(rule: any) {
+    this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
+
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.length - 1;
@@ -218,7 +225,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   loadCriteriaSearchDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
       this.criteriaSearchDSLQuery = {
-        criteriaList: response.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+        criteriaList: response?.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
         pageNumber: response?.pageNumber,
         size: response?.size,
         sortingCriteria: response?.sortingCriteria,

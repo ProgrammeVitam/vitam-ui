@@ -309,7 +309,8 @@
         "NOT_TO_ADD" : "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
         "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
         "FINAL_ACTION_NOT_TO_ADD" : "Action impossible pour ce type de règle : Un sort final est déjà ajouté",
-        "NOT_TO_DELETE" : "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours"
+        "NOT_TO_DELETE" : "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours",
+        "FINAL_ACTION_NOT_TO_DELETE_PROPERTY" : "Vous ne pouvez pas supprimer le sort final d'une règle DUA"
 
       },
       "MORE_ACTIONS" : {
