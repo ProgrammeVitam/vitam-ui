@@ -20,6 +20,10 @@
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été créé
     </ng-container>
 
+    <ng-container *ngSwitchCase="'exportCsvLimitReached'">
+      <i class="vitamui-icon vitamui-icon-admin-key"></i>Il n'est pas possible de réaliser un export csv sur plus de {{ data?.limit }} résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche.
+    </ng-container>
+
     <ng-container *ngSwitchCase="'agencyUpdate'" i18n="@@notificationAgencyUpdate">
       <i class="vitamui-icon vitamui-icon-admin-key"></i> Le service agent {{ data?.name }} a bien été mis à jour.
     </ng-container>

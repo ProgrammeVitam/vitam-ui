@@ -36,18 +36,29 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 public class AccessionRegisterDetailExternalRestClient extends
     BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, ExternalHttpContext> {
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(AccessionRegisterDetailExternalRestClient.class);
 
     public AccessionRegisterDetailExternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -74,4 +85,12 @@ public class AccessionRegisterDetailExternalRestClient extends
         };
     }
 
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(AccessionRegisterDetailsSearchStatsDto query,
+                                                               ExternalHttpContext context) {
+        LOGGER.debug("Accession register details csv export");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<AccessionRegisterDetailsSearchStatsDto> request = new HttpEntity<>(query, headers);
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV, HttpMethod.POST,
+                              request, Resource.class);
+    }
 }

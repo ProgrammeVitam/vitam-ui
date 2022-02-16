@@ -10,3 +10,17 @@
   border: 1px solid var(--vitamui-grey-400);
   border-radius: 5px;
 }
+
+.area-download {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+  right: 5px;
+}
+
+.disabled-div {
+  pointer-events: none;
+}
+.enabled-div {
+  pointer-events: painted;
+}

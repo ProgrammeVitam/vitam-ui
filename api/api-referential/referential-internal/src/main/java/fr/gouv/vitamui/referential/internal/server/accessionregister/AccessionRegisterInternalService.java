@@ -40,7 +40,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.opencsv.CSVWriterBuilder;
+import com.opencsv.ICSVWriter;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
+import fr.gouv.vitam.common.LocalDateUtil;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -53,28 +56,42 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterCsv;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
+import fr.gouv.vitamui.referential.common.dto.ExportAccessionRegisterResultParam;
 import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,13 +124,12 @@ public class AccessionRegisterInternalService {
     public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
         RequestResponse<AccessionRegisterSummaryModel> requestResponse;
         try {
-            LOGGER.debug("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            LOGGER.debug("List of Accession Register EvIdAppSession : {} ", context.getApplicationSessionId());
             requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
             final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
             return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
         } catch (JsonProcessingException | VitamClientException e) {
-            LOGGER.error("Error when getting Accession Register summaries : {} " , e);
             throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
         }
     }
@@ -135,7 +151,7 @@ public class AccessionRegisterInternalService {
         HitsDto hits = results.getHits();
         Integer resultSize = 0;
         Integer resultTotal = 0;
-        if(hits != null) {
+        if (hits != null) {
             resultSize = hits.getSize();
             resultTotal = hits.getTotal();
         }
@@ -152,6 +168,124 @@ public class AccessionRegisterInternalService {
         return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore, optionalValues);
     }
 
+    /**
+     * Export accession register details into csv result file
+     *
+     * @param searchQuery
+     * @param vitamContext
+     * @throws VitamClientException
+     * @throws IOException
+     */
+    public Resource exportToCsvAccessionRegister(final AccessionRegisterDetailsSearchStatsDto searchQuery,
+        final VitamContext vitamContext) {
+        LOGGER.debug("Calling exportToCsvAccessionRegister with query {} ", searchQuery);
+        Locale locale = Locale.FRENCH;
+        // add language to query model
+        ExportAccessionRegisterResultParam exportSearchResultParam = new ExportAccessionRegisterResultParam(locale);
+        return exportAccessionRegistersByCriteriaAndParams(searchQuery, exportSearchResultParam, vitamContext);
+    }
+
+    /**
+     * export to csv Accession Register By Criteria And Params by language
+     *
+     * @param searchQuery
+     * @param exportAccessionRegisterResultParam
+     * @param vitamContext
+     * @return
+     * @throws VitamClientException
+     */
+    private Resource exportAccessionRegistersByCriteriaAndParams(
+        final AccessionRegisterDetailsSearchStatsDto searchQuery, final
+    ExportAccessionRegisterResultParam exportAccessionRegisterResultParam, final VitamContext vitamContext) {
+        try {
+
+            List<AccessionRegisterCsv> accessionRegisterCsvList =
+                exportAccessionRegisterToCsvFile(searchQuery, vitamContext);
+            // create a write
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            Writer writer = new OutputStreamWriter(outputStream, StandardCharsets.UTF_8.name());
+            // header record
+            String[] headerRecordFr =
+                exportAccessionRegisterResultParam.getHeaders()
+                    .toArray(new String[exportAccessionRegisterResultParam.getHeaders().size()]);
+            SimpleDateFormat dateFormat = new SimpleDateFormat(exportAccessionRegisterResultParam.getPatternDate());
+            // create a csv writer
+            ICSVWriter csvWriter = new CSVWriterBuilder(writer)
+                .withSeparator(exportAccessionRegisterResultParam.getSeparator())
+                .withQuoteChar(ICSVWriter.NO_QUOTE_CHARACTER)
+                .withEscapeChar(ICSVWriter.DEFAULT_ESCAPE_CHARACTER)
+                .withLineEnd(ICSVWriter.DEFAULT_LINE_END)
+                .build();
+            // write header record
+            csvWriter.writeNext(headerRecordFr);
+
+            // write data records
+            accessionRegisterCsvList.stream().forEach(accessionRegisterCsv -> {
+                String startDt = null;
+                if (accessionRegisterCsv.getStartDate() != null) {
+                    try {
+                        startDt = dateFormat.format(LocalDateUtil.getDate(accessionRegisterCsv.getStartDate()));
+                    } catch (ParseException e) {
+                        LOGGER.error("Error parsing starting date {} ", accessionRegisterCsv.getStartDate());
+                    }
+                }
+
+                csvWriter.writeNext(new String[] {
+                    accessionRegisterCsv.getId(),
+                    startDt, //dateEntree
+                    accessionRegisterCsv.getOriginatingAgency(), //servProd
+                    accessionRegisterCsv.getSubmissionAgency(), //servVers
+                    accessionRegisterCsv.getArchivalAgreement(), //contratEntree
+                    accessionRegisterCsv.getAcquisitionInformation(), //modeEntree
+                    accessionRegisterCsv.getLegalStatus(), //statutJur
+                    String.valueOf(accessionRegisterCsv.getTotalUnits().getIngested()),
+                    String.valueOf(accessionRegisterCsv.getTotalObjectsGroups().getIngested()),
+                    String.valueOf(accessionRegisterCsv.getTotalObjects().getIngested()),
+                    String.valueOf(accessionRegisterCsv.getObjectSize().getIngested()),
+                    accessionRegisterCsv.getStatus().value()
+                });
+            });
+            // close writers
+            csvWriter.close();
+            writer.close();
+            return new ByteArrayResource(outputStream.toByteArray());
+        } catch (IOException ex) {
+            throw new BadRequestException("Unable to export csv file ", ex);
+        }
+    }
+
+
+    private List<AccessionRegisterCsv> exportAccessionRegisterToCsvFile(
+        final AccessionRegisterDetailsSearchStatsDto searchQuery,
+        final VitamContext vitamContext) {
+        try {
+            JsonNode detailsQuery =
+                AccessionRegisterSummaryInternalService.buildCustomAccessionRegisterDetailsQuery(searchQuery);
+            LOGGER.debug("Final query details: {}", detailsQuery.toPrettyString());
+            //Fetching data from vitam
+            AccessionRegisterDetailResponseDto accessionRegisterDetailResponseDto =
+                fetchingAllPaginatedDataFromVitam(vitamContext, detailsQuery);
+            LOGGER.debug("Fetched accession register data : {} ", accessionRegisterDetailResponseDto);
+            List<AccessionRegisterCsv> accessionRegisterList = new ArrayList<>();
+            if (accessionRegisterDetailResponseDto != null) {
+                accessionRegisterList = accessionRegisterDetailResponseDto.getResults().stream().map(
+                    this::fillOriginatingAgencyName
+                ).collect(Collectors.toList());
+            }
+            return accessionRegisterList;
+        } catch (InvalidCreateOperationException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query", e);
+        }
+    }
+
+    private AccessionRegisterCsv fillOriginatingAgencyName(AccessionRegisterDetailModel accessionRegister) {
+        AccessionRegisterCsv accessionRegisterCsv = new AccessionRegisterCsv();
+        BeanUtils.copyProperties(accessionRegister, accessionRegisterCsv);
+        return accessionRegisterCsv;
+    }
+
+
+
     private JsonNode buildAllPaginatedJsonQuery(Integer pageNumber, Integer size, Optional<String> orderBy,
         Optional<DirectionDto> direction, VitamContext vitamContext, Optional<String> criteria) {
         JsonNode query;
@@ -159,29 +293,30 @@ public class AccessionRegisterInternalService {
             Map<String, Object> vitamCriteria = new HashMap<>();
             LOGGER.debug("List of Accession Registers EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
-                vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
+                vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {
+                });
             }
+            LOGGER.debug("vitamCriteria Map: {}", vitamCriteria.toString());
             query = AccessRegisterVitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
-            LOGGER.error("Can't create dsl query to get paginated accession registers : {}", ioe);
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);
         } catch (IOException e) {
-            LOGGER.error("Can't read value from criteria entries : {}", e);
             throw new InternalServerException("Can't read value from criteria entries", e);
         }
         return query;
     }
 
-    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext, JsonNode query) {
+    private AccessionRegisterDetailResponseDto fetchingAllPaginatedDataFromVitam(VitamContext vitamContext,
+        JsonNode query) {
         AccessionRegisterDetailResponseDto results;
         try {
-            RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails = adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
-            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(), AccessionRegisterDetailResponseDto.class);
+            RequestResponse<AccessionRegisterDetailModel> accessionRegisterDetails =
+                adminExternalClient.findAccessionRegisterDetails(vitamContext, query);
+            results = objectMapper.treeToValue(accessionRegisterDetails.toJsonNode(),
+                AccessionRegisterDetailResponseDto.class);
         } catch (VitamClientException e) {
-            LOGGER.error("Can't fetch data from VITAM : {}", e);
             throw new InternalServerException("Can't fetch data from VITAM", e);
         } catch (JsonProcessingException e) {
-            LOGGER.error("Can't process Json Parsing : {}", e);
             throw new InternalServerException("Can't process Json Parsing", e);
         }
         return results;
@@ -193,16 +328,14 @@ public class AccessionRegisterInternalService {
         List<AgencyModelDto> agencies;
         try {
             originatingAgencyQuery = buildOriginatingAgencyProjectionQuery(results);
-            RequestResponse<AgenciesModel> requestResponse = agencyService.findAgencies(vitamContext, originatingAgencyQuery);
+            RequestResponse<AgenciesModel> requestResponse =
+                agencyService.findAgencies(vitamContext, originatingAgencyQuery);
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
         } catch (JsonProcessingException e) {
-            LOGGER.error("Error parsing query : {}", e);
             throw new InternalServerException("Error parsing query", e);
         } catch (VitamClientException e) {
-            LOGGER.error("Error fetching agencies from vitam : {}", e);
             throw new InternalServerException("Error fetching agencies from vitam", e);
         } catch (InvalidCreateOperationException e) {
-            LOGGER.error("Invalid Select vitam query : {}", e);
             throw new InternalServerException("Invalid Select vitam query", e);
         }
 
@@ -234,7 +367,6 @@ public class AccessionRegisterInternalService {
         try {
             select.setProjection(JsonHandler.toJsonNode(queryProjection));
         } catch (InvalidParseOperationException e) {
-            LOGGER.error("Error constructing vitam query : {}", e);
             throw new InvalidCreateOperationException("Invalid vitam query", e);
         }
         LOGGER.debug("agencies query: {}", select.getFinalSelect());
