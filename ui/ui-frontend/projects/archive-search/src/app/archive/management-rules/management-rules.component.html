@@ -90,7 +90,14 @@
               >
                 {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option
               >
-              <mat-option value="deleteProperty" [disabled]="true"> {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option>
+              <mat-option
+                value="DELETE_PROPERTY"
+                [disabled]="isDeletePropertyDisabled"
+                matTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
+                matTooltipClass="vitamui-tooltip-rules"
+              >
+                {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
+              >
               <mat-option value="BlockPropertyInheritance" [disabled]="true">
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
