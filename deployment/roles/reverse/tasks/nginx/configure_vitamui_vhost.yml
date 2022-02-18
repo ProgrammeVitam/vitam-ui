@@ -1,6 +1,6 @@
 ---
 
-- name: 'Tasks > Reverseproxy-xam > configure_vitamui_vhost.yml | Adding vitamui vhost configuration'
+- name: 'Tasks > Reverse > configure_vitamui_vhost.yml | Adding vitamui vhost configuration'
   template:
     src: "nginx/conf.d/{{ item }}"
     dest: "{{ nginx_conf_dir }}/{{ item | basename | regex_replace('\\.j2$') }}"
