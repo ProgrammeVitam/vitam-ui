@@ -8,7 +8,7 @@
 
 - name: 'Tasks > reverse > prerequisites.yml | Install nginx package'
   package:
-    state: present
+    state: latest
     name: nginx
   register: result
   retries: "{{ packages_install_retries_number }}"
