@@ -132,4 +132,6 @@ public class IdentityProviderDto extends CustomerIdDto {
     private Boolean useNonce;
 
     private Boolean usePkce;
+
+    private String protocoleType;
 }

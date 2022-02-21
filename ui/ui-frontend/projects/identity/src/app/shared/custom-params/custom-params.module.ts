@@ -34,50 +34,24 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSelectModule } from '@angular/material/select';
-
+import { TranslateModule } from '@ngx-translate/core';
 import { VitamUICommonModule } from 'ui-frontend-common';
-import { LevelInputModule } from 'ui-frontend-common';
-import { CustomParamsModule } from '../custom-params/custom-params.module';
-import { DomainsInputModule } from '../domains-input';
-import { PatternModule } from '../pattern';
-import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
-import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
-import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
-import { EditablePatternsComponent } from './editable-patterns/editable-patterns.component';
+import { CustomParamsComponent } from './custom-params.component';
+
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
     ReactiveFormsModule,
-    OverlayModule,
-    MatSelectModule,
     MatProgressSpinnerModule,
-    MatButtonToggleModule,
-    DomainsInputModule,
-    LevelInputModule,
-    PatternModule,
-    VitamUICommonModule,
-    CustomParamsModule
+    TranslateModule,
+    VitamUICommonModule
   ],
-  declarations: [
-    EditableDomainInputComponent,
-    EditablePatternsComponent,
-    EditableKeystoreComponent,
-    EditableCustomParamsComponent,
-  ],
-  exports: [
-    EditableDomainInputComponent,
-    EditablePatternsComponent,
-    EditableKeystoreComponent,
-    EditableCustomParamsComponent,
-  ]
+  declarations: [CustomParamsComponent],
+  exports: [CustomParamsComponent]
 })
-export class EditableFieldModule { }
+export class CustomParamsModule { }
