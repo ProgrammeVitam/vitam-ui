@@ -1,4 +1,4 @@
-<div class="d-flex mt-1 justify-content-between" [class.pattern-mini]="vitamuiMiniMode">
+<div class="d-flex mt-2" [class.pattern-mini]="vitamuiMiniMode">
   <mat-form-field class="vitamui-mat-select d-flex align-items-center" [class.vitamui-mat-select-mini]="vitamuiMiniMode" [style.width.%]="50">
     <mat-select [formControl]="control" required [placeholder]="'SHARED.PATTERN' | translate" panelClass="vitamui-mat-select" #select>
       <mat-option *ngFor="let option of availableOptions" [value]="option.value" [disabled]="option.disabled">
@@ -12,7 +12,7 @@
     </div>
   </mat-form-field>
 
-  <button  class="btn primary btn-circle" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
+  <button  class="btn primary btn-circle mt-2" [class.btn-small]="vitamuiMiniMode" (click)="add()" [disabled]="!controlValueValid()">
     <i class="vitamui-icon vitamui-icon-add"></i>
   </button>
 </div>

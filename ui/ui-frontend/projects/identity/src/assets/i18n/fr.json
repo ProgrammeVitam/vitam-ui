@@ -44,6 +44,11 @@
       "PASSWORD_PLACEHOLDER": "Mot de passe",
       "WRONG_PASSWORD": "Mot de passe incorrect"
     },
+    "EDITABLE_PARAMS": {
+      "KEY": "Clé",
+      "VALUE": "Valeur",
+      "CUSTOM_SETTINGS": "Paramétrages customs"
+    },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(déjà utilisé)",
     "SNACKBAR": {
@@ -68,7 +73,8 @@
       "SUBROGATION_CANCEL": "Votre demande de subrogation a bien été annulée",
       "SUBROGATION_DENIED": "Votre demande de subrogation a été refusée",
       "SUBROGATION_UNAVAILABLE": "La subrogation pour cet utilisateur est momentanément impossible",
-      "ACCOUNT_UPDATE": "Les informations ont été mises à jour"
+      "ACCOUNT_UPDATE": "Les informations ont été mises à jour",
+      "OIDC_UPDATE": "Pour le protocole OIDC, ces champs doivent être renseignés : url discovery, client identifier et client secret pour que la modification aurait lieu"
     }
   },
   "CUSTOMER": {
@@ -156,12 +162,23 @@
       "IDP_METADATA": "Metadata de l'IDP",
       "MAIL_ATTRIBUTE": "Attribut de l'e-mail",
       "IDENTIFIER_ATTRIBUTE": "Attribut de l'id. utilisateur",
+      "CLIENT_IDENTIFIER": "Identifiant du client",
+      "CLIENT_SECRET": "Secret du client",
+      "URL_DISCOVERY": "URL Discovery",
+      "PERIMETER": "Périmètre",
+      "JWS_ALGORITHME": "Algorithme jws",
+      "STATEFUL": "Avec Etat",
+      "USE_NONCE": "Utilise Nonce",
+      "USE_PKCE": "Avec Pkce",
+      "PROTOCOL_TYPE": "Type de protocole",
       "MODAL": {
         "TITLE": "Création d'un IDP pour",
         "KEYSTORE_PWD": "Mot de passe du keystore",
         "WRONG_PASSWORD": "Mot de passe incorrect",
         "UPLOAD_KEYSTORE": "Uploader le fichier keystore de CAS",
-        "UPLOAD_METADATA": "Uploader le fichier metadata de l'IDP"
+        "UPLOAD_METADATA": "Uploader le fichier metadata de l'IDP",
+        "SUBTITLE_SAML": "Paramètres spécificiques SAML",
+        "SUBTITLE_OIDC": "Paramètres spécificiques OIDC"
       },
       "AUTO_PROVISIONING": "Mise à jour automatique des utilisateurs"
     },
@@ -284,7 +301,7 @@
         "MOBILE": "Numéro de mobile",
         "FIX": "Numéro de fixe"
       },
-      "CENTER_CODE":"Code du centre",
+      "CENTER_CODE": "Code du centre",
       "SITE_CODE": "Code du site",
       "INTERNAL_CODE": "Code Interne",
       "DEFAULT_LANGUAGE": "Langue de l'interface",
@@ -428,7 +445,7 @@
         "SAFE": "Coffre",
         "PROFILE": "Profil"
       }
-  },
+    },
     "UNITS_FORM": {
       "INPUT_PLACEHOLDER": "Unité d'appartenance",
       "UNIT_ALREADY_EXIST": "Unité déjà associée à un groupe",

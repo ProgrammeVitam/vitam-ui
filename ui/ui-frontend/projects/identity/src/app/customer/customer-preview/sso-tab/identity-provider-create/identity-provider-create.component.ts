@@ -42,44 +42,109 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { IdentityProviderService } from '../identity-provider.service';
+import JWS_ALGORITHMS, { ProtocoleType } from '../sso-tab-const';
 
 @Component({
   selector: 'app-identity-provider-create',
   templateUrl: './identity-provider-create.component.html',
-  styleUrls: ['./identity-provider-create.component.scss']
+  styleUrls: ['./identity-provider-create.component.scss'],
 })
 export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
-
   form: FormGroup;
+  commonControls: FormGroup;
+  samlSpecificControls: FormGroup;
+  oidcSpecificControls: FormGroup;
   keystore: File;
   idpMetadata: File;
-
+  stepCount = 2;
+  stepIndex = 0;
   private keyPressSubscription: Subscription;
+  protocoleType = ProtocoleType;
+  jwsAlgorithms = JWS_ALGORITHMS;
 
   constructor(
     public dialogRef: MatDialogRef<IdentityProviderCreateComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer, domains: Array<{ value: string, disabled: boolean }> },
+    @Inject(MAT_DIALOG_DATA) public data: { customer: Customer; domains: Array<{ value: string; disabled: boolean }> },
     private formBuilder: FormBuilder,
     private identityProviderService: IdentityProviderService,
     private confirmDialogService: ConfirmDialogService
-  ) { }
+  ) {
+    this.samlSpecificControls = this.initializeSamlControls();
+    this.oidcSpecificControls = this.initializeOIDCControls();
+    this.commonControls = this.initializeCommonControls();
+    this.form= this.formBuilder.group({
+      ...this.commonControls.controls,
+      ...this.samlSpecificControls.controls
+    })
+  }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
+    this.keyPressSubscription = this.confirmDialogService
+      .listenToEscapeKeyPress(this.dialogRef)
+      .subscribe(() => this.onCancel());
+
+    this.form.get('protocoleType').setValue(ProtocoleType.SAML);
+  }
+
+  onProtocoleTypeChange(value: string) {
+    switch (value) {
+      case ProtocoleType.CERTIFICAT:
+        this.stepCount = 1;
+        this.form = this.formBuilder.group({
+          ...this.commonControls.controls
+        });
+
+        break;
+      case ProtocoleType.SAML:
+        this.form = this.formBuilder.group({
+          ...this.commonControls.controls,
+          ...this.samlSpecificControls.controls,
+        });
+        this.stepCount = 2;
+        break;
+      case ProtocoleType.OIDC:
+        this.form = this.formBuilder.group({
+          ...this.commonControls.controls,
+          ...this.oidcSpecificControls.controls,
+        });
+        this.stepCount = 2;
+        break;
+    }
+  }
+
+  initializeSamlControls() {
+    return this.formBuilder.group({
+      keystorePassword: [null, Validators.required],
+      authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
+    });
+  }
+
+  initializeOIDCControls() {
+    return this.formBuilder.group({
+      clientId: [null, Validators.required],
+      clientSecret: [null, Validators.required],
+      discoveryUrl: [null, Validators.required],
+      scope: [],
+      preferredJwsAlgorithm: [],
+      customParams: [],
+      useState: [true],
+      useNonce: [true],
+      usePkce: [false],
+    });
+  }
+  initializeCommonControls() {
+    return this.formBuilder.group({
+      protocoleType: [ProtocoleType.CERTIFICAT, Validators.required],
       customerId: [this.data.customer.id, Validators.required],
       enabled: [true, Validators.required],
       name: [null, Validators.required],
       internal: [{ value: false, disabled: true }, Validators.required],
-      keystorePassword: [null, Validators.required],
       patterns: [null, Validators.required],
       mailAttribute: [null],
       identifierAttribute: [null],
-      authnRequestBinding: [AuthnRequestBindingEnum.POST, Validators.required],
       autoProvisioningEnabled: [false, Validators.required],
     });
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
-
   ngOnDestroy() {
     this.keyPressSubscription.unsubscribe();
   }
@@ -93,22 +158,23 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (!this.isFormValid) { return; }
-
-    const idp = this.form.value;
-
-    idp.internal = false;
-
+    var idp;
+    if (!this.form.valid) {
+      return;
+    }
+    idp = this.form.value;
     idp.keystore = this.keystore;
     idp.idpMetadata = this.idpMetadata;
 
+    idp.internal = false;
     this.identityProviderService.create(idp).subscribe(
       (newIdp: IdentityProvider) => this.dialogRef.close(newIdp),
       (response) => {
         if (response && response.error && response.error.error && response.error.error === 'INVALID_KEYSTORE_PASSWORD') {
           this.form.get('keystorePassword').setErrors({ badPassword: true });
         }
-      });
+      }
+    );
   }
 
   setKeystore(files: FileList) {
@@ -119,8 +185,15 @@ export class IdentityProviderCreateComponent implements OnInit, OnDestroy {
     this.idpMetadata = files.item(0);
   }
 
+  get displayNextButton(): boolean {
+    return this.form.get('protocoleType').value !== ProtocoleType.CERTIFICAT;
+  }
+
+  get disableNextButton(): boolean {
+    return !this.form.get('patterns').valid || !this.form.get('name').valid;
+  }
+
   get isFormValid(): boolean {
     return !this.form.pending && this.form.valid && !!this.keystore && !!this.idpMetadata;
   }
-
 }

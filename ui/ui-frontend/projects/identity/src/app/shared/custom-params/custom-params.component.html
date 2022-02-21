@@ -1,0 +1,34 @@
+<div class="row mt-2">
+  <div class="col-9">
+    <vitamui-common-input
+      class="p-0 col-5"
+      [formControl]="controlKey"
+      [placeholder]="keyPlaceholder | translate"
+      (blur)="onTouched()"
+      (keydown.enter)="add()"
+    >
+    </vitamui-common-input>
+    <vitamui-common-input
+      class="p-0 col-5 ml-4"
+      [formControl]="controlValue"
+      [placeholder]="valuePlaceholder | translate"
+      (blur)="onTouched()"
+      (keydown.enter)="add()"
+    >
+    </vitamui-common-input>
+  </div>
+  <div class="col-2">
+    <button type="button" class="btn primary" (click)="add()" [disabled]="buttonAddDisabled()">{{ 'COMMON.ADD' | translate }}</button>
+  </div>
+</div>
+<div class="vitamui-input-errors">
+  <ng-content select="vitamui-common-field-error"></ng-content>
+</div>
+<div class="vitamui-chip-list mt-1">
+  <div *ngFor="let val of values | keyvalue" class="vitamui-chip">
+    <div class="vitamui-chip-content">{{ val.key }} : {{ val.value }}</div>
+    <div class="vitamui-remove-chip" (click)="remove(val.key)">
+      <i class="material-icons">clear</i>
+    </div>
+  </div>
+</div>
