@@ -33,12 +33,10 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis-commons</artifactId>
-            <version>5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis-client</artifactId>
-            <version>5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.ui</groupId>
@@ -157,10 +155,6 @@
             <artifactId>ui-commons</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
         </dependency>
         <dependency>
             <groupId>org.junit.vintage</groupId>

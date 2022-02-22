@@ -84,6 +84,9 @@ public class PastisCustomCharacterEscapeHandler implements CharacterEscapeHandle
                     case '\'':
                         out.write("'");
                         break;
+
+                    default:
+                        break;
                 }
             }
         }

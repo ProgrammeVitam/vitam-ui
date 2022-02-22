@@ -37,21 +37,21 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
+import lombok.Getter;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PastisSAX2Handler extends DefaultHandler {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisSAX2Handler.class);
-    public ElementRNG elementRNGRoot;
+    @Getter
+    private ElementRNG elementRNGRoot;
     boolean isValue;
-    Stack<ElementRNG> stackRNG = new Stack<ElementRNG>();
+    private Deque<ElementRNG> stackRNG = new ArrayDeque<>();
     private boolean isInDocumentationTag;
     private StringBuilder documentationContent;
 
@@ -61,7 +61,7 @@ public class PastisSAX2Handler extends DefaultHandler {
      * This method is called everytime the parser gets an open tag
      * Identifies which tag has being opened at time by assiging a new flag
      */
-    public void startElement(String nameSpace, String localName, String qName, Attributes attr) throws SAXException {
+    public void startElement(String nameSpace, String localName, String qName, Attributes attr) {
 
         //cette variable contient le nom du nœud qui a créé l'événement
         // If node not a grammar tag or start tag
@@ -80,8 +80,8 @@ public class PastisSAX2Handler extends DefaultHandler {
             elementRNG.setName(attr.getValue("name"));
             elementRNG.setType(localName);
             elementRNG.setDataType(attr.getValue("type"));
-            if (!stackRNG.empty()) {
-                ElementRNG e = stackRNG.lastElement();
+            if (!stackRNG.isEmpty()) {
+                ElementRNG e = stackRNG.getLast();
                 elementRNG.setParent(e);
                 e.getChildren().add(elementRNG);
             }
@@ -107,8 +107,8 @@ public class PastisSAX2Handler extends DefaultHandler {
             isInDocumentationTag = false;
 
         }
-        if (!stackRNG.empty()) {
-            ElementRNG e = stackRNG.pop();
+        if (!stackRNG.isEmpty()) {
+            stackRNG.pop();
         }
     }
 
@@ -123,23 +123,17 @@ public class PastisSAX2Handler extends DefaultHandler {
     }
 
     /**
-     * Actions à réaliser lors de la fin du document XML.
-     */
-    public void endDocument() {
-    }
-
-    /**
      * Actions to perform when tag content is reached (Data between '< />' )
      */
     @Override
     public void characters(char[] caracteres, int start, int length) throws SAXException {
         if (isInDocumentationTag) {
             documentationContent.append(new String(caracteres, start, length));
-            stackRNG.lastElement().setValue(documentationContent.toString());
+            stackRNG.getLast().setValue(documentationContent.toString());
         }
         if (isValue) {
             String valueContent = new String(caracteres, start, length);
-            stackRNG.lastElement().setValue(valueContent);
+            stackRNG.getLast().setValue(valueContent);
             this.isValue = false;
         }
     }

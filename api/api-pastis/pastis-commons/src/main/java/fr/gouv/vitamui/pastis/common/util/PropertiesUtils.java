@@ -78,7 +78,7 @@ public final class PropertiesUtils {
         try {
             file = new File(url.toURI());
         } catch (final URISyntaxException e) {
-            file = new File(url.getFile().replaceAll("%20", " "));
+            file = new File(url.getFile().replace("%20", " "));
         }
         if (file.exists()) {
             return file;
@@ -97,17 +97,17 @@ public final class PropertiesUtils {
         if (resourcesFile == null) {
             throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES);
         }
-        InputStream stream = null;
+        InputStream stream;
         try {
             stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcesFile);
         } catch (final SecurityException e) {
-
+            throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
         }
         if (stream == null) {
             try {
                 stream = PropertiesUtils.class.getClassLoader().getResourceAsStream(resourcesFile);
             } catch (final SecurityException e) {
-
+                throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
             }
         }
         if (stream == null) {

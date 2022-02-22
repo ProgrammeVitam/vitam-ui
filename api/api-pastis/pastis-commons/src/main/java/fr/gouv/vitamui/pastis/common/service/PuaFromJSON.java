@@ -41,8 +41,6 @@ package fr.gouv.vitamui.pastis.common.service;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,31 +51,28 @@ import java.util.List;
 @Service
 public class PuaFromJSON {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonFromPUA.class);
-    private static final String schema = "http://json-schema.org/draft-04/schema";
-    private static final String type = "object";
-    private static final Boolean additionalProperties = false;
+    private static final String SCHEMA = "http://json-schema.org/draft-04/schema";
+    private static final String TYPE = "object";
+    private static final Boolean ADDITIONALPROPERTIES = false;
     @Autowired
     private PuaPastisValidator puaPastisValidator;
 
     public String getControlSchemaFromElementProperties(ElementProperties elementProperties) throws IOException {
         // We use a JSONObject instead of POJO, since Jackson and Gson will add unnecessary
-        // backslashes during mapping string object values back to string;
-        JSONObject controlSchema = puaPastisValidator.sortedJSONObject();
+        // backslashes during mapping string object values back to string
+        JSONObject controlSchema = puaPastisValidator.sortedJSON();
         // 1. Add Schema
-        controlSchema.put("$schema", schema);
+        controlSchema.put("$schema", SCHEMA);
         // 2. Add  type
-        controlSchema.put("type", type);
+        controlSchema.put("type", TYPE);
         // 3. Add additionProperties
-        controlSchema.put("additionalProperties", additionalProperties);
+        controlSchema.put("additionalProperties", ADDITIONALPROPERTIES);
         // 4. Check if tree contains Management metadata
-        controlSchema = addPatternProperties(elementProperties, controlSchema);
+        addPatternProperties(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
-
         controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
 
-        //controlSchema.put("required",puaPastisValidator.getRequiredProperties(elementProperties));
-        // 5. Add definitions;
+        // 5. Add definitions
         JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
         controlSchema.put("definitions", definitionsFromBasePua);
         // 6. Add ArchiveUnitProfile and the rest of the tree
@@ -85,9 +80,8 @@ public class PuaFromJSON {
         JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);
         JSONObject sortedElements = getJSONObjectsFromJSonArray(allElements);
         controlSchema.put("properties", sortedElements);
-        // 7. Remove excessive backslashes from mapping strings to objects and vice-versa;
-        String cleanedJSON = controlSchema.toString().replaceAll("[\\\\]+", "");
-        return cleanedJSON;
+        // 7. Remove excessive backslashes from mapping strings to objects and vice-versa
+        return controlSchema.toString().replaceAll("[\\\\]+", "");
     }
 
     public String getDefinitions() {
@@ -95,7 +89,7 @@ public class PuaFromJSON {
     }
 
     private JSONObject getJSONObjectsFromJSonArray(JSONArray array) {
-        JSONObject sortedJSONObject = puaPastisValidator.sortedJSONObject();
+        JSONObject sortedJSONObject = puaPastisValidator.sortedJSON();
         Iterator<Object> iterator = array.iterator();
         while (iterator.hasNext()) {
             JSONObject jsonObject = (JSONObject) iterator.next();
@@ -106,12 +100,11 @@ public class PuaFromJSON {
         return sortedJSONObject;
     }
 
-    private JSONObject addPatternProperties(ElementProperties elementProperties, JSONObject controlSchema)
+    private void addPatternProperties(ElementProperties elementProperties, JSONObject controlSchema)
         throws IOException {
         if (!puaPastisValidator.containsManagement(elementProperties)) {
             controlSchema.put("patternProperties", new JSONObject().put("#management", new JSONObject()));
         }
-        return controlSchema;
     }
 
 }

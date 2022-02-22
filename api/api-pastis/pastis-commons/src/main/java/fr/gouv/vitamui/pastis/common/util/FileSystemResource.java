@@ -39,6 +39,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.util;
 
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.lang.Nullable;
 
 public final class FileSystemResource extends ByteArrayResource {
 
@@ -49,8 +50,19 @@ public final class FileSystemResource extends ByteArrayResource {
         this.fileName = filename;
     }
 
+    @Override
     public String getFilename() {
         return fileName;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object other) {
+        return super.equals(other);
     }
 
     public void setFilename(String fileName) {

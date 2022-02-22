@@ -40,8 +40,6 @@ package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.PuaData;
 import fr.gouv.vitamui.pastis.common.dto.seda.SedaNode;
@@ -51,20 +49,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-
-import static fr.gouv.vitamui.pastis.common.util.RNGConstants.typeElement;
 
 @Service
 public class JsonFromPUA {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(JsonFromPUA.class);
 
     private Long idCounter = 0L;
+    private static final String CONTENT = "Content";
+    private static final String PROPERTIES = "properties";
 
     /**
      * Generates a Profile from a PUA file
@@ -82,15 +75,15 @@ public class JsonFromPUA {
         root.setName("DescriptiveMetadata");
         root.setId(idCounter++);
         root.setLevel(0);
-        root.setType(String.valueOf(RNGConstants.MetadaDataType.element));
+        root.setType(String.valueOf(RNGConstants.MetadaDataType.ELEMENT.getLabel()));
 
         // Adding ArchiveUnit Element
         ElementProperties archiveUnit = createChildren(root, "ArchiveUnit");
-        archiveUnit.setType(String.valueOf(RNGConstants.MetadaDataType.element));
+        archiveUnit.setType(String.valueOf(RNGConstants.MetadaDataType.ELEMENT.getLabel()));
 
         // Adding id element
         ElementProperties id = createChildren(archiveUnit, "id");
-        id.setType(String.valueOf(RNGConstants.MetadaDataType.attribute));
+        id.setType(String.valueOf(RNGConstants.MetadaDataType.ATTRIBUTE.getLabel()));
         id.setValueOrData("data");
         id.setDataType(String.valueOf(RNGConstants.DataType.ID));
 
@@ -111,18 +104,18 @@ public class JsonFromPUA {
      */
     public void sortTreeWithSeda(ElementProperties tree, SedaNode sedaNode) {
         tree.getChildren().sort(Comparator.comparing(
-            c -> sedaNode.getChildren().stream().map(s -> s.getName()).collect(Collectors.toList())
+            c -> sedaNode.getChildren().stream().map(SedaNode::getName).collect(Collectors.toList())
                 .indexOf(c.getName())));
         for (ElementProperties e : tree.getChildren()) {
-            sortTreeWithSeda(e,
-                sedaNode.getChildren().stream().filter(s -> s.getName().equals(e.getName())).findFirst().get());
+            Optional<SedaNode> optionalSedaNode = sedaNode.getChildren().stream().filter(s -> s.getName().equals(e.getName())).findFirst();
+            optionalSedaNode.ifPresent(node -> sortTreeWithSeda(e, node));
         }
     }
 
     private List<String> getRequiredFields(JSONObject controlSchema) {
         List<String> required = new ArrayList<>();
         if (controlSchema.has("required")) {
-            required.addAll(controlSchema.getJSONArray("required").toList().stream().map(o -> (String) o)
+            required.addAll(controlSchema.getJSONArray("required").toList().stream().map(String.class::cast)
                 .collect(Collectors.toList()));
         }
         return required;
@@ -166,8 +159,8 @@ public class JsonFromPUA {
      */
     private void buildProfile(JSONObject jsonPUA, SedaNode sedaNode, ElementProperties parent) {
         List<String> requiredFields = getRequiredFields(jsonPUA);
-        if (jsonPUA.has("properties")) {
-            JSONObject properties = jsonPUA.getJSONObject("properties");
+        if (jsonPUA.has(PROPERTIES)) {
+            JSONObject properties = jsonPUA.getJSONObject(PROPERTIES);
             if (properties.length() != 0) {
                 for (String propertyName : properties.keySet()) {
                     Set<String> childrensNames;
@@ -179,48 +172,57 @@ public class JsonFromPUA {
                         requiredFieldsActual =
                             getRequiredFields(properties.getJSONObject(propertyName).getJSONObject("items"));
                         propertiesNew =
-                            properties.getJSONObject(propertyName).getJSONObject("items").getJSONObject("properties");
+                            properties.getJSONObject(propertyName).getJSONObject("items").getJSONObject(PROPERTIES);
                         childrensNames = propertiesNew.keySet();
                     } else {
                         requiredFieldsActual = requiredFields;
                         propertiesNew = properties;
                         childrensNames = Collections.singleton(propertyName);
                     }
-                    childrensNames.forEach(childName -> {
-                        JSONObject childPua = propertiesNew.getJSONObject(childName);
-                        SedaNode childrenSedaNode = getChildrenSedaNode(sedaNode, childName);
-
-                        ElementProperties childrenParent;
-                        // In a PUA the Content node in ArchiveUnit node is omitted.
-                        // So if we are in the ArchiveUnit Node, then we must check for the children in Content Node as well
-                        if (childrenSedaNode == null && parent.getName().equals("ArchiveUnit")) {
-                            childrenSedaNode = getChildrenSedaNode(getChildrenSedaNode(sedaNode, "Content"), childName);
-
-                            ElementProperties content =
-                                parent.getChildren().stream().filter(c -> c.getName().equals("Content")).findAny()
-                                    .orElse(null);
-                            // Create "Content" ElementProperties if not created yet
-                            if (content == null) {
-                                content = createChildren(parent, "Content");
-                                content.setType(String.valueOf(RNGConstants.MetadaDataType.element));
-                            }
-                            childrenParent = content;
-                        } else {
-                            childrenParent = parent;
-                        }
-                        // If the childrenDefinition is found then process the childPua and add it to the childProfile
-                        if (childrenSedaNode != null) {
-                            ElementProperties childProfile =
-                                getElementProperties(childrenSedaNode, childrenParent, childName, childPua,
-                                    requiredFieldsActual.contains(childName));
-
-                            buildProfile(childPua, childrenSedaNode, childProfile);
-                        }
-                    });
+                    buildChildrenProfile(parent, sedaNode, requiredFieldsActual, childrensNames, propertiesNew);
                 }
-                ;
             }
         }
+    }
+
+    private void buildChildrenDefinition(SedaNode childrenSedaNode, JSONObject childPua, ElementProperties childrenParent,
+        String childName, List<String> requiredFieldsActual){
+        if (childrenSedaNode != null) {
+            ElementProperties childProfile =
+                getElementProperties(childrenSedaNode, childrenParent, childName, childPua,
+                    requiredFieldsActual.contains(childName));
+
+            buildProfile(childPua, childrenSedaNode, childProfile);
+        }
+    }
+
+    private void buildChildrenProfile(ElementProperties parent, SedaNode sedaNode, List<String> requiredFieldsActual,
+        Set<String> childrensNames, JSONObject propertiesNew){
+        childrensNames.forEach(childName -> {
+            JSONObject childPua = propertiesNew.getJSONObject(childName);
+            SedaNode childrenSedaNode = getChildrenSedaNode(sedaNode, childName);
+
+            ElementProperties childrenParent;
+            // In a PUA the Content node in ArchiveUnit node is omitted.
+            // So if we are in the ArchiveUnit Node, then we must check for the children in Content Node as well
+            if (childrenSedaNode == null && parent.getName().equals("ArchiveUnit")) {
+                childrenSedaNode = getChildrenSedaNode(getChildrenSedaNode(sedaNode, CONTENT), childName);
+
+                ElementProperties content =
+                    parent.getChildren().stream().filter(c -> c.getName().equals(CONTENT)).findAny()
+                        .orElse(null);
+                // Create "Content" ElementProperties if not created yet
+                if (content == null) {
+                    content = createChildren(parent, CONTENT);
+                    content.setType(String.valueOf(RNGConstants.MetadaDataType.ELEMENT.getLabel()));
+                }
+                childrenParent = content;
+            } else {
+                childrenParent = parent;
+            }
+            // If the childrenDefinition is found then process the childPua and add it to the childProfile
+            buildChildrenDefinition(childrenSedaNode, childPua, childrenParent, childName, requiredFieldsActual);
+        });
     }
 
     /**
@@ -235,7 +237,7 @@ public class JsonFromPUA {
     private ElementProperties getElementProperties(SedaNode sedaNode, ElementProperties parent, String key,
         JSONObject childPua, Boolean required) {
         ElementProperties childProfile = createChildren(parent, key);
-        childProfile.setType(typeElement.get(sedaNode.getElement()));
+        childProfile.setType(RNGConstants.getTypeElement().get(sedaNode.getElement()));
         childProfile.setDataType(sedaNode.getType());
 
         Integer minItems = null;
@@ -250,7 +252,7 @@ public class JsonFromPUA {
                 case "enum":
                     addPuaDataToElementIfNotPresent(childProfile);
                     List<String> enume =
-                        childPua.getJSONArray(k).toList().stream().map(o -> (String) o).collect(Collectors.toList());
+                        childPua.getJSONArray(k).toList().stream().map(String.class::cast).collect(Collectors.toList());
                     childProfile.getPuaData().setEnum(enume);
                     break;
                 case "pattern":
@@ -304,7 +306,7 @@ public class JsonFromPUA {
     }
 
     private String getCardinality(Integer minItems, Integer maxItems, Boolean required, SedaNode sedaNode) {
-        if (required) {
+        if (Boolean.TRUE.equals(required)) {
             switch (sedaNode.getCardinality()) {
                 case "1-N":
                 case "0-N":
@@ -312,6 +314,7 @@ public class JsonFromPUA {
                 case "1":
                 case "0-1":
                     return "1";
+                default:
             }
             return "1";
         } else if (minItems != null && maxItems != null) {

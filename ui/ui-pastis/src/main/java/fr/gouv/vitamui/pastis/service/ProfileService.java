@@ -38,8 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -76,6 +74,7 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
         this.commonService = commonService;
     }
 
+    @Override
     public Collection<ProfileDto> getAll(final ExternalHttpContext context, final Optional<String> criteria) {
         return client.getAll(context, criteria);
     }
@@ -86,19 +85,12 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
     }
 
 
-    @Override
-    public PaginatedValuesDto<ProfileDto> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
-        return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
-    }
-
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);
     }
 
-    public boolean check(ExternalHttpContext context, ProfileDto ProfileDto) {
-        return client.check(context, ProfileDto);
+    public boolean check(ExternalHttpContext context, ProfileDto profileDto) {
+        return client.check(context, profileDto);
     }
 
     public ResponseEntity<JsonNode> updateProfile(final ExternalHttpContext c, final ProfileDto dto) {
@@ -109,6 +101,7 @@ public class ProfileService extends AbstractPaginateService<ProfileDto> {
     }
 
 
+    @Override
     public void delete(ExternalHttpContext context, String id) {
         client.delete(context, id);
     }

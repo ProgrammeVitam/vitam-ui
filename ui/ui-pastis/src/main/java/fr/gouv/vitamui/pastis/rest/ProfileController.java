@@ -87,6 +87,7 @@ import java.util.Optional;
 public class ProfileController extends AbstractUiRestController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProfileController.class);
+    private static final String IDMANDATORYMESSAGE = "The Identifier is a mandatory parameter: ";
     protected final ProfileService service;
 
     @Autowired
@@ -143,7 +144,7 @@ public class ProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
@@ -157,7 +158,7 @@ public class ProfileController extends AbstractUiRestController {
     @GetMapping(value = RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> download(final @PathVariable("id") String id) {
         LOGGER.debug("download {} profile with id :{}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
         Resource body = service.download(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition", "attachment")
@@ -177,7 +178,7 @@ public class ProfileController extends AbstractUiRestController {
         @RequestParam("file") MultipartFile file) throws IOException {
         LOGGER.debug("Update profile file with id :{}", id);
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
         return service.updateProfileFile(buildUiHttpContext(), id, file);
     }
 

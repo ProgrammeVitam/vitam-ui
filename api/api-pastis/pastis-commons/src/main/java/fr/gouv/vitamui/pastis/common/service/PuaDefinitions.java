@@ -61,7 +61,7 @@ public class PuaDefinitions {
     @JsonAnySetter
     public void setDefinitions(String key, Object value) {
         if (definitions == null) {
-            definitions = new HashMap<String, Object>();
+            definitions = new HashMap<>();
         }
         if (key != null) {
             if (value != null) {

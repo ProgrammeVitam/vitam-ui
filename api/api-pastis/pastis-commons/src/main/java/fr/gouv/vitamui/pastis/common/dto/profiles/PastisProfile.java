@@ -40,18 +40,12 @@ package fr.gouv.vitamui.pastis.common.dto.profiles;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.json.JSONObject;
-
+import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.Random;
 
 @Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class PastisProfile extends IdDto {
 
     String type;
@@ -62,7 +56,8 @@ public class PastisProfile extends IdDto {
 
     public PastisProfile(String fileName, String status, Long lastModified) {
         this.type = this.getFileType(fileName);
-        this.setId(String.valueOf(Math.abs(new Random().nextLong()) / 1000));
+        long idExample = new SecureRandom().nextLong() / 1000;
+        this.setId(String.valueOf(Math.abs(idExample) / 1000));
         this.fileName = fileName;
         this.baseName = getFileBaseName(fileName);
         this.status = status;
@@ -77,17 +72,6 @@ public class PastisProfile extends IdDto {
     private String getFileBaseName(String fileName) {
         String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
         return tokens[0];
-    }
-
-
-    public void deserialise(JSONObject jsonObject) {
-
-        this.setId((String) jsonObject.get("#id"));
-        this.setStatus((String) jsonObject.get("status"));
-        this.setLastModified((String) jsonObject.get("lastModified"));
-        this.setFileName((String) jsonObject.get("fileName"));
-        this.setBaseName((String) jsonObject.get("baseName"));
-        this.setType((String) jsonObject.get("type"));
     }
 }
 

@@ -37,6 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,224 +47,225 @@ import java.util.Map;
  */
 public class RNGConstants {
 
-    public static final Map<String, String> typeElement = new HashMap<>() {
-        public static final long serialVersionUID = 1L;
+    private static final String ELEMENT = "element";
+    private static final String GROUP = "group";
+    private static final String CHOICE = "choice";
 
-        {
-            put("Simple", "element");
-            put("Complex", "element");
-            put("Attribute", "attribute");
-        }
-    };
-    public static final Map<String, String> CardinalityMap = new HashMap<String, String>() {
-        public static final long serialVersionUID = 1L;
+    @Getter
+    private static final Map<String, String> typeElement = new HashMap<>();
 
-        {
-            put("optional", "0-1");
-            put("zeroOrMore", "0-N");
-            put("obligatoire", "1");
-            put("oneOrMore", "1-N");
-        }
-    };
-    public static final Map<String, String> GroupOrChoiceMap = new HashMap<String, String>() {
-        public static final long serialVersionUID = 1L;
+    static {
+        typeElement.put("Simple", ELEMENT);
+        typeElement.put("Complex", ELEMENT);
+        typeElement.put("Attribute", "attribute");
+    }
 
-        {
-            put("group", "group");
-            put("choice", "choice");
-        }
-    };
-    public static final Map<String, DataType> TypesMap = new HashMap<String, DataType>() {
-        public static final long serialVersionUID = 1L;
+    @Getter
+    private static final Map<String, String> CardinalityMap = new HashMap<>();
 
-        {
-            put("CodeListVersions", DataType.token);
-            put("Comment", DataType.string);
-            put("Date", DataType.token);
-            put("MessageIdentifier", DataType.token);
-            put("ArchivalAgreement", DataType.token);
-            put("ReplyCodeListVersion", DataType.token);
-            put("MessageDigestAlgorithmCodeListVersion", DataType.token);
-            put("MimeTypeCodeListVersion", DataType.token);
-            put("EncodingCodeListVersion", DataType.token);
-            put("FileFormatCodeListVersion", DataType.token);
-            put("CompressionAlgorithmCodeListVersion", DataType.token);
-            put("DataObjectVersionCodeListVersion", DataType.token);
-            put("StorageRuleCodeListVersion", DataType.token);
-            put("AppraisalRuleCodeListVersion", DataType.token);
-            put("AccessRuleCodeListVersion", DataType.token);
-            put("DisseminationRuleCodeListVersion", DataType.token);
-            put("ReuseRuleCodeListVersion", DataType.token);
-            put("ClassificationRuleCodeListVersion", DataType.token);
-            put("AcquisitionInformationCodeListVersion", DataType.token);
-            put("AuthorizationReasonCodeListVersion", DataType.token);
-            put("RelationshipCodeListVersion", DataType.token);
-            put("OtherCodeListAbstract", DataType.token);
-            put("DataObjectSystemId", DataType.token);
-            put("DataObjectGroupSystemId", DataType.token);
-            put("Relationship", DataType.token);
-            put("DataObjectGroupReferenceId", DataType.token);
-            put("DataObjectGroupId", DataType.token);
-            put("DataObjectVersion", DataType.token);
-            put("Attachment", DataType.base64Binary);
-            put("Uri", DataType.anyURI);
-            put("MessageDigest", DataType.base64Binary);
-            put("Size", DataType.positiveInteger);
-            put("Compressed", DataType.booleanType);
-            put("FormatLitteral", DataType.string);
-            put("MimeType", DataType.token);
-            put("FormatId", DataType.token);
-            put("Encoding", DataType.token);
-            put("Filename", DataType.string);
-            put("CreatingApplicationName", DataType.string);
-            put("CreatingApplicationVersion", DataType.string);
-            put("DateCreatedByApplication", DataType.token);
-            put("CreatingOs", DataType.string);
-            put("CreatingOsVersion", DataType.string);
-            put("LastModified", DataType.token);
-            put("PhysicalId", DataType.token);
-            put("Width", DataType.decimal);
-            put("Height", DataType.decimal);
-            put("Depth", DataType.decimal);
-            put("Shape", DataType.string);
-            put("Diameter", DataType.decimal);
-            put("Length", DataType.decimal);
-            put("Thickness", DataType.decimal);
-            put("Weight", DataType.decimal);
-            put("NumberOfPage", DataType.intType);
-            put("EventIdentifier", DataType.token);
-            put("EventTypeCode", DataType.token);
-            put("EventType", DataType.token);
-            put("EventDateTime", DataType.token);
-            put("EventDetail", DataType.string);
-            put("Outcome", DataType.token);
-            put("OutcomeDetail", DataType.token);
-            put("OutcomeDetailMessage", DataType.token);
-            put("EventDetailData", DataType.token);
-            put("DataObjectReferenceId", DataType.token);
-            put("ArchiveUnitRefId", DataType.token);
-            put("ArchiveUnitProfile", DataType.token);
-            put("Rule", DataType.token);
-            put("StartDate", DataType.token);
-            put("PreventInheritance", DataType.booleanType);
-            put("RefNonRuleId", DataType.token);
-            put("FinalAction", DataType.token);
-            put("ClassificationAudience", DataType.token);
-            put("ClassificationLevel", DataType.token);
-            put("ClassificationOwner", DataType.token);
-            put("ClassificationReassessingDate", DataType.token);
-            put("NeedReassessingAuthorization", DataType.booleanType);
-            put("NeedAuthorization", DataType.booleanType);
-            put("DescriptionLevel", DataType.token);
-            put("Title", DataType.string);
-            put("FilePlanPosition", DataType.token);
-            put("SystemId", DataType.token);
-            put("OriginatingSystemId", DataType.token);
-            put("ArchivalAgencyArchiveUnitIdentifier", DataType.token);
-            put("OriginatingAgencyArchiveUnitIdentifier", DataType.token);
-            put("TransferringAgencyArchiveUnitIdentifier", DataType.token);
-            put("Description", DataType.string);
-            put("CustodialHistoryItem", DataType.string);
-            put("Type", DataType.string);
-            put("DocumentType", DataType.string);
-            put("language", DataType.language);
-            put("DescriptionLanguage", DataType.language);
-            put("Status", DataType.token);
-            put("Version", DataType.string);
-            put("Tag", DataType.token);
-            put("KeywordContent", DataType.string);
-            put("KeywordReference", DataType.token);
-            put("KeywordType", DataType.token);
-            put("Spatial", DataType.string);
-            put("Temporal", DataType.string);
-            put("Juridictional", DataType.string);
-            put("Identifier", DataType.string);
-            put("FirstName", DataType.string);
-            put("BirthName", DataType.string);
-            put("FullName", DataType.string);
-            put("GivenName", DataType.string);
-            put("Gender", DataType.string);
-            put("BirthDate", DataType.string);
-            put("Geogname", DataType.string);
-            put("Address", DataType.string);
-            put("PostalCode", DataType.string);
-            put("City", DataType.string);
-            put("Region", DataType.string);
-            put("Country", DataType.string);
-            put("DeathDate", DataType.token);
-            put("Nationality", DataType.string);
-            put("Corpname", DataType.string);
-            put("Function", DataType.string);
-            put("Activity", DataType.string);
-            put("Position", DataType.string);
-            put("Role", DataType.string);
-            put("Mandate", DataType.string);
-            put("Source", DataType.string);
-            put("ArchiveUnitRefId", DataType.NCName);
-            put("DataObjectReferenceId", DataType.token);
-            put("RepositoryArchiveUnitPID", DataType.token);
-            put("RepositoryObjectPID", DataType.token);
-            put("ExternalReference", DataType.token);
-            put("CreatedDate", DataType.token);
-            put("TransactedDate", DataType.token);
-            put("AcquiredDate", DataType.token);
-            put("SentDate", DataType.token);
-            put("ReceivedDate", DataType.token);
-            put("RegisteredDate", DataType.token);
-            put("EndDate", DataType.token);
-            put("Masterdata", DataType.token);
-            put("SigningTime", DataType.token);
-            put("ValidationTime", DataType.token);
-            put("SignedObjectId", DataType.token);
-            put("SignedObjectDigest", DataType.base64Binary);
-            put("GpsVersionID", DataType.string);
-            put("GpsAltitude", DataType.string);
-            put("GpsAltitudeRef", DataType.string);
-            put("GpsLatitude", DataType.string);
-            put("GpsLatitudeRef", DataType.string);
-            put("GpsLongitude", DataType.string);
-            put("GpsLongitudeRef", DataType.string);
-            put("GpsDateStamp", DataType.string);
-            put("ArchivalProfile", DataType.token);
-            put("ServiceLevel", DataType.token);
-            put("AcquisitionInformation", DataType.token);
-            put("LegalStatus", DataType.token);
-            put("OriginatingAgencyIdentifier", DataType.token);
-            put("SubmissionAgencyIdentifier", DataType.token);
-            put("RelatedTransferReference", DataType.token);
-            put("TransferRequestReplyIdentifier", DataType.token);
-            put("xml:id", DataType.ID);
-            put("ID", DataType.ID);
-            put("id", DataType.ID);
-            put("algorithm", DataType.token);
-            put("lang", DataType.language);
-            put("xml:lang", DataType.language);
-            put("href", DataType.anyURI);
-            put("listID", DataType.token);
-            put("listAgencyID", DataType.token);
-            put("listAgencyName", DataType.string);
-            put("listName", DataType.string);
-            put("listVersionID", DataType.token);
-            put("Name", DataType.string);
-            put("languageID", DataType.language);
-            put("listURI", DataType.anyURI);
-            put("listSchemeURI", DataType.anyURI);
-            put("schemeID", DataType.token);
-            put("schemeName", DataType.string);
-            put("schemeAgencyID", DataType.token);
-            put("schemeAgencyName", DataType.string);
-            put("schemeVersionID", DataType.token);
-            put("schemeDataURI", DataType.anyURI);
-            put("schemeURI", DataType.anyURI);
-            put("target", DataType.NCName);
-            put("type", DataType.token);
-            put("filename", DataType.string);
-            put("anyURI", DataType.anyURI);
-            put("unCompressedSize", DataType.positiveInteger);
-            put("unit", DataType.string);
-            put("when", DataType.token);
-        }
-    };
+    static {
+        CardinalityMap.put("optional", "0-1");
+        CardinalityMap.put("zeroOrMore", "0-N");
+        CardinalityMap.put("obligatoire", "1");
+        CardinalityMap.put("oneOrMore", "1-N");
+    }
+
+    @Getter
+    private static final Map<String, String> GroupOrChoiceMap = new HashMap<>();
+
+    static {
+        GroupOrChoiceMap.put(GROUP, GROUP);
+        GroupOrChoiceMap.put(CHOICE, CHOICE);
+    }
+
+    @Getter
+    private static final Map<String, DataType> TypesMap = new HashMap<>();
+
+    static {
+        TypesMap.put("CodeListVersions", DataType.TOKEN);
+        TypesMap.put("Comment", DataType.STRING);
+        TypesMap.put("Date", DataType.TOKEN);
+        TypesMap.put("MessageIdentifier", DataType.TOKEN);
+        TypesMap.put("ArchivalAgreement", DataType.TOKEN);
+        TypesMap.put("ReplyCodeListVersion", DataType.TOKEN);
+        TypesMap.put("MessageDigestAlgorithmCodeListVersion", DataType.TOKEN);
+        TypesMap.put("MimeTypeCodeListVersion", DataType.TOKEN);
+        TypesMap.put("EncodingCodeListVersion", DataType.TOKEN);
+        TypesMap.put("FileFormatCodeListVersion", DataType.TOKEN);
+        TypesMap.put("CompressionAlgorithmCodeListVersion", DataType.TOKEN);
+        TypesMap.put("DataObjectVersionCodeListVersion", DataType.TOKEN);
+        TypesMap.put("StorageRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("AppraisalRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("AccessRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("DisseminationRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("ReuseRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("ClassificationRuleCodeListVersion", DataType.TOKEN);
+        TypesMap.put("AcquisitionInformationCodeListVersion", DataType.TOKEN);
+        TypesMap.put("AuthorizationReasonCodeListVersion", DataType.TOKEN);
+        TypesMap.put("RelationshipCodeListVersion", DataType.TOKEN);
+        TypesMap.put("OtherCodeListAbstract", DataType.TOKEN);
+        TypesMap.put("DataObjectSystemId", DataType.TOKEN);
+        TypesMap.put("DataObjectGroupSystemId", DataType.TOKEN);
+        TypesMap.put("Relationship", DataType.TOKEN);
+        TypesMap.put("DataObjectGroupReferenceId", DataType.TOKEN);
+        TypesMap.put("DataObjectGroupId", DataType.TOKEN);
+        TypesMap.put("DataObjectVersion", DataType.TOKEN);
+        TypesMap.put("Attachment", DataType.BASE64BINARY);
+        TypesMap.put("Uri", DataType.ANYURI);
+        TypesMap.put("MessageDigest", DataType.BASE64BINARY);
+        TypesMap.put("Size", DataType.POSITIVE_INTEGER);
+        TypesMap.put("Compressed", DataType.BOOLEAN_TYPE);
+        TypesMap.put("FormatLitteral", DataType.STRING);
+        TypesMap.put("MimeType", DataType.TOKEN);
+        TypesMap.put("FormatId", DataType.TOKEN);
+        TypesMap.put("Encoding", DataType.TOKEN);
+        TypesMap.put("Filename", DataType.STRING);
+        TypesMap.put("CreatingApplicationName", DataType.STRING);
+        TypesMap.put("CreatingApplicationVersion", DataType.STRING);
+        TypesMap.put("DateCreatedByApplication", DataType.TOKEN);
+        TypesMap.put("CreatingOs", DataType.STRING);
+        TypesMap.put("CreatingOsVersion", DataType.STRING);
+        TypesMap.put("LastModified", DataType.TOKEN);
+        TypesMap.put("PhysicalId", DataType.TOKEN);
+        TypesMap.put("Width", DataType.DECIMAL);
+        TypesMap.put("Height", DataType.DECIMAL);
+        TypesMap.put("Depth", DataType.DECIMAL);
+        TypesMap.put("Shape", DataType.STRING);
+        TypesMap.put("Diameter", DataType.DECIMAL);
+        TypesMap.put("Length", DataType.DECIMAL);
+        TypesMap.put("Thickness", DataType.DECIMAL);
+        TypesMap.put("Weight", DataType.DECIMAL);
+        TypesMap.put("NumberOfPage", DataType.INT_TYPE);
+        TypesMap.put("EventIdentifier", DataType.TOKEN);
+        TypesMap.put("EventTypeCode", DataType.TOKEN);
+        TypesMap.put("EventType", DataType.TOKEN);
+        TypesMap.put("EventDateTime", DataType.TOKEN);
+        TypesMap.put("EventDetail", DataType.STRING);
+        TypesMap.put("Outcome", DataType.TOKEN);
+        TypesMap.put("OutcomeDetail", DataType.TOKEN);
+        TypesMap.put("OutcomeDetailMessage", DataType.TOKEN);
+        TypesMap.put("EventDetailData", DataType.TOKEN);
+        TypesMap.put("ArchiveUnitProfile", DataType.TOKEN);
+        TypesMap.put("Rule", DataType.TOKEN);
+        TypesMap.put("StartDate", DataType.TOKEN);
+        TypesMap.put("PreventInheritance", DataType.BOOLEAN_TYPE);
+        TypesMap.put("RefNonRuleId", DataType.TOKEN);
+        TypesMap.put("FinalAction", DataType.TOKEN);
+        TypesMap.put("ClassificationAudience", DataType.TOKEN);
+        TypesMap.put("ClassificationLevel", DataType.TOKEN);
+        TypesMap.put("ClassificationOwner", DataType.TOKEN);
+        TypesMap.put("ClassificationReassessingDate", DataType.TOKEN);
+        TypesMap.put("NeedReassessingAuthorization", DataType.BOOLEAN_TYPE);
+        TypesMap.put("NeedAuthorization", DataType.BOOLEAN_TYPE);
+        TypesMap.put("DescriptionLevel", DataType.TOKEN);
+        TypesMap.put("Title", DataType.STRING);
+        TypesMap.put("FilePlanPosition", DataType.TOKEN);
+        TypesMap.put("SystemId", DataType.TOKEN);
+        TypesMap.put("OriginatingSystemId", DataType.TOKEN);
+        TypesMap.put("ArchivalAgencyArchiveUnitIdentifier", DataType.TOKEN);
+        TypesMap.put("OriginatingAgencyArchiveUnitIdentifier", DataType.TOKEN);
+        TypesMap.put("TransferringAgencyArchiveUnitIdentifier", DataType.TOKEN);
+        TypesMap.put("Description", DataType.STRING);
+        TypesMap.put("CustodialHistoryItem", DataType.STRING);
+        TypesMap.put("Type", DataType.STRING);
+        TypesMap.put("DocumentType", DataType.STRING);
+        TypesMap.put("language", DataType.LANGUAGE);
+        TypesMap.put("DescriptionLanguage", DataType.LANGUAGE);
+        TypesMap.put("Status", DataType.TOKEN);
+        TypesMap.put("Version", DataType.STRING);
+        TypesMap.put("Tag", DataType.TOKEN);
+        TypesMap.put("KeywordContent", DataType.STRING);
+        TypesMap.put("KeywordReference", DataType.TOKEN);
+        TypesMap.put("KeywordType", DataType.TOKEN);
+        TypesMap.put("Spatial", DataType.STRING);
+        TypesMap.put("Temporal", DataType.STRING);
+        TypesMap.put("Juridictional", DataType.STRING);
+        TypesMap.put("Identifier", DataType.STRING);
+        TypesMap.put("FirstName", DataType.STRING);
+        TypesMap.put("BirthName", DataType.STRING);
+        TypesMap.put("FullName", DataType.STRING);
+        TypesMap.put("GivenName", DataType.STRING);
+        TypesMap.put("Gender", DataType.STRING);
+        TypesMap.put("BirthDate", DataType.STRING);
+        TypesMap.put("Geogname", DataType.STRING);
+        TypesMap.put("Address", DataType.STRING);
+        TypesMap.put("PostalCode", DataType.STRING);
+        TypesMap.put("City", DataType.STRING);
+        TypesMap.put("Region", DataType.STRING);
+        TypesMap.put("Country", DataType.STRING);
+        TypesMap.put("DeathDate", DataType.TOKEN);
+        TypesMap.put("Nationality", DataType.STRING);
+        TypesMap.put("Corpname", DataType.STRING);
+        TypesMap.put("Function", DataType.STRING);
+        TypesMap.put("Activity", DataType.STRING);
+        TypesMap.put("Position", DataType.STRING);
+        TypesMap.put("Role", DataType.STRING);
+        TypesMap.put("Mandate", DataType.STRING);
+        TypesMap.put("Source", DataType.STRING);
+        TypesMap.put("ArchiveUnitRefId", DataType.NC_NAME);
+        TypesMap.put("DataObjectReferenceId", DataType.TOKEN);
+        TypesMap.put("RepositoryArchiveUnitPID", DataType.TOKEN);
+        TypesMap.put("RepositoryObjectPID", DataType.TOKEN);
+        TypesMap.put("ExternalReference", DataType.TOKEN);
+        TypesMap.put("CreatedDate", DataType.TOKEN);
+        TypesMap.put("TransactedDate", DataType.TOKEN);
+        TypesMap.put("AcquiredDate", DataType.TOKEN);
+        TypesMap.put("SentDate", DataType.TOKEN);
+        TypesMap.put("ReceivedDate", DataType.TOKEN);
+        TypesMap.put("RegisteredDate", DataType.TOKEN);
+        TypesMap.put("EndDate", DataType.TOKEN);
+        TypesMap.put("Masterdata", DataType.TOKEN);
+        TypesMap.put("SigningTime", DataType.TOKEN);
+        TypesMap.put("ValidationTime", DataType.TOKEN);
+        TypesMap.put("SignedObjectId", DataType.TOKEN);
+        TypesMap.put("SignedObjectDigest", DataType.BASE64BINARY);
+        TypesMap.put("GpsVersionID", DataType.STRING);
+        TypesMap.put("GpsAltitude", DataType.STRING);
+        TypesMap.put("GpsAltitudeRef", DataType.STRING);
+        TypesMap.put("GpsLatitude", DataType.STRING);
+        TypesMap.put("GpsLatitudeRef", DataType.STRING);
+        TypesMap.put("GpsLongitude", DataType.STRING);
+        TypesMap.put("GpsLongitudeRef", DataType.STRING);
+        TypesMap.put("GpsDateStamp", DataType.STRING);
+        TypesMap.put("ArchivalProfile", DataType.TOKEN);
+        TypesMap.put("ServiceLevel", DataType.TOKEN);
+        TypesMap.put("AcquisitionInformation", DataType.TOKEN);
+        TypesMap.put("LegalStatus", DataType.TOKEN);
+        TypesMap.put("OriginatingAgencyIdentifier", DataType.TOKEN);
+        TypesMap.put("SubmissionAgencyIdentifier", DataType.TOKEN);
+        TypesMap.put("RelatedTransferReference", DataType.TOKEN);
+        TypesMap.put("TransferRequestReplyIdentifier", DataType.TOKEN);
+        TypesMap.put("xml:id", DataType.ID);
+        TypesMap.put("ID", DataType.ID);
+        TypesMap.put("id", DataType.ID);
+        TypesMap.put("algorithm", DataType.TOKEN);
+        TypesMap.put("lang", DataType.LANGUAGE);
+        TypesMap.put("xml:lang", DataType.LANGUAGE);
+        TypesMap.put("href", DataType.ANYURI);
+        TypesMap.put("listID", DataType.TOKEN);
+        TypesMap.put("listAgencyID", DataType.TOKEN);
+        TypesMap.put("listAgencyName", DataType.STRING);
+        TypesMap.put("listName", DataType.STRING);
+        TypesMap.put("listVersionID", DataType.TOKEN);
+        TypesMap.put("Name", DataType.STRING);
+        TypesMap.put("languageID", DataType.LANGUAGE);
+        TypesMap.put("listURI", DataType.ANYURI);
+        TypesMap.put("listSchemeURI", DataType.ANYURI);
+        TypesMap.put("schemeID", DataType.TOKEN);
+        TypesMap.put("schemeName", DataType.STRING);
+        TypesMap.put("schemeAgencyID", DataType.TOKEN);
+        TypesMap.put("schemeAgencyName", DataType.STRING);
+        TypesMap.put("schemeVersionID", DataType.TOKEN);
+        TypesMap.put("schemeDataURI", DataType.ANYURI);
+        TypesMap.put("schemeURI", DataType.ANYURI);
+        TypesMap.put("target", DataType.NC_NAME);
+        TypesMap.put("type", DataType.TOKEN);
+        TypesMap.put("filename", DataType.STRING);
+        TypesMap.put("anyURI", DataType.ANYURI);
+        TypesMap.put("unCompressedSize", DataType.POSITIVE_INTEGER);
+        TypesMap.put("unit", DataType.STRING);
+        TypesMap.put("when", DataType.TOKEN);
+    }
 
     public static boolean isElement(String type) {
         for (MetadaDataType typeElement : MetadaDataType.values()) {
@@ -302,35 +305,32 @@ public class RNGConstants {
 
     public static boolean isValueOrData(String type) {
 
-        if (null != type && (MetadaDataType.data.toString().equals(type)
-            || MetadaDataType.nsName.toString().equals(type)
-            || MetadaDataType.value.toString().equals(type))) {
-            return true;
-        }
-        return false;
+        return (null != type && (MetadaDataType.DATA.toString().equals(type)
+            || MetadaDataType.NS_NAME.toString().equals(type)
+            || MetadaDataType.VALUE.toString().equals(type)));
     }
 
-    public static enum DataType {
-        string("string"),
-        dateTime("dateTime"),
-        date("date"),
+    public enum DataType {
+        STRING("string"),
+        DATETIME("dateTime"),
+        DATE("date"),
         ID("ID"),
-        id("id"),
-        anyURI("anyURI"),
-        token("token"),
-        tokenType("tokenType"),
-        base64Binary("base64Binary"),
-        positiveInteger("positiveInteger"),
-        booleanType("boolean"),
-        decimal("decimal"),
-        intType("int"),
-        language("language"),
-        NCName("NCName"),
-        undefined("undefined");
+        //id("id"),
+        ANYURI("anyURI"),
+        TOKEN("token"),
+        TOKENTYPE("tokenType"),
+        BASE64BINARY("base64Binary"),
+        POSITIVE_INTEGER("positiveInteger"),
+        BOOLEAN_TYPE("boolean"),
+        DECIMAL("decimal"),
+        INT_TYPE("int"),
+        LANGUAGE("language"),
+        NC_NAME("NCName"),
+        UNDEFINED("undefined");
 
         private String label;
 
-        private DataType(final String value) {
+        DataType(final String value) {
             setLabel(value);
         }
 
@@ -338,23 +338,23 @@ public class RNGConstants {
             return label;
         }
 
-        public void setLabel(final String label) {
+        void setLabel(final String label) {
             this.label = label;
         }
     }
 
-    public static enum MetadaDataType {
-        element("element"),
-        attribute("attribute"),
-        data("data"),
-        except("except"),
-        nsName("nsName"),
-        value("value"),
-        text("text"),
+    public enum MetadaDataType {
+        ELEMENT(RNGConstants.ELEMENT),
+        ATTRIBUTE("attribute"),
+        DATA("data"),
+        EXCEPT("except"),
+        NS_NAME("nsName"),
+        VALUE("value"),
+        TEXT("text"),
         ID("ID");
         private String label;
 
-        private MetadaDataType(final String value) {
+        MetadaDataType(final String value) {
             setLabel(value);
         }
 
@@ -362,19 +362,19 @@ public class RNGConstants {
             return label;
         }
 
-        public void setLabel(final String label) {
+        void setLabel(final String label) {
             this.label = label;
         }
     }
 
-    public static enum Cardinality {
-        optional("0-1"),
-        zeroOrMore("0-N"),
-        obligatoire("1"),
-        oneOrMore("1-N");
+    public enum Cardinality {
+        OPTIONAL("0-1"),
+        ZERO_OR_MORE("0-N"),
+        OBLIGATOIRE("1"),
+        ONE_OR_MORE("1-N");
         private String label;
 
-        private Cardinality(final String value) {
+        Cardinality(final String value) {
             setLabel(value);
         }
 
@@ -382,25 +382,21 @@ public class RNGConstants {
             return label;
         }
 
-        public void setLabel(final String label) {
+        void setLabel(final String label) {
             this.label = label;
         }
     }
 
-    public static enum GroupOrChoice {
-        group("group"),
-        choice("choice");
+    public enum GroupOrChoice {
+        GROUP(RNGConstants.GROUP),
+        CHOICE(RNGConstants.CHOICE);
         private String label;
 
-        private GroupOrChoice(final String value) {
+        GroupOrChoice(final String value) {
             setLabel(value);
         }
 
-        public String getLabel() {
-            return label;
-        }
-
-        public void setLabel(final String label) {
+        void setLabel(final String label) {
             this.label = label;
         }
     }

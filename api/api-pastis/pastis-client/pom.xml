@@ -30,7 +30,6 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis-commons</artifactId>
-            <version>5.0-SNAPSHOT</version>
         </dependency>
 
         <!-- JSON -->

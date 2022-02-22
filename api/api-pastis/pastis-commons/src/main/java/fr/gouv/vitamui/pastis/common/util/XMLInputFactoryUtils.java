@@ -41,6 +41,8 @@ import javax.xml.stream.XMLInputFactory;
 
 public class XMLInputFactoryUtils {
 
+    private XMLInputFactoryUtils(){}
+
     public static XMLInputFactory newInstance() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);

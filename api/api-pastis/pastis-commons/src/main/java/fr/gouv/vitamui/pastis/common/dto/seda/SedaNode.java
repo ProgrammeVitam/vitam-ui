@@ -45,21 +45,21 @@ import java.util.stream.Stream;
 
 @Data
 public class SedaNode {
-    private String Name;
-    private String Element;
-    private String Cardinality;
-    private String Type;
-    private String Choice;
-    private String Extensible;
-    private List<String> Enumeration;
-    private String Definition;
-    private String Collection;
-    private List<SedaNode> Children;
+    private String name;
+    private String element;
+    private String cardinality;
+    private String type;
+    private String choice;
+    private String extensible;
+    private List<String> enumeration;
+    private String definition;
+    private String collection;
+    private List<SedaNode> children;
 
 
     public Stream<SedaNode> flattened() {
         return Stream.concat(
             Stream.of(this),
-            Children.stream().flatMap(SedaNode::flattened));
+            children.stream().flatMap(SedaNode::flattened));
     }
 }

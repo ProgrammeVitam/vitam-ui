@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rng:grammar xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:seda="fr:gouv:culture:archivesdefrance:seda:v2.1"
+             xmlns:rng="http://relaxng.org/ns/structure/1.0"
+             datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
+             ns="fr:gouv:culture:archivesdefrance:seda:v2.1"
+             xmlns="fr:gouv:culture:archivesdefrance:seda:v2.1"
+>
+    <rng:start>
+        <rng:element name="ArchiveTransfer">
+            <rng:element name="Date">
+                <rng:data type="dateTime"/>
+            </rng:element>
+            <rng:element name="MessageIdentifier">
+                <rng:data type="token"/>
+            </rng:element>
+            <rng:element name="ArchivalAgreement">
+                <rng:value type="token">IN-UPPA-0</rng:value>
+            </rng:element>
+            <rng:element name="CodeListVersions">
+                <rng:data type="token"/>
+            </rng:element>
+            <rng:element name="DataObjectPackage">
+                <rng:oneOrMore>
+                    <rng:element name="DataObjectGroup">
+                        <rng:attribute name="id">
+                            <rng:data type="ID"/>
+                        </rng:attribute>
+                        <rng:zeroOrMore>
+                            <rng:element name="BinaryDataObject">
+                                <rng:element name="DataObjectVersion">
+                                    <xsd:annotation>
+                                        <xsd:documentation>BinaryMaster par défaut</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                                <rng:element name="Uri">
+                                    <rng:data type="anyURI"/>
+                                </rng:element>
+                                <rng:element name="MessageDigest">
+                                    <rng:data type="base64Binary"/>
+                                    <rng:attribute name="algorithm">
+                                        <rng:data type="token"/>
+                                    </rng:attribute>
+                                </rng:element>
+                                <rng:element name="Size">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                                <rng:element name="FormatIdentification">
+                                    <rng:optional>
+                                        <rng:element name="FormatLitteral">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:optional>
+                                    <rng:optional>
+                                        <rng:element name="FormatId">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:optional>
+                                </rng:element>
+                                <rng:element name="FileInfo">
+                                    <rng:element name="Filename">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:element>
+                                <rng:attribute name="id">
+                                    <rng:data type="ID"/>
+                                </rng:attribute>
+                            </rng:element>
+                        </rng:zeroOrMore>
+                    </rng:element>
+                </rng:oneOrMore>
+                <rng:element name="DescriptiveMetadata">
+                    <rng:element name="ArchiveUnit">
+                        <xsd:annotation>
+                            <xsd:documentation>Séance du conseil d'administration</xsd:documentation>
+                        </xsd:annotation>
+                        <rng:attribute name="id">
+                            <rng:data type="ID"/>
+                        </rng:attribute>
+                        <rng:element name="Content">
+                            <rng:element name="DescriptionLevel">
+                                <rng:value type="token">File</rng:value>
+                            </rng:element>
+                            <rng:element name="Title">
+                                <rng:data type="string"/>
+                                <rng:attribute name="xml:lang">
+                                    <rng:value type="language">fra</rng:value>
+                                </rng:attribute>
+                            </rng:element>
+                            <rng:element name="OriginatingSystemId">
+                                <xsd:annotation>
+                                    <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="Description">
+                                <rng:attribute name="xml:lang">
+                                    <rng:data type="language"/>
+                                </rng:attribute>
+                                <rng:value type="token">Ces documents sont archivés dans le but d'une conservation des
+                                    décisions du conseil d'administration.
+                                </rng:value>
+                            </rng:element>
+                            <rng:optional>
+                                <rng:element name="CustodialHistory">
+                                    <rng:element name="CustodialHistoryItem">
+                                        <rng:value type="token">Ces archives sont transférées à l'initiative de la
+                                            Direction des affaires juridiques directement vers le SAE externalisé pour
+                                            conservation et après validation de l'archiviste de l'UPPA
+                                        </rng:value>
+                                    </rng:element>
+                                </rng:element>
+                            </rng:optional>
+                            <rng:element name="Language">
+                                <rng:value type="token">fra</rng:value>
+                            </rng:element>
+                            <rng:element name="Tag">
+                                <rng:value type="token">Organe délibérant</rng:value>
+                            </rng:element>
+                            <rng:element name="Tag">
+                                <rng:value type="token">Conseil d'administration</rng:value>
+                            </rng:element>
+                            <rng:element name="CreatedDate">
+                                <xsd:annotation>
+                                    <xsd:documentation>Date de tenue du CA</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="StartDate">
+                                <xsd:annotation>
+                                    <xsd:documentation>Date de tenue du CA</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:data type="token"/>
+                            </rng:element>
+                            <rng:element name="EndDate">
+                                <xsd:annotation>
+                                    <xsd:documentation>Date de tenue du CA</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:data type="token"/>
+                            </rng:element>
+                        </rng:element>
+                        <rng:zeroOrMore>
+                            <rng:element name="ArchiveUnit">
+                                <xsd:annotation>
+                                    <xsd:documentation>Procurations</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:attribute name="id">
+                                    <rng:data type="ID"/>
+                                </rng:attribute>
+                                <rng:element name="Content">
+                                    <rng:element name="DescriptionLevel">
+                                        <rng:value type="token">Item</rng:value>
+                                    </rng:element>
+                                    <rng:element name="Title">
+                                        <rng:data type="string"/>
+                                        <rng:attribute name="xml:lang">
+                                            <rng:value type="language">fra</rng:value>
+                                        </rng:attribute>
+                                    </rng:element>
+                                    <rng:element name="OriginatingSystemId">
+                                        <xsd:annotation>
+                                            <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                    <rng:element name="Tag">
+                                        <rng:value type="token">Procuration</rng:value>
+                                    </rng:element>
+                                </rng:element>
+                                <rng:element name="DataObjectReference">
+                                    <rng:element name="DataObjectGroupReferenceId">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:element>
+                            </rng:element>
+                        </rng:zeroOrMore>
+                        <rng:element name="ArchiveUnit">
+                            <xsd:annotation>
+                                <xsd:documentation>Convocation-OJ</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:value type="token">Item</rng:value>
+                                </rng:element>
+                                <rng:element name="Title">
+                                    <rng:attribute name="xml:lang">
+                                        <rng:value type="language">fra</rng:value>
+                                    </rng:attribute>
+                                    <rng:value type="string">Convocation-OJ</rng:value>
+                                </rng:element>
+                                <rng:element name="OriginatingSystemId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                                <rng:element name="Signature">
+                                    <rng:oneOrMore>
+                                        <rng:element name="Signer">
+                                            <rng:element name="FullName">
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                            <rng:element name="SigningTime">
+                                                <rng:data type="dateTime"/>
+                                            </rng:element>
+                                            <rng:optional>
+                                                <rng:element name="Function">
+                                                    <rng:data type="string"/>
+                                                </rng:element>
+                                            </rng:optional>
+                                        </rng:element>
+                                    </rng:oneOrMore>
+                                    <rng:element name="Validator">
+                                        <rng:element name="FullName">
+                                            <rng:data type="string"/>
+                                        </rng:element>
+                                        <rng:element name="ValidationTime">
+                                            <rng:data type="dateTime"/>
+                                        </rng:element>
+                                        <rng:optional>
+                                            <rng:element name="Function">
+                                                <rng:data type="string"/>
+                                            </rng:element>
+                                        </rng:optional>
+                                    </rng:element>
+                                    <rng:element name="ReferencedObject">
+                                        <rng:element name="SignedObjectId">
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                        <rng:element name="SignedObjectDigest">
+                                            <rng:data type="token"/>
+                                            <rng:attribute name="algorithm">
+                                                <rng:data type="token"/>
+                                            </rng:attribute>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:element>
+                            </rng:element>
+                            <rng:element name="DataObjectReference">
+                                <rng:element name="DataObjectGroupReferenceId">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                        </rng:element>
+                        <rng:element name="ArchiveUnit">
+                            <xsd:annotation>
+                                <xsd:documentation>Feuille d'émargement-élus</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:value type="token">Item</rng:value>
+                                </rng:element>
+                                <rng:element name="Title">
+                                    <rng:attribute name="xml:lang">
+                                        <rng:value type="language">fra</rng:value>
+                                    </rng:attribute>
+                                    <rng:value type="string">Feuille d'émargement-élus</rng:value>
+                                </rng:element>
+                                <rng:element name="OriginatingSystemId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:element name="DataObjectReference">
+                                <rng:element name="DataObjectGroupReferenceId">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                        </rng:element>
+                        <rng:element name="ArchiveUnit">
+                            <xsd:annotation>
+                                <xsd:documentation>Feuille d'émargement-membres consultatifs</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:value type="token">Item</rng:value>
+                                </rng:element>
+                                <rng:element name="Title">
+                                    <rng:attribute name="xml:lang">
+                                        <rng:value type="language">fra</rng:value>
+                                    </rng:attribute>
+                                    <rng:value type="string">Feuille d'émargement-membres consultatifs</rng:value>
+                                </rng:element>
+                                <rng:element name="OriginatingSystemId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:element name="DataObjectReference">
+                                <rng:element name="DataObjectGroupReferenceId">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                        </rng:element>
+                        <rng:optional>
+                            <rng:element name="ArchiveUnit">
+                                <xsd:annotation>
+                                    <xsd:documentation>Enregistrement audio</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:attribute name="id">
+                                    <rng:data type="ID"/>
+                                </rng:attribute>
+                                <rng:optional>
+                                    <rng:element name="Management">
+                                        <rng:element name="AppraisalRule">
+                                            <rng:element name="Rule">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>DUA 15 ans</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:value type="token">APP-00015</rng:value>
+                                            </rng:element>
+                                            <rng:element name="StartDate">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="FinalAction">
+                                                <rng:value type="token">Destroy</rng:value>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:element name="AccessRule">
+                                            <rng:element name="Rule">
+                                                <rng:value type="token">ACC-00020</rng:value>
+                                            </rng:element>
+                                            <rng:element name="StartDate">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:optional>
+                                <rng:element name="Content">
+                                    <rng:element name="DescriptionLevel">
+                                        <rng:value type="token">Item</rng:value>
+                                    </rng:element>
+                                    <rng:element name="Title">
+                                        <rng:attribute name="xml:lang">
+                                            <rng:value type="language">fra</rng:value>
+                                        </rng:attribute>
+                                        <rng:value type="string">Enregistrement audio</rng:value>
+                                    </rng:element>
+                                    <rng:element name="OriginatingSystemId">
+                                        <xsd:annotation>
+                                            <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:element>
+                                <rng:element name="DataObjectReference">
+                                    <rng:element name="DataObjectGroupReferenceId">
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                </rng:element>
+                            </rng:element>
+                        </rng:optional>
+                        <rng:element name="ArchiveUnit">
+                            <xsd:annotation>
+                                <xsd:documentation>Relevé de conclusions</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:value type="token">Item</rng:value>
+                                </rng:element>
+                                <rng:element name="Title">
+                                    <rng:attribute name="xml:lang">
+                                        <rng:value type="language">fra</rng:value>
+                                    </rng:attribute>
+                                    <rng:value type="string">Relevé de conclusions</rng:value>
+                                </rng:element>
+                                <rng:element name="OriginatingSystemId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:element name="DataObjectReference">
+                                <rng:element name="DataObjectGroupReferenceId">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                        </rng:element>
+                        <rng:element name="ArchiveUnit">
+                            <xsd:annotation>
+                                <xsd:documentation>Accusé de réception du rectorat</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:attribute name="id">
+                                <rng:data type="ID"/>
+                            </rng:attribute>
+                            <rng:element name="Content">
+                                <rng:element name="DescriptionLevel">
+                                    <rng:value type="token">Item</rng:value>
+                                </rng:element>
+                                <rng:element name="Title">
+                                    <rng:attribute name="xml:lang">
+                                        <rng:value type="language">fra</rng:value>
+                                    </rng:attribute>
+                                    <rng:value type="string">Accusé de réception du rectorat</rng:value>
+                                </rng:element>
+                                <rng:element name="OriginatingSystemId">
+                                    <xsd:annotation>
+                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                    </xsd:annotation>
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                            <rng:element name="DataObjectReference">
+                                <rng:element name="DataObjectGroupReferenceId">
+                                    <rng:data type="token"/>
+                                </rng:element>
+                            </rng:element>
+                        </rng:element>
+                        <rng:oneOrMore>
+                            <rng:element name="ArchiveUnit">
+                                <xsd:annotation>
+                                    <xsd:documentation>Point OJ</xsd:documentation>
+                                </xsd:annotation>
+                                <rng:attribute name="id">
+                                    <rng:data type="ID"/>
+                                </rng:attribute>
+                                <rng:element name="Content">
+                                    <rng:element name="DescriptionLevel">
+                                        <rng:value type="token">File</rng:value>
+                                    </rng:element>
+                                    <rng:element name="Title">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Intitulé du point à l'OJ</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:data type="token"/>
+                                        <rng:attribute name="xml:lang">
+                                            <rng:value type="language">fra</rng:value>
+                                        </rng:attribute>
+                                    </rng:element>
+                                    <rng:element name="Tag">
+                                        <rng:value type="token">Point OJ</rng:value>
+                                    </rng:element>
+                                    <rng:element name="Tag">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Point n°</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:data type="token"/>
+                                    </rng:element>
+                                    <rng:zeroOrMore>
+                                        <rng:element name="Tag">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Mot-clés ordre du jour</xsd:documentation>
+                                            </xsd:annotation>
+                                            <rng:data type="token"/>
+                                        </rng:element>
+                                    </rng:zeroOrMore>
+                                </rng:element>
+                                <rng:zeroOrMore>
+                                    <rng:element name="ArchiveUnit">
+                                        <xsd:annotation>
+                                            <xsd:documentation>PV CA antérieur</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:attribute name="id">
+                                            <rng:data type="ID"/>
+                                        </rng:attribute>
+                                        <rng:element name="Content">
+                                            <rng:element name="DescriptionLevel">
+                                                <rng:value type="token">Item</rng:value>
+                                            </rng:element>
+                                            <rng:element name="Title">
+                                                <rng:data type="token"/>
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:value type="language">fra</rng:value>
+                                                </rng:attribute>
+                                            </rng:element>
+                                            <rng:element name="OriginatingSystemId">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="Status">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>"Voté" ou "Non voté"</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="Tag">
+                                                <rng:value type="token">PV</rng:value>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:element name="DataObjectReference">
+                                            <rng:element name="DataObjectGroupReferenceId">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                                <rng:zeroOrMore>
+                                    <rng:element name="ArchiveUnit">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Extrait</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:attribute name="id">
+                                            <rng:data type="ID"/>
+                                        </rng:attribute>
+                                        <rng:element name="Content">
+                                            <rng:element name="DescriptionLevel">
+                                                <rng:value type="token">File</rng:value>
+                                            </rng:element>
+                                            <rng:element name="Title">
+                                                <rng:data type="token"/>
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:value type="language">fra</rng:value>
+                                                </rng:attribute>
+                                            </rng:element>
+                                            <rng:element name="Tag">
+                                                <rng:value type="token">Extrait de délibération</rng:value>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:element name="ArchiveUnit">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Extrait</xsd:documentation>
+                                            </xsd:annotation>
+                                            <rng:attribute name="id">
+                                                <rng:data type="ID"/>
+                                            </rng:attribute>
+                                            <rng:element name="Content">
+                                                <rng:element name="DescriptionLevel">
+                                                    <rng:value type="token">Item</rng:value>
+                                                </rng:element>
+                                                <rng:element name="Title">
+                                                    <rng:data type="token"/>
+                                                    <rng:attribute name="xml:lang">
+                                                        <rng:value type="language">fra</rng:value>
+                                                    </rng:attribute>
+                                                </rng:element>
+                                                <rng:element name="OriginatingSystemId">
+                                                    <xsd:annotation>
+                                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                    </xsd:annotation>
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                                <rng:element name="Signature">
+                                                    <rng:oneOrMore>
+                                                        <rng:element name="Signer">
+                                                            <rng:element name="FullName">
+                                                                <rng:data type="string"/>
+                                                            </rng:element>
+                                                            <rng:element name="SigningTime">
+                                                                <rng:data type="dateTime"/>
+                                                            </rng:element>
+                                                            <rng:optional>
+                                                                <rng:element name="Function">
+                                                                    <rng:data type="string"/>
+                                                                </rng:element>
+                                                            </rng:optional>
+                                                        </rng:element>
+                                                    </rng:oneOrMore>
+                                                    <rng:element name="Validator">
+                                                        <rng:element name="FullName">
+                                                            <rng:data type="string"/>
+                                                        </rng:element>
+                                                        <rng:element name="ValidationTime">
+                                                            <rng:data type="dateTime"/>
+                                                        </rng:element>
+                                                        <rng:optional>
+                                                            <rng:element name="Function">
+                                                                <rng:data type="string"/>
+                                                            </rng:element>
+                                                        </rng:optional>
+                                                    </rng:element>
+                                                    <rng:element name="ReferencedObject">
+                                                        <rng:element name="SignedObjectId">
+                                                            <rng:data type="token"/>
+                                                        </rng:element>
+                                                        <rng:element name="SignedObjectDigest">
+                                                            <rng:data type="token"/>
+                                                            <rng:attribute name="algorithm">
+                                                                <rng:data type="token"/>
+                                                            </rng:attribute>
+                                                        </rng:element>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:element>
+                                            <rng:element name="DataObjectReference">
+                                                <rng:element name="DataObjectGroupReferenceId">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="ArchiveUnit">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>Pièces annexes</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:attribute name="id">
+                                                    <rng:data type="ID"/>
+                                                </rng:attribute>
+                                                <rng:element name="Content">
+                                                    <rng:element name="DescriptionLevel">
+                                                        <rng:value type="token">Item</rng:value>
+                                                    </rng:element>
+                                                    <rng:element name="Title">
+                                                        <rng:data type="token"/>
+                                                        <rng:attribute name="xml:lang">
+                                                            <rng:value type="language">fra</rng:value>
+                                                        </rng:attribute>
+                                                    </rng:element>
+                                                    <rng:element name="OriginatingSystemId">
+                                                        <xsd:annotation>
+                                                            <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                        </xsd:annotation>
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                    <rng:element name="Tag">
+                                                        <rng:value type="token">Pièce annexe</rng:value>
+                                                    </rng:element>
+                                                </rng:element>
+                                                <rng:element name="DataObjectReference">
+                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                                <rng:zeroOrMore>
+                                    <rng:element name="ArchiveUnit">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Pièces annexes</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:attribute name="id">
+                                            <rng:data type="ID"/>
+                                        </rng:attribute>
+                                        <rng:element name="Content">
+                                            <rng:element name="DescriptionLevel">
+                                                <rng:value type="token">Item</rng:value>
+                                            </rng:element>
+                                            <rng:element name="Title">
+                                                <rng:data type="token"/>
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:value type="language">fra</rng:value>
+                                                </rng:attribute>
+                                            </rng:element>
+                                            <rng:element name="OriginatingSystemId">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                            <rng:element name="Tag">
+                                                <rng:value type="token">Pièce annexe</rng:value>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:element name="DataObjectReference">
+                                            <rng:element name="DataObjectGroupReferenceId">
+                                                <rng:data type="token"/>
+                                            </rng:element>
+                                        </rng:element>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                                <rng:zeroOrMore>
+                                    <rng:element name="ArchiveUnit">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Convention ou Accord international</xsd:documentation>
+                                        </xsd:annotation>
+                                        <rng:attribute name="id">
+                                            <rng:data type="ID"/>
+                                        </rng:attribute>
+                                        <rng:element name="Management">
+                                            <rng:element name="AppraisalRule">
+                                                <rng:element name="Rule">
+                                                    <rng:value type="token">APP-00015</rng:value>
+                                                </rng:element>
+                                                <rng:element name="StartDate">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                                <rng:element name="FinalAction">
+                                                    <rng:value type="token">Destroy</rng:value>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:element name="Content">
+                                            <rng:element name="DescriptionLevel">
+                                                <rng:value type="token">File</rng:value>
+                                            </rng:element>
+                                            <rng:element name="Title">
+                                                <rng:data type="token"/>
+                                                <rng:attribute name="xml:lang">
+                                                    <rng:value type="language">fra</rng:value>
+                                                </rng:attribute>
+                                            </rng:element>
+                                            <rng:optional>
+                                                <rng:element name="Tag">
+                                                    <rng:value type="token">ACI</rng:value>
+                                                </rng:element>
+                                            </rng:optional>
+                                            <rng:optional>
+                                                <rng:element name="Tag">
+                                                    <rng:value type="token">Convention</rng:value>
+                                                </rng:element>
+                                            </rng:optional>
+                                            <rng:optional>
+                                                <rng:element name="Tag">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                            </rng:optional>
+                                        </rng:element>
+                                        <rng:element name="ArchiveUnit">
+                                            <xsd:annotation>
+                                                <xsd:documentation>Convention ou ACI</xsd:documentation>
+                                            </xsd:annotation>
+                                            <rng:attribute name="id">
+                                                <rng:data type="ID"/>
+                                            </rng:attribute>
+                                            <rng:element name="Content">
+                                                <rng:element name="DescriptionLevel">
+                                                    <rng:value type="token">Item</rng:value>
+                                                </rng:element>
+                                                <rng:element name="Title">
+                                                    <rng:data type="token"/>
+                                                    <rng:attribute name="xml:lang">
+                                                        <rng:value type="language">fra</rng:value>
+                                                    </rng:attribute>
+                                                </rng:element>
+                                                <rng:element name="OriginatingSystemId">
+                                                    <xsd:annotation>
+                                                        <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                    </xsd:annotation>
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                            </rng:element>
+                                            <rng:element name="DataObjectReference">
+                                                <rng:element name="DataObjectGroupReferenceId">
+                                                    <rng:data type="token"/>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:element>
+                                        <rng:zeroOrMore>
+                                            <rng:element name="ArchiveUnit">
+                                                <xsd:annotation>
+                                                    <xsd:documentation>Pièces annexes</xsd:documentation>
+                                                </xsd:annotation>
+                                                <rng:attribute name="id">
+                                                    <rng:data type="ID"/>
+                                                </rng:attribute>
+                                                <rng:element name="Content">
+                                                    <rng:element name="DescriptionLevel">
+                                                        <rng:value type="token">Item</rng:value>
+                                                    </rng:element>
+                                                    <rng:element name="Title">
+                                                        <rng:data type="token"/>
+                                                        <rng:attribute name="xml:lang">
+                                                            <rng:value type="language">fra</rng:value>
+                                                        </rng:attribute>
+                                                    </rng:element>
+                                                    <rng:element name="OriginatingSystemId">
+                                                        <xsd:annotation>
+                                                            <xsd:documentation>ID-SI-prod</xsd:documentation>
+                                                        </xsd:annotation>
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                    <rng:element name="Tag">
+                                                        <rng:value type="token">Pièce annexe</rng:value>
+                                                    </rng:element>
+                                                </rng:element>
+                                                <rng:element name="DataObjectReference">
+                                                    <rng:element name="DataObjectGroupReferenceId">
+                                                        <rng:data type="token"/>
+                                                    </rng:element>
+                                                </rng:element>
+                                            </rng:element>
+                                        </rng:zeroOrMore>
+                                    </rng:element>
+                                </rng:zeroOrMore>
+                            </rng:element>
+                        </rng:oneOrMore>
+                    </rng:element>
+                </rng:element>
+                <rng:element name="ManagementMetadata">
+                    <rng:element name="ArchivalProfile">
+                        <rng:data type="token"/>
+                    </rng:element>
+                    <rng:element name="OriginatingAgencyIdentifier">
+                        <rng:value type="token">19640251500270</rng:value>
+                    </rng:element>
+                    <rng:element name="SubmissionAgencyIdentifier">
+                        <rng:value type="token">19640251500270</rng:value>
+                    </rng:element>
+                    <rng:element name="AppraisalRule">
+                        <rng:element name="Rule">
+                            <xsd:annotation>
+                                <xsd:documentation>DUA 15 ans</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:value type="token">APP-00015</rng:value>
+                        </rng:element>
+                        <rng:element name="StartDate">
+                            <rng:data type="date"/>
+                        </rng:element>
+                        <rng:element name="FinalAction">
+                            <rng:value type="token">Keep</rng:value>
+                        </rng:element>
+                    </rng:element>
+                    <rng:element name="AccessRule">
+                        <rng:element name="Rule">
+                            <xsd:annotation>
+                                <xsd:documentation>Librement communicable</xsd:documentation>
+                            </xsd:annotation>
+                            <rng:value type="token">ACC-00001</rng:value>
+                        </rng:element>
+                        <rng:element name="StartDate">
+                            <rng:data type="date"/>
+                        </rng:element>
+                    </rng:element>
+                </rng:element>
+            </rng:element>
+            <rng:element name="ArchivalAgency">
+                <rng:element name="Identifier">
+                    <rng:attribute name="schemeName">
+                        <rng:value type="token">SIRET</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="schemeAgencyName">
+                        <rng:value type="token">INSEE</rng:value>
+                    </rng:attribute>
+                    <rng:value type="token">19341594000017</rng:value>
+                </rng:element>
+            </rng:element>
+            <rng:element name="TransferringAgency">
+                <rng:element name="Identifier">
+                    <rng:attribute name="schemeName">
+                        <rng:value type="token">SIRET</rng:value>
+                    </rng:attribute>
+                    <rng:attribute name="schemeAgencyName">
+                        <rng:value type="token">INSEE</rng:value>
+                    </rng:attribute>
+                    <rng:value type="token">19640251500270</rng:value>
+                </rng:element>
+            </rng:element>
+        </rng:element>
+    </rng:start>
+</rng:grammar>
