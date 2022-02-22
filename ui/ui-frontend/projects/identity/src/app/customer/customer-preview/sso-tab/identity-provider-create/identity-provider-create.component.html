@@ -38,7 +38,7 @@
           >
             <ng-container *ngIf="form.get('name')?.touched">
               <vitamui-common-input-error *ngIf="!!form?.get('name')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
+                'COMMON.ERROR.REQUIRED' | translate
               }}</vitamui-common-input-error>
             </ng-container>
           </vitamui-common-input>
@@ -114,7 +114,7 @@
           >
             <ng-container *ngIf="form.get('keystorePassword')?.touched">
               <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.required">{{
-                'COMMON.REQUIRED' | translate
+                'COMMON.ERROR.REQUIRED' | translate
               }}</vitamui-common-input-error>
               <vitamui-common-input-error *ngIf="!!form?.get('keystorePassword')?.errors?.badPassword">{{
                 'CUSTOMER.SSO.MODAL.WRONG_PASSWORD' | translate

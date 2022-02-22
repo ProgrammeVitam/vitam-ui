@@ -34,19 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {CommonModule} from '@angular/common';
-import {NgModule} from '@angular/core';
-import {AutocompletePositionDirective} from "./autocomplete-position.directive";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { AutocompletePositionDirective } from './autocomplete-position.directive';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    AutocompletePositionDirective
-  ],
-  exports: [
-    AutocompletePositionDirective
-  ]
+  imports: [CommonModule],
+  declarations: [AutocompletePositionDirective],
+  exports: [AutocompletePositionDirective],
 })
-export class AutocompletePositionDirectiveModule { }
+export class AutocompletePositionDirectiveModule {}

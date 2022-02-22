@@ -3,11 +3,7 @@
         <button class="btn btn-circle primary small" (click)="location.back()" aria-label="breadcrumb back">
             <i class="vitamui-icon vitamui-icon-arrow-back"></i>
         </button>
-
-        <vitamui-common-breadcrumb
-            [data]="data"
-            (selected)="redirectTo($event)">
-        </vitamui-common-breadcrumb>
+        <vitamui-common-breadcrumb [data]="data" (selected)="navigateTo($event)"></vitamui-common-breadcrumb>
     </div>
 
     <h5 class="ml-2 mb-4">

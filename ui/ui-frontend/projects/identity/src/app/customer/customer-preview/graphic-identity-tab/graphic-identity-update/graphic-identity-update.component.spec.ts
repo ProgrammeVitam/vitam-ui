@@ -36,17 +36,17 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { forwardRef, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ENVIRONMENT } from 'ui-frontend-common';
-import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState } from 'ui-frontend-common';
+import { BASE_URL, Customer, InjectorModule, LoggerModule, OtpState, VitamUISnackBarService } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from './../../../../../environments/environment';
 
 import { Component } from '@angular/core';
-import { VitamUISnackBar } from '../../../../shared/vitamui-snack-bar';
+
 import { GraphicIdentityUpdateComponent } from './graphic-identity-update.component';
 
 const expectedCustomer: Customer = {
@@ -65,31 +65,31 @@ const expectedCustomer: Customer = {
     street: '85 rue des bois',
     zipCode: '75013',
     city: 'Paris',
-    country: 'France'
+    country: 'France',
   },
   language: 'FRENCH',
-  emailDomains: [
-    'domain.com',
-  ],
+  emailDomains: ['domain.com'],
   defaultEmailDomain: 'domain.com',
-  owners: [{
-    id: 'znvuzhvyvg',
-    identifier: '41',
-    code: '254791',
-    name: 'owner name',
-    companyName: 'company name',
-    address: {
-      street: '85 rue des bois',
-      zipCode: '75013',
-      city: 'Paris',
-      country: 'France'
+  owners: [
+    {
+      id: 'znvuzhvyvg',
+      identifier: '41',
+      code: '254791',
+      name: 'owner name',
+      companyName: 'company name',
+      address: {
+        street: '85 rue des bois',
+        zipCode: '75013',
+        city: 'Paris',
+        country: 'France',
+      },
+      customerId: 'idCustomer',
+      readonly: false,
     },
-    customerId: 'idCustomer',
-    readonly: false
-  }],
+  ],
   themeColors: {},
-  gdprAlert : false,
-  gdprAlertDelay : 72,
+  gdprAlert: false,
+  gdprAlertDelay: 72,
   portalMessages: {},
   portalTitles: {},
 };
@@ -97,46 +97,43 @@ const expectedCustomer: Customer = {
 @Component({
   selector: 'app-customer-colors-input',
   template: '',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => CustomerColorsInputStubComponent),
-    multi: true,
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CustomerColorsInputStubComponent),
+      multi: true,
+    },
+  ],
 })
 class CustomerColorsInputStubComponent implements ControlValueAccessor {
-    @Input() placeholder: string;
-    @Input() spinnerDiameter = 25;
-    writeValue() {}
-    registerOnChange() {}
-    registerOnTouched() {}
+  @Input() placeholder: string;
+  @Input() spinnerDiameter = 25;
+  writeValue() {}
+  registerOnChange() {}
+  registerOnTouched() {}
 }
 
 describe('GraphicIdentityUpdateComponent', () => {
   let component: GraphicIdentityUpdateComponent;
   let fixture: ComponentFixture<GraphicIdentityUpdateComponent>;
 
-  beforeEach(async(() => {
-    const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-    const snackBarSpy = jasmine.createSpyObj('VitamUISnackBar', ['open', 'openFromComponent']);
-    TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        HttpClientTestingModule,
-        VitamUICommonTestModule,
-        InjectorModule,
-        LoggerModule.forRoot(),
-      ],
-      declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
-        { provide: ENVIRONMENT, useValue: environment }
-      ]
+  beforeEach(
+    waitForAsync(() => {
+      const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
+      const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
+      TestBed.configureTestingModule({
+        imports: [ReactiveFormsModule, HttpClientTestingModule, VitamUICommonTestModule, InjectorModule, LoggerModule.forRoot()],
+        declarations: [CustomerColorsInputStubComponent, GraphicIdentityUpdateComponent],
+        providers: [
+          { provide: MatDialogRef, useValue: matDialogRefSpy },
+          { provide: MAT_DIALOG_DATA, useValue: { customer: expectedCustomer, logo: null } },
+          { provide: BASE_URL, useValue: '/fake-api' },
+          { provide: VitamUISnackBarService, useValue: snackBarSpy },
+          { provide: ENVIRONMENT, useValue: environment },
+        ],
+      }).compileComponents();
     })
-      .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GraphicIdentityUpdateComponent);

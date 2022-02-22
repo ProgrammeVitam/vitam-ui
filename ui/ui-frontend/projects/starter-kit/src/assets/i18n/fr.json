@@ -43,6 +43,7 @@
     "PRIMARY": "Couleur primaire",
     "SECONDARY": "Couleur secondaire",
     "GREY": "Couleur grise",
+    "ADDITIONAL": "Couleur additionelle",
     "RED": "Couleur rouge",
     "ORANGE": "Couleur orange",
     "GREEN": "Couleur verte"

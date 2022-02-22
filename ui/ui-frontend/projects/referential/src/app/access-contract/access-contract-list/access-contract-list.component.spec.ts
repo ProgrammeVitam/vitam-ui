@@ -41,12 +41,22 @@ import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
 
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {BASE_URL, TableFilterModule} from 'ui-frontend-common';
+import {BASE_URL, TableFilterModule, WINDOW_LOCATION} from 'ui-frontend-common';
 import {AccessContractListComponent} from './access-contract-list.component';
+
+import { AccessContractService } from '../access-contract.service';
+
+import { EMPTY, of } from 'rxjs';
 
 describe('AccessContractListComponent', () => {
   let component: AccessContractListComponent;
   let fixture: ComponentFixture<AccessContractListComponent>;
+  // const accessContractServiceSpy = jasmine.createSpyObj('VitamUISnackBarService', ['getAll', 'search']);
+
+  const accessContractServiceMock = {
+    getAll: () => of([]),
+    search: () => EMPTY
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -59,7 +69,9 @@ describe('AccessContractListComponent', () => {
       ],
       providers: [
         {provide: BASE_URL, useValue: ''},
-        {provide: MatSnackBar, useValue: {}}
+        {provide: MatSnackBar, useValue: {}},
+        {provide: AccessContractService, useValue: accessContractServiceMock},
+        {provide: WINDOW_LOCATION, useValue: window.location },
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

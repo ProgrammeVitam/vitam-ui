@@ -34,38 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {VitamUISnackBarComponent} from './vitamui-snack-bar.component';
-
-describe('VitamUISnackbarComponent', () => {
-  let component: VitamUISnackBarComponent;
-  let fixture: ComponentFixture<VitamUISnackBarComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [VitamUISnackBarComponent],
-      providers: [
-        {provide: MAT_SNACK_BAR_DATA, useValue: {}},
-        {
-          provide: MatSnackBarRef, useValue: {
-            dismiss: () => {
-            }
-          }
-        },
-      ]
-    })
-      .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(VitamUISnackBarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+export class VitamUITimeoutError extends HttpErrorResponse {
+    constructor() {
+      super({ status: 504 });
+    }
+  }

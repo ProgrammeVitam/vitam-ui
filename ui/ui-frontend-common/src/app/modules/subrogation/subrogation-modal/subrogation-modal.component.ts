@@ -37,12 +37,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { AuthService } from '../../auth.service';
+import { VitamUISnackBarService } from '../../components/vitamui-snack-bar/vitamui-snack-bar.service';
 import { Subrogation } from '../../models';
-import { NotificationSnackBarComponent } from '../notification-snack-bar/notification-snack-bar.component';
-import { NotificationType } from '../notification-type.enum';
 import { SubrogationService } from '../subrogation.service';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
@@ -68,7 +65,7 @@ export class SubrogationModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public builder: FormBuilder,
     private authService: AuthService,
-    private matSnackBar: MatSnackBar,
+    private snackBarService: VitamUISnackBarService,
     private subrogationService: SubrogationService
   ) {
     this.form = this.builder.group({
@@ -115,10 +112,9 @@ export class SubrogationModalComponent implements OnInit {
           }
         } else {
           this.dialogRef.close();
-          this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
-            panelClass: 'vitamui-snack-bar',
-            data: { type: NotificationType.SUBRO_ALREADY_RUNNING_WITH_OTHER_USERS, email : response.surrogate },
-            duration: 10000
+          this.snackBarService.open({
+            message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.ACTIVE_SUBROGATION',
+            icon: 'vitamui-icon-link banner-icon'
           });
         }
 
@@ -161,10 +157,9 @@ export class SubrogationModalComponent implements OnInit {
 
   handleSubrogationError() {
     this.dialogRef.close();
-    this.matSnackBar.openFromComponent(NotificationSnackBarComponent, {
-      panelClass: 'vitamui-snack-bar',
-      data: { type: NotificationType.SUBRO_UNAVAILABLE },
-      duration: 10000
+    this.snackBarService.open({
+      message: 'SUBROGATION.HOME.RESULTS_TABLE.MODAL.IMPOSSIBLE_SUBROGATION',
+      icon: 'vitamui-icon-link banner-icon'
     });
   }
 

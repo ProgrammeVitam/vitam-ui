@@ -25,7 +25,7 @@
         <div class="text large bold">{{'CUSTOMER.OWNER.MODAL.SAFE_TITLE' | translate}} "{{ownerForm?.value?.owner?.name}}"</div>
 
         <vitamui-common-input formControlName="name" required [placeholder]="'CUSTOMER.OWNER.SAFE_NAME' | translate">
-          <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('required')">{{'COMMON.REQUIRED' | translate}}</vitamui-common-input-error>
+          <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('required')">{{'COMMON.ERROR.REQUIRED' | translate}}</vitamui-common-input-error>
           <vitamui-common-input-error *ngIf="tenantForm?.get('name')?.touched && tenantForm?.get('name')?.hasError('uniqueName')">{{'CUSTOMER.OWNER.MODAL.NAME_ALREADY_EXIST' | translate}}</vitamui-common-input-error>
         </vitamui-common-input>
 

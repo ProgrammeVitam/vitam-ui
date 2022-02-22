@@ -37,13 +37,13 @@
 /* tslint:disable:component-selector max-classes-per-file */
 
 import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
-import {  ComponentFixture, TestBed , waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTreeModule} from '@angular/material/tree';
 import {EMPTY, of} from 'rxjs';
-import {AuthService} from 'ui-frontend-common';
-import {FileType} from '../../models/file-type.enum';
-import {Node} from '../../models/node.interface';
+import { AuthService } from 'ui-frontend-common';
+import { FileType } from '../../models/file-type.enum';
+import { Node } from '../../models/node.interface';
 import { FilingPlanComponent } from './filing-plan.component';
 import { FilingPlanMode, FilingPlanService } from './filing-plan.service';
 

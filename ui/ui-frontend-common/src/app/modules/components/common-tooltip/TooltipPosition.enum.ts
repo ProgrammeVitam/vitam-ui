@@ -34,19 +34,9 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { VitamUICommonModule } from 'ui-frontend-common';
-
-import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    VitamUICommonModule
-  ],
-  declarations: [VitamUISnackBarComponent],
-  exports: [VitamUISnackBarComponent],
-  entryComponents: [VitamUISnackBarComponent]
-})
-export class VitamUISnackBarModule { }
+export enum TooltipPosition {
+  TOP = 'TOP',
+  BOTTOM = 'BOTTOM',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+}

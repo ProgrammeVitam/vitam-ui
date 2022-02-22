@@ -84,7 +84,7 @@
         <div class="form_textarea">
           <label for="dsl">Requête DSL (Format JSON)</label>
           <textarea class="textarea textarea__requete" id="dsl" minlength="2" formControlName="dsl"></textarea>
-          <div class="actions">
+          <div class="actions btn-container">
             <button
               type="submit"
               [disabled]="form.pending || form.invalid"
@@ -107,7 +107,7 @@
             #responseText
             formControlName="response"
           ></textarea>
-          <div class="actions right">
+          <div class="actions right btn-container">
             <button type="button" class="btn" (click)="copyToClipbord(responseText)" i18n="Copy adminDsl button@@AdminDslCopyButton">
               Copier
             </button>

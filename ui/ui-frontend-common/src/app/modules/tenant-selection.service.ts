@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { UserApiService } from './api/user-api.service';
 import { ApplicationId } from './application-id.enum';
 import { AuthService } from './auth.service';
@@ -14,13 +14,13 @@ export const TENANT_SELECTION_URL_CONDITION = '/tenant/';
 })
 export class TenantSelectionService {
 
-    public currentAppId$ = new BehaviorSubject(undefined);
+    public currentAppId$ = new BehaviorSubject(null);
 
     /** Contain data about the current selected tenant */
     private selectedTenant: Tenant;
 
     /** Provide selected tenant subscriptions */
-    private selectedTenant$ = new BehaviorSubject(undefined);
+    private selectedTenant$ = new BehaviorSubject(null);
 
     /** Contain the last persisted tenant identifier in DB */
     private lastTenantIdentifier: number;
@@ -54,19 +54,7 @@ export class TenantSelectionService {
     }
 
     public getSelectedTenant$(): Observable<Tenant> {
-        if (this.selectedTenant$.getValue()) {
-           return this.selectedTenant$.asObservable();
-        } else {
-            // Return a new observable if there is no value,
-            // so we are only notified when a value is defined in the selected tenant BehaviorSubject
-            return new Observable(observer => {
-                this.selectedTenant$.asObservable().subscribe((tenant: Tenant) => {
-                    if (tenant) {
-                        observer.next(tenant);
-                    }
-                });
-            });
-        }
+        return this.selectedTenant$.pipe(filter((tenant: Tenant) => !!tenant));
     }
 
     public getLastTenantIdentifier(): number {

@@ -92,7 +92,7 @@ describe('VitamUIMenuTileComponent', () => {
       tooltip: 'Tooltip de Mon Compte',
       category: 'users',
       position: 7,
-      serviceId: "^https://dev.vitamui.com/.*",
+      serviceId: '^https://dev.vitamui.com/.*',
       hasCustomerList: false,
       hasHighlight: false,
       hasTenantList: false,

@@ -1,4 +1,3 @@
-
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -48,30 +47,43 @@ import { GroupService } from '../../group/group.service';
 import { GroupSelection } from '../group-selection.interface';
 import { UserService } from '../user.service';
 
-
 @Component({
   selector: 'app-user-preview',
   templateUrl: './user-preview.component.html',
-  styleUrls: ['./user-preview.component.scss']
+  styleUrls: ['./user-preview.component.scss'],
 })
 export class UserPreviewComponent implements OnDestroy, OnInit {
-
   @Input() isPopup: boolean;
 
-   // tslint:disable-next-line:variable-name
-   _user: User;
+  // tslint:disable-next-line:variable-name
+  _user: User;
 
-
-   get user() : User {
-     return this._user;
-   }
-   @Input()
-  set user(user: User){
+  get user(): User {
+    return this._user;
+  }
+  @Input()
+  set user(user: User) {
     this._user = user;
-    if(this._user.userInfoId)
-   {
-    this.userInfoService.get(this._user.userInfoId).subscribe((response) => this.userInfo = response);
-   }
+    this.collectionsMap = new Map();
+    const map = new Map();
+    const ids: string[] = [];
+    if (this._user) {
+      map.set(this._user.id, 'users');
+      ids.push(this._user.identifier);
+
+      if (this._user.userInfoId) {
+        this.userInfoService.get(this._user.userInfoId).subscribe((response) => {
+          this.userInfo = response;
+          ids.push(this.userInfo.identifier);
+          map.set(this.userInfo.id, 'userinfos');
+          this.collectionsMap = map;
+          this.identifiers = ids;
+        });
+      } else {
+        this.collectionsMap = map;
+        this.identifiers = ids;
+      }
+    }
   }
   @Input() customer: Customer;
 
@@ -81,20 +93,23 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   @ViewChild('confirmEnabledUserDialog', { static: true }) confirmEnabledUserDialog: TemplateRef<UserPreviewComponent>;
   @ViewChild('confirmdeleteUserDialog', { static: true }) confirmdeleteUserDialog: TemplateRef<UserPreviewComponent>;
 
-
-  connectedUserInfo: AdminUserProfile;
-  userUpdatedSub: Subscription;
-  attribaGroups: GroupSelection[];
-  userInfo: UserInfo;
+  public connectedUserInfo: AdminUserProfile;
+  public userUpdatedSub: Subscription;
+  public attribaGroups: GroupSelection[];
+  public userInfo: UserInfo;
+  public collectionsMap: Map<string, string>;
+  public identifiers: string[];
 
   @Input()
-  get groups(): Group[] { return this._groups; }
+  get groups(): Group[] {
+    return this._groups;
+  }
   set groups(groupList: Group[]) {
     this._groups = groupList;
   }
 
-    // tslint:disable-next-line:variable-name
-    private _groups: Group[];
+  // tslint:disable-next-line:variable-name
+  private _groups: Group[];
 
 
     constructor(
@@ -122,8 +137,11 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   }
 
   openPopup() {
-    window.open(this.startupService.getConfigStringValue('UI_URL')
-    + '/user/' + this.user.id, 'detailPopup', 'width=584, height=713, resizable=no, location=no');
+    window.open(
+      this.startupService.getConfigStringValue('UI_URL') + '/user/' + this.user.id,
+      'detailPopup',
+      'width=584, height=713, resizable=no, location=no'
+    );
     this.emitClose();
   }
 
@@ -157,38 +175,55 @@ export class UserPreviewComponent implements OnDestroy, OnInit {
   }
 
   filterAuthenticationEvents(event: any): boolean {
-    return event.outDetail && (
-      event.outDetail.includes('EXT_VITAMUI_CREATE_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_UPDATE_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_BLOCK_USER') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_REVOCATION') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
-      event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE')
+    return (
+      event.outDetail &&
+      (event.outDetail.includes('EXT_VITAMUI_CREATE_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_UPDATE_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_BLOCK_USER') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_REVOCATION') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_INIT') ||
+        event.outDetail.includes('EXT_VITAMUI_PASSWORD_CHANGE') ||
+        event.outDetail.includes('EXT_VITAMUI_CREATE_USER_INFO') ||
+        event.outDetail.includes('EXT_VITAMUI_UPDATE_USER_INFO'))
     );
   }
 
-    deleteUser(user: User, status: string) {
-
-    const emailadress  = user.email.split('@');
-    const email = "anonyme-"+user.identifier + "@"+emailadress[1];
-    const firstname = "";
-    const lastname = "";
-    const siteCode = "";
-    const internalCode = "";
-    const groupId = "";
+  deleteUser(user: User, status: string) {
+    const emailadress = user.email.split('@');
+    const email = 'anonyme-' + user.identifier + '@' + emailadress[1];
+    const firstname = '';
+    const lastname = '';
+    const siteCode = '';
+    const internalCode = '';
+    const groupId = '';
     const address = {
-      street: "",
-      zipCode: "",
-      city: "",
-      country: ""};
+      street: '',
+      zipCode: '',
+      city: '',
+      country: '',
+    };
 
-      let dialogToOpen;
+    let dialogToOpen;
     dialogToOpen = this.confirmdeleteUserDialog;
     const dialogRef = this.matDialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    dialogRef.afterClosed()
+    dialogRef
+      .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.userService.deleteUser({ id: this.user.id, lastname, email,  address, mobile : null, phone : null, status, groupId, firstname, siteCode, internalCode })
+        this.userService
+          .deleteUser({
+            id: this.user.id,
+            lastname,
+            email,
+            address,
+            mobile: null,
+            phone: null,
+            status,
+            groupId,
+            firstname,
+            siteCode,
+            internalCode,
+          })
           .subscribe((user) => {
             this.user = user;
             this.emitClose();

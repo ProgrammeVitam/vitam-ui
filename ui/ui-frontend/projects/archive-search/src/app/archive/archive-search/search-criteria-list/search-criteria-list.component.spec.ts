@@ -38,12 +38,11 @@ import { DatePipe } from '@angular/common';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, VitamUISnackBar } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, VitamUISnackBarService } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
@@ -75,7 +74,7 @@ describe('SearchCriteriaListComponent', () => {
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+  const snackBarSpy = jasmine.createSpyObj('VitamUISnackBarService', ['open']);
 
   const SearchCriteriaListServiceStub = {
     getSearchCriteriaHistory: () => of([]),
@@ -86,7 +85,6 @@ describe('SearchCriteriaListComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        MatSnackBarModule,
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
@@ -100,7 +98,7 @@ describe('SearchCriteriaListComponent', () => {
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
-        { provide: VitamUISnackBar, useValue: snackBarSpy },
+        { provide: VitamUISnackBarService, useValue: snackBarSpy },
         { provide: SearchCriteriaListService, useValue: SearchCriteriaListServiceStub },
         {
           provide: ActivatedRoute,

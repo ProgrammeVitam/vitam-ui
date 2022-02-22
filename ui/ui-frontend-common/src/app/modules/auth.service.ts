@@ -35,33 +35,51 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { ApplicationId } from './application-id.enum';
 import { WINDOW_LOCATION } from './injection-tokens';
-import { AuthUser, Tenant } from './models';
+import { AuthUser, Tenant, User, UserInfo } from './models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  get userInfo(): UserInfo {
+    return this._userInfo;
+  }
+
+  set userInfo(userInfo: UserInfo) {
+    this._userInfo = userInfo;
+    this.userInfo$.next(userInfo);
+  }
+
   set user(user: AuthUser) {
     this._user = user;
-    this.userLoaded.next(user);
+    this.user$.next(user);
   }
+
   get user(): AuthUser {
     return this._user;
   }
+
+  public loginUrl: string;
+  public logoutUrl: string;
+  public logoutRedirectUiUrl: string;
+  public user$ = new BehaviorSubject<AuthUser>(null);
+
   // tslint:disable-next-line:variable-name
   private _user: AuthUser;
+  // tslint:disable-next-line:variable-name
+  private _userInfo: UserInfo;
+  private userInfo$ = new BehaviorSubject<UserInfo>(null);
 
-  loginUrl: string;
-  logoutUrl: string;
-  logoutRedirectUiUrl: string;
-  userLoaded = new BehaviorSubject<AuthUser>(null);
+  constructor(@Inject(WINDOW_LOCATION) private location: any) { }
 
-  constructor(@Inject(WINDOW_LOCATION) private location: any) {}
+  public getUser$(): Observable<AuthUser> {
+    return this.user$.pipe(filter((user: AuthUser) => !!user), take(1));
+  }
 
   logout() {
     this.user = null;
@@ -133,4 +151,7 @@ export class AuthService {
     return tenant;
   }
 
+  public getUserInfo$(): Observable<UserInfo> {
+    return this.userInfo$.pipe(filter((userInfo: UserInfo) => !!userInfo), take(1));
+  }
 }

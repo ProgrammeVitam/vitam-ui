@@ -56,10 +56,9 @@ export const VITAMUI_INPUT_VALUE_ACCESSOR: any = {
 })
 export class VitamUIDurationInputComponent implements ControlValueAccessor {
 
-  form: FormGroup;
+  public form: FormGroup;
 
-  @Input()
-  get disabled(): boolean { return this._disabled; }
+  @Input() get disabled(): boolean { return this._disabled; }
   set disabled(value: boolean) { this._disabled = coerceBooleanProperty(value); }
   // tslint:disable-next-line:variable-name
   private _disabled = false;

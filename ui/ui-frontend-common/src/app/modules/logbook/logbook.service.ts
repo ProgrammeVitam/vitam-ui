@@ -96,7 +96,8 @@ export class LogbookService {
 
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, collectionName, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
-      map((response) => response.$results.reduce(flattenChildEvents, []).filter(e => e.obIdReq === collectionName).sort(sortEventByDate))
+      map((response) => response.$results.reduce(flattenChildEvents, [])
+        .filter(e => e.obIdReq.toLowerCase() === collectionName.toLowerCase()).sort(sortEventByDate))
     );
   }
 
@@ -107,6 +108,17 @@ export class LogbookService {
     return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
       map((response) => response.$results.reduce(flattenChildEvents, []).filter(e => e.obIdReq === collectionName).sort(sortEventByDate))
+    );
+  }
+
+  listOperationByResourcePathIdAndCollectionNameWithCustomFilter(
+    resourcePath: string, identifier: string, collectionName: string, tenantIdentifier: number,
+    filterPredicate: (event: Event) => boolean): Observable<Event[]> {
+    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+
+    return this.logbookApi.findOperationByIdAndCollectionName(identifier, resourcePath, headers).pipe(
+      catchError(() => of({ $results: [] as Event[] })),
+      map((response) => response.$results.reduce(flattenChildEvents, []).filter(filterPredicate).sort(sortEventByDate))
     );
   }
 
@@ -133,7 +145,7 @@ export class LogbookService {
 
   listHistoryForProfileArchive(id: string, externalParamId: string, tenantIdentifier: number): Observable<Event[]> {
     const profileEventsObservable = this.listOperationByIdAndCollectionName(id, 'profiles', tenantIdentifier);
-    const archiveParamEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'archiveParams', tenantIdentifier);
+    const archiveParamEventsObservable = this.listOperationByIdAndCollectionName(externalParamId, 'archiveparams', tenantIdentifier);
 
     return forkJoin([profileEventsObservable, archiveParamEventsObservable]).pipe(
       map((results) => {
@@ -141,8 +153,26 @@ export class LogbookService {
       }));
   }
 
-  listOperationsBySelectQuery(query: VitamSelectQuery, tenantIdentifier: number): Observable<Event[]> {
-    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString() });
+  listHistoryOperations(collectionsMap: Map<string, string>, tenantIdentifier: number): Observable<Event[]> {
+    const observables: Observable<Event[]>[] = [];
+    collectionsMap.forEach((value, key) => {
+      const result = this.listOperationByIdAndCollectionName(key, value, tenantIdentifier);
+      observables.push(result);
+    });
+
+    return forkJoin(observables).pipe(
+      map((results) => {
+        let events: Event[] = [];
+
+        results.forEach((event) => {
+          events = events.concat(event);
+        });
+        return (events).sort(sortEventByDate);
+      }));
+  }
+
+  listOperationsBySelectQuery(query: VitamSelectQuery, accessContract: string, tenantIdentifier: number): Observable<Event[]> {
+    const headers = new HttpHeaders({ 'X-Tenant-Id': tenantIdentifier.toString(), 'X-Access-Contract-Id': accessContract });
 
     return this.logbookApi.findOperationsBySelectQuery(query, headers).pipe(
       catchError(() => of({ $results: [] as Event[] })),
@@ -152,7 +182,7 @@ export class LogbookService {
     );
   }
 
-   getOperationById(id: string, tenantIdentifier: number, accessContractId: string): Observable<Event> {
+  getOperationById(id: string, tenantIdentifier: number, accessContractId: string): Observable<Event> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': tenantIdentifier.toString(),
       'X-Access-Contract-Id': accessContractId

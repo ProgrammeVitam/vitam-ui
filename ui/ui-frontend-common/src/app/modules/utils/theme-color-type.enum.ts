@@ -5,6 +5,7 @@ export enum ThemeColorType {
   VITAMUI_HEADER_FOOTER = 'vitamui-header-footer',
   VITAMUI_BACKGROUND = 'vitamui-background',
   VITAMUI_GREY = 'vitamui-grey',
+  VITAMUI_ADDITIONAL = 'vitamui-additional',
   /* DEPRECATED colors : Use color chart with declinations var(--vitamui-primary-XXX) and var(--vitamui-secondary-XXX) */
   VITAMUI_PRIMARY_LIGHT = 'vitamui-primary-light',
   VITAMUI_PRIMARY_LIGHT_20 = 'vitamui-primary-light-20',

@@ -34,10 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Application, ApplicationService, Group } from 'ui-frontend-common';
+import { Group, Profile } from 'ui-frontend-common';
 import { GroupService } from '../../group.service';
 import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 
@@ -48,52 +48,48 @@ import { ProfilesEditComponent } from './profiles-edit/profiles-edit.component';
 })
 export class ProfilesTabComponent implements OnInit, OnDestroy {
 
-  @Input()
-  set group(group: Group) {
-    this._group = group;
-  }
-  get group(): Group { return this._group; }
-  private _group: Group;
+  @Input() group: Group;
 
   @Input() readOnly: boolean;
 
-  profilesDisplay: any [];
+  profilesDisplay: any[];
   updatedGroup: Subscription;
+  public groupProfiles: Profile [];
 
-  constructor(private dialog: MatDialog, private groupService: GroupService, private applicationService: ApplicationService) { }
+  constructor(private dialog: MatDialog, private groupService: GroupService) { }
 
   ngOnInit() {
-    this.initializeProfilesList(this.group);
+    this.initializeProfilesList(this.group?.profiles);
     this.updatedGroup = this.groupService.updated.subscribe((updatedGroup: Group) => {
       this.group = updatedGroup;
-      this.initializeProfilesList(this.group);
-
+      this.initializeProfilesList(this.group?.profiles);
     });
   }
 
-  initializeProfilesList(group: Group) {
+  initializeProfilesList(groupProfiles: Profile []): void {
     this.profilesDisplay = [];
-    group.profiles.forEach((profile) =>
-      this.profilesDisplay.push({
-        id: profile.id,
-        appName: this.findApplicationName(profile.applicationName),
-        tenantName: profile.tenantName,
-        profileName: profile.name,
-        description: profile.description
-      })
-    );
+    if (groupProfiles) {
+      groupProfiles.forEach((profile) =>
+        this.profilesDisplay.push({
+          id: profile.id,
+          appId: profile.applicationName,
+          tenantName: profile.tenantName,
+          profileName: profile.name,
+          description: profile.description
+        })
+      );
 
-    this.profilesDisplay.sort((first, second) => {
-      if (first.appName > second.appName) {
-        return 1;
-      }
-      if (second.appName > first.appName) {
-        return -1;
-      }
+      this.profilesDisplay.sort((first, second) => {
+        if (first.appName > second.appName) {
+          return 1;
+        }
+        if (second.appName > first.appName) {
+          return -1;
+        }
 
-      return 0;
-    });
-
+        return 0;
+      });
+    }
   }
 
   openEditProfilesDialog() {
@@ -105,17 +101,6 @@ export class ProfilesTabComponent implements OnInit, OnDestroy {
       disableClose: true,
       panelClass: 'vitamui-modal'
     });
-  }
-
-  findApplicationName(appId: string): string {
-    const apps: Application[] = this.applicationService.applications;
-    if (appId && apps && apps.length > 0) {
-      const applicationsMatch = apps.filter((application) => application.identifier === appId);
-      if (applicationsMatch && applicationsMatch.length > 0) {
-        return applicationsMatch[0].name;
-      }
-    }
-    return appId;
   }
 
   ngOnDestroy() {

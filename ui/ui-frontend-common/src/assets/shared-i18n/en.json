@@ -9,6 +9,7 @@
     "CONFIRM": "Confirm",
     "CLOSE": "Close",
     "REQUIRED": "Required param",
+    "INCORRECT_VALUE": "Incorrect value",
     "NO_RESULT": "No result",
     "SHOW_MORE_RESULTS": "Show more results",
     "LANGUAGE": {
@@ -27,6 +28,11 @@
       "NO_HISTORY": "No history",
       "OPERATIONS": "Logbook"
     }
+  },
+  "DATE": {
+    "DAYS": "Days",
+    "HOURS": "Hours",
+    "MINUTES": "Minutes"
   },
     "EXCEPTIONS" : {
      "HTTP_STATUS_CODE_BAD_REQUEST": "Error: invalid request",
@@ -105,7 +111,7 @@
       "TOOLTIP": "Configure groups of rights profiles, which will be assigned to users"
     },
     "PROFILES_APP": {
-      "NAME": "Administrator’s rights",
+      "NAME": "Administrator's rights",
       "TOOLTIP": "Set up rights profiles for administrators in an organization"
     },
     "SUBROGATIONS_APP": {
@@ -177,7 +183,7 @@
       "TOOLTIP": "Access to Docuware"
     },
     "RECORD_MANAGEMENT_APP": {
-      "NAME": "Record Management",
+      "NAME": "Records Management",
       "TOOLTIP": "Organize the repository of management rules and manage the archive life cycle"
     },
     "ARCHIVE_BATCH_INGEST_APP": {
@@ -224,14 +230,13 @@
       "NAME": "Management rules",
       "TOOLTIP": "Management rules",
       "MESSAGES": {
-        "COMMON_RULE_MESSAGE": "The Rule",
-        "CREATION_SUCCESS": "succussfully created.",
+        "RULE_CREATION_SUCCESS": "The Rule {{ name }} succussfully created.",
+        "RULE_CREATION_FAILED": "The Rule {{ name }} didn't created.",
         "DELETION": "rule deletion",
-        "CREATION_FAILED": "didn't created.",
-        "UPDATE_SUCCESS": "successfully uodated",
-        "UPDATE_FAILED": "didn't updated",
-        "DELETION_SUCCESS": "successfully deleted",
-        "DELETION_FAILED": "didn't deleted",
+        "RULE_UPDATE_SUCCESS": "The rule {{ name }} successfully updated",
+        "RULE_UPDATE_FAILED": "The rule {{ name }} didn't updated",
+        "RULE_DELETION_SUCCESS": "The rule {{ name }} successfully deleted",
+        "RULE_DELETION_FAILED": "The rule {{ name }} didn't deleted",
         "OPERATION_IN_PROGRESS": "in progress...",
         "EXPORT_IN_PROGRESS": "Rule export in progress..."
       }
@@ -259,6 +264,10 @@
     "CONTEXTS_APP": {
       "NAME": "Application contexts",
       "TOOLTIP": "Authenticate an application and assign rights to it"
+    },
+    "SECURITY_PROFILES_APP": {
+      "NAME": "Security profiles",
+      "TOOLTIP": "Access, Create, Modify or Delete security profiles"
     },
     "ONTOLOGY_APP": {
       "NAME": "Ontology",
@@ -408,6 +417,13 @@
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
+    "CHECK_ATTACHEMENT":"Verification of the attachment between existing and new objects, groups of objects and archival units",
+    "CHECK_ATTACHEMENT.OK":"Successful verification of the attachment between existing and new objects, groups of objects and archival units",
+    "CHECK_ATTACHEMENT.KO":"Failed to verify attachment between existing and new objects, object groups and archival units",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER": "Identification of heir archival units",
+    "MASS_UPDATE_RULES_CHECK": "Checking the rules",
+    "STP_INVALIDATE": "Invalidation of calculated rules",
+    "STP_INVALIDATE.STARTED": "Invalidation of calculated rules started",
     "COMPUTE_INHERITED_RULES" : "Calculation of applicable management rules",
     "COMPUTE_INHERITED_RULES_FINALIZATION" : "Finalization the calculation of the applicable management rules",
     "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD" : "Verification of processing limitation thresholds for archival units",
@@ -419,7 +435,6 @@
     "COMPUTE_INHERITED_RULES_ACTION":"Calculation of applicable management rules",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED" : "Process for finalizing the calculation of the applicable management rules",
     "STP_COMPUTE_INHERITED_RULES_FINALIZATION" : "Finalization of the calculation of the applicable management rules",
-    "CHECK_ATTACHEMENT":"Verification of the connection between existing objects, groups of objects and archival units and new ones",
     "CHECK_OBJECT_SIZE" : "File size check",
     "OBJ_STORAGE" : "Writing objects and groups of objects to the storage offer",
     "AUDIT": "Audit",
@@ -1706,7 +1721,7 @@
     "CTR_SCHEMA.KO": "JSON schema check process failed",
     "CHECK_HEADER.CHECK_AGENT.FATAL": "Technical error when checking the presence and control of agent services",
     "STP_OG_STORING.ALREADY_EXECUTED": "Action already carried out: No process for writing the metadata of groups of objects on the storage offers",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.KO": "Failed to check the conformity of values ​​in fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.KO": "Failed to check the conformity of values in fields",
     "STP_PROBATIVE_VALUE_EXTRACT_ZIP_FILE.KO": "Process of extracting signatures from secured files failed",
     "MANIFEST_FILE_NAME_CHECK.STARTED.OK": "Success of the start of the control of the name of the transfer slip",
     "STP_OG_CHECK_AND_TRANSFORME.WARNING": "Warning during the process of checking and processing objects and groups of objects",
@@ -1798,7 +1813,7 @@
     "EXPORT_DIP.WARNING": "Warning when exporting the DIP",
     "ROLL_BACK.OK": "Successful alignment of lifecycle logs",
     "STP_ELIMINATION_ANALYSIS_UNIT_INDEXATION.OK": "Success of the indexing process of the disposal analysis of archival units",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.FATAL": "Technical error when checking the conformity of the values ​​in the fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.FATAL": "Technical error when checking the conformity of the values in the fields",
     "MASS_UPDATE_UNITS_RULES.WARNING": "Warning when updating management metadata for archival units",
     "UPDATE_OBJECT_GROUP": "Update of the object group",
     "UNIT_DETACHMENT.STARTED.OK": "Successful start of secondment of archival units",
@@ -1940,7 +1955,7 @@
     "STP_UPDATE_CONTEXT.STARTED.OK": "Success of the start of the application context update process",
     "VERIFY_TIMESTAMP.WARNING": "Warning when checking the timestamp",
     "LOGBOOK_OBJECTGROUP_LFC_TRACEABILITY.OK": "Successful securing object group lifecycle logs",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.OK": "Success of checking the conformity of the values ​​in the fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.OK": "Success of checking the conformity of the values in the fields",
     "CHECK_FILE_FORMAT": "Checking the formats of objects and group of objects",
     "STP_PROBATIVE_VALUE_EXTRACT_ZIP_FILE.OK": "Success of the process of extracting signatures from secure files",
     "AUDIT_CHECK_OBJECT.AUDIT_CHECK_OBJECT.KO": "Failed to audit the existence and integrity of objects",
@@ -2224,7 +2239,7 @@
     "STP_MIGRATION_UNITS.WARNING": "Warning during the process of preparing the migration of archival units",
     "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_WRONG_ATTACHMENT_LINK.KO": "The transfer slip makes a connection using elements outside the scope",
     "UPDATE_ARCHIVEUNITPROFILE.NOT_IN_ENUM.KO": "Failed to update archival unit profile: a value does not match the expected values",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.STARTED": "Start of checking the conformity of the values ​​in the fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.STARTED": "Start of checking the conformity of the values in the fields",
     "LFC.PRESERVATION_SIEGFRIED_IDENTIFICATION.FILE_FORMAT.OK": "Format of the identified object, referenced in the internal repository and the result of the format identification tool.",
     "STP_UNIT_ATTACHMENT.FATAL": "Technical error during the process of linking archival units",
     "STP_DELETE_FORMAT": "Process of deleting the format repository",
@@ -2702,7 +2717,7 @@
     "STP_UPDATE_OBJECT_GROUP.KO": "Object group update process failed",
     "STP_ELIMINATION_ACTION_FINALIZATION.WARNING": "Warning during the process of finalizing the final disposal of archival units",
     "STP_PROBATIVE_VALUE_CHECK_MERKLE_TREE.FATAL": "Technical error during the process of checking the MERKLE tree",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.WARNING": "Warning when checking the conformity of values ​​in fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT.WARNING": "Warning when checking the conformity of values in fields",
     "LFC.UNITS_RULES_COMPUTE": "Application of management rules and calculation of due dates",
     "STP_DELETE_MASTERDATA_ACCESSION_REGISTER_SYMBOLIC": "Process of deleting the Register of Symbolic Funds",
     "LFC.UNIT_METADATA_UPDATE_CHECK_DT.WARNING": "Warning when checking the association with an archival unit profile",
@@ -2732,7 +2747,7 @@
     "LFC.CHECK_UNIT_SCHEMA.EMPTY_REQUIRED_FIELD.STARTED.OK": "Success of the start of the additional check on the validity of the fields of the archival unit",
     "TRACEABILITY.OK": "Success of the securing operation",
     "STP_ELIMINATION_ACTION_DETACH_OBJECT_GROUP.OK": "Success of the process of detaching groups of technical objects from which certain parent archival units are eliminated",
-    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT": "Checking the conformity of values ​​in the fields",
+    "LFC.CHECK_UNIT_SCHEMA.INVALID_UNIT": "Checking the conformity of values in the fields",
     "STP_MIGRATION_UNITS_PREPARE.FATAL": "Technical error during the process of preparing the migration of archival units",
     "LFC.CHECK_MANIFEST.LFC_CREATION.FATAL": "Technical error while creating the lifecycle log",
     "UNIT_METADATA_UPDATE_CHECK_PERMISSION.OK": "Successful verification of the rights to update metadata of archival units",
@@ -2941,6 +2956,8 @@
     "CHECK_ARCHIVE_UNIT_PROFILE.OK": "Successful verification of compliance with archival unit profiles",
     "CHECK_DATAOBJECTPACKAGE.CHECK_MANIFEST_OBJECTNUMBER.INVALID_URI.KO": "At least one object declares a URI to which a file does not correspond or declares a URI already used by another object",
     "LFC.CHECK_ARCHIVE_UNIT_PROFILE.INVALID_AU_PROFILE.KO": "Failed to verify compliance with archival unit profiles: archival unit profile not compliant",
+    "LFC.CHECK_OBJECT_SIZE.CHECK_SIZE": "Checking the size of a binary file",
+    "LFC.CHECK_OBJECT_SIZE": "Checking File Size",
     "STP_RECLASSIFICATION_FINALIZATION.KO": "Failed to finalize the modification of the archival unit tree",
     "STP_CHECK_AND_COMPUTE.STARTED.FATAL": "Technical error when starting the process of preparing the list of archival units to update and modification authorizations",
     "STORAGE_BACKUP.KO": "Failed to save the write logs",
@@ -3001,6 +3018,17 @@
     "EXT_VITAMUI_CREATE_TENANT": "Creation of the owner's safe",
     "EXT_VITAMUI_UPDATE_TENANT": "Modification of the owner's safe",
     "EXT_VITAMUI_CREATE_USER": "User creation",
-    "EXT_VITAMUI_UPDATE_USER": "User modification"
+    "EXT_VITAMUI_UPDATE_USER": "User modification",
+    "EXT_VITAMUI_CREATE_USER_INFO": "User info creation",
+    "EXT_VITAMUI_UPDATE_USER_INFO": "User info modification"
+  },
+  "HTTP_INTERCEPTOR": {
+    "HTTP_STATUS_CODE_FORBIDDEN": "You do not have the necessary rights to perform this operation.",
+    "HTTP_STATUS_CODE_BAD_REQUEST": "Error: invalid request",
+    "HTTP_STATUS_CODE_NOT_FOUND": "The resource does not exist",
+    "HTTP_STATUS_CODE_SERVICE_UNAVAILABLE": "A technical error has occurred: service unavailable",
+    "HTTP_STATUS_CODE_GATEWAY_TIMEOUT": "A technical error has occurred: the server is not responding.",
+    "HTTP_STATUS_CODE_EXPECTATION_FAILED": "The platform configuration does not allow you to perform this action, please contact your administrator.",
+    "SERVER_ERROR": "A technical error has occurred: internal error"
   }
 }
