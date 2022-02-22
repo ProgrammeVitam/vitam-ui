@@ -38,24 +38,26 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 
 public class OrderedJSONObjectFactory {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(OrderedJSONObjectFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderedJSONObjectFactory.class);
     private static boolean setupDone = false;
-    private static Field JSONObjectMapField = null;
+    private static Field jsonObjectMapField = null;
+
+    private OrderedJSONObjectFactory() {}
 
     public static void setupFieldAccessor() {
         if (!setupDone) {
             setupDone = true;
             try {
-                JSONObjectMapField = JSONObject.class.getDeclaredField("map");
-                JSONObjectMapField.setAccessible(true);
+                jsonObjectMapField = JSONObject.class.getDeclaredField("map");
+                jsonObjectMapField.setAccessible(true);
             } catch (NoSuchFieldException ignored) {
                 LOGGER.warn("JSONObject implementation has changed, returning unmodified instance");
             }
@@ -66,10 +68,11 @@ public class OrderedJSONObjectFactory {
         setupFieldAccessor();
         JSONObject result = new JSONObject();
         try {
-            if (JSONObjectMapField != null) {
-                JSONObjectMapField.set(result, new LinkedHashMap<>());
+            if (jsonObjectMapField != null) {
+                jsonObjectMapField.set(result, new LinkedHashMap<>());
             }
-        } catch (IllegalAccessException ignored) {
+        } catch (IllegalAccessException e) {
+            LOGGER.info(e.getMessage());
         }
         return result;
     }

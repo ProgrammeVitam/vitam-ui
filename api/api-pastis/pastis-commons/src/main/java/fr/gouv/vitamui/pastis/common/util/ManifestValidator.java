@@ -37,8 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.apache.xerces.util.XMLCatalogResolver;
 import org.xml.sax.SAXException;
@@ -62,7 +62,7 @@ public class ManifestValidator {
      * Filename of the catalog file ; should be found in the classpath.
      */
     public static final String CATALOG_FILENAME = "xsd_validation/catalog.xml";
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ManifestValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManifestValidator.class);
     private static final String RNG_SUFFIX = ".rng";
 
     /**

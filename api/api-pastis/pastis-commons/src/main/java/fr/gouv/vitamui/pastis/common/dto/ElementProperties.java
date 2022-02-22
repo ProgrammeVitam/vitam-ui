@@ -43,46 +43,43 @@ import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 @Data
 @NoArgsConstructor
-public class ElementProperties implements Serializable {
+public class ElementProperties {
 
-    private static final long serialVersionUID = -5093112183496503253L;
-
-    String name;
-    String type;
-    String cardinality;
-    String groupOrChoice;
-    String valueOrData;
-    String dataType;
-    String value;
-    String documentation;
+    private String name;
+    private String type;
+    private String cardinality;
+    private String groupOrChoice;
+    private String valueOrData;
+    private String dataType;
+    private String value;
+    private String documentation;
 
     @JsonIgnore
-    Object sedaData;
+    private Object sedaData;
 
-    int level;
-    Long id;
-    Long parentId;
+    private int level;
+    private Long id;
+    private Long parentId;
 
     @JsonIgnore
-    ElementProperties parent;
+    private ElementProperties parent;
 
-    List<ElementProperties> choices = new ArrayList<ElementProperties>();
+    private List<ElementProperties> choices = new ArrayList<>();
 
-    List<ElementProperties> children = new ArrayList<ElementProperties>();
+    private List<ElementProperties> children = new ArrayList<>();
 
-    PuaData puaData;
+    private PuaData puaData;
 
 
     public void setCardinality(String cardinality) {
-        if (null != RNGConstants.CardinalityMap.get(cardinality)) {
-            this.cardinality = RNGConstants.CardinalityMap.get(cardinality);
+        if (null != RNGConstants.getCardinalityMap().get(cardinality)) {
+            this.cardinality = RNGConstants.getCardinalityMap().get(cardinality);
         } else {
             this.cardinality = cardinality;
         }
@@ -93,44 +90,11 @@ public class ElementProperties implements Serializable {
     }
 
     public void setGroupOrChoice(String groupOrChoice) {
-        if (null != RNGConstants.GroupOrChoiceMap.get(groupOrChoice)) {
-            this.groupOrChoice = RNGConstants.GroupOrChoiceMap.get(groupOrChoice);
+        if (null != RNGConstants.getGroupOrChoiceMap().get(groupOrChoice)) {
+            this.groupOrChoice = RNGConstants.getGroupOrChoiceMap().get(groupOrChoice);
         } else {
             this.groupOrChoice = groupOrChoice;
         }
-    }
-
-    @JsonIgnore
-    public Object getSedaData() {
-        return sedaData;
-    }
-
-    @JsonIgnore
-    public void setSedaData(Object sedaData) {
-        this.sedaData = sedaData;
-    }
-
-    @JsonIgnore
-    public ElementProperties getParent() {
-        return parent;
-    }
-
-    @JsonIgnore
-    public void setParent(ElementProperties parent) {
-        this.parent = parent;
-    }
-
-
-
-    public void init() {
-        this.setName("");
-        this.setCardinality("");
-        this.setValueOrData("");
-        this.setGroupOrChoice("");
-        this.setValue("");
-        this.setType("");
-        this.setDataType("");
-
     }
 
     public void initTree(ElementProperties json) {

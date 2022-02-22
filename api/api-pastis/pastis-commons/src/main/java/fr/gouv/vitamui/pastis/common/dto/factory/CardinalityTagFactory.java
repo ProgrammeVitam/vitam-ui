@@ -40,43 +40,35 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Map;
 
 public class CardinalityTagFactory implements AbstractTagFactory<CardinalityTag> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CardinalityTagFactory.class);
-
     @Override
     public CardinalityTag createTag(ElementProperties node, Tag cardinalityTag, int level) {
-        if (node.getCardinality().equals(RNGConstants.Cardinality.zeroOrMore.getLabel())) {
-            return new ZeroOrMoreTag();
-        } else if (node.getCardinality().equals(RNGConstants.Cardinality.oneOrMore.getLabel())) {
-            return new OneOrMoreTag();
-        } else if (node.getCardinality().equals(RNGConstants.Cardinality.optional.getLabel())) {
-            return new OptionalTag();
-        }
-        return null;
-    }
+        CardinalityTag cardinality = null;
 
-    @Override
-    public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level) {
-        return null;
+        if (node.getCardinality().equals(RNGConstants.Cardinality.ZERO_OR_MORE.getLabel())) {
+            cardinality = new ZeroOrMoreTag();
+        } else if (node.getCardinality().equals(RNGConstants.Cardinality.ONE_OR_MORE.getLabel())) {
+            cardinality = new OneOrMoreTag();
+        } else if (node.getCardinality().equals(RNGConstants.Cardinality.OPTIONAL.getLabel())) {
+            cardinality = new OptionalTag();
+        }
+        return cardinality;
     }
 
     public RNGConstants.Cardinality checkCardinalityType(String cardinalityType) {
+        RNGConstants.Cardinality enumerationRngConstantsCardinality= null;
         if (cardinalityType.equals("ZeroOrMoreTag")) {
-            return RNGConstants.Cardinality.zeroOrMore;
+            enumerationRngConstantsCardinality = RNGConstants.Cardinality.ZERO_OR_MORE;
         }
         if (cardinalityType.equals("OneOrMoreTag")) {
-            return RNGConstants.Cardinality.oneOrMore;
+            enumerationRngConstantsCardinality = RNGConstants.Cardinality.ONE_OR_MORE;
         }
         if (cardinalityType.equals("OptionalTag")) {
-            return RNGConstants.Cardinality.optional;
+            enumerationRngConstantsCardinality = RNGConstants.Cardinality.OPTIONAL;
         }
-        return null;
+        return enumerationRngConstantsCardinality;
     }
 
 

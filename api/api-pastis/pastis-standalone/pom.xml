@@ -42,16 +42,11 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis</artifactId>
-            <version>5.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>pastis-client</artifactId>
                 </exclusion>
-                <!--                <exclusion>
-                                    <groupId>fr.gouv.vitamui.commons</groupId>
-                                    <artifactId>commons-api</artifactId>
-                                </exclusion>-->
                 <exclusion>
                     <groupId>fr.gouv.vitamui.commons</groupId>
                     <artifactId>commons-rest</artifactId>
@@ -120,6 +115,9 @@
             <version>${jsonassert.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!--        Dans Java SE 9 et 10, la classe JAXB n'est plus présente dans la variable "classpath" par défaut.
+                A partir de la version 11, elle a complètement disparu de Java en édition standard.
+                Obliger de préciser une version antérieur pour éviter un NoClassDefFoundError à ce niveau-->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
@@ -252,7 +250,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.21</version>
+                        <version>${launch4j-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>build-pastis-standalone-executable-windows</id>
@@ -308,7 +306,7 @@
                                 </goals>
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>assembly.xml</descriptor>
+                                        <descriptor>${project.basedir}/src/main/assembly/packaging-zip.xml</descriptor>
                                     </descriptors>
                                 </configuration>
                             </execution>

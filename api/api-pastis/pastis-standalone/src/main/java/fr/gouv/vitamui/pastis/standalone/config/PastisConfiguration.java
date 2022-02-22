@@ -41,6 +41,7 @@ import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.context.annotation.Bean;
@@ -51,12 +52,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 
 @Configuration
 public class PastisConfiguration {
 
     private ResourceLoader resourceLoader;
+
 
     @Value("${cors.allowed-origins}")
     private String origins;
@@ -65,7 +68,7 @@ public class PastisConfiguration {
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NotNull CorsRegistry registry) {
                 registry.addMapping("/**")
                     .allowedOrigins(origins.split(","))
                     .allowCredentials(true);
@@ -92,7 +95,7 @@ public class PastisConfiguration {
 
     @Bean
     public PastisService pastisService() {
-        return new PastisService(this.resourceLoader);
+        return new PastisService(this.resourceLoader, puaPastisValidator(),jsonFromPUA(), puaFromJSON());
     }
 
     @Bean

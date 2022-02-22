@@ -38,8 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTag;
 import fr.gouv.vitamui.pastis.common.dto.factory.RngTagFactory;
@@ -51,6 +51,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 
 public class PastisMarshaller {
 
@@ -58,7 +59,7 @@ public class PastisMarshaller {
     public static final String MARSHALLER_FORMAT = Marshaller.JAXB_FORMATTED_OUTPUT;
 
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisMarshaller.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PastisMarshaller.class);
 
     public String getMarshalledObject(ElementProperties mappedJson) throws IOException, JAXBException {
 
@@ -71,13 +72,13 @@ public class PastisMarshaller {
         marshallerObj.setProperty(CHAR_ESCAPE_HANDLER, new PastisCustomCharacterEscapeHandler());
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        Writer writer = new OutputStreamWriter(os, "UTF-8");
+        Writer writer = new OutputStreamWriter(os, StandardCharsets.UTF_8);
         marshallerObj.marshal(rngTree, writer);
-        String response = new String(os.toByteArray(), "UTF-8");
+        String response = new String(os.toByteArray(), StandardCharsets.UTF_8);
         writer.close();
 
         String status = !response.isEmpty() ? "Json marshalled successfully" : "Failed to marshall json object";
-        LOGGER.info(status);
+        LOGGER.debug(status);
 
         return response;
     }

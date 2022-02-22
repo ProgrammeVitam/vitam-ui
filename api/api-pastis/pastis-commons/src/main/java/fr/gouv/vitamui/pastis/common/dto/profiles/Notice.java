@@ -53,48 +53,45 @@ import lombok.NoArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-
+import javax.annotation.CheckForNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Random;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Notice extends IdDto implements Serializable {
+public class Notice extends IdDto {
 
-    @Autowired NoticeUtils notice;
     @JsonProperty("identifier")
-    String identifier;
+    private String identifier;
     @JsonProperty("name")
-    String name;
+    private String name;
     @JsonProperty("description")
-    String description;
+    private String description;
     @JsonProperty("status")
-    ArchiveUnitProfileStatus status;
+    private ArchiveUnitProfileStatus status;
     @JsonProperty("creationDate")
-    String creationDate;
+    private String creationDate;
     @JsonProperty("lastUpdate")
-    String lastUpdate;
+    private String lastUpdate;
     @JsonProperty("activationDate")
-    String activationDate;
+    private String activationDate;
     @JsonProperty("deactivationDate")
-    String deactivationDate;
+    private String deactivationDate;
     @JsonProperty("controlSchema")
-    String controlSchema;
+    private String controlSchema;
     @JsonProperty("tenant")
-    Integer tenant;
+    private Integer tenant;
     @JsonProperty("version")
-    Integer version;
+    private Integer version;
     @JsonProperty("fields")
-    List<String> fields;
+    private List<String> fields;
     @JsonProperty("path")
     private String path;
     @JsonProperty("format")
@@ -102,32 +99,40 @@ public class Notice extends IdDto implements Serializable {
 
     public Notice(Resource r) throws IOException {
         String fileName = r.getFilename();
-        Long lastUpdate = r.lastModified();
-        this.setId(String.valueOf(Math.abs(new Random().nextLong()) / 1000));
-        this.identifier = getFileBaseName(fileName);
-        this.status = ArchiveUnitProfileStatus.ACTIVE;
-        this.lastUpdate = new Timestamp(lastUpdate).toString();
-        this.deactivationDate = new Timestamp(lastUpdate).toString();
-        this.activationDate = new Timestamp(lastUpdate).toString();
-        this.creationDate = new Timestamp(lastUpdate).toString();
-        this.tenant = 1;
-        this.version = 1;
-        this.name = getFileBaseName(fileName);
-        if (getFileType(fileName).equals(ProfileType.PUA)) {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rng/" +
-                fileName);
-            JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
-            JSONObject profileJson = new JSONObject(tokener);
-            this.controlSchema = profileJson.getString("controlSchema");
-            this.fields = notice.convert((JSONArray) profileJson.get("fields"));
-            this.description = profileJson.getString("description");
-        } else {
+        if(fileName != null ){
+            Long updateDate = r.lastModified();
+            long idExample = new SecureRandom().nextLong() / 1000;
+            this.setId(String.valueOf(Math.abs(idExample)));
+            String fileBaseName = getFileBaseName(fileName);
+            if(fileBaseName != null){
+                this.identifier = fileBaseName;
+            }
+            this.status = ArchiveUnitProfileStatus.ACTIVE;
+            this.lastUpdate = new Timestamp(updateDate).toString();
+            this.deactivationDate = new Timestamp(updateDate).toString();
+            this.activationDate = new Timestamp(updateDate).toString();
+            this.creationDate = new Timestamp(updateDate).toString();
+            this.tenant = 1;
+            this.version = 1;
+            this.name = getFileBaseName(fileName);
+            if (getFileType(fileName).equals(ProfileType.PUA)) {
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rng/" +
+                    fileName);
+                JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
+                JSONObject profileJson = new JSONObject(tokener);
+                this.controlSchema = profileJson.getString("controlSchema");
+                this.fields = NoticeUtils.convert((JSONArray) profileJson.get("fields"));
+                this.description = profileJson.getString("description");
+            } else {
 
-            this.path = fileName;
-            this.format = ProfileFormat.RNG;
+                this.path = fileName;
+                this.format = ProfileFormat.RNG;
+            }
         }
+
     }
 
+    @CheckForNull
     private String getFileBaseName(String fileName) {
         String[] tokens = fileName.split("\\.(?=[^\\.]+$)");
         return tokens[0];
@@ -142,13 +147,7 @@ public class Notice extends IdDto implements Serializable {
     public String serialiseString() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new AfterburnerModule());
-        String json = mapper.writeValueAsString(this);
-        return json;
+        return mapper.writeValueAsString(this);
     }
-
-/*    public void deserialize(JSONObject jsonObject) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.readValue(jsonObject, Notice.class);
-    }*/
 
 }

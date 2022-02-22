@@ -36,13 +36,11 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-package fr.gouv.vitamui.pastis.server.service;
+package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
-import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
-import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -52,6 +50,7 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
@@ -60,8 +59,7 @@ import java.io.InputStreamReader;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("dev")
+@TestPropertySource(locations = "/application-test.yml")
 public class ImportPuaTest {
 
     PuaPastisValidator puaPastisValidator = new PuaPastisValidator();

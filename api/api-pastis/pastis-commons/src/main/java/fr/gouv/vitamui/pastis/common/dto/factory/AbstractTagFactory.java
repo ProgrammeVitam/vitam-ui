@@ -40,12 +40,17 @@ package fr.gouv.vitamui.pastis.common.dto.factory;
 
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public interface AbstractTagFactory<T> {
 
-    T createTag(ElementProperties node, Tag tag, int level);
+    default T createTag(ElementProperties node, Tag tag, int level){
+        return null;
+    }
 
-    Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level);
+    default Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level){
+        return new HashMap<>();
+    }
 
 }

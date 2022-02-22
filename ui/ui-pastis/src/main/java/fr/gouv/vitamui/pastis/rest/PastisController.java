@@ -55,7 +55,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,7 +63,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 
 @Api(tags = "pastis")
@@ -84,7 +82,7 @@ public class PastisController extends AbstractUiRestController {
     }
 
     @ApiOperation(value = "Transform profile")
-    @RequestMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE, method = RequestMethod.POST)
+    @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
     ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice) throws IOException {
         LOGGER.debug("Start get profile By ui-pastis-controller");
         return pastisTransformationService.loadProfile(notice, buildUiHttpContext());
@@ -118,8 +116,7 @@ public class PastisController extends AbstractUiRestController {
     @ApiOperation(value = "Create new Profile by type PA or PUA")
     @GetMapping(RestApi.PASTIS_CREATE_PROFILE)
     @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws
-        URISyntaxException, IOException {
+    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws IOException {
         LOGGER.debug("Create new Profile by type PA or PUA By ui-pastis-controller");
         return pastisTransformationService.createProfile(profileType, buildUiHttpContext());
     }

@@ -38,21 +38,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
-import lombok.Setter;
-
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement(name = "rng:element")
-@Setter
 public class ElementXML extends BaliseXML {
 
-    ValueXML valueXML;
-
-
-    @XmlElement(name = "rng:value")
-    public ValueXML getValueXML() {
-        return valueXML;
-    }
 }

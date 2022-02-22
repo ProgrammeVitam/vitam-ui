@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class PuaMetadata extends JsonElement {
 
-    public Map<String, PuaMetadataDetails> puaDetails = new HashMap<String, PuaMetadataDetails>();
+    private Map<String, PuaMetadataDetails> puaDetails = new HashMap<>();
 
     public Map<String, PuaMetadataDetails> getPuaDetails() {
         return puaDetails;

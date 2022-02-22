@@ -43,13 +43,7 @@ import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataTagFactory implements AbstractTagFactory {
-
-
-    @Override
-    public Object createTag(ElementProperties node, Tag tag, int level) {
-        return null;
-    }
+public class DataTagFactory implements AbstractTagFactory<Object> {
 
     @Override
     public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag dataRNG, RngTag currentTag, int level) {

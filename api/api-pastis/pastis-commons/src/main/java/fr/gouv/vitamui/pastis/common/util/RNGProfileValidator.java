@@ -37,8 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.util;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.XMLConstants;
@@ -56,22 +56,21 @@ public class RNGProfileValidator {
 
     public static final String RNG_FACTORY = "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory";
     public static final String RNG_PROPERTY_KEY = "javax.xml.validation.SchemaFactory:" + XMLConstants.RELAXNG_NS_URI;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RNGProfileValidator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RNGProfileValidator.class);
 
-    public boolean validateRNG(File file, String error) throws Exception {
+    public boolean validateRNG(File file) throws XMLStreamException, FileNotFoundException {
         try {
             System.setProperty(RNG_PROPERTY_KEY, RNG_FACTORY);
             SchemaFactory.newInstance(XMLConstants.RELAXNG_NS_URI).newSchema(file);
         } catch (SAXException e) {
             LOGGER.error("Malformed profile rng file", e);
-            error = "Malformed profile rng file : " + e.getMessage();
             return false;
         }
 
-        return checkTag(file, "rng", "grammar", error);
+        return checkTag(file);
     }
 
-    private boolean checkTag(File file, String prefix, String element, String error)
+    private boolean checkTag(File file)
         throws FileNotFoundException, XMLStreamException {
 
         final XMLInputFactory xmlInputFactory = XMLInputFactoryUtils.newInstance();
@@ -86,8 +85,7 @@ public class RNGProfileValidator {
                 String elementName = event.asStartElement().getName().getLocalPart();
                 String elementPrefix = event.asStartElement().getName().getPrefix();
 
-                if (Objects.equals(element, elementName) || Objects.equals(prefix, elementPrefix)) {
-                    error += "Profile file xsd have not the xsd:schema tag name.";
+                if (Objects.equals("grammar", elementName) || Objects.equals("rng", elementPrefix)) {
                     return true;
                 }
             }

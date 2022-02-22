@@ -38,19 +38,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
-import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+public class ValueTagFactory implements AbstractTagFactory<Tag> {
 
-import java.util.Map;
-
-public class ValueTagFactory implements AbstractTagFactory {
-
-    @Override
-    public Tag createTag(ElementProperties node, Tag tag, int level) {
-        return null;
-    }
-
-    @Override
-    public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level) {
-        return null;
-    }
 }

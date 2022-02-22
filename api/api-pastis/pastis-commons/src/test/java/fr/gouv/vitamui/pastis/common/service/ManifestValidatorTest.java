@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-package fr.gouv.vitamui.pastis.server.service;
+package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
@@ -52,76 +52,74 @@ import fr.gouv.vitamui.pastis.common.dto.jaxb.OptionalXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.StartXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
+import fr.gouv.vitamui.pastis.common.util.ManifestValidator;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
 import fr.gouv.vitamui.pastis.common.util.PropertiesUtils;
-import fr.gouv.vitamui.pastis.common.util.RNGProfileValidator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("dev")
-public class RNGProfileValidatorTest {
+@TestPropertySource(locations = "/application-test.yml")
+public class ManifestValidatorTest {
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
-    private RNGProfileValidator rngProfileValidator;
-    @Value("${json.base.file}")
-    private String jsonFileName;
+    private ManifestValidator manifestValidator;
 
     @Before
     public void init() {
-        rngProfileValidator = new RNGProfileValidator();
+        manifestValidator = new ManifestValidator();
     }
 
     @Test
-    /**
-     * Test s'assurant que la librairie de validation de fichier RNG est opérationnelle
-     */
-    public void validateRNGProfileOK() throws Exception {
-        File fileProfileXsd = PropertiesUtils.getResourceFile("profiles/profile_ok.rng");
-
-        Assert.assertTrue(rngProfileValidator.validateRNG(fileProfileXsd, ""));
+    public void testManifestOK()
+        throws Exception {
+        Assert
+            .assertTrue(manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"),
+                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")));
     }
 
     @Test
-    /**
-     * Test s'assurant que la librairie de validation de fichier RNG est opérationnelle
-     */
-    public void validateRNGProfileNOK() throws Exception {
-        File fileProfileXsd = PropertiesUtils.getResourceFile("profiles/profile_nok.rng");
-
-        Assert.assertFalse(rngProfileValidator.validateRNG(fileProfileXsd, ""));
+    public void testManifestNOK()
+        throws Exception {
+        Assert.assertFalse(
+            manifestValidator.checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestNOK.xml"),
+                PropertiesUtils.getResourceFile("manifests/rngProfile.rng")));
     }
 
-    @Test
     /**
-     * Génère un profil RNG depuis un fichier JSON et valide ce profil
+     * Generate an RNG file from JSON profile
+     * Test manifest agains this generated RNG file
+     *
+     * @throws IOException
+     * @throws JAXBException
      */
-    public void validateGeneratedRNGProfileFromJSON() throws Exception {
-
-        InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream(jsonFileName);
+    @Test
+    public void testManifestAgainstGeneratedRNG() throws IOException, JAXBException {
+        InputStream jsonInputStream = getClass().getClassLoader().getResourceAsStream("manifests/jsonProfile.json");
         ObjectMapper objectMapper = new ObjectMapper();
         ElementProperties jsonMap = objectMapper.readValue(jsonInputStream, ElementProperties.class);
         jsonMap.initTree(jsonMap);
 
         BaliseXML.buildBaliseXMLTree(jsonMap, 0, null);
-        BaliseXML eparentRng = BaliseXML.baliseXMLStatic;
+        BaliseXML eparentRng = BaliseXML.getBaliseXMLStatic();
         JAXBContext contextObj = JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class,
             ValueXML.class, OptionalXML.class, OneOrMoreXML.class,
             ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class,
@@ -131,11 +129,12 @@ public class RNGProfileValidatorTest {
         marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
             new PastisCustomCharacterEscapeHandler());
 
-        File rngProfile = tempFolder.newFile();
+        File rngProfile = tempFolder.newFile("generatedProfile.rng");
         OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(rngProfile), "UTF-8");
         marshallerObj.marshal(eparentRng, writer);
         writer.close();
 
-        Assert.assertTrue(rngProfileValidator.validateRNG(rngProfile, ""));
+        Assert.assertTrue(manifestValidator
+            .checkFileRNG(PropertiesUtils.getResourceAsStream("manifests/manifestOK.xml"), rngProfile));
     }
 }

@@ -43,9 +43,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileType;
@@ -53,12 +52,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NoticeUtils {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(NoticeUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoticeUtils.class);
 
     private NoticeUtils() {
     }
@@ -77,31 +75,22 @@ public class NoticeUtils {
             profileResponse.setType(getFileType(notice));
             profileResponse.setName(notice.getIdentifier());
             profileResponse.setNotice(getNoticeFromPUA(new JSONObject(notice.serialiseString())));
-        } catch (JsonProcessingException e) {
-            LOGGER.info("Error while convert notice to profileResponse {}", notice);
         } catch (IOException e) {
-            LOGGER.info("Error while convert notice to profileResponse {}", notice);
+            LOGGER.debug("Error while convert notice to profileResponse {}", notice);
         }
 
         return profileResponse;
     }
 
-    public static ArrayList<String> convert(JSONArray jsonArray) throws JsonProcessingException {
-        ArrayList<String> list = new ArrayList<String>();
+    public static List<String> convert(JSONArray jsonArray) throws JsonProcessingException {
+        List<String> list;
         ObjectMapper objectMapper = new ObjectMapper();
-        list = (ArrayList<String>) objectMapper.readValue(jsonArray.toString(), new TypeReference<List<String>>() {
+        list = objectMapper.readValue(jsonArray.toString(), new TypeReference<>() {
         });
         return list;
     }
 
     public static ProfileType getFileType(Notice notice) {
         return notice.getPath() != null && notice.getControlSchema() == null ? ProfileType.PA : ProfileType.PUA;
-    }
-
-    public static String serialiseString(Object o) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new AfterburnerModule());
-        String json = mapper.writeValueAsString(o);
-        return json;
     }
 }

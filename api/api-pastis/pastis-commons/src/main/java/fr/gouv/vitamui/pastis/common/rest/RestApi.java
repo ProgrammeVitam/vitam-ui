@@ -43,6 +43,8 @@ package fr.gouv.vitamui.pastis.common.rest;
  */
 public class RestApi {
 
+    private RestApi(){}
+
     // Return
     public static final String PASTIS_GET_ALL_PROFILES = "/getprofiles";
     public static final String PASTIS_UPLOAD_PROFILE = "/profile";

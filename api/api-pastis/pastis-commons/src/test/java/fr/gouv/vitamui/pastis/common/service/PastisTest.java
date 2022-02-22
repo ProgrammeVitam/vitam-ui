@@ -35,21 +35,21 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-package fr.gouv.vitamui.pastis.server.service;
+package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
 import fr.gouv.vitamui.pastis.common.util.PastisGetXmlJsonTree;
 import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
@@ -62,11 +62,10 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ActiveProfiles("dev")
+@TestPropertySource(locations = "/application-test.yml")
 public class PastisTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PastisTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElementRNG.class);
 
     public PastisMarshaller pastisMarshaller = new PastisMarshaller();
 
@@ -105,7 +104,7 @@ public class PastisTest {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
 
         xmlReader.parse(loader.getResource(this.rngFileName).toURI().toString());
-        String jsonTree = getJson.getJsonParsedTreeTest(handler.elementRNGRoot);
+        String jsonTree = getJson.getJsonParsedTreeTest(handler.getElementRNGRoot());
 
         Assert.assertNotNull("JSON profile generated successfully", jsonTree);
 
