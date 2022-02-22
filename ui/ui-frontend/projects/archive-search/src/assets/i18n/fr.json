@@ -299,15 +299,18 @@
       "UA_SELECTED" :"{{ua_selected}} unités archivistiques séléctionnées",
       "RULES_TO_ADD" : "Règle(s) à ajouter",
       "RULES_TO_UPDATE" : "Règle(s) à modifier",
+      "RULES_TO_DELETE" : "Règle(s) à supprimer",
       "ACTIONS" : {
         "ADD_RULE" : "Ajouter une règle",
         "DELETE_RULE" :"Supprimer une règle",
         "BLOCK_RULE_INHERITANCE" : "Bloquer l’héritage d’une règle",
         "DELETE_BLOCK_RULE_INHERITANCE" : "Supprimer le blocage d’héritage d’une règle",
         "UPDATE_RULE" : "Modifier une règle",
-        "NOT_TO_ADD" : "Action impossible pour ce type de règle : une modification est déjà en cours",
-        "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout est déjà en cours",
-        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible pour ce type de règle : Un sort final est déjà ajouté"
+        "NOT_TO_ADD" : "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
+        "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
+        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible pour ce type de règle : Un sort final est déjà ajouté",
+        "NOT_TO_DELETE" : "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours",
+        "FINAL_ACTION_NOT_TO_DELETE_PROPERTY" : "Vous ne pouvez pas supprimer le sort final d'une règle DUA"
 
       },
       "MORE_ACTIONS" : {

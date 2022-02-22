@@ -74,7 +74,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   };
   private ruleCategoryDuaActionsToUpdate: RuleCategoryAction = {
     rules: [],
-    finalAction: '',
+  };
+  private ruleCategoryDuaActionsToDelete: RuleCategoryAction = {
+    rules: [],
   };
   actionSelected: string;
 
@@ -90,17 +92,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
-  ruleCategorySelected: string;
-  isRuleCategorySelected = false;
+
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
 
+  isRuleCategorySelected = false;
   isAddValidActions = false;
   isUpdateValidActions = false;
   isAddPropertyValidActions = false;
   isUpdateValidActionsWithProperty = false;
+  isDeleteValidActions = false;
+  isDeleteValidActionsWithProperty = false;
+  isDeletePropertyDisabled = false;
+
   messageNotUpdate: string;
   messageNotAdd: string;
+  ruleCategorySelected: string;
   messageNotAddProperty: string;
+  messageNotDelete: string;
+  messageNotToDeleteProperty: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -123,7 +132,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            rule.actionType === RuleActionsEnum.ADD_RULES
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isUpdateValidActionsWithProperty =
         data.filter(
@@ -137,13 +146,28 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
-            rule.actionType === RuleActionsEnum.UPDATE_RULES
+            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isAddPropertyValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
             rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+      this.isDeleteValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+        ).length !== 0;
+
+      this.isDeleteValidActionsWithProperty =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length === 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
     });
@@ -165,6 +189,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
     this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
     this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
+    this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
+    this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
   }
 
   initializeParameters() {
@@ -184,6 +210,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   }
 
   selectRule(rule: any) {
+    this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
+
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.length - 1;
@@ -197,7 +225,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   loadCriteriaSearchDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
       this.criteriaSearchDSLQuery = {
-        criteriaList: response.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+        criteriaList: response?.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
         pageNumber: response?.pageNumber,
         size: response?.size,
         sortingCriteria: response?.sortingCriteria,
@@ -272,6 +300,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
     const actionUpdateOnRules: any = {};
+    const actionDeleteOnRules: any = {};
 
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
@@ -301,7 +330,19 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
           actionUpdateOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToUpdate?.rules,
-            finalAction: null,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
           };
         }
       }
@@ -310,7 +351,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
       update: this.objectToArray(actionUpdateOnRules),
-      delete: [],
+      delete: this.objectToArray(actionDeleteOnRules),
     };
 
     this.showConfirmRuleActionsDialogSuscription = dialogRef
