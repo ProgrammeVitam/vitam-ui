@@ -153,7 +153,7 @@ public final class IamPasswordManagementServiceTest extends BaseWebflowActionTes
         UserDto userDto =new UserDto();
         userDto.setLastname("ADMIN");
         when(casExternalRestClient.getUserByEmail(any(ExternalHttpContext.class), eq(EMAIL), any(Optional.class))).thenReturn(userDto);
-        val utils = new Utils(null, 0, null, null);
+        val utils = new Utils(null, 0, null, null, "");
         service = new IamPasswordManagementService(passwordManagementProperties, null, null, null, casExternalRestClient, providersService, identityProviderHelper, null, utils, null, passwordValidator, passwordConfiguration);
         final Map<String, AuthenticationHandlerExecutionResult> successes = new HashMap<>();
         successes.put("fake", null);
