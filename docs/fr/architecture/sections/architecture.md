@@ -1090,6 +1090,8 @@ La journalisation des événements VITAMUI a pour objectifs :
 
 ### Base iam
 
+![Schéma des relations entre les collections de la base IAM](../images/VitamUI-iam_database.png)
+
 * Collections
   * applications
   * customers
