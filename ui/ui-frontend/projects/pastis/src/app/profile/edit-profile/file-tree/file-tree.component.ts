@@ -402,7 +402,6 @@ export class FileTreeComponent implements OnDestroy {
     newAttributeNode.parent = parent;
     parent.children.push(newAttributeNode);
     this.parentNodeMap.set(newAttributeNode, parent);
-    console.log("Parent of attribute after insert is now : ", parent.children);
   }
 
   // @ts-ignore
