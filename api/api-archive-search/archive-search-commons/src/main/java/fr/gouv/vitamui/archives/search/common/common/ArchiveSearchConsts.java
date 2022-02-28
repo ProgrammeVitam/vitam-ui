@@ -38,6 +38,7 @@ public class ArchiveSearchConsts {
     public static final String RULE_ID_FIELD = "RuleId";
     public static final String RULE_TYPE_FIELD = "RuleType";
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
+    public static final String ARCHIVE_UNIT_INGEST = "INGEST";
 
     public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION =
         "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION";

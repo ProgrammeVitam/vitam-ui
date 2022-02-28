@@ -1,10 +1,18 @@
 {
   "$and": [
     {
-      "$or": [
-        {
+      "$or": [ {
+        "$and" : [
+          {
+            "$eq" : {
+              "#unitType": "INGEST"
+            }
+          },
+          {
             "$exists": "#object"
-        },
+          }
+        ]
+      },
         {
           "$eq": {
             "#unitType": "HOLDING_UNIT"

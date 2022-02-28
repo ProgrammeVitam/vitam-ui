@@ -273,12 +273,22 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES, ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT, ArchiveSearchConsts.CriteriaOperators.EQ));
                         break;
                     case "ARCHIVE_UNIT_WITH_OBJECTS" :
-                        subQueryOr
+                        BooleanQuery subQueryAndForIngestWithObject = and();
+
+                        subQueryAndForIngestWithObject
+                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES, ArchiveSearchConsts.ARCHIVE_UNIT_INGEST, ArchiveSearchConsts.CriteriaOperators.EQ));
+                        subQueryAndForIngestWithObject
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value, ArchiveSearchConsts.CriteriaOperators.EXISTS));
+                        subQueryOr.add(subQueryAndForIngestWithObject);
                         break;
                     case "ARCHIVE_UNIT_WITHOUT_OBJECTS" :
-                        subQueryOr
+                        BooleanQuery subQueryAndForIngestWithoutObjects = and();
+
+                        subQueryAndForIngestWithoutObjects
+                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES, ArchiveSearchConsts.ARCHIVE_UNIT_INGEST, ArchiveSearchConsts.CriteriaOperators.EQ));
+                        subQueryAndForIngestWithoutObjects
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value, ArchiveSearchConsts.CriteriaOperators.MISSING));
+                        subQueryOr.add(subQueryAndForIngestWithoutObjects);
                         break;
                     default:
                         LOGGER.error("Can not find binding for value: {}", searchValues);

@@ -55,6 +55,8 @@ import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 public class ArchivesSearchAppraisalQueryBuilderServiceTest {
@@ -88,7 +90,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
 
     @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -100,7 +102,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
+    void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
@@ -112,7 +114,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaOnDate()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaOnDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -131,13 +133,13 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         String queryFileStr = loadFileContent("one-date-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -159,13 +161,13 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("interval-date-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -186,12 +188,12 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-rule-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -221,13 +223,13 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-inherited-only-rule-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -264,13 +266,13 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-inherited-or-scoped-rule-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesInWaitingToCalculate()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesInWaitingToCalculate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -307,12 +309,12 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-waiting-to-recalculate-rule-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasNoRule()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -349,12 +351,12 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-no-rules-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -392,12 +394,12 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-final-action-elimination-rules-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -424,16 +426,16 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
-        Assertions.assertEquals(query.getQueries().size(), 2);
+        assertThat(query.getQueries().size()).isEqualTo(2);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("identifier-final-action-keep-rules-query.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery() throws Exception {
+    void testFillQueryFromCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -457,7 +459,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
+    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
         throws InvalidCreateOperationException, IOException  {
 
         //Given
@@ -476,16 +478,17 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
-        Assertions.assertEquals(query.getQueries().size(), 1);
+        //assertEquals(query.getQueries().size(), 1);
+        assertThat(query.getQueries().size()).isEqualTo(1);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
         String queryFileStr = loadFileContent("vitam_query_with_start_date.txt");
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+        assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery() throws Exception {
+    void testFillQueryFromCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -508,7 +511,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery() throws Exception {
+    void testFillQueryFromCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -531,7 +534,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     }
 
     @Test
-    public void testFillQueryFromCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery() throws Exception {
+    void testFillQueryFromCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery() throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
