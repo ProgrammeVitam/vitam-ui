@@ -30,7 +30,7 @@ package fr.gouv.vitamui.archives.search.common.common;
 import lombok.Data;
 
 @Data
-public class AppraisalRuleOriginRuleCriteria {
+public class MgtRuleOriginRuleCriteria {
     private Boolean waitingToRecalculate;
     private Boolean inheritAtLeastOneRule;
     private Boolean hasAtLeastOneRule;

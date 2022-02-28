@@ -39,7 +39,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,40 +61,33 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-
     public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConsts.CriteriaOperators operator,
         String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
         if (searchKey == null || "".equals(searchKey.trim())) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
-            if (CollectionUtils.isEmpty(searchValues)) {
-                //the case of empty list
-                query.add(buildSubQueryByOperator(searchKey, null, operator));
-            } else if (searchValues.size() > 1) {
-                BooleanQuery subQueryOr = or();
-                BooleanQuery subQueryAnd = and();
-                //The case of multiple values
-                if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
-                    for (String value : searchValues) {
-                        subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
-
-                    }
-                    query.add(subQueryAnd);
+        if (CollectionUtils.isEmpty(searchValues)) {
+            //the case of empty list
+            query.add(buildSubQueryByOperator(searchKey, null, operator));
+        } else if (searchValues.size() > 1) {
+            BooleanQuery subQueryOr = or();
+            BooleanQuery subQueryAnd = and();
+            //The case of multiple values
+            if (operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+                for (String value : searchValues) {
+                    subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
-                else {
-                    for (String value : searchValues) {
-                        subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
-                    }
-                    query.add(subQueryOr);
+                query.add(subQueryAnd);
+            } else {
+                for (String value : searchValues) {
+                    subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
-
-            } else if (searchValues.size() == 1) {
-                //the case of one value
-                query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+                query.add(subQueryOr);
             }
-
-
-
+        } else if (searchValues.size() == 1) {
+            //the case of one value
+            query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+        }
     }
 
     public static Query buildSubQueryByOperator(String searchKey, String value,
@@ -124,6 +116,9 @@ public class VitamQueryHelper {
                 break;
             case EXISTS:
                 criteriaSubQuery = exists(searchKey);
+                break;
+            case NOT_EXISTS:
+                criteriaSubQuery = missing(searchKey);
                 break;
             case MISSING:
                 criteriaSubQuery = missing(searchKey);

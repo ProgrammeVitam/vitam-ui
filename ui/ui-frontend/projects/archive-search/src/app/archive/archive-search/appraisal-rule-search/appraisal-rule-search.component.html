@@ -15,13 +15,14 @@
           label="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ID_DUA' | translate }}"
           minlength="1"
         >
-          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}
+          </vitamui-common-field-error>
           <vitamui-common-field-error errorKey="ruleIdPattern"
-            >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
+          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
           </vitamui-common-field-error>
 
           <vitamui-common-field-error errorKey="ruleIdExists"
-            >{{ 'ARCHIVE_SEARCH.RULE.CODE_NOT_EXIST' | translate }}
+          >{{ 'ARCHIVE_SEARCH.RULE.CODE_NOT_EXIST' | translate }}
           </vitamui-common-field-error>
         </vitamui-common-editable-input>
       </div>
@@ -50,7 +51,7 @@
             *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value; else showBeginDtDua"
             (click)="pickerBeginDua.open()"
             class="search-date-label"
-            >{{
+          >{{
               (endDateInterval
                 ? 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_BEGIN'
                 : 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_EQUAL'
@@ -58,8 +59,8 @@
             }}</span
           >
           <ng-template #showBeginDtDua
-            ><span (click)="pickerBeginDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | date: 'dd/MM/yyyy' }}
+          ><span (click)="pickerBeginDua.open()"
+          >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -94,11 +95,11 @@
             *ngIf="!appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value; else showEndDtDua"
             (click)="pickerEndDua.open()"
             class="search-date-label"
-            >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
+          >{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.END_DATE_DUA_END' | translate }}</span
           >
           <ng-template #showEndDtDua
-            ><span (click)="pickerEndDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | date: 'dd/MM/yyyy' }}
+          ><span (click)="pickerEndDua.open()"
+          >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | date: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -144,9 +145,9 @@
           <label class="criteria-checkbox-choice">
             <input
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE', $event)"
-              id="HAS_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE')"
+              (click)="checkBoxChange('ORIGIN_HAS_AT_LEAST_ONE', $event)"
+              id="HAS_AT_LEAST_ONE_RULE_ORIGIN"
+              [checked]="appraisalAdditionalCriteria.get('ORIGIN_HAS_AT_LEAST_ONE')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_AT_LEAST_ONE_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -155,9 +156,9 @@
           <label class="criteria-checkbox-choice">
             <input
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
-              id="INHERITE_AT_LEAST_ONE_APPRAISAL_RULE_ORIGIN"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE')"
+              (click)="checkBoxChange('ORIGIN_INHERITE_AT_LEAST_ONE', $event)"
+              id="INHERITE_AT_LEAST_ONE_RULE_ORIGIN"
+              [checked]="appraisalAdditionalCriteria.get('ORIGIN_INHERITE_AT_LEAST_ONE')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.INHERITE_AT_LEAST_ONE_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -166,10 +167,10 @@
         <div class="row">
           <label class="criteria-checkbox-choice">
             <input
-              id="HAS_NO_APPRAISAL_RULE_ORIGIN"
+              id="HAS_NO_RULE_ORIGIN"
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_HAS_NO_ONE')"
+              (click)="checkBoxChange('ORIGIN_HAS_NO_ONE', $event)"
+              [checked]="appraisalAdditionalCriteria.get('ORIGIN_HAS_NO_ONE')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.HAS_NO_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -177,10 +178,10 @@
         <div class="row">
           <label class="criteria-checkbox-choice">
             <input
-              id="WAITING_TO_RE_CALCULATE_APPRAISAL_RULE_ORIGIN"
+              id="WAITING_TO_RE_CALCULATE_RULE_ORIGIN"
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE')"
+              (click)="checkBoxChange('ORIGIN_WAITING_RECALCULATE', $event)"
+              [checked]="appraisalAdditionalCriteria.get('ORIGIN_WAITING_RECALCULATE')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.ORIGIN.WAITING_TO_RE_CALCULATE_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -196,10 +197,10 @@
         <div class="row">
           <label class="criteria-checkbox-choice">
             <input
-              id="HAS_APPRAISAL_RULE_FINAL_ACTION_TYPE"
+              id="HAS_FINAL_ACTION_TYPE"
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION')"
+              (click)="checkBoxChange('FINAL_ACTION_HAS_FINAL_ACTION', $event)"
+              [checked]="appraisalAdditionalCriteria.get('FINAL_ACTION_HAS_FINAL_ACTION')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.HAS_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -208,9 +209,9 @@
           <label class="criteria-checkbox-choice">
             <input
               type="checkbox"
-              id="INHERITE_APPRAISAL_RULE_FINAL_ACTION_TYPE"
-              (click)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION')"
+              id="INHERITE_FINAL_ACTION_TYPE"
+              (click)="checkBoxChange('FINAL_ACTION_INHERITE_FINAL_ACTION', $event)"
+              [checked]="appraisalAdditionalCriteria.get('FINAL_ACTION_INHERITE_FINAL_ACTION')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION_TYPE.INHERITE_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -227,9 +228,9 @@
           <label class="criteria-checkbox-choice">
             <input
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION', $event)"
-              id="ELIMINATION_APPRAISAL_RULE_FINAL_ACTION"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION')"
+              (click)="checkBoxChange('FINAL_ACTION_TYPE_ELIMINATION', $event)"
+              id="ELIMINATION_FINAL_ACTION"
+              [checked]="appraisalAdditionalCriteria.get('FINAL_ACTION_TYPE_ELIMINATION')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.ELIMINATION_APPRAISAL_RULE' | translate }}</span>
           </label>
@@ -239,10 +240,10 @@
           <label class="criteria-checkbox-choice">
             <input
               type="checkbox"
-              id="KEEP_APPRAISAL_RULE_FINAL_ACTION"
+              id="KEEP_FINAL_ACTION"
               type="checkbox"
-              (click)="checkBoxChange('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP', $event)"
-              [checked]="appraisalAdditionalCriteria.get('APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP')"
+              (click)="checkBoxChange('FINAL_ACTION_TYPE_KEEP', $event)"
+              [checked]="appraisalAdditionalCriteria.get('FINAL_ACTION_TYPE_KEEP')"
             />
             <span>{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.FINAL_ACTION.KEEP_APPRAISAL_RULE' | translate }}</span>
           </label>

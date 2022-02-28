@@ -39,10 +39,13 @@ public class ArchiveSearchConsts {
     public static final String RULE_TYPE_FIELD = "RuleType";
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
     public static final String ARCHIVE_UNIT_INGEST = "INGEST";
+    public static final String ACCESS_RULE_TYPE = "AccessRule";
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION =
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP = "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP";
+
+    public final static String FINAL_ACTION_TYPE_ELIMINATION =
+        "FINAL_ACTION_TYPE_ELIMINATION";
+    public final static String FINAL_ACTION_TYPE_KEEP = "FINAL_ACTION_TYPE_KEEP";
+
 
     public enum CriteriaDataType {
         STRING, DATE, INTERVAL
@@ -50,34 +53,39 @@ public class ArchiveSearchConsts {
 
 
     public enum CriteriaCategory {
-        FIELDS, APPRAISAL_RULE, NODES
+        FIELDS, APPRAISAL_RULE, ACCESS_RULE, NODES
     }
 
 
-    public enum AppraisalRuleOrigin {
-        INHERITED, SCOPED, ANY
+    public enum RuleOrigin {
+        INHERITED, SCOPED
     }
 
 
     public enum AppraisalRuleOriginValues {
-        APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE, APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE, APPRAISAL_RULE_ORIGIN_HAS_NO_ONE, APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE
+        ORIGIN_WAITING_RECALCULATE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_HAS_AT_LEAST_ONE
     }
 
 
+    public enum AccessRuleOriginValues {
+        ACCESS_RULE_ORIGIN_WAITING_RECALCULATE, ACCESS_RULE_ORIGIN_INHERITE_AT_LEAST_ONE, ACCESS_RULE_ORIGIN_HAS_NO_ONE, ACCESS_RULE_ORIGIN_HAS_AT_LEAST_ONE
+    }
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION =
-        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION =
-        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION";
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION = "APPRAISAL_RULE_FINAL_ACTION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE = "APPRAISAL_RULE_FINAL_ACTION_TYPE";
-    public final static String APPRAISAL_RULE_ORIGIN = "APPRAISAL_RULE_ORIGIN";
+    public final static String FINAL_ACTION_INHERITE_FINAL_ACTION =
+        "FINAL_ACTION_INHERITE_FINAL_ACTION";
+    public final static String FINAL_ACTION_HAS_FINAL_ACTION =
+        "FINAL_ACTION_HAS_FINAL_ACTION";
 
-    public final static String APPRAISAL_RULE_IDENTIFIER = "APPRAISAL_RULE_IDENTIFIER";
-    public final static String APPRAISAL_RULE_TITLE = "APPRAISAL_RULE_TITLE";
-    public final static String APPRAISAL_RULE_END_DATE = "APPRAISAL_RULE_END_DATE";
-    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+    public final static String RULE_FINAL_ACTION = "FINAL_ACTION";
+    public final static String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
+
+    public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
+    public final static String RULE_TITLE = "RULE_TITLE";
+    public final static String RULE_END_DATE = "RULE_END_DATE";
+    public final static String RULE_START_DATE = "RULE_START_DATE";
+
+
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
@@ -100,40 +108,9 @@ public class ArchiveSearchConsts {
     }
 
 
-    public static Map<String, String> SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#management.AppraisalRule.Rules.Rule",
-            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#management.AppraisalRule.Rules.EndDate"
-        );
-    public static Map<String, String> INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#computedInheritedRules.AppraisalRule.Rules.Rule",
-            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#computedInheritedRules.AppraisalRule.Rules.EndDate"
-        );
-
-    public static String APPRAISAL_RULE_ORIGIN_INHERITED_FIELD = "#computedInheritedRules.AppraisalRule.Rules.Rule";
-    public static String APPRAISAL_RULE_ORIGIN_SCOPED_FIELD = "#management.AppraisalRule.Rules.Rule";
-
-
-    public static Map<String, String> APPRAISAL_MGT_RULES_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE.name(),
-            "#validComputedInheritedRules",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_NO_ONE.name(),
-            "#computedInheritedRules.AppraisalRule",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name(),
-            "#computedInheritedRules.AppraisalRule",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE.name(),
-            "#management.AppraisalRule.Rules.Rule"
-        );
-
-    public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION,
-            "#computedInheritedRules.AppraisalRule.FinalAction",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION, "#management.AppraisalRule.FinalAction"
-        );
-
-
     public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP, "Keep"
+        Map.of(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
+            ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP, "Keep"
         );
 
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
@@ -145,7 +122,7 @@ public class ArchiveSearchConsts {
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
             "SP_LABEL", "originating_agency_label",
-            "ARCHIVE_UNIT_HOLDING_UNIT","#unitType"
+            "ARCHIVE_UNIT_HOLDING_UNIT", "#unitType"
         );
 
 

@@ -25,16 +25,16 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archive.internal.server.service;
+package fr.gouv.vitamui.archives.search.common.common;
 
-import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
-import java.util.List;
-
-public interface IArchivesSearchAppraisalQueryBuilderService {
-    void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList)
-        throws InvalidParseOperationException, InvalidCreateOperationException;
+@Data
+@AllArgsConstructor
+public class ArchiveSearchFieldMapping {
+    private String rules;
+    private String ruleIdentifier;
+    private String ruleEndDate;
+    private String inheritanceOrigin;
 }

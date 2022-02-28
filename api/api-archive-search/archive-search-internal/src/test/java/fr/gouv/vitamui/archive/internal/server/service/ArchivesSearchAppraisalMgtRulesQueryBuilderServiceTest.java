@@ -59,15 +59,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-public class ArchivesSearchAppraisalQueryBuilderServiceTest {
+public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalQueryBuilderServiceTest.class);
+        VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class);
 
-    public static String SEARCH_QUERY_WITH_UNIT_TYPE = "data/queries/search_query_with_unit_type.json";
-    public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER = "data/queries/search_query_with_object_parameter.json";
+    public static String SEARCH_QUERY_WITH_UNIT_TYPE = "data/queries/appraisal/search_query_with_unit_type.json";
+    public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER =
+        "data/queries/appraisal/search_query_with_object_parameter.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE =
-        "data/queries/search_query_with_object_and_unit_type.json";
+        "data/queries/appraisal/search_query_with_object_and_unit_type.json";
     public static String ARCHIVE_UNIT_WITH_OBJECTS = "ARCHIVE_UNIT_WITH_OBJECTS";
     public static String ARCHIVE_UNIT_WITHOUT_OBJECTS = "ARCHIVE_UNIT_WITHOUT_OBJECTS";
     public static String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
@@ -75,7 +76,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
 
     @InjectMocks
-    private ArchivesSearchAppraisalQueryBuilderService archivesSearchAppraisalQueryBuilderService;
+    private ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
 
     @InjectMocks
     private ArchivesSearchFieldsQueryBuilderService archivesSearchFieldsQueryBuilderService;
@@ -84,42 +85,42 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
     @BeforeEach
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archivesSearchAppraisalQueryBuilderService = new ArchivesSearchAppraisalQueryBuilderService();
+        archivesSearchManagementRulesQueryBuilderService = new ArchivesSearchManagementRulesQueryBuilderService();
         archivesSearchFieldsQueryBuilderService = new ArchivesSearchFieldsQueryBuilderService();
     }
 
 
     @Test
-    void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
+    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, null);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, null);
 
         //then
         Assertions.assertTrue(query.getQueries().isEmpty());
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
+    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
         //Given
         //When
         BooleanQuery query = or();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, List.of());
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, List.of());
 
         //then
         Assertions.assertTrue(query.getQueries().isEmpty());
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaOnDate()
+    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaOnDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_END_DATE);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-02T02:50:12.208Z", null)));
         searchCriteriaEltDto.setDataType(ArchiveSearchConsts.CriteriaDataType.INTERVAL.name());
@@ -127,24 +128,24 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         criteriaList.add(searchCriteriaEltDto);
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent("one-date-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/one-date-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
+    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaIntervalDate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_END_DATE);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto
             .setValues(List.of(new CriteriaValue("2011-11-02T02:50:12.208Z", "2021-11-02T02:50:12.208Z")));
@@ -153,26 +154,26 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("interval-date-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/interval-date-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
+    public void testFillQueryFromCriteriaListWhenAppraisalMgtRulesSimpleCriteriaRuleCode()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -180,25 +181,25 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-rule-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -207,7 +208,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto
             .setCriteria(
-                ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name());
+                ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -215,26 +216,26 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-inherited-only-rule-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-inherited-only-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesWithOnlyInheritedOrScopedRules()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -242,7 +243,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -250,7 +251,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -258,26 +259,26 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-inherited-or-scoped-rule-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-inherited-or-scoped-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesInWaitingToCalculate()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesInWaitingToCalculate()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -285,7 +286,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -293,7 +294,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_WAITING_RECALCULATE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -301,25 +302,25 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-waiting-to-recalculate-rule-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-waiting-to-recalculate-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasNoRule()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasNoRule()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -327,7 +328,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -335,7 +336,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_NO_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_HAS_NO_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -343,25 +344,25 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-no-rules-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-no-rules-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionElimination()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -369,7 +370,7 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name());
+            ArchiveSearchConsts.AppraisalRuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -377,34 +378,34 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE);
+            ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto
-            .setValues(List.of(new CriteriaValue(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION)));
+            .setValues(List.of(new CriteriaValue(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-final-action-elimination-rules-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-final-action-elimination-rules-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasFinalActionKeep()
         throws InvalidCreateOperationException, IOException {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -412,30 +413,31 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE);
+            ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto
-            .setValues(List.of(new CriteriaValue(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP)));
+            .setValues(List.of(new CriteriaValue(ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP)));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         //When
         BooleanQuery query = and();
-        archivesSearchAppraisalQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
         //then
 
         Assertions.assertFalse(query.getQueries().isEmpty());
-        assertThat(query.getQueries().size()).isEqualTo(2);
+        Assertions.assertEquals(query.getQueries().size(), 2);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("identifier-final-action-keep-rules-query.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/identifier-final-action-keep-rules-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery() throws Exception {
+    public void testfillQueryFromAppraisalCriteriaListWhenEliminationAnalysisTechnicalIdentifierThenReturnTheExactQuery()
+        throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
@@ -453,19 +455,22 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
         JsonNode expectedQuery =
-            JsonHandler.getFromFile(PropertiesUtils.findFile("data/queries/elimination_analysis_search.json"));
-        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+            JsonHandler
+                .getFromFile(PropertiesUtils.findFile("data/queries/appraisal/elimination_analysis_search.json"));
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
-        throws InvalidCreateOperationException, IOException  {
+    public void testfillQueryFromAppraisalCriteriaListWhenAppraisalMgtRulesHasStartDateForControlThenReturnTheExactQuery()
+        throws InvalidCreateOperationException, IOException {
 
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_START_DATE);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_START_DATE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-08T23:00:00.000Z")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -478,23 +483,24 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
 
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
-        //assertEquals(query.getQueries().size(), 1);
-        assertThat(query.getQueries().size()).isEqualTo(1);
+        Assertions.assertEquals(query.getQueries().size(), 1);
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("vitam_query_with_start_date.txt");
-        assertEquals(queryStr.trim(), queryFileStr.trim());
+        String queryFileStr = loadFileContent("appraisal/vitam_query_with_start_date.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery() throws Exception {
+    public void testfillQueryFromAppraisalCriteriaListWhenArchiveUnitTypeIsPresentThenReturnTheExactQuery()
+        throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT), new CriteriaValue(ARCHIVE_UNIT_FILING_UNIT)));
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT), new CriteriaValue(ARCHIVE_UNIT_FILING_UNIT)));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
@@ -506,18 +512,22 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         JsonNode expectedQuery =
             JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_UNIT_TYPE));
-        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery() throws Exception {
+    public void testfillQueryFromAppraisalCriteriaListWhenObjectParameterIsPresentThenReturnTheExactQuery()
+        throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT)));
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_HOLDING_UNIT)));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
@@ -529,18 +539,22 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         JsonNode expectedQuery =
             JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_OBJECT_PARAMETER));
-        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
 
     }
 
     @Test
-    void testFillQueryFromCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery() throws Exception {
+    public void testfillQueryFromAppraisalCriteriaListWhenObjectParameterAndUnitTypeArePresentThenReturnTheExactQuery()
+        throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_WITHOUT_OBJECTS)));
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue(ARCHIVE_UNIT_WITH_OBJECTS), new CriteriaValue(ARCHIVE_UNIT_WITHOUT_OBJECTS)));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
@@ -552,12 +566,14 @@ public class ArchivesSearchAppraisalQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         JsonNode expectedQuery =
             JsonHandler.getFromFile(PropertiesUtils.findFile(SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE));
-        JSONAssert.assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(), true);
+        JSONAssert
+            .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
+                true);
 
     }
 
     private String loadFileContent(String filename) throws IOException {
-        InputStream inputStream = ArchivesSearchAppraisalQueryBuilderServiceTest.class.getClassLoader()
+        InputStream inputStream = ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest.class.getClassLoader()
             .getResourceAsStream("data/queries/" + filename);
         String fileContent = readFromInputStream(inputStream);
         return fileContent;

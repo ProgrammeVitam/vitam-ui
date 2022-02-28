@@ -65,10 +65,11 @@ import { ArchivePreviewComponent } from './archive-preview/archive-preview.compo
 import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { AccessRuleSearchComponent } from './archive-search/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
-import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
+import { RuleValidator } from './archive-search/rule.validator';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
@@ -81,11 +82,11 @@ import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/fi
 import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
-import { ManagementRulesComponent } from './management-rules/management-rules.component';
+import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
-import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 
 @NgModule({
   imports: [
@@ -138,6 +139,7 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     SearchCriteriaListComponent,
     CriteriaSearchComponent,
     AppraisalRuleSearchComponent,
+    AccessRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,

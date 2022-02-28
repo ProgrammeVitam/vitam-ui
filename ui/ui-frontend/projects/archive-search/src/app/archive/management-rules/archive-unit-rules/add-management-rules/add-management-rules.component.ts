@@ -49,9 +49,9 @@ import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
+const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
 const APPRAISAL_RULE_START_DATE = 'APPRAISAL_RULE_START_DATE';
-const APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE = 'APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE';
+const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
 @Component({
   selector: 'app-add-management-rules',
@@ -181,14 +181,14 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
 
     const onlyManagementRules: SearchCriteriaEltDto = {
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
-      criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
+      criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
       values: [{ id: 'true', value: 'true' }],
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_IDENTIFIER,
+      criteria: RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,
@@ -210,7 +210,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
     if (this.ruleDetailsForm.get('startDate').value) {
       const criteriaWithId: SearchCriteriaEltDto = {
-        criteria: APPRAISAL_RULE_IDENTIFIER,
+        criteria: RULE_IDENTIFIER,
         values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
         category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
         operator: CriteriaOperator.EQ,
@@ -230,7 +230,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       };
       const onlyManagementRules: SearchCriteriaEltDto = {
         category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
-        criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
+        criteria: ORIGIN_HAS_AT_LEAST_ONE,
         dataType: CriteriaDataType.STRING,
         operator: CriteriaOperator.EQ,
         values: [{ id: 'true', value: 'true' }],

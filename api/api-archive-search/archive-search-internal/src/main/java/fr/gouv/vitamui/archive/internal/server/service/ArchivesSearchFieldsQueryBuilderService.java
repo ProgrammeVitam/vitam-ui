@@ -30,6 +30,7 @@ import fr.gouv.vitam.common.database.builder.query.Query;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -47,11 +48,10 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
  * Service to build DSL Query for simple fields criteria for extracting archive units
  */
 @Service
-public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchAppraisalQueryBuilderService {
+public class ArchivesSearchFieldsQueryBuilderService {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchFieldsQueryBuilderService.class);
 
-    @Override
     public void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList)
         throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(criteriaList)) {
@@ -61,49 +61,49 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                     throw new IllegalArgumentException("Field not mapped correctly  ");
                 }
                 switch (searchCriteria.getCriteria()) {
-                    case ArchiveSearchConsts.TITLE_OR_DESCRIPTION :
+                    case ArchiveSearchConsts.TITLE_OR_DESCRIPTION:
                         queryToFill.add(buildTitleAndDescriptionQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID :
+                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID:
                         queryToFill.add(buildEliminationAnalysisSearchQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.TITLE_CRITERIA :
+                    case ArchiveSearchConsts.TITLE_CRITERIA:
                         queryToFill.add(buildTitleQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
-                    case ArchiveSearchConsts.DESCRIPTION_CRITERIA :
+                    case ArchiveSearchConsts.DESCRIPTION_CRITERIA:
                         queryToFill.add(buildDescriptionQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.APPRAISAL_RULE_START_DATE :
+                    case ArchiveSearchConsts.RULE_START_DATE:
                         queryToFill.add(buildRuleStartDateQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA :
+                    case ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA:
                         queryToFill.add(buildArchiveUnitTypeQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList())));
                         break;
 
-                    case ArchiveSearchConsts.DESCRIPTION_LEVEL_CRITERIA :
+                    case ArchiveSearchConsts.DESCRIPTION_LEVEL_CRITERIA:
                         queryToFill.add(buildArchiveUnitDescriptionLevelQuery(
-                            searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
@@ -116,16 +116,17 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
 
                         VitamQueryHelper.addParameterCriteria(queryToFill,
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
-                            mappedCriteriaName, searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                            mappedCriteriaName,
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()));
                         break;
                 }
                 if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
                     queryToFill.add(buildStartDateEndDateQuery(searchCriteria.getCriteria(),
-                        searchCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                        searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                             Collectors.toList()),
                         ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
-                    }
+                }
             }
         }
     }
@@ -205,7 +206,8 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                     LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
                         .withMinute(0).withSecond(0).withNano(0);
                 subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
+                    .add(VitamQueryHelper.buildSubQueryByOperator(
+                        ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
                         ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
             }
 
@@ -222,7 +224,8 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
                 subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ELIMINATION_GUID, value, operator));
+                    .add(VitamQueryHelper
+                        .buildSubQueryByOperator(ArchiveSearchConsts.ELIMINATION_GUID, value, operator));
             }
             subQueryAnd.add(subQueryOr);
         }
@@ -234,25 +237,29 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         throws InvalidCreateOperationException {
         BooleanQuery subQueryAnd = and();
         BooleanQuery subQueryOr = or();
-        String criteria = ArchiveSearchConsts.START_DATE_CRITERIA.equals(searchCriteria) ?
-            ArchiveSearchConsts.START_DATE :
-            (ArchiveSearchConsts.END_DATE_CRITERIA.equals(searchCriteria) ?
-                ArchiveSearchConsts.END_DATE : null);
-
+        String criteria;
+        switch (searchCriteria) {
+            case ArchiveSearchConsts.START_DATE_CRITERIA:
+                criteria = ArchiveSearchConsts.START_DATE;
+                break;
+            case ArchiveSearchConsts.END_DATE_CRITERIA:
+                criteria = ArchiveSearchConsts.END_DATE;
+                break;
+            default:
+                criteria = null;
+        }
         LOGGER.info("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
-                for (String value : searchValues) {
-                    LocalDateTime searchDate =
-                        LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                            .withMinute(0).withSecond(0).withNano(0);
-                    subQueryOr
-                        .add(VitamQueryHelper.buildSubQueryByOperator(criteria,
-                            ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
-                }
-
-                subQueryAnd.add(subQueryOr);
+            for (String value : searchValues) {
+                LocalDateTime searchDate =
+                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+                        .withMinute(0).withSecond(0).withNano(0);
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(criteria,
+                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(searchDate.plusDays(1)), operator));
+            }
+            subQueryAnd.add(subQueryOr);
         }
-
         return subQueryAnd;
     }
 
@@ -264,15 +271,19 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
                 switch (value) {
-                    case "ARCHIVE_UNIT_FILING_UNIT" :
+                    case "ARCHIVE_UNIT_FILING_UNIT":
                         subQueryOr
-                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES, ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT, ArchiveSearchConsts.CriteriaOperators.EQ));
+                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
+                                ArchiveSearchConsts.ARCHIVE_UNIT_FILING_UNIT,
+                                ArchiveSearchConsts.CriteriaOperators.EQ));
                         break;
-                    case "ARCHIVE_UNIT_HOLDING_UNIT" :
+                    case "ARCHIVE_UNIT_HOLDING_UNIT":
                         subQueryOr
-                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES, ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT, ArchiveSearchConsts.CriteriaOperators.EQ));
+                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES,
+                                ArchiveSearchConsts.ARCHIVE_UNIT_HOLDING_UNIT,
+                                ArchiveSearchConsts.CriteriaOperators.EQ));
                         break;
-                    case "ARCHIVE_UNIT_WITH_OBJECTS" :
+                   case "ARCHIVE_UNIT_WITH_OBJECTS" :
                         BooleanQuery subQueryAndForIngestWithObject = and();
 
                         subQueryAndForIngestWithObject
@@ -281,7 +292,7 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
                             .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.ARCHIVE_UNIT_OBJECTS, value, ArchiveSearchConsts.CriteriaOperators.EXISTS));
                         subQueryOr.add(subQueryAndForIngestWithObject);
                         break;
-                    case "ARCHIVE_UNIT_WITHOUT_OBJECTS" :
+                     case "ARCHIVE_UNIT_WITHOUT_OBJECTS" :
                         BooleanQuery subQueryAndForIngestWithoutObjects = and();
 
                         subQueryAndForIngestWithoutObjects
@@ -310,7 +321,8 @@ public class ArchivesSearchFieldsQueryBuilderService implements IArchivesSearchA
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
                 subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_LEVEL, value, operator));
+                    .add(VitamQueryHelper
+                        .buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_LEVEL, value, operator));
             }
             subQueryAnd.add(subQueryOr);
         }
