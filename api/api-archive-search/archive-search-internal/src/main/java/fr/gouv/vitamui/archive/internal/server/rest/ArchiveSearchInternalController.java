@@ -33,6 +33,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -279,5 +280,20 @@ public class ArchiveSearchInternalController {
                 tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return archiveInternalService.selectUnitWithInheritedRules(searchQuery, vitamContext);
+    }
+
+    @PostMapping(RestApi.RECLASSIFICATION)
+    public ResponseEntity<String> reclassification(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) throws VitamClientException {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, reclassificationCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.reclassification(vitamContext, reclassificationCriteriaDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

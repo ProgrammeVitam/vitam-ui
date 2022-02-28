@@ -71,6 +71,7 @@ import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-se
 import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
+import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
@@ -83,11 +84,12 @@ import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/fi
 import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
+import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
+import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
-import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 
 @NgModule({
   imports: [
@@ -116,7 +118,7 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
-    MatRadioModule,
+    MatRadioModule
   ],
   providers: [
     ArchiveApiService,
@@ -128,6 +130,7 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     RuleValidator,
     ManagementRulesSharedDataService,
     ManagementRulesValidatorService,
+    ArchiveUnitValidatorService
   ],
   declarations: [
     ArchiveComponent,
@@ -147,11 +150,13 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     ArchiveUnitRulesComponent,
     AddUpdatePropertyComponent,
     UpdateUnitRulesComponent,
+    ReclassificationComponent,
+    DeleteUnitRulesComponent,
     ArchiveUnitInformationTabComponent,
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitRulesInformationsTabComponent,
-    DeleteUnitRulesComponent,
+    DeleteUnitRulesComponent
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class ArchiveModule {}

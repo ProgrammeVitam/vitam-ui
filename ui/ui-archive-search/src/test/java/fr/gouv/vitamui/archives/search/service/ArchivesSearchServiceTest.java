@@ -34,6 +34,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
@@ -401,5 +402,21 @@ public class ArchivesSearchServiceTest {
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
             .selectUnitWithInheritedRules(ArgumentMatchers.any(), any(SearchCriteriaDto.class));
+    }
+
+    @Test
+    public void launch_reclassification_should_call_appropriate_rest_client_one_time() {
+        // Given
+        ReclassificationCriteriaDto reclassificationCriteriaDto = new ReclassificationCriteriaDto();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(archiveSearchExternalRestClient.reclassification(any(ReclassificationCriteriaDto.class), ArgumentMatchers.any()))
+            .thenReturn(new ResponseEntity<>(new String(), HttpStatus.OK));
+
+        // When
+        archivesSearchService.reclassification(reclassificationCriteriaDto, context);
+
+        // Then
+        verify(archiveSearchExternalRestClient, Mockito.times(1))
+            .reclassification(any(ReclassificationCriteriaDto.class), ArgumentMatchers.any());
     }
 }

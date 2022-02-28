@@ -325,4 +325,19 @@ public class UnitService {
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }
+
+    /**
+     * reclassification
+     *
+     * @param vitamContext
+     * @param dslQuery
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> reclassification(final VitamContext vitamContext, final JsonNode dslQuery)
+        throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.reclassification(vitamContext, dslQuery);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+    }
 }

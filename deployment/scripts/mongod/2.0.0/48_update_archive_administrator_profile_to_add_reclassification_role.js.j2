@@ -1,0 +1,20 @@
+db = db.getSiblingDB('iam')
+
+print("START_48_update_archive_administrator_profile_to_add_reclassification_role.js");
+
+db.profiles.updateOne({
+   "_id":"system_archive_search_profile_archiviste_administrator"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+             {
+               "name" : "ROLE_RECLASSIFICATION"
+             }
+        	]
+        }
+    }
+});
+
+print("END_48_update_archive_administrator_profile_to_add_reclassification_role.js");

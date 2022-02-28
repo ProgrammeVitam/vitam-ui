@@ -50,6 +50,7 @@ import {
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
@@ -97,7 +98,7 @@ export class ArchiveService extends SearchService<any> {
     return pagedResult;
   }
 
-  private static fetchTitle(title: string, titleInLanguages: any) {
+  public static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
@@ -145,6 +146,10 @@ export class ArchiveService extends SearchService<any> {
     });
 
     return this.sortByTitle(out);
+  }
+
+  public static fetchAuTitle(unit: any) {
+    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
@@ -356,6 +361,12 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
+  }
+
+  reclassification(criteriaDto: ReclassificationCriteriaDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.reclassification(criteriaDto, headers);
   }
 }
 

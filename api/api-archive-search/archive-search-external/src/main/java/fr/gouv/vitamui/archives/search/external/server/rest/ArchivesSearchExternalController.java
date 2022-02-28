@@ -30,6 +30,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -181,5 +182,15 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         return archivesSearchExternalService.selectUnitWithInheritedRules(query);
+    }
+
+
+    @PostMapping(RestApi.RECLASSIFICATION)
+    @Secured(ServicesData.ROLE_RECLASSIFICATION)
+    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", reclassificationCriteriaDto);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
     }
 }

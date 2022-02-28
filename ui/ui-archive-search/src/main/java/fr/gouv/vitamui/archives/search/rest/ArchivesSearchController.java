@@ -27,10 +27,12 @@
 package fr.gouv.vitamui.archives.search.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
@@ -244,5 +246,15 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ResultsDto resultsDto = archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
         return resultsDto;
 
+    }
+
+    @ApiOperation(value = "launch reclassification by criteria")
+    @PostMapping(RestApi.RECLASSIFICATION)
+    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.convertValue(reclassificationCriteriaDto, JsonNode.class);
+        LOGGER.debug("Reclassification query JSON {}", node.toPrettyString());
+        return archivesSearchService.reclassification(reclassificationCriteriaDto, buildUiHttpContext()).getBody();
     }
 }

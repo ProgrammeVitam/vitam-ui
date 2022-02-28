@@ -59,6 +59,9 @@ import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCo
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -311,7 +314,66 @@ public class ArchiveSearchInternalServiceTest {
         Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
     }
 
+    @Test
+    public void testReclassificationThenOK() throws Exception {
+        // Given
+        when(unitService.reclassification(any(), any()))
+            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
 
+        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("CODE1")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        criteriaList.add(agencyCodeCriteria);
+        agencyCodeCriteria = new SearchCriteriaEltDto();
+        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD);
+        agencyCodeCriteria.setValues(List.of(new CriteriaValue("ANY_LABEL")));
+        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+
+        SearchCriteriaEltDto searchCriteriaElementsNodes = new SearchCriteriaEltDto();
+        searchCriteriaElementsNodes.setCriteria("NODE");
+        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
+        searchCriteriaElementsNodes.setValues(
+            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
+        criteriaList.add(agencyCodeCriteria);
+        criteriaList.add(searchCriteriaElementsNodes);
+        searchQuery.setSize(20);
+        searchQuery.setPageNumber(20);
+        searchQuery.setCriteriaList(criteriaList);
+
+        ReclassificationCriteriaDto reclassificationCriteriaDto = buildReclassificationCriteriaDto();
+        reclassificationCriteriaDto.setSearchCriteriaDto(searchQuery);
+
+        //When //Then
+        String expectingGuid = archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+        assertThatCode(() -> {
+            archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+        }).doesNotThrowAnyException();
+
+        Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
+    }
+
+    private ReclassificationCriteriaDto buildReclassificationCriteriaDto() {
+        ReclassificationCriteriaDto reclassificationCriteriaDto = new ReclassificationCriteriaDto();
+
+        List<ReclassificationAction> reclassificationActionsList = new ArrayList<>();
+
+        ReclassificationAction reclassificationActions = new ReclassificationAction();
+
+        ReclassificationQueryActionType attr = new ReclassificationQueryActionType();
+        attr.setUnitups(Arrays.asList("guid1", "guid2"));
+
+        reclassificationActions.setAdd(attr);
+        reclassificationActions.setPull(attr);
+
+        reclassificationActionsList.add(reclassificationActions);
+
+        reclassificationCriteriaDto.setAction(reclassificationActionsList);
+
+        return reclassificationCriteriaDto;
+    }
     @Test
     public void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
         // Given

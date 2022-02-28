@@ -44,7 +44,7 @@ import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from
 import { Unit } from '../archive/models/unit.interface';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ArchiveSharedDataServiceService {
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
@@ -66,6 +66,10 @@ export class ArchiveSharedDataServiceService {
 
   private entireNodes = new BehaviorSubject<string[]>([]);
 
+  private auTitleSubject = new BehaviorSubject<string>('');
+
+  private actionSubject = new BehaviorSubject<string>('');
+
   currentNode = this.sourceNode.asObservable();
   currentNodeTarget = this.targetNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
@@ -74,6 +78,8 @@ export class ArchiveSharedDataServiceService {
   archiveUnitToPreviewObservable = this.archiveUnitTpPreviewSubject.asObservable();
   toggleArchiveUnitObservable = this.toggleArchiveUnitSubject.asObservable();
   storedSearchCriteriaHistoryObservable = this.storedSearchCriteriaHistorySubject.asObservable();
+  auTitleObservable = this.auTitleSubject.asObservable();
+  actionObservable = this.actionSubject.asObservable();
   allSearchCriteriaHistoryObservable = this.allSearchCriteriaHistorySubject.asObservable();
 
   simpleSearchCriteriaAddObservable = this.simpleSearchCriteriaAddSubject.asObservable();
@@ -137,6 +143,22 @@ export class ArchiveSharedDataServiceService {
 
   emitSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory) {
     this.storedSearchCriteriaHistorySubject.next(searchCriteriaHistory);
+  }
+
+  emitArchiveUnitTitle(auTitle: string) {
+    this.auTitleSubject.next(auTitle);
+  }
+
+  emitActionChosen(action: string) {
+    this.auTitleSubject.next(action);
+  }
+
+  getActionChosen(): Observable<string> {
+    return this.auTitleSubject.asObservable();
+  }
+
+  getArchiveUnitTitle(): Observable<string> {
+    return this.auTitleSubject.asObservable();
   }
 
   getSearchCriteriaHistoryShared(): Observable<SearchCriteriaHistory> {

@@ -39,7 +39,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +51,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gte;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
@@ -68,31 +68,31 @@ public class VitamQueryHelper {
         if (searchKey == null || "".equals(searchKey.trim())) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
-            if (CollectionUtils.isEmpty(searchValues)) {
-                //the case of empty list
-                query.add(buildSubQueryByOperator(searchKey, null, operator));
-            } else if (searchValues.size() > 1) {
-                BooleanQuery subQueryOr = or();
-                BooleanQuery subQueryAnd = and();
-                //The case of multiple values
-                if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
-                    for (String value : searchValues) {
-                        subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
+        if (CollectionUtils.isEmpty(searchValues)) {
+            //the case of empty list
+            query.add(buildSubQueryByOperator(searchKey, null, operator));
+        } else if (searchValues.size() > 1) {
+            BooleanQuery subQueryOr = or();
+            BooleanQuery subQueryAnd = and();
+            //The case of multiple values
+            if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+                for (String value : searchValues) {
+                    subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
 
-                    }
-                    query.add(subQueryAnd);
                 }
-                else {
-                    for (String value : searchValues) {
-                        subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
-                    }
-                    query.add(subQueryOr);
-                }
-
-            } else if (searchValues.size() == 1) {
-                //the case of one value
-                query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+                query.add(subQueryAnd);
             }
+            else {
+                for (String value : searchValues) {
+                    subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
+                }
+                query.add(subQueryOr);
+            }
+
+        } else if (searchValues.size() == 1) {
+            //the case of one value
+            query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+        }
 
 
 
@@ -127,6 +127,13 @@ public class VitamQueryHelper {
                 break;
             case MISSING:
                 criteriaSubQuery = missing(searchKey);
+                break;
+            case IN:
+                if(!ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.containsValue(value)){
+                    criteriaSubQuery = in(searchKey, value);
+                } else {
+                    criteriaSubQuery = eq(searchKey, value);
+                }
                 break;
             default:
                 criteriaSubQuery = eq(searchKey, value);

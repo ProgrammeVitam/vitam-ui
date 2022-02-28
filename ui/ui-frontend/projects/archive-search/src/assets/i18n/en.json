@@ -55,7 +55,7 @@
         "HOLDENDDATE": "Date de fin de gel"
       },
       "COMMON_YES" :"Yes",
-      "COMMON_NO" : "No"  
+      "COMMON_NO" : "No"
     },
     "DIP": {
       "EXPORT_DIP": "Export a DIP",
@@ -323,95 +323,134 @@
       "WRONG_FORMAT": "Wrong rule format"
     }
   },
-    "RULES": {
-      "TITLE" : "Modify a rule",
-      "SELECT_RULE_CATEGORY": "Select a rule category",
-      "SELECT_RULE_ACTION": "Select an action",
-      "OTHER_ACTIONS": "Other actions",
-      "BACK": "BACK",
-      "EXECUTE_RULE_UPDATE": "Start update",
-      "EXECUTE_RULE_UPDATE_MESSAGE" : "The operation to update the management rules has been launched",
-      "ACTION_ON_RULES": "Action on the rules",
-      "UA_SELECTED": "{{ua_selected}} selected archival units",
-      "RULES_TO_ADD": "Rule(s) to add",
-      "RULES_TO_UPDATE" : "Rule(s) to update",
-      "RULES_TO_DELETE" : "Rule(s) to delete",
-      "ACTIONS": {
-        "ADD_RULE": "Add a rule",
-        "DELETE_RULE": "Delete a rule",
-        "BLOCK_RULE_INHERITANCE": "Block rule inheritance",
-        "DELETE_BLOCK_RULE_INHERITANCE": "Delete the inheritance block from a rule",
-        "UPDATE_RULE": "Modify a rule",
-        "NOT_TO_ADD" : "Action impossible for this type of rule: a modification or a deletion is already in progress",
-        "NOT_TO_UPDATE" : "Impossible action for this type of rule: an addition or a deletion is already in progress",
-        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible for this type of rule: A final action is already added",
-        "NOT_TO_DELETE" : "Impossible action for this type of rule: an addition or a modification is already in progress",
-        "FINAL_ACTION_NOT_TO_DELETE_PROPERTY" : "You cannot remove the final action from a DUA rule"
-      },
-      "MORE_ACTIONS": {
-        "UPDATE_PROPERTY": "Add or modify a property",
-        "DELETE_PROPERTY": "Delete a property",
-        "BLOCK_PROPERTY_INHERITANCE": "Block inheritance of the category",
-        "DELETE_BLOCK_PROPERTY_INHERITANCE": "Remove category inheritance block"
-      },
-      "APRAISAL_RULES": {
-        "MANAGEMENT_RULES": "Management rule",
-        "START_DATE": "Start date",
-        "RULE_NAME": "Label",
-        "END_DATE": "End date",
-        "RULE_ID": "Code",
-        "SAME_RULE_ID" : "Code identical to the previous action",
-        "RULE_NOT_EXIST" :"The rule code entered does not exist",
-        "TARGET_RULE" : "Target management rule",
-        "SOURCE_RULE" : "Source management rule*",
-        "UPDATED" : "Updated",
-        "TARGET_START_DATE" : "Target startDate",
-        "UA_TO_UPDATE" :"UA selected will be taken into account during the update",
-        "UA_TO_IGNORE" :"of the UAs selected do not carry this administrative useful life rule and will be ignored"
+  "RULES": {
+    "TITLE": "Modify a rule",
+    "SELECT_RULE_CATEGORY": "Select a rule category",
+    "SELECT_RULE_ACTION": "Select an action",
+    "OTHER_ACTIONS": "Other actions",
+    "BACK": "BACK",
+    "EXECUTE_RULE_UPDATE": "Start update",
+    "EXECUTE_RULE_UPDATE_MESSAGE": "The operation to update the management rules has been launched",
+    "ACTION_ON_RULES": "Action on the rules",
+    "UA_SELECTED": "{{ua_selected}} selected archival units",
+    "RULES_TO_ADD": "Rule(s) to add",
+    "RULES_TO_UPDATE": "Rule(s) to update",
+    "RULES_TO_DELETE": "Rule(s) to delete",
+    "ACTIONS": {
+      "ADD_RULE": "Add a rule",
+      "DELETE_RULE": "Delete a rule",
+      "BLOCK_RULE_INHERITANCE": "Block rule inheritance",
+      "DELETE_BLOCK_RULE_INHERITANCE": "Delete the inheritance block from a rule",
+      "UPDATE_RULE": "Modify a rule",
+      "NOT_TO_ADD": "Action impossible for this type of rule: a modification or a deletion is already in progress",
+      "NOT_TO_UPDATE": "Impossible action for this type of rule: an addition or a deletion is already in progress",
+      "FINAL_ACTION_NOT_TO_ADD": "Action impossible for this type of rule: A final action is already added",
+      "NOT_TO_DELETE": "Impossible action for this type of rule: an addition or a modification is already in progress",
+      "FINAL_ACTION_NOT_TO_DELETE_PROPERTY": "You cannot remove the final action from a DUA rule"
+    },
+    "MORE_ACTIONS": {
+      "UPDATE_PROPERTY": "Add or modify a property",
+      "DELETE_PROPERTY": "Delete a property",
+      "BLOCK_PROPERTY_INHERITANCE": "Block inheritance of the category",
+      "DELETE_BLOCK_PROPERTY_INHERITANCE": "Remove category inheritance block"
+    },
+    "APRAISAL_RULES": {
+      "MANAGEMENT_RULES": "Management rule",
+      "START_DATE": "Start date",
+      "RULE_NAME": "Label",
+      "END_DATE": "End date",
+      "RULE_ID": "Code",
+      "SAME_RULE_ID": "Code identical to the previous action",
+      "RULE_NOT_EXIST": "The rule code entered does not exist",
+      "TARGET_RULE": "Target management rule",
+      "SOURCE_RULE": "Source management rule*",
+      "UPDATED": "Updated",
+      "TARGET_START_DATE": "Target startDate",
+      "UA_TO_UPDATE": "UA selected will be taken into account during the update",
+      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored"
+    },
+    "FINAL_ACTION": {
+      "TITLE": "Final action",
+      "SELECT_VALUE": "Select a value",
+      "KEEP": "Conservation",
+      "ELIMINATION": "Elimination"
+    },
+    "COMMON": {
+      "UNDO": "Cancel",
+      "CONTROL": "Control",
+      "CONFIRM": "Confirm"
+    },
+    "UA_CONTROL": {
+      "UA_FINAL_ACTION_MESSAGE": "The selected UAs will be taken into account during the update.",
+      "UA_WITH_SAME_RULE": "{{itemsWithSameRule}} of the selected UAs already carry this rule and will be ignored.",
+      "UA_WITH_RULES_TO_UPDATE": "{{itemsToUpdate}} Selected UAs will be taken into account during the update.",
+      "UA_WITH_SAME_RULE_AND_DATE": "{{itemsWithSameRuleAndDate}} of the selected UAs already have this rule and start date and will be ignored."
+    },
+    "DIALOG_MESSAGE": {
+      "UPDATE_CONFIRM_TITLE_MESSAGE": "Validate rule change(s)",
+      "DELETE_COMPONENT": "Are you sure you want to delete this rule update block?",
+      "UPDATE_CONFIRM_MESSAGE": "Warning, you are about to validate the rule changes on {{ua_selected}} archival units. Do you confirm this update? ",
+      "EXIT_CONFIRM_MESSAGE": "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
+    },
 
+    "CATEGORIES_NAME": {
+      "STORAGE_RULE": "Current useful life (CUL)",
+      "APPRAISAL_RULE": "Administrative useful life (AUL)",
+      "HOLD_RULE": "Freeze / Thaw",
+      "ACCESS_RULE": "Communicability",
+      "DISSEMINATION_RULE": "Diffusion",
+      "REUSE_RULE": "Reuse",
+      "CLASSIFICATION_RULE": "Classification"
+    },
 
-      },
-      "FINAL_ACTION": {
-        "TITLE" : "Final action",
-        "SELECT_VALUE": "Select a value",
-        "KEEP": "Conservation",
-        "ELIMINATION": "Elimination"
-      },
-      "COMMON": {
-        "UNDO": "Cancel",
-        "CONTROL": "Control",
-        "CONFIRM" : "Confirm"
-      },
-      "UA_CONTROL": {
-        "UA_FINAL_ACTION_MESSAGE" : "The selected UAs will be taken into account during the update.",
-        "UA_WITH_SAME_RULE": "{{itemsWithSameRule}} of the selected UAs already carry this rule and will be ignored.",
-        "UA_WITH_RULES_TO_UPDATE": "{{itemsToUpdate}} Selected UAs will be taken into account during the update.",
-        "UA_WITH_SAME_RULE_AND_DATE": "{{itemsWithSameRuleAndDate}} of the selected UAs already have this rule and start date and will be ignored."
-
-      },
-      "DIALOG_MESSAGE" : {
-        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validate rule change(s)",
-        "DELETE_COMPONENT" : "Are you sure you want to delete this rule update block?",
-        "UPDATE_CONFIRM_MESSAGE" : "Warning, you are about to validate the rule changes on {{ua_selected}} archival units. Do you confirm this update? ",
-        "EXIT_CONFIRM_MESSAGE" : "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
-          },
-
-      "CATEGORIES_NAME" : {
-        "STORAGE_RULE" : "Current useful life (CUL)",
-        "APPRAISAL_RULE" : "Administrative useful life (AUL)",
-        "HOLD_RULE" : "Freeze / Thaw",
-        "ACCESS_RULE" : "Communicability",
-        "DISSEMINATION_RULE" : "Diffusion",
-        "REUSE_RULE" : "Reuse",
-        "CLASSIFICATION_RULE" : "Classification"
-      },
-
-      "ALERTE_MESSAGES" : {
-        "BACK_TO_SELECTION" : "Return to selection",
-        "ACTION_ALERTE_TITLE" : "The requested action is not possible for this selection",
-        "ACTION_ALERTE_FIRST_MESSAGE" : "Your selection includes at least one positioning tree type archival unit.",
-        "UPDATE_RULES_ALERTE_SECOND_MESSAGE" : "Change rule action is not allowed for this one(s). Please remove the corresponding archival units.",
-        "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
-      }
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Return to selection",
+      "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+      "ACTION_ALERTE_FIRST_MESSAGE": "Your selection includes at least one positioning tree type archival unit.",
+      "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "Change rule action is not allowed for this one(s). Please remove the corresponding archival units.",
+      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
     }
+  },
+  "RECLASSIFICATION": {
+    "EXECUTION_ACTION": "Reclassify the archival unit",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel",
+    "ALERTE_MESSAGES": {
+      "RECLASSE_TITLE": "Reclassify the archival unit",
+      "BACK_TO_SELECTION": "Return to selection",
+      "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",
+      "ACTION_ALERTE_ONE_UNIT_1": "Your selection includes more than one archival unit.",
+      "ACTION_ALERTE_ONE_UNIT_2": "The reclassifocation action is possible just for one archival unit",
+      "ACTION_ALERTE_ONE_UNIT_HINT": "Please revise your selection by selecting only one archival unit. "
+    },
+    "EXECUTE_RECLASSEMENT_MESSAGE": "The reclassification request demand is successfully lunched",
+    "COMMON": {
+      "TARGET_GUID_LABEL": "Technical identifier of the target position",
+      "TARGET_GUID_TITLE_LABEL": "Entitled of the target position",
+      "TO_PARENT_TARGET": "To the folder",
+      "SELECT_TARGET_PARENT": "Select the source position(s) to remove",
+      "FROM_PARENT_SOURCE_MESSAGE": "Current parent folder(s)",
+      "ARCHIVE_WITH_NO_PARENTS": "The archival unit has no parents",
+      "GUID_ALREADY_EXISTS": "The technical identifier already exists",
+      "ATTACHMENT_ALREADY_EXISTS": "The attachment already exists"
+    },
+    "FIRST_STEP": {
+      "TITLE": "Reclassify the archival unit",
+      "SELECTED_UNIT": "Selected archive unit",
+      "CHILDS": "Child(s)",
+      "SELECT_ACTION_MESSAGE_1": "Select an action",
+      "SELECT_ACTION_MESSAGE_2": "Reclassification action"
+    },
+    "REPLACE_STEP": {
+      "TITLE": "Move to another folder",
+      "FROM_PARENT_SOURCE_MESSAGE": "From folder(s)"
+    },
+    "DELETE_STEP": {
+      "TITLE": "Remove from a folder"
+    },
+    "ADD_STEP": {
+      "TITLE": "Add to a folder",
+      "ADD_TO_FOLDER": "Add to folder"
+    }
+  }
 }

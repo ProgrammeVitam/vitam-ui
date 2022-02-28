@@ -32,6 +32,7 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -123,5 +124,9 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
 
     public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto query) {
         return getClient().selectUnitWithInheritedRules(getInternalHttpContext(), query);
+    }
+
+    public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        return archiveInternalRestClient.reclassification(reclassificationCriteriaDto, getInternalHttpContext());
     }
 }

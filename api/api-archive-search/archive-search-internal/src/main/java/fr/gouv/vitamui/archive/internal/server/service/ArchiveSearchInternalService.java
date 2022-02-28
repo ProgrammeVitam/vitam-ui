@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.opencsv.CSVWriterBuilder;
 import com.opencsv.ICSVWriter;
@@ -62,6 +63,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportSearchResultParam;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -101,6 +103,8 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -187,9 +191,7 @@ public class ArchiveSearchInternalService {
         archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
         archiveSearchRulesInternalService.mapAppraisalRulesTitlesToCodes(searchQuery, vitamContext);
         JsonNode dslQuery = mapRequestToDslQuery(searchQuery);
-
         JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
-        LOGGER.info("salam response {}", vitamResponse);
         return decorateAndMapResponse(vitamResponse, vitamContext);
     }
 
@@ -810,5 +812,22 @@ public class ArchiveSearchInternalService {
             response = archiveUnitsDto.getArchives().getResults().get(0);
         }
         return response;
+    }
+
+    public String reclassification(final VitamContext vitamContext, final ReclassificationCriteriaDto reclassificationCriteriaDto)
+        throws VitamClientException {
+        if (reclassificationCriteriaDto == null ) {
+            throw new BadRequestException("Error reclassification criteria");
+        }
+        LOGGER.debug("Reclassification Object : {}", reclassificationCriteriaDto.toString());
+        JsonNode dslQuery = mapRequestToDslQuery(reclassificationCriteriaDto.getSearchCriteriaDto());
+        ArrayNode array = JsonHandler.createArrayNode();
+        ((ObjectNode) dslQuery).putPOJO("$action", reclassificationCriteriaDto.getAction());
+        Arrays.stream(new String[]{"$projection" ,"$filter","$facets"}).forEach(((ObjectNode) dslQuery)::remove);
+        array.add(dslQuery);
+        LOGGER.debug("Reclassification query : {}", array.toPrettyString());
+        RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
+        return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
+
     }
 }

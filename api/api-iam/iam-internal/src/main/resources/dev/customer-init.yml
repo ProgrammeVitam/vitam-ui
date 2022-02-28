@@ -190,6 +190,7 @@ customer-init:
         - ROLE_UPDATE_MANAGEMENT_RULES
         - ROLE_COMPUTED_INHERITED_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_RECLASSIFICATION
 
   #- name: profileName
   #  description: desc

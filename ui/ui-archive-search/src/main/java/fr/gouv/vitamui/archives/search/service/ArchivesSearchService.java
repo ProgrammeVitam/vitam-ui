@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archives.search.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
@@ -200,5 +201,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         final ExternalHttpContext context) {
         LOGGER.debug("calling select Unit With Inherited Rules by criteria {} ", searchQuery);
         return archiveSearchExternalRestClient.selectUnitWithInheritedRules(context, searchQuery);
+    }
+
+    public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,ExternalHttpContext context) {
+        LOGGER.info("Reclassification with criteria {}", reclassificationCriteriaDto);
+        return archiveSearchExternalRestClient.reclassification(reclassificationCriteriaDto, context);
     }
 }
