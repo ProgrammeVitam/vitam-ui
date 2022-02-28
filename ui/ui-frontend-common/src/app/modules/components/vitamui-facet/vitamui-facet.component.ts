@@ -25,14 +25,54 @@
  * accept its terms.
  */
 
-import { Colors } from './facet-colors.enum';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FacetDetails } from '../../models/operation/facet-details.interface';
 
-export interface FacetDetails {
-  title: string;
-  totalResults: number;
-  clickable: boolean;
-  color: string;
-  filter?: string;
-  backgroundColor?: Colors;
-  selected?: boolean;
+@Component({
+  // tslint:disable-next-line: component-selector
+  selector: 'app-vitamui-facet',
+  templateUrl: './vitamui-facet.component.html',
+  styleUrls: ['./vitamui-facet.component.scss'],
+})
+export class VitamuiFacetComponent implements OnInit {
+  /**
+   * The title of the component that contains a list of Facet
+   * It can be in English or in French
+   */
+  @Input()
+  facetTitle: string;
+
+  @Input()
+  facetSubTitle?: string;
+
+  /**
+   * An action to execute that allows to filter the list of results
+   * For static facet, it's not necessary to execute this action
+   */
+  @Output() filter = new EventEmitter<string>();
+
+  /**
+   * The list of Facets to create
+   * A list of FacetDetails with many informations about each Facet
+   *
+   * FacetDetails object contains :
+   * title: the Title of the Facet component to show
+   * totalResults: The number of results.
+   * clickable : to distinguish between static and dynamic facet component
+   * color : the color of the title
+   * filter : the parameter used to lunch the filter on results
+   *
+   */
+  @Input()
+  facetDetails: FacetDetails[];
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  onFilter(facet: FacetDetails) {
+    if (facet.clickable) {
+      this.filter.emit(facet.filter);
+    }
+  }
 }

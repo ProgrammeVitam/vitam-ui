@@ -78,7 +78,6 @@ public class VitamQueryHelper {
                 if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
                     for (String value : searchValues) {
                         subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
-
                     }
                     query.add(subQueryAnd);
                 }
@@ -93,9 +92,6 @@ public class VitamQueryHelper {
                 //the case of one value
                 query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
             }
-
-
-
     }
 
     public static Query buildSubQueryByOperator(String searchKey, String value,

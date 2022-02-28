@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -35,6 +36,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,4 +54,13 @@ public class SearchCriteriaDto implements Serializable {
     private Integer size;
     private String language = Locale.FRENCH.getLanguage();
     private boolean trackTotalHits;
+
+
+    public List<SearchCriteriaEltDto> retrieveFieldsCriteriaInCategory(String fieldName,
+        ArchiveSearchConsts.CriteriaCategory categoryName) {
+        return this.getCriteriaList().stream()
+            .filter(criteriaElt -> categoryName.equals(criteriaElt.getCategory()) &&
+                criteriaElt.getCriteria().equals(fieldName)).collect(Collectors.toList());
+
+    }
 }

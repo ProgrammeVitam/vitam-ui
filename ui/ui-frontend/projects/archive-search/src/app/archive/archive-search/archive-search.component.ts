@@ -60,7 +60,17 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -175,7 +185,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   accessContract: string;
   @Output() archiveUnitClick = new EventEmitter<any>();
 
-  tenantIdentifier: string;
+  tenantIdentifier: number;
   appraisalRuleCriteriaForm: FormGroup;
   nodeData: NodeData;
   searchCriterias: Map<string, SearchCriteria>;
@@ -187,9 +197,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   otherCriteriaValueType = 'DATE';
 
   isIndeterminate: boolean;
-  trackTotalHits: boolean;
   isAllchecked: boolean;
   hasResults = false;
+  hasAppraisalRulesCriteria = false;
+
   show = true;
   showUnitPreviewBlock = false;
   hasDipExportRole = false;
@@ -246,6 +257,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
+  trackTotalHits: boolean;
+  hasAppraisalRules = false;
   ontologies: any;
   selectedValueOntolonogy: any;
 
@@ -261,6 +274,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
   }
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
 
   addCriteriaCategory(categoryName: string) {
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
@@ -307,7 +321,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
 
     this.searchCriterias = new Map();
@@ -546,6 +560,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.buildAppraisalCriteriaListForQUery();
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.callVitamApiService();
+      this.hasAppraisalRules = this.checkIfCriteriaContainsAppraisalRule();
     }
   }
 
@@ -585,8 +600,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return nodesIdList;
   }
 
-  // à modifier pour bien trier en fonction des 4 types qui existent
-  // c'est compliqué et non cohérent parce qu'on fait un filtre sur 2 paramètres différents.
   getArchiveUnitType(archiveUnit: any) {
     if (archiveUnit) {
       return archiveUnit['#unitType'];
@@ -676,7 +689,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       (pagedResult: PagedResult) => {
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
-          this.archiveExchangeDataService.emitFacets(pagedResult.facets);
+          this.archiveSearchResultFacets.nodesFacets = this.archiveService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveService.extractAppraisalRulesFacetsResults(pagedResult.facets);
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
         } else {
@@ -1463,5 +1478,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           });
       }
     });
+  }
+
+  checkIfCriteriaContainsAppraisalRule(): boolean {
+    let hasAppraisalRuleCriteria = false;
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      for (let value of this.searchCriterias.values()) {
+        if (!hasAppraisalRuleCriteria && SearchCriteriaTypeEnum[value.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+          hasAppraisalRuleCriteria = true;
+        }
+      }
+    }
+    return hasAppraisalRuleCriteria;
   }
 }

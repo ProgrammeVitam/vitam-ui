@@ -25,14 +25,26 @@
  * accept its terms.
  */
 
-import { Colors } from './facet-colors.enum';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { VitamuiFacetComponent } from './vitamui-facet.component';
 
-export interface FacetDetails {
-  title: string;
-  totalResults: number;
-  clickable: boolean;
-  color: string;
-  filter?: string;
-  backgroundColor?: Colors;
-  selected?: boolean;
-}
+describe('LogbookOperationFacetteComponent', () => {
+  let component: VitamuiFacetComponent;
+  let fixture: ComponentFixture<VitamuiFacetComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [VitamuiFacetComponent],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(VitamuiFacetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

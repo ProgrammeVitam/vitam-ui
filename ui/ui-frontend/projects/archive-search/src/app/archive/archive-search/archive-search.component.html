@@ -58,7 +58,14 @@
       </div>
     </div>
   </div>
-
+  <div class="row" *ngIf="!pending && submited && hasAppraisalRules">
+    <app-archive-search-rules-facets
+      class="facet-div"
+      [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+      [tenantIdentifier]="tenantIdentifier"
+      [totalResults]="totalResults"
+    ></app-archive-search-rules-facets>
+  </div>
   <div class="row" *ngIf="!showCriteriaPanel">
     <a class="hide-ink" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
   </div>
@@ -533,21 +540,3 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
-
-<!-- <ng-template #confirmComputedInheritedRulesDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.TITLE' | translate }}</div>
-    <div class="text large bold">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRMATION_MESSAGE' | translate: { itemSelected: itemSelected } }}
-    </div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRM' | translate }}
-    </button>
-    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CANCEL' | translate }}</button>
-  </mat-dialog-actions></ng-template
-> -->

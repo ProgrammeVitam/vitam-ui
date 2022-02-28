@@ -56,6 +56,7 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
         VitamUILoggerFactory.getInstance(ArchivesSearchAppraisalQueryBuilderService.class);
 
 
+
     @Override
     public void fillQueryFromCriteriaList(BooleanQuery query, List<SearchCriteriaEltDto> criteriaList)
         throws InvalidCreateOperationException {
@@ -304,19 +305,42 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
             List<SearchCriteriaEltDto> appraisalMgtRulesFinalActionCriteria = appraisalMgtRulesCriteriaList.stream()
                 .filter(criteria -> ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE.equals(criteria.getCriteria()))
                 .collect(Collectors.toList());
-            BooleanQuery subQueryAppraisalRuleOriginFinalAction = or();
-            for (SearchCriteriaEltDto finalActionCriteria : appraisalMgtRulesFinalActionCriteria) {
-                for (CriteriaValue value : finalActionCriteria.getValues()) {
-                    String mappedValue =
-                        ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.get(value.getValue());
-                    if (mappedValue != null) {
-                        VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
-                            ArchiveSearchConsts.CriteriaOperators.EQ,
-                            "#management.AppraisalRule.FinalAction", List.of(mappedValue));
-                        VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
-                            ArchiveSearchConsts.CriteriaOperators.IN,
-                            "#computedInheritedRules.AppraisalRule.FinalAction", List.of(mappedValue));
+            if (!CollectionUtils.isEmpty(appraisalMgtRulesFinalActionCriteria)) {
+                if (appraisalMgtRulesFinalActionCriteria.size() > 1) {
+                    BooleanQuery subQueryAppraisalRuleOriginFinalActionMultiple = and();
+                    for (SearchCriteriaEltDto finalActionCriteria : appraisalMgtRulesFinalActionCriteria) {
+                        buildCriteriaForSingleFinalActionCriteria(subQueryAppraisalRuleOriginFinalActionMultiple,
+                            finalActionCriteria);
                     }
+                    if (subQueryAppraisalRuleOriginFinalActionMultiple.isReady()) {
+                        mainQuery.add(subQueryAppraisalRuleOriginFinalActionMultiple);
+                    }
+                } else if (appraisalMgtRulesFinalActionCriteria.size() == 1) {
+                    buildCriteriaForSingleFinalActionCriteria(mainQuery, appraisalMgtRulesFinalActionCriteria.get(0));
+                }
+            }
+        }
+    }
+
+    private void buildCriteriaForSingleFinalActionCriteria(BooleanQuery mainQuery,
+        SearchCriteriaEltDto finalActionCriteria)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryAppraisalRuleOriginFinalAction = or();
+        if (finalActionCriteria != null && !CollectionUtils.isEmpty(finalActionCriteria.getValues())) {
+            for (CriteriaValue value : finalActionCriteria.getValues()) {
+                String mappedValue =
+                    ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.get(value.getValue());
+                if (mappedValue != null) {
+                    VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
+                        ArchiveSearchConsts.CriteriaOperators.EQ,
+                        ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING
+                            .get(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION),
+                        List.of(mappedValue));
+                    VitamQueryHelper.addParameterCriteria(subQueryAppraisalRuleOriginFinalAction,
+                        ArchiveSearchConsts.CriteriaOperators.IN,
+                        ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING
+                            .get(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION),
+                        List.of(mappedValue));
                 }
             }
             if (subQueryAppraisalRuleOriginFinalAction.isReady()) {
@@ -340,7 +364,8 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                         ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING.get(value.getValue()), List.of());
                 }
             }
-            if (subQueryAppraisalRuleOriginFinalAction.isReady()) {
+            if (!CollectionUtils.isEmpty(appraisalMgtRulesFinalActionCriteria) &&
+                subQueryAppraisalRuleOriginFinalAction.isReady()) {
                 query.add(subQueryAppraisalRuleOriginFinalAction);
             }
         }
@@ -370,17 +395,21 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                 .get(ArchiveSearchConsts.APPRAISAL_RULE_END_DATE);
 
         if (ArchiveSearchConsts.AppraisalRuleOrigin.SCOPED.equals(origin)) {
+            boolean criteriaAdded = false;
             if (appraisalIdentifierCriteria.isPresent()) {
                 BooleanQuery identifierQuery = or();
+
                 for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
                     VitamQueryHelper.addParameterCriteria(identifierQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
                         ruleIdVitamFieldNameScoped, List.of(valueIdentifier.getValue()));
+                    criteriaAdded = true;
                 }
-                if (identifierQuery.isReady()) {
+                if (criteriaAdded && identifierQuery.isReady()) {
                     appraisalMgtRulesSubQuery.add(identifierQuery);
                 }
             }
             if (appraisalEndDatesCriteria.isPresent()) {
+                criteriaAdded = false;
                 BooleanQuery appraisalEndQuery = or();
                 for (CriteriaValue valueEndDate : appraisalEndDatesCriteria.get().getValues()) {
                     BooleanQuery intervalQueryByInterval = and();
@@ -394,6 +423,7 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                             .addParameterCriteria(intervalQueryByInterval, ArchiveSearchConsts.CriteriaOperators.GTE,
                                 endDtVitamFieldNameScoped,
                                 List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDt)));
+                        criteriaAdded = true;
                     }
 
                     if (!ObjectUtils.isEmpty(endDtStr)) {
@@ -402,27 +432,31 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                         VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
                             ArchiveSearchConsts.CriteriaOperators.LTE, endDtVitamFieldNameScoped,
                             List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
+                        criteriaAdded = true;
                     }
-                    if (intervalQueryByInterval.isReady()) {
+                    if (criteriaAdded && intervalQueryByInterval.isReady()) {
                         appraisalEndQuery.add(intervalQueryByInterval);
                     }
                 }
-                if (appraisalEndQuery.isReady()) {
+                if (criteriaAdded && appraisalEndQuery.isReady()) {
                     appraisalMgtRulesSubQuery.add(appraisalEndQuery);
                 }
             }
         } else if (ArchiveSearchConsts.AppraisalRuleOrigin.INHERITED.equals(origin)) {
+            boolean criteriaAdded = false;
             if (appraisalIdentifierCriteria.isPresent()) {
                 BooleanQuery identifierQuery = or();
                 for (CriteriaValue valueIdentifier : appraisalIdentifierCriteria.get().getValues()) {
                     VitamQueryHelper.addParameterCriteria(identifierQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
                         ruleIdVitamFieldName, List.of(valueIdentifier.getValue()));
+                    criteriaAdded = true;
                 }
-                if (identifierQuery.isReady()) {
+                if (criteriaAdded && identifierQuery.isReady()) {
                     appraisalMgtRulesSubQuery.add(identifierQuery);
                 }
             }
             if (appraisalEndDatesCriteria.isPresent()) {
+                criteriaAdded = false;
                 BooleanQuery appraisalEndQuery = or();
                 for (CriteriaValue valueEndDate : appraisalEndDatesCriteria.get().getValues()) {
                     BooleanQuery intervalQueryByInterval = and();
@@ -436,6 +470,7 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                             .addParameterCriteria(intervalQueryByInterval, ArchiveSearchConsts.CriteriaOperators.GTE,
                                 endDtVitamFieldName,
                                 List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(beginDt)));
+                        criteriaAdded = true;
                     }
 
                     if (!ObjectUtils.isEmpty(endDtStr)) {
@@ -444,12 +479,13 @@ public class ArchivesSearchAppraisalQueryBuilderService implements IArchivesSear
                         VitamQueryHelper.addParameterCriteria(intervalQueryByInterval,
                             ArchiveSearchConsts.CriteriaOperators.LTE, endDtVitamFieldName,
                             List.of(ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(endDt)));
+                        criteriaAdded = true;
                     }
-                    if (intervalQueryByInterval.isReady()) {
+                    if (criteriaAdded && intervalQueryByInterval.isReady()) {
                         appraisalEndQuery.add(intervalQueryByInterval);
                     }
                 }
-                if (appraisalEndQuery.isReady()) {
+                if (criteriaAdded && appraisalEndQuery.isReady()) {
                     appraisalMgtRulesSubQuery.add(appraisalEndQuery);
                 }
             }

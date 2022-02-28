@@ -44,6 +44,7 @@ public class ArchiveSearchConsts {
         "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION";
     public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP = "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP";
 
+
     public enum CriteriaDataType {
         STRING, DATE, INTERVAL
     }
@@ -82,6 +83,7 @@ public class ArchiveSearchConsts {
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String FR_DATE_FORMAT_WITH_SLASH = "dd/MM/yyyy";
 
     public static final String TRUE_CRITERIA_VALUE = "true";
     public static final String FALSE_CRITERIA_VALUE = "false";
@@ -90,6 +92,8 @@ public class ArchiveSearchConsts {
         DateTimeFormatter.ofPattern(ArchiveSearchConsts.ISO_DATE_FORMAT, Locale.FRENCH);
     public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATER =
         DateTimeFormatter.ofPattern(ArchiveSearchConsts.ONLY_DATE_FORMAT, Locale.FRENCH);
+    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH =
+        DateTimeFormatter.ofPattern(ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH, Locale.FRENCH);
 
 
     /*
@@ -145,9 +149,8 @@ public class ArchiveSearchConsts {
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
             "SP_LABEL", "originating_agency_label",
-            "ARCHIVE_UNIT_HOLDING_UNIT","#unitType"
+            "ARCHIVE_UNIT_HOLDING_UNIT", "#unitType"
         );
-
 
     public static final int DEFAULT_DEPTH = 10;
     public static final int FACET_SIZE_MILTIPLIER = 100;
@@ -176,7 +179,6 @@ public class ArchiveSearchConsts {
     public static final String ID = "#id";
     public static final String NAME = "Name";
     public static final String SHORT_NAME = "ShortName";
-    public static final String PUID = "PUID";
 
     /* Title and Description Query fields */
     public static final String TITLE = "Title";
@@ -188,6 +190,14 @@ public class ArchiveSearchConsts {
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
+
+    public static final String FACETS_EXPIRED_RULES_COMPUTED = "EXPIRED_RULES_COMPUTED";
+    public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
+    public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
+    public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";
+    public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
+    public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
+    public static final String COUNT_CONFLICT_RULES = "Conflict";
     /* StartDate and EndDate Query fields */
     public static final String START_DATE = "StartDate";
     public static final String START_DATE_CRITERIA = "START_DATE";

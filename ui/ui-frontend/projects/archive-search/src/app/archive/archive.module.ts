@@ -67,6 +67,8 @@ import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
@@ -81,8 +83,8 @@ import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/fi
 import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
-import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
@@ -141,6 +143,8 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
+    SearchAppraisalRulesFacetsComponent,
+    ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
     ArchiveUnitRulesComponent,

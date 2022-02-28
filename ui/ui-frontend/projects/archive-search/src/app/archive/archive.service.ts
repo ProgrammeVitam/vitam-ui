@@ -52,7 +52,14 @@ import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import {
+  AppraisalRuleFacets,
+  PagedResult,
+  ResultFacet,
+  ResultFacetList,
+  SearchCriteriaDto,SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
@@ -72,30 +79,6 @@ export class ArchiveService extends SearchService<any> {
   }
 
   headers = new HttpHeaders();
-
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0
-    };
-    const resultFacets: ResultFacet[] = [];
-    if (response.$facetResults && response.$facetResults) {
-      for (const facet of response.$facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    pagedResult.facets = resultFacets;
-    return pagedResult;
-  }
 
   private static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
@@ -192,12 +175,91 @@ export class ArchiveService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => ArchiveService.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
   launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  }
+  private buildPagedResults(response: SearchResponse): PagedResult {
+    let pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    pagedResult.facets = response.$facetResults;
+    return pagedResult;
+  }
+
+  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
+    let nodesFacets: ResultFacet[] = [];
+
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          let nodesFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            nodesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+      }
+    }
+    return nodesFacets;
+  }
+
+  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
+    let appraisalRulesFacets = new AppraisalRuleFacets();
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
+        if (facet.name === 'FINAL_ACTION_COMPUTED') {
+          let buckets = facet.buckets;
+          let finalActionsFacets = [];
+          for (let bucket of buckets) {
+            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
+        }
+        if (facet.name === 'RULES_COMPUTED_NUMBER') {
+          let rulesListFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            rulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.rulesListFacets = rulesListFacets;
+        }
+        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
+          let expiredRulesListFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
+        }
+        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
+          let buckets = facet.buckets;
+          let waitingToRecalculateRulesListFacets = [];
+          for (let bucket of buckets) {
+            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
+        }
+
+        if (facet.name === 'COUNT_WITHOUT_RULES') {
+          let buckets = facet.buckets;
+          let noAppraisalRulesFacets = [];
+          for (let bucket of buckets) {
+            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
+        }
+      }
+    }
+    return appraisalRulesFacets;
   }
 
   normalizeTitle(title: string): string {

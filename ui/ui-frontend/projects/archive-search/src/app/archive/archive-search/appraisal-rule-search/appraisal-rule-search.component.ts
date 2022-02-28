@@ -13,6 +13,10 @@ const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION = 'APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION';
 const APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP = 'APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP';
 
+const APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED = 'APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED';
+/*const APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP_CALCULATED = 'APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP_CALCULATED';
+ */
+
 const APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE = 'APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE';
 const APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE = 'APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE';
 const APPRAISAL_RULE_ORIGIN_HAS_NO_ONE = 'APPRAISAL_RULE_ORIGIN_HAS_NO_ONE';
@@ -240,6 +244,26 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         }
         this.previousAppraisalCriteriaValue.eliminationFinalActionType = action;
         break;
+      case APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED:
+        if (action) {
+          this.addCriteria(
+            APPRAISAL_RULE_FINAL_ACTION_TYPE,
+            { id: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED, value: APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION },
+            APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION,
+            true,
+            'EQ',
+            true,
+            'STRING',
+            SearchCriteriaTypeEnum.APPRAISAL_RULE
+          );
+        } else {
+          this.emitRemoveCriteriaEvent(APPRAISAL_RULE_FINAL_ACTION_TYPE, {
+            id: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED,
+            value: APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION_CALCULATED,
+          });
+        }
+        this.previousAppraisalCriteriaValue.eliminationFinalActionType = action;
+        break;
       case APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP:
         if (action) {
           this.addCriteria(
@@ -260,6 +284,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         }
         this.previousAppraisalCriteriaValue.keepFinalActionType = action;
         break;
+
       case APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION:
         if (action) {
           this.addCriteria(

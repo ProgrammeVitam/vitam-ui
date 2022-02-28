@@ -25,14 +25,13 @@
  * accept its terms.
  */
 
-import { Colors } from './facet-colors.enum';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { VitamuiFacetComponent } from './vitamui-facet.component';
 
-export interface FacetDetails {
-  title: string;
-  totalResults: number;
-  clickable: boolean;
-  color: string;
-  filter?: string;
-  backgroundColor?: Colors;
-  selected?: boolean;
-}
+@NgModule({
+  declarations: [VitamuiFacetComponent],
+  imports: [CommonModule],
+  exports: [VitamuiFacetComponent],
+})
+export class VitamuiFacetModule {}
