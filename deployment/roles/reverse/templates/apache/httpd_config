@@ -124,6 +124,10 @@
 
     ProxyPass /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout {{reverse_connection_params}}
     ProxyPassReverse  /cas/logout {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/logout
+
+    ProxyPass /cas/clientredirect {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/clientredirect {{reverse_connection_params}}
+    ProxyPassReverse  /cas/clientredirect {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/clientredirect
+
 {% endfor %}
 
     # PORTAL
