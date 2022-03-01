@@ -400,10 +400,8 @@ public class ArchiveSearchInternalService {
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
 
-            query = createQueryDSL(searchQuery
-                searchQuery.getPageNumber(),
-                searchQuery.getSize(), orderBy, direction, searchQuery.isTrackTotalHits(),
-                !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList));
+            query = createQueryDSL(searchQuery, searchQuery.getPageNumber(), searchQuery.getSize(), orderBy, direction,
+                searchQuery.isTrackTotalHits());
         } catch (InvalidCreateOperationException ioe) {
             throw new VitamClientException("Unable to find archive units with pagination", ioe);
         } catch (InvalidParseOperationException e) {
@@ -703,7 +701,7 @@ public class ArchiveSearchInternalService {
      */
     public JsonNode createQueryDSL(SearchCriteriaDto searchQuery,
         final Integer pageNumber, final Integer size, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction, final boolean trackTotalHits, boolean includeAppraisalRulesFacets)
+        final Optional<DirectionDto> direction, final boolean trackTotalHits)
         throws InvalidParseOperationException, InvalidCreateOperationException {
         final BooleanQuery query = and();
         final SelectMultiQuery select = new SelectMultiQuery();
@@ -734,7 +732,7 @@ public class ArchiveSearchInternalService {
 
         select.addFacets(FacetHelper.terms(ArchiveSearchConsts.FACETS_COUNT_BY_NODE, ArchiveSearchConsts.UNITS_UPS,
             (nodes.size() + 1) * ArchiveSearchConsts.FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
-        if (includeAppraisalRulesFacets) {
+        if (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList)) {
             fillAppraisalRulesFacets(appraisalMgtRulesCriteriaList, select);
         }
         // Manage Filters
