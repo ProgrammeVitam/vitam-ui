@@ -126,7 +126,6 @@ public class UnitService {
      * Search object by id.
      *
      * @param unitId
-     * @param objectId
      * @param vitamContext
      * @return
      * @throws VitamClientException
@@ -307,6 +306,22 @@ public class UnitService {
     public RequestResponse<JsonNode> computedInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
         throws VitamClientException {
         final RequestResponse<JsonNode> jsonResponse = accessExternalClient.computedInheritedRules(vitamContext, dslQuery);
+        VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
+        return jsonResponse;
+    }
+
+
+    /**
+     * select Units With Inherited Rules
+     *
+     * @param vitamContext
+     * @param dslQuery
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> selectUnitsWithInheritedRules(final VitamContext vitamContext, final JsonNode dslQuery)
+        throws VitamClientException {
+        final RequestResponse<JsonNode> jsonResponse = accessExternalClient.selectUnitsWithInheritedRules(vitamContext, dslQuery);
         VitamRestUtils.checkResponse(jsonResponse, HttpStatus.SC_OK, HttpStatus.SC_ACCEPTED);
         return jsonResponse;
     }

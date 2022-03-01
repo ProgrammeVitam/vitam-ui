@@ -37,19 +37,19 @@
  *
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { BytesPipe } from './bytes.pipe';
-import { EmptyPipe } from './empty.pipe';
-import { HighlightPipe } from './highlight.pipe';
-import { SafeStylePipe } from './safe-style.pipe';
-import { StrongifyPipe } from './strongify.pipe';
-import { TruncatePipe } from './truncate.pipe';
-import { YesNoPipe } from './yes-no.pipe';
+import { Pipe, PipeTransform } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
-@NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
-  imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
+@Pipe({
+  name: 'yesNo',
 })
-export class PipesModule {}
+export class YesNoPipe implements PipeTransform {
+  constructor(private translateService: TranslateService) {}
+  transform(propertyValue: any): any {
+    return String(propertyValue) === 'true'
+      ? this.translateService.instant('COMMON.COMMON_YES')
+      : String(propertyValue) === 'false'
+      ? this.translateService.instant('COMMON.COMMON_NO')
+      : propertyValue;
+  }
+}

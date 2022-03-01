@@ -195,4 +195,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         LOGGER.info("computed Inherited Rules with criteria {}", searchCriteriaDto);
         return archiveSearchExternalRestClient.computedInheritedRules(searchCriteriaDto, context);
     }
+
+    public ResponseEntity<ResultsDto> selectUnitsWithInheritedRules(final SearchCriteriaDto searchQuery,
+        final ExternalHttpContext context) {
+        LOGGER.debug("calling select Unit With Inherited Rules by criteria {} ", searchQuery);
+        return archiveSearchExternalRestClient.selectUnitWithInheritedRules(context, searchQuery);
+    }
 }

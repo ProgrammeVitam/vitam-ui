@@ -54,6 +54,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -132,19 +133,19 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    public void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() {
+    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(Mockito.eq(query)))
+            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
             .thenReturn(expectedResponse);
         ArchiveUnitsDto responseDto = archivesSearchExternalController.searchArchiveUnitsByCriteria(query);
         Assertions.assertEquals(responseDto, expectedResponse);
     }
 
     @Test
-    public void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ko() {
+    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ko() {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         SearchCriteriaEltDto nodeCriteria = new SearchCriteriaEltDto();
@@ -155,7 +156,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         query.setCriteriaList(List.of(nodeCriteria));
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
-            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(Mockito.eq(query)))
+            .when(archivesSearchExternalService.searchArchiveUnitsByCriteria(query))
             .thenReturn(expectedResponse);
 
         assertThatCode(() -> archivesSearchExternalController.searchArchiveUnitsByCriteria(query))
@@ -163,7 +164,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    public void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() {
+    void testSearchFilingHoldingSchemeResultsThanReturnVitamUISearchResponseDto() {
         // Given
         VitamUISearchResponseDto expectedResponse = new VitamUISearchResponseDto();
         when(archivesSearchExternalService.getFilingHoldingScheme())
@@ -179,7 +180,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    public void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws IOException {
+    void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws IOException {
         // Given
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
@@ -187,7 +188,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         Resource resource = new ByteArrayResource(ArchivesSearchExternalControllerTest.class.getClassLoader()
             .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
 
-        when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(Mockito.eq(query)))
+        when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query))
             .thenReturn(resource);
         // When
         Resource responseCsv =
@@ -198,13 +199,13 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    public void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
+    void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
 
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         String expectedResponse = EXPECTED_RESPONSE;
 
         Mockito
-            .when(archivesSearchExternalService.updateArchiveUnitsRules(Mockito.eq(ruleSearchCriteriaDto)))
+            .when(archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto))
             .thenReturn(expectedResponse);
 
         String response = archivesSearchExternalController.updateArchiveUnitsRules(ruleSearchCriteriaDto);
@@ -212,7 +213,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    public void testLaunchComputedInheritedRulesThenReturnVitamOperationId() {
+    void testLaunchComputedInheritedRulesThenReturnVitamOperationId() {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         String expectedResponse = EXPECTED_RESPONSE;
@@ -222,6 +223,23 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
             .when(archivesSearchExternalService.computedInheritedRules(searchCriteriaDto))
             .thenReturn(expectedResponse);
         String response = archivesSearchExternalController.computedInheritedRules(searchCriteriaDto);
+
+        // Then
+        Assertions.assertEquals(response, expectedResponse);
+    }
+
+
+    @Test
+    void testSelectUnitWithInheritedRulesThenReturnVitamOperationId() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ResultsDto expectedResponse = new ResultsDto();
+
+        // When
+        Mockito
+            .when(archivesSearchExternalService.selectUnitWithInheritedRules(searchCriteriaDto))
+            .thenReturn(expectedResponse);
+        ResultsDto response = archivesSearchExternalController.selectUnitWithInheritedRules(searchCriteriaDto);
 
         // Then
         Assertions.assertEquals(response, expectedResponse);

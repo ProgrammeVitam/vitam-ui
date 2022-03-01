@@ -37,19 +37,30 @@
  *
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { BytesPipe } from './bytes.pipe';
-import { EmptyPipe } from './empty.pipe';
-import { HighlightPipe } from './highlight.pipe';
-import { SafeStylePipe } from './safe-style.pipe';
-import { StrongifyPipe } from './strongify.pipe';
-import { TruncatePipe } from './truncate.pipe';
-import { YesNoPipe } from './yes-no.pipe';
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-@NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
-  imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
-})
-export class PipesModule {}
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.Set;
+
+@Getter
+@Setter
+@ToString
+public class InheritanceRuleDto {
+
+    /**
+     * Prevent Inheritance
+     */
+    @JsonProperty("PreventInheritance")
+    private Boolean preventInheritance;
+
+    /**
+     * Prevent Rules Id List
+     */
+    @JsonProperty("PreventRulesId")
+    private Set<String> preventRulesId;
+}

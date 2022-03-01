@@ -70,6 +70,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 
+import static org.assertj.core.api.Assertions.*;
+
 @RunWith(SpringRunner.class)
 public class ArchivesSearchServiceTest {
     public final String ARCHIVE_UNITS_RESULTS_CSV = "data/vitam_archive_units_response.csv";
@@ -140,8 +142,8 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertEquals(objectData.getFilename(), "this_is_a_BinaryMaster.txt");
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertThat(objectData.getFilename()).isEqualTo( "this_is_a_BinaryMaster.txt");
     }
 
 
@@ -161,8 +163,8 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertEquals(version, 1);
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertThat(version).isEqualTo(1);
     }
 
     @Test
@@ -181,8 +183,8 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.BINARYMASTER.getValue());
-        assertEquals(version, 1);
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.BINARYMASTER.getValue());
+        assertThat(version).isEqualTo(1);
     }
 
     @Test
@@ -201,8 +203,8 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertEquals(version, 1);
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
+        assertThat(version).isEqualTo(1);
     }
 
     @Test
@@ -220,8 +222,8 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertEquals(objectData.getFilename(), "Gallieni pour diffusion");
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
+        assertThat(objectData.getFilename()).isEqualTo("Gallieni pour diffusion");
     }
 
     @Test
@@ -257,8 +259,8 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.DISSEMINATION.getValue());
-        assertEquals(objectData.getFilename(), "titre dissemination");
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.DISSEMINATION.getValue());
+        assertThat(objectData.getFilename()).isEqualTo("titre dissemination");
     }
 
     @Test
@@ -276,8 +278,8 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.THUMBNAIL.getValue());
-        assertEquals(objectData.getFilename(), "titre thumbnail.txt");
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.THUMBNAIL.getValue());
+        assertThat(objectData.getFilename()).isEqualTo("titre thumbnail.txt");
     }
 
     @Test
@@ -330,8 +332,8 @@ public class ArchivesSearchServiceTest {
         int version = archivesSearchService.getVersion(resultsDto.getQualifiers(), usage);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
-        assertEquals(version, 3);
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
+        assertThat(version).isEqualTo(3);
     }
 
     @Test
@@ -348,8 +350,9 @@ public class ArchivesSearchServiceTest {
         String usage = archivesSearchService.getUsage(resultsDto, objectData);
 
         // Then
-        assertEquals(usage, ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
-        assertEquals(objectData.getFilename(), "Un fichier de type TextContent");
+        assertThat(usage).isEqualTo(ObjectQualifierTypeEnum.TEXTCONTENT.getValue());
+        assertThat(objectData.getFilename()).isEqualTo("Un fichier de type TextContent");
+
     }
 
 
@@ -382,5 +385,21 @@ public class ArchivesSearchServiceTest {
         // Then
         verify(archiveSearchExternalRestClient, Mockito.times(1))
             .computedInheritedRules(any(SearchCriteriaDto.class), ArgumentMatchers.any());
+    }
+
+    @Test
+    public void select_unit_with_inherited_rules_should_call_appropriate_rest_client() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(archiveSearchExternalRestClient.selectUnitWithInheritedRules( ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
+            .thenReturn(new ResponseEntity<>(new ResultsDto(), HttpStatus.OK));
+
+        // When
+        archivesSearchService.selectUnitsWithInheritedRules(searchCriteriaDto, context);
+
+        // Then
+        verify(archiveSearchExternalRestClient, Mockito.times(1))
+            .selectUnitWithInheritedRules(ArgumentMatchers.any(), any(SearchCriteriaDto.class));
     }
 }

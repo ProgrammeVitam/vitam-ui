@@ -62,7 +62,9 @@ import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
-import { ArchiveSearchPopupComponent } from './archive-preview/archive-search-popup.component';
+import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
@@ -81,8 +83,8 @@ import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/fi
 import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
-import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
+import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
 import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
@@ -133,7 +135,6 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     FilingHoldingSchemeComponent,
     ArchiveSearchComponent,
     ArchivePreviewComponent,
-    ArchiveSearchPopupComponent,
     SearchCriteriaSaverComponent,
     SearchCriteriaListComponent,
     CriteriaSearchComponent,
@@ -146,6 +147,9 @@ import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/
     ArchiveUnitRulesComponent,
     AddUpdatePropertyComponent,
     UpdateUnitRulesComponent,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitRulesInformationsTabComponent,
     DeleteUnitRulesComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

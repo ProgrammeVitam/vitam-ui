@@ -172,4 +172,14 @@ public class ArchivesSearchExternalController {
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
         return archivesSearchExternalService.computedInheritedRules(searchCriteriaDto);
     }
+
+
+    @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query) {
+        LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return archivesSearchExternalService.selectUnitWithInheritedRules(query);
+    }
 }

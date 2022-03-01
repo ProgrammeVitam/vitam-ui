@@ -57,6 +57,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   accessContract: string;
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
+  isLPExtended = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -124,5 +125,11 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
 
   showPreviewArchiveUnit(item: Event) {
     this.openPanel(item);
+  }
+  showExtendedLateralPanel() {
+    this.isLPExtended = true;
+  }
+  backToNormalLateralPanel() {
+    this.isLPExtended = false;
   }
 }

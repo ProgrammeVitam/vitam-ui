@@ -1,5 +1,62 @@
 {
   "ARCHIVE_SEARCH": {
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION" : {
+        "KEEP" : "Conservation",
+        "DESTROY" : "Elimination",
+        "CONFLICT" : "Conflit",
+        "INHERITED" : "Hérité",
+        "CARRIED" : "Porté",
+        "COPY" :"Copie",
+        "TRANSFER" : "Transfert",
+        "RESTRICTACCESS" : "Accès réservé"
+      },
+      "RULE_STATUS" : {
+        "INHERITED" : "Héritée",
+        "CARRIED" : "Portée",
+        "BLOCKED" : "Bloquée"
+      },
+      "RULE" : {
+        "IDENTIFIER" : "Identifiant",
+        "START_DATE" : "Début",
+        "END_DATE" : "Fin",
+        "STATUS" : "Statut"
+      },
+      "FINAL_ACTION" : {
+        "VALUE" : "Valeur",
+        "STATUS" : "Statut",
+        "PROPERTY" : "Propriété"
+      }  ,
+      "PROPERTIES" : "Propriétés",
+      "FINAL_ACTION_VALUE" : "Sort final",
+      "INHERITANCE_BLOCKED":"Héritage de la catégorie bloqué",
+      "CATEGORY_NAME" : {
+        "APPRAISALRULE" : "DUA",
+        "STORAGERULE" : "DUC",
+        "HOLDRULE" : "Gel",
+        "ACCESSRULE" : "Communicabilité",
+        "DISSEMINATIONRULE" : "Diffusion",
+        "REUSERULE" : "Réutilisation",
+        "CLASSIFICATIONRULE" : "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES" : {
+        "CLASSIFICATIONLEVEL": "Niveau de classification",
+        "CLASSIFICATIONOWNER": "Propriétaire",
+        "CLASSIFICATIONAUDIENCE": "Limitation du champ de diffusion",
+        "CLASSIFICATIONREASSESSINGDATE": "Date de réévaluation",
+        "NEEDREASSESSINGAUTHORIZATION": "Besoin d'autorisation de réévaluation"
+      },
+
+      "HOLD_RULE_PROPERTIES" : {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES" :"Oui",
+      "COMMON_NO" : "Non"   
+    },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
       "SELECTED": "Sélectionnés",
@@ -178,8 +235,8 @@
         "UNIT_TYPE" : {
           "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive avec objets",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive sans objets",
-          "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre de positionnement",
-          "ARCHIVE_UNIT_FILING_UNIT" : "Plan de classement",
+          "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre",
+          "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
           "ARCHIVE_UNIT_PLAN" : "Plan",
           "ARCHIVE_UNIT_HOLDING" : "Arbre"
         }
@@ -221,7 +278,13 @@
         "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
       },
       "TABS": {
-        "INFORMATIONS": "Informations"
+        "INFORMATIONS": "Informations",
+        "RULES" : "Règles",
+        "OBJECTS" : "Objets"
+      },
+      "ACTIONS" : {
+        "SHOW_MORE_DETAILS" : "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS" : "Masquer les métadonnées de gestion"
       }
     },
     "FILING_SHCEMA": {

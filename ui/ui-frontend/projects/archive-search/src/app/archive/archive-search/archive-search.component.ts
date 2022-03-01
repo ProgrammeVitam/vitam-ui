@@ -854,7 +854,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.addCriteria(
             c,
             value,
-            value.value,
+            c === ALL_ARCHIVE_UNIT_TYPES
+              ? this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
+              : value.value,
             criteria.keyTranslated,
             criteria.operator,
             SearchCriteriaTypeEnum.FIELDS,

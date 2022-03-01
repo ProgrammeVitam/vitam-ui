@@ -36,68 +36,61 @@
  */
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
-import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { ArchiveApiService } from '../../../core/api/archive-api.service';
-import { DipRequestCreateComponent } from './dip-request-create.component';
+import { BASE_URL, InjectorModule, VitamUISnackBar, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-unit-rules-details-tab.component';
 
-describe('DipRequestCreateComponent', () => {
-  let component: DipRequestCreateComponent;
-  let fixture: ComponentFixture<DipRequestCreateComponent>;
+describe('ArchiveUnitRulesDetailsTabComponent', () => {
+  let component: ArchiveUnitRulesDetailsTabComponent;
+  let fixture: ComponentFixture<ArchiveUnitRulesDetailsTabComponent>;
 
-  const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
-  const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-
-  const archiveServiceMock = {
-    archive: () => of('test archive'),
-    search: () => of([]),
-    getAccessContractById: () => of({}),
-  };
+  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DipRequestCreateComponent],
-      imports: [
-        InjectorModule,
-        TranslateModule.forRoot(),
-        MatButtonToggleModule,
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        LoggerModule.forRoot(),
-      ],
+      declarations: [ArchiveUnitRulesDetailsTabComponent],
+      imports: [InjectorModule, MatSnackBarModule, HttpClientTestingModule, TranslateModule.forRoot()],
       providers: [
-        FormBuilder,
-        { provide: MatDialogRef, useValue: matDialogRefSpy },
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment },
+        { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
-        { provide: ArchiveApiService, useValue: archiveServiceMock },
+        { provide: environment, useValue: environment },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DipRequestCreateComponent);
+  beforeEach(async(() => {
+    fixture = TestBed.createComponent(ArchiveUnitRulesDetailsTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  });
+    component.archiveUnit = {
+      '#allunitups': [],
+      '#id': 'id',
+      '#object': '',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('items Selected should be grather than 0 ', () => {
-    expect(component.itemSelected).toBeGreaterThan(0);
+
+  it('should the length of listOfCriteriaSearch to be 1', () => {
+    component.selectUnitWithInheritedRules(component.archiveUnit);
+    expect(component.listOfCriteriaSearch.length).toEqual(1);
   });
-  it('Should have an accessContract ', () => {
-    expect(component.data.accessContract).not.toBeNull();
+
+  it('should the archiveUnitRules exists ', () => {
+    component.selectUnitWithInheritedRules(component.archiveUnit);
+    expect(component.archiveUnitRules).not.toBeNull();
   });
 });
