@@ -88,6 +88,8 @@ public class Utils {
 
     private final JavaMailSender mailSender;
 
+    private final String casServerPrefix;
+
     public ExternalHttpContext buildContext(final String username) {
         return new ExternalHttpContext(casTenantIdentifier, casToken, "cas+" + username, casIdentity);
     }
@@ -96,7 +98,7 @@ public class Utils {
         final HttpServletResponse response = WebUtils.getHttpServletResponseFromExternalWebflowContext(requestContext);
         val service = WebUtils.getService(requestContext);
 
-        String url = CommonHelper.addParameter("clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
+        String url = CommonHelper.addParameter(casServerPrefix + "/clientredirect", Pac4jConstants.DEFAULT_CLIENT_NAME_PARAMETER, client.getName());
         if (service != null) {
             url = CommonHelper.addParameter(url, CasProtocolConstants.PARAMETER_SERVICE, service.getOriginalUrl());
         }

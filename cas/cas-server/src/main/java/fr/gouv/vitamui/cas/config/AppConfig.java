@@ -332,7 +332,7 @@ public class AppConfig extends BaseTicketCatalogConfigurer {
 
     @Bean
     public Utils utils() {
-        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender);
+        return new Utils(tokenApiCas, casTenantIdentifier, casIdentity, mailSender, casProperties.getServer().getPrefix());
     }
 
     @Bean
