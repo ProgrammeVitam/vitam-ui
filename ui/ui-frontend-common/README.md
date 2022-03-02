@@ -69,3 +69,12 @@ Make another commit with the changes made to the apps as well as the incremented
 Push your commits and your tag.
 
 Reset the old npmrc if necessary.
+
+
+## Standalone Profile
+
+The standalone profile is used to build the ui-frontend-common project ignoring all services that require authentication, replacing the following files:
+
+- api/api-pastis/pastis-standalone/src/main/resources/standalone/startup.service.ts -> src/app/modules/startup.service.ts
+- api/api-pastis/pastis-standalone/src/main/resources/standalone/theme.service.ts -> src/app/modules/theme.service.ts
+- api/api-pastis/pastis-standalone/src/main/resources/standalone/app.configuration.interface.ts -> src/app/modules/models/app.configuration.interface.ts
