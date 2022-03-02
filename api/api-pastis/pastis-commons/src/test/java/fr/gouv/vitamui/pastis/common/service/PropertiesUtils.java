@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-package fr.gouv.vitamui.pastis.common.util;
+package fr.gouv.vitamui.pastis.common.service;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,10 +69,11 @@ public final class PropertiesUtils {
             throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
         }
         if (url == null) {
-            url = Thread.currentThread().getContextClassLoader().getResource(resourcesFile);
-        }
-        if (url == null) {
-            throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
+            try {
+                url = Thread.currentThread().getContextClassLoader().getResource(resourcesFile);
+            } catch (Exception e) {
+                throw new FileNotFoundException(FILE_NOT_FOUND_IN_RESOURCES + resourcesFile);
+            }
         }
         File file;
         try {

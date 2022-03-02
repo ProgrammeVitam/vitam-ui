@@ -41,8 +41,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
-import fr.gouv.vitamui.pastis.common.util.PropertiesUtils;
-import fr.gouv.vitamui.pastis.common.util.RNGProfileValidator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;

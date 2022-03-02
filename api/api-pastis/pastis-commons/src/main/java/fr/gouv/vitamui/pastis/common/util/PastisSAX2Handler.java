@@ -43,15 +43,14 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.Stack;
 
 public class PastisSAX2Handler extends DefaultHandler {
 
     @Getter
     private ElementRNG elementRNGRoot;
     boolean isValue;
-    private Deque<ElementRNG> stackRNG = new ArrayDeque<>();
+    private Stack<ElementRNG> stackRNG = new Stack<>();
     private boolean isInDocumentationTag;
     private StringBuilder documentationContent;
 
@@ -81,7 +80,7 @@ public class PastisSAX2Handler extends DefaultHandler {
             elementRNG.setType(localName);
             elementRNG.setDataType(attr.getValue("type"));
             if (!stackRNG.isEmpty()) {
-                ElementRNG e = stackRNG.getLast();
+                ElementRNG e = stackRNG.lastElement();
                 elementRNG.setParent(e);
                 e.getChildren().add(elementRNG);
             }
@@ -129,11 +128,11 @@ public class PastisSAX2Handler extends DefaultHandler {
     public void characters(char[] caracteres, int start, int length) throws SAXException {
         if (isInDocumentationTag) {
             documentationContent.append(new String(caracteres, start, length));
-            stackRNG.getLast().setValue(documentationContent.toString());
+            stackRNG.lastElement().setValue(documentationContent.toString());
         }
         if (isValue) {
             String valueContent = new String(caracteres, start, length);
-            stackRNG.getLast().setValue(valueContent);
+            stackRNG.lastElement().setValue(valueContent);
             this.isValue = false;
         }
     }
