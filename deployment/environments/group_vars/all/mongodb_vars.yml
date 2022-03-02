@@ -24,6 +24,6 @@ mongodb:
 mongo_dump_folder: /backup/mongod/
 mongo_backup_reinstall:
   - db: "iam"
-    collections: [ "customers", "externalParameters", "groups", "owners", "profiles", "sequences", "subrogations", "tenants", "users", "providers" ]
+    collections: [ "customers", "groups", "owners", "profiles", "sequences", "subrogations", "tenants", "users", "providers" ]
   - db: "admin"
     collections: []
