@@ -66,13 +66,12 @@ public class ExternalParametersInternalService extends VitamUICrudService<Extern
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ExternalParametersInternalService.class);
 
-    public static final String EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX =
-        "default_ac_";
-    public static final String EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX =
-        "Profil pour la gestion des paramétrages externes ";
-    public static final String EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT =
-        "Profil pour la gestion des paramétrages externes ";
-
+    public static final String EXTERNAL_PARAMETER_IDENTIFIER_PREFIX =
+        "DEFAULT_EXT_PARAM_";
+    public static final String EXTERNAL_PARAMETER_NAME_PREFIX =
+        "Liste des paramétrages externes du tenant ";
+    public static final String EXTERNAL_PARAMS_PROFILE_NAME_PREFIX =
+        "Profil pour la gestion des paramétrages externes du tenant ";
 
     private final ExternalParametersRepository externalParametersRepository;
     private final ExternalParametersConverter externalParametersConverter;

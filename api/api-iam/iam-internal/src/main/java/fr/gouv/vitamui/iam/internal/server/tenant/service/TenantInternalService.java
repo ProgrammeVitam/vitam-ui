@@ -249,12 +249,12 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         Customer customer = customerOptional.get();
         final TenantDto createdTenantDto = super.create(tenantDto);
         Optional<ExternalParameters> fullAccessContractOpt = externalParametersRepository.findByIdentifier(
-            ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX +
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
                 customer.getIdentifier() + "_" +
                 tenantDto.getName());
         Assert.isTrue(fullAccessContractOpt.isPresent(),
             "No external parameter found with id " +
-                ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX +
+                ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX +
                 customer.getIdentifier() + "_" +
                 tenantDto.getName());
         createExternalParameterProfileForDefaultAccessContract(tenantDto.getCustomerId(), tenantDto.getIdentifier(),
@@ -578,11 +578,11 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
     private Profile createExternalParameterProfileForDefaultAccessContract(String customerId, Integer tenantIdentifier,
         String externalParameterId) {
         Profile defaultAccessContractProfile = EntityFactory
-            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+            .buildProfile(ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
                     tenantIdentifier,
                 String.valueOf(sequenceGeneratorService.getNextSequenceId(SequencesConstants.PROFILE_IDENTIFIER,
                     CustomSequencesConstants.DEFAULT_SEQUENCE_INCREMENT_VALUE)),
-                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_FOR_DEFAULT_ACCESS_CONTRACT + " " +
+                ExternalParametersInternalService.EXTERNAL_PARAMS_PROFILE_NAME_PREFIX + " " +
                     tenantIdentifier,
                 true,
                 "",
@@ -597,10 +597,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         String tenantName) {
         ExternalParametersDto fullAccessContract = new ExternalParametersDto();
         fullAccessContract.setIdentifier(
-            ExternalParametersInternalService.EXTERNAL_PARAM_DEFAULT_ACCESS_CONTRACT_PREFIX + customerIdentifier + "_" +
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + customerIdentifier + "_" +
                 tenantName);
         fullAccessContract.setName(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_FO_DEFAULT_ACCESS_CONTRACT_NAME_PREFIX +
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX +
                 customerIdentifier + "_" +
                 tenantName);
         return fullAccessContract;
