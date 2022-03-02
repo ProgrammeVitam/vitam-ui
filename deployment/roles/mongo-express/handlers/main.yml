@@ -1,0 +1,6 @@
+---
+
+- name: reload consul configuration
+  service:
+    name: "{{ consul.service_name | default('vitam-consul') }}"
+    state: reloaded
