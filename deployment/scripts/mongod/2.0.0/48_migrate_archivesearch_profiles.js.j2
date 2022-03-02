@@ -1,0 +1,54 @@
+db = db.getSiblingDB('iam');
+
+print("START 48_migrate_archivesearch_profiles.js");
+
+//======== MIGRATE OLD PROFILES FOR APP ARCHIVE_SEARCH_MANAGEMENT_APP ========//
+db.groups.aggregate([
+    {
+        $lookup: {
+            from: "profiles",
+            localField: "profileIds",
+            foreignField: "_id",
+            as: "fullProfiles"
+        }
+    },
+    { $match: { "fullProfiles.applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP" } }
+]).forEach(fullGroup => {
+    // print(JSON.stringify(fullGroup));
+    fullGroup.fullProfiles.forEach(profileToReplace => {
+        // print(JSON.stringify(profileToReplace));
+
+        const expectedProfileId = "PROFIL_" + profileToReplace.tenantIdentifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-CONSULTATION";
+
+        if (profileToReplace.applicationName == "ARCHIVE_SEARCH_MANAGEMENT_APP" && profileToReplace._id != expectedProfileId) {
+
+            print("Original group: " + JSON.stringify(fullGroup));
+
+            // We check if the expected profile exist; otherwise we couldn't associate to it
+            const newProfile = db.profiles.findOne({ "_id": expectedProfileId });
+
+            print("Group: " + fullGroup.name);
+            print("Migrate profileId: " + profileToReplace._id + " to " + newProfile._id);
+
+            var bulk = db.groups.initializeOrderedBulkOp();
+            bulk.find({ "_id": fullGroup._id }).updateOne({ "$addToSet": { "profileIds": newProfile._id } });
+            bulk.find({ "_id": fullGroup._id }).updateOne({ "$pull": { "profileIds": profileToReplace._id } });
+            bulk.execute();
+
+            print("Updated group: " + JSON.stringify(db.groups.findOne({ "_id": fullGroup._id })));
+        }
+
+    });
+
+});
+
+//======== DELETE OLD PROFILES FOR APP ARCHIVE_SEARCH_MANAGEMENT_APP ========//
+db.profiles.remove(
+    {
+        $and: [
+            { "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP" },
+            { "_id": { $not: { $regex: "^PROFIL_" } } }
+        ]
+    });
+
+print("END 48_migrate_archivesearch_profiles.js");
