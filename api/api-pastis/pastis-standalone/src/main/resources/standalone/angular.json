@@ -135,13 +135,13 @@
             "main": "projects/pastis/src/test.ts",
             "polyfills": "projects/pastis/src/polyfills.ts",
             "tsConfig": "projects/pastis/tsconfig.spec.json",
-            "karmaConfig": "projects/pastis/karma.conf.js",
+            "karmaConfig": "projects/pastis/karma.conf.ci.js",
             "assets": [
               "projects/pastis/src/favicon.ico",
               "projects/pastis/src/assets"
             ],
             "styles": [
-              "projects/pastis/src/styles.scss"
+              "projects/pastis/src/sass/styles.scss"
             ],
             "scripts": []
           }
