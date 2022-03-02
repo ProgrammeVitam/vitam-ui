@@ -35,8 +35,9 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-package fr.gouv.vitamui.pastis.common.util;
+package fr.gouv.vitamui.pastis.common.service;
 
+import fr.gouv.vitamui.pastis.common.util.XMLInputFactoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;

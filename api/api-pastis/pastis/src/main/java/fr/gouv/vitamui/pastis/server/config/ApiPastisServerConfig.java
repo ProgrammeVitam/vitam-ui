@@ -129,7 +129,7 @@ public class ApiPastisServerConfig extends AbstractContextConfiguration {
 
     @Bean
     public PuaFromJSON puaFromJSON() {
-        return new PuaFromJSON();
+        return new PuaFromJSON(puaPastisValidator());
     }
 
     @Bean

@@ -54,8 +54,12 @@ public class PuaFromJSON {
     private static final String SCHEMA = "http://json-schema.org/draft-04/schema";
     private static final String TYPE = "object";
     private static final Boolean ADDITIONALPROPERTIES = false;
+    private final PuaPastisValidator puaPastisValidator;
+
     @Autowired
-    private PuaPastisValidator puaPastisValidator;
+    public PuaFromJSON(final PuaPastisValidator puaPastisValidator){
+        this.puaPastisValidator = puaPastisValidator;
+    }
 
     public String getControlSchemaFromElementProperties(ElementProperties elementProperties) throws IOException {
         // We use a JSONObject instead of POJO, since Jackson and Gson will add unnecessary

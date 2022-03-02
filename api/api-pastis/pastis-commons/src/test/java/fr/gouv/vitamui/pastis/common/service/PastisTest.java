@@ -38,11 +38,7 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
-import fr.gouv.vitamui.pastis.common.util.PastisGetXmlJsonTree;
 import fr.gouv.vitamui.pastis.common.util.PastisMarshaller;
 import fr.gouv.vitamui.pastis.common.util.PastisSAX2Handler;
 import org.junit.Assert;
@@ -64,8 +60,6 @@ import java.net.URISyntaxException;
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "/application-test.yml")
 public class PastisTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(ElementRNG.class);
 
     public PastisMarshaller pastisMarshaller = new PastisMarshaller();
 
@@ -96,7 +90,7 @@ public class PastisTest {
     public void testIfJSONCanBeGenerated() throws IOException, JAXBException, URISyntaxException, SAXException {
 
         PastisSAX2Handler handler = new PastisSAX2Handler();
-        PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
+        PastisGetJsonTree getJson = new PastisGetJsonTree();
 
         XMLReader xmlReader = XMLReaderFactory.createXMLReader();
         xmlReader.setContentHandler(handler);
@@ -104,7 +98,7 @@ public class PastisTest {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
 
         xmlReader.parse(loader.getResource(this.rngFileName).toURI().toString());
-        String jsonTree = getJson.getJsonParsedTreeTest(handler.getElementRNGRoot());
+        String jsonTree = getJson.getJsonParsedTree(handler.getElementRNGRoot());
 
         Assert.assertNotNull("JSON profile generated successfully", jsonTree);
 
