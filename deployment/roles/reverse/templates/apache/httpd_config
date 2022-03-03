@@ -58,15 +58,12 @@
     ProxyPassReverse /v1 http://{{hostvars [groups['hosts_vitamui_consul_server'][0]]['ip_admin']}}:8500/v1
 {% endif %}
 
-    # MONGO-EXPRESS
 {% for host in groups['hosts_vitamui_mongod'] %}
-    {% if hostvars[host]['mongo_express'] is defined %}
-    {% if hostvars[host]['mongo_express']|lower == 'true' %}
-
-    ProxyPass {{ mongo_express_conf.baseuri }} http://{{hostvars[host]['ip_admin']}}:{{ mongo_express_conf.mongo_express_port }}{{ mongo_express_conf.baseuri }} {{reverse_connection_params}}
-    ProxyPassReverse  {{ mongo_express_conf.baseuri }} http://{{hostvars[host]['ip_admin']}}:{{ mongo_express_conf.mongo_express_port }}{{ mongo_express_conf.baseuri }}
-    {% endif %}
-    {% endif %}
+{% if hostvars[host]['mongo_express_enabled'] | default(false) | bool == true %}
+    # MONGO-EXPRESS
+    ProxyPass {{ mongo_express.baseuri }} http://mongo-express-mongo-vitamui.service.consul:{{ mongo_express.port | default('8081') }}{{ mongo_express.baseuri }} {{reverse_connection_params}}
+    ProxyPassReverse {{ mongo_express.baseuri }} http://mongo-express-mongo-vitamui.service.consul:{{ mongo_express.port | default('8081') }}{{ mongo_express.baseuri }}
+{% endif %}
 {% endfor %}
 
     # UI IDENTITY ADMIN

@@ -1,0 +1,17 @@
+{
+  "service": {
+    "name": "mongo-express-{{ mongo_cluster_name }}",
+    "address": "{{ ip_admin }}",
+    "port": {{ mongo_express.port | default('8081') }},
+    "enable_tag_override": false,
+    "tags": ["bdd","mongo","{{ mongo_cluster_name }}","mongo-express"],
+    "checks": [
+      {
+        "name": "mongo-express-{{ mongo_cluster_name }} : TCP check",
+        "notes": "Status mongo-express-{{ mongo_cluster_name }}",
+        "tcp": "{{ ip_admin }}:{{ mongo_express.port | default('8081') }}",
+        "interval": "{{ mongodb.check_consul }}s"
+      }
+    ]
+  }
+}
