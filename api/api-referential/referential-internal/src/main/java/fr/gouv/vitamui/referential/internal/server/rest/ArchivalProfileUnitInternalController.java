@@ -86,7 +86,6 @@ public class ArchivalProfileUnitInternalController {
         LOGGER.debug("create archival unit profile={}", archivalUnitProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         archivalUnitProfile.setTenant(0);
-        vitamContext.setTenantId(0);
         return archivalProfileUnitInternalService.create(vitamContext, archivalUnitProfile);
     }
 

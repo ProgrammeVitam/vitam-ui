@@ -35,46 +35,44 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, Input, OnInit } from '@angular/core';
-import { FileUploader } from 'ng2-file-upload';
-import { FileService } from '../../core/services/file.service';
-import { ProfileService } from '../../core/services/profile.service';
+
+package fr.gouv.vitamui.pastis.common.service;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 
+@RunWith(Parameterized.class)
+public class PuaPastisValidatorOKTest {
 
-@Component({
-  selector: 'pastis-user-action-upload',
-  templateUrl: './upload-profile.component.html',
-  styleUrls: ['./upload-profile.component.scss']
-})
-export class UserActionUploadProfileComponent implements OnInit {
-
-  @Input()
-  uploader: FileUploader = new FileUploader({url: ""});
-  fileToUpload: File = null;
-
-  constructor(private profileService: ProfileService, private fileService: FileService) { }
-
-  ngOnInit() {
-  }
-
-  handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
-  }
-
-  uploadAndReload(event: any) {
-    const fileList: FileList = event.target.files;
-    this.handleFileInput(fileList);
-    if (this.fileToUpload) {
-      const formData = new FormData();
-      formData.append('file', this.fileToUpload, this.fileToUpload.name);
-      this.profileService.uploadProfile(formData).subscribe( fileData => {
-        if (fileData) {
-          console.log('File submited! : ', fileData);
-          this.fileService.updateTreeWithProfile(fileData);
-        }
-      });
+    @Parameters
+    public static Collection<String> data() {
+        return Arrays.asList(new String[] {
+            "pua/pua_OK.json",
+            "pua/pua_OK_with_management.json",
+        });
     }
-  }
+
+    private final String fileName;
+    private final PuaPastisValidatorTest puaPastisValidatorTest;
+
+    public PuaPastisValidatorOKTest(String fileName) {
+        this.fileName = fileName;
+        this.puaPastisValidatorTest = new PuaPastisValidatorTest();
+    }
+
+
+    @Test
+    public void testImports() {
+        puaPastisValidatorTest.testImport(fileName);
+    }
+
 
 }
+
+
