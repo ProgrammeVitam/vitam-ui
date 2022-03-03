@@ -191,10 +191,14 @@ public class InitCustomerService {
         String tenantName) {
         ExternalParametersDto fullAccessContract = new ExternalParametersDto();
         fullAccessContract.setIdentifier(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + tenantIdentifier);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX + customerIdentifier + "_" +
+                tenantName);
         fullAccessContract.setName(
-            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX + tenantIdentifier);
+            ExternalParametersInternalService.EXTERNAL_PARAMETER_NAME_PREFIX +
+                customerIdentifier + "_" +
+                tenantName);
         return fullAccessContract;
+
     }
 
     private OwnerDto saveOwner(final OwnerDto dto) {
