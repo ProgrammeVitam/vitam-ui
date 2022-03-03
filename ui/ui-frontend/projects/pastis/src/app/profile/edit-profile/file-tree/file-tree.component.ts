@@ -260,7 +260,7 @@ export class FileTreeComponent implements OnDestroy {
   async addNewItem(node: FileNode) {
     let dataToSendToPopUp = <PastisDialogData>{};
     dataToSendToPopUp.titleDialog = this.popupAddTitleDialog;
-    dataToSendToPopUp.subTitleDialog = this.popupAddSubTitleDialog + ` "${node.name}"`, node.name;
+    dataToSendToPopUp.subTitleDialog = `${this.popupAddSubTitleDialog} ${node.name}`, node.name;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.width = '800px';
     dataToSendToPopUp.okLabel = this.popupAddOkLabel;

@@ -46,6 +46,7 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { PopupService } from '../../core/services/popup.service';
 import { Subscription } from 'rxjs';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { ProfileService } from '../../core/services/profile.service';
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -56,25 +57,25 @@ export class UserActionAddMetadataComponent implements OnInit {
 
   btnIsDisabled: boolean;
 
-  sedaData:SedaData;
-  allowedChildren : SedaData[];
-  filterName:string;
+  sedaData: SedaData;
+  allowedChildren: SedaData[];
+  filterName: string;
   namesFiltered: any = [];
   sedaNodeFound: SedaData;
-  selectedSedaNode:SedaData;
-  addedItems:SedaData[] = [];
+  selectedSedaNode: SedaData;
+  addedItems: SedaData[] = [];
   dialogData: PastisDialogData;
 
-  atLeastOneIsSelected:boolean;
-  customTemplate:TemplateRef<any>
+  atLeastOneIsSelected: boolean;
+  customTemplate: TemplateRef<any>
   fileNode: FileNode;
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService:FileService, private sedaService:SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) { }
+    private fileService: FileService, private sedaService: SedaService,
+    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService, private profileService: ProfileService) { }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -85,33 +86,42 @@ export class UserActionAddMetadataComponent implements OnInit {
         console.log(error)
       }
     );
-    this.fileService.nodeChange.subscribe(fileNode=>{this.fileNode = fileNode})
+    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode })
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
-    this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound,this.fileNode)
-                                            .filter(e=>e.Element !== SedaElementConstants.attribute);
-
+ 
+    if (this.profileService.profileMode === "PA") {
+      this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
+      .filter(e => e.Element !== SedaElementConstants.attribute);
+    } else if (this.profileService.profileMode === "PUA" ) {
+      if ( this.sedaNodeFound.Name === "ArchiveUnit"){
+        this.allowedChildren = this.sedaNodeFound.Children
+        .filter(e => e.Name === "Management" || e.Name === "ArchiveUnitProfile");
+      } else {
+        this.allowedChildren = this.sedaNodeFound.Children
+      }
+    }
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
-    this.popUpService.btnYesShoudBeDisabled.subscribe(status=>{
+    this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
       this.btnIsDisabled = status;
     })
   }
 
-  selectSedaElement(selectedElements:string[]) {
+  selectSedaElement(selectedElements: string[]) {
     if (selectedElements.length) {
-      this.selectedSedaNode = this.sedaService.getSedaNode(this.sedaData,selectedElements[0]);
+      this.selectedSedaNode = this.sedaService.getSedaNode(this.sedaData, selectedElements[0]);
     }
   }
 
-  isElementSelected(element: SedaData){
-    if (this.addedItems){
+  isElementSelected(element: SedaData) {
+    if (this.addedItems) {
       return this.addedItems.includes(element);
     }
   }
 
-  onRemoveSelectedElement(element: SedaData){
+  onRemoveSelectedElement(element: SedaData) {
     let indexOfElement = this.addedItems.indexOf(element)
     if (indexOfElement >= 0) {
       this.addedItems.splice(indexOfElement, 1);
@@ -128,37 +138,37 @@ export class UserActionAddMetadataComponent implements OnInit {
     this.upateButtonStatusAndDataToSend();
   }
 
-  onAddSelectedElement(element: SedaData){
-      this.addedItems.push(element);
+  onAddSelectedElement(element: SedaData) {
+    this.addedItems.push(element);
 
-      if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
-        this.allowedChildren = this.allowedChildren.filter(e => e != element);
-      }
-      this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
+    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    }
+    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
 
-  upateButtonStatusAndDataToSend(){
+  upateButtonStatusAndDataToSend() {
     this.popUpService.setPopUpDataOnClose(this.addedItems);
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected)
   }
 
-  onAllItemsAdded(){
+  onAllItemsAdded() {
     return this.allowedChildren.length === this.addedItems.length;
   }
 
-  isElementComplex(element: SedaData){
-    if (element){
+  isElementComplex(element: SedaData) {
+    if (element) {
       return element.Element === SedaElementConstants.complex;
     }
   }
 
-  getDefinition(element:SedaData):string {
+  getDefinition(element: SedaData): string {
     return element ? element.Definition : '';
   }
 
   onYesClick(): void {
-    console.log("Clicked ok on dialog : %o" , this.selectedSedaNode);
+    console.log("Clicked ok on dialog : %o", this.selectedSedaNode);
 
   }
   onNoClick(): void {
@@ -168,33 +178,33 @@ export class UserActionAddMetadataComponent implements OnInit {
   public onSearchSubmit(search: string): void {
     this.filterName = search;
   }
-  onResolveName(element: SedaData):string {
-    if(this.sedaLanguage){
+  onResolveName(element: SedaData): string {
+    if (this.sedaLanguage) {
       return element.Name;
     }
-    else{
-      if(element.NameFr){
+    else {
+      if (element.NameFr) {
         return element.NameFr;
       }
     }
     return element.Name;
   }
   ngOnDestroy(): void {
-    if(this.sedaLanguageSub != null){
+    if (this.sedaLanguageSub != null) {
       this.sedaLanguageSub.unsubscribe();
     }
   }
 
 }
 
-@Pipe({name: 'filterByName'})
+@Pipe({ name: 'filterByName' })
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
-    if(!listOfElements) return null;
-    if(!nameToFilter) return listOfElements;
-    if(sedaLanguage){
+    if (!listOfElements) return null;
+    if (!nameToFilter) return listOfElements;
+    if (sedaLanguage) {
       return listOfElements.filter(element => element.Name != undefined).filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
-    }else{
+    } else {
       return listOfElements.filter(element => element.NameFr != undefined).filter(element => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     }
 
