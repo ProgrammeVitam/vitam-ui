@@ -188,10 +188,12 @@ export class FileTreeMetadataComponent {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  additionalProperties: boolean;
+  additionalPropertiesMetadonnee : boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService, 
+    private router: Router, private startupService: StartupService, public profileService: ProfileService,
     private fileTreeService:FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService) {
 
@@ -218,7 +220,8 @@ export class FileTreeMetadataComponent {
       this.popupAnnuler= "Annuler"
     }
 
-
+    this.additionalProperties = false;
+    this.additionalPropertiesMetadonnee = false;
     this.docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
     this._sedalanguageSub = this.metadataLanguageService.sedaLanguage.subscribe(
@@ -690,4 +693,23 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
+  changeStatusAditionalProperties($event: boolean) {
+    this.additionalProperties = $event;
+  }
+
+
+  isElementNameNotContentManagement(nomDuChamp: string) {
+    return !(nomDuChamp == "Content" || nomDuChamp == "Management");
+  }
+
+  changeAutorisation($event: MatCheckboxChange, element : any) {
+    console.log($event.checked + "test" + element.nomDuChamp);
+    this.additionalPropertiesMetadonnee = $event.checked;
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
+  }
+
+  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: FileNode) {
+//TODO Mettre additional properties à true dans la métadonnée complexe element.
+    console.log(element.nomDuChamp + " nom metadonnee" + additionalPropertiesMetadonnee + " nouveau addition à setter")
+  }
 }

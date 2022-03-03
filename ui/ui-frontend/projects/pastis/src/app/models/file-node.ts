@@ -94,6 +94,7 @@ export enum ValueOrDataConstants {
 }
 
 export interface FileNode {
+  additionalProperties:boolean;
   id: number;
   parentId: number;
   name: string;

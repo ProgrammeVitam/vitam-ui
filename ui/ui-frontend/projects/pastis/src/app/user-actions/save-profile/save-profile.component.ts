@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ProfileService} from '../../core/services/profile.service';
 import {FileService} from '../../core/services/file.service';
 import {FileNode} from '../../models/file-node';
@@ -103,7 +103,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   data: FileNode[] = [];
   donnees: string[];
 
-  subscription1$: Subscription;
   subscription2$: Subscription;
   subscriptions: Subscription[] = [];
 
@@ -112,6 +111,8 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   profileDescription: ProfileDescription;
   fileRng : File;
+
+  @Input() additional : boolean;
 
   @Output() close = new EventEmitter();
 
@@ -159,6 +160,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     //Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
+    this.data[0].additionalProperties = this.additional;
     if(this.isStandalone){
       this.downloadProfiles(true);
     }
@@ -202,7 +204,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             let retour;
             if (result.success) {
               retour = result.data
-              //TODO : Vérifier mode PA PUA : faire la pop up de sauvegarde qui envoie un pa ou un pua avec modele à completer par le retour
               if (result.mode === "PUA") {
                 if(!this.editProfile){
                   this.profileDescription =  Object.assign(this.noticeService.profileFromNotice(retour,this.editProfile, true), this.profileDescription)
@@ -328,6 +329,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   downloadProfiles(local: boolean): void{
     if (this.data) {
+      console.log(this.data[0].additionalProperties + " TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT addional result")
       // Get Notice changement
       let notice: any;
       if (this.profileService.profileMode === "PUA") {

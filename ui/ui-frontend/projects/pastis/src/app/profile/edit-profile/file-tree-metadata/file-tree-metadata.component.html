@@ -25,11 +25,17 @@
 
       <!--Top right panel container-->
       <div class="pastis-metadata-option-entete-2">
+        <!--Toggle button allow additional properties-->
+        <div *ngIf="this.profileService.profileMode==='PUA' && this.isStandalone" class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' |
+             translate}}">
+          <allow-additional-properties
+            (stateToggleButton)="changeStatusAditionalProperties($event)"></allow-additional-properties>
+        </div>
         <!--Button save-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' |
              translate}}" placement="top"
              show-delay="0">
-          <pastis-user-action-save-profile></pastis-user-action-save-profile>
+          <pastis-user-action-save-profile [additional]="additionalProperties"></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' |
@@ -50,7 +56,8 @@
         (search)="applyFilterTier($event)"
         [searchbarPlaceholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SEARCH_PLACEHOLDER' | translate">
         <!--Button add metadata-->
-        <button (click)="onAddNode()" *ngIf="checkElementType() && resolveButtonLabel(clickedNode) !== null" class="btn primary  ml-5"
+        <button (click)="onAddNode()" *ngIf="checkElementType() && resolveButtonLabel(clickedNode) !== null"
+                class="btn primary  ml-5"
                 style="text-transform: uppercase;">{{resolveButtonLabel(clickedNode)}}
         </button>
       </vitamui-common-banner>
@@ -59,7 +66,8 @@
 
     <!--Metatada table container-->
     <div class="pastis-table-container">
-      <table *ngIf="shouldLoadMetadataTable(); else complexElementWithouChild" [dataSource]="matDataSource" class="list-profile-table"
+      <table *ngIf="shouldLoadMetadataTable(); else complexElementWithouChild" [dataSource]="matDataSource"
+             class="list-profile-table"
              mat-table>
         <!-- Name Column -->
         <ng-container matColumnDef="nomDuChamp">
@@ -71,7 +79,8 @@
             <span
               [matTooltipShowDelay]="0"
               [ngClass]="{'pastis-table-content': isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j]),
-                                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])}" matTooltip="{{getSedaDefinition(element.nomDuChamp)}}" matTooltipClass="pastis-matTooltipClass"
+                                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])}"
+              matTooltip="{{getSedaDefinition(element.nomDuChamp)}}" matTooltipClass="pastis-matTooltipClass"
               placement="right">
                <i *ngIf="isElementComplex(element.nomDuChamp)" class="vitamui-icon vitamui-icon-complex-element-1-1">
                  <span class="path1"></span><span class="path2"></span
@@ -101,7 +110,8 @@
             <ng-container [ngSwitch]="getMetadataInputType(element)">
               <ng-container *ngSwitchCase="'date'">
                 <div class="pastis-vitamui-container-editable-valeur-fixe">
-                  <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)" [dpDayPicker]="config"
+                  <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)"
+                                                    [dpDayPicker]="config"
                                                     [maxlength]="120"
                                                     [ngModel]="element.valeurFixe"
                                                     class="valeur-fixe-pastis">
@@ -138,7 +148,8 @@
             translate}}
           </th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <mat-select (ngModelChange)="setNodeChildrenCardinalities(element,$event)" [ngModel]="selectedCardinalities[i]"
+            <mat-select (ngModelChange)="setNodeChildrenCardinalities(element,$event)"
+                        [ngModel]="selectedCardinalities[i]"
                         class="select-border" disableRipple="true"
                         panelClass="vitamui-mat-select">
               <mat-option *ngFor="let c of element.cardinalite" [value]="c">
@@ -169,7 +180,8 @@
         <ng-container matColumnDef="menuoption">
           <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell></th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <button (click)="onButtonClicked(element.id,$event)" *ngIf="isRowHovered(element.id)" [center-mat-menu]="menuTrigger" [ngClass]="{'pastis-btn-metadata-options-active': isButtonClicked(element.id,matDataSource.data[rowIndex]),
+            <button (click)="onButtonClicked(element.id,$event)" *ngIf="isRowHovered(element.id)"
+                    [center-mat-menu]="menuTrigger" [ngClass]="{'pastis-btn-metadata-options-active': isButtonClicked(element.id,matDataSource.data[rowIndex]),
                               'pastis-btn-metadata-options': !isButtonClicked(element.id,matDataSource.data[rowIndex]) }"
                     disableRipple="true" id="menuBtn"
                     mat-icon-button>
@@ -188,7 +200,8 @@
                 <mat-divider *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'"
                              style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onDuplicateNode(element.id)" *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'"
+                <button (click)="onDuplicateNode(element.id)"
+                        *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'"
                         mat-menu-item>
                   <mat-icon style="color:#757575">filter_none</mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate}}</span>
@@ -207,6 +220,24 @@
                   <span
                     class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate}}</span>
                 </button>
+
+                <!-- Autoriser la présence de métadonnées non déclarées-->
+                <mat-divider
+                  *ngIf="isElementComplex(element.nomDuChamp) && this.profileService.profileMode==='PUA'&& isElementNameNotContentManagement(element.nomDuChamp)"
+                  style="border-top-color:#E0E0E0;">
+                </mat-divider>
+                <mat-checkbox
+                  *ngIf="isElementComplex(element.nomDuChamp) && this.profileService.profileMode==='PUA'&& isElementNameNotContentManagement(element.nomDuChamp)"
+                  class="mat-menu-item" (change)="changeAutorisation($event, element)">
+                  <span class="allow_presence_text">Autoriser la presence de <br/> métadonnées non déclarées</span>
+                  <div class="placement-tooltip">
+                    <i class="vitamui-icon vitamui-icon-info primary clickable"
+                       matTooltip="Permet de modifier l’autorisation dans le manifeste de la présence de métadonnées non déclarées dans le PUA"
+                       matTooltipClass="vitamui-tooltip"
+                       style="font-size: 1.5em"></i>
+                  </div>
+                </mat-checkbox>
+
                 <!-- @Supprimer-->
                 <mat-divider *ngIf="!isSedaObligatory(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
                 </mat-divider>
@@ -222,7 +253,8 @@
         </ng-container>
 
         <tr *matHeaderRowDef="displayedColumns;sticky: true" class="pastis-table-row-header" mat-header-row></tr>
-        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave(row)" *matRowDef="let row; columns: displayedColumns;"
+        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave(row)"
+            *matRowDef="let row; columns: displayedColumns;"
             class="pastis-table-row" mat-row></tr>
       </table>
     </div>

@@ -54,10 +54,11 @@ import {CreateNoticeComponent} from "./create-notice/create-notice.component";
 import {CoreModule} from "../core/core.module";
 import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,
@@ -71,7 +72,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     FormsModule,
     MatSlideToggleModule
   ],
-  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent,UserActionsDownloadDocComponent,FilterByNamePipe ],
+  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent],
 })
 export class UserActionsModule {
 

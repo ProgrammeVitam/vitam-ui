@@ -51,6 +51,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 public class ElementProperties {
 
+    private String additionalProperties;
     private String name;
     private String type;
     private String cardinality;
