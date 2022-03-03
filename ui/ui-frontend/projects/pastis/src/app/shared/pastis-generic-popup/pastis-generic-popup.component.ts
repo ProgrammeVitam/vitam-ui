@@ -1,7 +1,7 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {PastisPopupSelectionService} from "./pastis-popup-selection.service";
-import {DataGeneriquePopupService} from "../data-generique-popup.service";
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { Input } from '@angular/core';
+import {DataGeneriquePopupService} from '../data-generique-popup.service';
+import {PastisPopupSelectionService} from './pastis-popup-selection.service';
 
 @Component({
   selector: 'pastis-generic-popup',
@@ -9,14 +9,14 @@ import { Input } from '@angular/core';
   styleUrls: ['./pastis-generic-popup.component.scss']
 })
 export class PastisGenericPopupComponent implements OnInit {
-  donnees:string[];
+  donnees: string[];
 
   @Input()
   firstChoice: string;
   @Input()
   secondChoice: string;
   @Input()
-  title : string;
+  title: string;
 
   @Input()
   secondPopup: boolean;
@@ -28,12 +28,12 @@ export class PastisGenericPopupComponent implements OnInit {
   constructor(private pastisPopupSelectionService: PastisPopupSelectionService, private dataGeneriquePopupService: DataGeneriquePopupService) { }
 
   ngOnInit(): void {
-    this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees= donnees);
-    if(this.firstChoice == null && this.firstChoice == ''){
-      this.firstChoice= this.donnees[0];
+    this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees);
+    if (this.firstChoice == null && this.firstChoice == '') {
+      this.firstChoice = this.donnees[0];
     }
     if ( typeof(this.firstChoice) == 'undefined' && this.firstChoice == null ) {
-      this.firstChoice= this.donnees[0];
+      this.firstChoice = this.donnees[0];
     }
     if ( typeof(this.secondChoice) == 'undefined' && this.secondChoice == null ) {
       this.secondChoice = this.donnees[1];
@@ -41,13 +41,13 @@ export class PastisGenericPopupComponent implements OnInit {
     if ( typeof(this.title) == 'undefined' && this.title == null ) {
       this.title = this.donnees[2];
     }
-      this.status=true;
+    this.status = true;
     this.pastisPopupSelectionService.value = this.firstChoice;
   }
 
-  changeStatus(value: string): void{
-    if((this.status && value != this.firstChoice)
-          || (!this.status && value != this.secondChoice)){
+  changeStatus(value: string): void {
+    if ((this.status && value != this.firstChoice)
+          || (!this.status && value != this.secondChoice)) {
        this.status = !this.status;
        this.pastisPopupSelectionService.value = value;
     }

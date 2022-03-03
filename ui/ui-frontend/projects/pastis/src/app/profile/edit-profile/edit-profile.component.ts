@@ -36,22 +36,22 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
-import { FileService } from '../../core/services/file.service';
-import { SedaService } from '../../core/services/seda.service';
-import { FileNode } from '../../models/file-node';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { BehaviorSubject, Subscription} from 'rxjs';
-import { FileTreeComponent } from './file-tree/file-tree.component';
-import { SedaData } from '../../models/seda-data';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { ProfileService } from '../../core/services/profile.service';
-import { FileTreeService } from './file-tree/file-tree.service';
 import {TranslateService} from '@ngx-translate/core';
-import {environment} from "../../../environments/environment";
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { BehaviorSubject, Subscription} from 'rxjs';
+import {environment} from '../../../environments/environment';
+import { FileService } from '../../core/services/file.service';
+import { ProfileService } from '../../core/services/profile.service';
+import { SedaService } from '../../core/services/seda.service';
+import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
+import { FileNode } from '../../models/file-node';
+import { SedaData } from '../../models/seda-data';
+import { FileTreeComponent } from './file-tree/file-tree.component';
+import { FileTreeService } from './file-tree/file-tree.service';
 
 const EDIT_PROFILE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE';
 
@@ -92,11 +92,11 @@ export class EditProfileComponent implements OnDestroy {
   isStandalone: boolean = environment.standalone;
   puaMode: boolean;
 
-  entete: string = 'Entête';
-  regles: string = 'Règles';
-  unitesArchives: string = 'Unités d\'archives';
-  objets: string = 'Objets';
-  unitesArchivesPuaMode: string = 'Unité d\'archive';
+  entete = 'Entête';
+  regles = 'Règles';
+  unitesArchives = 'Unités d\'archives';
+  objets = 'Objets';
+  unitesArchivesPuaMode = 'Unité d\'archive';
 
 
   profileTabChildrenToInclude: string[] = [];
@@ -123,27 +123,27 @@ export class EditProfileComponent implements OnDestroy {
 
   @ViewChild(FileTreeComponent, {static: false}) fileTreeComponent: FileTreeComponent;
 
-  private _fileServiceCurrentTreeSubscription : Subscription;
+  private _fileServiceCurrentTreeSubscription: Subscription;
 
   constructor(private sedaService: SedaService, private fileService: FileService,
               private sideNavService: ToggleSidenavService, public profileService: ProfileService,
-              private loaderService: NgxUiLoaderService, private fileTreeService:FileTreeService,
+              private loaderService: NgxUiLoaderService, private fileTreeService: FileTreeService,
               private translateService: TranslateService) {
     this.selectedIndex = 0;
   }
 
-  initAll(){
+  initAll() {
     this.puaMode = this.profileService.profileMode === 'PA' ? false : true;
-    if(!this.isStandalone){
+    if (!this.isStandalone) {
       this.entete = 'PROFILE.EDIT_PROFILE.ENTETE';
       this.regles = 'PROFILE.EDIT_PROFILE.REGLES';
       this.unitesArchives = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES';
       this.objets = 'PROFILE.EDIT_PROFILE.OBJETS';
-      this.unitesArchivesPuaMode= 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES_PUA_MODE';
+      this.unitesArchivesPuaMode = 'PROFILE.EDIT_PROFILE.UNITES_ARCHIVES_PUA_MODE';
     }
     this.tabLabels.push(this.entete, this.regles, this.unitesArchives, this.objets, this.unitesArchivesPuaMode);
 
-    let collectionSeda: string[] = [];
+    const collectionSeda: string[] = [];
     collectionSeda.push('Entête', 'Règles', 'Unités d\'archives', 'Objets');
     this.fileTreeService.nestedTreeControl = new NestedTreeControl<FileNode>(this.getChildren);
     this.collectionNames = collectionSeda.map(name => name.charAt(0).toUpperCase() + name.slice(1).toLowerCase());
@@ -159,31 +159,31 @@ export class EditProfileComponent implements OnDestroy {
     this.rulesTabChildrenToExclude.push();
     this.treeTabChildrenToInclude.push();
     this.treeTabChildrenToExclude.push();
-    this.objectTabChildrenToInclude.push('BinaryDataObject', 'PhysicalDataObject')
+    this.objectTabChildrenToInclude.push('BinaryDataObject', 'PhysicalDataObject');
     this.objectTabChildrenToExclude.push('ManagementMetadata', 'ArchiveUnit', 'DescriptiveMetadata');
     this.tabShowElementRules.push(
       [this.headerTabChildrenToInclude, this.headerTabChildrenToExclude],
       [this.profileTabChildrenToInclude, this.profileTabChildrenToExclude],
       [this.rulesTabChildrenToInclude, this.rulesTabChildrenToExclude],
       [this.treeTabChildrenToInclude, this.treeTabChildrenToExclude],
-      [this.objectTabChildrenToInclude, this.objectTabChildrenToExclude])
+      [this.objectTabChildrenToInclude, this.objectTabChildrenToExclude]);
     this.initActiveTabAndProfileMode();
     this.setTabsAndMetadataRules(this.activeTabIndex);
 
-    //Set initial rules
+    // Set initial rules
     this.fileService.setCollectionName(this.collectionName);
     this.fileService.setTabRootMetadataName(this.rootTabMetadataName);
     this.fileService.setNewChildrenRules(this.elementRules);
   }
 
-  ngAfterViewInit () {
+  ngAfterViewInit() {
     this._fileServiceCurrentTreeSubscription = this.fileService.currentTree.subscribe(response => {
       this.initAll();
-      if (response && response!==undefined) {
+      if (response && response !== undefined) {
         this.nodeToSend = response[0];
         if (this.nodeToSend) {
           this.fileService.allData.next(response);
-          let filteredData = this.getFilteredData(this.rootTabMetadataName);
+          const filteredData = this.getFilteredData(this.rootTabMetadataName);
 
           this.fileTreeService.nestedDataSource = new MatTreeNestedDataSource();
           this.fileTreeService.nestedDataSource.data = filteredData;
@@ -194,7 +194,7 @@ export class EditProfileComponent implements OnDestroy {
         }
       }
       this.loadProfileData(this.activeTabIndex);
-      console.log("Init file tree node on file tree : %o", this.dataChange.getValue());
+      console.log('Init file tree node on file tree : %o', this.dataChange.getValue());
     });
 
     this.sedaParentNode = this.sedaService.sedaRules[0];
@@ -206,7 +206,7 @@ export class EditProfileComponent implements OnDestroy {
 
 
   initActiveTabAndProfileMode() {
-    this.profileService.profileMode === "PA" ? this.activeTabIndex = 0 : this.activeTabIndex = 2;
+    this.profileService.profileMode === 'PA' ? this.activeTabIndex = 0 : this.activeTabIndex = 2;
   }
 
   loadProfile(event: MatTabChangeEvent) {
@@ -215,17 +215,17 @@ export class EditProfileComponent implements OnDestroy {
   }
 
   setTabsAndMetadataRules(tabIndex: number) {
-    this.collectionName = this.profileService.profileMode === "PA" ? this.collectionNames[tabIndex] : this.collectionNames[2];
-    this.rootTabMetadataName = this.profileService.profileMode === "PA" ? this.rootNames[tabIndex] : this.rootNames[2];
-    this.elementRules = this.profileService.profileMode === "PA" ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
+    this.collectionName = this.profileService.profileMode === 'PA' ? this.collectionNames[tabIndex] : this.collectionNames[2];
+    this.rootTabMetadataName = this.profileService.profileMode === 'PA' ? this.rootNames[tabIndex] : this.rootNames[2];
+    this.elementRules = this.profileService.profileMode === 'PA' ? this.tabShowElementRules[tabIndex] : this.tabShowElementRules[2];
   }
 
-  loadProfileData(tabindex:number) {
+  loadProfileData(tabindex: number) {
     this.setTabsAndMetadataRules(tabindex);
-    this.fileService.collectionName.next(this.collectionName)
+    this.fileService.collectionName.next(this.collectionName);
     this.fileService.rootTabMetadataName.next(this.rootTabMetadataName);
     this.fileService.tabChildrenRulesChange.next(this.elementRules);
-    let fiteredData = this.getFilteredData(this.rootTabMetadataName);
+    const fiteredData = this.getFilteredData(this.rootTabMetadataName);
     if (fiteredData) {
       this.fileService.tabRootNode.next(fiteredData[0]);
       this.loaderService.start();
@@ -241,11 +241,11 @@ export class EditProfileComponent implements OnDestroy {
 
   getFilteredData(rootTreeMetadataName: string): FileNode[] {
     if (this.nodeToSend) {
-      let nodeNameToFilter = this.profileService.profileMode === "PA" ? rootTreeMetadataName : this.nodeToSend.name;
-      let currentNode = this.fileService.getFileNodeByName(this.fileService.allData.getValue()[0], nodeNameToFilter);
-      let filteredData = [];
+      const nodeNameToFilter = this.profileService.profileMode === 'PA' ? rootTreeMetadataName : this.nodeToSend.name;
+      const currentNode = this.fileService.getFileNodeByName(this.fileService.allData.getValue()[0], nodeNameToFilter);
+      const filteredData = [];
       filteredData.push(currentNode);
-      console.log("Filtered data : ", filteredData)
+      console.log('Filtered data : ', filteredData);
       return filteredData;
     }
   }
@@ -253,15 +253,15 @@ export class EditProfileComponent implements OnDestroy {
   getChildren = (node: FileNode) => node.children;
 
   closeSideNav() {
-    this.sideNavService.hide()
+    this.sideNavService.hide();
   }
 
   canShowOnPuaMode(tabIndex: number) {
-    return this.profileService.profileMode === "PUA" ? (tabIndex === 3) : true;
+    return this.profileService.profileMode === 'PUA' ? (tabIndex === 3) : true;
   }
 
   ngOnDestroy() {
-    if(this._fileServiceCurrentTreeSubscription!= null){
+    if (this._fileServiceCurrentTreeSubscription != null) {
       this._fileServiceCurrentTreeSubscription.unsubscribe();
     }
   }

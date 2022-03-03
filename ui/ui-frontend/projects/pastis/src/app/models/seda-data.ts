@@ -35,8 +35,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-//Seda element constants :
-//Seda elelemtns can be attributes, simple or complex elements
+// Seda element constants :
+// Seda elelemtns can be attributes, simple or complex elements
 
 export enum SedaElementConstants {
     attribute = 'Attribute',
@@ -44,13 +44,13 @@ export enum SedaElementConstants {
     complex = 'Complex'
 }
 
-//Seda choice constants : can be yes or no
+// Seda choice constants : can be yes or no
 export enum SedaChoiceConstants {
     yes = 'yes',
     no = 'no',
 }
 
-//Seda Extensible constants : can be yes or no
+// Seda Extensible constants : can be yes or no
 export enum SedaExtensibleConstants {
     yes = 'yes',
     no = 'no',
@@ -74,15 +74,15 @@ export enum SedaCollections {
 
 export interface SedaData {
     [key: string]: any;
-    Name:string;
+    Name: string;
     NameFr: string;
-    Type:string;
-    Element:string;
-    Cardinality:string;
-    Definition:string;
-    Extensible:boolean;
-    Choice:boolean;
+    Type: string;
+    Element: string;
+    Cardinality: string;
+    Definition: string;
+    Extensible: boolean;
+    Choice: boolean;
     Children: SedaData[];
-    Enumeration:string[];
+    Enumeration: string[];
     Collection: SedaCollections;
 }

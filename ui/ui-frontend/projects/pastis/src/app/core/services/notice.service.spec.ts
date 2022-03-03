@@ -48,7 +48,7 @@ import { ProfileService } from './profile.service';
 
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
 
 describe('PopupService', () => {

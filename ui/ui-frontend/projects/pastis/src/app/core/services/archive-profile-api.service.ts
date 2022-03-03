@@ -36,9 +36,9 @@
  */
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Inject, Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
 import {Profile} from '../../models/profile';
 import { PastisConfiguration } from '../classes/pastis-configuration';
 
@@ -51,7 +51,7 @@ export class ArchiveProfileApiService extends BaseHttpClient<Profile> {
 
   // @ts-ignore
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string, private pastisConfig: PastisConfiguration) {
-    console.log("passage dans service archive API");
+    console.log('passage dans service archive API');
     super(http, baseUrl);
   }
 

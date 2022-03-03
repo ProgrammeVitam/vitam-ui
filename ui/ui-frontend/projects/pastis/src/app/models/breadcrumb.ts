@@ -1,4 +1,4 @@
-import { FileNode } from "./file-node";
+import { FileNode } from './file-node';
 
 export interface BreadcrumbDataTop {
     label: string;

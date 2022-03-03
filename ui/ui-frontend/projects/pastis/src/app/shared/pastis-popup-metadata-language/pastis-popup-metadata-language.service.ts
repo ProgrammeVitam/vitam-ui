@@ -43,7 +43,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class PastisPopupMetadataLanguageService {
-  sedaLanguage= new BehaviorSubject<boolean>(null);
+  sedaLanguage = new BehaviorSubject<boolean>(null);
 
   constructor() {
     this.sedaLanguage.next(true);

@@ -37,13 +37,13 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
-import {SedaVisualizerComponent} from '../seda-visualizer/seda-visualizer.component';
 import {ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent} from 'ui-frontend-common';
 import {environment} from '../../environments/environment';
-import {ListProfileComponent} from '../profile/list-profile/list-profile.component';
 import {MainComponent} from '../main/main.component';
+import {CreateProfileComponent} from '../profile/create-profile/create-profile.component';
+import {ListProfileComponent} from '../profile/list-profile/list-profile.component';
+import {SedaVisualizerComponent} from '../seda-visualizer/seda-visualizer.component';
 import {PastisUnderConstructionComponent} from '../shared/pastis-under-construction/pastis-under-construction.component';
-import {CreateProfileComponent} from "../profile/create-profile/create-profile.component";
 
 const standalone: boolean = environment.standalone;
 const routes: Route[] = standalone ?
@@ -53,10 +53,10 @@ const routes: Route[] = standalone ?
     component: ListProfileComponent,
   },
   {path: 'sedaview', component: SedaVisualizerComponent},
-  {path: '', component: ListProfileComponent, data:{appId: 'PASTIS_APP'}},
-  {path: 'edit/:id', component: MainComponent, data:{appId: 'PASTIS_APP'}},
-  {path: 'new', component: MainComponent, data:{appId: 'PASTIS_APP'}},
-  {path: '**', component: PastisUnderConstructionComponent, data:{appId: 'PASTIS_APP'}}
+  {path: '', component: ListProfileComponent, data: {appId: 'PASTIS_APP'}},
+  {path: 'edit/:id', component: MainComponent, data: {appId: 'PASTIS_APP'}},
+  {path: 'new', component: MainComponent, data: {appId: 'PASTIS_APP'}},
+  {path: '**', component: PastisUnderConstructionComponent, data: {appId: 'PASTIS_APP'}}
 ] :
 [
   {
