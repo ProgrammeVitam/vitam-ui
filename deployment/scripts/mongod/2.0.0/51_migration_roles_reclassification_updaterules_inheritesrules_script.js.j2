@@ -9,9 +9,15 @@ db.profiles.updateMany({
    "$addToSet": {
       "roles":{
            $each: [
-               "name": "ROLE_RECLASSIFICATION",
-               "name": "ROLE_UPDATE_MANAGEMENT_RULES",
-               "name": "ROLE_COMPUTED_INHERITED_RULES"
+              {
+              "name": "ROLE_RECLASSIFICATION"
+              },
+              {
+              "name": "ROLE_UPDATE_MANAGEMENT_RULES"
+              },
+              { 
+              "name": "ROLE_COMPUTED_INHERITED_RULES"
+              }
           ]
       }
    }
