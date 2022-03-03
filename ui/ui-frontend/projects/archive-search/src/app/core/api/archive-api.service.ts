@@ -44,6 +44,7 @@ import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive/models/search.criteria';
+import { Unit } from '../../archive/models/unit.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -143,5 +144,9 @@ export class ArchiveApiService extends BaseHttpClient<any> {
       responseType: 'text',
       headers,
     });
+  }
+
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
+    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
   }
 }

@@ -17,6 +17,8 @@
       "FRENCH": "Français",
       "GERMAN": "Allemand"
     },
+    "COMMON_YES" : "Oui",
+    "COMMON_NO" : "Non",
     "UNDO_MODAL": {
       "TITLE": "Fermer la fenêtre",
       "UNDO_MESSAGE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?"

@@ -37,19 +37,66 @@
  *
  */
 
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { BytesPipe } from './bytes.pipe';
-import { EmptyPipe } from './empty.pipe';
-import { HighlightPipe } from './highlight.pipe';
-import { SafeStylePipe } from './safe-style.pipe';
-import { StrongifyPipe } from './strongify.pipe';
-import { TruncatePipe } from './truncate.pipe';
-import { YesNoPipe } from './yes-no.pipe';
+package fr.gouv.vitamui.commons.vitam.api.dto;
 
-@NgModule({
-  declarations: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
-  imports: [CommonModule],
-  exports: [BytesPipe, HighlightPipe, StrongifyPipe, TruncatePipe, SafeStylePipe, EmptyPipe, YesNoPipe],
-})
-export class PipesModule {}
+import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.gouv.vitam.common.model.massupdate.RuleAction;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+public class RuleCategoryVitamUiDto {
+
+    /**
+     * Rules List
+     */
+    @JsonProperty("Rules")
+    private List<RuleAction> rules;
+
+    /**
+     * Final Action
+     */
+    @JsonProperty("FinalAction")
+    private String finalAction;
+
+    /**
+     * Classification Level
+     */
+    @JsonProperty("ClassificationLevel")
+    private String classificationLevel;
+
+    /**
+     * Classification Owner
+     */
+    @JsonProperty("ClassificationOwner")
+    private String classificationOwner;
+
+    /**
+     * Classification Audience
+     */
+    @JsonProperty("ClassificationAudience")
+    private String classificationAudience;
+
+    /**
+     * Classification Reassessing Date
+     */
+    @JsonProperty("ClassificationReassessingDate")
+    private String classificationReassessingDate;
+
+    /**
+     * Need Reassessing Authorization
+     */
+    @JsonProperty("NeedReassessingAuthorization")
+    private Boolean needReassessingAuthorization;
+
+    /**
+     * Inheritance
+     */
+    @JsonProperty("Inheritance")
+    private InheritanceRuleDto inheritance;
+}

@@ -232,4 +232,17 @@ public class ArchivesSearchController extends AbstractUiRestController {
         String result = archivesSearchService.computedInheritedRules(searchCriteriaDto, buildUiHttpContext()).getBody();
         return result;
     }
+
+
+    @ApiOperation(value = "select Unit With Inherited Rules")
+    @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public ResultsDto selectUnitsWithInheritedRules(@RequestBody final SearchCriteriaDto searchQuery) {
+        ArchiveUnitsDto archiveUnits;
+        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
+        ResultsDto resultsDto = archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
+        return resultsDto;
+
+    }
 }

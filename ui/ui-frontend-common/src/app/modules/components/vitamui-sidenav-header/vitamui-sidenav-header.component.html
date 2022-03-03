@@ -1,4 +1,4 @@
-<div class="vitamui-sidepanel">
+<div [ngClass]="extended ? 'extended-vitamui-sidepanel' : 'vitamui-sidepanel'">
   <div class="vitamui-sidepanel-header">
     <div class="d-flex justify-content-end">
       <button class="btn link cancel" (click)="onclose.emit()">
@@ -8,25 +8,32 @@
 
     <div *ngIf="!loading; else spinner">
       <div class="title">
-        <i class="vitamui-icon {{icon}}" [ngClass]="{
-          'status-badge-red': badge === 'red',
-          'status-badge-green': badge === 'green',
-          'status-badge-grey': badge === 'grey',
-          'status-badge-orange': badge === 'orange',
-          'status-badge-black': badge === 'black'
-        }">
+        <i
+          class="vitamui-icon {{ icon }}"
+          [ngClass]="{
+            'status-badge-red': badge === 'red',
+            'status-badge-green': badge === 'green',
+            'status-badge-grey': badge === 'grey',
+            'status-badge-orange': badge === 'orange',
+            'status-badge-black': badge === 'black'
+          }"
+        >
         </i>
 
-      <div *ngIf="hasToolTipOnTitle && toolTipTitleText && toolTipTitleDuration" matTooltip="{{toolTipTitleText}}"
-           matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="toolTipTitleDuration">
-        <h5 class="m-0 text-primary">{{title}}</h5>
-        <p class="text large light m-0">{{subtitle}}</p>
-      </div>
-      <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText || !toolTipTitleDuration">
-          <h5 class="m-0">{{title}}</h5>
-          <p class="text medium m-0">{{subtitle}}</p>
+        <div
+          *ngIf="hasToolTipOnTitle && toolTipTitleText && toolTipTitleDuration"
+          matTooltip="{{ toolTipTitleText }}"
+          matTooltipClass="vitamui-tooltip"
+          [matTooltipShowDelay]="toolTipTitleDuration"
+        >
+          <h5 class="m-0 text-primary">{{ title }}</h5>
+          <p class="text large light m-0">{{ subtitle }}</p>
         </div>
-      <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
+        <div *ngIf="!hasToolTipOnTitle || !toolTipTitleText || !toolTipTitleDuration">
+          <h5 class="m-0">{{ title }}</h5>
+          <p class="text medium m-0">{{ subtitle }}</p>
+        </div>
+        <div *ngIf="!actionsBelowTitle" class="d-flex align-items-end justify-content-end actions">
           <ng-container *ngTemplateOutlet="actionButtons"></ng-container>
         </div>
       </div>
@@ -43,7 +50,6 @@
     <mat-spinner class="vitamui-spinner medium"></mat-spinner>
   </div>
 </ng-template>
-
 
 <ng-template #actionButtons>
   <ng-content></ng-content>

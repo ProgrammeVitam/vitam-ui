@@ -199,4 +199,17 @@ public class ArchiveSearchExternalRestClient
                 request, String.class);
         return response;
     }
+
+
+    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(ExternalHttpContext context, SearchCriteriaDto query) {
+        LOGGER.debug("Calling select Unit With Inherited Rules by criteria");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<ResultsDto> response =
+            restTemplate.exchange(getUrl() + RestApi.UNIT_WITH_INHERITED_RULES, HttpMethod.POST,
+                request, ResultsDto.class);
+        checkResponse(response);
+        return response;
+    }
 }

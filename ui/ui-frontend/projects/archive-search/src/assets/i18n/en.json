@@ -1,5 +1,62 @@
 {
   "ARCHIVE_SEARCH": {
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION" : {
+        "KEEP" : "Conservation",
+        "DESTROY" : "Elimination",
+        "CONFLICT" : "Conflict",
+        "INHERITED" : "Inherited",
+        "CARRIED" : "Carried",
+        "COPY" :"Copy",
+        "TRANSFER" : "Transfer",
+        "RESTRICTACCESS" : "Restrict access"
+      },
+      "RULE_STATUS" : {
+        "INHERITED" : "Inherited",
+        "CARRIED" : "Carried",
+        "BLOCKED" :"Blocked"
+      },
+      "RULE" : {
+        "IDENTIFIER" : "Identifier",
+        "START_DATE" : "Start",
+        "END_DATE" : "End",
+        "STATUS" : "Status"
+      },
+      "FINAL_ACTION" : {
+        "VALUE" : "Value",
+        "STATUS" : "Status",
+        "PROPERTY" : "Property"
+      },
+      "PROPERTIES" : "Properties",
+      "FINAL_ACTION_VALUE" : "Sort final",
+      "INHERITANCE_BLOCKED":"Category inheritance blocked",
+      "CATEGORY_NAME" : {
+        "APPRAISALRULE" : "DUA",
+        "STORAGERULE" : "DUC",
+        "HOLDRULE" : "Freeze",
+        "ACCESSRULE" : "Communicability",
+        "DISSEMINATIONRULE" : "Dissemination",
+        "REUSERULE" : "Reuse",
+        "CLASSIFICATIONRULE" : "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES" : {
+        "CLASSIFICATIONLEVEL": "Classification level",
+        "CLASSIFICATIONOWNER": "Owner",
+        "CLASSIFICATIONAUDIENCE": "Broadcast scope limitation",
+        "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
+        "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
+      },
+
+      "HOLD_RULE_PROPERTIES" : {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES" :"Yes",
+      "COMMON_NO" : "No"  
+    },
     "DIP": {
       "EXPORT_DIP": "Export a DIP",
       "SELECTED": "Selected",
@@ -151,8 +208,8 @@
         "UNIT_TYPE" : {
           "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive with objects",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive without objects",
-          "ARCHIVE_UNIT_HOLDING_UNIT" : "Positioning tree",
-          "ARCHIVE_UNIT_FILING_UNIT" : "Filing plan",
+          "ARCHIVE_UNIT_HOLDING_UNIT" : "Tree",
+          "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
           "ARCHIVE_UNIT_PLAN" : "Plan",
           "ARCHIVE_UNIT_HOLDING" : "Tree"
         }
@@ -194,7 +251,13 @@
         "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH"
       },
       "TABS": {
-        "INFORMATIONS": "Informations"
+        "INFORMATIONS": "Informations",
+        "RULES" : "Rules",
+        "OBJECTS" : "Objects"
+      },
+      "ACTIONS" : {
+        "SHOW_MORE_DETAILS" : "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS" : "Hide management metadata"
       }
     },
     "FILING_SHCEMA": {

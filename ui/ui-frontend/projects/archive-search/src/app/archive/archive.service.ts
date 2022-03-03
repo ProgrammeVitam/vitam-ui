@@ -269,7 +269,6 @@ export class ArchiveService extends SearchService<any> {
     function window_focus() {
       window.removeEventListener('focus', window_focus, false);
       URL.revokeObjectURL(url);
-      console.log('revoke ' + url);
     }
     location.href = url;
   }
@@ -351,6 +350,12 @@ export class ArchiveService extends SearchService<any> {
         return of(-1);
       })
     );
+  }
+
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
   }
 }
 

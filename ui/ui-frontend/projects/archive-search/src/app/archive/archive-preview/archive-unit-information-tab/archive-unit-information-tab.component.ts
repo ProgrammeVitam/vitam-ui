@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
  *
@@ -34,52 +34,48 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.commons.vitam.api.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
+import { ArchiveService } from '../../archive.service';
+import { Unit } from '../../models/unit.interface';
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+@Component({
+  selector: 'app-archive-unit-information-tab',
+  templateUrl: './archive-unit-information-tab.component.html',
+  styleUrls: ['./archive-unit-information-tab.component.css'],
+})
+export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
+  @Input()
+  archiveUnit: Unit;
+  @Input()
+  accessContract: string;
+  @Input()
+  tenantIdentifier: number;
+  uaPath$: Observable<{ fullPath: string; resumePath: string }>;
 
-import java.util.ArrayList;
-import java.util.List;
+  fullPath = false;
+  constructor(private archiveService: ArchiveService) {}
 
-@Getter
-@Setter
-@ToString
-public class InheritedPropertyDto {
+  ngOnInit(): void {
+    this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
+  }
 
-    /**
-     * Unit id
-     */
-    @JsonProperty("UnitId")
-    private String unitId;
+  onDownloadObjectFromUnit(archiveUnit: Unit) {
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
+  }
 
-    /**
-     * Originating Agency Name
-     */
-    @JsonProperty("OriginatingAgency")
-    private String originatingAgency;
+  showArchiveUniteFullPath() {
+    this.fullPath = true;
+  }
 
-    /**
-     * PropertyName
-     */
-    @JsonProperty("PropertyName")
-    private String propertyName;
-
-
-    /**
-     * PropertyValue
-     */
-    @JsonProperty("PropertyValue")
-    private Object propertyValue;
-
-
-    /**
-     * Paths
-     */
-    @JsonProperty("Paths")
-    private List<ArrayList<String>> paths = new ArrayList<>();
-
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.archiveUnit.firstChange) {
+      return;
+    }
+    if (changes.archiveUnit.currentValue['#id'] !== changes.archiveUnit.previousValue['#id']) {
+      this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
+    }
+    this.fullPath = false;
+  }
 }

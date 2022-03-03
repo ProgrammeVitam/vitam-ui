@@ -120,4 +120,8 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto) {
         return archiveInternalRestClient.computedInheritedRules(searchCriteriaDto, getInternalHttpContext());
     }
+
+    public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto query) {
+        return getClient().selectUnitWithInheritedRules(getInternalHttpContext(), query);
+    }
 }
