@@ -50,15 +50,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { PastisConfiguration } from './core/classes/pastis-configuration';
 import { ToastrModule } from 'ngx-toastr';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { InjectorModule } from 'ui-frontend-common';
 import { LoggerModule } from 'ui-frontend-common';
 import { BASE_URL } from 'ui-frontend-common';
 import { ENVIRONMENT } from 'ui-frontend-common';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { PastisConfiguration } from './core/classes/pastis-configuration';
 
- export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
+export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient, [
     { prefix: './assets/shared-i18n/', suffix: '.json' },
     { prefix: './assets/i18n/', suffix: '.json' },

@@ -1,6 +1,6 @@
+import {FlexibleConnectedPositionStrategy, OverlayConfig, OverlayRef} from '@angular/cdk/overlay';
 import {Directive, ElementRef, HostListener, Input, Renderer2} from '@angular/core';
-import {FlexibleConnectedPositionStrategy, OverlayConfig, OverlayRef} from '@angular/cdk/overlay'
-import {MatMenuPanel, MatMenuTrigger} from "@angular/material/menu";
+import {MatMenuPanel, MatMenuTrigger} from '@angular/material/menu';
 
 @Directive({
   selector: '[center-mat-menu]'
@@ -27,10 +27,10 @@ export class CenterMatmenuDirective {
   @HostListener('click', ['$event'])
   // @ts-ignore
   onclick(e) {
-    console.log("cliquer ?")
+    console.log('cliquer ?');
     this._setVariables();
-    //menu not opened by keyboard down arrow, have to set this so MatMenuTrigger knows the menu was opened with a mouse click
-    this.menuTrigger['_openedBy'] = e.button === 0 ? 'mouse' : null;
+    // menu not opened by keyboard down arrow, have to set this so MatMenuTrigger knows the menu was opened with a mouse click
+    this.menuTrigger._openedBy = e.button === 0 ? 'mouse' : null;
 
     this._overrideMatMenu();
 
@@ -41,7 +41,7 @@ export class CenterMatmenuDirective {
       this._styleDropDown(this.dropDown);
       this._setOverlayPosition(this.dropDown, this.overlayPositionBox);
       this._openMenu();
-    })
+    });
   }
 
   private _setVariables() {
@@ -68,13 +68,13 @@ export class CenterMatmenuDirective {
     strat.positionChanges.subscribe(() => {
       this._setButtonVars();
       this._setOverlayPosition(this.dropDown, this.overlayPositionBox);
-    })
+    });
     this.overlayConf.hasBackdrop = this.menu.hasBackdrop == null ?
       !this.menuTrigger.triggersSubmenu() : this.menu.hasBackdrop;
     this.overlayRef.attach(this.menuTrigger['_getPortal']());
 
     if (this.menu.lazyContent) {
-      this.menu.lazyContent.attach()
+      this.menu.lazyContent.attach();
     }
 
     // @ts-ignore
@@ -82,7 +82,7 @@ export class CenterMatmenuDirective {
       this.menuTrigger.closeMenu();
       setTimeout(() => {
         this._renderer.removeChild(this.button, this.arrowDiv);
-      }, 75)
+      }, 75);
 
     });
     this.menuTrigger['_initMenu']();
@@ -92,12 +92,12 @@ export class CenterMatmenuDirective {
     this.arrowDiv = this._renderer.createElement('div');
     this._renderer.addClass(this.arrowDiv, 'dialog-arrow');
     this._renderer.appendChild(this.button, this.arrowDiv);
-    this._renderer.setStyle(this.arrowDiv, 'left', (this.buttonWidth / 2) - 10 + 'px')
+    this._renderer.setStyle(this.arrowDiv, 'left', (this.buttonWidth / 2) - 10 + 'px');
     this._renderer.setStyle(this._renderer.parentNode(dropDown), 'transform-origin', 'center top 0px');
   }
 
   private _setOverlayPosition(dropDown: HTMLElement, overlayPositionBox: HTMLElement) {
-    let dropDownleft = ((this.buttonWidth / 2 + this.buttonLeft) - dropDown.offsetWidth / 2);
+    const dropDownleft = ((this.buttonWidth / 2 + this.buttonLeft) - dropDown.offsetWidth / 2);
 
     this._renderer.setStyle(overlayPositionBox, 'top', this.buttonBottom + 1 + 'px');
     this._renderer.setStyle(overlayPositionBox, 'left', dropDownleft + 'px');

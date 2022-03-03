@@ -35,34 +35,34 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {CoreModule} from './../core/core.module'
-import {SharedModule} from './../shared/shared.module'
-import {FileTreeModule} from './../profile/edit-profile/file-tree/file-tree.module'
+import {NgModule} from '@angular/core';
+import {CoreModule} from './../core/core.module';
+import {FileTreeModule} from './../profile/edit-profile/file-tree/file-tree.module';
+import {SharedModule} from './../shared/shared.module';
 
 
-import {MatIconModule} from '@angular/material/icon'
-import {MatTabsModule} from '@angular/material/tabs'
+import {MatIconModule} from '@angular/material/icon';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
-import {CreateProfileComponent} from './create-profile/create-profile.component'
-import {EditProfileComponent} from './edit-profile/edit-profile.component'
+import {FormsModule} from '@angular/forms';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {TranslateModule} from '@ngx-translate/core';
+import {FileUploadModule} from 'ng2-file-upload';
+import {NgxUiLoaderModule} from 'ngx-ui-loader';
+import {VitamUICommonModule} from 'ui-frontend-common';
+import {PastisMaterialModule} from '../material.module';
+import {UserActionsModule} from '../user-actions/user-actions.module';
+import {CreateProfileComponent} from './create-profile/create-profile.component';
+import {EditProfileComponent} from './edit-profile/edit-profile.component';
 import {
   FilterByStringNamePipe,
   FilterByTypePipe,
   ListProfileComponent
-} from './list-profile/list-profile.component'
+} from './list-profile/list-profile.component';
+import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
 import {ProfileComponent} from './profile.component';
-import {PastisMaterialModule} from '../material.module';
-import {FileUploadModule} from 'ng2-file-upload';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {UserActionsModule} from '../user-actions/user-actions.module';
-import {FormsModule} from "@angular/forms";
-import {VitamUICommonModule} from 'ui-frontend-common';
-import {TranslateModule} from '@ngx-translate/core';
-import {NgxUiLoaderModule} from "ngx-ui-loader";
-import {ProfilePreviewModule} from "./profile-preview/profile-preview.module";
 
 
 @NgModule({
@@ -83,9 +83,9 @@ import {ProfilePreviewModule} from "./profile-preview/profile-preview.module";
     NgxUiLoaderModule,
     ProfilePreviewModule
   ],
-  exports: [CreateProfileComponent,EditProfileComponent,ListProfileComponent],
-  providers:[],
-  declarations: [ProfileComponent,CreateProfileComponent,EditProfileComponent,ListProfileComponent,FilterByTypePipe,FilterByStringNamePipe],
+  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent],
+  providers: [],
+  declarations: [ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
 
 })
 export class ProfileModule {

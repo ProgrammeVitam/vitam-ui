@@ -20,10 +20,10 @@ import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
 
 
 function constantToTranslate(edit: boolean) {
-  if(edit){
+  if (edit) {
     this.popupSaveCreateNoticeTitleDialog = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_TITLE_DIALOG_EDIT');
     this.popupSaveCreateNoticeSubTitleDialog = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_SUBTITLE_DIALOG_EDIT');
-  }else{
+  } else {
     this.popupSaveCreateNoticeTitleDialog = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_TITLE_DIALOG');
     this.popupSaveCreateNoticeSubTitleDialog = this.translated('PROFILE.POP_UP_SAVE.SAVE_PROFILE.POPUP_CREATE_NOTICE_SUBTITLE_DIALOG');
   }
@@ -45,15 +45,15 @@ function constantToTranslate(edit: boolean) {
 })
 export class PastisPopupOptionComponent implements OnInit, OnDestroy {
 
-  popupSaveCancelLabel:string;
-  popupSaveTitleDialog:string;
-  popupSaveSubTitleDialog:string;
-  popupSaveOkLabel:string;
+  popupSaveCancelLabel: string;
+  popupSaveTitleDialog: string;
+  popupSaveSubTitleDialog: string;
+  popupSaveOkLabel: string;
 
-  popupSaveCreateNoticeCancelLabel:string;
-  popupSaveCreateNoticeTitleDialog :string;
-  popupSaveCreateNoticeSubTitleDialog :string;
-  popupSaveCreateNoticeOkLabel :string;
+  popupSaveCreateNoticeCancelLabel: string;
+  popupSaveCreateNoticeTitleDialog: string;
+  popupSaveCreateNoticeSubTitleDialog: string;
+  popupSaveCreateNoticeOkLabel: string;
   editProfile: boolean;
 
   subscription1$: Subscription;
@@ -66,7 +66,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   popupCreationSubTitleDialog: string;
   popupCreationOkLabel: string;
 
-  donnees:string[];
+  donnees: string[];
 
   data: FileNode[] = [];
 
@@ -80,14 +80,14 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   @Input()
   newProfileUrl: string;
   @Input()
-  uploader: FileUploader = new FileUploader({url: ""});
+  uploader: FileUploader = new FileUploader({url: ''});
 
-  expanded: boolean = false;
+  expanded = false;
 
 
-  constructor(private router:Router, private profileService: ProfileService,
+  constructor(private router: Router, private profileService: ProfileService,
               public dialog: MatDialog, private noticeService: NoticeService,
-              private translateService: TranslateService, private loaderService:NgxUiLoaderService,
+              private translateService: TranslateService, private loaderService: NgxUiLoaderService,
               private notificationService: NotificationService) { }
 
   ngOnInit(): void {
@@ -107,12 +107,12 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     return this.translateService.instant(nameOfFieldToTranslate);
   }
 
-  goToSedaView(){
+  goToSedaView() {
     window.open(this.sedaUrl);
   }
 
-  uploadProfile(files: File[]):void {
-    let fileToUpload: File = files[0];
+  uploadProfile(files: File[]): void {
+    const fileToUpload: File = files[0];
 
     if (fileToUpload) {
       const formData = new FormData();
@@ -127,12 +127,12 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     }
   }
 
-  changeExpand(){
+  changeExpand() {
     this.expanded = !this.expanded;
   }
   async createProfile() {
     this.loaderService.start();
-    let dataToSendToPopUp = <PastisDialogData>{};
+    const dataToSendToPopUp = {} as PastisDialogData;
     dataToSendToPopUp.titleDialog = this.popupCreationTitleDialog;
     dataToSendToPopUp.subTitleDialog = this.popupCreationSubTitleDialog;
     dataToSendToPopUp.width = '800px';
@@ -145,11 +145,11 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
         data: dataToSendToPopUp
       }
     );
-    this.subscription2$ =dialogRef.afterClosed().subscribe((result) => {
-      if (result.success){
-        console.log(result.action + " PA ou PUA ?")
-        if(result.action ==='PA' || result.action ==='PUA'){
-          let dataToSendToPopUp = <PastisDialogDataCreate>{};
+    this.subscription2$ = dialogRef.afterClosed().subscribe((result) => {
+      if (result.success) {
+        console.log(result.action + ' PA ou PUA ?');
+        if (result.action === 'PA' || result.action === 'PUA') {
+          const dataToSendToPopUp = {} as PastisDialogDataCreate;
           dataToSendToPopUp.titleDialog = this.popupSaveCreateNoticeTitleDialog;
           dataToSendToPopUp.subTitleDialog = this.popupSaveCreateNoticeSubTitleDialog;
           dataToSendToPopUp.okLabel = this.popupSaveCreateNoticeOkLabel;
@@ -164,29 +164,29 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
           dialogRef.afterClosed().subscribe((result) => {
             let retour;
             if (result.success) {
-              retour = result.data
-              if (result.mode === "PUA") {
-                console.log("je suis sur un enregistrement d'un PUA")
+              retour = result.data;
+              if (result.mode === 'PUA') {
+                console.log('je suis sur un enregistrement d\'un PUA');
 
-                let profileDescription = this.noticeService.puaNotice(retour);
+                const profileDescription = this.noticeService.puaNotice(retour);
                 this.profileService.createArchivalUnitProfile(profileDescription).subscribe(() => {
                   this.changeExpand();
-                  this.notificationService.showSuccess("La création de notice a bien été effectué")
+                  this.notificationService.showSuccess('La création de notice a bien été effectué');
                   this.profileService.refreshListProfiles();
-                  console.log("ok create")
-              })
+                  console.log('ok create');
+              });
 
-              } else if (result.mode === "PA") {
-                console.log(retour.identifier)
+              } else if (result.mode === 'PA') {
+                console.log(retour.identifier);
 
-                let profile: Profile = this.noticeService.paNotice(retour, true)
-                //STEP 1 : Create Notice
+                const profile: Profile = this.noticeService.paNotice(retour, true);
+                // STEP 1 : Create Notice
                 this.profileService.createProfilePa(profile).subscribe(() => {
-                  //console.log("ok create" + createdProfile)
+                  // console.log("ok create" + createdProfile)
                   this.changeExpand();
-                  this.notificationService.showSuccess("La création de notice a bien été effectué")
+                  this.notificationService.showSuccess('La création de notice a bien été effectué');
                   this.profileService.refreshListProfiles();
-                })
+                });
 
               }
             }
@@ -194,12 +194,12 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
         }
       }
       });
-      this.loaderService.stop();
+    this.loaderService.stop();
     this.subscriptions.push(this.subscription2$);
   }
 
   ngOnDestroy(): void {
-    if(this._uploadProfileSub){
+    if (this._uploadProfileSub) {
       this._uploadProfileSub.unsubscribe();
     }
   }

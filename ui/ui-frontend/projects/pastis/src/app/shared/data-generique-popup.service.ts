@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class DataGeneriquePopupService {
 
   constructor() { }
 
-  changeDonnees(donnees: Array<string>){
-    this.donneeSource.next(donnees)
+  changeDonnees(donnees: Array<string>) {
+    this.donneeSource.next(donnees);
   }
 }

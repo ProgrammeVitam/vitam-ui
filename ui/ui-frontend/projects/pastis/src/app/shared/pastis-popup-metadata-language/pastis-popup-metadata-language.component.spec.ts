@@ -49,7 +49,7 @@ describe('PastisPopupMetadataLanguageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ PastisPopupMetadataLanguageComponent ],
-      imports: [ 
+      imports: [
         TranslateModule.forRoot()
       ],
       providers: [ PastisPopupMetadataLanguageService ]

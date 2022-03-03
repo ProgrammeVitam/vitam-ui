@@ -51,19 +51,19 @@ export class NoticeService {
 
   notice: Notice;
 
-  getNotice(){
+  getNotice() {
     this.fileService.notice.subscribe(
       (value: any) => {
         this.notice = value;
         return this.notice;
       },
       (error) => {
-        console.log(error)
+        console.log(error);
       }
-    )
+    );
   }
 
-  puaNotice(retour: any): ArchivalProfileUnit{
+  puaNotice(retour: any): ArchivalProfileUnit {
 
     class ArchivalProfileUnitModel implements ArchivalProfileUnit {
       id: string;
@@ -81,17 +81,17 @@ export class NoticeService {
       fields: string[];
     }
 
-    let profileDescription = new ArchivalProfileUnitModel();
+    const profileDescription = new ArchivalProfileUnitModel();
     profileDescription.identifier = retour.identifier;
     profileDescription.name = retour.intitule;
     profileDescription.description = retour.description;
     profileDescription.status = retour.selectedStatus;
-    profileDescription.controlSchema = "{}"
+    profileDescription.controlSchema = '{}';
 
     return profileDescription;
     }
 
-  paNotice(retour: any, create: boolean): Profile{
+  paNotice(retour: any, create: boolean): Profile {
     class ProfileModel implements Profile {
       id: string;
       status: string;
@@ -108,50 +108,50 @@ export class NoticeService {
       path: string;
     }
 
-    let profile = new ProfileModel();
+    const profile = new ProfileModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
     profile.description = retour.description;
     profile.status = retour.selectedStatus;
     profile.format = create ? 'RNG' : retour.format;
-    return profile
+    return profile;
 
   }
 
-  profileFromNotice(retour: any, edit:boolean, pua:boolean): ProfileDescription{
+  profileFromNotice(retour: any, edit: boolean, pua: boolean): ProfileDescription {
     class ProfileDescriptionModel implements ProfileDescription {
       id: string;
-      identifier:string;
-      name:string;
-      description:string;
-      status:string;
-      creationDate:string;
-      lastUpdate:string;
-      type:string;
-      activationDate:string;
-      deactivationDate:string;
-      controlSchema:string;
-      tenant:number;
-      version:number;
-      fields:string[];
-      path:string;
-      format:string;
+      identifier: string;
+      name: string;
+      description: string;
+      status: string;
+      creationDate: string;
+      lastUpdate: string;
+      type: string;
+      activationDate: string;
+      deactivationDate: string;
+      controlSchema: string;
+      tenant: number;
+      version: number;
+      fields: string[];
+      path: string;
+      format: string;
     }
 
-    let profile = new ProfileDescriptionModel();
+    const profile = new ProfileDescriptionModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
     profile.description = retour.description;
     profile.status = retour.selectedStatus;
-    if(!edit && !pua){
+    if (!edit && !pua) {
       profile.format = 'RNG';
     }
 
-    return profile
+    return profile;
 
   }
 
-  profileDescriptionToPaProfile(profileDescription: ProfileDescription): Profile{
+  profileDescriptionToPaProfile(profileDescription: ProfileDescription): Profile {
     class ProfileModel implements Profile {
       id: string;
       status: string;
@@ -172,7 +172,7 @@ export class NoticeService {
     return profile;
   }
 
-  profileDescriptionToPuaProfile(profileDescription: ProfileDescription): ArchivalProfileUnit{
+  profileDescriptionToPuaProfile(profileDescription: ProfileDescription): ArchivalProfileUnit {
     class ArchivalProfileUnitModel implements ArchivalProfileUnit {
       id: string;
       tenant: number;
