@@ -167,6 +167,7 @@
         "CARDINALITE": "Cardinalité",
         "COMMENTAIRE": "Commentaire",
         "DUPLIQUER": "Dupliquer",
+        "CONTROLE_METADONNEE": "Contrôle de métadonnée",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
         "SUPPRIMER": "Supprimer",
         "MESSAGE_METADONNEE_SANS_FILLES": {
