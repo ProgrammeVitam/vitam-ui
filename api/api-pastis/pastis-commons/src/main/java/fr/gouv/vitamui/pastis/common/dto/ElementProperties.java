@@ -90,11 +90,7 @@ public class ElementProperties {
     }
 
     public void setGroupOrChoice(String groupOrChoice) {
-        if (null != RNGConstants.getGroupOrChoiceMap().get(groupOrChoice)) {
-            this.groupOrChoice = RNGConstants.getGroupOrChoiceMap().get(groupOrChoice);
-        } else {
-            this.groupOrChoice = groupOrChoice;
-        }
+        this.groupOrChoice = RNGConstants.getGroupOrChoiceMap().getOrDefault(groupOrChoice, groupOrChoice);
     }
 
     public void initTree(ElementProperties json) {

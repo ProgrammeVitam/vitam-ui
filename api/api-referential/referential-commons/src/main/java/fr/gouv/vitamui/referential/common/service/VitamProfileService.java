@@ -48,7 +48,6 @@ public class VitamProfileService {
      */
     public RequestResponse<ProfileModel> findArchivalProfiles(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
         LOGGER.info("Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         final RequestResponse<ProfileModel> response = adminExternalClient.findProfiles(vitamContext, select);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -64,7 +63,6 @@ public class VitamProfileService {
      */
     public RequestResponse<ProfileModel> findArchivalProfileById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
         LOGGER.info("Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         final RequestResponse<ProfileModel> response = adminExternalClient.findProfileById(vitamContext, contractId);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -82,7 +80,6 @@ public class VitamProfileService {
      */
     public Response downloadProfile(VitamContext context, String id) throws VitamClientException, AccessExternalClientException, AccessExternalNotFoundException {
         LOGGER.info("Download profile file EvIdAppSession : {} ", context.getApplicationSessionId());
-        context.setTenantId(0);
         return adminExternalClient.downloadProfileFile(context, id);
     }
 
@@ -98,7 +95,6 @@ public class VitamProfileService {
      */
     public RequestResponse updateProfileFile(VitamContext context, String id, MultipartFile file) throws AccessExternalClientException, InvalidParseOperationException, IOException {
         LOGGER.info("Upload Profile xsd or rng EvIdAppSession : {} ", context.getApplicationSessionId());
-        context.setTenantId(0);
         return adminExternalClient.createProfileFile(context, id, file.getInputStream());
     }
 
@@ -114,7 +110,6 @@ public class VitamProfileService {
     public RequestResponse<?> updateProfile(VitamContext vitamContext, String id, JsonNode jsonNode) throws AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.info("Update Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         return adminExternalClient.updateProfile(vitamContext, id, jsonNode);
     }
 
@@ -133,7 +128,6 @@ public class VitamProfileService {
     public RequestResponse<?> create(final VitamContext vitamContext, ProfileModel newArchivalProfile)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
         LOGGER.info("Create Archival Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         final List<ProfileModel> profileModelNewList = new ArrayList<>();
         profileModelNewList.add(newArchivalProfile);
         return importArchivalProfiles(vitamContext, profileModelNewList);
@@ -143,7 +137,6 @@ public class VitamProfileService {
     public RequestResponse<?> importArchivalProfiles(final VitamContext vitamContext, final List<ProfileModel> archivalProfileModels)
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeArchivalProfiles(archivalProfileModels)) {
-            vitamContext.setTenantId(0);
             return adminExternalClient.createProfiles(vitamContext, byteArrayInputStream);
         }
     }
@@ -174,7 +167,6 @@ public class VitamProfileService {
     public RequestResponse<?> importProfileByFile(VitamContext vitamContext, String fileName, MultipartFile file)
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         LOGGER.debug("Import profile by file {}", fileName);
-        vitamContext.setTenantId(0);
         return adminExternalClient.createProfiles(vitamContext, file.getInputStream());
     }
 
