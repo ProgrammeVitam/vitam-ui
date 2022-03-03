@@ -219,7 +219,7 @@
                  <!-- Contrôle de métadonées => PUA -->
                  <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onDeleteNode(element.id)" *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                <button (click)="" *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
                 mat-menu-item>
           <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
           <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate}}</span>
