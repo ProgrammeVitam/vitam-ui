@@ -29,6 +29,7 @@ package fr.gouv.archive.internal.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
@@ -227,6 +228,18 @@ public class ArchiveInternalRestClient
         final ResponseEntity<ResultsDto> response =
             restTemplate.exchange(getUrl() + RestApi.UNIT_WITH_INHERITED_RULES, HttpMethod.POST,
                 request, ResultsDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.debug("Calling reclassification with query {} ", reclassificationCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<ReclassificationCriteriaDto> request = new HttpEntity<>(reclassificationCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.RECLASSIFICATION, HttpMethod.POST,
+                request, String.class);
         checkResponse(response);
         return response.getBody();
     }

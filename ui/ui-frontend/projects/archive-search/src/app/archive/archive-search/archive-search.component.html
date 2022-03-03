@@ -235,6 +235,11 @@
           <button mat-menu-item (click)="launchComputedInheritedRules()" [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
+
+          <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
+            {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
+          </button>
+
         </vitamui-common-menu-button>
       </div>
     </div>
@@ -485,6 +490,46 @@
 
         <div class="text small">
           {{ 'RULES.ALERTE_MESSAGES.UPDATE_RULES_ALERTE_SECOND_MESSAGE' | translate }}
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
+      {{ 'RULES.ALERTE_MESSAGES.BACK_TO_SELECTION' | translate }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #reclassificationAlerteMessageDialog>
+  <mat-dialog-content>
+    <div class="text-title">{{ 'RECLASSIFICATION.ALERTE_MESSAGES.RECLASSE_TITLE' | translate }}</div>
+    <br />
+
+    <div class="row red-text">
+      <div class="col-1">
+        <i class="material-icons icon-style">cancel</i>
+      </div>
+      <div class="col-11">
+        {{ 'RECLASSIFICATION.ALERTE_MESSAGES.ACTION_ALERTE_TITLE' | translate }}
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-1">
+        <span class="vertical-line"></span>
+      </div>
+      <div class="col-11">
+        <div class="text small bold">
+          {{ 'RECLASSIFICATION.ALERTE_MESSAGES.ACTION_ALERTE_ONE_UNIT_1' | translate }}
+        </div>
+
+        <div class="text small">
+          {{ 'RECLASSIFICATION.ALERTE_MESSAGES.ACTION_ALERTE_ONE_UNIT_2' | translate }}
+        </div>
+        <div class="text small">
+          {{ 'RECLASSIFICATION.ALERTE_MESSAGES.ACTION_ALERTE_ONE_UNIT_HINT' | translate }}
         </div>
       </div>
     </div>

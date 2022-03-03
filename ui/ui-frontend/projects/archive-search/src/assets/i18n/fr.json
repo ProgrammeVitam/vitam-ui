@@ -55,7 +55,7 @@
         "HOLDENDDATE": "Date de fin de gel"
       },
       "COMMON_YES" :"Oui",
-      "COMMON_NO" : "Non"   
+      "COMMON_NO" : "Non"
     },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
@@ -350,78 +350,75 @@
       "WRONG_FORMAT": "Mauvais format de règle"
     }
   },
-  "RULES" : {
-      "TITLE" : "Changer une règle",
-      "SELECT_RULE_CATEGORY" : "Sélectionnez une catégorie de règle",
-      "SELECT_RULE_ACTION" : "Sélectionnez une action",
-      "OTHER_ACTIONS" : "Autres actions",
-      "BACK" : "RETOUR",
-      "EXECUTE_RULE_UPDATE" : "Lancer la mise à jour",
-      "EXECUTE_RULE_UPDATE_MESSAGE" : "L’opération de mise à jour des règles de gestion a bien été lancée",
-      "ACTION_ON_RULES" : "Action sur les règles",
-      "UA_SELECTED" :"{{ua_selected}} unités archivistiques séléctionnées",
-      "RULES_TO_ADD" : "Règle(s) à ajouter",
-      "RULES_TO_UPDATE" : "Règle(s) à modifier",
-      "RULES_TO_DELETE" : "Règle(s) à supprimer",
-      "ACTIONS" : {
-        "ADD_RULE" : "Ajouter une règle",
-        "DELETE_RULE" :"Supprimer une règle",
-        "BLOCK_RULE_INHERITANCE" : "Bloquer l’héritage d’une règle",
-        "DELETE_BLOCK_RULE_INHERITANCE" : "Supprimer le blocage d’héritage d’une règle",
-        "UPDATE_RULE" : "Modifier une règle",
-        "NOT_TO_ADD" : "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
-        "NOT_TO_UPDATE" : "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
-        "FINAL_ACTION_NOT_TO_ADD" : "Action impossible pour ce type de règle : Un sort final est déjà ajouté",
-        "NOT_TO_DELETE" : "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours",
-        "FINAL_ACTION_NOT_TO_DELETE_PROPERTY" : "Vous ne pouvez pas supprimer le sort final d'une règle DUA"
-
-      },
-      "MORE_ACTIONS" : {
-        "UPDATE_PROPERTY" :"Ajouter ou modifier une propriété",
-        "DELETE_PROPERTY" : "Supprimer une propriété",
-        "BLOCK_PROPERTY_INHERITANCE" : "Bloquer l’héritage de la catégorie",
-        "DELETE_BLOCK_PROPERTY_INHERITANCE" : "Supprimer le blocage d’héritage de la catégorie"
-      },
-      "APRAISAL_RULES" : {
-        "MANAGEMENT_RULES" : "Règle de gestion",
-        "START_DATE" : "Date de début",
-        "RULE_NAME" : "Libellé",
-        "END_DATE" : "Date de fin",
-        "RULE_ID" : "Code",
-        "SAME_RULE_ID" : "Code identique à l'action précédente",
-        "RULE_NOT_EXIST" :"Le code de la règle renseigné n'existe pas",
-        "TARGET_RULE" : "Règle de gestion cible",
-        "SOURCE_RULE" : "Règle de gestion source *",
-        "UPDATED" : "Modifié",
-        "TARGET_START_DATE" : "Date de début cible",
-        "UA_TO_UPDATE" :"UA sélectionnées seront prises en compte lors de la mise à jour",
-        "UA_TO_IGNORE" :"des UA sélectionnées ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
-
-      },
-      "FINAL_ACTION" : {
-        "TITLE" : "Sort final",
-        "SELECT_VALUE" : "Sélectionner une valeur",
-        "KEEP" : "Conservation",
-        "ELIMINATION" : "Elimination"
-      },
-      "COMMON" : {
-        "UNDO" : "Annuler",
-        "CONTROL" : "Contrôler",
-        "CONFIRM" : "Confirmer"
-      },
-      "UA_CONTROL" : {
-        "UA_FINAL_ACTION_MESSAGE" : "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
-        "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
-        "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
-        "UA_WITH_SAME_RULE_AND_DATE" : "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
-
-      },
-      "DIALOG_MESSAGE" : {
-        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",
-        "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
-        "UPDATE_CONFIRM_MESSAGE" : "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
-        "EXIT_CONFIRM_MESSAGE" : "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
-      },
+  "RULES": {
+    "TITLE": "Changer une règle",
+    "SELECT_RULE_CATEGORY": "Sélectionnez une catégorie de règle",
+    "SELECT_RULE_ACTION": "Sélectionnez une action",
+    "OTHER_ACTIONS": "Autres actions",
+    "BACK": "RETOUR",
+    "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
+    "EXECUTE_RULE_UPDATE_MESSAGE": "L’opération de mise à jour des règles de gestion a bien été lancée",
+    "ACTION_ON_RULES": "Action sur les règles",
+    "UA_SELECTED": "{{ua_selected}} unités archivistiques séléctionnées",
+    "RULES_TO_ADD": "Règle(s) à ajouter",
+    "RULES_TO_UPDATE": "Règle(s) à modifier",
+    "RULES_TO_DELETE": "Règle(s) à supprimer",
+    "ACTIONS": {
+      "ADD_RULE": "Ajouter une règle",
+      "DELETE_RULE": "Supprimer une règle",
+      "BLOCK_RULE_INHERITANCE": "Bloquer l’héritage d’une règle",
+      "DELETE_BLOCK_RULE_INHERITANCE": "Supprimer le blocage d’héritage d’une règle",
+      "UPDATE_RULE": "Modifier une règle",
+      "NOT_TO_ADD": "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
+      "NOT_TO_UPDATE": "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
+      "FINAL_ACTION_NOT_TO_ADD": "Action impossible pour ce type de règle : Un sort final est déjà ajouté",
+      "NOT_TO_DELETE": "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours",
+      "FINAL_ACTION_NOT_TO_DELETE_PROPERTY": "Vous ne pouvez pas supprimer le sort final d'une règle DUA"
+    },
+    "MORE_ACTIONS": {
+      "UPDATE_PROPERTY": "Ajouter ou modifier une propriété",
+      "DELETE_PROPERTY": "Supprimer une propriété",
+      "BLOCK_PROPERTY_INHERITANCE": "Bloquer l’héritage de la catégorie",
+      "DELETE_BLOCK_PROPERTY_INHERITANCE": "Supprimer le blocage d’héritage de la catégorie"
+    },
+    "APRAISAL_RULES": {
+      "MANAGEMENT_RULES": "Règle de gestion",
+      "START_DATE": "Date de début",
+      "RULE_NAME": "Libellé",
+      "END_DATE": "Date de fin",
+      "RULE_ID": "Code",
+      "SAME_RULE_ID": "Code identique à l'action précédente",
+      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas",
+      "TARGET_RULE": "Règle de gestion cible",
+      "SOURCE_RULE": "Règle de gestion source *",
+      "UPDATED": "Modifié",
+      "TARGET_START_DATE": "Date de début cible",
+      "UA_TO_UPDATE": "UA sélectionnées seront prises en compte lors de la mise à jour",
+      "UA_TO_IGNORE": "des UA sélectionnées ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
+    },
+    "FINAL_ACTION": {
+      "TITLE": "Sort final",
+      "SELECT_VALUE": "Sélectionner une valeur",
+      "KEEP": "Conservation",
+      "ELIMINATION": "Elimination"
+    },
+    "COMMON": {
+      "UNDO": "Annuler",
+      "CONTROL": "Contrôler",
+      "CONFIRM": "Confirmer"
+    },
+    "UA_CONTROL": {
+      "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
+      "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
+      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
+    },
+    "DIALOG_MESSAGE": {
+      "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
+      "DELETE_COMPONENT": "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
+      "EXIT_CONFIRM_MESSAGE": "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
+    },
 
       "CATEGORIES_NAME" : {
         "STORAGE_RULE" : "Durée d'utilité courante (DUC)",
@@ -433,13 +430,54 @@
         "CLASSIFICATION_RULE" : "Classification"
       },
 
-      "ALERTE_MESSAGES" : {
-        "BACK_TO_SELECTION" : "Revenir à la sélection",
-        "ACTION_ALERTE_TITLE" : "L'action demandée n'est pas possible pour cette sélection",
-        "ACTION_ALERTE_FIRST_MESSAGE" : "Votre sélection comporte au moins une unité archivistique de type arbre de positionnement.",
-        "UPDATE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
-        "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE" : "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
-      }
-
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_FIRST_MESSAGE": "Votre sélection comporte au moins une unité archivistique de type arbre de positionnement.",
+      "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "L’action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
+      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
     }
+  },
+  "RECLASSIFICATION": {
+    "EXECUTION_ACTION": "Reclasser une unité archivistique",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
+    "ALERTE_MESSAGES": {
+      "RECLASSE_TITLE": "Reclasser une unité archivistique",
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_ONE_UNIT_1": "Votre sélection comporte plusieurs unités archivistiques",
+      "ACTION_ALERTE_ONE_UNIT_2": "L’action de reclassement n'est possible que pour une seule.",
+      "ACTION_ALERTE_ONE_UNIT_HINT": "Veuillez revoir votre sélection en ne sélectionnant qu'une seule unité archivistique."
+    },
+    "EXECUTE_RECLASSEMENT_MESSAGE": "La demande de reclassement a bien été lancée",
+    "COMMON": {
+      "TARGET_GUID_LABEL": "Identifiant technique de la position cible",
+      "TARGET_GUID_TITLE_LABEL": "Intitulé de la position cible",
+      "TO_PARENT_TARGET": "Vers le dossier",
+      "SELECT_TARGET_PARENT": "Sélectionner la ou les position(s) source(s) à retirer",
+      "FROM_PARENT_SOURCE_MESSAGE": "Dossier(s) parent(s) actuel(s)",
+      "ARCHIVE_WITH_NO_PARENTS": "Le dossier n'a pas de parents",
+      "GUID_ALREADY_EXISTS": "L'identifiant technique n'existe pas",
+      "ATTACHMENT_ALREADY_EXISTS": "Le rattachement existe déjà"
+    },
+    "FIRST_STEP": {
+      "TITLE": "Reclasser une unité archivistique",
+      "SELECTED_UNIT": "unité archivistique sélectionnée",
+      "CHILDS": "fils",
+      "SELECT_ACTION_MESSAGE_1": "Sélectionner une action",
+      "SELECT_ACTION_MESSAGE_2": "Action de reclassement"
+    },
+    "REPLACE_STEP": {
+      "TITLE": "Déplacer vers un autre dossier",
+      "FROM_PARENT_SOURCE_MESSAGE": "Depuis le ou les dossier(s)"
+    },
+    "DELETE_STEP": {
+      "TITLE": "Retirer d'un dossier"
+    },
+    "ADD_STEP": {
+      "TITLE": "Ajouter à un dossier",
+      "ADD_TO_FOLDER": "Ajouter au dossier"
+    }
+  }
 }

@@ -35,22 +35,18 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-export enum CriteriaOperator {
-  EQ = 'EQ',
-  NOT_EQ = 'NOT_EQ',
-  EXISTS = 'EXISTS',
-  MISSING = 'MISSING',
-  GTE = 'GTE',
-  LTE = 'LTE',
-  IN = 'IN'
+import { SearchCriteriaDto } from './search.criteria';
+
+export interface ReclassificationCriteriaDto {
+  searchCriteriaDto: SearchCriteriaDto;
+  $action: ReclassificationAction[];
 }
 
-export enum CriteriaDataType {
-  STRING = 'STRING',
-  DATE = 'DATE'
+export interface ReclassificationAction {
+  $add?: ReclassificationQueryActionType;
+  $pull?: ReclassificationQueryActionType;
 }
 
-export enum ActionOnCriteria {
-  REMOVE = 'REMOVE',
-  ADD = 'ADD'
+export interface ReclassificationQueryActionType {
+  '#unitups': string[];
 }

@@ -44,15 +44,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import {
-  AccessContract,
-  ActionOnCriteria,
-  CriteriaDataType,
-  CriteriaOperator,
-  Direction,
-  StartupService,
-  VitamuiRoles,
-} from 'ui-frontend-common';
+import { AccessContract, ActionOnCriteria, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -64,6 +56,7 @@ import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, Sea
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
+import { ReclassificationComponent } from './reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
 const BUTTON_MAX_TEXT = 40;
@@ -197,6 +190,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   hasAccessContractManagementPermissions = false;
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
+  hasReclassificationRole = false;
   waitingToGetFixedCount = false;
   showDuaEndDate = false;
   otherCriteriaValueEnabled = false;
@@ -237,6 +231,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   showConfirmBigNumberOfResultsSuscription: Subscription;
   actionliminationSuscription: Subscription;
   updateArchiveUnitAlerteMessageDialogSubscription: Subscription;
+  reclassificationAlerteMessageDialogSubscription: Subscription;
   launchComputeInheritedRuleAlerteMessageDialogSubscription: Subscription;
   computedInheritedRulesSuscription: Subscription;
   subscriptionNodes: Subscription;
@@ -249,11 +244,16 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   ontologies: any;
   selectedValueOntolonogy: any;
 
+  archiveUnitGuidSelected: string;
+  archiveUnitAllunitup: string [];
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
   @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
   updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
+  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
@@ -336,6 +336,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
     this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
     this.checkUserHasRole('ComputedInheritedRulesRole', VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
+    this.checkUserHasRole('ReclassificationRole', "ROLE_RECLASSIFICATION", +this.tenantIdentifier);
 
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
@@ -700,6 +701,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.INCLUDED);
         this.pending = false;
         this.included = true;
+        this.listOfUAIdToInclude = [];
       },
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
@@ -935,7 +937,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
-    this.updateArchiveUnitAlerteMessageDialogSubscription?.unsubscribe();
+    this.updateArchiveUnitAlerteMessageDialogSubscription ?.unsubscribe();
+    this.reclassificationAlerteMessageDialogSubscription?.unsubscribe();
     this.launchComputeInheritedRuleAlerteMessageDialogSubscription?.unsubscribe();
     this.computedInheritedRulesSuscription?.unsubscribe();
   }
@@ -1101,6 +1104,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         case 'ComputedInheritedRulesRole':
           this.hasComputedInheritedRulesRole = result;
           break;
+        case 'ReclassificationRole':
+          this.hasReclassificationRole = result;
+          break;
         default:
           break;
       }
@@ -1176,6 +1182,51 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
     });
+  }
+
+
+  launchReclassification() {
+
+    // reclassification can not be launched on more than one archive unit
+    if(this.itemSelected > 1) {
+      const dialogToOpen = this.reclassificationAlerteMessageDialog;
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+      this.reclassificationAlerteMessageDialogSubscription = dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => { });
+    } else if(this.itemSelected === 1){
+      this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
+      this.archiveUnitAllunitup = this.archiveUnits.find((au) => au['#id'] == this.archiveUnitGuidSelected)['#allunitups'];
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+
+    const reclassificationCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      sortingCriteria,
+      language: this.translateService.currentLang,
+    };
+
+    const dialogRef = this.dialog.open(ReclassificationComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: false,
+      data: {
+        itemSelected: this.itemSelected,
+        reclassificationCriteria: reclassificationCriteria,
+        accessContract: this.accessContract,
+        tenantIdentifier: this.tenantIdentifier,
+        archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+        archiveUnitAllunitup: this.archiveUnitAllunitup
+      },
+    });
+    this.openDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
+      if(result) {
+        return;
+      }
+    });
+  }
   }
 
   selectedItemCountKnown(): boolean {
