@@ -12,39 +12,13 @@ db.applications.insert({
     "icon" : "vitamui-icon vitamui-icon-ontologie",
     "name" : "Profils Documentaires",
     "category" : "referential",
-    "position" : 1,
+    "position": NumberInt(1),
     "hasCustomerList" : false,
-    "hasTenantList" : false,
+    "hasTenantList" : true,
     "hasHighlight" : false,
     "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
     "target" : "_self"
 });
-
-db.applications.update(
-    { "identifier" : "PASTIS_APP" },
-    {
-        "$set" : {
-{% if vitamui.pastis.base_url is defined %}
-        	"url": "{{ vitamui.pastis.base_url }}/pastis",
-{% else %}
-            "url" : "{{ url_prefix }}",
-{% endif %}
-            "icon": "vitamui-icon vitamui-icon-ontologie",
-             "name": "Profils Documentaires",
-             "category": "referential",
-             "position": NumberInt(1),
-             "hasCustomerList": false,
-             "hasTenantList": true,
-             "hasHighlight": false,
-             "tooltip": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
-             "target": "_self"
-        },
-        "$setOnInsert": {
-            "identifier" : "PASTIS_APP"
-        }
-    },
-    { "upsert":true }
-);
 
 db.applications.update({
     "identifier" : "PASTIS_APP",
