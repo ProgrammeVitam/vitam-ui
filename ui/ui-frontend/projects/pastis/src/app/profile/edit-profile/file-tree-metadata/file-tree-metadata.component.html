@@ -1,8 +1,7 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
   <mat-sidenav-content>
-    <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone"
-                             [data]="breadcrumbDataTop"
-                             class="breadcrumbTop">
+    <pastis-title-breadcrumb (selected)="navigate($event)" *ngIf="!isStandalone" [data]="breadcrumbDataTop"
+      class="breadcrumbTop">
     </pastis-title-breadcrumb>
     <!--Top panels container-->
     <div class="pastis-metadata-option-container">
@@ -17,9 +16,7 @@
             {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA' | translate}}
           </ng-container>
         </h5>
-        <pastis-breadcrumb
-          (selected)="navigateMetadata($event)"
-          [data]="breadcrumbDataMetadata">
+        <pastis-breadcrumb (selected)="navigateMetadata($event)" [data]="breadcrumbDataMetadata">
         </pastis-breadcrumb>
       </div>
 
@@ -27,31 +24,27 @@
       <div class="pastis-metadata-option-entete-2">
         <!--Button save-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' |
-             translate}}" placement="top"
-             show-delay="0">
+             translate}}" placement="top" show-delay="0">
           <pastis-user-action-save-profile></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' |
-             translate}}"
-             placement="top" show-delay="0">
+             translate}}" placement="top" show-delay="0">
           <pastis-user-action-download-doc (click)="openChoicePopup()"></pastis-user-action-download-doc>
           <div class="vitamui-pastis-choice-language">
-            <pastis-popup-metadata-language (click)="changeSedaLanguage()"
-                                            *ngIf="languagePopup"
-                                            [docPath]="docPath"></pastis-popup-metadata-language>
+            <pastis-popup-metadata-language (click)="changeSedaLanguage()" *ngIf="languagePopup" [docPath]="docPath">
+            </pastis-popup-metadata-language>
           </div>
         </div>
       </div>
     </div>
     <div class="button-filter">
 
-      <vitamui-common-banner
-        (search)="applyFilterTier($event)"
+      <vitamui-common-banner (search)="applyFilterTier($event)"
         [searchbarPlaceholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SEARCH_PLACEHOLDER' | translate">
         <!--Button add metadata-->
-        <button (click)="onAddNode()" *ngIf="checkElementType() && resolveButtonLabel(clickedNode) !== null" class="btn primary  ml-5"
-                style="text-transform: uppercase;">{{resolveButtonLabel(clickedNode)}}
+        <button (click)="onAddNode()" *ngIf="checkElementType() && resolveButtonLabel(clickedNode) !== null"
+          class="btn primary  ml-5" style="text-transform: uppercase;">{{resolveButtonLabel(clickedNode)}}
         </button>
       </vitamui-common-banner>
     </div>
@@ -59,32 +52,30 @@
 
     <!--Metatada table container-->
     <div class="pastis-table-container">
-      <table *ngIf="shouldLoadMetadataTable(); else complexElementWithouChild" [dataSource]="matDataSource" class="list-profile-table"
-             mat-table>
+      <table *ngIf="shouldLoadMetadataTable(); else complexElementWithouChild" [dataSource]="matDataSource"
+        class="list-profile-table" mat-table>
         <!-- Name Column -->
         <ng-container matColumnDef="nomDuChamp">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col"
-              mat-header-cell>{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.NOM_METADONNEE' |
+          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+            {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.NOM_METADONNEE' |
             translate}}
           </th>
           <td *matCellDef="let element;index as j" class="pastis-metadata-table-col-large" mat-cell>
-            <span
-              [matTooltipShowDelay]="0"
+            <span [matTooltipShowDelay]="0"
               [ngClass]="{'pastis-table-content': isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j]),
-                                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])}" matTooltip="{{getSedaDefinition(element.nomDuChamp)}}" matTooltipClass="pastis-matTooltipClass"
+                                 'pastis-table-content-with-errors': !isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])}"
+              matTooltip="{{getSedaDefinition(element.nomDuChamp)}}" matTooltipClass="pastis-matTooltipClass"
               placement="right">
-               <i *ngIf="isElementComplex(element.nomDuChamp)" class="vitamui-icon vitamui-icon-complex-element-1-1">
-                 <span class="path1"></span><span class="path2"></span
-               ><span class="path3"></span><span class="path4"></span
-               ><span class="path5"></span>
-            </i>
+              <i *ngIf="isElementComplex(element.nomDuChamp)" class="vitamui-icon vitamui-icon-complex-element-1-1">
+                <span class="path1"></span><span class="path2"></span><span class="path3"></span><span
+                  class="path4"></span><span class="path5"></span>
+              </i>
 
 
               {{onResolveName(element.nomDuChamp)}}
               <mat-icon *ngIf="!isSedaCardinalityConform(element.cardinalite,selectedCardinalities[j])"
-                        matTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
-                        matTooltipClass="pastis-table-content"
-                        matTooltipPosition="above">
+                matTooltip="La cardinalité n'est pas conforme aux specifications du SEDA 2.1"
+                matTooltipClass="pastis-table-content" matTooltipPosition="above">
                 info
               </mat-icon>
             </span>
@@ -93,24 +84,22 @@
 
         <!-- Value Column -->
         <ng-container matColumnDef="valeurFixe">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col"
-              mat-header-cell>{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.VALEUR_FIXE' |
+          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+            {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.VALEUR_FIXE' |
             translate}}
           </th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-medium" mat-cell>
             <ng-container [ngSwitch]="getMetadataInputType(element)">
               <ng-container *ngSwitchCase="'date'">
                 <div class="pastis-vitamui-container-editable-valeur-fixe">
-                  <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)" [dpDayPicker]="config"
-                                                    [maxlength]="120"
-                                                    [ngModel]="element.valeurFixe"
-                                                    class="valeur-fixe-pastis">
+                  <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)"
+                    [dpDayPicker]="config" [maxlength]="120" [ngModel]="element.valeurFixe" class="valeur-fixe-pastis">
                   </vitamui-common-editable-textarea>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'enumeration'">
                 <mat-select [ngModel]="element.valeurFixe" class="mat-select-valeur-fixe"
-                            placeholder="Choisissez une valeur">
+                  placeholder="Choisissez une valeur">
                   <mat-option [value]=""></mat-option>
                   <mat-option *ngFor="let val of element.enumeration; let i =index" [value]="val">
                     <mat-checkbox (change)="onChange(element,val);selected = i" [checked]="selected === i"> {{val}}
@@ -121,8 +110,7 @@
               <ng-container *ngIf="!checkElementType(element.nomDuChamp)">
                 <div *ngSwitchDefault class="pastis-vitamui-container-editable-valeur-fixe">
                   <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)" [maxlength]="120"
-                                                    [ngModel]="element.valeurFixe"
-                                                    class="valeur-fixe-pastis">
+                    [ngModel]="element.valeurFixe" class="valeur-fixe-pastis">
                   </vitamui-common-editable-textarea>
                 </div>
               </ng-container>
@@ -133,14 +121,14 @@
 
         <!-- Cardinality Column -->
         <ng-container matColumnDef="cardinalite">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col"
-              mat-header-cell>{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CARDINALITE' |
+          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+            {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CARDINALITE' |
             translate}}
           </th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <mat-select (ngModelChange)="setNodeChildrenCardinalities(element,$event)" [ngModel]="selectedCardinalities[i]"
-                        class="select-border" disableRipple="true"
-                        panelClass="vitamui-mat-select">
+            <mat-select (ngModelChange)="setNodeChildrenCardinalities(element,$event)"
+              [ngModel]="selectedCardinalities[i]" class="select-border" disableRipple="true"
+              panelClass="vitamui-mat-select">
               <mat-option *ngFor="let c of element.cardinalite" [value]="c">
                 <span class="cardinality-text">{{c}}</span>
               </mat-option>
@@ -150,15 +138,14 @@
 
         <!-- Commnent Column -->
         <ng-container matColumnDef="commentaire">
-          <th *matHeaderCellDef class="pastis-font-table-header pastis-col"
-              mat-header-cell> {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.COMMENTAIRE' |
+          <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell>
+            {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.COMMENTAIRE' |
             translate}}
           </th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-large" mat-cell>
             <div class="pastis-vitamui-container-editable-commentaire">
               <vitamui-common-editable-textarea (ngModelChange)="setDocumentation(element,$event)" [maxlength]="120"
-                                                [ngModel]="element.commentaire"
-                                                class="commentaire-pastis">
+                [ngModel]="element.commentaire" class="commentaire-pastis">
               </vitamui-common-editable-textarea>
             </div>
 
@@ -169,10 +156,11 @@
         <ng-container matColumnDef="menuoption">
           <th *matHeaderCellDef class="pastis-font-table-header pastis-col" mat-header-cell></th>
           <td *matCellDef="let element;index as i" class="pastis-metadata-table-col-small" mat-cell>
-            <button (click)="onButtonClicked(element.id,$event)" *ngIf="isRowHovered(element.id)" [center-mat-menu]="menuTrigger" [ngClass]="{'pastis-btn-metadata-options-active': isButtonClicked(element.id,matDataSource.data[rowIndex]),
-                              'pastis-btn-metadata-options': !isButtonClicked(element.id,matDataSource.data[rowIndex]) }"
-                    disableRipple="true" id="menuBtn"
-                    mat-icon-button>
+            <button (click)="onButtonClicked(element.id,$event)" *ngIf="isRowHovered(element.id)"
+              [center-mat-menu]="menuTrigger"
+              [ngClass]="{'pastis-btn-metadata-options-active': isButtonClicked(element.id,matDataSource.data[rowIndex]),
+                              'pastis-btn-metadata-options': !isButtonClicked(element.id,matDataSource.data[rowIndex]) }" disableRipple="true"
+              id="menuBtn" mat-icon-button>
               <mat-icon
                 [ngClass]="{'pastis-ico-menu-active': isButtonClicked(element.id,matDataSource.data[rowIndex]),
                                 'pastis-ico-menu-inactive': !isButtonClicked(element.id,matDataSource.data[rowIndex])}">
@@ -181,49 +169,49 @@
             </button>
 
             <div #menuTrigger="matMenuTrigger" (menuClosed)="rowIndex = 100" (menuOpened)="rowIndex = i"
-                 [matMenuTriggerFor]="menu">
+              [matMenuTriggerFor]="menu">
 
               <mat-menu #menu="matMenu" [overlapTrigger]="false" class="pastis-menu-item-vitam">
                 <!-- Dupliquer-->
                 <mat-divider *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'"
-                             style="border-top-color:#E0E0E0;">
+                  style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onDuplicateNode(element.id)" *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'"
-                        mat-menu-item>
+                <button (click)="onDuplicateNode(element.id)"
+                  *ngIf="isDuplicated(element.nomDuChamp) && this.profileService.profileMode==='PA'" mat-menu-item>
                   <mat-icon style="color:#757575">filter_none</mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.DUPLIQUER' | translate}}</span>
                 </button>
                 <!-- @Attributs-->
                 <mat-divider *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode==='PA'"
-                             style="border-top-color:#E0E0E0;"></mat-divider>
+                  style="border-top-color:#E0E0E0;"></mat-divider>
                 <button (click)="onEditAttributesClick(element.id)"
-                        *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode==='PA'"
-                        mat-menu-item>
+                  *ngIf="hasAttributes(element.nomDuChamp) && this.profileService.profileMode==='PA'" mat-menu-item>
                   <i class="vitamui-icon vitamui-icon-alternate_email_black_24dp" style="margin-right: 16px;
                    vertical-align: middle;
                     color:#757575;
                    font-size: 1.77em;">
                   </i>
-                  <span
-                    class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' | translate}}</span>
+                  <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ATTRIBUT_METADONNEE' |
+                    translate}}</span>
                 </button>
                 <!-- @Supprimer-->
                 <mat-divider *ngIf="!isSedaObligatory(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onDeleteNode(element.id)" *ngIf="!isSedaObligatory(element.nomDuChamp)"
-                        mat-menu-item>
+                <button (click)="onDeleteNode(element.id)" *ngIf="!isSedaObligatory(element.nomDuChamp)" mat-menu-item>
                   <mat-icon style="color:#757575">delete</mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate}}</span>
                 </button>
 
-                 <!-- Contrôle de métadonées => PUA -->
-                 <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
+                <!-- Contrôle de métadonées => PUA -->
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                  style="border-top-color:#E0E0E0;">
                 </mat-divider>
                 <button *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
-                mat-menu-item>
-          <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
-          <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' | translate}}</span>
-        </button>
+                  mat-menu-item>
+                  <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                  <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' |
+                    translate}}</span>
+                </button>
               </mat-menu>
             </div>
           </td>
@@ -231,14 +219,79 @@
         </ng-container>
 
         <tr *matHeaderRowDef="displayedColumns;sticky: true" class="pastis-table-row-header" mat-header-row></tr>
-        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave(row)" *matRowDef="let row; columns: displayedColumns;"
-            class="pastis-table-row" mat-row></tr>
+        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave(row)"
+          *matRowDef="let row; columns: displayedColumns;" class="pastis-table-row" mat-row></tr>
       </table>
     </div>
 
+    <div *ngIf="this.profileService.profileMode === 'PUA'">
+      <div class="pastis-panel-metadata-control">
+        <h2 class="pastis-dialog-config-title" matDialogTitle>
+
+          <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' |
+            translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i></mat-icon>
+          </span>
+
+        </h2>
+        <div class="ml-5">
+
+          <mat-form-field class="mr-3 vitamui-mat-select">
+            <mat-select panelClass="vitamui-mat-select">
+              <mat-option *ngFor="" [value]="">
+                {{country.label}}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_up</i>
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <div class="pastis-panel-metadata-control">
+        <h2 class="pastis-dialog-config-title" matDialogTitle>
+
+          <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' |
+            translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i></mat-icon>
+          </span>
+        </h2>
+        <div class="ml-5 row">
+          <mat-radio-button style="display: inline;">
+            <span class="text-text-normal ml-3 row">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' |
+              translate}}:
+            </span>
+            <div class="ml-3">
+
+              <mat-form-field class="mr-3 vitamui-mat-select">
+                <mat-select panelClass="vitamui-mat-select">
+                  <mat-option *ngFor="" [value]="">
+                    {{country.label}}
+                  </mat-option>
+                </mat-select>
+                <div class="select-arrow">
+                  <i class="material-icons">keyboard_arrow_up</i>
+                  <i class="material-icons">keyboard_arrow_down</i>
+                </div>
+              </mat-form-field>
+
+            </div>
+          </mat-radio-button>
+
+        </div>
+        <div class="ml-5 mt-4 row">
+          <mat-radio-button>
+            <vitamui-common-textarea class="ml-3" [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
+                    translate">
+            </vitamui-common-textarea>
+          </mat-radio-button>
+        </div>
+      </div>
+    </div>
+
     <ng-template #complexElementWithouChild>
-      <div
-        class="complex-element-no-child">
+      <div class="complex-element-no-child">
         {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEUN' | translate}}
         {{clickedNode.name}} {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.MESSAGE_METADONNEE_SANS_FILLES.PARTIEDEUX' |
         translate}}

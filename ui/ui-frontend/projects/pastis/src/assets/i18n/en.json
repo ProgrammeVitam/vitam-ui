@@ -168,6 +168,10 @@
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
         "CONTROLE_METADONNEE": "Metadata control",
+        "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
+        "FORMATAGE_PREDEFINI": "Use predefined formatting",
+        "SAISIR_EXPRESSION": "Enter a regular expression",
+        "EXPRESSION_CONTROLE": "\"Regular expression\" type control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",
         "MESSAGE_METADONNEE_SANS_FILLES": {

@@ -168,6 +168,10 @@
         "COMMENTAIRE": "Commentaire",
         "DUPLIQUER": "Dupliquer",
         "CONTROLE_METADONNEE": "Contrôle de métadonnée",
+        "ENUMERATION_CONTROLE": "Contrôle de type \"Enumération\"",
+        "FORMATAGE_PREDEFINI": "Utiliser un formatage prédéfini",
+        "SAISIR_EXPRESSION": "Saisir une expression régulière",
+        "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
         "SUPPRIMER": "Supprimer",
         "MESSAGE_METADONNEE_SANS_FILLES": {
