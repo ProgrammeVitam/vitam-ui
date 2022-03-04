@@ -41,14 +41,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ExternalParameters, ExternalParametersService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
+import { ArchiveService } from './archive.service';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss'],
+  styleUrls: ['./archive.component.scss']
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   show = true;
@@ -58,6 +59,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   accessContractSub: Subscription;
   errorMessageSub: Subscription;
   isLPExtended = false;
+  hasAccessContractManagementPermissions = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,7 +70,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private externalParameterService: ExternalParametersService,
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private archiveService: ArchiveService
   ) {
     super(route, globalEventService);
   }
@@ -82,7 +85,8 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       this.show = hidden;
     });
 
-    this.fetchUserAccessContract();
+    this.fetchUserAccessContractFromExternalParameters();
+    //this.fetchVitamAccessContract();
   }
 
   ngOnDestroy() {
@@ -92,13 +96,14 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     }
   }
 
-  fetchUserAccessContract() {
+  fetchUserAccessContractFromExternalParameters() {
     this.accessContractSub = this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
       const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
       if (accessConctractId && accessConctractId.length > 0) {
         this.accessContract = accessConctractId;
         this.foundAccessContract = true;
         this.managementRulesSharedDataService.emitAccessContract(accessConctractId);
+        this.fetchVitamAccessContract();
       } else {
         this.errorMessageSub = this.translateService
           .get('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND')
@@ -106,13 +111,29 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
             map((message) => {
               this.snackBar.open(message, null, {
                 panelClass: 'vitamui-snack-bar',
-                duration: 10000,
+                duration: 10000
               });
             })
           )
           .subscribe();
       }
     });
+  }
+
+  fetchVitamAccessContract() {
+    this.archiveService.getAccessContractById(this.accessContract).subscribe(
+      (ac: AccessContract) => {
+        this.hasAccessContractManagementPermissions = this.archiveService.hasAccessContractManagementPermissions(ac);
+      },
+      (error: any) => {
+        console.error('AccessContract not found', error);
+        const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
+        this.snackBar.open(message + ': ' + this.accessContract, null, {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000
+        });
+      }
+    );
   }
 
   hiddenTreeBlock(hidden: boolean): void {

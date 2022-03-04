@@ -193,6 +193,7 @@ customer-init:
         - ROLE_COMPUTED_INHERITED_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
+        - ROLE_UPDATE_UNIT_DESC_METADATA
 
   #- name: profileName
   #  description: desc

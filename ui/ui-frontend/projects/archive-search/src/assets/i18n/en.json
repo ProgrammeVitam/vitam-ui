@@ -1,45 +1,45 @@
 {
   "ARCHIVE_SEARCH": {
     "ARCHIVE_UNIT_RULES_DETAILS": {
-      "RULES_FINAL_ACTION" : {
-        "KEEP" : "Conservation",
-        "DESTROY" : "Elimination",
-        "CONFLICT" : "Conflict",
-        "INHERITED" : "Inherited",
-        "CARRIED" : "Carried",
-        "COPY" :"Copy",
-        "TRANSFER" : "Transfer",
-        "RESTRICTACCESS" : "Restrict access"
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflict",
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "COPY": "Copy",
+        "TRANSFER": "Transfer",
+        "RESTRICTACCESS": "Restrict access"
       },
-      "RULE_STATUS" : {
-        "INHERITED" : "Inherited",
-        "CARRIED" : "Carried",
-        "BLOCKED" :"Blocked"
+      "RULE_STATUS": {
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "BLOCKED": "Blocked"
       },
-      "RULE" : {
-        "IDENTIFIER" : "Identifier",
-        "START_DATE" : "Start",
-        "END_DATE" : "End",
-        "STATUS" : "Status"
+      "RULE": {
+        "IDENTIFIER": "Identifier",
+        "START_DATE": "Start",
+        "END_DATE": "End",
+        "STATUS": "Status"
       },
-      "FINAL_ACTION" : {
-        "VALUE" : "Value",
-        "STATUS" : "Status",
-        "PROPERTY" : "Property"
+      "FINAL_ACTION": {
+        "VALUE": "Value",
+        "STATUS": "Status",
+        "PROPERTY": "Property"
       },
-      "PROPERTIES" : "Properties",
-      "FINAL_ACTION_VALUE" : "Sort final",
-      "INHERITANCE_BLOCKED":"Category inheritance blocked",
-      "CATEGORY_NAME" : {
-        "APPRAISALRULE" : "DUA",
-        "STORAGERULE" : "DUC",
-        "HOLDRULE" : "Freeze",
-        "ACCESSRULE" : "Communicability",
-        "DISSEMINATIONRULE" : "Dissemination",
-        "REUSERULE" : "Reuse",
-        "CLASSIFICATIONRULE" : "Classification"
+      "PROPERTIES": "Properties",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Category inheritance blocked",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "STORAGERULE": "DUC",
+        "HOLDRULE": "Freeze",
+        "ACCESSRULE": "Communicability",
+        "DISSEMINATIONRULE": "Dissemination",
+        "REUSERULE": "Reuse",
+        "CLASSIFICATIONRULE": "Classification"
       },
-      "CLASSIFICATION_RULE_PROPERTIES" : {
+      "CLASSIFICATION_RULE_PROPERTIES": {
         "CLASSIFICATIONLEVEL": "Classification level",
         "CLASSIFICATIONOWNER": "Owner",
         "CLASSIFICATIONAUDIENCE": "Broadcast scope limitation",
@@ -47,15 +47,15 @@
         "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
       },
 
-      "HOLD_RULE_PROPERTIES" : {
+      "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
         "PREVENTREARRANGEMENT": "Blocage de reclassement",
         "HOLDREASSESSINGDATE": "Date de réévaluation",
         "HOLDENDDATE": "Date de fin de gel"
       },
-      "COMMON_YES" :"Yes",
-      "COMMON_NO" : "No"
+      "COMMON_YES": "Yes",
+      "COMMON_NO": "No"
     },
     "DIP": {
       "EXPORT_DIP": "Export a DIP",
@@ -109,13 +109,13 @@
     "RULES_ACTION": {
       "UPDATE_RULE": "Update rules"
     },
-    "COMPUTED_INHERITED_RULES" : {
-      "EXECUTION_ACTION" : "Launch the inheritance calculation",
-      "OPERATION_MESSAGE" : "The inheritance calculation has been launched on the selected units",
-      "TITLE" : "Inheritance computed launch validation",
-      "CONFIRMATION_MESSAGE" : "You are about to launch an inheritance calculation on {{itemSelected}} archival unit(s). Do you want to confirm?",
-      "CONFIRM" : "Confirm",
-      "CANCEL" :"Cancel"
+    "COMPUTED_INHERITED_RULES": {
+      "EXECUTION_ACTION": "Launch the inheritance calculation",
+      "OPERATION_MESSAGE": "The inheritance calculation has been launched on the selected units",
+      "TITLE": "Inheritance computed launch validation",
+      "CONFIRMATION_MESSAGE": "You are about to launch an inheritance calculation on {{itemSelected}} archival unit(s). Do you want to confirm?",
+      "CONFIRM": "Confirm",
+      "CANCEL": "Cancel"
     },
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
@@ -135,8 +135,8 @@
     "NO_MORE_RESULTS": "No more results",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Delete rule criterias",
     "SEARCH_CRITERIA_FILTER": {
-      "DATES" : "Dates",
-      "UA_TYPE" : "Type of archival units",
+      "DATES": "Dates",
+      "UA_TYPE": "Type of archival units",
       "TITLE": "Search filters",
       "DUA_TITLE": "Administrative useful life",
       "OTHER_FILED_SELECTION": "Select another criteria",
@@ -189,14 +189,14 @@
         "ID_DUA": "Id",
         "START_DATE_DUA": "End Date",
         "END_DATE_DUA": "Start Date",
-        "ARCHIVE_UNIT_FILING_UNIT" : "Filing plan",
-        "ARCHIVE_UNIT_HOLDING_UNIT" : "Positioning tree",
-        "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive with objects",
-        "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive without objects",
-        "HOLDING_UNIT" : "Positioning tree",
-        "FILING_UNIT" : "Filing plan",
-        "DESCRIPTION_LEVEL" : "Archive unit type",
-        "ALL_ARCHIVE_UNIT_TYPES" :"Type",
+        "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
+        "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
+        "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
+        "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive without objects",
+        "HOLDING_UNIT": "Positioning tree",
+        "FILING_UNIT": "Filing plan",
+        "DESCRIPTION_LEVEL": "Archive unit type",
+        "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ORIGIN": {
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
@@ -205,13 +205,13 @@
           "SELECT_ALL_APPRAISAL_RULE": "Select all"
         },
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier",
-        "UNIT_TYPE" : {
-          "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive with objects",
-          "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive without objects",
-          "ARCHIVE_UNIT_HOLDING_UNIT" : "Tree",
-          "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
-          "ARCHIVE_UNIT_PLAN" : "Plan",
-          "ARCHIVE_UNIT_HOLDING" : "Tree"
+        "UNIT_TYPE": {
+          "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive without objects",
+          "ARCHIVE_UNIT_HOLDING_UNIT": "Tree",
+          "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+          "ARCHIVE_UNIT_PLAN": "Plan",
+          "ARCHIVE_UNIT_HOLDING": "Tree"
         }
       }
     },
@@ -231,7 +231,7 @@
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
         "SP_COMM_DT": "Originating agency Comm DT",
-        "TYPE" : "Type"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -252,12 +252,12 @@
       },
       "TABS": {
         "INFORMATIONS": "Informations",
-        "RULES" : "Rules",
-        "OBJECTS" : "Objects"
+        "RULES": "Rules",
+        "OBJECTS": "Objects"
       },
-      "ACTIONS" : {
-        "SHOW_MORE_DETAILS" : "Show all metadata",
-        "SHOW_ONLY_INFORMATION_DETAILS" : "Hide management metadata"
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
       }
     },
     "FILING_SHCEMA": {
@@ -452,5 +452,27 @@
       "TITLE": "Add to a folder",
       "ADD_TO_FOLDER": "Add to folder"
     }
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "The archival unit description metadata update request demand is successfully sent",
+    "MESSAGE": "Do you want to confirm the update of the metadata of this archival unit?",
+    "HINT": "Update validation",
+    "NO_PERMISSION": "Your access contract does not authorize this action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "CLOSE",
+    "CONFIRM_CLOSE": "Modified data will not be saved. Are you sure you want to close the window ?",
+    "CLOSE_WINDOW_HINT": "Close archival unit update",
+    "RECORDGRP": "RecordGrp",
+    "FILE": "File",
+    "ITEM": "Item",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Subfonds",
+    "CLASS": "Class",
+    "SUBGRP": "SubGrp",
+    "OTHERLEVEL": "Otherlevel",
+    "SERIES": "Series",
+    "SUBSERIES": "Subseries",
+    "FONDS": "Fonds",
+    "SAVE": "SAVE"
   }
 }

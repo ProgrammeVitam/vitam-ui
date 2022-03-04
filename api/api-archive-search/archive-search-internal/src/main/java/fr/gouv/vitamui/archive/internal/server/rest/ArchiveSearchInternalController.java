@@ -36,6 +36,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -58,6 +59,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -295,5 +297,20 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         String result = archiveInternalService.reclassification(vitamContext, reclassificationCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    public String updateUnitById(final @PathVariable("id") String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+        throws VitamClientException {
+        LOGGER.debug("update archiveUnit id  {}", id);
+        ParameterChecker
+            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+        ParameterChecker
+            .checkParameter("The request body is mandatory: ", unitDescriptiveMetadataDto);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.updateUnitById(id, unitDescriptiveMetadataDto, vitamContext);
     }
 }

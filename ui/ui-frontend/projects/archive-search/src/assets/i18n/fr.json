@@ -1,45 +1,45 @@
 {
   "ARCHIVE_SEARCH": {
     "ARCHIVE_UNIT_RULES_DETAILS": {
-      "RULES_FINAL_ACTION" : {
-        "KEEP" : "Conservation",
-        "DESTROY" : "Elimination",
-        "CONFLICT" : "Conflit",
-        "INHERITED" : "Hérité",
-        "CARRIED" : "Porté",
-        "COPY" :"Copie",
-        "TRANSFER" : "Transfert",
-        "RESTRICTACCESS" : "Accès réservé"
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflit",
+        "INHERITED": "Hérité",
+        "CARRIED": "Porté",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICTACCESS": "Accès réservé"
       },
-      "RULE_STATUS" : {
-        "INHERITED" : "Héritée",
-        "CARRIED" : "Portée",
-        "BLOCKED" : "Bloquée"
+      "RULE_STATUS": {
+        "INHERITED": "Héritée",
+        "CARRIED": "Portée",
+        "BLOCKED": "Bloquée"
       },
-      "RULE" : {
-        "IDENTIFIER" : "Identifiant",
-        "START_DATE" : "Début",
-        "END_DATE" : "Fin",
-        "STATUS" : "Statut"
+      "RULE": {
+        "IDENTIFIER": "Identifiant",
+        "START_DATE": "Début",
+        "END_DATE": "Fin",
+        "STATUS": "Statut"
       },
-      "FINAL_ACTION" : {
-        "VALUE" : "Valeur",
-        "STATUS" : "Statut",
-        "PROPERTY" : "Propriété"
-      }  ,
-      "PROPERTIES" : "Propriétés",
-      "FINAL_ACTION_VALUE" : "Sort final",
-      "INHERITANCE_BLOCKED":"Héritage de la catégorie bloqué",
-      "CATEGORY_NAME" : {
-        "APPRAISALRULE" : "DUA",
-        "STORAGERULE" : "DUC",
-        "HOLDRULE" : "Gel",
-        "ACCESSRULE" : "Communicabilité",
-        "DISSEMINATIONRULE" : "Diffusion",
-        "REUSERULE" : "Réutilisation",
-        "CLASSIFICATIONRULE" : "Classification"
+      "FINAL_ACTION": {
+        "VALUE": "Valeur",
+        "STATUS": "Statut",
+        "PROPERTY": "Propriété"
       },
-      "CLASSIFICATION_RULE_PROPERTIES" : {
+      "PROPERTIES": "Propriétés",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Héritage de la catégorie bloqué",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "STORAGERULE": "DUC",
+        "HOLDRULE": "Gel",
+        "ACCESSRULE": "Communicabilité",
+        "DISSEMINATIONRULE": "Diffusion",
+        "REUSERULE": "Réutilisation",
+        "CLASSIFICATIONRULE": "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES": {
         "CLASSIFICATIONLEVEL": "Niveau de classification",
         "CLASSIFICATIONOWNER": "Propriétaire",
         "CLASSIFICATIONAUDIENCE": "Limitation du champ de diffusion",
@@ -47,15 +47,15 @@
         "NEEDREASSESSINGAUTHORIZATION": "Besoin d'autorisation de réévaluation"
       },
 
-      "HOLD_RULE_PROPERTIES" : {
+      "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
         "PREVENTREARRANGEMENT": "Blocage de reclassement",
         "HOLDREASSESSINGDATE": "Date de réévaluation",
         "HOLDENDDATE": "Date de fin de gel"
       },
-      "COMMON_YES" :"Oui",
-      "COMMON_NO" : "Non"
+      "COMMON_YES": "Oui",
+      "COMMON_NO": "Non"
     },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
@@ -92,8 +92,8 @@
       "EXECUTE": "Eliminer les archives",
       "EXECUTE_ONE": "Eliminer l'archive"
     },
-    "RULES_ACTION" : {
-      "UPDATE_RULE" : "Mettre à jour des règles"
+    "RULES_ACTION": {
+      "UPDATE_RULE": "Mettre à jour des règles"
     },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
@@ -109,13 +109,13 @@
         "CANCEL": "Annuler"
       }
     },
-    "COMPUTED_INHERITED_RULES" : {
-      "EXECUTION_ACTION" : "Lancer le calcul d'héritage",
-      "OPERATION_MESSAGE" : "Le calcul des héritages a bien été lancé sur les unités sélectionnées",
-      "TITLE" : "Validation de lancement du calcul d'héritage",
-      "CONFIRMATION_MESSAGE" : "Vous êtes sur le point de lancer un calcul d'héritage sur {{itemSelected}} unité(s) archivistique(s). Voulez-vous confirmer ?",
-      "CONFIRM" : "Confirmer",
-      "CANCEL" :"Annuler"
+    "COMPUTED_INHERITED_RULES": {
+      "EXECUTION_ACTION": "Lancer le calcul d'héritage",
+      "OPERATION_MESSAGE": "Le calcul des héritages a bien été lancé sur les unités sélectionnées",
+      "TITLE": "Validation de lancement du calcul d'héritage",
+      "CONFIRMATION_MESSAGE": "Vous êtes sur le point de lancer un calcul d'héritage sur {{itemSelected}} unité(s) archivistique(s). Voulez-vous confirmer ?",
+      "CONFIRM": "Confirmer",
+      "CANCEL": "Annuler"
     },
     "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
@@ -137,8 +137,8 @@
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
     "NO_MORE_RESULTS": "Fin des résultats",
     "SEARCH_CRITERIA_FILTER": {
-      "DATES" : "Dates",
-      "UA_TYPE" : "Type d'unités archivistiques",
+      "DATES": "Dates",
+      "UA_TYPE": "Type d'unités archivistiques",
       "TITLE": "Filtre de recherche",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
@@ -197,14 +197,14 @@
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
         "GUID_OPI": "Identifiant technique du versement",
-        "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
-        "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre ",
-        "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive avec objets",
-        "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive sans objets",
-        "HOLDING_UNIT" : "Arbre de positionnement",
-        "FILING_UNIT" : "Plan de classement",
-        "DESCRIPTION_LEVEL" : "Type d'unité archivistique",
-        "ALL_ARCHIVE_UNIT_TYPES" :"Type",
+        "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+        "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre ",
+        "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
+        "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+        "HOLDING_UNIT": "Arbre de positionnement",
+        "FILING_UNIT": "Plan de classement",
+        "DESCRIPTION_LEVEL": "Type d'unité archivistique",
+        "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
@@ -232,13 +232,13 @@
           "EXCLUDE": "Exclure"
         },
         "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
-        "UNIT_TYPE" : {
-          "ARCHIVE_UNIT_WITH_OBJECTS" : "Archive avec objets",
-          "ARCHIVE_UNIT_WITHOUT_OBJECTS" : "Archive sans objets",
-          "ARCHIVE_UNIT_HOLDING_UNIT" : "Arbre",
-          "ARCHIVE_UNIT_FILING_UNIT" : "Plan",
-          "ARCHIVE_UNIT_PLAN" : "Plan",
-          "ARCHIVE_UNIT_HOLDING" : "Arbre"
+        "UNIT_TYPE": {
+          "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+          "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre",
+          "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+          "ARCHIVE_UNIT_PLAN": "Plan",
+          "ARCHIVE_UNIT_HOLDING": "Arbre"
         }
       }
     },
@@ -258,7 +258,7 @@
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP_COMM": "Service Prod Comm",
         "SP_COMM_DT": "Service Prod Comm DT",
-        "TYPE" : "Type"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -279,12 +279,12 @@
       },
       "TABS": {
         "INFORMATIONS": "Informations",
-        "RULES" : "Règles",
-        "OBJECTS" : "Objets"
+        "RULES": "Règles",
+        "OBJECTS": "Objets"
       },
-      "ACTIONS" : {
-        "SHOW_MORE_DETAILS" : "Afficher l'ensemble des métadonnées",
-        "SHOW_ONLY_INFORMATION_DETAILS" : "Masquer les métadonnées de gestion"
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
       }
     },
     "FILING_SHCEMA": {
@@ -420,15 +420,15 @@
       "EXIT_CONFIRM_MESSAGE": "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
     },
 
-      "CATEGORIES_NAME" : {
-        "STORAGE_RULE" : "Durée d'utilité courante (DUC)",
-        "APPRAISAL_RULE" : "Durée d'utilité administrative (DUA)",
-        "HOLD_RULE" : "Gel / Dégel",
-        "ACCESS_RULE" : "Communicabilité",
-        "DISSEMINATION_RULE" : "Diffusion",
-        "REUSE_RULE" : "Réutilisation",
-        "CLASSIFICATION_RULE" : "Classification"
-      },
+    "CATEGORIES_NAME": {
+      "STORAGE_RULE": "Durée d'utilité courante (DUC)",
+      "APPRAISAL_RULE": "Durée d'utilité administrative (DUA)",
+      "HOLD_RULE": "Gel / Dégel",
+      "ACCESS_RULE": "Communicabilité",
+      "DISSEMINATION_RULE": "Diffusion",
+      "REUSE_RULE": "Réutilisation",
+      "CLASSIFICATION_RULE": "Classification"
+    },
 
     "ALERTE_MESSAGES": {
       "BACK_TO_SELECTION": "Revenir à la sélection",
@@ -479,5 +479,27 @@
       "TITLE": "Ajouter à un dossier",
       "ADD_TO_FOLDER": "Ajouter au dossier"
     }
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "La demande de mise à jour d'unité archivistique a bien été envoyée",
+    "MESSAGE": "Voulez-vous confirmer la mise à jour des métadonnées de cette unité archivistique ?",
+    "HINT": "Validation de mise à jour",
+    "NO_PERMISSION": "Votre contrat d'accès n'autorise pas cette action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "FERMER",
+    "CONFIRM_CLOSE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
+    "CLOSE_WINDOW_HINT": "Quitter la mise à jour",
+    "RECORDGRP": "Groupes de dossiers",
+    "FILE": "Dossier",
+    "ITEM": "Pièce",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Sous-fonds",
+    "CLASS": "Classe",
+    "SUBGRP": "Sous-groupe de documents",
+    "OTHERLEVEL": "Autre niveau",
+    "SERIES": "Série",
+    "SUBSERIES": "Sous-série",
+    "FONDS": "Fonds",
+    "SAVE": "ENREGISTRER"
   }
 }

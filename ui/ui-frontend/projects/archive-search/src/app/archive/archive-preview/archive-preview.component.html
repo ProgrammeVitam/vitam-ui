@@ -17,6 +17,16 @@
     <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
       {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
     </button>
+    <button
+      mat-menu-item
+      matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+      matTooltipClass="vitamui-tooltip"
+      [matTooltipShowDelay]="300"
+      (click)="updateMetadataDesc()"
+      [disabled]="updateStarted || !hasAccessContractManagementPermissions"
+    >
+      {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
+    </button>
   </vitamui-common-menu-button>
 </vitamui-common-sidenav-header>
 
@@ -27,6 +37,8 @@
         [archiveUnit]="archiveUnit"
         [accessContract]="accessContract"
         [tenantIdentifier]="tenantIdentifier"
+        [updateStarted]="updateStarted"
+        (showNormalPanel)="showNormalPanel()"
       ></app-archive-unit-information-tab>
     </mat-tab>
 

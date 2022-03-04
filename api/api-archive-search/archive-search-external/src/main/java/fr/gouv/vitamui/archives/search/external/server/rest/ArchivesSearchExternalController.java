@@ -33,6 +33,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -52,6 +53,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -192,5 +194,14 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
+    }
+
+
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        LOGGER.debug("update unit by id {} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
 }
