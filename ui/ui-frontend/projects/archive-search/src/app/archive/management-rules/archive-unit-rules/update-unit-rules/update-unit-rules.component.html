@@ -140,7 +140,7 @@
 
     <div *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
 
-    <div class="d-flex mt-4">
+    <div class="d-flex mt-4 padding-btm-style">
       <button type="submit" class="btn primary mr-4" [disabled]="!isValidRule || !isValidForm || disabledControl" (click)="submit()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
