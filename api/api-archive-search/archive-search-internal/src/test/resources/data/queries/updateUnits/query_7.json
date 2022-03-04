@@ -1,0 +1,19 @@
+{
+  "$action": [
+    {
+      "$set": {
+        "Title_.en": "english title",
+        "Description_.fr": "french description",
+        "DescriptionLevel": "Item"
+      }
+    },
+    {
+      "$unset": [
+        "StartDate",
+        "EndDate",
+        "Title_.fr",
+        "Description_.en"
+      ]
+    }
+  ]
+}

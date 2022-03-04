@@ -379,6 +379,7 @@ public class ServicesData {
     public static final String ROLE_UPDATE_MANAGEMENT_RULES = UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
     public static final String ROLE_COMPUTED_INHERITED_RULES = ROLE_PREFIX + "COMPUTED_INHERITED_RULES";
     public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
+    public static final String ROLE_UPDATE_UNIT_DESC_METADATA = ROLE_PREFIX + "UPDATE_UNIT_DESC_METADATA";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -537,7 +538,8 @@ public class ServicesData {
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
-            ROLE_RECLASSIFICATION
+            ROLE_RECLASSIFICATION,
+            ROLE_UPDATE_UNIT_DESC_METADATA
 
             );
 
@@ -683,7 +685,8 @@ public class ServicesData {
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
-            ROLE_RECLASSIFICATION
+            ROLE_RECLASSIFICATION,
+            ROLE_UPDATE_UNIT_DESC_METADATA
             );
     //@formatter:on
 

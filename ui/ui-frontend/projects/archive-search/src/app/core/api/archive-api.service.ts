@@ -46,6 +46,7 @@ import { SearchCriteriaHistory } from '../../archive/models/search-criteria-hist
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive/models/search.criteria';
 import { Unit } from '../../archive/models/unit.interface';
+import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -156,5 +157,8 @@ export class ArchiveApiService extends BaseHttpClient<any> {
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
     return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
+  }
+  updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, { headers, responseType: 'text' as 'json' });
   }
 }

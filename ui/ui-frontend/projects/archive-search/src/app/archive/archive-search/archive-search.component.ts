@@ -44,7 +44,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { AccessContract, ActionOnCriteria, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -187,7 +187,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   showUnitPreviewBlock = false;
   hasDipExportRole = false;
   hasUpdateManagementRuleRole = false;
-  hasAccessContractManagementPermissions = false;
+  @Input()
+  hasAccessContractManagementPermissions: boolean;
   hasEliminationAnalysisOrActionRole = false;
   hasComputedInheritedRulesRole = false;
   hasReclassificationRole = false;
@@ -246,6 +247,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   archiveUnitGuidSelected: string;
   archiveUnitAllunitup: string [];
+  hasAccessContractManagementPermissionsMessage = '';
   @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
   confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
 
@@ -309,7 +311,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
     });
-
+    this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
@@ -318,19 +320,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.submit();
     });
 
-    this.archiveService.getAccessContractById(this.accessContract).subscribe(
-      (ac: AccessContract) => {
-        this.hasAccessContractManagementPermissions = this.archiveService.hasAccessContractManagementPermissions(ac);
-      },
-      (error: any) => {
-        console.error('AccessContract not found', error);
-        const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
-        this.snackBar.open(message + ': ' + this.accessContract, null, {
-          panelClass: 'vitamui-snack-bar',
-          duration: 10000,
-        });
-      }
-    );
 
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);

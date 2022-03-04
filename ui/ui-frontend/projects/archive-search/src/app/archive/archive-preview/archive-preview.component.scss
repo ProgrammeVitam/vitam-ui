@@ -1,0 +1,22 @@
+.download-btn {
+  border-radius: 100px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 20px 20px 120px;
+}
+
+.btn-show-full-path {
+  border: 1px solid var(--vitamui-grey);
+  border-radius: 10px;
+  font-size: 10px;
+}
+
+.btn-show-full-path:hover {
+  background-color: var(--vitamui-grey-400);
+  cursor: pointer;
+}
+
+.margin-btn {
+  margin-right: 300px;
+}

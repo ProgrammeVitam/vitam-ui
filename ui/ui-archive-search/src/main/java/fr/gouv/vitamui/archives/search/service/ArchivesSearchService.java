@@ -33,6 +33,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -206,5 +207,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,ExternalHttpContext context) {
         LOGGER.info("Reclassification with criteria {}", reclassificationCriteriaDto);
         return archiveSearchExternalRestClient.reclassification(reclassificationCriteriaDto, context);
+    }
+
+    public ResponseEntity<String> updateUnitById(String id, final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, ExternalHttpContext context) {
+        LOGGER.debug("Update the Archive Unit with id {}", id);
+        return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
     }
 }

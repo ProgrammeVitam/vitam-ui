@@ -37,12 +37,13 @@
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import { Unit } from '../models/unit.interface';
 
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
-  styleUrls: ['./archive-preview.component.scss'],
+  styleUrls: ['./archive-preview.component.scss']
 })
 export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
@@ -62,13 +63,19 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
 
   tenantIdentifier: number;
 
-  constructor(private route: ActivatedRoute) {
+  updateStarted = false;
+  @Input()
+  hasAccessContractManagementPermissions: boolean;
+  hasAccessContractManagementPermissionsMessage = '';
+  constructor(private route: ActivatedRoute, private translateService: TranslateService) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
+  }
 
   emitClose() {
     this.isPanelextended = false;
@@ -80,12 +87,19 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
     this.selectedIndex = 0;
+    this.updateStarted = false;
   }
 
   showExtendedPanel() {
     this.isPanelextended = true;
     this.showExtendedLateralPanel.emit();
     this.selectedIndex = 1;
+  }
+
+  updateMetadataDesc() {
+    this.isPanelextended = true;
+    this.showExtendedLateralPanel.emit();
+    this.updateStarted = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

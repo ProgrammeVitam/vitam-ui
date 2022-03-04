@@ -17,6 +17,7 @@
       [archiveUnit]="openedItem"
       [accessContract]="accessContract"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
+      [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
     ></app-archive-preview>
   </mat-sidenav>
 
@@ -40,7 +41,12 @@
           <i class="material-icons">chevron_right</i>
         </button>
       </div>
-      <app-archive-search (archiveUnitClick)="showPreviewArchiveUnit($event)" [accessContract]="accessContract"> </app-archive-search>
+      <app-archive-search
+        (archiveUnitClick)="showPreviewArchiveUnit($event)"
+        [accessContract]="accessContract"
+        [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+      >
+      </app-archive-search>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

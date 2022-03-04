@@ -67,6 +67,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -103,7 +104,6 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -139,11 +139,15 @@ public class ArchiveSearchInternalService {
     public static final String NEW_TAB = "\t";
     public static final String NEW_LINE_1 = "\r\n";
     public static final String OPERATION_IDENTIFIER = "itemId";
+    public static final String IDENTIFIER = "#id";
     public static final String SPACE = " ";
     public static final String FILING_UNIT = "FILING_UNIT";
     public static final String HOLDING_UNIT = "HOLDING_UNIT";
     private static final String[] FILING_PLAN_PROJECTION =
         new String[] {"#id", "Title", "Title_", "DescriptionLevel", "#unitType", "#unitups", "#allunitups"};
+    private static final String SET = "$set";
+    private static final String UNSET = "$unset";
+    private static final String ACTION = "$action";
 
     private final ObjectMapper objectMapper;
     private final UnitService unitService;
@@ -295,6 +299,99 @@ public class ArchiveSearchInternalService {
             throw new VitamClientException("Unable to find the UA", e);
         }
     }
+
+    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, VitamContext vitamContext) throws VitamClientException {
+
+        if (unitDescriptiveMetadataDto == null ) {
+            throw new BadRequestException("Error update unit criteria");
+        }
+
+        LOGGER.debug("UnitDescriptiveMetadataDto : {}", unitDescriptiveMetadataDto.toString());
+        ObjectNode dslQuery = createUpdateQuery(unitDescriptiveMetadataDto);
+
+        LOGGER.debug("updateUnitById query : {}", dslQuery.toPrettyString());
+        RequestResponse<JsonNode> updateResponse = unitService.updateUnitById(vitamContext, dslQuery, id);
+        String response = null;
+        if(updateResponse.isOk()){
+            RequestResponse<JsonNode> unitById = unitService.findUnitById(id, vitamContext);
+            try {
+                final VitamUISearchResponseDto archivesResponse =
+                    objectMapper.treeToValue(unitById.toJsonNode(), VitamUISearchResponseDto.class);
+                List<String> operations = archivesResponse.getResults().get(0).getOperations();
+                response = operations.get(operations.size()-1);
+            } catch (Exception e) {
+                throw new VitamClientException("Error fetching unit from vitam while updating descriptive metadata");
+            }
+        }
+        return response;
+    }
+
+    public ObjectNode createUpdateQuery(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+
+        ObjectNode dslQuery = JsonHandler.createObjectNode();
+        ArrayNode arrayAction = JsonHandler.createArrayNode();
+        ObjectNode unsetNode = JsonHandler.createObjectNode();
+        if(!CollectionUtils.isEmpty(unitDescriptiveMetadataDto.getUnsetAction())) {
+            unsetNode.putPOJO(UNSET, unitDescriptiveMetadataDto.getUnsetAction());
+            nullifyField(unitDescriptiveMetadataDto);
+            unitDescriptiveMetadataDto.setUnsetAction(null);
+        }
+
+        ObjectNode setNode = JsonHandler.createObjectNode();
+        transformDate(unitDescriptiveMetadataDto);
+        unitDescriptiveMetadataDto.setUnsetAction(null);
+        setNode.putPOJO(SET, unitDescriptiveMetadataDto);
+        if(setNode.get(SET) != null && !Objects.equals(setNode.get(SET).toString(), "{}")) {
+            arrayAction.add(setNode);
+        }
+        if(!unsetNode.isEmpty()) {
+            arrayAction.add(unsetNode);
+        }
+        dslQuery.putArray (ACTION);
+        ArrayNode action = (ArrayNode)dslQuery.get(ACTION);
+
+        if(setNode.get(SET) != null && !Objects.equals(setNode.get(SET).toString(), "{}")) {
+            action.add(setNode);
+        }
+        if(!unsetNode.isEmpty()) {
+            unitDescriptiveMetadataDto.setUnsetAction(null);
+            action.add(unsetNode);
+        }
+        return dslQuery;
+    }
+
+    private void nullifyField(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        unitDescriptiveMetadataDto.getUnsetAction().forEach(f -> {
+            switch (f) {
+                case "StartDate":
+                    unitDescriptiveMetadataDto.setStartDate(null);
+                    break;
+                case "EndDate":
+                    unitDescriptiveMetadataDto.setEndDate(null);
+                    break;
+                case "Description":
+                    unitDescriptiveMetadataDto.setDescription(null);
+                    break;
+                case "Description_.fr":
+                    unitDescriptiveMetadataDto.setDescription_fr(null);
+                    break;
+                case "Description_.en":
+                    unitDescriptiveMetadataDto.setDescription_en(null);
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    private void transformDate(UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        if(unitDescriptiveMetadataDto.getStartDate()!=null) {
+            unitDescriptiveMetadataDto.setStartDate(LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getStartDate()).split("T")[0]);
+        }
+        if(unitDescriptiveMetadataDto.getEndDate()!=null) {
+            unitDescriptiveMetadataDto.setEndDate(LocalDateUtil.getFormattedDateForMongo(unitDescriptiveMetadataDto.getEndDate()).split("T")[0]);
+        }
+ }
 
     public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
