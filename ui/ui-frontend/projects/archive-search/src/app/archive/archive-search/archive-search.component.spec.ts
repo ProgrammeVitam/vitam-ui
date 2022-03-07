@@ -251,7 +251,7 @@ describe('ArchiveSearchComponent', () => {
         component.submit();
         component.searchCriterias.forEach((criteria) => {
           criteria.values.forEach((criteriaValue) => {
-            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.INCLUDED);
+            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.IN_PROGRESS);
           });
         });
       });

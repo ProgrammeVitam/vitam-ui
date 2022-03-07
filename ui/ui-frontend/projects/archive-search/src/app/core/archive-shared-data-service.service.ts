@@ -60,8 +60,11 @@ export class ArchiveSharedDataServiceService {
 
   private simpleSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
   private appraisalSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
+  private accessSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
 
   private searchAppraisalCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private searchAccessCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+
   private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
 
   private entireNodes = new BehaviorSubject<string[]>([]);
@@ -85,6 +88,7 @@ export class ArchiveSharedDataServiceService {
   simpleSearchCriteriaAddObservable = this.simpleSearchCriteriaAddSubject.asObservable();
 
   appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
+  accessFromMainSearchCriteriaObservable = this.searchAccessCriteriaActionFromMainSubject.asObservable();
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
 
   filingHoldingNodes = this.filingHoldingNodesSubject.asObservable();
@@ -220,12 +224,27 @@ export class ArchiveSharedDataServiceService {
     return this.appraisalSearchCriteriaAddSubject.asObservable();
   }
 
+  addAccessSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
+    this.accessSearchCriteriaAddSubject.next(searchCriteria);
+  }
+
+  receiveAccessSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
+    return this.accessSearchCriteriaAddSubject.asObservable();
+  }
   sendAppraisalFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
     this.searchAppraisalCriteriaActionFromMainSubject.next(searchCriteriaAction);
   }
 
   receiveAppraisalFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
     return this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
+  }
+
+  sendAccessFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
+    this.searchAccessCriteriaActionFromMainSubject.next(searchCriteriaAction);
+  }
+
+  receiveAccessFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
+    return this.searchAccessCriteriaActionFromMainSubject.asObservable();
   }
 
   sendRemoveFromChildSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {

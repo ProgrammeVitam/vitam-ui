@@ -9,7 +9,7 @@
     </div>
     <div class="col-1 form-control"></div>
     <div class="col-3 form-control text-right">
-      <button type="button" class="btn primary" [disabled]="searchCriteriaKeys.length === 0" (click)="submit()">
+      <button type="button" class="btn primary" [disabled]="!(searchCriteriaKeys && searchCriteriaKeys.length !== 0)" (click)="submit()">
         {{ 'ARCHIVE_SEARCH.LAUNCH_SEARCH_ACTION' | translate }}
       </button>
     </div>
@@ -58,7 +58,14 @@
       </div>
     </div>
   </div>
-
+  <div class="row" *ngIf="!pending && submited && hasAppraisalRules">
+    <app-archive-search-rules-facets
+      class="facet-div"
+      [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+      [tenantIdentifier]="tenantIdentifier"
+      [totalResults]="totalResults"
+    ></app-archive-search-rules-facets>
+  </div>
   <div class="row" *ngIf="!showCriteriaPanel">
     <a class="hide-ink" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
   </div>
@@ -90,7 +97,27 @@
                 'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
               }}</a>
             </div>
-            <app-appraisal-rule-search></app-appraisal-rule-search>
+            <app-appraisal-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-appraisal-rule-search>
+          </div>
+        </ng-container>
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'ACCESS_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('ACCESS_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-access-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-access-rule-search>
           </div>
         </ng-container>
       </mat-tab>
@@ -121,13 +148,8 @@
         <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
         </button>
-        <button
-          mat-menu-item
-          class="btn-new-save"
-          (click)="addCriteriaCategory('COMMUNICABILITY')"
-          [disabled]="isCategoryAdded('COMMUNICABILITY') || true"
-        >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.COMMUNICABILITY' | translate }}
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')" [disabled]="isCategoryAdded('ACCESS_RULE')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }}
         </button>
         <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
@@ -242,7 +264,6 @@
           <button mat-menu-item (click)="launchReclassification()" [disabled]="!hasReclassificationRole || itemSelected === 0">
             {{ 'RECLASSIFICATION.EXECUTION_ACTION' | translate }}
           </button>
-
         </vitamui-common-menu-button>
       </div>
     </div>
@@ -581,21 +602,3 @@
     </button>
   </mat-dialog-actions>
 </ng-template>
-
-<!-- <ng-template #confirmComputedInheritedRulesDialog>
-  <mat-dialog-content>
-    <br />
-
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.TITLE' | translate }}</div>
-    <div class="text large bold">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRMATION_MESSAGE' | translate: { itemSelected: itemSelected } }}
-    </div>
-  </mat-dialog-content>
-  <br />
-  <mat-dialog-actions>
-    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">
-      {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CONFIRM' | translate }}
-    </button>
-    <button matDialogClose class="btn cancel">{{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.CANCEL' | translate }}</button>
-  </mat-dialog-actions></ng-template
-> -->

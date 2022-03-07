@@ -25,19 +25,13 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.common;
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { VitamuiFacetComponent } from './vitamui-facet.component';
 
-import lombok.Data;
-
-@Data
-public class AppraisalRuleOriginRuleCriteria {
-    private Boolean waitingToRecalculate;
-    private Boolean inheritAtLeastOneRule;
-    private Boolean hasAtLeastOneRule;
-    private Boolean hasNoRule;
-
-    public boolean containsOriginRule() {
-        return this.waitingToRecalculate != null || this.inheritAtLeastOneRule != null || hasAtLeastOneRule != null ||
-            hasNoRule != null;
-    }
-}
+@NgModule({
+  declarations: [VitamuiFacetComponent],
+  imports: [CommonModule],
+  exports: [VitamuiFacetComponent],
+})
+export class VitamuiFacetModule {}

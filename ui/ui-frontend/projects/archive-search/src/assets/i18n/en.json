@@ -141,26 +141,26 @@
       "DUA_TITLE": "Administrative useful life",
       "OTHER_FILED_SELECTION": "Select another criteria",
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_END_DATE_END": "DUA: max End date",
-        "APPRAISAL_RULE_END_DATE_BEGIN": "DUA: min End date",
+        "RULE_END_DATE_END": "DUA: max End date",
+        "RULE_END_DATE_BEGIN": "DUA: min End date",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
-        "APPRAISAL_RULE_FINAL_ACTION": "FInal Action",
-        "APPRAISAL_RULE_TITLE": "DUA Rule title",
-        "APPRAISAL_RULE_IDENTIFIER": "DUA Rule identifier",
-        "APPRAISAL_RULE_START_DATE": "DUA Start Date",
-        "APPRAISAL_RULE_END_DATE": "DUAEnd Date",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE": "Final Action",
-        "APPRAISAL_RULE_ORIGIN": "DUA Rule",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP": "Conservation",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED": "Not declared",
-        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
-        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
-        "APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE": "Holden rule",
-        "APPRAISAL_RULE_ORIGIN_HAS_NO_ONE": "Not defined",
-        "APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE": "Waiting for recalculate",
-        "APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
+        "FINAL_ACTION": "FInal Action",
+        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
+        "RULE_IDENTIFIER_APPRAISAL_RULE": "DUA Rule identifier",
+        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
+        "RULE_END_DATE_APPRAISAL_RULE": "DUAEnd Date",
+        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
+        "RULE_ORIGIN_APPRAISAL_RULE": "DUA Rule",
+        "FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
+        "FINAL_ACTION_TYPE_KEEP": "Conservation",
+        "FINAL_ACTION_TYPE_NOT_SPECIFIED": "Not declared",
+        "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
+        "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Holden rule",
+        "ORIGIN_HAS_NO_ONE": "Not defined",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting for recalculate",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
       },
       "FIELDS": {
         "ID": "ID",
@@ -208,8 +208,8 @@
         "UNIT_TYPE": {
           "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
           "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive without objects",
-          "ARCHIVE_UNIT_HOLDING_UNIT": "Tree",
-          "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+          "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
+          "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
           "ARCHIVE_UNIT_PLAN": "Plan",
           "ARCHIVE_UNIT_HOLDING": "Tree"
         }
@@ -231,7 +231,7 @@
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
         "SP_COMM_DT": "Originating agency Comm DT",
-        "TYPE": "Type"
+        "TYPE" : "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {

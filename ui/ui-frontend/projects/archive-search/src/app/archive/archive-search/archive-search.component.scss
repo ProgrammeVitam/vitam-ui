@@ -17,6 +17,11 @@
   margin-right: 140px;
 }
 
+.facet-area {
+  display: block;
+  overflow: auto;
+}
+
 ::ng-deep.mat-menu-panel {
   max-width: fit-content !important;
 }
@@ -54,4 +59,9 @@
 }
 .enabled-div {
   pointer-events: painted;
+}
+
+.facet-div {
+  width: 100%;
+  padding: 10px 10px;
 }
