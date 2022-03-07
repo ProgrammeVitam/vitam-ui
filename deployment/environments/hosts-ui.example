@@ -133,9 +133,9 @@ hosts_vitamui_mongod
 # Optional params
 #  - mongo_cluster_name=mongo-vitamui (default: mongo-vitamui)
 #  - mongo_shard_id=0 (default: 0)
-#  - mongo_express=true to deploy mongo_express (default: false)
+#  - mongo_express_enabled=true to deploy mongo_express (default: false)
 # Example:
-# vm-mongo-ui mongo_rs_bootstrap=true mongo_express=true
+# vm-mongo-ui mongo_rs_bootstrap=true mongo_express_enabled=true
 
 
 ################################################################################
