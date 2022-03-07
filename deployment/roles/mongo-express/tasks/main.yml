@@ -11,16 +11,31 @@
 - name: Push mongo-express scripts and config
   template:
     src: "env.sh.j2"
-    dest:  "{{ vitamui_defaults.folder.root_path }}/conf/mongo-express/env.sh"
+    dest: "{{ vitamui_defaults.folder.root_path }}/conf/mongo-express/env.sh"
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: 0755
 
 - name: Ensure mongo-express is started
   systemd:
-    name:  vitamui-mongo-express
+    name: vitamui-mongo-express
     state: restarted
     enabled: yes
     daemon_reload: yes
   tags:
     - mongod
+
+#### Consul configuration ####
+- name: Deploy consul agent service declaration
+  template:
+    src: "service-componentid.json.j2"
+    dest: "{{ consul.conf_folder }}/service-{{ item }}.json"
+    owner: "{{ vitam_defaults.users.vitam }}"
+    group: "{{ vitam_defaults.users.group }}"
+    mode: "{{ vitam_defaults.folder.conf_permission }}"
+  with_items:
+    - "mongo-express-{{ mongo_cluster_name }}"
+  tags:
+    - consul_conf
+  notify:
+   - reload consul configuration
