@@ -67,11 +67,14 @@ import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-u
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
 import { ArchiveSearchResolverService } from './archive-search-resolver.service';
+import { AccessRuleSearchComponent } from './archive-search/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
-import { RuleValidator } from './archive-search/appraisal-rule-search/rule.validator';
+import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
+import { RuleValidator } from './archive-search/rule.validator';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
@@ -118,7 +121,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     VitamUILibraryModule,
     MatIconModule,
     MatTabsModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   providers: [
     ArchiveApiService,
@@ -130,7 +133,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     RuleValidator,
     ManagementRulesSharedDataService,
     ManagementRulesValidatorService,
-    ArchiveUnitValidatorService
+    ArchiveUnitValidatorService,
   ],
   declarations: [
     ArchiveComponent,
@@ -142,9 +145,12 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     SearchCriteriaListComponent,
     CriteriaSearchComponent,
     AppraisalRuleSearchComponent,
+    AccessRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
+    SearchAppraisalRulesFacetsComponent,
+    ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
     ArchiveUnitRulesComponent,
@@ -155,8 +161,8 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     ArchiveUnitInformationTabComponent,
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitRulesInformationsTabComponent,
-    DeleteUnitRulesComponent
+    DeleteUnitRulesComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class ArchiveModule {}

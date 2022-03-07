@@ -49,8 +49,8 @@ import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
-const APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE = 'APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE';
+const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
+const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
 @Component({
   selector: 'app-delete-unit-rules',
@@ -230,14 +230,14 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
 
     const onlyManagementRules: SearchCriteriaEltDto = {
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
-      criteria: APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE,
+      criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
       values: [{ id: 'true', value: 'true' }],
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_IDENTIFIER,
+      criteria: RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,

@@ -62,7 +62,6 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-
     public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConsts.CriteriaOperators operator,
         String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
         if (searchKey == null || "".equals(searchKey.trim())) {
@@ -125,6 +124,7 @@ public class VitamQueryHelper {
             case EXISTS:
                 criteriaSubQuery = exists(searchKey);
                 break;
+
             case MISSING:
                 criteriaSubQuery = missing(searchKey);
                 break;

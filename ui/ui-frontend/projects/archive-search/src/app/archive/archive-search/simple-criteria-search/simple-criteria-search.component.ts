@@ -47,7 +47,7 @@ import { ArchiveService } from '../../archive.service';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const APPRAISAL_RULE_FINAL_ACTION_TYPE = 'APPRAISAL_RULE_FINAL_ACTION_TYPE';
+const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
 const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
@@ -282,7 +282,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   }
 
   isValueTranslated(criteria: string) {
-    return criteria === APPRAISAL_RULE_FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
+    return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
   }
   ngOnInit() {
     this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {

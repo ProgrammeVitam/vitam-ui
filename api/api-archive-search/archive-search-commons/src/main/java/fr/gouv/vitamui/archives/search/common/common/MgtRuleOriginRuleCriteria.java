@@ -25,16 +25,19 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archive.internal.server.service;
+package fr.gouv.vitamui.archives.search.common.common;
 
-import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
-import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import lombok.Data;
 
-import java.util.List;
+@Data
+public class MgtRuleOriginRuleCriteria {
+    private Boolean waitingToRecalculate;
+    private Boolean inheritAtLeastOneRule;
+    private Boolean hasAtLeastOneRule;
+    private Boolean hasNoRule;
 
-public interface IArchivesSearchAppraisalQueryBuilderService {
-    void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList)
-        throws InvalidParseOperationException, InvalidCreateOperationException;
+    public boolean containsOriginRule() {
+        return this.waitingToRecalculate != null || this.inheritAtLeastOneRule != null || hasAtLeastOneRule != null ||
+            hasNoRule != null;
+    }
 }

@@ -37,6 +37,8 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatDatepickerModule } from "@angular/material/datepicker";
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslateModule } from '@ngx-translate/core';
@@ -61,6 +63,7 @@ import { NavbarModule } from './components/navbar/navbar.module';
 import { OrderByButtonModule } from './components/order-by-button/order-by-button.module';
 import { OrderDropdownModule } from './components/order-dropdown/order-dropdown.module';
 import { ScrollTopModule } from './components/scroll-top/scroll-top.module';
+import { SearchBarWithSiblingButtonModule } from "./components/search-bar-with-sibling-button/search-bar-with-sibling-button.module";
 import { SearchBarModule } from './components/search-bar/search-bar.module';
 import { SlideToggleModule } from './components/slide-toggle/slide-toggle.module';
 import { StepperModule } from './components/stepper/stepper.module';
@@ -73,11 +76,14 @@ import { VitamUICustomerSelectModule } from './components/vitamui-customer-selec
 import { VitamUIDisplayNodeModule } from './components/vitamui-display-node/vitamui-display-node.module';
 import { VitamuiDragDropFileModule } from './components/vitamui-drag-drop-file/vitamui-drag-drop-file.module';
 import { VitamUIDurationInputModule } from './components/vitamui-duration-input/vitamui-duration-input.module';
+import { VitamuiFacetModule } from './components/vitamui-facet/vitamui-facet.module';
 import { VitamUIFieldErrorModule } from './components/vitamui-field-error/vitamui-field-error.module';
 import { VitamUIInputModule } from './components/vitamui-input/vitamui-input.module';
+import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
 import { VitamUIListInputModule } from './components/vitamui-list-input/vitamui-list-input.module';
 import { VitamuiMenuButtonModule } from './components/vitamui-menu-button/vitamui-menu-button.module';
 import { VitamUIMenuTileModule } from './components/vitamui-menu-tile/vitamui-menu-tile.module';
+import { VitamuiMultiInputsModule } from "./components/vitamui-multi-inputs/vitamui-multi-inputs.module";
 import { VitamuiSidenavHeaderModule } from './components/vitamui-sidenav-header/vitamui-sidenav-header.module';
 import { VitamUISnackBarModule } from './components/vitamui-snack-bar/vitamui-snack-bar.module';
 import { VitamUITenantSelectModule } from './components/vitamui-tenant-select/vitamui-tenant-select.module';
@@ -98,11 +104,7 @@ import { SecurityModule } from './security/security.module';
 import { StartupService } from './startup.service';
 import { SubrogationModule } from './subrogation/subrogation.module';
 import { VitamUIHttpInterceptor } from './vitamui-http-interceptor';
-import {SearchBarWithSiblingButtonModule} from "./components/search-bar-with-sibling-button/search-bar-with-sibling-button.module";
-import { VitamuiIntervalDatePickerComponent } from './components/vitamui-interval-date-picker/vitamui-interval-date-picker.component';
-import {ReactiveFormsModule} from "@angular/forms";
-import {MatDatepickerModule} from "@angular/material/datepicker";
-import {VitamuiMultiInputsModule} from "./components/vitamui-multi-inputs/vitamui-multi-inputs.module";
+
 
 export function startupServiceFactory(startupService: StartupService) {
   // leave it like this due to run packagr issue :
@@ -174,6 +176,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ResizeSidebarModule,
     AutocompletePositionDirectiveModule,
     LogbookOperationFacetModule,
+    VitamuiFacetModule,
     TranslateModule,
     ReactiveFormsModule,
     MatDatepickerModule,
@@ -232,6 +235,7 @@ export function startupServiceFactory(startupService: StartupService) {
     ResizeSidebarModule,
     AutocompletePositionDirectiveModule,
     LogbookOperationFacetModule,
+    VitamuiFacetModule,
     VitamuiIntervalDatePickerComponent,
     VitamuiMultiInputsModule
   ],
