@@ -1,7 +1,7 @@
 - name: set vitamui_consul_url
   set_fact:
     vitamui_consul_url: "/ui/{{ vitam_site_name }}-ui/services"
-    mongo_express_uri: "https://{{ vitam_reverse_external_dns }}/mongo-express"
+    mongo_express_uri: "https://{{ vitam_reverse_external_dns }}/{{ mongo_express.baseuri }}"
 
 - name: save index.html
   command: cp -p index.html index.html.{{ ansible_date_time.date }}-{{ ansible_date_time.time }}
@@ -13,7 +13,7 @@
     path: "/var/www/html-{{ vitam_site_name }}/index.html"
     marker: "<!-- {mark} BEGIN ANSIBLE MANAGED BLOCK -->"
     insertafter: <div class="col-md-2"><a href="/ihm-recette/" class="btn btn-primary btn-xs" target="_blank">IHM recette</a> </div>
-    block: | 
+    block: |
                                  <div class="col-md-4"><a href="https://{{ vitam_reverse_external_dns }}" class="btn btn-primary btn-xs" target="_blank">VITAM UI</a> </div>
 
 - name: consul
@@ -27,8 +27,8 @@
   register: index_content
 
 ### block in the goal to be complient with idempotence
-- block: 
-  - name: Mongo express data
+- block:
+  - name: Mongo express vitamui
     replace:
       path: "/var/www/html-{{ vitam_site_name }}/index.html"
       regexp: (mongo-express-offer-fs-[0-9]+.*\n.*</div>)
@@ -40,9 +40,6 @@
         {% endfor %}
         </div>
   when: index_content.stdout is not search('Mongo express.*vitamui')
-
-
-
 
 
 ### block in the goal to be complient with idempotence
