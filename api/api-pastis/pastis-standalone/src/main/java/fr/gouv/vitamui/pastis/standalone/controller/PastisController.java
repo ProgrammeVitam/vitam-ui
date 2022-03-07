@@ -98,7 +98,7 @@ class PastisController {
         tags = {"pastis"})
     @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws  TechnicalException {
-        String pua = profileService.getArchiveUnitProfile(json);
+        String pua = profileService.getArchiveUnitProfile(json, true);
         if (pua != null) {
             return ResponseEntity.ok(pua);
         } else {
