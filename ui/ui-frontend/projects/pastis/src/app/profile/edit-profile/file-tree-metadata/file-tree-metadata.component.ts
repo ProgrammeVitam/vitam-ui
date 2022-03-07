@@ -428,6 +428,13 @@ export class FileTreeMetadataComponent {
     }
   }
 
+  isAloneAndSimple(metadatas: MatTableDataSource<MetadataHeaders>): boolean {
+    if (metadatas.data.length === 1 && !this.isElementComplex(metadatas.data[0].nomDuChamp)) {
+      return true;
+    }
+    return false;
+  }
+
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
       console.log("Yes")

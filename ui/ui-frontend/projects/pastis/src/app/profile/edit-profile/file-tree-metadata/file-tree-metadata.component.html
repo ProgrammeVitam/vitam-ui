@@ -224,7 +224,7 @@
       </table>
     </div>
 
-    <div *ngIf="this.profileService.profileMode === 'PUA'">
+    <div *ngIf="this.profileService.profileMode === 'PUA' && isAloneAndSimple(matDataSource)">
       <div class="pastis-panel-metadata-control">
         <h2 class="pastis-dialog-config-title" matDialogTitle>
 
@@ -233,9 +233,9 @@
           </span>
 
         </h2>
-        <div class="ml-5">
+        <div class="ml-5 row">
 
-          <mat-form-field class="mr-3 vitamui-mat-select">
+          <mat-form-field class="mr-3 vitamui-mat-select col-6">
             <mat-select panelClass="vitamui-mat-select">
               <mat-option *ngFor="" [value]="">
                 {{country.label}}
@@ -257,14 +257,16 @@
             translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i></mat-icon>
           </span>
         </h2>
-        <div class="ml-5 row">
-          <mat-radio-button style="display: inline;">
-            <span class="text-text-normal ml-3 row">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' |
-              translate}}:
-            </span>
-            <div class="ml-3">
-
-              <mat-form-field class="mr-3 vitamui-mat-select">
+        <div class="ml-5">
+          <div class="row">
+            <div>
+              <mat-radio-button class="text-text-normal ">
+                {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' |
+                translate}}:
+              </mat-radio-button>
+            </div>
+            <div>
+              <mat-form-field class="ml-3 vitamui-mat-select ">
                 <mat-select panelClass="vitamui-mat-select">
                   <mat-option *ngFor="" [value]="">
                     {{country.label}}
@@ -275,19 +277,26 @@
                   <i class="material-icons">keyboard_arrow_down</i>
                 </div>
               </mat-form-field>
-
             </div>
-          </mat-radio-button>
-
+          </div>
         </div>
-        <div class="ml-5 mt-4 row">
-          <mat-radio-button>
-            <vitamui-common-textarea class="ml-3" [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
-                    translate">
-            </vitamui-common-textarea>
-          </mat-radio-button>
+
+        <div class="ml-5 mt-4">
+          <div class="row">
+            <div>
+              <mat-radio-button>
+              </mat-radio-button>
+            </div>
+            <div>
+              <vitamui-common-textarea [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
+              translate">
+              </vitamui-common-textarea>
+            </div>
+          </div>
+
         </div>
       </div>
+
     </div>
 
     <ng-template #complexElementWithouChild>
