@@ -59,6 +59,9 @@ td {
   margin: 0px -10px 0px 0px !important;
 }
 
+.pastis-table-container {
+  margin-bottom: 60px ;
+}
 .pastis-table-container .mat-select-value-text {
   @extend .text-text-normal;
   color: var(--vitamui-grey-600);
@@ -298,7 +301,14 @@ tr:hover .pastis-btn-appear {
   height: 50px;
   display: inline-block;
 }
-
+.pastis-panel-metadata-control {
+  @extend .pastis-panel-radius-5;
+  margin-left: 74px;
+  margin-right: 120px;
+  height: fit-content;
+  background-color: #FAFAFA;
+  padding-bottom: 30px
+}
 .pastis-metadata-option-container {
   @extend .pastis-panel-radius-10;
   @extend .pastis-panel-shadow;
@@ -462,3 +472,32 @@ dp-day-calendar .dp-day-calendar-container {
   left: 13em;
   top: 1em;
 }
+.pastis-dialog-config-title {
+  bottom: 10px;
+  position: relative;
+  padding-top: 20px
+}
+
+.pastis-dialog-title {
+  @extend .pastis-font-popup-title;
+  /* Positioning */
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-top: 10px;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: var(--vitamui-grey-900);
+
+}
+
+.pastis-icon-primary {
+  color: var(--vitamui-primary-700) !important;
+  margin-left: 10px !important;
+}
+

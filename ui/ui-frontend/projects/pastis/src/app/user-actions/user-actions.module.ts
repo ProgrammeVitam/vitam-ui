@@ -45,6 +45,7 @@ import {UserActionSaveProfileComponent} from './save-profile/save-profile.compon
 import {PastisMaterialModule} from '../material.module';
 import {UserActionsDownloadDocComponent} from './download-doc/download-doc.component';
 import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadata.component';
+import {UserActionAddPuaControlComponent} from './add-pua-control/add-pua-control.component';
 
 import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -58,7 +59,7 @@ import { AllowAdditionalPropertiesComponent } from './allow-additional-propertie
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,
@@ -72,7 +73,7 @@ import { AllowAdditionalPropertiesComponent } from './allow-additional-propertie
     FormsModule,
     MatSlideToggleModule
   ],
-  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent],
+  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent,UserActionAddPuaControlComponent],
 })
 export class UserActionsModule {
 

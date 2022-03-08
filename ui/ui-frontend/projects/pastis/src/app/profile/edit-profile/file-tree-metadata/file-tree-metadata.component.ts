@@ -51,23 +51,24 @@ import {
   TypeConstants,
   ValueOrDataConstants
 } from '../../../models/file-node';
-import { SedaData, SedaElementConstants } from '../../../models/seda-data';
-import { FileTreeMetadataService } from './file-tree-metadata.service';
-import { AttributesPopupComponent } from './attributes/attributes.component';
-import { AttributeData } from '../../../models/edit-attribute-models';
-import { ProfileService } from '../../../core/services/profile.service';
-import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
-import { StartupService } from 'ui-frontend-common';
-import { Router } from '@angular/router';
-import { Subscription } from "rxjs";
-import { MatCheckboxChange } from "@angular/material/checkbox";
-import { PastisPopupMetadataLanguageService } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { FileTreeService } from '../file-tree/file-tree.service';
-import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
-import { CardinalityValues, MetadataHeaders } from '../../../models/models';
-import { NotificationService } from '../../../core/services/notification.service';
-import { PastisDialogData } from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { environment } from 'projects/pastis/src/environments/environment';
+import {SedaData, SedaElementConstants} from '../../../models/seda-data';
+import {FileTreeMetadataService} from './file-tree-metadata.service';
+import {AttributesPopupComponent} from './attributes/attributes.component';
+import {AttributeData} from '../../../models/edit-attribute-models';
+import {ProfileService} from '../../../core/services/profile.service';
+import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
+import {StartupService} from 'ui-frontend-common';
+import {Router} from '@angular/router';
+import {Subscription} from "rxjs";
+import {MatCheckboxChange} from "@angular/material/checkbox";
+import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import {FileTreeService} from '../file-tree/file-tree.service';
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {CardinalityValues, MetadataHeaders} from '../../../models/models';
+import {NotificationService} from '../../../core/services/notification.service';
+import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {environment} from 'projects/pastis/src/environments/environment';
+import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -522,6 +523,23 @@ export class FileTreeMetadataComponent {
           this.fileService.removeItem(attributeFileNodeListToRemove, popData.fileNode);
         }
       }
+    }
+  }
+
+  async onEditControlClick(fileNodeId: number) {
+    alert(fileNodeId)
+    let popData = {} as PastisDialogData;
+    if (fileNodeId) {
+      popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+      popData.titleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
+      popData.subTitleDialog = "Ajouter des contrôles supplémentaires à Title";
+      popData.width = '1120px';
+      popData.component = UserActionAddPuaControlComponent
+      popData.okLabel = 'AJOUTER LES CONTROLES'
+      popData.cancelLabel = this.popupAnnuler
+
+      let popUpAnswer = <AttributeData[]>await this.fileService.openPopup(popData);
+      console.log("The answer for edit attributte was ", popUpAnswer);
     }
   }
 

@@ -53,7 +53,7 @@ import {DuplicateMetadataComponent} from "../../../user-actions/duplicate-metada
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {environment} from "../../../../environments/environment";
 import { ProfileService } from '../../../core/services/profile.service';
-import { PUA } from '../../../models/pua.model';
+import { PuaData } from '../../../models/pua-data';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -261,7 +261,7 @@ export class FileTreeComponent implements OnDestroy {
   async addNewItem(node: FileNode) {
     let dataToSendToPopUp = <PastisDialogData>{};
     dataToSendToPopUp.titleDialog = this.popupAddTitleDialog;
-    dataToSendToPopUp.subTitleDialog = this.popupAddSubTitleDialog + ` "${node.name}"`, node.name;
+    dataToSendToPopUp.subTitleDialog = `${this.popupAddSubTitleDialog} ${node.name}`, node.name;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.width = '800px';
     dataToSendToPopUp.okLabel = this.popupAddOkLabel;
@@ -322,7 +322,7 @@ export class FileTreeComponent implements OnDestroy {
         newNode.children = [];
         newNode.sedaData = sedaChild;
         if (this.isElementComplex(newNode)) {
-          newNode.puaData = new PUA()
+          newNode.puaData = {} as PuaData;
           newNode.puaData.additionalProperties = false;
         }
         console.log("Parent node name: " + parent.name);

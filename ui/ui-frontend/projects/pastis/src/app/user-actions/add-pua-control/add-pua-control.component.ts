@@ -35,8 +35,8 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, TemplateRef, Pipe, PipeTransform } from '@angular/core';
-import { SedaData, SedaElementConstants, SedaCardinalityConstants } from '../../models/seda-data';
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { SedaData, SedaElementConstants } from '../../models/seda-data';
 import { FileNode } from '../../models/file-node';
 import { FileService } from '../../core/services/file.service';
 import { SedaService } from '../../core/services/seda.service';
@@ -46,24 +46,27 @@ import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dial
 import { PopupService } from '../../core/services/popup.service';
 import { Subscription } from 'rxjs';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { ProfileService } from '../../core/services/profile.service';
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
-  templateUrl: './add-metadata.component.html',
-  styleUrls: ['./add-metadata.component.scss']
+  templateUrl: './add-pua-control.component.html',
+  styleUrls: ['./add-pua-control.component.scss']
 })
-export class UserActionAddMetadataComponent implements OnInit {
+export class UserActionAddPuaControlComponent implements OnInit {
 
   btnIsDisabled: boolean;
 
   sedaData: SedaData;
-  allowedChildren: SedaData[];
-  filterName: string;
+  allowedChildren: string[] = [
+    "Enumération",
+    "Expression régulière",
+    "Longueur Min/Max",
+    "Valeur Min/Max"
+  ]
   namesFiltered: any = [];
   sedaNodeFound: SedaData;
   selectedSedaNode: SedaData;
-  addedItems: SedaData[] = [];
+  addedItems: string[] = [];
   dialogData: PastisDialogData;
 
   atLeastOneIsSelected: boolean;
@@ -75,7 +78,7 @@ export class UserActionAddMetadataComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
     private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService, private profileService: ProfileService) { }
+    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) { }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -90,18 +93,7 @@ export class UserActionAddMetadataComponent implements OnInit {
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
- 
-    if (this.profileService.profileMode === "PA") {
-      this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
-      .filter(e => e.Element !== SedaElementConstants.attribute);
-    } else if (this.profileService.profileMode === "PUA" ) {
-      if ( this.sedaNodeFound.Name === "ArchiveUnit"){
-        this.allowedChildren = this.sedaNodeFound.Children
-        .filter(e => e.Name === "Management" || e.Name === "ArchiveUnitProfile");
-      } else {
-        this.allowedChildren = this.sedaNodeFound.Children
-      }
-    }
+
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
@@ -109,41 +101,28 @@ export class UserActionAddMetadataComponent implements OnInit {
     })
   }
 
-  selectSedaElement(selectedElements: string[]) {
-    if (selectedElements.length) {
-      this.selectedSedaNode = this.sedaService.getSedaNode(this.sedaData, selectedElements[0]);
-    }
-  }
 
-  isElementSelected(element: SedaData) {
+  isElementSelected(element: string) {
     if (this.addedItems) {
       return this.addedItems.includes(element);
     }
   }
 
-  onRemoveSelectedElement(element: SedaData) {
+  onRemoveSelectedElement(element: string) {
     let indexOfElement = this.addedItems.indexOf(element)
+    console.log(indexOfElement)
     if (indexOfElement >= 0) {
-      this.addedItems.splice(indexOfElement, 1);
+      this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
     }
-    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
-      this.allowedChildren.push(element);
-      this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
-    }
-    let orderedNames = Object.values(this.allowedChildren);
-    this.allowedChildren.sort((a, b) => {
-      return orderedNames.indexOf(a) - orderedNames.indexOf(b)
-    })
+    console.error(this.allowedChildren)
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
 
-  onAddSelectedElement(element: SedaData) {
+  onAddSelectedElement(element: string) {
     this.addedItems.push(element);
 
-    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
-      this.allowedChildren = this.allowedChildren.filter(e => e != element);
-    }
+    this.allowedChildren = this.allowedChildren.filter(e => e != element);
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
@@ -175,9 +154,6 @@ export class UserActionAddMetadataComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  public onSearchSubmit(search: string): void {
-    this.filterName = search;
-  }
   onResolveName(element: SedaData): string {
     if (this.sedaLanguage) {
       return element.Name;
@@ -195,18 +171,4 @@ export class UserActionAddMetadataComponent implements OnInit {
     }
   }
 
-}
-
-@Pipe({ name: 'filterByName' })
-export class FilterByNamePipe implements PipeTransform {
-  transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
-    if (!listOfElements) return null;
-    if (!nameToFilter) return listOfElements;
-    if (sedaLanguage) {
-      return listOfElements.filter(element => element.Name != undefined).filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
-    } else {
-      return listOfElements.filter(element => element.NameFr != undefined).filter(element => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
-    }
-
-  }
 }
