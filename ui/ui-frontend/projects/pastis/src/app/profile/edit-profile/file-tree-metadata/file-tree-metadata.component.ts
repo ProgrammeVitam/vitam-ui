@@ -35,12 +35,12 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {Component, EventEmitter, Output, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatTableDataSource} from '@angular/material/table';
-import {FileService} from '../../../core/services/file.service';
-import {SedaService} from '../../../core/services/seda.service';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { Component, EventEmitter, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatTableDataSource } from '@angular/material/table';
+import { FileService } from '../../../core/services/file.service';
+import { SedaService } from '../../../core/services/seda.service';
 import {
   CardinalityConstants,
   DataTypeConstants,
@@ -51,23 +51,23 @@ import {
   TypeConstants,
   ValueOrDataConstants
 } from '../../../models/file-node';
-import {SedaData, SedaElementConstants} from '../../../models/seda-data';
-import {FileTreeMetadataService} from './file-tree-metadata.service';
-import {AttributesPopupComponent} from './attributes/attributes.component';
-import {AttributeData} from '../../../models/edit-attribute-models';
-import {ProfileService} from '../../../core/services/profile.service';
-import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
-import {StartupService} from 'ui-frontend-common';
-import {Router} from '@angular/router';
-import {Subscription} from "rxjs";
-import {MatCheckboxChange} from "@angular/material/checkbox";
-import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import {FileTreeService} from '../file-tree/file-tree.service';
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {CardinalityValues, MetadataHeaders} from '../../../models/models';
-import {NotificationService} from '../../../core/services/notification.service';
-import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {environment} from 'projects/pastis/src/environments/environment';
+import { SedaData, SedaElementConstants } from '../../../models/seda-data';
+import { FileTreeMetadataService } from './file-tree-metadata.service';
+import { AttributesPopupComponent } from './attributes/attributes.component';
+import { AttributeData } from '../../../models/edit-attribute-models';
+import { ProfileService } from '../../../core/services/profile.service';
+import { BreadcrumbDataMetadata, BreadcrumbDataTop } from '../../../models/breadcrumb';
+import { StartupService } from 'ui-frontend-common';
+import { Router } from '@angular/router';
+import { Subscription } from "rxjs";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { PastisPopupMetadataLanguageService } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { FileTreeService } from '../file-tree/file-tree.service';
+import { LangChangeEvent, TranslateService } from "@ngx-translate/core";
+import { CardinalityValues, MetadataHeaders } from '../../../models/models';
+import { NotificationService } from '../../../core/services/notification.service';
+import { PastisDialogData } from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { environment } from 'projects/pastis/src/environments/environment';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -101,7 +101,7 @@ export class FileTreeMetadataComponent {
   //Mat table
   matDataSource: MatTableDataSource<MetadataHeaders>;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
 
@@ -157,16 +157,16 @@ export class FileTreeMetadataComponent {
   @Output()
   public removeNode: EventEmitter<FileNode> = new EventEmitter<FileNode>();
 
-  private _profileServiceProfileModeSubscription : Subscription;
+  private _profileServiceProfileModeSubscription: Subscription;
 
   @Output()
-  public duplicateNode: EventEmitter<FileNode>= new EventEmitter<FileNode>();
+  public duplicateNode: EventEmitter<FileNode> = new EventEmitter<FileNode>();
 
-  private _fileServiceSubscription : Subscription;
-  private _fileMetadataServiceSubscriptionSelectedCardinalities : Subscription;
-  private _fileServiceSubscriptionNodeChange : Subscription;
-  private _sedaServiceSubscritptionSelectedSedaNode : Subscription;
-  private _fileMetadataServiceSubscriptionDataSource : Subscription;
+  private _fileServiceSubscription: Subscription;
+  private _fileMetadataServiceSubscriptionSelectedCardinalities: Subscription;
+  private _fileServiceSubscriptionNodeChange: Subscription;
+  private _sedaServiceSubscritptionSelectedSedaNode: Subscription;
+  private _fileMetadataServiceSubscriptionDataSource: Subscription;
   private _sedalanguageSub: Subscription;
 
   sedaLanguage: boolean;
@@ -189,12 +189,12 @@ export class FileTreeMetadataComponent {
   commentaire: string;
   enumeration: string[];
   additionalProperties: boolean;
-  additionalPropertiesMetadonnee : boolean;
+  additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
     private router: Router, private startupService: StartupService, public profileService: ProfileService,
-    private fileTreeService:FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
+    private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService) {
 
     this.config = {
@@ -207,17 +207,17 @@ export class FileTreeMetadataComponent {
 
   ngOnInit() {
 
-    if(!this.isStandalone){
+    if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
     }
-    else if(this.isStandalone){
-      this.notificationAjoutMetadonnee= "La métadonnée ArchiveUnit a été ajoutée"
-      this.boutonAjoutMetadonnee= "Ajouter une métadonnée"
-      this.boutonAjoutUA= "Ajouter une UA"
-      this.popupSousTitre= "Edition des attributs de"
-      this.popupValider= "Valider"
-      this.popupAnnuler= "Annuler"
+    else if (this.isStandalone) {
+      this.notificationAjoutMetadonnee = "La métadonnée ArchiveUnit a été ajoutée"
+      this.boutonAjoutMetadonnee = "Ajouter une métadonnée"
+      this.boutonAjoutUA = "Ajouter une UA"
+      this.popupSousTitre = "Edition des attributs de"
+      this.popupValider = "Valider"
+      this.popupAnnuler = "Annuler"
     }
 
     this.additionalProperties = false;
@@ -235,23 +235,23 @@ export class FileTreeMetadataComponent {
     this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe(node => {
       this.clickedNode = node;
       // BreadCrumb for navigation through metadatas
-      if (node && node!==undefined) {
-        let breadCrumbNodeLabel: string =  node.name;
+      if (node && node !== undefined) {
+        let breadCrumbNodeLabel: string = node.name;
         this.fileService.tabRootNode.subscribe(tabRootNode => {
-          if (tabRootNode){
+          if (tabRootNode) {
             let tabLabel = (<any>nodeNameToLabel)[tabRootNode.name];
-            this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode}];
-            if (tabRootNode.name !== breadCrumbNodeLabel){
-              if(node.parent){
-                if (node.parent.name!==tabRootNode.name){
-                  if(node.parent.parent){
-                    if (node.parent.parent.name!==tabRootNode.name){
-                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
+            this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode }];
+            if (tabRootNode.name !== breadCrumbNodeLabel) {
+              if (node.parent) {
+                if (node.parent.name !== tabRootNode.name) {
+                  if (node.parent.parent) {
+                    if (node.parent.parent.name !== tabRootNode.name) {
+                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: '...' }]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: node.parent.name, node: node.parent } ]);
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: node.parent.name, node: node.parent }]);
                 }
-                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node: node } ]);
+                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: breadCrumbNodeLabel, node: node }]);
               }
             }
           }
@@ -259,8 +259,8 @@ export class FileTreeMetadataComponent {
       }
     });
     // BreadCrump Top for navigation
-    this.profileModeLabel = this.profileService.profileMode==='PUA'?"PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA":"PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA";
-    this.breadcrumbDataTop = [{ label: "PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL", url: this.startupService.getPortalUrl(), external: true},{ label: "PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL", url: '/'}, { label: this.profileModeLabel }];
+    this.profileModeLabel = this.profileService.profileMode === 'PUA' ? "PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA" : "PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA";
+    this.breadcrumbDataTop = [{ label: "PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL", url: this.startupService.getPortalUrl(), external: true }, { label: "PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL", url: '/' }, { label: this.profileModeLabel }];
 
     this._fileServiceSubscription = this.fileService.currentTree.subscribe(fileTree => {
       if (fileTree) {
@@ -298,16 +298,16 @@ export class FileTreeMetadataComponent {
     })
   }
 
-  navigate(d: BreadcrumbDataTop){
-      if (d.external){
-        window.location.assign(d.url);
-      } else {
-        this.router.navigate([d.url],{skipLocationChange: false});
-      }
+  navigate(d: BreadcrumbDataTop) {
+    if (d.external) {
+      window.location.assign(d.url);
+    } else {
+      this.router.navigate([d.url], { skipLocationChange: false });
+    }
   }
 
-  navigateMetadata(d: BreadcrumbDataMetadata){
-    if (d.node && d.node!==undefined){
+  navigateMetadata(d: BreadcrumbDataMetadata) {
+    if (d.node && d.node !== undefined) {
       this.fileTreeService.updateMedataTable.next(d.node);
     }
   }
@@ -326,8 +326,8 @@ export class FileTreeMetadataComponent {
     let nomDuchamp: string = this.sedaLanguage ? 'nomDuChamp' : 'nomDuChampFr';
     this.setupFilter(nomDuchamp);
     // Lors d'un reset sur le search component on renvoie un string null.
-    if(filterValue == null)
-      filterValue='';
+    if (filterValue == null)
+      filterValue = '';
     this.matDataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -439,13 +439,13 @@ export class FileTreeMetadataComponent {
         Name: 'ArchiveUnit',
         NameFr: null,
         Type: null,
-        Element:null,
-        Cardinality:null,
-        Definition:null,
-        Extensible:null,
-        Choice:null,
+        Element: null,
+        Cardinality: null,
+        Definition: null,
+        Extensible: null,
+        Choice: null,
         Children: null,
-        Enumeration:null,
+        Enumeration: null,
         Collection: null
       });
       let params: FileNodeInsertParams = {
@@ -460,7 +460,7 @@ export class FileTreeMetadataComponent {
     }
   }
 
-  onDuplicateNode(id : number) {
+  onDuplicateNode(id: number) {
     const nodeToDuplicate = this.fileService.getFileNodeById(this.fileService.nodeChange.getValue(), id);
     this.duplicateNode.emit(nodeToDuplicate);
   }
@@ -638,29 +638,29 @@ export class FileTreeMetadataComponent {
   }
 
   goBack() {
-    this.router.navigate(['/'], {skipLocationChange: false});
+    this.router.navigate(['/'], { skipLocationChange: false });
   }
 
   ngOnDestroy() {
     if (this._fileServiceSubscription != null) {
       this._fileServiceSubscription.unsubscribe();
     }
-    if(this._fileMetadataServiceSubscriptionSelectedCardinalities!= null){
+    if (this._fileMetadataServiceSubscriptionSelectedCardinalities != null) {
       this._fileMetadataServiceSubscriptionSelectedCardinalities.unsubscribe();
     }
-    if(this._fileServiceSubscriptionNodeChange!= null){
+    if (this._fileServiceSubscriptionNodeChange != null) {
       this._fileServiceSubscriptionNodeChange.unsubscribe();
     }
-    if(this._sedaServiceSubscritptionSelectedSedaNode!= null){
+    if (this._sedaServiceSubscritptionSelectedSedaNode != null) {
       this._sedaServiceSubscritptionSelectedSedaNode.unsubscribe();
     }
-    if(this._fileMetadataServiceSubscriptionDataSource!= null){
+    if (this._fileMetadataServiceSubscriptionDataSource != null) {
       this._fileMetadataServiceSubscriptionDataSource.unsubscribe();
     }
-    if(this._profileServiceProfileModeSubscription!= null){
+    if (this._profileServiceProfileModeSubscription != null) {
       this._profileServiceProfileModeSubscription.unsubscribe();
     }
-    if(this._sedalanguageSub!=null){
+    if (this._sedalanguageSub != null) {
       this._sedalanguageSub.unsubscribe();
     }
   }
@@ -702,14 +702,20 @@ export class FileTreeMetadataComponent {
     return !(nomDuChamp == "Content" || nomDuChamp == "Management");
   }
 
-  changeAutorisation($event: MatCheckboxChange, element : any) {
+  changeAutorisation($event: MatCheckboxChange, element: any) {
     console.log($event.checked + "test" + element.nomDuChamp);
     this.additionalPropertiesMetadonnee = $event.checked;
     this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
   }
 
-  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: FileNode) {
-//TODO Mettre additional properties à true dans la métadonnée complexe element.
-    console.log(element.nomDuChamp + " nom metadonnee" + additionalPropertiesMetadonnee + " nouveau addition à setter")
+  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
+
+    for (let node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id) {
+        
+        node.puaData.additionalProperties = additionalPropertiesMetadonnee;
+      }
+    }
+
   }
 }

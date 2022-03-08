@@ -53,6 +53,7 @@ import {DuplicateMetadataComponent} from "../../../user-actions/duplicate-metada
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {environment} from "../../../../environments/environment";
 import { ProfileService } from '../../../core/services/profile.service';
+import { PUA } from '../../../models/pua.model';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -281,6 +282,7 @@ export class FileTreeComponent implements OnDestroy {
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?:boolean) {
     console.log("After data is : %o", this.fileTreeService.nestedDataSource.data)
+    console.log("element to add : %o",elementsToAdd)
     let elementsToAddFromSeda: SedaData[] = [];
     for (let element of elementsToAdd) {
       parent.sedaData.Children.forEach((child) => {
@@ -319,6 +321,10 @@ export class FileTreeComponent implements OnDestroy {
         newNode.parent = parent;
         newNode.children = [];
         newNode.sedaData = sedaChild;
+        if (this.isElementComplex(newNode)) {
+          newNode.puaData = new PUA()
+          newNode.puaData.additionalProperties = false;
+        }
         console.log("Parent node name: " + parent.name);
         console.log("New node  : ", newNode);
 
