@@ -68,6 +68,7 @@ import {CardinalityValues, MetadataHeaders} from '../../../models/models';
 import {NotificationService} from '../../../core/services/notification.service';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {environment} from 'projects/pastis/src/environments/environment';
+import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -130,6 +131,12 @@ export class FileTreeMetadataComponent {
 
   isStandalone: boolean = environment.standalone;
 
+  enumerationControl: boolean;
+  valueControl: boolean;
+  lengthControl: boolean;
+  expressionControl: boolean;
+  arrayControl: string[];
+
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
 
@@ -144,6 +151,9 @@ export class FileTreeMetadataComponent {
   popupSousTitre: string
   popupValider: string
   popupAnnuler: string
+  popupControlTitleDialog: string
+  popupControlSubTitleDialog: string
+  popupControlOkLabel: string
 
   @Output()
   public insertItem: EventEmitter<FileNodeInsertParams> = new EventEmitter<FileNodeInsertParams>();
@@ -191,7 +201,7 @@ export class FileTreeMetadataComponent {
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService, 
+    private router: Router, private startupService: StartupService, public profileService: ProfileService,
     private fileTreeService:FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService) {
 
@@ -216,6 +226,9 @@ export class FileTreeMetadataComponent {
       this.popupSousTitre= "Edition des attributs de"
       this.popupValider= "Valider"
       this.popupAnnuler= "Annuler"
+      this.popupControlTitleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
+      this.popupControlSubTitleDialog = "Ajouter des contrôles supplémentaires à";
+      this.popupControlOkLabel = 'AJOUTER LES CONTROLES'
     }
 
 
@@ -527,6 +540,51 @@ export class FileTreeMetadataComponent {
         }
       }
     }
+  }
+
+  async onEditControlClick(fileNodeId: number) {
+    alert(fileNodeId)
+    let popData = {} as PastisDialogData;
+    if (fileNodeId) {
+      popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+      popData.titleDialog = this.popupControlTitleDialog;
+      popData.subTitleDialog = this.popupControlSubTitleDialog + ' "' + popData.fileNode.name + '"';
+      popData.width = '800px';
+      popData.component = UserActionAddPuaControlComponent;
+      popData.okLabel = this.popupControlOkLabel;
+      popData.cancelLabel = this.popupAnnuler;
+
+      let popUpAnswer = <string[]>await this.fileService.openPopup(popData);
+      console.log("The answer for arrays control was ", popUpAnswer);
+      if(popUpAnswer){
+        this.arrayControl = popUpAnswer;
+        this.setControlsVues(this.arrayControl)
+      }
+    }
+  }
+
+  resetContols(){
+    this.arrayControl = [];
+    this.enumerationControl = false;
+    this.expressionControl = false;
+    this.lengthControl = false;
+    this.valueControl = false;
+  }
+
+  setControlsVues(elements: string[]){
+    if(elements.includes("Enumération")){
+      this.enumerationControl = true;
+    }
+    if(elements.includes("Expression régulière")){
+      this.expressionControl = true;
+    }
+    if(elements.includes("Longueur Min/Max")){
+      this.lengthControl = true;
+    }
+    if(elements.includes("Valeur Min/Max")){
+      this.valueControl = true;
+    }
+
   }
 
   onDeleteNode(nodeId: number) {
