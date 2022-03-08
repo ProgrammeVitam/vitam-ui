@@ -68,6 +68,7 @@ import {CardinalityValues, MetadataHeaders} from '../../../models/models';
 import {NotificationService} from '../../../core/services/notification.service';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {environment} from 'projects/pastis/src/environments/environment';
+import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -191,7 +192,7 @@ export class FileTreeMetadataComponent {
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
     private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService, 
+    private router: Router, private startupService: StartupService, public profileService: ProfileService,
     private fileTreeService:FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
     private translateService: TranslateService) {
 
@@ -519,6 +520,23 @@ export class FileTreeMetadataComponent {
           this.fileService.removeItem(attributeFileNodeListToRemove, popData.fileNode);
         }
       }
+    }
+  }
+
+  async onEditControlClick(fileNodeId: number) {
+    alert(fileNodeId)
+    let popData = {} as PastisDialogData;
+    if (fileNodeId) {
+      popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+      popData.titleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
+      popData.subTitleDialog = "Ajouter des contrôles supplémentaires à Title";
+      popData.width = '1120px';
+      popData.component = UserActionAddPuaControlComponent
+      popData.okLabel = 'AJOUTER LES CONTROLES'
+      popData.cancelLabel = this.popupAnnuler
+
+      let popUpAnswer = <AttributeData[]>await this.fileService.openPopup(popData);
+      console.log("The answer for edit attributte was ", popUpAnswer);
     }
   }
 
