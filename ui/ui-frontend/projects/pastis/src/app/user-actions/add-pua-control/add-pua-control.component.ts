@@ -57,12 +57,11 @@ export class UserActionAddPuaControlComponent implements OnInit {
   btnIsDisabled: boolean;
 
   sedaData: SedaData;
-  allowedChildren: string[] = [
-    "Enumération",
-    "Expression régulière",
-    "Longueur Min/Max",
-    "Valeur Min/Max"
-  ]
+  enumerationsLabel: string = "Enumération";
+  expressionReguliereLabel: string = "Expression régulière";
+  lengthMinMaxLabel: string = "Longueur Min/Max";
+  valueMinMaxLabel: string = "Valeur Min/Max";
+  allowedChildren: string[];
   namesFiltered: any = [];
   sedaNodeFound: SedaData;
   selectedSedaNode: SedaData;
@@ -78,7 +77,9 @@ export class UserActionAddPuaControlComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
     private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) { }
+    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) {
+      this.refreshAllowedChildren();
+    }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -109,10 +110,14 @@ export class UserActionAddPuaControlComponent implements OnInit {
   }
 
   onRemoveSelectedElement(element: string) {
-    let indexOfElement = this.addedItems.indexOf(element)
-    console.log(indexOfElement)
-    if (indexOfElement >= 0) {
-      this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
+    if(this.isExclusive(element)){
+      this.refreshAllowedChildren();
+    }else{
+      let indexOfElement = this.addedItems.indexOf(element)
+      console.log(indexOfElement)
+      if (indexOfElement >= 0) {
+        this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
+      }
     }
     console.error(this.allowedChildren)
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
@@ -121,8 +126,11 @@ export class UserActionAddPuaControlComponent implements OnInit {
 
   onAddSelectedElement(element: string) {
     this.addedItems.push(element);
-
-    this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    if(this.isExclusive(element)){
+      this.refreshAllowedChildren(element);
+    }else{
+      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    }
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
@@ -154,20 +162,29 @@ export class UserActionAddPuaControlComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onResolveName(element: SedaData): string {
-    if (this.sedaLanguage) {
-      return element.Name;
-    }
-    else {
-      if (element.NameFr) {
-        return element.NameFr;
-      }
-    }
-    return element.Name;
-  }
   ngOnDestroy(): void {
     if (this.sedaLanguageSub != null) {
       this.sedaLanguageSub.unsubscribe();
+    }
+  }
+
+  isExclusive(element: string): boolean{
+    return element === this.valueMinMaxLabel || element === this.enumerationsLabel;
+  }
+
+  refreshAllowedChildren(element?: string){
+
+    if(element){
+      this.addedItems = [element];
+      this.allowedChildren = [];
+    }else{
+      this.allowedChildren = [
+        this.enumerationsLabel,
+        this.valueMinMaxLabel,
+        this.lengthMinMaxLabel,
+        this.expressionReguliereLabel
+      ];
+      this.addedItems = [];
     }
   }
 

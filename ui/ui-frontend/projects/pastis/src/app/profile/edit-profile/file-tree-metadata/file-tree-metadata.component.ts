@@ -131,6 +131,12 @@ export class FileTreeMetadataComponent {
 
   isStandalone: boolean = environment.standalone;
 
+  enumerationControl: boolean;
+  valueControl: boolean;
+  lengthControl: boolean;
+  expressionControl: boolean;
+  arrayControl: string[];
+
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
 
@@ -145,6 +151,9 @@ export class FileTreeMetadataComponent {
   popupSousTitre: string
   popupValider: string
   popupAnnuler: string
+  popupControlTitleDialog: string
+  popupControlSubTitleDialog: string
+  popupControlOkLabel: string
 
   @Output()
   public insertItem: EventEmitter<FileNodeInsertParams> = new EventEmitter<FileNodeInsertParams>();
@@ -217,6 +226,9 @@ export class FileTreeMetadataComponent {
       this.popupSousTitre= "Edition des attributs de"
       this.popupValider= "Valider"
       this.popupAnnuler= "Annuler"
+      this.popupControlTitleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
+      this.popupControlSubTitleDialog = "Ajouter des contrôles supplémentaires à";
+      this.popupControlOkLabel = 'AJOUTER LES CONTROLES'
     }
 
 
@@ -528,16 +540,44 @@ export class FileTreeMetadataComponent {
     let popData = {} as PastisDialogData;
     if (fileNodeId) {
       popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
-      popData.titleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
-      popData.subTitleDialog = "Ajouter des contrôles supplémentaires à Title";
-      popData.width = '1120px';
-      popData.component = UserActionAddPuaControlComponent
-      popData.okLabel = 'AJOUTER LES CONTROLES'
-      popData.cancelLabel = this.popupAnnuler
+      popData.titleDialog = this.popupControlTitleDialog;
+      popData.subTitleDialog = this.popupControlSubTitleDialog + ' "' + popData.fileNode.name + '"';
+      popData.width = '800px';
+      popData.component = UserActionAddPuaControlComponent;
+      popData.okLabel = this.popupControlOkLabel;
+      popData.cancelLabel = this.popupAnnuler;
 
-      let popUpAnswer = <AttributeData[]>await this.fileService.openPopup(popData);
-      console.log("The answer for edit attributte was ", popUpAnswer);
+      let popUpAnswer = <string[]>await this.fileService.openPopup(popData);
+      console.log("The answer for arrays control was ", popUpAnswer);
+      if(popUpAnswer){
+        this.arrayControl = popUpAnswer;
+        this.setControlsVues(this.arrayControl)
+      }
     }
+  }
+
+  resetContols(){
+    this.arrayControl = [];
+    this.enumerationControl = false;
+    this.expressionControl = false;
+    this.lengthControl = false;
+    this.valueControl = false;
+  }
+
+  setControlsVues(elements: string[]){
+    if(elements.includes("Enumération")){
+      this.enumerationControl = true;
+    }
+    if(elements.includes("Expression régulière")){
+      this.expressionControl = true;
+    }
+    if(elements.includes("Longueur Min/Max")){
+      this.lengthControl = true;
+    }
+    if(elements.includes("Valeur Min/Max")){
+      this.valueControl = true;
+    }
+
   }
 
   onDeleteNode(nodeId: number) {
