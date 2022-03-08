@@ -35,17 +35,12 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { SedaData, SedaElementConstants } from '../../models/seda-data';
-import { FileNode } from '../../models/file-node';
-import { FileService } from '../../core/services/file.service';
-import { SedaService } from '../../core/services/seda.service';
+import { Component, OnInit } from '@angular/core';
+import { SedaData } from '../../models/seda-data';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PopupService } from '../../core/services/popup.service';
-import { Subscription } from 'rxjs';
-import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -61,40 +56,21 @@ export class UserActionAddPuaControlComponent implements OnInit {
   expressionReguliereLabel: string = "Expression régulière";
   lengthMinMaxLabel: string = "Longueur Min/Max";
   valueMinMaxLabel: string = "Valeur Min/Max";
+  enumerationsDefinition: string = "Signaler les valeurs autorisées";
+  expressionReguliereDefinition: string = "Définir une expression régulière pour la valeur de la métadonnée";
   allowedChildren: string[];
-  namesFiltered: any = [];
-  sedaNodeFound: SedaData;
-  selectedSedaNode: SedaData;
   addedItems: string[] = [];
   dialogData: PastisDialogData;
 
   atLeastOneIsSelected: boolean;
-  customTemplate: TemplateRef<any>
-  fileNode: FileNode;
-  sedaLanguage: boolean;
-  sedaLanguageSub: Subscription;
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) {
+    private popUpService: PopupService) {
       this.refreshAllowedChildren();
     }
 
   ngOnInit() {
-    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
-      (value: boolean) => {
-        this.sedaLanguage = value;
-      },
-      (error) => {
-        console.log(error)
-      }
-    );
-    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode })
-    this.sedaData = this.sedaService.sedaRules[0];
-
-    this.sedaNodeFound = this.fileNode.sedaData;
-
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
@@ -102,24 +78,15 @@ export class UserActionAddPuaControlComponent implements OnInit {
     })
   }
 
-
-  isElementSelected(element: string) {
-    if (this.addedItems) {
-      return this.addedItems.includes(element);
-    }
-  }
-
   onRemoveSelectedElement(element: string) {
     if(this.isExclusive(element)){
       this.refreshAllowedChildren();
     }else{
       let indexOfElement = this.addedItems.indexOf(element)
-      console.log(indexOfElement)
       if (indexOfElement >= 0) {
         this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
       }
     }
-    console.error(this.allowedChildren)
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
@@ -140,32 +107,17 @@ export class UserActionAddPuaControlComponent implements OnInit {
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected)
   }
 
-  onAllItemsAdded() {
-    return this.allowedChildren.length === this.addedItems.length;
-  }
-
-  isElementComplex(element: SedaData) {
-    if (element) {
-      return element.Element === SedaElementConstants.complex;
+  getDefinition(element: string): string {
+    if(element === this.enumerationsLabel){
+      return this.enumerationsDefinition
     }
-  }
-
-  getDefinition(element: SedaData): string {
-    return element ? element.Definition : '';
-  }
-
-  onYesClick(): void {
-    console.log("Clicked ok on dialog : %o", this.selectedSedaNode);
-
-  }
-  onNoClick(): void {
-    this.dialogRef.close();
+    if(element === this.expressionReguliereLabel){
+      return this.expressionReguliereDefinition
+    }
+    return '';
   }
 
   ngOnDestroy(): void {
-    if (this.sedaLanguageSub != null) {
-      this.sedaLanguageSub.unsubscribe();
-    }
   }
 
   isExclusive(element: string): boolean{
