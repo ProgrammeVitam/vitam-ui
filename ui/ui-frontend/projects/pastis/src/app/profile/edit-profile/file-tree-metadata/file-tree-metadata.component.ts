@@ -764,6 +764,8 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
-
-
+  isEmptyEnumeration(enumerations: string[]): boolean{
+    return enumerations.length === 0;
+  }
+ 
 }
