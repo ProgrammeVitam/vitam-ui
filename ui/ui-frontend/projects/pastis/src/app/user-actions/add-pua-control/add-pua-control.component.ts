@@ -146,8 +146,6 @@ export class UserActionAddPuaControlComponent implements OnInit {
     }else{
       this.allowedChildren = [
         this.enumerationsLabel,
-        this.valueMinMaxLabel,
-        this.lengthMinMaxLabel,
         this.expressionReguliereLabel
       ];
       this.addedItems = [];
