@@ -1,8 +1,8 @@
 <div *ngFor="let action of getActionByRuleType()">
-  <div *ngIf="action === 'ADD_RULES'">
-    <div class="action-style">
+  <div class="margin-style" *ngIf="action === 'ADD_RULES'">
+    <div class="action-style vitamui-table-head">
       {{ 'RULES.RULES_TO_ADD' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
         {{ collapsed ? 'expand_more' : 'expand_less' }}
       </i>
     </div>
@@ -22,22 +22,22 @@
 
   <div class="action-style" *ngIf="action === 'BlockRuleInheritance'">
     {{ action }}
-    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
       {{ collapsed ? 'expand_more' : 'expand_less' }}
     </i>
   </div>
 
   <div class="action-style" *ngIf="action === 'deleteBlockRuleInheritance'">
     {{ action }}
-    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showAddRuleBloc()">
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
       {{ collapsed ? 'expand_more' : 'expand_less' }}
     </i>
   </div>
 
-  <div *ngIf="action === 'DELETE_RULES'">
-    <div class="action-style">
+  <div class="margin-style" *ngIf="action === 'DELETE_RULES'">
+    <div class="action-style vitamui-table-head">
       {{ 'RULES.RULES_TO_DELETE' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showDeleteRuleBloc()">
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showDeleteRuleBloc()">
         {{ deleteRuleCollapsed ? 'expand_more' : 'expand_less' }}
       </i>
     </div>
@@ -55,10 +55,10 @@
     </div>
   </div>
 
-  <div *ngIf="action === 'UPDATE_PROPERTY'">
-    <div class="action-style">
+  <div class="margin-style" *ngIf="action === 'UPDATE_PROPERTY'">
+    <div class="action-style vitamui-table-head">
       {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showUpdatePropertyBloc()">
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdatePropertyBloc()">
         {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
       </i>
     </div>
@@ -68,10 +68,10 @@
     </div>
   </div>
 
-  <div *ngIf="action === 'UPDATE_RULES'">
-    <div class="action-style">
+  <div class="margin-style" *ngIf="action === 'UPDATE_RULES'">
+    <div class="action-style vitamui-table-head">
       {{ 'RULES.RULES_TO_UPDATE' | translate }}
-      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showUpdateRuleBloc()">
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdateRuleBloc()">
         {{ updateRuleCollapsed ? 'expand_more' : 'expand_less' }}
       </i>
     </div>

@@ -50,7 +50,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, SearchBarModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
@@ -91,6 +91,7 @@ describe('ArchiveComponent', () => {
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
@@ -108,7 +109,7 @@ describe('ArchiveComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });

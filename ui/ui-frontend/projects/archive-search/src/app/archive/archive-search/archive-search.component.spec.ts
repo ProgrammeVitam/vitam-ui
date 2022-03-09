@@ -146,7 +146,7 @@ describe('ArchiveSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -220,7 +220,7 @@ describe('ArchiveSearchComponent', () => {
     });
 
     describe('addCriteria', () => {
-      fit('should add the new criteria to the criteria list having same key', () => {
+      it('should add the new criteria to the criteria list having same key', () => {
         // When: add a new criteria value
         component.addCriteria(
           searchCriteria.key,
@@ -247,7 +247,7 @@ describe('ArchiveSearchComponent', () => {
     });
 
     describe('submit', () => {
-      fit('should check all criteria as included when submit', () => {
+      it('should check all criteria as included when submit', () => {
         component.submit();
         component.searchCriterias.forEach((criteria) => {
           criteria.values.forEach((criteriaValue) => {

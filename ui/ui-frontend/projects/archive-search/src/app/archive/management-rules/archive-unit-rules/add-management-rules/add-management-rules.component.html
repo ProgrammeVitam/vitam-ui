@@ -88,14 +88,13 @@
 
     <div *ngIf="isLoading; then loadingMode; else resultsFound"></div>
 
-    <div class="d-flex mt-4">
+    <div class="d-flex mt-4 padding-btm-style">
       <button type="submit" class="btn primary mr-4" [disabled]="!ruleDetailsForm.valid || isDisabled" (click)="submit()">
         {{ 'RULES.COMMON.CONTROL' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
     </div>
   </form>
-  <br />
 </div>
 
 <ng-template #confirmDeleteAddRuleDialog>
