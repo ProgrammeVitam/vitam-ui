@@ -142,6 +142,8 @@ export class FileTreeMetadataComponent {
   arrayControl: string[];
   clickedControl: FileNode;
   enumerationsSedaControl: string[];
+  enumsControlSeleted: string[] = [];
+  editedEnumControl: string;
 
   formatagePredefini: string[] = ["Date AAAA-MM-JJ", "Date AAAA", "Adresse mail"];
 
@@ -552,7 +554,8 @@ export class FileTreeMetadataComponent {
 
   async onEditControlClick(fileNodeId: number) {
     let popData = {} as PastisDialogData;
-    if (fileNodeId) {
+    if (fileNodeId && fileNodeId === this.clickedNode.id) {
+      this.resetContols();
       popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
       popData.titleDialog = this.popupControlTitleDialog;
       popData.subTitleDialog = this.popupControlSubTitleDialog + ' "' + popData.fileNode.name + '"';
@@ -767,5 +770,34 @@ export class FileTreeMetadataComponent {
   isEmptyEnumeration(enumerations: string[]): boolean{
     return enumerations.length === 0;
   }
- 
+
+  onSubmitControls(){
+    if(this.enumerationControl && this.enumsControlSeleted.length > 0){
+      if(this.clickedNode.puaData){
+        this.clickedNode.puaData.enum = this.enumsControlSeleted;
+      }else{
+        this.clickedNode.puaData = {
+          enum: this.enumsControlSeleted
+        }
+      }
+
+    }
+    if(this.expressionControl){
+
+    }
+  }
+
+  onRemoveEnumsControl(element: string) {
+    alert(element)
+    let indexOfElement = this.enumsControlSeleted.indexOf(element)
+    if (indexOfElement >= 0) {
+      this.enumsControlSeleted.splice(indexOfElement, 1)[0]
+    }
+    if(this.enumsControlSeleted.length === 0) this.editedEnumControl = null;
+  }
+
+  addEnumsControl(element: string){
+    this.enumsControlSeleted.push(element);
+  }
+
 }
