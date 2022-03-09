@@ -271,7 +271,10 @@
             <h2 class="pastis-dialog-config-title" matDialogTitle>
 
               <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' |
-                translate}}<mat-icon class="pastis-icon-primary "><i class="vitamui-icon vitamui-icon-info"></i>
+                translate}}<mat-icon class="pastis-icon-primary "> <i class="vitamui-icon vitamui-icon-info primary clickable"
+                  [matTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_EXPRESSION' |
+                   translate"
+                  matTooltipClass="vitamui-tooltip"></i>
                 </mat-icon>
               </span>
             </h2>
@@ -282,20 +285,21 @@
               <i class="material-icons">close</i>
             </button></div>
         </div>
-
+        <mat-radio-group [(ngModel)]="radioExpressionReguliere">
         <div class="ml-5">
           <div class="row">
             <div>
-              <mat-radio-button class="text-text-normal ">
+              <mat-radio-button value="select" class="text-text-normal ">
                 {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMATAGE_PREDEFINI' |
                 translate}}:
               </mat-radio-button>
             </div>
             <div>
               <mat-form-field class="ml-3 vitamui-mat-select ">
-                <mat-select panelClass="vitamui-mat-select">
-                  <mat-option *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement">
-                    {{predefiniElement}}
+                <mat-select  [ngModel]="selectedpattern" (ngModelChange)="setPatternExpressionReguliere(clickedControl,$event)" disableRipple="true" panelClass="vitamui-mat-select">
+                  <mat-option  *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement.value"
+>
+                    {{predefiniElement.label}}
                   </mat-option>
                 </mat-select>
                 <div class="select-arrow">
@@ -310,17 +314,18 @@
         <div class="ml-5 mt-4">
           <div class="row">
             <div>
-              <mat-radio-button>
+              <mat-radio-button value="input">
               </mat-radio-button>
             </div>
             <div class="col-6">
               <vitamui-common-textarea [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
-              translate">
+              translate" (ngModeChange)="setPatternExpressionReguliere(clickedNode, $event)">
               </vitamui-common-textarea>
             </div>
           </div>
 
         </div>
+      </mat-radio-group>
       </div>
 
     </div>

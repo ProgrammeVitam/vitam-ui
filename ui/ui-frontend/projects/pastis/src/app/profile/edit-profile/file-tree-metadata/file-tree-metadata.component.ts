@@ -69,6 +69,7 @@ import {NotificationService} from '../../../core/services/notification.service';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {environment} from 'projects/pastis/src/environments/environment';
 import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
+import { PuaData } from '../../../models/pua-data';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -109,6 +110,7 @@ export class FileTreeMetadataComponent {
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
+  selectedpattern: string = "";
 
   clickedNode: FileNode = {} as FileNode;
 
@@ -143,7 +145,14 @@ export class FileTreeMetadataComponent {
   clickedControl: FileNode;
   enumerationsSedaControl: string[];
 
-  formatagePredefini: string[] = ["Date AAAA-MM-JJ", "Date AAAA", "Adresse mail"];
+  radioExpressionReguliere: string;
+
+  formatagePredefini: Array<{label: string, value: string}> = 
+  [
+    { label : "Date AAAA-MM-JJ", value: "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$" }, 
+    { label: "Date AAAA", value: "[0-9]{4}-[0-9]{2}-[0-9]{2}" },
+    { label: "Adresse mail", value: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" }
+  ];
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
@@ -766,6 +775,15 @@ export class FileTreeMetadataComponent {
 
   isEmptyEnumeration(enumerations: string[]): boolean{
     return enumerations.length === 0;
+  }
+
+  setPatternExpressionReguliere(node: FileNode, pattern: string) {
+    
+    if(!node.puaData){
+      node.puaData = {} as PuaData;
+    }
+    node.puaData.pattern = pattern;
+    console.log(node)
   }
  
 }
