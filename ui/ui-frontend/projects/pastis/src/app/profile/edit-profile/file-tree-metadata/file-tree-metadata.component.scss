@@ -9,6 +9,12 @@
 @import '~ui-frontend-common/sass/icons/vitamui-icons';
 @import '~ui-frontend-common/sass/variables/colors';
 @import '~ui-frontend-common/sass/editable-field';
+@import '../../../user-actions/add-metadata/add-metadata.component.scss';
+
+
+.pastis-container-selected-items{
+  margin-top: 10px;
+}
 
 
 td {

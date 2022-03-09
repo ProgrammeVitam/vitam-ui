@@ -225,6 +225,7 @@
       </table>
     </div>
 
+    <!-- Metatdata Control Part-->
     <div *ngIf="this.profileService.profileMode === 'PUA'">
       <div class="pastis-panel-metadata-control"
         *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )">
@@ -257,9 +258,20 @@
               </div>
             </mat-form-field>
             <ng-template #blockInput>
-              <vitamui-common-editable-textarea >
-            </vitamui-common-editable-textarea>
+              <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
+              </vitamui-common-editable-input>
             </ng-template>
+          </div>
+        </div>
+        <div *ngIf="enumsControlSeleted?.length > 0" class="pastis-container-selected-items">
+          <div *ngFor="let item of enumsControlSeleted;let i =index" style="display: inline-flex">
+            <div class="selected-items-box">
+                      <span style="padding: 12px;">
+                        <span class="item-text">{{item}}</span>
+                      </span>
+              <mat-divider class="selected-items-separator" vertical></mat-divider>
+              <span (click)="onRemoveEnumsControl(item)" class="selected-items-close">&times;</span>
+            </div>
           </div>
         </div>
       </div>
@@ -326,6 +338,14 @@
 
         </div>
       </mat-radio-group>
+      </div>
+
+      <div>
+        <!--Button add metadata-->
+        <button *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )"
+          class="btn primary  ml-5" style="text-transform: uppercase;" (click)="onSubmitControls()">
+          {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate}}
+        </button>
       </div>
 
     </div>
