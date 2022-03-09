@@ -80,6 +80,7 @@ function constantToTranslate() {
   this.popupSousTitre = this.translated('.POPUP_SOUS_TITRE');
   this.popupValider = this.translated('.POPUP_VALIDER');
   this.popupAnnuler = this.translated('.POPUP_ANNULER');
+  this.popupControlOkLabel = this.translated('.POPUP_CONTROL_OK_BUTTON_LABEL');
 }
 
 @Component({

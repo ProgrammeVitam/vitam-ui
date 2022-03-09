@@ -36,11 +36,25 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Component, OnInit } from '@angular/core';
-import { SedaData } from '../../models/seda-data';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PopupService } from '../../core/services/popup.service';
+import { environment } from 'projects/pastis/src/environments/environment';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+
+
+const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
+
+function constantToTranslate() {
+  this.enumerationsLabel = this.translated('.ENUMERATIONS_LABEL');
+  this.expressionReguliereLabel = this.translated('.EXPRESSION_REGULIERE_LABEL');
+  this.lengthMinMaxLabel = this.translated('.LENGTH_MIN_MAX_LABEL');
+  this.valueMinMaxLabel = this.translated('.VALUE_MIN_MAX_LABEL');
+  this.enumerationsDefinition = this.translated('.ENUMERATIONS_DEFINITION');
+  this.expressionReguliereDefinition = this.translated('.EXPRESSION_REGULIERE_DEFINITION');
+}
+
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -50,8 +64,6 @@ import { PopupService } from '../../core/services/popup.service';
 export class UserActionAddPuaControlComponent implements OnInit {
 
   btnIsDisabled: boolean;
-
-  sedaData: SedaData;
   enumerationsLabel: string = "Enumération";
   expressionReguliereLabel: string = "Expression régulière";
   lengthMinMaxLabel: string = "Longueur Min/Max";
@@ -63,10 +75,15 @@ export class UserActionAddPuaControlComponent implements OnInit {
   dialogData: PastisDialogData;
 
   atLeastOneIsSelected: boolean;
+  isStandalone: boolean = environment.standalone;
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private popUpService: PopupService) {
+    private popUpService: PopupService, private translateService: TranslateService) {
+      if(!this.isStandalone){
+        constantToTranslate.call(this);
+        this.translatedOnChange();
+      }
       this.refreshAllowedChildren();
     }
 
@@ -117,9 +134,6 @@ export class UserActionAddPuaControlComponent implements OnInit {
     return '';
   }
 
-  ngOnDestroy(): void {
-  }
-
   isExclusive(element: string): boolean{
     return element === this.valueMinMaxLabel || element === this.enumerationsLabel;
   }
@@ -138,6 +152,18 @@ export class UserActionAddPuaControlComponent implements OnInit {
       ];
       this.addedItems = [];
     }
+  }
+
+  translatedOnChange(): void {
+    this.translateService.onLangChange
+      .subscribe((event: LangChangeEvent) => {
+        constantToTranslate.call(this);
+        console.log(event.lang);
+      });
+  }
+
+  translated(nameOfFieldToTranslate: string): string {
+    return this.translateService.instant(ADD_PUA_CONTROL_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
 
 }
