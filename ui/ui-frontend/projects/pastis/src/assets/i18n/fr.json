@@ -183,7 +183,9 @@
           "VALEUR_FIXE": "Valeur fixe",
           "COMMENTAIRE": "Commentaire"
         },
-        "POPUP_CONTROL_OK_BUTTON_LABEL": "AJOUTER LES CONTROLES"
+        "POPUP_CONTROL_OK_BUTTON_LABEL": "AJOUTER LES CONTROLES",
+        "POPUP_CONTROL_SUB_TITLE_DIALOG": "Ajouter des contrôles supplémentaires à",
+        "POPUP_CONTROL_TITLE_DIALOG": "Veuillez séléctionner un ou plusieurs contrôles"
       }
     },
     "LIST_PROFILE": {
