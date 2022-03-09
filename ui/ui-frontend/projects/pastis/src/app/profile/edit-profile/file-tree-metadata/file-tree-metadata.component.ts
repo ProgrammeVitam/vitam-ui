@@ -141,6 +141,7 @@ export class FileTreeMetadataComponent {
   expressionControl: boolean;
   arrayControl: string[];
   clickedControl: FileNode;
+  enumerationsSedaControl: string[];
 
   formatagePredefini: string[] = ["Date AAAA-MM-JJ", "Date AAAA", "Adresse mail"];
 
@@ -565,7 +566,7 @@ export class FileTreeMetadataComponent {
       console.log("The answer for arrays control was ", popUpAnswer);
       if(popUpAnswer){
         this.arrayControl = popUpAnswer;
-        this.setControlsVues(this.arrayControl)
+        this.setControlsVues(this.arrayControl, popData.fileNode.name)
       }
     }
   }
@@ -578,9 +579,10 @@ export class FileTreeMetadataComponent {
     this.valueControl = false;
   }
 
-  setControlsVues(elements: string[]){
+  setControlsVues(elements: string[], sedaName: string){
     if((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))){
       this.enumerationControl = true;
+      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
     }
     if((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))){
       this.expressionControl = true;
@@ -762,6 +764,6 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
- 
-  
+
+
 }

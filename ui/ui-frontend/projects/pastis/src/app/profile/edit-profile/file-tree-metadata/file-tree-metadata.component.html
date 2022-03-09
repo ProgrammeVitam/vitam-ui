@@ -235,7 +235,6 @@
                 translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i>
                 </mat-icon>
               </span>
-              {{this.clickedControl | json}}
             </h2>
           </div>
           <div style="position: relative; right:20px; "><button class="btn btn-circle large "
@@ -248,8 +247,8 @@
 
           <mat-form-field class="mr-3 vitamui-mat-select col-6">
             <mat-select panelClass="vitamui-mat-select">
-              <mat-option *ngFor="" [value]="">
-
+              <mat-option *ngFor="let element of enumerationsSedaControl" [value]="">
+                {{element}}
               </mat-option>
             </mat-select>
             <div class="select-arrow">
