@@ -136,6 +136,9 @@ export class FileTreeMetadataComponent {
   lengthControl: boolean;
   expressionControl: boolean;
   arrayControl: string[];
+  clickedControl: FileNode;
+
+  formatagePredefini: string[] = ["Date AAAA-MM-JJ", "Date AAAA", "Adresse mail"];
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
@@ -543,12 +546,12 @@ export class FileTreeMetadataComponent {
   }
 
   async onEditControlClick(fileNodeId: number) {
-    alert(fileNodeId)
     let popData = {} as PastisDialogData;
     if (fileNodeId) {
       popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
       popData.titleDialog = this.popupControlTitleDialog;
       popData.subTitleDialog = this.popupControlSubTitleDialog + ' "' + popData.fileNode.name + '"';
+      this.clickedControl = popData.fileNode;
       popData.width = '800px';
       popData.component = UserActionAddPuaControlComponent;
       popData.okLabel = this.popupControlOkLabel;
@@ -755,4 +758,6 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
+ 
+  
 }

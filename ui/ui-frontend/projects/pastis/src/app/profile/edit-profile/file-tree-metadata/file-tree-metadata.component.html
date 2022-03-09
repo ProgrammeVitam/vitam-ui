@@ -203,11 +203,11 @@
                 </button>
 
                 <!-- Contrôle de métadonées => PUA -->
-                <mat-divider
-                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
                   style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onEditControlClick(element.id)" *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                <button (click)="onEditControlClick(element.id)"
+                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
                   mat-menu-item>
                   <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' |
@@ -225,21 +225,31 @@
       </table>
     </div>
 
-    <div *ngIf="this.profileService.profileMode === 'PUA' && isAloneAndSimple(matDataSource)">
-      <div class="pastis-panel-metadata-control">
-        <h2 class="pastis-dialog-config-title" matDialogTitle>
+    <div *ngIf="this.profileService.profileMode === 'PUA'">
+      <div class="pastis-panel-metadata-control"
+        *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )">
+        <div class="row">
+          <div class="col">
+            <h2 class="pastis-dialog-config-title" matDialogTitle>
+              <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' |
+                translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i>
+                </mat-icon>
+              </span>
+              {{this.clickedControl | json}}
+            </h2>
+          </div>
+          <div style="position: relative; right:20px; "><button class="btn btn-circle large "
+              style="background-color: transparent; border-width: 0ch;" >
+              <i class="material-icons">close</i>
+            </button></div>
+        </div>
 
-          <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' |
-            translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i></mat-icon>
-          </span>
-
-        </h2>
         <div class="ml-5 row">
 
           <mat-form-field class="mr-3 vitamui-mat-select col-6">
             <mat-select panelClass="vitamui-mat-select">
               <mat-option *ngFor="" [value]="">
-                {{country.label}}
+
               </mat-option>
             </mat-select>
             <div class="select-arrow">
@@ -251,13 +261,25 @@
         </div>
       </div>
 
-      <div class="pastis-panel-metadata-control">
-        <h2 class="pastis-dialog-config-title" matDialogTitle>
+      <div class="pastis-panel-metadata-control"
+        *ngIf="expressionControl && (clickedControl.name === clickedNode.name  )">
+        <div class="row">
+          <div class="col">
+            <h2 class="pastis-dialog-config-title" matDialogTitle>
 
-          <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' |
-            translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i></mat-icon>
-          </span>
-        </h2>
+              <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EXPRESSION_CONTROLE' |
+                translate}}<mat-icon class="pastis-icon-primary "><i class="vitamui-icon vitamui-icon-info"></i>
+                </mat-icon>
+              </span>
+            </h2>
+
+          </div>
+          <div style="position: relative; right:20px; "><button class="btn btn-circle large "
+              style="background-color: transparent; border-width: 0ch;">
+              <i class="material-icons">close</i>
+            </button></div>
+        </div>
+
         <div class="ml-5">
           <div class="row">
             <div>
@@ -269,8 +291,8 @@
             <div>
               <mat-form-field class="ml-3 vitamui-mat-select ">
                 <mat-select panelClass="vitamui-mat-select">
-                  <mat-option *ngFor="" [value]="">
-                    {{country.label}}
+                  <mat-option *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement">
+                    {{predefiniElement}}
                   </mat-option>
                 </mat-select>
                 <div class="select-arrow">
@@ -288,7 +310,7 @@
               <mat-radio-button>
               </mat-radio-button>
             </div>
-            <div>
+            <div class="col-6">
               <vitamui-common-textarea [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
               translate">
               </vitamui-common-textarea>
