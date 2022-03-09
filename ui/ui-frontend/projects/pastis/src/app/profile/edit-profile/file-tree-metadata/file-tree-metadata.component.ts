@@ -72,6 +72,7 @@ import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-co
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
+const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
 
 function constantToTranslate() {
   this.notificationAjoutMetadonnee = this.translated('.NOTIFICATION_AJOUT_METADONNEE');
@@ -80,6 +81,9 @@ function constantToTranslate() {
   this.popupSousTitre = this.translated('.POPUP_SOUS_TITRE');
   this.popupValider = this.translated('.POPUP_VALIDER');
   this.popupAnnuler = this.translated('.POPUP_ANNULER');
+  this.popupControlOkLabel = this.translated('.POPUP_CONTROL_OK_BUTTON_LABEL');
+  this.popupControlSubTitleDialog = this.translated('.POPUP_CONTROL_SUB_TITLE_DIALOG');
+  this.popupControlTitleDialog = this.translated('.POPUP_CONTROL_TITLE_DIALOG');
 }
 
 @Component({
@@ -575,16 +579,16 @@ export class FileTreeMetadataComponent {
   }
 
   setControlsVues(elements: string[]){
-    if(elements.includes("Enumération")){
+    if((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))){
       this.enumerationControl = true;
     }
-    if(elements.includes("Expression régulière")){
+    if((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))){
       this.expressionControl = true;
     }
-    if(elements.includes("Longueur Min/Max")){
+    if((this.isStandalone && elements.includes("Longueur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))){
       this.lengthControl = true;
     }
-    if(elements.includes("Valeur Min/Max")){
+    if((this.isStandalone && elements.includes("Valeur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))){
       this.valueControl = true;
     }
 
