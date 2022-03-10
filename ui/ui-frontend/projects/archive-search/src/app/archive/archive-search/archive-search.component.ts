@@ -52,17 +52,7 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import {
-  ArchiveSearchResultFacets,
-  CriteriaValue,
-  PagedResult,
-  SearchCriteria,
-  SearchCriteriaCategory,
-  SearchCriteriaEltDto,
-  SearchCriteriaStatusEnum,
-  SearchCriteriaTypeEnum,
-  SearchCriteriaValue,
-} from '../models/search.criteria';
+import { ArchiveSearchResultFacets, CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -353,7 +343,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
     this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
     this.checkUserHasRole('ComputedInheritedRulesRole', VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
-    this.checkUserHasRole('ReclassificationRole', 'ROLE_RECLASSIFICATION', +this.tenantIdentifier);
+    this.checkUserHasRole('ReclassificationRole', VitamuiRoles.ROLE_RECLASSIFICATION, +this.tenantIdentifier);
 
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
@@ -1302,7 +1292,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         .subscribe(() => {});
     } else if (this.itemSelected === 1) {
       this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
-      this.archiveUnitAllunitup = this.archiveUnits.find((au) => au['#id'] == this.archiveUnitGuidSelected)['#allunitups'];
+      this.archiveUnitAllunitup = this.archiveUnits.find((au) => au['#id'] == this.archiveUnitGuidSelected)['#unitups'];
       this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
 

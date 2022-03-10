@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -52,7 +52,7 @@ import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata
   templateUrl: './archive-unit-information-tab.component.html',
   styleUrls: ['./archive-unit-information-tab.component.css'],
 })
-export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
+export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
   archiveUnit: Unit;
   @Input()
@@ -282,7 +282,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
       (this.form.get('title').value == this.previousValue.title || this.form.get('title').invalid || this.form.get('title').pending) &&
       (this.form.get('description').invalid ||
         this.form.get('description').pending ||
-        this.form.get('description').value == this.previousValue.description) &&
+        this.form.get('description').value == this.previousValue.description
+        ||
+        (this.form.get('description').value === '' && this.hasNoDescription)
+        ) &&
       (this.form.get('descriptionLevel').invalid ||
         this.form.get('descriptionLevel').pending ||
         this.form.get('descriptionLevel').value == this.previousValue.descriptionLevel) &&
@@ -309,13 +312,18 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
           endDate = this.getStartDate(this.form.get('endDate').value);
         }
 
-        metadataToUpdate = {
+        let desc = null;
+        if(this.hasNoDescription && dif?.description ?.length > 0 && !this.hasFrDescription && !this.hasEnDescription){
+            desc = dif.description;
+        }
+
+          metadataToUpdate = {
           id: null,
           Title: this.hasTitle ? dif?.title: null,
           DescriptionLevel: dif?.descriptionLevel,
           "Title_.fr": this.hasFrTitle ? dif?.title : null,
           "Title_.en": this.hasEnTitle ? dif?.title : null,
-          Description: dif?.description?.length === 0 || this.hasNoDescription || this.hasFrDescription || this.hasEnDescription  ? null : dif?.description,
+          Description: desc,
           "Description_.fr": this.hasFrDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
           "Description_.en": this.hasEnDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
           StartDate: startDate != null ? this.getStartDate(this.form.get('startDate').value) : null,
@@ -385,8 +393,10 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
           this.archiveUnit.Description = this.form.get('description').value;
         } else if(this.hasFrDescription) {
           this.archiveUnit.Description_.fr = this.form.get('description').value;
-        } else {
+        } else if(this.hasEnDescription){
           this.archiveUnit.Description_.en = this.form.get('description').value;
+        } else {
+          this.archiveUnit.Description = this.form.get('description').value;
         }
 
         this.archiveUnit.DescriptionLevel = this.form.get('descriptionLevel').value;
@@ -454,4 +464,9 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges {
   showArchiveUniteFullPath() {
     this.fullPath = true;
   }
+
+  ngOnDestroy() {
+    this.updateFormSub.unsubscribe();
+  }
+
 }
