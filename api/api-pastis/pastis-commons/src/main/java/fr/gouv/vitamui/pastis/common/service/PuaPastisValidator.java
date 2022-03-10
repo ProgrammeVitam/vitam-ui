@@ -619,6 +619,9 @@ public class PuaPastisValidator {
             puaMetadataDetails.setMinItems(0);
             puaMetadataDetails.setMaxItems(1);
         }
+        if(!sedaElement.getElement().equals(COMPLEX) && el.getPuaData() != null && el.getPuaData().getPattern() != null){
+            puaMetadataDetails.setPattern(el.getPuaData().getPattern());
+        }
         if(el.getPuaData() != null && el.getPuaData().getEnum() != null){
             puaMetadataDetails.setEnums(el.getPuaData().getEnum());
         }else{

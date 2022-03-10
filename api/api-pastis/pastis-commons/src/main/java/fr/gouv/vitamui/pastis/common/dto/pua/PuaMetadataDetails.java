@@ -56,4 +56,5 @@ public class PuaMetadataDetails {
     List<String> required;
     PuaMetadata items;
     List<String> enums;
+    String pattern;
 }
