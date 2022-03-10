@@ -59,7 +59,7 @@ import {ProfileService} from '../../../core/services/profile.service';
 import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
 import {StartupService} from 'ui-frontend-common';
 import {Router} from '@angular/router';
-import {Subscription} from "rxjs";
+import { Subscription} from "rxjs";
 import {MatCheckboxChange} from "@angular/material/checkbox";
 import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import {FileTreeService} from '../file-tree/file-tree.service';
@@ -806,10 +806,9 @@ export class FileTreeMetadataComponent {
   }
 
   onRemoveEnumsControl(element: string) {
-    alert(element)
     let indexOfElement = this.enumsControlSeleted.indexOf(element)
     if (indexOfElement >= 0) {
-      this.enumsControlSeleted.splice(indexOfElement, 1)[0]
+      this.enumsControlSeleted.splice(indexOfElement, 1)[0];
     }
     if(this.enumsControlSeleted.length === 0) this.editedEnumControl = null;
   }
@@ -817,5 +816,7 @@ export class FileTreeMetadataComponent {
   addEnumsControl(element: string){
     this.enumsControlSeleted.push(element);
   }
+
+  
 
 }
