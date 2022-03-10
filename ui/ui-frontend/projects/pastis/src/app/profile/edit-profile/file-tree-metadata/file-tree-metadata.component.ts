@@ -44,6 +44,7 @@ import {SedaService} from '../../../core/services/seda.service';
 import {
   CardinalityConstants,
   DataTypeConstants,
+  DateFormatType,
   FileNode,
   FileNodeInsertAttributeParams,
   FileNodeInsertParams,
@@ -64,7 +65,7 @@ import {MatCheckboxChange} from "@angular/material/checkbox";
 import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import {FileTreeService} from '../file-tree/file-tree.service';
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {CardinalityValues, MetadataHeaders} from '../../../models/models';
+import {CardinalityValues, MetadataHeaders } from '../../../models/models';
 import {NotificationService} from '../../../core/services/notification.service';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {environment} from 'projects/pastis/src/environments/environment';
@@ -110,7 +111,8 @@ export class FileTreeMetadataComponent {
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
-  selectedpattern: string = "";
+
+  selectedRegex: string = "";
 
   clickedNode: FileNode = {} as FileNode;
 
@@ -148,13 +150,16 @@ export class FileTreeMetadataComponent {
   editedEnumControl: string[];
   openControls: boolean;
 
-  radioExpressionReguliere: string;
-
-  formatagePredefini: Array<{label: string, value: string}> =
+  radioExpressionReguliere: string = "select";
+  regex: string;
+  customRegex: string;
+  formatagePredefini: Array<{label: string, value: string}> = 
   [
-    { label : "Date AAAA-MM-JJ", value: "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$" },
-    { label: "Date AAAA", value: "[0-9]{4}-[0-9]{2}-[0-9]{2}" },
-    { label: "Adresse mail", value: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" }
+    { label: 'AAAA-MM-JJ', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}' },
+    { label: 'AAAA-MM-JJTHH:MM:SS', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}' },
+    { label: 'AAAA', value: '[0-9]{4}' },
+    { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' },
+    { label: 'Adresse mail', value: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}' }
   ];
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
@@ -603,6 +608,22 @@ export class FileTreeMetadataComponent {
     }
     if((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))){
       this.expressionControl = true;
+      let type: string =  this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      switch (type) {
+        case DateFormatType.date:
+          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
+          break;
+        case DateFormatType.dateTime:
+          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
+          break;
+        case DateFormatType.dateType:
+          this.formatagePredefini.pop();
+          break;
+        default:
+          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
+          break;
+      }
+      this.regex = this.formatagePredefini[0].value;
     }
     if((this.isStandalone && elements.includes("Longueur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))){
       this.lengthControl = true;
@@ -785,13 +806,13 @@ export class FileTreeMetadataComponent {
     return enumerations.length === 0;
   }
 
-  setPatternExpressionReguliere(node: FileNode, pattern: string) {
-
-    if(!node.puaData){
-      node.puaData = {} as PuaData;
+  setPatternExpressionReguliere() {
+    if(!this.clickedControl.puaData){
+      this.clickedControl.puaData = {} as PuaData;
     }
-    node.puaData.pattern = pattern;
-    console.log(node)
+    
+    this.clickedControl.puaData.pattern = (this.radioExpressionReguliere === 'select') ? this.regex : this.customRegex;
+    console.log(this.clickedControl)
   }
 
   onSubmitControls(){
@@ -806,7 +827,7 @@ export class FileTreeMetadataComponent {
 
     }
     if(this.expressionControl){
-
+      this.setPatternExpressionReguliere();
     }
     this.resetContols()
   }
