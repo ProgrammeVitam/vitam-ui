@@ -245,7 +245,7 @@
         </div>
 
         <div class="ml-5 row">
-          <div class="col-8">
+          <div class="col-4">
             <mat-form-field class="mr-3 vitamui-mat-select"  *ngIf="!isEmptyEnumeration(enumerationsSedaControl); else blockInput">
               <mat-select multiple panelClass="vitamui-mat-select" name="enumsControlSeleted" (selectionChange)="addEnumsControlList($event.value)" [(ngModel)]="editedEnumControl">
                 <mat-option *ngFor="let element of enumerationsSedaControl" [value]="element" >
