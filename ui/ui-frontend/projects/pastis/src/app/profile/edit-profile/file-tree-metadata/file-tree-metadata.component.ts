@@ -145,13 +145,14 @@ export class FileTreeMetadataComponent {
   clickedControl: FileNode;
   enumerationsSedaControl: string[];
   enumsControlSeleted: string[] = [];
-  editedEnumControl: string;
+  editedEnumControl: string[];
+  openControls: boolean;
 
   radioExpressionReguliere: string;
 
-  formatagePredefini: Array<{label: string, value: string}> = 
+  formatagePredefini: Array<{label: string, value: string}> =
   [
-    { label : "Date AAAA-MM-JJ", value: "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$" }, 
+    { label : "Date AAAA-MM-JJ", value: "^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$" },
     { label: "Date AAAA", value: "[0-9]{4}-[0-9]{2}-[0-9]{2}" },
     { label: "Adresse mail", value: "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" }
   ];
@@ -579,6 +580,7 @@ export class FileTreeMetadataComponent {
       if(popUpAnswer){
         this.arrayControl = popUpAnswer;
         this.setControlsVues(this.arrayControl, popData.fileNode.name)
+        this.openControls = true;
       }
     }
   }
@@ -589,6 +591,9 @@ export class FileTreeMetadataComponent {
     this.expressionControl = false;
     this.lengthControl = false;
     this.valueControl = false;
+    this.enumsControlSeleted = [];
+    this.editedEnumControl = [];
+    this.openControls = false;
   }
 
   setControlsVues(elements: string[], sedaName: string){
@@ -781,14 +786,14 @@ export class FileTreeMetadataComponent {
   }
 
   setPatternExpressionReguliere(node: FileNode, pattern: string) {
-    
+
     if(!node.puaData){
       node.puaData = {} as PuaData;
     }
     node.puaData.pattern = pattern;
     console.log(node)
   }
- 
+
   onSubmitControls(){
     if(this.enumerationControl && this.enumsControlSeleted.length > 0){
       if(this.clickedNode.puaData){
@@ -803,12 +808,22 @@ export class FileTreeMetadataComponent {
     if(this.expressionControl){
 
     }
+    this.resetContols()
   }
 
   onRemoveEnumsControl(element: string) {
     let indexOfElement = this.enumsControlSeleted.indexOf(element)
     if (indexOfElement >= 0) {
       this.enumsControlSeleted.splice(indexOfElement, 1)[0];
+      this.editedEnumControl = []
+      this.enumsControlSeleted.forEach( e => {
+        this.editedEnumControl.push(e)
+      })
+    }
+
+    if(this.editedEnumControl.includes(element)){
+      indexOfElement = this.editedEnumControl.indexOf(element)
+      this.editedEnumControl.splice(indexOfElement, 1)[0];
     }
     if(this.enumsControlSeleted.length === 0) this.editedEnumControl = null;
   }
@@ -816,7 +831,13 @@ export class FileTreeMetadataComponent {
   addEnumsControl(element: string){
     this.enumsControlSeleted.push(element);
   }
+  addEnumsControlList(elements: string[]){
+    this.enumsControlSeleted = elements;
+  }
 
-  
+  closeControlsVue(){
+    this.openControls = false;
+    this.resetContols();
+  }
 
 }

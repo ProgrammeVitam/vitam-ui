@@ -226,7 +226,7 @@
     </div>
 
     <!-- Metatdata Control Part-->
-    <div *ngIf="this.profileService.profileMode === 'PUA'">
+    <div *ngIf="this.profileService.profileMode === 'PUA' && openControls">
       <div class="pastis-panel-metadata-control"
         *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )">
         <div class="row">
@@ -239,7 +239,7 @@
             </h2>
           </div>
           <div style="position: relative; right:20px; "><button class="btn btn-circle large "
-              style="background-color: transparent; border-width: 0ch;" >
+              style="background-color: transparent; border-width: 0ch;" (click)="closeControlsVue()">
               <i class="material-icons">close</i>
             </button></div>
         </div>
@@ -247,12 +247,11 @@
         <div class="ml-5 row">
           <div class="col-8">
             <mat-form-field class="mr-3 vitamui-mat-select"  *ngIf="!isEmptyEnumeration(enumerationsSedaControl); else blockInput">
-              <mat-select multiple panelClass="vitamui-mat-select" name="enumsControlSeleted" [(ngModel)]="enumsControlSeleted">
-                <mat-option *ngFor="let element of enumerationsSedaControl" [value]="element" >                 
-                  {{element}} 
+              <mat-select multiple panelClass="vitamui-mat-select" name="enumsControlSeleted" (selectionChange)="addEnumsControlList($event.value)" [(ngModel)]="editedEnumControl">
+                <mat-option *ngFor="let element of enumerationsSedaControl" [value]="element" >
+                  {{element}}
                 </mat-option>
               </mat-select>
-              <p>{{element}}</p>
               <div class="select-arrow">
                 <i class="material-icons">keyboard_arrow_up</i>
                 <i class="material-icons">keyboard_arrow_down</i>
@@ -310,8 +309,7 @@
             <div>
               <mat-form-field class="ml-3 vitamui-mat-select ">
                 <mat-select  [ngModel]="selectedpattern" (ngModelChange)="setPatternExpressionReguliere(clickedControl,$event)" disableRipple="true" panelClass="vitamui-mat-select">
-                  <mat-option  *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement.value"
->
+                  <mat-option  *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement.value">
                     {{predefiniElement.label}}
                   </mat-option>
                 </mat-select>
@@ -341,9 +339,9 @@
       </mat-radio-group>
       </div>
 
-      <div>
+      <div class="pastis-container-button-submit-controls">
         <!--Button add metadata-->
-        <button *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )"
+        <button *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )" [disabled]="this.enumsControlSeleted.length <= 0"
           class="btn primary  ml-5" style="text-transform: uppercase;" (click)="onSubmitControls()">
           {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate}}
         </button>
