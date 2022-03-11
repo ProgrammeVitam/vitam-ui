@@ -1,15 +1,15 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {PopupService} from "../../core/services/popup.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {PastisDialogDataCreate} from "../save-profile/save-profile.component";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../../environments/environment";
-import { Notice } from '../../models/notice.model';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {environment} from '../../../environments/environment';
 import { FileService } from '../../core/services/file.service';
+import {PopupService} from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
+import { Notice } from '../../models/notice.model';
+import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {PastisDialogDataCreate} from '../save-profile/save-profile.component';
 
 
 interface Status {
@@ -36,20 +36,20 @@ export class CreateNoticeComponent implements OnInit {
   dialogData: PastisDialogData;
   isDisabledButton = false;
   notice: Notice;
-  //edit or new notice
+  // edit or new notice
   editNotice: boolean;
   titleDialog: string;
   subTitleDialog: string;
-  okLabel:string;
-  cancelLabel:string;
+  okLabel: string;
+  cancelLabel: string;
   arrayStatus: Status[] ;
   typeProfile?: string;
   modePUA: boolean;
   information: string;
   presenceNonDeclareMetadonneesPUAControl = new FormControl(false);
   createNotice: boolean;
-  profilActif :string;
-  profilInactif:string;
+  profilActif: string;
+  profilInactif: string;
   validate: boolean;
 
   isStandalone: boolean = environment.standalone;
@@ -67,49 +67,45 @@ export class CreateNoticeComponent implements OnInit {
 
   ngOnInit() {
 
-    this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/')-4, this.router.url.lastIndexOf('/')) === "edit";
-    if(this.editNotice){
+    this.editNotice = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
+    if (this.editNotice) {
       this.validate = true;
       // Subscribe observer to notice
       this.fileService.noticeEditable.subscribe((value: Notice) => {
         this.notice = value;
-      })
-    }// load new notice
-    else{
+      });
+    } else {
       this.notice = {
         description: '',
         name: '',
         status: 'ACTIVE',
         identifier: ''
-       }
+       };
     }
 
-    if(!this.isStandalone){
+    if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
+    } else if (this.isStandalone) {
+      this.profilActif = 'Profil actif';
+      this.profilInactif = 'Profil inactif';
     }
-    else if(this.isStandalone)
-    {
-      this.profilActif = "Profil actif"
-      this.profilInactif = "Profil inactif"
-    }
-    this.arrayStatus= [
-      {value: 'INACTIVE', viewValue:this.profilInactif},
+    this.arrayStatus = [
+      {value: 'INACTIVE', viewValue: this.profilInactif},
       {value: 'ACTIVE', viewValue:  this.profilActif}
     ];
     this.typeProfile = this.data.modeProfile;
-    if(this.typeProfile ==="PUA")
-      this.modePUA=true;
-    this.information = "texte d'information"
-    let identifierForm = this.modePUA ? [null, Validators.required] : [null];
+    if (this.typeProfile === 'PUA') {
+      this.modePUA = true;
+    }
+    this.information = 'texte d\'information';
+    const identifierForm = this.modePUA ? [null, Validators.required] : [null];
     this.form = this.formBuilder.group({
       identifier: identifierForm,
       intitule: [null, Validators.required],
       selectedStatus: [null],
       description: [null],
       autoriserPresenceMetadonnees : false
-      //TODO à implémenter
-      // this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
     });
 
 
@@ -120,9 +116,9 @@ export class CreateNoticeComponent implements OnInit {
 
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
-    this.popUpService.btnYesShoudBeDisabled.subscribe(status=>{
+    this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
       this.btnIsDisabled = status;
-    })
+    });
   }
 
   translatedOnChange(): void {
@@ -138,19 +134,15 @@ export class CreateNoticeComponent implements OnInit {
   }
 
   onCancel() {
-/*    if (this.form.dirty) {
-      this.popUpService.confirmBeforeClosing(this.dialogRef);
-    } else {*/
       this.dialogRef.close();
-    // }
   }
 
 
 
 
-  upateButtonStatusAndDataToSend(){
-    this.popUpService.setPopUpDataOnClose("test");
-    this.popUpService.disableYesButton(true)
+  upateButtonStatusAndDataToSend() {
+    this.popUpService.setPopUpDataOnClose('test');
+    this.popUpService.disableYesButton(true);
   }
 
 
@@ -163,28 +155,27 @@ export class CreateNoticeComponent implements OnInit {
 
   }
 
-  checkIdentifier(){
+  checkIdentifier() {
 
-    if(this.notice.identifier.length !== 0){
+    if (this.notice.identifier.length !== 0) {
       this.profileService.getPuaProfile(this.notice.identifier).subscribe(
         () => {
-          alert('Identifier already exists use another identifier')
+          alert('Identifier already exists use another identifier');
           this.validate = false;
-        },() => {
+        }, () => {
           this.validate = true;
           this.checkIntitule();
         }
-      )
-    }else{
+      );
+    } else {
       this.validate = false;
-    }    
+    }
   }
 
-  checkIntitule(){
-    if(this.notice.name.length !== 0) this.validate = true;
-    else{
+  checkIntitule() {
+    if (this.notice.name.length !== 0) { this.validate = true; } else {
       this.validate = false;
-    }  
+    }
   }
 
   onSubmit() {
@@ -193,12 +184,12 @@ export class CreateNoticeComponent implements OnInit {
       return;
     }
     this.isDisabledButton = true;
-    console.log(this.form.value)
-    if(this.editNotice){
+    console.log(this.form.value);
+    if (this.editNotice) {
       this.fileService.noticeEditable.next(this.notice);
       this.fileService.setNotice(true);
     }
-    this.dialogRef.close({ success: true, action: 'none', data:this.form.value, mode:this.typeProfile });
+    this.dialogRef.close({ success: true, action: 'none', data: this.form.value, mode: this.typeProfile });
   }
 }
 

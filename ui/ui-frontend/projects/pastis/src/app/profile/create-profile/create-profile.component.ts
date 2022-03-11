@@ -36,10 +36,10 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {Component, Inject, OnInit} from '@angular/core';
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../../environments/environment";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {environment} from '../../../environments/environment';
+import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POPUP_CREATION_CHOICE_PATH = 'PROFILE.POP_UP_CREATION.CHOICE';
 
@@ -58,7 +58,7 @@ export class CreateProfileComponent implements OnInit {
   firstChoice: string;
   secondChoice: string;
   title: string;
-  profilPaChoice: boolean = true;
+  profilPaChoice = true;
   isStandalone: boolean = environment.standalone;
 
   constructor(private dialogRef: MatDialogRef<CreateProfileComponent>, private translateService: TranslateService,
@@ -70,9 +70,9 @@ export class CreateProfileComponent implements OnInit {
       constantToTranslate.call(this);
       this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.firstChoice = "PA"
-      this.secondChoice = "PUA"
-      this.title = "Sélectionner un profil d'archivage :"
+      this.firstChoice = 'PA';
+      this.secondChoice = 'PUA';
+      this.title = 'Sélectionner un profil d\'archivage :';
     }
   }
 
@@ -97,10 +97,10 @@ export class CreateProfileComponent implements OnInit {
   }
 
   changeChoiceCreateProfile($event: string) {
-    console.log($event)
-    if ($event == this.firstChoice)
+    console.log($event);
+    if ($event == this.firstChoice) {
       this.profilPaChoice = true;
-    else {
+    } else {
       this.profilPaChoice = false;
     }
   }

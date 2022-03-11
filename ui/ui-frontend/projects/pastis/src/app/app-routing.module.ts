@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NgModule } from '@angular/core';
-import { RouterModule, Route } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'ui-frontend-common';
 import { environment } from '../environments/environment';

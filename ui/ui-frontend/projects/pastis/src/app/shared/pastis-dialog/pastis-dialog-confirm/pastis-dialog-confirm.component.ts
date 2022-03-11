@@ -35,13 +35,13 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Inject, OnInit,} from '@angular/core';
-import {PastisDialogData} from '../classes/pastis-dialog-data';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SedaService} from '../../../core/services/seda.service';
 import {ComponentPortal} from '@angular/cdk/portal';
+import {Component, Inject, OnInit, } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
 import {PopupService} from '../../../core/services/popup.service';
-import {TranslateService} from "@ngx-translate/core";
+import {SedaService} from '../../../core/services/seda.service';
+import {PastisDialogData} from '../classes/pastis-dialog-data';
 const PASTIS_DIALOG_CONFIRM_TRANSLATE_PATH = 'PASTIS_DIALOG_CONFIRM';
 @Component({
   selector: 'pastis-pastis-dialog-confirm',
@@ -52,54 +52,54 @@ export class PastisDialogConfirmComponent implements OnInit {
 
   portal: ComponentPortal<any>;
 
-  dataBeforeClose:any;
+  dataBeforeClose: any;
 
-  btnYesShouldBeDisabled:boolean ;
+  btnYesShouldBeDisabled: boolean ;
 
-  popupValider : string = this.translated('.POPUP_VALIDER');
-  popupAnnuler : string = this.translated('.POPUP_ANNULER');
+  popupValider: string = this.translated('.POPUP_VALIDER');
+  popupAnnuler: string = this.translated('.POPUP_ANNULER');
 
   constructor(
     public dialogConfirmRef: MatDialogRef<PastisDialogConfirmComponent>,
     @Inject(MAT_DIALOG_DATA) public dialogReceivedData: PastisDialogData,
-    public sedaService: SedaService, private popUpService:PopupService,
+    public sedaService: SedaService, private popUpService: PopupService,
     private translateService: TranslateService) {
   }
 
 
   ngOnInit() {
-    console.log("Data received on confirm dialog : %o", this.dialogReceivedData);
-    if (this.dialogReceivedData.component){
+    console.log('Data received on confirm dialog : %o', this.dialogReceivedData);
+    if (this.dialogReceivedData.component) {
       this.portal = new ComponentPortal(this.dialogReceivedData.component);
       this.popUpService.setPopUpDataOnOpen(this.dialogReceivedData);
     }
-      if (!this.dialogReceivedData.okLabel) this.dialogReceivedData.okLabel = this.popupValider;
+    if (!this.dialogReceivedData.okLabel) { this.dialogReceivedData.okLabel = this.popupValider; }
 
-      if (!this.dialogReceivedData.cancelLabel) this.dialogReceivedData.cancelLabel = this.popupAnnuler;
+    if (!this.dialogReceivedData.cancelLabel) { this.dialogReceivedData.cancelLabel = this.popupAnnuler; }
 
-      this.popUpService.popUpDataBeforeClose.subscribe(data=>{
+    this.popUpService.popUpDataBeforeClose.subscribe(data => {
         this.dataBeforeClose = data;
-      })
-      this.popUpService.btnYesShoudBeDisabled.subscribe(shouldDisableButton=>{
+      });
+    this.popUpService.btnYesShoudBeDisabled.subscribe(shouldDisableButton => {
           this.btnYesShouldBeDisabled = shouldDisableButton;
-      })
-      this.popUpService.btnYesShoudBeDisabled.next(this.dialogReceivedData.disableBtnOuiOnInit)
+      });
+    this.popUpService.btnYesShoudBeDisabled.next(this.dialogReceivedData.disableBtnOuiOnInit);
 
   }
 
   onNoClick(): void {
-    console.log("Clicked no ");
-    this.popUpService.btnYesShoudBeDisabled.next(false)
+    console.log('Clicked no ');
+    this.popUpService.btnYesShoudBeDisabled.next(false);
     this.dialogConfirmRef.close();
   }
 
   onYesClick(): void {
-    console.log("Clicked ok on dialog and send data : %o", this.dataBeforeClose);
+    console.log('Clicked ok on dialog and send data : %o', this.dataBeforeClose);
   }
 
   getToolTipData(data: any) {
     if (data && data.length) {
-      return data.nodeName
+      return data.nodeName;
     }
   }
 

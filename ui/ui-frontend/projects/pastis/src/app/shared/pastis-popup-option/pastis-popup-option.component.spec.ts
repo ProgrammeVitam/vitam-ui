@@ -13,8 +13,8 @@ import { PastisPopupOptionComponent } from './pastis-popup-option.component';
 
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
-  const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
+matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+const snackBarSpy = jasmine.createSpyObj('MatSnackBar', ['open', 'openFromComponent']);
 
 describe('PastisPopupOptionComponent', () => {
   let component: PastisPopupOptionComponent;

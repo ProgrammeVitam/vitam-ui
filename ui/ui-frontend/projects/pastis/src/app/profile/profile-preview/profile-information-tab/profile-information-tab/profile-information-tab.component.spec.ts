@@ -52,7 +52,7 @@ describe('ProfileInformationTabComponent', () => {
       name: '',
       type: '',
       controlSchema: '{}'
-    }
+    };
     fixture.detectChanges();
   });
 

@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -12,7 +12,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { CreateNoticeComponent } from './create-notice.component';
 
 const matDialogData = jasmine.createSpyObj('MAT_DIALOG_DATA', ['open']);
-  matDialogData.open.and.returnValue({ afterClosed: () => of(true) });
+matDialogData.open.and.returnValue({ afterClosed: () => of(true) });
 const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['open']);
 matDialogRefSpy.open.and.returnValue({ afterClosed: () => of(true) });
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);

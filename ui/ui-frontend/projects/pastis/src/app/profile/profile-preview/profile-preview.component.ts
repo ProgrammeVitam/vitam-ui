@@ -1,17 +1,17 @@
 import {AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
-import {MatTab, MatTabGroup, MatTabHeader} from "@angular/material/tabs";
-import {ProfileDescription} from "../../models/profile-description.model";
-import {ProfileInformationTabComponent} from "./profile-information-tab/profile-information-tab/profile-information-tab.component";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfirmActionComponent} from "../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component";
-import {Observable} from "rxjs";
-import {Router} from "@angular/router";
-import {StartupService} from "ui-frontend-common";
-import {PastisConfiguration} from "../../core/classes/pastis-configuration";
-import {environment} from "../../../environments/environment";
-import {ProfileService} from "../../core/services/profile.service";
-import {ProfileResponse} from "../../models/profile-response";
-import {FileNode} from "../../models/file-node";
+import {MatDialog} from '@angular/material/dialog';
+import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
+import {Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {StartupService} from 'ui-frontend-common';
+import {ConfirmActionComponent} from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
+import {environment} from '../../../environments/environment';
+import {PastisConfiguration} from '../../core/classes/pastis-configuration';
+import {ProfileService} from '../../core/services/profile.service';
+import {FileNode} from '../../models/file-node';
+import {ProfileDescription} from '../../models/profile-description.model';
+import {ProfileResponse} from '../../models/profile-response';
+import {ProfileInformationTabComponent} from './profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 @Component({
   selector: 'profile-preview',
@@ -26,7 +26,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   inputProfile: ProfileDescription;
 
   tabUpdated: boolean[] = [false, false];
-  isClicked: boolean = false;
+  isClicked = false;
   isStandalone: boolean = environment.standalone;
 
   fileNode: FileNode[] = [];
@@ -60,7 +60,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   closeNotice(updated: boolean) {
-    if(updated){
+    if (updated) {
       this.emitClose();
     }
   }
@@ -99,13 +99,14 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   isProfilAttached() {
-    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path)
-      //console.log(this.inputProfile)
+    if (this.inputProfile.controlSchema && this.inputProfile.controlSchema.length != 2 || this.inputProfile.path) {
+      // console.log(this.inputProfile)
       return true;
+    }
   }
 
   onButtonClicked() {
-    this.isClicked = !this.isClicked
+    this.isClicked = !this.isClicked;
   }
 
   editProfile(inputProfile: ProfileDescription) {
@@ -116,28 +117,28 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   downloadProfile(inputProfile: ProfileDescription) {
-    if (inputProfile.type === "PA") {
+    if (inputProfile.type === 'PA') {
       this.profileService.downloadProfilePaVitam(inputProfile.identifier).subscribe(dataFile => {
         if (dataFile) {
           this.downloadFile(dataFile, inputProfile.type, inputProfile);
         }
       });
-    } else if (inputProfile.type === "PUA") {
+    } else if (inputProfile.type === 'PUA') {
       // Send the retrieved JSON data to profile service
       this.profileService.getProfile(inputProfile).subscribe(retrievedData => {
-        let profileResponse = retrievedData as ProfileResponse;
-        this.fileNode.push(profileResponse.profile)
-        console.log(profileResponse.notice.identifier + "identifier")
+        const profileResponse = retrievedData as ProfileResponse;
+        this.fileNode.push(profileResponse.profile);
+        console.log(profileResponse.notice.identifier + 'identifier');
         this.profileService.uploadFile(this.fileNode, profileResponse.notice, inputProfile.type).subscribe(data => {
           this.downloadFile(data, inputProfile.type, inputProfile);
         });
-      })
+      });
     }
   }
 
-  downloadFile(dataFile: any, typeProfile:string, inputProfile?:ProfileDescription): void {
-    console.debug("Profile mode : ", this.profileService.profileMode)
-    let typeFile = typeProfile === "PA" ? 'application/xml' : 'application/json';
+  downloadFile(dataFile: any, typeProfile: string, inputProfile?: ProfileDescription): void {
+    console.debug('Profile mode : ', this.profileService.profileMode);
+    const typeFile = typeProfile === 'PA' ? 'application/xml' : 'application/json';
     const newBlob = new Blob([dataFile], {type: typeFile});
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
@@ -146,7 +147,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
-    link.download = typeProfile === "PA" ? inputProfile.path : 'pastis_' +inputProfile.identifier +'.json';
+    link.download = typeProfile === 'PA' ? inputProfile.path : 'pastis_' + inputProfile.identifier + '.json';
     // this is necessary as link.click() does not work on the latest firefox
     link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
     setTimeout(() => {

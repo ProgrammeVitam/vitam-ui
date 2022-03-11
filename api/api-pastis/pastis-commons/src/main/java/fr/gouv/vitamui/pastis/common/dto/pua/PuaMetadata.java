@@ -47,14 +47,6 @@ public class PuaMetadata extends JsonElement {
 
     private Map<String, PuaMetadataDetails> puaDetails = new HashMap<>();
 
-    public Map<String, PuaMetadataDetails> getPuaDetails() {
-        return puaDetails;
-    }
-
-    public void setPuaDetails(Map<String, PuaMetadataDetails> puaDetails) {
-        this.puaDetails = puaDetails;
-    }
-
     @Override
     public JsonElement deepCopy() {
         return null;

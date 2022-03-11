@@ -160,7 +160,6 @@ public class ProfileInternalController {
         LOGGER.debug("create profile={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         archivalProfile.setTenant(0);
-        vitamContext.setTenantId(0);
         return profileInternalService.create(vitamContext, archivalProfile);
     }
 
