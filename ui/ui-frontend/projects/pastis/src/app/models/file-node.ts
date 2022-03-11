@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { PUA } from './pua.model';
+import { PuaData } from './pua-data';
 import { SedaData } from './seda-data';
 
 /**
@@ -94,6 +94,7 @@ export enum ValueOrDataConstants {
 }
 
 export interface FileNode {
+  additionalProperties:boolean;
   id: number;
   parentId: number;
   name: string;
@@ -109,7 +110,7 @@ export interface FileNode {
   children: FileNode[];
   parent: FileNode;
   sedaData: SedaData;
-  puaData?: PUA;
+  puaData?: PuaData;
 }
 
 export interface FileNodeInsertParams {

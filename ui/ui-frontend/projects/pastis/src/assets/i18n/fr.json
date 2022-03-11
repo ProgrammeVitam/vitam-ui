@@ -167,8 +167,15 @@
         "CARDINALITE": "Cardinalité",
         "COMMENTAIRE": "Commentaire",
         "DUPLIQUER": "Dupliquer",
+        "CONTROLE_METADONNEE": "Contrôle de métadonnée",
+        "ENUMERATION_CONTROLE": "Contrôle de type \"Enumération\"",
+        "FORMATAGE_PREDEFINI": "Utiliser un formatage prédéfini",
+        "SAISIR_EXPRESSION": "Saisir une expression régulière",
+        "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
         "SUPPRIMER": "Supprimer",
+        "AUTORISER_PRESENCE_METADONNEE": "Autoriser la presence de metadonnee non declarees",
+        "ADDITIONAL_PROPERTIES_TOOLTIP": "Autoriser ou non la présence, dans un bordereau, de métadonnées non déclarées dans le PUA",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "La métadonnée",
           "PARTIEDEUX": "ne contient pas de métadonnées filles. Vous devez lui en ajouter au moins une pour pouvoir l'utiliser dans votre profil."

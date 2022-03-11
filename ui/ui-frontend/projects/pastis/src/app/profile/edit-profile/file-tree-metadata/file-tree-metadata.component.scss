@@ -59,6 +59,9 @@ td {
   margin: 0px -10px 0px 0px !important;
 }
 
+.pastis-table-container {
+  margin-bottom: 60px ;
+}
 .pastis-table-container .mat-select-value-text {
   @extend .text-text-normal;
   color: var(--vitamui-grey-600);
@@ -179,7 +182,7 @@ td {
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     text-align: left;
   }
   @extend .editable-field-control;
@@ -298,7 +301,14 @@ tr:hover .pastis-btn-appear {
   height: 50px;
   display: inline-block;
 }
-
+.pastis-panel-metadata-control {
+  @extend .pastis-panel-radius-5;
+  margin-left: 74px;
+  margin-right: 120px;
+  height: fit-content;
+  background-color: #FAFAFA;
+  padding-bottom: 30px
+}
 .pastis-metadata-option-container {
   @extend .pastis-panel-radius-10;
   @extend .pastis-panel-shadow;
@@ -310,11 +320,12 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-metadata-option-entete-1 {
-  position: relative;
+  position: absolute;
   height: 117px;
-  float: left;
-  padding-left: 35px;
-  padding-top: 20px;
+  width: 50%;
+  float: right;
+  left: 35px;
+  top: 20px;
 }
 
 .pastis-metadata-option-entete-1 .vitamui-icon-dossier-physique {
@@ -325,11 +336,11 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-metadata-option-entete-2 {
-  position: relative;
+  position: absolute;
   height: 117px;
-  width: 172px;
   display: inline-flex;
-  float: right;
+  right: 20px;
+  top: 5px;
 }
 
 
@@ -368,7 +379,7 @@ dp-date-picker {
 
 dp-day-calendar .dp-day-calendar-container {
   border-radius: 20px !important;
-  box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.1), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 24px 38px rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 11px 15px rgba(0, 0, 0, 0.1), 0 9px 46px rgba(0, 0, 0, 0.06), 0 24px 38px rgba(0, 0, 0, 0.07) !important;
 }
 
 .dp-selected {
@@ -448,3 +459,45 @@ dp-day-calendar .dp-day-calendar-container {
   overflow: visible;
   z-index: 999;
 }
+
+.allow_presence_text{
+  font-size: 11px !important;
+  font-family: 'Mulish', sans-serif !important;
+  color: #212121 !important;
+  font-weight: 400;
+}
+
+.placement-tooltip{
+  position: absolute;
+  left: 13em;
+  top: 1em;
+}
+.pastis-dialog-config-title {
+  bottom: 10px;
+  position: relative;
+  padding-top: 20px
+}
+
+.pastis-dialog-title {
+  @extend .pastis-font-popup-title;
+  /* Positioning */
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-top: 10px;
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: var(--vitamui-grey-900);
+
+}
+
+.pastis-icon-primary {
+  color: var(--vitamui-primary-700) !important;
+  margin-left: 10px !important;
+}
+

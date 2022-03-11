@@ -85,6 +85,7 @@
         "CARDINALITE ": "Cardinality",
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
+        "CONTROLE_METADONNEE": "Metadata control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",
         "MESSAGE_METADONNEE_SANS_FILLES": {

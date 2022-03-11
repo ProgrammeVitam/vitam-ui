@@ -35,16 +35,17 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {FileUploadModule} from 'ng2-file-upload';
-import {PastisMaterialModule} from '../material.module';
-import {SharedModule} from '../shared/shared.module';
+import {UserActionUploadProfileComponent} from './upload-profile/upload-profile.component';
+import {SharedModule} from '../shared/shared.module'
 import {FilterByNamePipe} from './add-metadata/add-metadata.component';
+import {UserActionSaveProfileComponent} from './save-profile/save-profile.component';
+import {PastisMaterialModule} from '../material.module';
 import {UserActionsDownloadDocComponent} from './download-doc/download-doc.component';
 import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadata.component';
-import {UserActionSaveProfileComponent} from './save-profile/save-profile.component';
-import {UserActionUploadProfileComponent} from './upload-profile/upload-profile.component';
+import {UserActionAddPuaControlComponent} from './add-pua-control/add-pua-control.component';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -53,11 +54,12 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {VitamUIInputModule} from 'vitamui-library';
 import {CoreModule} from '../core/core.module';
 import {CreateNoticeComponent} from './create-notice/create-notice.component';
-import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
+import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
+import {AllowAdditionalPropertiesComponent} from './allow-additional-properties/allow-additional-properties.component';
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent, FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,
@@ -71,7 +73,7 @@ import { SaveProfileOptionsComponent } from './save-profile-options/save-profile
     FormsModule,
     MatSlideToggleModule
   ],
-  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe ],
+  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent,UserActionAddPuaControlComponent],
 })
 export class UserActionsModule {
 
