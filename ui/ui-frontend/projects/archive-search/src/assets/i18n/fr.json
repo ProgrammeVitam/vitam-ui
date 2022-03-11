@@ -442,8 +442,8 @@
       "SOURCE_RULE": "Règle de gestion source *",
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
-      "UA_TO_UPDATE": "UA sélectionnées seront prises en compte lors de la mise à jour",
-      "UA_TO_IGNORE": "des UA sélectionnées ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
+      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

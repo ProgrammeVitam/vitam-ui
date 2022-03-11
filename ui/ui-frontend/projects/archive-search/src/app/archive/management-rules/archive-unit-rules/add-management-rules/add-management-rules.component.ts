@@ -49,7 +49,7 @@ import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
+const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const APPRAISAL_RULE_START_DATE = 'APPRAISAL_RULE_START_DATE';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
@@ -188,7 +188,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: RULE_IDENTIFIER,
+      criteria: APPRAISAL_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,
@@ -210,7 +210,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
     if (this.ruleDetailsForm.get('startDate').value) {
       const criteriaWithId: SearchCriteriaEltDto = {
-        criteria: RULE_IDENTIFIER,
+        criteria: APPRAISAL_RULE_IDENTIFIER,
         values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
         category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
         operator: CriteriaOperator.EQ,
@@ -224,7 +224,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
             value: this.ruleDetailsForm.get('startDate').value,
           },
         ],
-        category: SearchCriteriaTypeEnum.FIELDS,
+        category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
         operator: CriteriaOperator.EQ,
         dataType: CriteriaDataType.STRING,
       };
