@@ -36,18 +36,18 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { FileNode } from "../../../models/file-node";
 import { ComponentType } from '@angular/cdk/portal';
+import { FileNode } from '../../../models/file-node';
 
 export interface PastisDialogData {
     width: string;
     height: string;
     titleDialog: string;
     subTitleDialog: string;
-    okLabel:string;
-    cancelLabel:string;
+    okLabel: string;
+    cancelLabel: string;
     fileNode: FileNode;
-    disableBtnOuiOnInit:boolean;
+    disableBtnOuiOnInit: boolean;
     component: ComponentType<any>;
     modeProfile ?: string;
   }

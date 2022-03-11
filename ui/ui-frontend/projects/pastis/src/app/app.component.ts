@@ -50,7 +50,7 @@ export class AppComponent implements OnInit {
   public sedaviewRoute: boolean;
 
   constructor() {
-    this.sedaviewRoute = document.URL.substring(document.URL.lastIndexOf('/'), document.URL.length) === "/sedaview";
+    this.sedaviewRoute = document.URL.substring(document.URL.lastIndexOf('/'), document.URL.length) === '/sedaview';
 
   }
 

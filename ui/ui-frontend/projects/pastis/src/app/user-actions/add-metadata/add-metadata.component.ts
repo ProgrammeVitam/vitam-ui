@@ -35,16 +35,16 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, TemplateRef, Pipe, PipeTransform } from '@angular/core';
-import { SedaData, SedaElementConstants, SedaCardinalityConstants } from '../../models/seda-data';
-import { FileNode } from '../../models/file-node';
-import { FileService } from '../../core/services/file.service';
-import { SedaService } from '../../core/services/seda.service';
+import { Component, OnInit, Pipe, PipeTransform, TemplateRef } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
-import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { PopupService } from '../../core/services/popup.service';
 import { Subscription } from 'rxjs';
+import { FileService } from '../../core/services/file.service';
+import { PopupService } from '../../core/services/popup.service';
+import { SedaService } from '../../core/services/seda.service';
+import { FileNode } from '../../models/file-node';
+import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
+import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
+import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import { ProfileService } from '../../core/services/profile.service';
 
@@ -67,15 +67,15 @@ export class UserActionAddMetadataComponent implements OnInit {
   dialogData: PastisDialogData;
 
   atLeastOneIsSelected: boolean;
-  customTemplate: TemplateRef<any>
+  customTemplate: TemplateRef<any>;
   fileNode: FileNode;
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService, private profileService: ProfileService) { }
+              private fileService: FileService, private sedaService: SedaService,
+              private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService, private profileService: ProfileService) { }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -83,14 +83,14 @@ export class UserActionAddMetadataComponent implements OnInit {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error)
+        console.log(error);
       }
     );
     this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode })
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
- 
+
     if (this.profileService.profileMode === "PA") {
       this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
       .filter(e => e.Element !== SedaElementConstants.attribute);
@@ -106,7 +106,7 @@ export class UserActionAddMetadataComponent implements OnInit {
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
       this.btnIsDisabled = status;
-    })
+    });
   }
 
   selectSedaElement(selectedElements: string[]) {
@@ -122,7 +122,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   }
 
   onRemoveSelectedElement(element: SedaData) {
-    let indexOfElement = this.addedItems.indexOf(element)
+    const indexOfElement = this.addedItems.indexOf(element);
     if (indexOfElement >= 0) {
       this.addedItems.splice(indexOfElement, 1);
     }
@@ -130,27 +130,27 @@ export class UserActionAddMetadataComponent implements OnInit {
       this.allowedChildren.push(element);
       this.allowedChildren = this.allowedChildren.slice(0, this.allowedChildren.length);
     }
-    let orderedNames = Object.values(this.allowedChildren);
+    const orderedNames = Object.values(this.allowedChildren);
     this.allowedChildren.sort((a, b) => {
-      return orderedNames.indexOf(a) - orderedNames.indexOf(b)
-    })
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
+      return orderedNames.indexOf(a) - orderedNames.indexOf(b);
+    });
+    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
     this.upateButtonStatusAndDataToSend();
   }
 
   onAddSelectedElement(element: SedaData) {
-    this.addedItems.push(element);
+      this.addedItems.push(element);
 
-    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
-      this.allowedChildren = this.allowedChildren.filter(e => e != element);
-    }
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
-    this.upateButtonStatusAndDataToSend();
+      if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+        this.allowedChildren = this.allowedChildren.filter(e => e != element);
+      }
+      this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+      this.upateButtonStatusAndDataToSend();
   }
 
   upateButtonStatusAndDataToSend() {
     this.popUpService.setPopUpDataOnClose(this.addedItems);
-    this.popUpService.disableYesButton(!this.atLeastOneIsSelected)
+    this.popUpService.disableYesButton(!this.atLeastOneIsSelected);
   }
 
   onAllItemsAdded() {
@@ -168,7 +168,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   }
 
   onYesClick(): void {
-    console.log("Clicked ok on dialog : %o", this.selectedSedaNode);
+    console.log('Clicked ok on dialog : %o' , this.selectedSedaNode);
 
   }
   onNoClick(): void {
@@ -181,8 +181,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   onResolveName(element: SedaData): string {
     if (this.sedaLanguage) {
       return element.Name;
-    }
-    else {
+    } else {
       if (element.NameFr) {
         return element.NameFr;
       }
@@ -200,8 +199,8 @@ export class UserActionAddMetadataComponent implements OnInit {
 @Pipe({ name: 'filterByName' })
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
-    if (!listOfElements) return null;
-    if (!nameToFilter) return listOfElements;
+    if (!listOfElements) { return null; }
+    if (!nameToFilter) { return listOfElements; }
     if (sedaLanguage) {
       return listOfElements.filter(element => element.Name != undefined).filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     } else {

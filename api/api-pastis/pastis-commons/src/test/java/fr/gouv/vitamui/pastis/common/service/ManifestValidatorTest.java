@@ -54,15 +54,12 @@ import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
 import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
 import fr.gouv.vitamui.pastis.common.util.ManifestValidator;
 import fr.gouv.vitamui.pastis.common.util.PastisCustomCharacterEscapeHandler;
-import fr.gouv.vitamui.pastis.common.util.PropertiesUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 

@@ -5,11 +5,11 @@
   "pastisPathPrefix": "",
   "getAllProfilesUrl": "/getprofiles",
   "editProfileUrl": "/edit",
-  "createProfileByTypeUrl": "/createprofile",
+  "createProfileByTypeUrl": "/profile",
   "uploadProfileUrl": "/profile",
   "getFileUrl": "/getfile",
-  "savePAasFileUrl": "/getarchiveprofile",
+  "savePAasFileUrl": "/archiveprofile",
   "savePUAasFileUrl": "/getarchiveunitprofile"
-  
-  
+
+
 }

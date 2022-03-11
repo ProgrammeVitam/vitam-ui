@@ -120,12 +120,12 @@ export interface FileNode {
 
 export interface FileNodeInsertParams {
   node: FileNode;
-  elementsToAdd:SedaData[];
+  elementsToAdd: SedaData[];
 }
 
 export interface FileNodeInsertAttributeParams {
   node: FileNode;
-  elementsToAdd:FileNode[];
+  elementsToAdd: FileNode[];
 }
 
 export enum nodeNameToLabel {

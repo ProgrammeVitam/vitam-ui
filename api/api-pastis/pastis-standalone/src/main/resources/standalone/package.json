@@ -1,7 +1,5 @@
 {
-  "name": "vitamui-ui",
-  "version": "5.4.0-SNAPSHOT",
-  "license": "MIT",
+  "name": "pastis-standalone",
   "pki": {
     "path": "../../dev-deployment/environments/certs/server/hosts/localhost",
     "asset": "reverse"
@@ -18,6 +16,7 @@
     "build:all": "npm run build:fr && npm run build:en",
     "build:pastis": "export NODE_OPTIONS=--max_old_space_size=4096; ng build pastis --prod --i18n-locale fr",
     "test": "ng test --watch=false",
+    "test:pastis": "ng test pastis --watch=false",
     "test:vitamui-library": "ng test vitamui-library --watch=false",
     "test:conf-ci": "ng test --watch=false --karma-config=karma.conf.ci.js",
     "test:sonar": "ng test --code-coverage --watch=false",
