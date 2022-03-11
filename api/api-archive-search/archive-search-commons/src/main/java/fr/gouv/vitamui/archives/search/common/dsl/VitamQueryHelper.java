@@ -55,6 +55,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.missing;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
@@ -149,8 +150,7 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
-        final Integer size,
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap,
         final Optional<String> orderBy, final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, InvalidCreateOperationException {
 
@@ -168,7 +168,6 @@ public class VitamQueryHelper {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
-        select.setLimitFilter(pageNumber * size, size);
         Map<String, Integer> projection = new HashMap<>();
         projection.put("Identifier", 1);
         projection.put("Name", 1);
@@ -190,10 +189,7 @@ public class VitamQueryHelper {
                 final String searchKey = entry.getKey();
 
                 switch (searchKey) {
-                    case ArchiveSearchConsts.NAME:
-                    case ArchiveSearchConsts.SHORT_NAME:
                     case ArchiveSearchConsts.IDENTIFIER:
-                    case ArchiveSearchConsts.ID:
                         if (entry.getValue() instanceof ArrayList) {
                             final List<String> stringsValues = (ArrayList) entry.getValue();
                             for (String elt : stringsValues) {
@@ -204,6 +200,23 @@ public class VitamQueryHelper {
                             // string equals operation
                             final String stringValue = (String) entry.getValue();
                             queryOr.add(eq(searchKey, stringValue));
+                            haveOrParameters = true;
+                        }
+
+                        break;
+
+                    case ArchiveSearchConsts.NAME:
+                    case ArchiveSearchConsts.SHORT_NAME:
+                    case ArchiveSearchConsts.ID:
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String name : stringsValues) {
+                                queryOr.add(matchPhrasePrefix(searchKey, name));
+                            }
+                            haveOrParameters = true;
+                        } else if (entry.getValue() instanceof String) {
+                            final String stringValue = (String) entry.getValue();
+                            queryOr.add(matchPhrasePrefix(searchKey, stringValue));
                             haveOrParameters = true;
                         }
 
