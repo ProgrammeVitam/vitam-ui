@@ -619,13 +619,17 @@ public class PuaPastisValidator {
             puaMetadataDetails.setMinItems(0);
             puaMetadataDetails.setMaxItems(1);
         }
-        if (!sedaElement.getEnumeration().isEmpty() && el.getValue() == null) {
-            puaMetadataDetails.setEnums(sedaElement.getEnumeration());
-        }
-        if (el.getValue() != null) {
-            ArrayList<String> list = new ArrayList<>();
-            list.add(el.getValue());
-            puaMetadataDetails.setEnums(list);
+        if(el.getPuaData() != null && el.getPuaData().getEnum() != null){
+            puaMetadataDetails.setEnums(el.getPuaData().getEnum());
+        }else{
+            if (!sedaElement.getEnumeration().isEmpty() && el.getValue() == null) {
+                puaMetadataDetails.setEnums(sedaElement.getEnumeration());
+            }
+            if (el.getValue() != null) {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(el.getValue());
+                puaMetadataDetails.setEnums(list);
+            }
         }
 
     }

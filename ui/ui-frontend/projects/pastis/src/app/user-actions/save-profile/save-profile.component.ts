@@ -36,23 +36,23 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {environment} from '../../../environments/environment';
-import {FileService} from '../../core/services/file.service';
-import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
 import {ProfileService} from '../../core/services/profile.service';
-import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {FileService} from '../../core/services/file.service';
 import {FileNode} from '../../models/file-node';
-import {Profile} from '../../models/profile';
-import {ProfileDescription} from '../../models/profile-description.model';
+import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
+import {Subscription} from "rxjs";
 import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {CreateNoticeComponent} from '../create-notice/create-notice.component';
-import {SaveProfileOptionsComponent} from '../save-profile-options/save-profile-options.component';
+import {MatDialog} from "@angular/material/dialog";
+import {CreateNoticeComponent} from "../create-notice/create-notice.component";
+import {SaveProfileOptionsComponent} from "../save-profile-options/save-profile-options.component";
+import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
+import {Profile} from "../../models/profile";
+import {ProfileDescription} from "../../models/profile-description.model";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {environment} from "../../../environments/environment";
+import {Router} from '@angular/router';
+import {NoticeService} from '../../core/services/notice.service';
+import {NotificationService} from '../../core/services/notification.service';
 
 export interface PastisDialogDataCreate {
   height: string;
@@ -103,7 +103,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   data: FileNode[] = [];
   donnees: string[];
 
-  subscription1$: Subscription;
   subscription2$: Subscription;
   subscriptions: Subscription[] = [];
 
@@ -112,6 +111,8 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
 
   profileDescription: ProfileDescription;
   fileRng: File;
+
+  @Input() additional : boolean;
 
   @Output() close = new EventEmitter();
 
@@ -157,6 +158,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
+    this.data[0].additionalProperties = this.additional;
     if (this.isStandalone) {
       this.downloadProfiles(true);
     } else {

@@ -38,19 +38,9 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 import {Component, EventEmitter, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatCheckboxChange} from '@angular/material/checkbox';
 import {MatTableDataSource} from '@angular/material/table';
-import {Router} from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {environment} from 'projects/pastis/src/environments/environment';
-import {Subscription} from 'rxjs';
-import {StartupService} from 'ui-frontend-common';
 import {FileService} from '../../../core/services/file.service';
-import {NotificationService} from '../../../core/services/notification.service';
-import {ProfileService} from '../../../core/services/profile.service';
 import {SedaService} from '../../../core/services/seda.service';
-import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
-import {AttributeData} from '../../../models/edit-attribute-models';
 import {
   CardinalityConstants,
   DataTypeConstants,
@@ -61,13 +51,24 @@ import {
   TypeConstants,
   ValueOrDataConstants
 } from '../../../models/file-node';
-import {CardinalityValues, MetadataHeaders} from '../../../models/models';
 import {SedaData, SedaElementConstants} from '../../../models/seda-data';
-import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {FileTreeMetadataService} from './file-tree-metadata.service';
+import {AttributesPopupComponent} from './attributes/attributes.component';
+import {AttributeData} from '../../../models/edit-attribute-models';
+import {ProfileService} from '../../../core/services/profile.service';
+import {BreadcrumbDataMetadata, BreadcrumbDataTop} from '../../../models/breadcrumb';
+import {StartupService} from 'ui-frontend-common';
+import {Router} from '@angular/router';
+import {Subscription} from "rxjs";
+import {MatCheckboxChange} from "@angular/material/checkbox";
 import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import {FileTreeService} from '../file-tree/file-tree.service';
-import {AttributesPopupComponent} from './attributes/attributes.component';
-import {FileTreeMetadataService} from './file-tree-metadata.service';
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {CardinalityValues, MetadataHeaders} from '../../../models/models';
+import {NotificationService} from '../../../core/services/notification.service';
+import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
+import {environment} from 'projects/pastis/src/environments/environment';
+import {UserActionAddPuaControlComponent} from "../../../user-actions/add-pua-control/add-pua-control.component";
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -101,7 +102,7 @@ export class FileTreeMetadataComponent {
   // Mat table
   matDataSource: MatTableDataSource<MetadataHeaders>;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
 
@@ -188,6 +189,8 @@ export class FileTreeMetadataComponent {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  additionalProperties: boolean;
+  additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
               private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
@@ -217,7 +220,8 @@ export class FileTreeMetadataComponent {
       this.popupAnnuler = 'Annuler';
     }
 
-
+    this.additionalProperties = false;
+    this.additionalPropertiesMetadonnee = false;
     this.docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
     this._sedalanguageSub = this.metadataLanguageService.sedaLanguage.subscribe(
@@ -245,7 +249,7 @@ export class FileTreeMetadataComponent {
                       this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: node.parent.name, node: node.parent } ]);
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: node.parent.name, node: node.parent }]);
                 }
                 this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node } ]);
               }
@@ -522,6 +526,23 @@ export class FileTreeMetadataComponent {
     }
   }
 
+  async onEditControlClick(fileNodeId: number) {
+    alert(fileNodeId)
+    let popData = {} as PastisDialogData;
+    if (fileNodeId) {
+      popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+      popData.titleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
+      popData.subTitleDialog = "Ajouter des contrôles supplémentaires à Title";
+      popData.width = '1120px';
+      popData.component = UserActionAddPuaControlComponent
+      popData.okLabel = 'AJOUTER LES CONTROLES'
+      popData.cancelLabel = this.popupAnnuler
+
+      let popUpAnswer = <AttributeData[]>await this.fileService.openPopup(popData);
+      console.log("The answer for edit attributte was ", popUpAnswer);
+    }
+  }
+
   onDeleteNode(nodeId: number) {
     const nodeToDelete = this.fileService.getFileNodeById(this.fileService.nodeChange.getValue(), nodeId);
     this.removeNode.emit(nodeToDelete);
@@ -635,7 +656,7 @@ export class FileTreeMetadataComponent {
   }
 
   goBack() {
-    this.router.navigate(['/'], {skipLocationChange: false});
+    this.router.navigate(['/'], { skipLocationChange: false });
   }
 
   ngOnDestroy() {
@@ -690,4 +711,29 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
+  changeStatusAditionalProperties($event: boolean) {
+    this.additionalProperties = $event;
+  }
+
+
+  isElementNameNotContentManagement(nomDuChamp: string) {
+    return !(nomDuChamp == "Content" || nomDuChamp == "Management");
+  }
+
+  changeAutorisation($event: MatCheckboxChange, element: any) {
+    console.log($event.checked + "test" + element.nomDuChamp);
+    this.additionalPropertiesMetadonnee = $event.checked;
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
+  }
+
+  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
+
+    for (let node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id) {
+
+        node.puaData.additionalProperties = additionalPropertiesMetadonnee;
+      }
+    }
+
+  }
 }

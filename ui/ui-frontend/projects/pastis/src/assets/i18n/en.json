@@ -167,8 +167,15 @@
         "CARDINALITE": "Cardinality",
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
+        "CONTROLE_METADONNEE": "Metadata control",
+        "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
+        "FORMATAGE_PREDEFINI": "Use predefined formatting",
+        "SAISIR_EXPRESSION": "Enter a regular expression",
+        "EXPRESSION_CONTROLE": "\"Regular expression\" type control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",
+        "AUTORISER_PRESENCE_METADONNEE": "Allow the presence of undeclared metadata",
+        "ADDITIONAL_PROPERTIES_TOOLTIP": "Authorize or not the presence, in a slip, of metadata not declared in the PUA",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "The metadata",
           "PARTIEDEUX": "does not contain any child metadata. You must add at least one to it to be able to use it in your profile."
