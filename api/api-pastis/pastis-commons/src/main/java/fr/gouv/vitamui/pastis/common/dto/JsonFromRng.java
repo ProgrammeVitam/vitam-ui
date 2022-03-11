@@ -53,7 +53,7 @@ public class JsonFromRng {
 
     String cardinality;
 
-    String valuleOrData;
+    String valueOrData;
 
     String dataType;
 

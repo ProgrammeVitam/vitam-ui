@@ -11,7 +11,7 @@ import { ProfileService } from '../../core/services/profile.service';
 import { ProfilePreviewComponent } from './profile-preview.component';
 
 const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-  matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
 
 describe('ProfilePreviewComponent', () => {
   let component: ProfilePreviewComponent;
@@ -30,7 +30,7 @@ describe('ProfilePreviewComponent', () => {
         PastisConfiguration,
         { provide: BASE_URL, useValue: '/pastis-api' },
         { provide: MatDialog, useValue: matDialogSpy },
-        //{ provide: MatSnackBar, useValue: snackBarSpy },
+        // { provide: MatSnackBar, useValue: snackBarSpy },
         { provide: StartupService, useValue: { getTenantIdentifier: () => ''} },
       ]
     })
@@ -48,7 +48,7 @@ describe('ProfilePreviewComponent', () => {
       name: '',
       type: '',
       controlSchema: '{}'
-    }
+    };
     fixture.detectChanges();
   });
 

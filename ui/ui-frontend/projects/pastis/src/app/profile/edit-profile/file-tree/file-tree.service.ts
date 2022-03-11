@@ -35,20 +35,20 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { Injectable } from '@angular/core';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Subject } from 'rxjs';
 import { FileNode } from '../../../models/file-node';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { NestedTreeControl } from '@angular/cdk/tree';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileTreeService {
 
-  updateMedataTable:Subject<FileNode>;
-  nestedDataSource:MatTreeNestedDataSource<FileNode>;;
-  nestedTreeControl:NestedTreeControl<FileNode>;
+  updateMedataTable: Subject<FileNode>;
+  nestedDataSource: MatTreeNestedDataSource<FileNode>;
+  nestedTreeControl: NestedTreeControl<FileNode>;
 
   constructor() {
     this.updateMedataTable = new Subject<FileNode>();

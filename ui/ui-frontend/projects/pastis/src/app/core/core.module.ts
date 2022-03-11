@@ -36,9 +36,9 @@
  */
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { VitamUICommonModule, throwIfAlreadyLoaded } from 'ui-frontend-common';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { NgxUiLoaderConfig, NgxUiLoaderModule } from 'ngx-ui-loader';
+import { throwIfAlreadyLoaded, VitamUICommonModule } from 'ui-frontend-common';
 import { PastisMaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';
 

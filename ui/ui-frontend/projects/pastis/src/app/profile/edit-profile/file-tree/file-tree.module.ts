@@ -35,27 +35,27 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { DpDatePickerModule } from 'ng2-date-picker';
 import { SharedModule } from '../../../shared/shared.module';
 import { UserActionsModule } from '../../../user-actions/user-actions.module';
-import { DpDatePickerModule } from 'ng2-date-picker';
 
 import { MatTableModule} from '@angular/material/table';
-import { PastisMaterialModule } from '../../../material.module'
+import { PastisMaterialModule } from '../../../material.module';
 
 import { MAT_RIPPLE_GLOBAL_OPTIONS} from '@angular/material/core';
 
 
+import {TranslateModule} from '@ngx-translate/core';
+import {EditableFieldModule, VitamUICommonModule} from 'ui-frontend-common';
+import { CoreModule } from '../../../core/core.module';
+import { PastisDialogConfirmComponent } from '../../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
+import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
 import { FileTreeMetadataComponent } from '../file-tree-metadata/file-tree-metadata.component';
 import { FileTreeComponent } from './file-tree.component';
 import { FiletreeFilterPipe } from './pipes/file-tree-filter.pipe';
-import { AttributesPopupComponent } from '../file-tree-metadata/attributes/attributes.component';
-import { PastisDialogConfirmComponent } from '../../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
-import { CoreModule } from '../../../core/core.module';
-import {EditableFieldModule, VitamUICommonModule} from "ui-frontend-common";
-import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -76,10 +76,10 @@ import {TranslateModule} from "@ngx-translate/core";
     FileTreeComponent,
     FileTreeMetadataComponent
   ],
-  providers:[{provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: {disabled: true}}],
-  declarations: [FileTreeMetadataComponent, FileTreeComponent,FiletreeFilterPipe,
+  providers: [{provide: MAT_RIPPLE_GLOBAL_OPTIONS, useValue: {disabled: true}}],
+  declarations: [FileTreeMetadataComponent, FileTreeComponent, FiletreeFilterPipe,
     AttributesPopupComponent],
-  entryComponents: [FileTreeComponent,FileTreeMetadataComponent,PastisDialogConfirmComponent,AttributesPopupComponent]
+  entryComponents: [FileTreeComponent, FileTreeMetadataComponent, PastisDialogConfirmComponent, AttributesPopupComponent]
 })
 
 export class FileTreeModule {

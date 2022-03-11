@@ -1,5 +1,5 @@
 /*
-Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2021)
+Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
 [dad@cines.fr]
 
@@ -38,38 +38,41 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.service;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import java.util.Arrays;
+import java.util.Collection;
 
-import java.util.HashMap;
-import java.util.Map;
 
-@Service
-public class PuaDefinitions {
+@RunWith(Parameterized.class)
+public class PuaPastisValidatorNOKTest {
 
-    protected Map<String, Object> definitions;
-    @Value("${pua.definitions.file}")
-    private String defintionsFile;
-
-    @JsonAnyGetter
-    public Map<String, Object> getDefinitions() {
-        return definitions;
+    @Parameters
+    public static Collection<String> data() {
+        return Arrays.asList(new String[] {
+            "pua/pua_NOK_missing_definitions.json",
+            "pua/pua_NOK_missing_management.json",
+            "pua/pua_NOK_missing_properties.json",
+            "pua/pua_NOK_both_management_present.json"
+        });
     }
 
-    @JsonAnySetter
-    public void setDefinitions(String key, Object value) {
-        if (definitions == null) {
-            definitions = new HashMap<>();
-        }
-        if (key != null) {
-            if (value != null) {
-                definitions.put(key, value);
-            } else {
-                definitions.remove(key);
-            }
-        }
+    private final String fileName;
+    private final PuaPastisValidatorTest puaPastisValidatorTest;
 
+    public PuaPastisValidatorNOKTest(String fileName) {
+        this.fileName = fileName;
+        this.puaPastisValidatorTest = new PuaPastisValidatorTest();
     }
+
+    @Test(expected = AssertionError.class)
+    public void testImports() {
+        puaPastisValidatorTest.testImport(fileName);
+    }
+
+
 }
+
+

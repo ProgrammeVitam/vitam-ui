@@ -57,17 +57,17 @@ export class PastisPopupMetadataLanguageComponent implements OnInit {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error)
+        console.log(error);
       }
     );
   }
-  changeLanguage(sedaLanguage: boolean): void{
-    if(sedaLanguage != undefined){
+  changeLanguage(sedaLanguage: boolean): void {
+    if (sedaLanguage != undefined) {
       this.sedaLanguage = sedaLanguage;
       this.metadataLanguageService.sedaLanguage.next(this.sedaLanguage);
     }
   }
-  downloadDocumentation(){
+  downloadDocumentation() {
     window.open(this.docPath);
   }
 

@@ -1,5 +1,5 @@
-import {FileNode} from "./file-node";
-import { ProfileDescription } from "./profile-description.model";
+import {FileNode} from './file-node';
+import { ProfileDescription } from './profile-description.model';
 
 
 export interface ProfileResponse {

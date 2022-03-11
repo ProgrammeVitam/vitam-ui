@@ -37,20 +37,20 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable, OnDestroy} from '@angular/core';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {FileNode} from '../../models/file-node';
-import {PastisApiService} from '../api/api.pastis.service';
-import {PastisConfiguration} from '../classes/pastis-configuration';
-import {environment} from '../../../environments/environment'
 import {cloneDeep} from 'lodash';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import {environment} from '../../../environments/environment';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {FileNode} from '../../models/file-node';
+import {Profile} from '../../models/profile';
 import {ProfileDescription} from '../../models/profile-description.model';
 import {ProfileResponse} from '../../models/profile-response';
-import {PageRequest, PaginatedResponse} from "ui-frontend-common";
-import {map} from 'rxjs/operators';
-import {Profile} from "../../models/profile";
-import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
-import {ArchivalProfileUnitApiService} from "./archival-profile-unit-api.service";
-import {ArchiveProfileApiService} from "./archive-profile-api.service";
+import {PastisApiService} from '../api/api.pastis.service';
+import {PastisConfiguration} from '../classes/pastis-configuration';
+import {ArchivalProfileUnitApiService} from './archival-profile-unit-api.service';
+import {ArchiveProfileApiService} from './archive-profile-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -63,7 +63,7 @@ export class ProfileService implements OnDestroy  {
   public direction: string;
   public criteria?: string;
 
-  public profileMode : string;
+  public profileMode: string;
   public profileName: string;
   public profileId: string;
   protected pageRequest: PageRequest;
@@ -80,34 +80,33 @@ export class ProfileService implements OnDestroy  {
 
 
   constructor(private apiService: PastisApiService, private pastisConfig: PastisConfiguration,
-              private puaService: ArchivalProfileUnitApiService, private  paService : ArchiveProfileApiService) {
+              private puaService: ArchivalProfileUnitApiService, private  paService: ArchiveProfileApiService) {
   }
 
   ngOnDestroy(): void {
-       this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe())
+       this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
     }
 
-  getAllProfiles(): void{
-    if(environment.standalone){
+  getAllProfiles(): void {
+    if (environment.standalone) {
       this.getStandaloneProfiles().subscribe((profiles: ProfileDescription[]) => {
         if (profiles) {
-          this.retrievedProfiles.next(profiles)
-          console.log("Profiles: ", this.retrievedProfiles);
+          this.retrievedProfiles.next(profiles);
+          console.log('Profiles: ', this.retrievedProfiles);
         }
       });
-    }
-    else{
+    } else {
       this.getAllProfilesVitam();
-      //return this.getAllProfilesPaginated(pageRequest);
-      //return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
+      // return this.getAllProfilesPaginated(pageRequest);
+      // return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
     }
   }
 
-  refreshListProfiles(): void{
+  refreshListProfiles(): void {
     this.getAllProfiles();
   }
 
-  getStandaloneProfiles():  Observable<ProfileDescription[]>{
+  getStandaloneProfiles(): Observable<ProfileDescription[]> {
     return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
   }
 
@@ -115,7 +114,7 @@ export class ProfileService implements OnDestroy  {
     let allProfilesPA: any;
     const params = new HttpParams().set('embedded', 'ALL');
     // @ts-ignore
-    allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, {params :params});
+    allProfilesPA = this.apiService.get(this.pastisConfig.getAllArchivalProfileUrl, {params});
     return allProfilesPA;
   }
 
@@ -123,35 +122,35 @@ export class ProfileService implements OnDestroy  {
     let allProfilesPUA: any;
     const params = new HttpParams().set('embedded', 'ALL');
 
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl,{params :params});
+    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, {params});
     return allProfilesPUA;
   }
 
-  getAllProfilesVitam(): void{
-    let profiles: ProfileDescription[] = [];
-    this.subscription3$=this.getAllProfilesPUA().subscribe((profileListPUA:ProfileDescription[] ) => {
+  getAllProfilesVitam(): void {
+    const profiles: ProfileDescription[] = [];
+    this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[] ) => {
       if (profileListPUA) {
-        console.log(profileListPUA.length + "profileListPUA");
+        console.log(profileListPUA.length + 'profileListPUA');
         profileListPUA.forEach((p) => {
-          p.type = "PUA"
+          p.type = 'PUA';
           profiles.push(p);
         });
-        this.subscription4$= this.getAllProfilesPA().subscribe((profileListPA:ProfileDescription[] ) => {
+        this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[] ) => {
           if (profileListPA) {
-            console.log(profileListPA.length + "profileListPA");
+            console.log(profileListPA.length + 'profileListPA');
             profileListPA.forEach((p) => {
-              p.type = "PA"
+              p.type = 'PA';
               profiles.push(p);
             });
             this.retrievedProfiles.next(profiles);
           }
-        })
+        });
       }
-    })
+    });
   }
 
-  getProfile(element:ProfileDescription): Observable<ProfileResponse> {
-    return this.apiService.post<ProfileResponse>(this.pastisConfig.editProfileUrl,element,{})
+  getProfile(element: ProfileDescription): Observable<ProfileResponse> {
+    return this.apiService.post<ProfileResponse>(this.pastisConfig.editProfileUrl, element, {});
   }
 
   // Upload a RNG or a JSON file (PA or PUA, respectively) to the server
@@ -162,7 +161,7 @@ export class ProfileService implements OnDestroy  {
 
   // Send the modified tree as post,
   // Expects a RNG or a JSON file depending on the profile type
-  uploadFile(file: FileNode[],notice: ProfileDescription ,profileType:string): Observable<Blob> {
+  uploadFile(file: FileNode[], notice: ProfileDescription , profileType: string): Observable<Blob> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-type': 'application/json',
@@ -171,21 +170,21 @@ export class ProfileService implements OnDestroy  {
     };
     let profile: any = cloneDeep(file[0]);
 
-    let endPointUrl = profileType === "PA" ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl
+    const endPointUrl = profileType === 'PA' ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
     this.fixCircularReference(profile);
-    console.log("Data to")
+    console.log('Data to');
 
-    if(profileType === "PUA"){
-      profile = {"elementProperties": profile, "notice": notice};
+    if (profileType === 'PUA') {
+      profile = {elementProperties: profile, notice};
     }
 
     return this.apiService.post(endPointUrl, profile, httpOptions);
   }
 
-  fixCircularReference(node: FileNode){
-    node.parent=null;
-    node.sedaData=null;
-    node.children.forEach(child=>{this.fixCircularReference(child);});
+  fixCircularReference(node: FileNode) {
+    node.parent = null;
+    node.sedaData = null;
+    node.children.forEach(child => {this.fixCircularReference(child); });
   }
 
   // @ts-ignore
@@ -193,14 +192,14 @@ export class ProfileService implements OnDestroy  {
     this.page = pageRequest.page;
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
-    console.log(pageRequest.direction + "direction")
+    console.log(pageRequest.direction + 'direction');
 
     const params = new HttpParams()
       .set('page', this.page.toString())
       .set('size', this.size.toString())
       .set('direction', this.direction);
     let allProfilesPA: any;
-    allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl,{params :params})  .pipe(
+    allProfilesPA = this.apiService.get(this.pastisConfig.getProfilePaginatedUrl, {params})  .pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
         this.data = paginated.values;
         this.page = paginated.pageNum;
@@ -216,14 +215,14 @@ export class ProfileService implements OnDestroy  {
     this.page = pageRequest.page;
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
-    console.log(pageRequest.direction + "direction")
+    console.log(pageRequest.direction + 'direction');
 
     const params = new HttpParams()
       .set('page', this.page.toString())
       .set('size', this.size.toString())
       .set('direction', this.direction);
     let allProfilesPUA: any;
-    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl,{params :params})  .pipe(
+    allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitPaginatedUrl, {params})  .pipe(
       map((paginated: PaginatedResponse<ProfileDescription>) => {
         this.data = paginated.values;
         this.page = paginated.pageNum;
@@ -237,55 +236,55 @@ export class ProfileService implements OnDestroy  {
 
 
   getAllProfilesPaginated(pageRequest: PageRequest): Observable<ProfileDescription[]> {
-    let tabVide : ProfileDescription[] = [];
+    const tabVide: ProfileDescription[] = [];
 
-    this.subscription2$=this.getAllProfilesPAPaginated(pageRequest).subscribe((data:ProfileDescription[] ) => {
+    this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
       if (data) {
-        //console.error(data  + " data PA")
-        data.forEach(p => p.type = "PA");
+        // console.error(data  + " data PA")
+        data.forEach(p => p.type = 'PA');
         data.forEach(p => tabVide.push(p));
         this.retrievedProfiles.next(data);
-        //console.error("Profiles DES PA : ", tabVide);
+        // console.error("Profiles DES PA : ", tabVide);
       }
-    })
+    });
 
-    this.subscription1$ =this.getAllProfilesPUAPaginated(pageRequest).subscribe((data:ProfileDescription[] )=> {
+    this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
       // @ts-ignore
-      //console.error(data)
+      // console.error(data)
       if (data) {
-        console.log(data.length + "profileList");
-        data.forEach(p => p.type = "PUA");
-        //console.error("Profiles DES PUA: ", data);
+        console.log(data.length + 'profileList');
+        data.forEach(p => p.type = 'PUA');
+        // console.error("Profiles DES PUA: ", data);
         this.retrievedProfiles.next(data);
       }
-    })
+    });
 
 
 
-    console.log(tabVide[0]+ "tableau")
+    console.log(tabVide[0] + 'tableau');
 
-    this.subscriptions.push(this.subscription1$)
-    this.subscriptions.push(this.subscription2$)
+    this.subscriptions.push(this.subscription1$);
+    this.subscriptions.push(this.subscription2$);
 
-    console.log(this.retrievedProfiles+ " tableau gell all profiles Paginated")
+    console.log(this.retrievedProfiles + ' tableau gell all profiles Paginated');
     return this.retrievedProfiles;
   }
 
 
-  getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit>{
+  getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
     return this.puaService.getOne(id, headers);
   }
 
   createProfile(path: string, type: string): Observable<ProfileResponse> {
     const params = new HttpParams().set('type', type);
-    return this.apiService.get<ProfileResponse>(path, {params :params});
+    return this.apiService.get<ProfileResponse>(path, {params});
   }
 
-  createProfilePa(profile:Profile){
+  createProfilePa(profile: Profile) {
     return this.paService.create(profile);
   }
 
-  createArchivalUnitProfile(archivalUnitProfile:ArchivalProfileUnit){
+  createArchivalUnitProfile(archivalUnitProfile: ArchivalProfileUnit) {
     return this.puaService.create(archivalUnitProfile);
   }
 
@@ -297,14 +296,14 @@ export class ProfileService implements OnDestroy  {
     return this.puaService.updateProfilePua(archivalUnitProfile);
   }
 
-  updateProfileFilePa(profile: Profile, file: File){
+  updateProfileFilePa(profile: Profile, file: File) {
     const formData = new FormData();
-    formData.append('file', file, profile.name + ".rng");
-    return this.paService.uploadProfileArchivageFile(profile.identifier, formData)
+    formData.append('file', file, profile.name + '.rng');
+    return this.paService.uploadProfileArchivageFile(profile.identifier, formData);
   }
 
-  downloadProfilePaVitam(id: string){
-    return this.paService.download(id)
+  downloadProfilePaVitam(id: string) {
+    return this.paService.download(id);
   }
 
 }

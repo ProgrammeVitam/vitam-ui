@@ -54,24 +54,24 @@ export class PastisBreadcrumbComponent implements OnInit {
   public selected = new EventEmitter<any>();
 
   constructor(private metadataLanguageService: PastisPopupMetadataLanguageService, private tenantService: TenantSelectionService
-    ,private pastisConfig: PastisConfiguration){}
+    ,         private pastisConfig: PastisConfiguration) {}
 
   ngOnInit() {
   }
 
   public onClick(d: any, emit: boolean): void {
     if (emit) {
-      if(d.label === "PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL"){
+      if (d.label === 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL') {
         d.url = this.pastisConfig.pastisPathPrefix + this.tenantService.getSelectedTenant().identifier;
       }
       this.selected.emit(d);
     }
   }
 
-  getLabel(data:BreadcrumbDataMetadata): string {
+  getLabel(data: BreadcrumbDataMetadata): string {
     if (data.node && (data.label === data.node.name)) {
       if (!this.metadataLanguageService.sedaLanguage.getValue()) {
-        if (data.node.sedaData.NameFr){
+        if (data.node.sedaData.NameFr) {
           return data.node.sedaData.NameFr;
         }
       }

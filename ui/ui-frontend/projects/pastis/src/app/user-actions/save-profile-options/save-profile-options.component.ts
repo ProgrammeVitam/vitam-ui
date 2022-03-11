@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
-import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
-import {environment} from "../../../environments/environment";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {environment} from '../../../environments/environment';
+import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 
 const POP_UP_SAVE_CHOICE_PATH = 'PROFILE.POP_UP_SAVE.CHOICE';
 
@@ -25,35 +25,33 @@ function constantToTranslate() {
   styleUrls: ['./save-profile-options.component.scss']
 })
 export class SaveProfileOptionsComponent implements OnInit {
-  firstChoiceEnregistrement :string;
-  secondChoiceEnregistrement :string;
-  titleEnregistrement :string;
+  firstChoiceEnregistrement: string;
+  secondChoiceEnregistrement: string;
+  titleEnregistrement: string;
 
-  firstChoiceGestionNotice :string;
-  secondChoiceGestionNotice:string;
-  titleGestionNotice : string;
+  firstChoiceGestionNotice: string;
+  secondChoiceGestionNotice: string;
+  titleGestionNotice: string;
 
-  okLabelTerminate:string;
-  okLabelNext:string;
+  okLabelTerminate: string;
+  okLabelNext: string;
 
-  valueSelected: boolean
-  gestionNotice: boolean
+  valueSelected: boolean;
+  gestionNotice: boolean;
   isStandalone: boolean = environment.standalone;
   editProfile: boolean;
 
 
-  constructor(public dialogRef: MatDialogRef<SaveProfileOptionsComponent>,private translateService: TranslateService,
+  constructor(public dialogRef: MatDialogRef<SaveProfileOptionsComponent>, private translateService: TranslateService,
               @Inject(MAT_DIALOG_DATA) public data: PastisDialogData, private router: Router) {
-    this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/')-4, this.router.url.lastIndexOf('/')) === "edit";
+    this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 
   ngOnInit(): void {
-    if(!this.isStandalone){
+    if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
-    }
-    else if(this.isStandalone)
-    {
+    } else if (this.isStandalone) {
       this.firstChoiceEnregistrement = 'Local';
       this.secondChoiceEnregistrement = 'SAE';
       this.titleEnregistrement = 'Où souhaitez-vous l’enregistrer ?';
@@ -62,8 +60,8 @@ export class SaveProfileOptionsComponent implements OnInit {
       this.secondChoiceGestionNotice = 'Rattachement à une notice existante';
       this.titleGestionNotice = 'Gestion de la notice du profil';
 
-      this.okLabelTerminate = "TERMINER";
-      this.okLabelNext = "SUIVANT";
+      this.okLabelTerminate = 'TERMINER';
+      this.okLabelNext = 'SUIVANT';
     }
     this.valueSelected = false;
     this.gestionNotice = true;
@@ -82,7 +80,7 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   changeStatus($event: string) {
-    console.log($event)
+    console.log($event);
     if ($event == this.secondChoiceEnregistrement) {
       this.data.okLabel = this.okLabelNext;
       this.valueSelected = true;
@@ -93,10 +91,10 @@ export class SaveProfileOptionsComponent implements OnInit {
   }
 
   changeStatusGestionNoticeProfil($event: string) {
-    console.log($event)
-    if ($event ==  this.firstChoiceGestionNotice)
+    console.log($event);
+    if ($event ==  this.firstChoiceGestionNotice) {
       this.gestionNotice = true;
-    else {
+    } else {
       this.gestionNotice = false;
     }
   }

@@ -36,8 +36,8 @@
  */
 
 
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'pastis-title-breadcrumb',
@@ -52,13 +52,17 @@ export class PastisTitleBreadcrumbComponent implements OnInit {
   @Output()
   public selected = new EventEmitter<any>();
 
-  constructor(public location: Location) {}
+  constructor(private location: Location) {}
 
   ngOnInit() {
   }
 
   public bubbleEvent(d: any): void {
     this.selected.emit(d);
+  }
+
+  public goBack(){
+    this.location.back()
   }
 
 }

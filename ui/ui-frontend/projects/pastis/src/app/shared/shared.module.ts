@@ -35,22 +35,22 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PastisMaterialModule} from '../material.module'
-import { PastisUnderConstructionComponent } from './pastis-under-construction/pastis-under-construction.component';
-import { PastisDialogConfirmComponent } from './pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { PortalModule } from '@angular/cdk/portal';
-import { PastisPopupMetadataLanguageComponent } from './pastis-popup-metadata-language/pastis-popup-metadata-language.component';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { PastisMaterialModule} from '../material.module';
+import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
 import { PastisTitleBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
-import { TranslateModule } from '@ngx-translate/core';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
+import { PastisDialogConfirmComponent } from './pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisGenericPopupComponent } from './pastis-generic-popup/pastis-generic-popup.component';
+import { PastisPopupMetadataLanguageComponent } from './pastis-popup-metadata-language/pastis-popup-metadata-language.component';
 import { PastisPopupOptionComponent } from './pastis-popup-option/pastis-popup-option.component';
+import { PastisUnderConstructionComponent } from './pastis-under-construction/pastis-under-construction.component';
 
 @NgModule({
   declarations: [

@@ -5,15 +5,15 @@
   "pastisPathPrefix": "/pastis/tenant/",
   "getAllProfilesUrl": "/pastis/getprofiles",
   "editProfileUrl": "/pastis/edit",
-  "createProfileByTypeUrl": "/pastis/createprofile",
+  "createProfileByTypeUrl": "/pastis/profile",
   "uploadProfileUrl": "/pastis/profile",
   "getFileUrl": "/pastis/getfile",
-  "savePAasFileUrl": "/pastis/getarchiveprofile",
+  "savePAasFileUrl": "/pastis/archiveprofile",
   "savePUAasFileUrl": "/pastis/getarchiveunitprofile",
   "pastisApiPath":"/pastis",
   "archivalProfileUnitApiPath":"/archival-profile",
   "archiveProfileApiPath":"/profile",
-  
+
   "getAllArchivalProfileUrl": "/profile",
   "getProfilePaginatedUrl": "/profile",
   "getProfileById": "/profile/{{identifier}}",

@@ -48,8 +48,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -60,9 +58,8 @@ import java.io.InputStreamReader;
 
 @RunWith(SpringRunner.class)
 @TestPropertySource(locations = "/application-test.yml")
-public class ImportPuaTest {
+public class JsonFromPuaTest {
 
-    PuaPastisValidator puaPastisValidator = new PuaPastisValidator();
     JsonFromPUA jsonFromPUA = new JsonFromPUA();
 
     @Test
@@ -70,19 +67,13 @@ public class ImportPuaTest {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream("pua/pua_OK.json");
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
-
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
-
-        Notice notice = NoticeUtils.getNoticeFromPUA(profileJson);
-
         InputStream inputStreamExpected = getClass().getClassLoader().getResourceAsStream("pua/profile_Expected.json");
         tokener = new JSONTokener(inputStreamExpected);
         JSONObject fileNodeJSONExpected = new JSONObject(tokener);
-
         JSONAssert.assertEquals(fileNodeJSONActual, fileNodeJSONExpected, JSONCompareMode.STRICT);
     }
 
@@ -92,74 +83,66 @@ public class ImportPuaTest {
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profileActual = jsonFromPUA.getProfileFromPUA(profileJson);
-
         ObjectMapper mapper = new ObjectMapper();
         String fileNodeActual = mapper.writeValueAsString(profileActual);
         JSONObject fileNodeJSONActual = new JSONObject(fileNodeActual);
-
         InputStream inputStreamExpected =
             getClass().getClassLoader().getResourceAsStream("pua/profile_Expected_with_management.json");
         tokener = new JSONTokener(inputStreamExpected);
         JSONObject fileNodeJSONExpected = new JSONObject(tokener);
-
         JSONAssert.assertEquals(fileNodeJSONActual, fileNodeJSONExpected, JSONCompareMode.STRICT);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testImportNOK_missing_definitions() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_definitions.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
         ObjectMapper mapper = new ObjectMapper();
-        String fileNodeActual = mapper.writeValueAsString(profile);
-        Notice notice = NoticeUtils.getNoticeFromPUA(profileJson);
+        mapper.writeValueAsString(profile);
+        NoticeUtils.getNoticeFromPUA(profileJson);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testImportNOK_missing_management() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_management.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
         ObjectMapper mapper = new ObjectMapper();
-        String fileNodeActual = mapper.writeValueAsString(profile);
-        Notice notice = NoticeUtils.getNoticeFromPUA(profileJson);
+        mapper.writeValueAsString(profile);
+        NoticeUtils.getNoticeFromPUA(profileJson);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testImportNOK_missing_properties() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_missing_properties.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
         ObjectMapper mapper = new ObjectMapper();
-        String fileNodeActual = mapper.writeValueAsString(profile);
-        Notice notice = NoticeUtils.getNoticeFromPUA(profileJson);
+        mapper.writeValueAsString(profile);
+        NoticeUtils.getNoticeFromPUA(profileJson);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testImportNOK_both_management_present() throws IOException {
         InputStream inputStreamPua =
             getClass().getClassLoader().getResourceAsStream("pua/pua_NOK_both_management_present.json");
 
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
         ElementProperties profile = jsonFromPUA.getProfileFromPUA(profileJson);
         ObjectMapper mapper = new ObjectMapper();
-        String fileNodeActual = mapper.writeValueAsString(profile);
-        Notice notice = NoticeUtils.getNoticeFromPUA(profileJson);
+        mapper.writeValueAsString(profile);
+        NoticeUtils.getNoticeFromPUA(profileJson);
     }
 }

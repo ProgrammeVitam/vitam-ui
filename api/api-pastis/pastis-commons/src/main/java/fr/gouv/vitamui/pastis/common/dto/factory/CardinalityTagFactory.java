@@ -57,19 +57,5 @@ public class CardinalityTagFactory implements AbstractTagFactory<CardinalityTag>
         return cardinality;
     }
 
-    public RNGConstants.Cardinality checkCardinalityType(String cardinalityType) {
-        RNGConstants.Cardinality enumerationRngConstantsCardinality= null;
-        if (cardinalityType.equals("ZeroOrMoreTag")) {
-            enumerationRngConstantsCardinality = RNGConstants.Cardinality.ZERO_OR_MORE;
-        }
-        if (cardinalityType.equals("OneOrMoreTag")) {
-            enumerationRngConstantsCardinality = RNGConstants.Cardinality.ONE_OR_MORE;
-        }
-        if (cardinalityType.equals("OptionalTag")) {
-            enumerationRngConstantsCardinality = RNGConstants.Cardinality.OPTIONAL;
-        }
-        return enumerationRngConstantsCardinality;
-    }
-
 
 }

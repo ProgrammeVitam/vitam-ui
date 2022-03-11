@@ -1,5 +1,5 @@
 /*
-Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2021)
+Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
 
 [dad@cines.fr]
 
@@ -36,44 +36,43 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-package fr.gouv.vitamui.pastis.common.util;
+package fr.gouv.vitamui.pastis.common.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.json.JSONObject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
-import java.lang.reflect.Field;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
+import java.util.Collection;
 
-public class OrderedJSONObjectFactory {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderedJSONObjectFactory.class);
-    private static boolean setupDone = false;
-    private static Field jsonObjectMapField = null;
 
-    private OrderedJSONObjectFactory() {}
+@RunWith(Parameterized.class)
+public class PuaPastisValidatorOKTest {
 
-    public static void setupFieldAccessor() {
-        if (!setupDone) {
-            setupDone = true;
-            try {
-                jsonObjectMapField = JSONObject.class.getDeclaredField("map");
-                jsonObjectMapField.setAccessible(true);
-            } catch (NoSuchFieldException ignored) {
-                LOGGER.warn("JSONObject implementation has changed, returning unmodified instance");
-            }
-        }
+    @Parameters
+    public static Collection<String> data() {
+        return Arrays.asList(new String[] {
+            "pua/pua_OK.json",
+            "pua/pua_OK_with_management.json",
+        });
     }
 
-    public static JSONObject create() {
-        setupFieldAccessor();
-        JSONObject result = new JSONObject();
-        try {
-            if (jsonObjectMapField != null) {
-                jsonObjectMapField.set(result, new LinkedHashMap<>());
-            }
-        } catch (IllegalAccessException e) {
-            LOGGER.info(e.getMessage());
-        }
-        return result;
+    private final String fileName;
+    private final PuaPastisValidatorTest puaPastisValidatorTest;
+
+    public PuaPastisValidatorOKTest(String fileName) {
+        this.fileName = fileName;
+        this.puaPastisValidatorTest = new PuaPastisValidatorTest();
     }
+
+
+    @Test
+    public void testImports() {
+        puaPastisValidatorTest.testImport(fileName);
+    }
+
+
 }
+
+

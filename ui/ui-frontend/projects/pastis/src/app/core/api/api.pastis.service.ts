@@ -44,17 +44,17 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class PastisApiService{
+export class PastisApiService {
 
   baseUrl: string;
 
   constructor(private http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    if(environment.apiServerUrl != undefined && environment.standalone){
+    if (environment.apiServerUrl != undefined && environment.standalone) {
       this.baseUrl = environment.apiServerUrl;
-    }else{
+    } else {
       this.baseUrl = baseUrl;
     }
-    
+
   }
 
   getBaseUrl() {
@@ -63,13 +63,13 @@ export class PastisApiService{
 
   // Generic GET Method
   get<T = any>(path: string, options?: {}): Observable<T> {
-    //console.log('On API service using url : ', `${path}`);
+    // console.log('On API service using url : ', `${path}`);
     return this.http.get<T>(`${this.baseUrl}${path}`, options);
   }
 
     // Generic GET Method
   getLocally<T = any>(path: string): Observable<T> {
-    //console.log('On getLocally using filepath : ', `${path}`);
+    // console.log('On getLocally using filepath : ', `${path}`);
     return this.http.get<T>(`${path}`);
   }
 
@@ -81,9 +81,9 @@ export class PastisApiService{
   }
 
   // Generic POST Method
-  post<T>(path: string, body?:{}, options?: {}): Observable<T> {
-    //console.log('Body', body, " path : ", `${this.baseUrl}${path}`);
-    //console.log('On api service post with params: ',options);
+  post<T>(path: string, body?: {}, options?: {}): Observable<T> {
+    // console.log('Body', body, " path : ", `${this.baseUrl}${path}`);
+    // console.log('On api service post with params: ',options);
     return this.http.post<T>(`${this.baseUrl}${path}`, body, options);
   }
 
