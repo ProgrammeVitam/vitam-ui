@@ -100,6 +100,7 @@ export enum DateFormatType {
 }
 
 export interface FileNode {
+  additionalProperties:boolean;
   id: number;
   parentId: number;
   name: string;

@@ -46,7 +46,6 @@ import {DuplicateMetadataComponent} from './duplicate-metadata/duplicate-metadat
 import {UserActionAddPuaControlComponent} from './add-pua-control/add-pua-control.component';
 import {UserActionSaveProfileComponent} from './save-profile/save-profile.component';
 import {UserActionUploadProfileComponent} from './upload-profile/upload-profile.component';
-
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -54,11 +53,11 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {VitamUIInputModule} from 'vitamui-library';
 import {CoreModule} from '../core/core.module';
 import {CreateNoticeComponent} from './create-notice/create-notice.component';
-import { SaveProfileOptionsComponent } from './save-profile-options/save-profile-options.component';
+import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
 
 
 @NgModule({
-  declarations: [UserActionUploadProfileComponent, FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, UserActionAddPuaControlComponent],
+  declarations: [UserActionUploadProfileComponent,FilterByNamePipe, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, DuplicateMetadataComponent, CreateNoticeComponent, SaveProfileOptionsComponent, AllowAdditionalPropertiesComponent, UserActionAddPuaControlComponent],
   imports: [
     CommonModule,
     PastisMaterialModule,
@@ -72,7 +71,7 @@ import { SaveProfileOptionsComponent } from './save-profile-options/save-profile
     FormsModule,
     MatSlideToggleModule
   ],
-  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, UserActionAddPuaControlComponent ],
+  exports: [UserActionUploadProfileComponent, UserActionSaveProfileComponent, UserActionsDownloadDocComponent, FilterByNamePipe, AllowAdditionalPropertiesComponent,UserActionAddPuaControlComponent],
 })
 export class UserActionsModule {
 

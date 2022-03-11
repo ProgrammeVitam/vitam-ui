@@ -63,14 +63,14 @@ import {
   ValueOrDataConstants
 } from '../../../models/file-node';
 import {CardinalityValues, MetadataHeaders} from '../../../models/models';
-import { PuaData } from '../../../models/pua-data';
 import {SedaData, SedaElementConstants} from '../../../models/seda-data';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { UserActionAddPuaControlComponent } from '../../../user-actions/add-pua-control/add-pua-control.component';
 import {FileTreeService} from '../file-tree/file-tree.service';
+import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
 import {AttributesPopupComponent} from './attributes/attributes.component';
 import {FileTreeMetadataService} from './file-tree-metadata.service';
+import {PuaData} from '../../../models/pua-data';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -108,7 +108,7 @@ export class FileTreeMetadataComponent {
   // Mat table
   matDataSource: MatTableDataSource<MetadataHeaders>;
 
-  @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
 
@@ -223,6 +223,8 @@ export class FileTreeMetadataComponent {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  additionalProperties: boolean;
+  additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
               private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
@@ -255,7 +257,8 @@ export class FileTreeMetadataComponent {
       this.popupControlOkLabel = 'AJOUTER LES CONTROLES';
     }
 
-
+    this.additionalProperties = false;
+    this.additionalPropertiesMetadonnee = false;
     this.docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
     this._sedalanguageSub = this.metadataLanguageService.sedaLanguage.subscribe(
@@ -283,7 +286,7 @@ export class FileTreeMetadataComponent {
                       this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: node.parent.name, node: node.parent } ]);
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{ label: node.parent.name, node: node.parent }]);
                 }
                 this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node } ]);
               }
@@ -747,7 +750,7 @@ export class FileTreeMetadataComponent {
   }
 
   goBack() {
-    this.router.navigate(['/'], {skipLocationChange: false});
+    this.router.navigate(['/'], { skipLocationChange: false });
   }
 
   ngOnDestroy() {
@@ -859,6 +862,32 @@ export class FileTreeMetadataComponent {
   closeControlsVue(){
     this.openControls = false;
     this.resetContols();
+  }
+
+  changeStatusAditionalProperties($event: boolean) {
+    this.additionalProperties = $event;
+  }
+
+
+  isElementNameNotContentManagement(nomDuChamp: string) {
+    return !(nomDuChamp == "Content" || nomDuChamp == "Management");
+  }
+
+  changeAutorisation($event: MatCheckboxChange, element: any) {
+    console.log($event.checked + "test" + element.nomDuChamp);
+    this.additionalPropertiesMetadonnee = $event.checked;
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
+  }
+
+  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
+
+    for (let node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id) {
+
+        node.puaData.additionalProperties = additionalPropertiesMetadonnee;
+      }
+    }
+
   }
 
 }

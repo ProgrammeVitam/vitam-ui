@@ -191,7 +191,7 @@ td {
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
     text-align: left;
   }
   @extend .editable-field-control;
@@ -328,11 +328,12 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-metadata-option-entete-1 {
-  position: relative;
+  position: absolute;
   height: 117px;
-  float: left;
-  padding-left: 35px;
-  padding-top: 20px;
+  width: 50%;
+  float: right;
+  left: 35px;
+  top: 20px;
 }
 
 .pastis-metadata-option-entete-1 .vitamui-icon-dossier-physique {
@@ -343,11 +344,11 @@ tr:hover .pastis-btn-appear {
 }
 
 .pastis-metadata-option-entete-2 {
-  position: relative;
+  position: absolute;
   height: 117px;
-  width: 172px;
   display: inline-flex;
-  float: right;
+  right: 20px;
+  top: 5px;
 }
 
 
@@ -386,7 +387,7 @@ dp-date-picker {
 
 dp-day-calendar .dp-day-calendar-container {
   border-radius: 20px !important;
-  box-shadow: 0px 11px 15px rgba(0, 0, 0, 0.1), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 24px 38px rgba(0, 0, 0, 0.07) !important;
+  box-shadow: 0 11px 15px rgba(0, 0, 0, 0.1), 0 9px 46px rgba(0, 0, 0, 0.06), 0 24px 38px rgba(0, 0, 0, 0.07) !important;
 }
 
 .dp-selected {
@@ -467,6 +468,18 @@ dp-day-calendar .dp-day-calendar-container {
   z-index: 999;
 }
 
+.allow_presence_text{
+  font-size: 11px !important;
+  font-family: 'Mulish', sans-serif !important;
+  color: #212121 !important;
+  font-weight: 400;
+}
+
+.placement-tooltip{
+  position: absolute;
+  left: 13em;
+  top: 1em;
+}
 .pastis-dialog-config-title {
   bottom: 10px;
   position: relative;

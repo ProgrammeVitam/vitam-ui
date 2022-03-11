@@ -36,23 +36,24 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {Component, Input, OnDestroy, ViewChild, } from '@angular/core';
+import {Component, Input, OnDestroy, ViewChild,} from '@angular/core';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Subscription, throwError} from 'rxjs';
 import {environment} from '../../../../environments/environment';
 import {FileService} from '../../../core/services/file.service';
 import {NotificationService} from '../../../core/services/notification.service';
-import { ProfileService } from '../../../core/services/profile.service';
+import {ProfileService} from '../../../core/services/profile.service';
 import {SedaService} from '../../../core/services/seda.service';
 import {CardinalityConstants, DataTypeConstants, FileNode, TypeConstants} from '../../../models/file-node';
 import {SedaCardinalityConstants, SedaData, SedaElementConstants} from '../../../models/seda-data';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
-import { PastisPopupMetadataLanguageService } from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import {UserActionAddMetadataComponent} from '../../../user-actions/add-metadata/add-metadata.component';
 import {DuplicateMetadataComponent} from '../../../user-actions/duplicate-metadata/duplicate-metadata.component';
 import {UserActionRemoveMetadataComponent} from '../../../user-actions/remove-metadata/remove-metadata.component';
 import {FileTreeMetadataService} from '../file-tree-metadata/file-tree-metadata.service';
-import { FileTreeService } from './file-tree.service';
+import {FileTreeService} from './file-tree.service';
+import {PuaData} from '../../../models/pua-data';
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -279,6 +280,7 @@ export class FileTreeComponent implements OnDestroy {
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
     console.log('After data is : %o', this.fileTreeService.nestedDataSource.data);
+    console.log("element to add : %o",elementsToAdd)
     const elementsToAddFromSeda: SedaData[] = [];
     for (const element of elementsToAdd) {
       parent.sedaData.Children.forEach((child) => {
@@ -316,6 +318,10 @@ export class FileTreeComponent implements OnDestroy {
         newNode.parent = parent;
         newNode.children = [];
         newNode.sedaData = sedaChild;
+        if (this.isElementComplex(newNode)) {
+          newNode.puaData = {} as PuaData;
+          newNode.puaData.additionalProperties = false;
+        }
         console.log('Parent node name: ' + parent.name);
         console.log('New node  : ', newNode);
 

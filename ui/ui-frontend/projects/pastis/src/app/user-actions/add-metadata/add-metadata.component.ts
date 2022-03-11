@@ -86,7 +86,7 @@ export class UserActionAddMetadataComponent implements OnInit {
         console.log(error);
       }
     );
-    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode })
+    this.fileService.nodeChange.subscribe(fileNode => {this.fileNode = fileNode; });
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
@@ -196,7 +196,7 @@ export class UserActionAddMetadataComponent implements OnInit {
 
 }
 
-@Pipe({ name: 'filterByName' })
+@Pipe({name: 'filterByName'})
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
     if (!listOfElements) { return null; }
