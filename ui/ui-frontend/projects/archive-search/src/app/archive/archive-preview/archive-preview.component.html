@@ -81,7 +81,7 @@
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP' | translate }} :</label><br />
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_CODE' | translate }} :</label>
             <div>
-              {{ archiveUnit['#originating_agencies'] }}
+              {{ archiveUnit['#originating_agency'] }}
             </div>
           </div>
         </div>
@@ -90,7 +90,7 @@
             <label></label><br />
             <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.SP_LABEL' | translate }} :</label>
             <div>
-              {{ archiveUnit['originating_agencyName'] }}
+              {{ archiveUnit?.originating_agencyName }}
             </div>
           </div>
         </div>
