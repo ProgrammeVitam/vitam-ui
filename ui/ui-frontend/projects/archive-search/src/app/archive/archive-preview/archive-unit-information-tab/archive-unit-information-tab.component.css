@@ -39,12 +39,12 @@
 }
 
 .red-button-cancel {
-  background-color: "#e24242";
-  width: "10";
-  height: "10";
-  position: "absolute";
-  right: "16px";
-  bottom: "10px";
+  background-color: #e24242;
+  width: 10;
+  height: 10;
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
 }
 
 .margin_right {

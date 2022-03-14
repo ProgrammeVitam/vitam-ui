@@ -151,7 +151,13 @@
         <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
         <mat-datepicker #pickerSatrDate></mat-datepicker>
       </div>
-      <button class="red-button-cancel" *ngIf="form.get('startDate').value" type="button" mat-mini-fab (click)="clearDate('startDate')">
+      <button
+        class="red-button-cancel"
+        *ngIf="form.get('startDate').value"
+        type="button"
+        mat-mini-fab
+        (click)="clearDate('startDate')"
+      >
         <i class="material-icons">close</i>
       </button>
     </div>
@@ -168,7 +174,8 @@
         <input class="hidden" size="0" [matDatepicker]="pickerEndDate" formControlName="endDate" />
         <mat-datepicker #pickerEndDate></mat-datepicker>
       </div>
-      <button class="red-button-cancel" *ngIf="form.get('endDate').value" type="button" mat-mini-fab (click)="clearDate('endDate')">
+      <button  
+        class="red-button-cancel" *ngIf="form.get('endDate').value" type="button" mat-mini-fab (click)="clearDate('endDate')">
         <i class="material-icons">close</i>
       </button>
     </div>
