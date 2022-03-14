@@ -1,0 +1,24 @@
+{
+  "$query":{
+    "$and":[
+      {
+        "$or":[
+          {
+            "$match_phrase_prefix":{
+              "Name":"originating agency name"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "$filter":{
+
+  },
+  "$projection":{
+    "$fields":{
+      "Identifier":1,
+      "Name":1
+    }
+  }
+}

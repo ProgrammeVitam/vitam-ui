@@ -93,7 +93,10 @@ public class ArchiveSearchAgenciesInternalService {
         if (!agencyOriginNamesCriteria.isEmpty()) {
             LOGGER.debug(" trying to mapping agencies labels {} ", agencyOriginNamesCriteria.toString());
             agenciesOrigins = findOriginAgenciesByNames(vitamContext, agencyOriginNamesCriteria);
-            mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
+            if(!CollectionUtils.isEmpty(agenciesOrigins)) {
+                mapAgenciesNamesToAgenciesCodesInCriteria(searchQuery, agenciesOrigins);
+            }
+
         }
     }
 
@@ -168,7 +171,7 @@ public class ArchiveSearchAgenciesInternalService {
             searchCriteriaMap.put(field, originAgenciesCodes);
             try {
                 JsonNode queryOriginAgencies = VitamQueryHelper
-                    .createQueryDSL(searchCriteriaMap, 0, originAgenciesCodes.size(), Optional.empty(),
+                    .createQueryDSL(searchCriteriaMap, Optional.empty(),
                         Optional.empty());
                 RequestResponse<AgenciesModel> requestResponse =
                     agencyService.findAgencies(vitamContext, queryOriginAgencies);
