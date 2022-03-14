@@ -162,7 +162,7 @@ customer-init:
         - ROLE_LOGBOOKS
 
     - name: Consultation
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, sans export DIP et sans élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -172,7 +172,7 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
 
     - name: Archiviste
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles de gestion, avec export DIP et sans élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
