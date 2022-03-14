@@ -34,6 +34,6 @@ export interface Unit {
   // This does not come from the API. It is built from the unit info
   isDigital?: boolean;
   isPhysical?: boolean;
-
+  '#originating_agency'?: string;
   [key: string]: any;
 }
