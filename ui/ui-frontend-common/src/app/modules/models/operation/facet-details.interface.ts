@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-import {Colors} from "./facet-colors.enum";
+import { Colors } from './facet-colors.enum';
 
 export interface FacetDetails {
   title: string;
@@ -34,4 +34,5 @@ export interface FacetDetails {
   color: string;
   filter?: string;
   backgroundColor?: Colors;
+  selected?: boolean;
 }

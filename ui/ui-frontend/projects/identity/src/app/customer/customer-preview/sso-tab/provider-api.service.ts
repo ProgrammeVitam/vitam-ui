@@ -41,36 +41,50 @@ import { Observable } from 'rxjs';
 import { BaseHttpClient, BASE_URL, IdentityProvider } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
-
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/providers');
   }
 
   create(identityProvider: IdentityProvider, headers?: HttpHeaders): Observable<IdentityProvider> {
     const formData = new FormData();
-
-    formData.append('keystore', identityProvider.keystore, identityProvider.keystore.name);
-    formData.append('idpMetadata', identityProvider.idpMetadata, identityProvider.idpMetadata.name);
-    formData.append('provider', JSON.stringify({
-      customerId: identityProvider.customerId,
-      name: identityProvider.name,
-      internal: identityProvider.internal,
-      keystorePassword: identityProvider.keystorePassword,
-      patterns: identityProvider.patterns,
-      enabled: identityProvider.enabled,
-      mailAttribute: identityProvider.mailAttribute,
-      identifierAttribute: identityProvider.identifierAttribute,
-      authnRequestBinding: identityProvider.authnRequestBinding,
-      autoProvisioningEnabled: identityProvider.autoProvisioningEnabled
-    }));
+    if (identityProvider.keystore && identityProvider.idpMetadata) {
+      formData.append('keystore', identityProvider.keystore, identityProvider.keystore.name);
+      formData.append('idpMetadata', identityProvider.idpMetadata, identityProvider.idpMetadata.name);
+    }
+    formData.append(
+      'provider',
+      JSON.stringify({
+        protocoleType: identityProvider.protocoleType,
+        customerId: identityProvider.customerId,
+        name: identityProvider.name,
+        internal: identityProvider.internal,
+        keystorePassword: identityProvider.keystorePassword,
+        patterns: identityProvider.patterns,
+        enabled: identityProvider.enabled,
+        mailAttribute: identityProvider.mailAttribute,
+        identifierAttribute: identityProvider.identifierAttribute,
+        authnRequestBinding: identityProvider.authnRequestBinding,
+        autoProvisioningEnabled: identityProvider.autoProvisioningEnabled,
+        clientId: identityProvider.clientId,
+        clientSecret: identityProvider.clientSecret,
+        discoveryUrl: identityProvider.discoveryUrl,
+        scope: identityProvider.scope,
+        preferredJwsAlgorithm: identityProvider.preferredJwsAlgorithm,
+        customParams: identityProvider.customParams,
+        useState: identityProvider.useState,
+        useNonce: identityProvider.useNonce,
+        usePkce: identityProvider.usePkce,
+      })
+    );
 
     return this.http.post<IdentityProvider>(this.apiUrl, formData, { headers });
   }
 
-  patch(partialIDP: { id: string, [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
+
+  patch(partialIDP: { id: string; [key: string]: any }, headers?: HttpHeaders): Observable<IdentityProvider> {
     return super.patch(partialIDP, headers);
   }
 
@@ -104,5 +118,4 @@ export class ProviderApiService extends BaseHttpClient<IdentityProvider> {
   buildMetadataUrl(identityProviderId: string, tenantIdentifier: string): string {
     return this.apiUrl + `/${identityProviderId}/idpMetadata?tenantId=${tenantIdentifier}`;
   }
-
 }

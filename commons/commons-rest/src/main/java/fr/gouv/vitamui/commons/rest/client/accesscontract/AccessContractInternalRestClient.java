@@ -82,4 +82,11 @@ public class AccessContractInternalRestClient<C extends AbstractHttpContext> ext
         return response.getBody();
     }
 
+    public AccessContractsDto getAccessContractById(final C context, String identifier) {
+        final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
+        final ResponseEntity<AccessContractsDto> response = restTemplate.exchange(getUrl() + "/accesscontracts/"+ identifier, HttpMethod.GET, request,
+            AccessContractsDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
 }

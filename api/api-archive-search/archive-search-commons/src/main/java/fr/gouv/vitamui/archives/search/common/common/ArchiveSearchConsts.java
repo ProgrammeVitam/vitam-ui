@@ -38,12 +38,15 @@ public class ArchiveSearchConsts {
     public static final String RULE_ID_FIELD = "RuleId";
     public static final String RULE_TYPE_FIELD = "RuleType";
     public static final String APPRAISAL_RULE_TYPE = "AppraisalRule";
+    public static final String ARCHIVE_UNIT_INGEST = "INGEST";
+    public static final String ACCESS_RULE_TYPE = "AccessRule";
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION =
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP = "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED =
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED";
+
+    public final static String FINAL_ACTION_TYPE_ELIMINATION =
+        "FINAL_ACTION_TYPE_ELIMINATION";
+    public final static String FINAL_ACTION_TYPE_KEEP = "FINAL_ACTION_TYPE_KEEP";
+    public final static String FINAL_ACTION_TYPE_CONFLICT = "FINAL_ACTION_TYPE_CONFLICT";
+    public final static String RULE_ORIGIN_CRITERIA = "RULE_ORIGIN";
 
 
     public enum CriteriaDataType {
@@ -52,38 +55,70 @@ public class ArchiveSearchConsts {
 
 
     public enum CriteriaCategory {
-        FIELDS, APPRAISAL_RULE, NODES
+        FIELDS, APPRAISAL_RULE, ACCESS_RULE, NODES
     }
 
 
-    public enum AppraisalRuleOrigin {
-        INHERITED, SCOPED, ANY
+    public enum CriteriaMgtRulesCategory {
+        APPRAISAL_RULE("AppraisalRule"), ACCESS_RULE("AccessRule");
+
+        private final String fieldMapping;
+
+        private CriteriaMgtRulesCategory(String fieldMapping) {
+            this.fieldMapping = fieldMapping;
+        }
+
+        public String getFieldMapping() {
+            return fieldMapping;
+        }
+
+        public static boolean contains(String s) {
+            for (CriteriaMgtRulesCategory mgtRulesCategory : values())
+                if (mgtRulesCategory.name().equals(s))
+                    return true;
+            return false;
+        }
     }
 
 
-    public enum AppraisalRuleOriginValues {
-        APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE, APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE, APPRAISAL_RULE_ORIGIN_HAS_NO_ONE, APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE
+    public enum RuleOrigin {
+        INHERITED, SCOPED
     }
 
 
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION =
-        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION =
-        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION";
+    public enum RuleOriginValues {
+        ORIGIN_WAITING_RECALCULATE, ORIGIN_INHERITE_AT_LEAST_ONE, ORIGIN_HAS_NO_ONE, ORIGIN_HAS_AT_LEAST_ONE;
 
-    public final static String APPRAISAL_RULE_FINAL_ACTION = "APPRAISAL_RULE_FINAL_ACTION";
-    public final static String APPRAISAL_RULE_FINAL_ACTION_TYPE = "APPRAISAL_RULE_FINAL_ACTION_TYPE";
-    public final static String APPRAISAL_RULE_ORIGIN = "APPRAISAL_RULE_ORIGIN";
+        public static boolean contains(String s) {
+            for (RuleOriginValues ruleOriginValues : values())
+                if (ruleOriginValues.name().equals(s))
+                    return true;
+            return false;
+        }
+    }
 
-    public final static String APPRAISAL_RULE_IDENTIFIER = "APPRAISAL_RULE_IDENTIFIER";
-    public final static String APPRAISAL_RULE_TITLE = "APPRAISAL_RULE_TITLE";
-    public final static String APPRAISAL_RULE_END_DATE = "APPRAISAL_RULE_END_DATE";
-    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+
+    public final static String FINAL_ACTION_INHERITE_FINAL_ACTION =
+        "FINAL_ACTION_INHERITE_FINAL_ACTION";
+    public final static String FINAL_ACTION_HAS_FINAL_ACTION =
+        "FINAL_ACTION_HAS_FINAL_ACTION";
+
+    public final static String RULE_FINAL_ACTION = "FINAL_ACTION";
+    public final static String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
+
+    public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
+    public final static String RULE_TITLE = "RULE_TITLE";
+    public final static String RULE_END_DATE = "RULE_END_DATE";
+    public final static String RULE_START_DATE = "RULE_START_DATE";
+    public final static String WAITING_RECALCULATE = "WAITING_RECALCULATE";
+
+
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String FR_DATE_FORMAT_WITH_SLASH = "dd/MM/yyyy";
 
     public static final String TRUE_CRITERIA_VALUE = "true";
     public static final String FALSE_CRITERIA_VALUE = "false";
@@ -92,51 +127,21 @@ public class ArchiveSearchConsts {
         DateTimeFormatter.ofPattern(ArchiveSearchConsts.ISO_DATE_FORMAT, Locale.FRENCH);
     public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATER =
         DateTimeFormatter.ofPattern(ArchiveSearchConsts.ONLY_DATE_FORMAT, Locale.FRENCH);
+    public static final DateTimeFormatter ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH =
+        DateTimeFormatter.ofPattern(ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH, Locale.FRENCH);
 
 
     /*
     Operators for criteria
      */
     public enum CriteriaOperators {
-        EQ, MATCH, LT, GT, LTE, GTE, NOT_EQ, EXISTS, NOT_EXISTS, MISSING, NOT_MATCH, IN, NOT_IN
+        EQ, MATCH, LT, GT, LTE, GTE, NOT_EQ, EXISTS, MISSING, NOT_MATCH, IN, NOT_IN
     }
 
 
-    public static Map<String, String> SCOPED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#management.AppraisalRule.Rules.Rule",
-            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#management.AppraisalRule.Rules.EndDate"
-        );
-    public static Map<String, String> INHERITED_APPRAISAL_MGT_RULES_SIMPLE_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, "#computedInheritedRules.AppraisalRule.Rules.Rule",
-            ArchiveSearchConsts.APPRAISAL_RULE_END_DATE, "#computedInheritedRules.AppraisalRule.Rules.EndDate"
-        );
-
-    public static String APPRAISAL_RULE_ORIGIN_INHERITED_FIELD = "#computedInheritedRules.AppraisalRule.Rules.Rule";
-    public static String APPRAISAL_RULE_ORIGIN_SCOPED_FIELD = "#management.AppraisalRule.Rules.Rule";
-
-
-    public static Map<String, String> APPRAISAL_MGT_RULES_FIELDS_MAPPING =
-        Map.of(ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE.name(),
-            "#validComputedInheritedRules",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_NO_ONE.name(),
-            "#computedInheritedRules.AppraisalRule",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE.name(),
-            "#computedInheritedRules.AppraisalRule",
-            ArchiveSearchConsts.AppraisalRuleOriginValues.APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE.name(),
-            "#management.AppraisalRule.Rules.Rule"
-        );
-
-    public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION,
-            "#computedInheritedRules.AppraisalRule.FinalAction",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION, "#management.AppraisalRule.FinalAction"
-        );
-
-
     public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING =
-        Map.of(ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP, "Keep",
-            ArchiveSearchConsts.APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED, "???"
+        Map.of(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
+            ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP, "Keep"
         );
 
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
@@ -147,9 +152,10 @@ public class ArchiveSearchConsts {
             ORIGINATING_AGENCY_ID_FIELD, "#originating_agency",
             "START_DATE", "StartDate",
             "END_DATE", "EndDate",
-            "SP_LABEL", "originating_agency_label"
+            "SP_LABEL", "originating_agency_label",
+            "ARCHIVE_UNIT_HOLDING_UNIT", "#unitType",
+            WAITING_RECALCULATE, "#validComputedInheritedRules"
         );
-
 
     public static final int DEFAULT_DEPTH = 10;
     public static final int FACET_SIZE_MILTIPLIER = 100;
@@ -165,12 +171,19 @@ public class ArchiveSearchConsts {
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
     public static final String ELIMINATION_TECHNICAL_ID = "ELIMINATION_TECHNICAL_ID";
     public static final String ELIMINATION_GUID = "#elimination.OperationId";
+    public static final String ALL_ARCHIVE_UNIT_TYPES = "#unitType";
+    public static final String ALL_ARCHIVE_UNIT_TYPES_CRITERIA = "ALL_ARCHIVE_UNIT_TYPES";
+    public static final String DESCRIPTION_LEVEL_CRITERIA = "DESCRIPTION_LEVEL";
+    public static final String DESCRIPTION_LEVEL = "DescriptionLevel";
+    public static final String ARCHIVE_UNIT_OBJECTS = "#object";
+    public static final String ARCHIVE_UNIT_HOLDING_UNIT = "HOLDING_UNIT";
+    public static final String ARCHIVE_UNIT_FILING_UNIT = "FILING_UNIT";
+
 
     /* Query fields */
     public static final String ID = "#id";
     public static final String NAME = "Name";
     public static final String SHORT_NAME = "ShortName";
-    public static final String PUID = "PUID";
 
     /* Title and Description Query fields */
     public static final String TITLE = "Title";
@@ -182,6 +195,14 @@ public class ArchiveSearchConsts {
     public static final String TITLE_CRITERIA = "TITLE";
     public static final String DESCRIPTION_CRITERIA = "DESCRIPTION";
 
+
+    public static final String FACETS_EXPIRED_RULES_COMPUTED = "EXPIRED_RULES_COMPUTED";
+    public static final String FACETS_RULES_COMPUTED_NUMBER = "RULES_COMPUTED_NUMBER";
+    public static final String FACETS_FINAL_ACTION_COMPUTED = "FINAL_ACTION_COMPUTED";
+    public static final String FACETS_COMPUTE_RULES_AU_NUMBER = "COMPUTE_RULES_AU_NUMBER";
+    public static final String FACETS_COUNT_BY_NODE = "COUNT_BY_NODE";
+    public static final String FACETS_COUNT_WITHOUT_RULES = "COUNT_WITHOUT_RULES";
+    public static final String COUNT_CONFLICT_RULES = "Conflict";
     /* StartDate and EndDate Query fields */
     public static final String START_DATE = "StartDate";
     public static final String START_DATE_CRITERIA = "START_DATE";

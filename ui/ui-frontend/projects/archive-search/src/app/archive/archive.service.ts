@@ -39,18 +39,35 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, SearchService, SecurityService } from 'ui-frontend-common';
+import {
+  AccessContract,
+  AccessContractApiService,
+  CriteriaDataType,
+  CriteriaOperator,
+  SearchService,
+  SecurityService,
+} from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
 import { FilingHoldingSchemeNode } from './models/node.interface';
+import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, ResultFacet, SearchCriteriaDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import {
+  AppraisalRuleFacets,
+  PagedResult,
+  ResultFacet,
+  ResultFacetList,
+  SearchCriteriaDto,
+  SearchCriteriaEltDto,
+  SearchCriteriaTypeEnum,
+} from './models/search.criteria';
 import { Unit } from './models/unit.interface';
+import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveService extends SearchService<any> {
   constructor(
@@ -58,38 +75,15 @@ export class ArchiveService extends SearchService<any> {
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private accessContractApiService: AccessContractApiService
   ) {
     super(http, archiveApiService, 'ALL');
   }
 
   headers = new HttpHeaders();
 
-  private static buildPagedResults(response: SearchResponse): PagedResult {
-    const pagedResult: PagedResult = {
-      results: response.$results,
-      totalResults: response.$hits.total,
-      pageNumbers:
-        +response.$hits.size !== 0
-          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
-          : 0
-    };
-    const resultFacets: ResultFacet[] = [];
-    if (response.$facetResults && response.$facetResults) {
-      for (const facet of response.$facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            resultFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    pagedResult.facets = resultFacets;
-    return pagedResult;
-  }
-
-  private static fetchTitle(title: string, titleInLanguages: any) {
+  public static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
@@ -100,7 +94,7 @@ export class ArchiveService extends SearchService<any> {
   public loadFilingHoldingSchemeTree(tenantIdentifier: number, accessContractId: string): Observable<FilingHoldingSchemeNode[]> {
     const headers = new HttpHeaders({
       'X-Tenant-Id': '' + tenantIdentifier,
-      'X-Access-Contract-Id': accessContractId
+      'X-Access-Contract-Id': accessContractId,
     });
 
     return this.archiveApiService.getFilingHoldingScheme(headers).pipe(
@@ -129,7 +123,7 @@ export class ArchiveService extends SearchService<any> {
           parents: parentNode ? [parentNode] : [],
           vitamId: unit['#id'],
           checked: false,
-          hidden: false
+          hidden: false,
         };
         outNode.children = this.buildNestedTreeLevels(arr, outNode);
         out.push(outNode);
@@ -137,6 +131,10 @@ export class ArchiveService extends SearchService<any> {
     });
 
     return this.sortByTitle(out);
+  }
+
+  public static fetchAuTitle(unit: any) {
+    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
@@ -164,7 +162,7 @@ export class ArchiveService extends SearchService<any> {
           this.snackBar.openFromComponent(VitamUISnackBarComponent, {
             panelClass: 'vitamui-snack-bar',
             data: { type: 'exportCsvLimitReached' },
-            duration: 10000
+            duration: 10000,
           });
         }
       }
@@ -184,12 +182,91 @@ export class ArchiveService extends SearchService<any> {
         // Return other errors
         return of({ $hits: null, $results: [] });
       }),
-      map((results) => ArchiveService.buildPagedResults(results))
+      map((results) => this.buildPagedResults(results))
     );
   }
 
   launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  }
+  private buildPagedResults(response: SearchResponse): PagedResult {
+    let pagedResult: PagedResult = {
+      results: response.$results,
+      totalResults: response.$hits.total,
+      pageNumbers:
+        +response.$hits.size !== 0
+          ? Math.floor(+response.$hits.total / +response.$hits.size) + (+response.$hits.total % +response.$hits.size === 0 ? 0 : 1)
+          : 0,
+    };
+    pagedResult.facets = response.$facetResults;
+    return pagedResult;
+  }
+
+  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
+    let nodesFacets: ResultFacet[] = [];
+
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
+        if (facet.name === 'COUNT_BY_NODE') {
+          let nodesFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            nodesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+        }
+      }
+    }
+    return nodesFacets;
+  }
+
+  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
+    let appraisalRulesFacets = new AppraisalRuleFacets();
+    if (facetResults && facetResults.length > 0) {
+      for (let facet of facetResults) {
+        if (facet.name === 'FINAL_ACTION_COMPUTED') {
+          let buckets = facet.buckets;
+          let finalActionsFacets = [];
+          for (let bucket of buckets) {
+            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
+        }
+        if (facet.name === 'RULES_COMPUTED_NUMBER') {
+          let rulesListFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            rulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.rulesListFacets = rulesListFacets;
+        }
+        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
+          let expiredRulesListFacets = [];
+          let buckets = facet.buckets;
+          for (let bucket of buckets) {
+            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
+        }
+        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
+          let buckets = facet.buckets;
+          let waitingToRecalculateRulesListFacets = [];
+          for (let bucket of buckets) {
+            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
+        }
+
+        if (facet.name === 'COUNT_WITHOUT_RULES') {
+          let buckets = facet.buckets;
+          let noAppraisalRulesFacets = [];
+          for (let bucket of buckets) {
+            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
+        }
+      }
+    }
+    return appraisalRulesFacets;
   }
 
   normalizeTitle(title: string): string {
@@ -234,15 +311,25 @@ export class ArchiveService extends SearchService<any> {
     return this.archiveApiService.updateUnitsRules(ruleSearchCriteriaDto, headers);
   }
 
+  getAccessContractById(accessContract: string): Observable<AccessContract> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.accessContractApiService.getAccessContractById(accessContract, headers);
+  }
+
+  hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
+    return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
+  }
+
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
       data: {
         type: 'WorkflowSuccessSnackBar',
         message,
-        serviceUrl
+        serviceUrl,
       },
-      duration: 100000
+      duration: 100000,
     });
   }
 
@@ -251,7 +338,6 @@ export class ArchiveService extends SearchService<any> {
     function window_focus() {
       window.removeEventListener('focus', window_focus, false);
       URL.revokeObjectURL(url);
-      console.log('revoke ' + url);
     }
     location.href = url;
   }
@@ -262,7 +348,7 @@ export class ArchiveService extends SearchService<any> {
     if (!allunitups || allunitups.length === 0) {
       return of({
         fullPath: '',
-        resumePath: ''
+        resumePath: '',
       });
     }
 
@@ -272,14 +358,14 @@ export class ArchiveService extends SearchService<any> {
         values: allunitups,
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: archiveUnit['#allunitups'].length
+      size: archiveUnit['#allunitups'].length,
     };
 
     return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
@@ -306,10 +392,51 @@ export class ArchiveService extends SearchService<any> {
 
         return {
           fullPath,
-          resumePath
+          resumePath,
         };
       })
     );
+  }
+
+  launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.launchComputedInheritedRules(criteriaDto, headers);
+  }
+
+  getTotalTrackHitsByCriteria(criteriaElts: SearchCriteriaEltDto[], accessContract: string): Observable<number> {
+    const searchCriteria = {
+      criteriaList: criteriaElts,
+      pageNumber: 0,
+      size: 1,
+      trackTotalHits: true,
+    };
+    return this.searchArchiveUnitsByCriteria(searchCriteria, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        return pagedResult.totalResults;
+      }),
+      catchError(() => {
+        return of(-1);
+      })
+    );
+  }
+
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.selectUnitWithInheritedRules(criteriaDto, headers);
+  }
+
+  reclassification(criteriaDto: ReclassificationCriteriaDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.reclassification(criteriaDto, headers);
+  }
+
+  updateUnit(id: string, tenantIdentifier: number, accessContract: string, unitMDDDto: UnitDescriptiveMetadataDto): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract).append('X-Tenant-Id', '' + tenantIdentifier);
+    return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
   }
 }
 

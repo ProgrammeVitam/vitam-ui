@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -42,20 +43,16 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { InjectorModule } from './modules/helper/injector.module';
-
-import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
+import { QuicklinkModule, QuicklinkStrategy } from 'ngx-quicklink';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
-import { BASE_URL, ENVIRONMENT } from './modules';
-import { AppGuard, LoggerModule, WINDOW_LOCATION } from './modules';
-import { VitamUICommonModule } from './modules';
+import { AppGuard, BASE_URL, ENVIRONMENT, LoggerModule, VitamUICommonModule, WINDOW_LOCATION } from './modules';
 import { AccountComponent } from './modules/account';
+import { InjectorModule } from './modules/helper/injector.module';
+import { PipesModule } from './modules/pipes/pipes.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
@@ -67,13 +64,17 @@ import { AccountComponent } from './modules/account';
     VitamUICommonModule,
     LoggerModule.forRoot(),
     QuicklinkModule,
-    RouterModule.forRoot([
-    { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
-      { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
-      { path: '**', redirectTo: '' },
-    ], {
-      preloadingStrategy: QuicklinkStrategy
-    }),
+    RouterModule.forRoot(
+      [
+        { path: 'account', component: AccountComponent, canActivate: [AppGuard], data: { appId: 'ACCOUNTS_APP' } },
+        { path: '', redirectTo: 'components-demo', pathMatch: 'full' },
+        { path: '**', redirectTo: '' },
+      ],
+      {
+        preloadingStrategy: QuicklinkStrategy,
+      }
+    ),
+    PipesModule,
   ],
   providers: [
     { provide: BASE_URL, useValue: '/portal-api' },
@@ -81,6 +82,6 @@ import { AccountComponent } from './modules/account';
     { provide: WINDOW_LOCATION, useValue: window.location },
     // { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

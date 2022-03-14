@@ -40,10 +40,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { InjectorModule, LoggerModule, StartupService } from 'ui-frontend-common';
+import { BASE_URL, InjectorModule, LoggerModule, StartupService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { ArchiveService } from '../archive.service';
+import { ActionsRules, ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
+import { SearchCriteriaDto } from '../models/search.criteria';
 import { ManagementRulesComponent } from './management-rules.component';
 
 const translations: any = { TEST: 'Mock translate test' };
@@ -53,6 +58,49 @@ class FakeLoader implements TranslateLoader {
     return of(translations);
   }
 }
+
+const ruleActions: ActionsRules[] = [
+  {
+    ruleType: 'ruleType1',
+    actionType: 'actionType1',
+    id: 1,
+    ruleId: 'ruleId1',
+    stepValid: true,
+  },
+  {
+    ruleType: 'ruleType2',
+    actionType: 'actionType2',
+    id: 1,
+    ruleId: 'ruleId2',
+    stepValid: true,
+  },
+  {
+    ruleType: 'ruleType3',
+    actionType: 'actionType3',
+    id: 1,
+    ruleId: 'ruleId3',
+    stepValid: false,
+  },
+];
+
+const ruleCategoryAction: RuleCategoryAction = {
+  rules: [],
+  finalAction: 'keep',
+};
+
+const managementRules: ManagementRules[] = [
+  {
+    category: 'category',
+    ruleCategoryAction,
+    actionType: 'actionType',
+  },
+];
+
+const searchCriteriaDto: SearchCriteriaDto = {
+  criteriaList: [],
+  pageNumber: 1,
+  size: 10,
+};
 
 describe('ManagementRulesComponent', () => {
   let component: ManagementRulesComponent;
@@ -77,6 +125,24 @@ describe('ManagementRulesComponent', () => {
   };
 
   beforeEach(async () => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
+    };
+
+    const archiveServiceMock = {
+      getBaseUrl: () => '/fake-api',
+    };
+
+    const managementRulesSharedDataServiceMock = {
+      getCriteriaSearchDSLQuery: () => of(searchCriteriaDto),
+      getManagementRules: () => of(managementRules),
+      getAccessContract: () => of('AccessContract'),
+      getselectedItems: () => of(35),
+      getCriteriaSearchListToSave: () => of({}),
+      getRuleActions: () => of(ruleActions),
+    };
+
     await TestBed.configureTestingModule({
       imports: [
         InjectorModule,
@@ -91,10 +157,15 @@ describe('ManagementRulesComponent', () => {
       declarations: [ManagementRulesComponent],
       providers: [
         FormBuilder,
+        { provide: BASE_URL, useValue: '/fake-api' },
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: ArchiveService, useValue: archiveServiceMock },
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
       ],
     }).compileComponents();
   });
@@ -108,18 +179,26 @@ describe('ManagementRulesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
   it('Should have an accessContract ', () => {
     expect(component.accessContract).not.toBeNull();
   });
+
   it('items Selected should be grather than 0 ', () => {
     expect(component.selectedItem).toBeGreaterThan(0);
   });
+
   it('Should have a list of search criteria ', () => {
     expect(component.criteriaSearchListToSave).not.toBeNull();
   });
 
-  it('Should the rule Category Selected be   ', () => {
+  it('Should the rule Category Selected be ', () => {
     component.selectRule(rulesCatygories[0]);
     expect(component.ruleCategorySelected).toEqual('StorageRule');
+  });
+
+  it('Should return false, the actions are not all valid ', () => {
+    component.ruleActions = ruleActions;
+    expect(component.isAllActionsValid()).not.toBeTruthy();
   });
 });

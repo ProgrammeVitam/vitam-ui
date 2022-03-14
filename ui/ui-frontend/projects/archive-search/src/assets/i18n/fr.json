@@ -1,5 +1,62 @@
 {
   "ARCHIVE_SEARCH": {
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflit",
+        "INHERITED": "Hérité",
+        "CARRIED": "Porté",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICTACCESS": "Accès réservé"
+      },
+      "RULE_STATUS": {
+        "INHERITED": "Héritée",
+        "CARRIED": "Portée",
+        "BLOCKED": "Bloquée"
+      },
+      "RULE": {
+        "IDENTIFIER": "Identifiant",
+        "START_DATE": "Début",
+        "END_DATE": "Fin",
+        "STATUS": "Statut"
+      },
+      "FINAL_ACTION": {
+        "VALUE": "Valeur",
+        "STATUS": "Statut",
+        "PROPERTY": "Propriété"
+      },
+      "PROPERTIES": "Propriétés",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Héritage de la catégorie bloqué",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "STORAGERULE": "DUC",
+        "HOLDRULE": "Gel",
+        "ACCESSRULE": "Communicabilité",
+        "DISSEMINATIONRULE": "Diffusion",
+        "REUSERULE": "Réutilisation",
+        "CLASSIFICATIONRULE": "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES": {
+        "CLASSIFICATIONLEVEL": "Niveau de classification",
+        "CLASSIFICATIONOWNER": "Propriétaire",
+        "CLASSIFICATIONAUDIENCE": "Limitation du champ de diffusion",
+        "CLASSIFICATIONREASSESSINGDATE": "Date de réévaluation",
+        "NEEDREASSESSINGAUTHORIZATION": "Besoin d'autorisation de réévaluation"
+      },
+
+      "HOLD_RULE_PROPERTIES": {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES": "Oui",
+      "COMMON_NO": "Non"
+    },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
       "SELECTED": "Sélectionnés",
@@ -35,9 +92,32 @@
       "EXECUTE": "Eliminer les archives",
       "EXECUTE_ONE": "Eliminer l'archive"
     },
-    "RULES_ACTION" : {
-      "UPDATE_RULE" : "Mettre à jour des règles"
+    "RULES_ACTION": {
+      "UPDATE_RULE": "Mettre à jour des règles"
     },
+    "OTHER_ACTIONS": {
+      "DIALOG_MESSAGE": {
+        "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action sur {{elementsSize}} unités archivistiques",
+        "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT": "Action sur + de 10 000 unités archivistiques",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT": "Vous êtes sur le point d'effectuer cette action sur {{elementsSize}} unités archivistiques sélectionnées.",
+        "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE": "Action sur une unité archivistique",
+        "ACTION_ON_BIG_NUMBERS_TITLE_WITHOUT_EXACT_COUNT_ONE": "Action sur une unité archivistique",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_EXACT_COUNT_ONE": "Vous êtes sur le point d'effectuer cette action sur une unité archivistiques sélectionnée.",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_WITHOUT_EXACT_COUNT": "Vous êtes sur le point d'effectuer cette action sur + de 10 000 unités archivistiques sélectionnées.",
+        "ACTION_ON_BIG_NUMBERS_MESSAGE_2": "Confirmez-vous votre action ?",
+        "CONFIRM": "Confirmer",
+        "CANCEL": "Annuler"
+      }
+    },
+    "COMPUTED_INHERITED_RULES": {
+      "EXECUTION_ACTION": "Lancer le calcul d'héritage",
+      "OPERATION_MESSAGE": "Le calcul des héritages a bien été lancé sur les unités sélectionnées",
+      "TITLE": "Validation de lancement du calcul d'héritage",
+      "CONFIRMATION_MESSAGE": "Vous êtes sur le point de lancer un calcul d'héritage sur {{itemSelected}} unité(s) archivistique(s). Voulez-vous confirmer ?",
+      "CONFIRM": "Confirmer",
+      "CANCEL": "Annuler"
+    },
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
     "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
     "SHOW_TREES_PLANS": "Afficher les arbres et plans",
     "TITLE_SEARCH": "Recherche : ",
@@ -50,37 +130,58 @@
     "SEARCH_CRITERIA_LTE": "Avant le ",
     "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
+    "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
+    "MORE_THAN": "+ de ",
+    "MORE_THAN_THRESHOLD": "+ de 10 000",
     "SHOW_MORE_RESULTS": "Afficher plus de résultats...",
     "REMOVE_SEARCH_CRITERIA_BY_CATEGORY": "Supprimer les filtres de la règle",
     "NO_MORE_RESULTS": "Fin des résultats",
     "SEARCH_CRITERIA_FILTER": {
+      "DATES": "Dates",
+      "UA_TYPE": "Type d'unités archivistiques",
       "TITLE": "Filtre de recherche",
       "OTHER_FILED_SELECTION": "Sélection d'un autre critère",
       "DUA_TITLE": "Durée d'utilité administrative",
+      "ACCESS_TITLE": "Communicabilité",
       "NODES": {
         "NODE": "Position"
       },
       "APPRAISAL_RULE": {
-        "APPRAISAL_RULE_END_DATE_END": "DUA: Date de fin max",
-        "APPRAISAL_RULE_END_DATE_BEGIN": "DUA: Date de fin min",
+        "RULE_END_DATE_END": "DUA: Date de fin max",
+        "RULE_END_DATE_BEGIN": "DUA: Date de fin min",
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
-        "APPRAISAL_RULE_FINAL_ACTION": "Sort final DUA",
-        "APPRAISAL_RULE_TITLE": "Intitulé règle DUA",
-        "APPRAISAL_RULE_IDENTIFIER": "Identifiant règle DUA",
+        "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
+        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
+        "RULE_IDENTIFIER_APPRAISAL_RULE": "Identifiant règle DUA",
         "APPRAISAL_RULE_START_DATE": "Date de début règle DUA",
-        "APPRAISAL_RULE_END_DATE": "Date de fin DUA",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE": "Sort final",
-        "APPRAISAL_RULE_ORIGIN": "Règle DUA",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_KEEP": "Conservation",
-        "APPRAISAL_RULE_FINAL_ACTION_TYPE_NOT_SPECIFIED": "Non déclarée",
-        "APPRAISAL_RULE_FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
-        "APPRAISAL_RULE_FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
-        "APPRAISAL_RULE_ORIGIN_HAS_AT_LEAST_ONE": "Portées",
-        "APPRAISAL_RULE_ORIGIN_HAS_NO_ONE": "Non définies",
-        "APPRAISAL_RULE_ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
-        "APPRAISAL_RULE_ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
+        "RULE_END_DATE_APPRAISAL_RULE": "Date de fin DUA",
+        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Sort final",
+        "RULE_ORIGIN_APPRAISAL_RULE": "Règle DUA",
+        "FINAL_ACTION_TYPE_ELIMINATION": "Elimination",
+        "FINAL_ACTION_TYPE_KEEP": "Conservation",
+        "FINAL_ACTION_TYPE_NOT_SPECIFIED": "Non déclarée",
+        "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
+        "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
+        "ORIGIN_HAS_NO_ONE": "Non définies",
+        "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
+      },
+      "ACCESS_RULE": {
+        "RULE_END_DATE_END": "Communicabilité: Date de fin max",
+        "RULE_END_DATE_BEGIN": "Communicabilité: Date de fin min",
+        "CREATE_INTERVAL": "Créer un intervale",
+        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "RULE_TITLE_ACCESS_RULE": "Intitulé règle Communicabilité",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Identifiant règle Communicabilité",
+        "RULE_START_DATE_ACCESS_RULE": "Date de début règle Communicabilité",
+        "RULE_END_DATE_ACCESS_RULE": "Date de fin Communicabilité",
+        "RULE_ORIGIN_ACCESS_RULE": "Règle Communicabilité",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
+        "ORIGIN_HAS_NO_ONE": "Non définies",
+        "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
       "FIELDS": {
         "ID": "ID",
@@ -105,20 +206,42 @@
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "TITLE_DUA": "Intitulé",
+        "TITLE_ACCESS": "Intitulé",
         "ID_DUA": "Identifiant",
+        "ID_ACCESS": "Identifiant",
         "START_DATE_DUA": "Date de début",
         "END_DATE_DUA": "Date de fin de la règle",
         "END_DATE_DUA_EQUAL": "Date de fin extrême",
         "END_DATE_DUA_BEGIN": "Entre le ",
         "END_DATE_DUA_END": "et le ",
+        "END_DATE_ACCESS": "Date de fin de la règle",
+        "END_DATE_ACCESS_EQUAL": "Date de fin extrême",
+        "END_DATE_ACCESS_BEGIN": "Entre le ",
+        "END_DATE_ACCESS_END": "et le ",
         "GUID_OPI": "Identifiant technique du versement",
+        "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+        "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre ",
+        "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
+        "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+        "HOLDING_UNIT": "Arbre de positionnement",
+        "FILING_UNIT": "Plan de classement",
+        "DESCRIPTION_LEVEL": "Type d'unité archivistique",
+        "ALL_ARCHIVE_UNIT_TYPES": "Type",
+        "WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_WAITING_RECALCULATE": "Oui",
+
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Porte au moins une règle DUA",
           "HAS_NO_APPRAISAL_RULE": "N'a pas de règle DUA définie ",
           "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Est en attente de recalcul de règle",
-          "SELECT_ALL_APPRAISAL_RULE": "Sélectionne tout"
+          "SELECT_ALL_APPRAISAL_RULE": "Sélectionne tout",
+          "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Hérite d'au moins une règle Communicabilité",
+          "HAS_AT_LEAST_ONE_ACCESS_RULE": "Porte au moins une règle Communicabilité",
+          "HAS_NO_ACCESS_RULE": "N'a pas de règle Communicabilité définie ",
+          "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Est en attente de recalcul de règle",
+          "SELECT_ALL_ACCESS_RULE": "Sélectionne tout"
         },
         "FINAL_ACTION_TYPE": {
           "TITLE": "L'unité archivistique",
@@ -138,7 +261,34 @@
           "INCLUDE": "Inclure",
           "EXCLUDE": "Exclure"
         },
-        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
+        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination",
+        "UNIT_TYPE": {
+          "ARCHIVE_UNIT_WITH_OBJECTS": "Archive avec objets",
+          "ARCHIVE_UNIT_WITHOUT_OBJECTS": "Archive sans objets",
+          "ARCHIVE_UNIT_HOLDING_UNIT": "Arbre",
+          "ARCHIVE_UNIT_FILING_UNIT": "Plan",
+          "ARCHIVE_UNIT_PLAN": "Plan",
+          "ARCHIVE_UNIT_HOLDING": "Arbre"
+        }
+      }
+    },
+    "FACETS": {
+      "APPRAISAL_RULE": {
+        "RULES_COUNT": "Nombre de règles",
+        "EXPIRED_RULES": "Date d'échéance",
+        "FINAL_ACTIONS": "Sort final",
+        "WITHOUT_RULES": "Dont sans règle définie",
+        "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflit",
+        "NOT_EXPIRED": "Non-Echue",
+        "EXPIRED": "Echue",
+        "DISTINCT_RULES": "Règles distinctes",
+        "FROM_DATE": "A partir du",
+        "SHOW_RULES_LIST": "AFFICHER LISTE",
+        "WAITING_TO_RECALCULATE": "Avec règle non indexée",
+        "CALCULATED": "Avec règle indexée"
       }
     },
     "ARCHIVE_UNIT": {
@@ -156,7 +306,8 @@
         "OTHER_FIELD": "Autre critère",
         "SELECT_OTHER_FIELD": "Sélection d'un autre critère",
         "SP_COMM": "Service Prod Comm",
-        "SP_COMM_DT": "Service Prod Comm DT"
+        "SP_COMM_DT": "Service Prod Comm DT",
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -176,7 +327,13 @@
         "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
       },
       "TABS": {
-        "INFORMATIONS": "Informations"
+        "INFORMATIONS": "Informations",
+        "RULES": "Règles",
+        "OBJECTS": "Objets"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
       }
     },
     "FILING_SHCEMA": {
@@ -231,7 +388,7 @@
       "ADD": "Ajouter des filtres",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
       "DUC": "Durée d'utilité courante",
-      "COMMUNICABILITY": "Communicabilité",
+      "ACCESS_RULE": "Communicabilité",
       "REUSING": "Réutilisation",
       "DIFFUSION": "Diffusion",
       "CLASSIFICATION": "Classification",
@@ -242,75 +399,156 @@
       "WRONG_FORMAT": "Mauvais format de règle"
     }
   },
-  "RULES" : {   
-      "TITLE" : "Changer une règle",   
-      "SELECT_RULE_CATEGORY" : "Sélectionnez une catégorie de règle",
-      "SELECT_RULE_ACTION" : "Sélectionnez une action",     
-      "OTHER_ACTIONS" : "Autres actions",
-      "BACK" : "RETOUR",
-      "EXECUTE_RULE_UPDATE" : "Lancer la mise à jour",
-      "EXECUTE_RULE_UPDATE_MESSAGE" : "L’opération de mise à jour des règles de gestion a bien été lancée",
-      "ACTION_ON_RULES" : "Action sur les règles",
-      "UA_SELECTED" :"{{ua_selected}} unités archivistiques séléctionnées",
-      "RULES_TO_ADD" : "Règle(s) à ajouter",
-      "ACTIONS" : {
-        "ADD_RULE" : "Ajouter une règle",
-        "DELETE_RULE" :"Supprimer une règle",
-        "BLOCK_RULE_INHERITANCE" : "Bloquer l’héritage d’une règle",
-        "DELETE_BLOCK_RULE_INHERITANCE" : "Supprimer le blocage d’héritage d’une règle",
-        "UPDATE_RULE" : "Modifier une règle"
-      },
-      "MORE_ACTIONS" : {
-        "UPDATE_PROPERTY" :"Ajouter ou modifier une propriété",
-        "DELETE_PROPERTY" : "Supprimer une propriété",
-        "BLOCK_PROPERTY_INHERITANCE" : "Bloquer l’héritage de la catégorie",
-        "DELETE_BLOCK_PROPERTY_INHERITANCE" : "Supprimer le blocage d’héritage de la catégorie"
-      },
-      "APRAISAL_RULES" : {
-        "MANAGEMENT_RULES" : "Règle de gestion",
-        "START_DATE" : "Date de début",
-        "RULE_NAME" : "Libellé",
-        "END_DATE" : "Date de fin",
-        "RULE_ID" : "Code",
-        "SAME_RULE_ID" : "Code identique à l'action précédente",
-        "RULE_NOT_EXIST" :"Le code de la règle renseigné n'existe pas"
+  "RULES": {
+    "TITLE": "Changer une règle",
+    "SELECT_RULE_CATEGORY": "Sélectionnez une catégorie de règle",
+    "SELECT_RULE_ACTION": "Sélectionnez une action",
+    "OTHER_ACTIONS": "Autres actions",
+    "BACK": "RETOUR",
+    "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
+    "EXECUTE_RULE_UPDATE_MESSAGE": "L’opération de mise à jour des règles de gestion a bien été lancée",
+    "ACTION_ON_RULES": "Action sur les règles",
+    "UA_SELECTED": "{{ua_selected}} unités archivistiques séléctionnées",
+    "RULES_TO_ADD": "Règle(s) à ajouter",
+    "RULES_TO_UPDATE": "Règle(s) à modifier",
+    "RULES_TO_DELETE": "Règle(s) à supprimer",
+    "ACTIONS": {
+      "ADD_RULE": "Ajouter une règle",
+      "DELETE_RULE": "Supprimer une règle",
+      "BLOCK_RULE_INHERITANCE": "Bloquer l’héritage d’une règle",
+      "DELETE_BLOCK_RULE_INHERITANCE": "Supprimer le blocage d’héritage d’une règle",
+      "UPDATE_RULE": "Modifier une règle",
+      "NOT_TO_ADD": "Action impossible pour ce type de règle : une modification ou une suppression est déjà en cours",
+      "NOT_TO_UPDATE": "Action impossible pour ce type de règle : un ajout ou une suppression est déjà en cours",
+      "FINAL_ACTION_NOT_TO_ADD": "Action impossible pour ce type de règle : Un sort final est déjà ajouté",
+      "NOT_TO_DELETE": "Action impossible pour ce type de règle : un ajout ou une modification est déjà en cours",
+      "FINAL_ACTION_NOT_TO_DELETE_PROPERTY": "Vous ne pouvez pas supprimer le sort final d'une règle DUA"
+    },
+    "MORE_ACTIONS": {
+      "UPDATE_PROPERTY": "Ajouter ou modifier une propriété",
+      "DELETE_PROPERTY": "Supprimer une propriété",
+      "BLOCK_PROPERTY_INHERITANCE": "Bloquer l’héritage de la catégorie",
+      "DELETE_BLOCK_PROPERTY_INHERITANCE": "Supprimer le blocage d’héritage de la catégorie"
+    },
+    "APRAISAL_RULES": {
+      "MANAGEMENT_RULES": "Règle de gestion",
+      "START_DATE": "Date de début",
+      "RULE_NAME": "Libellé",
+      "END_DATE": "Date de fin",
+      "RULE_ID": "Code",
+      "SAME_RULE_ID": "Code identique à l'action précédente",
+      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas",
+      "TARGET_RULE": "Règle de gestion cible",
+      "SOURCE_RULE": "Règle de gestion source *",
+      "UPDATED": "Modifié",
+      "TARGET_START_DATE": "Date de début cible",
+      "UA_TO_UPDATE": "UA sélectionnées seront prises en compte lors de la mise à jour",
+      "UA_TO_IGNORE": "des UA sélectionnées ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
+    },
+    "FINAL_ACTION": {
+      "TITLE": "Sort final",
+      "SELECT_VALUE": "Sélectionner une valeur",
+      "KEEP": "Conservation",
+      "ELIMINATION": "Elimination"
+    },
+    "COMMON": {
+      "UNDO": "Annuler",
+      "CONTROL": "Contrôler",
+      "CONFIRM": "Confirmer"
+    },
+    "UA_CONTROL": {
+      "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
+      "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
+      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
+    },
+    "DIALOG_MESSAGE": {
+      "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
+      "DELETE_COMPONENT": "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
+      "EXIT_CONFIRM_MESSAGE": "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
+    },
 
-      },
-      "FINAL_ACTION" : {
-        "TITLE" : "Sort final",
-        "SELECT_VALUE" : "Sélectionner une valeur",
-        "KEEP" : "Conservation",
-        "ELIMINATION" : "Elimination"
-      },
-      "COMMON" : {
-        "UNDO" : "Annuler",
-        "CONTROL" : "Contrôler",
-        "CONFIRM" : "Confirmer"
-      },
-      "UA_CONTROL" : {
-        "UA_FINAL_ACTION_MESSAGE" : "L'ensemble des UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
-        "UA_WITH_SAME_RULE" : "{{ itemsWithSameRule }} des UA sélectionnée (s) portent déjà cette règle et seront ignorées.", 
-        "UA_WITH_RULES_TO_UPDATE" : "{{ itemsToUpdate }}  UA sélectionnée (s) seront prises en compte lors de la mise à jour.",
-        "UA_WITH_SAME_RULE_AND_DATE" : "{{ itemsWithSameRuleAndDate }} des UA sélectionnée (s) portent déjà cette règle et cette date de début et seront ignorées."
+    "CATEGORIES_NAME": {
+      "STORAGE_RULE": "Durée d'utilité courante (DUC)",
+      "APPRAISAL_RULE": "Durée d'utilité administrative (DUA)",
+      "HOLD_RULE": "Gel / Dégel",
+      "ACCESS_RULE": "Communicabilité",
+      "DISSEMINATION_RULE": "Diffusion",
+      "REUSE_RULE": "Réutilisation",
+      "CLASSIFICATION_RULE": "Classification"
+    },
 
-      },
-      "DIALOG_MESSAGE" : {
-        "UPDATE_CONFIRM_TITLE_MESSAGE" : "Validation de changement(s) de règle(s)",       
-        "DELETE_COMPONENT" : "Êtes-vous sur de vouloir supprimer le bloc de mise à jour des règles ?",
-        "UPDATE_CONFIRM_MESSAGE" : "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
-        "EXIT_CONFIRM_MESSAGE" : "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
-      },
-
-      "CATEGORIES_NAME" : {
-        "STORAGE_RULE" : "Durée d'utilité courante (DUC)",
-        "APPRAISAL_RULE" : "Durée d'utilité administrative (DUA)",
-        "HOLD_RULE" : "Gel / Dégel",
-        "ACCESS_RULE" : "Communicabilité",
-        "DISSEMINATION_RULE" : "Diffusion",
-        "REUSE_RULE" : "Réutilisation",
-        "CLASSIFICATION_RULE" : "Classification"
-      }
-    }  
-
-
+    "ALERTE_MESSAGES": {
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_FIRST_MESSAGE": "Votre sélection comporte au moins une unité archivistique de type arbre de positionnement.",
+      "UPDATE_RULES_ALERTE_SECOND_MESSAGE": "L’action de changement de règle n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes.",
+      "COMPUTE_INHERITANCE_RULES_ALERTE_SECOND_MESSAGE": "L’action de calcul des règles héritées n'est pas autorisée pour celle(s)-ci. Veuillez retirer les unités archivistiques correspondantes."
+    }
+  },
+  "RECLASSIFICATION": {
+    "EXECUTION_ACTION": "Reclasser une unité archivistique",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler",
+    "ALERTE_MESSAGES": {
+      "RECLASSE_TITLE": "Reclasser une unité archivistique",
+      "BACK_TO_SELECTION": "Revenir à la sélection",
+      "ACTION_ALERTE_TITLE": "L'action demandée n'est pas possible pour cette sélection",
+      "ACTION_ALERTE_ONE_UNIT_1": "Votre sélection comporte plusieurs unités archivistiques",
+      "ACTION_ALERTE_ONE_UNIT_2": "L’action de reclassement n'est possible que pour une seule.",
+      "ACTION_ALERTE_ONE_UNIT_HINT": "Veuillez revoir votre sélection en ne sélectionnant qu'une seule unité archivistique."
+    },
+    "EXECUTE_RECLASSEMENT_MESSAGE": "La demande de reclassement a bien été lancée",
+    "COMMON": {
+      "TARGET_GUID_LABEL": "Identifiant technique de la position cible",
+      "TARGET_GUID_TITLE_LABEL": "Intitulé de la position cible",
+      "TO_PARENT_TARGET": "Vers le dossier",
+      "SELECT_TARGET_PARENT": "Sélectionner la ou les position(s) source(s) à retirer",
+      "FROM_PARENT_SOURCE_MESSAGE": "Dossier(s) parent(s) actuel(s)",
+      "ARCHIVE_WITH_NO_PARENTS": "Le dossier n'a pas de parents",
+      "GUID_ALREADY_EXISTS": "L'identifiant technique n'existe pas",
+      "ATTACHMENT_ALREADY_EXISTS": "Le rattachement existe déjà"
+    },
+    "FIRST_STEP": {
+      "TITLE": "Reclasser une unité archivistique",
+      "SELECTED_UNIT": "unité archivistique sélectionnée",
+      "CHILDS": "fils",
+      "SELECT_ACTION_MESSAGE_1": "Sélectionner une action",
+      "SELECT_ACTION_MESSAGE_2": "Action de reclassement"
+    },
+    "REPLACE_STEP": {
+      "TITLE": "Déplacer vers un autre dossier",
+      "FROM_PARENT_SOURCE_MESSAGE": "Depuis le ou les dossier(s)"
+    },
+    "DELETE_STEP": {
+      "TITLE": "Retirer d'un dossier"
+    },
+    "ADD_STEP": {
+      "TITLE": "Ajouter à un dossier",
+      "ADD_TO_FOLDER": "Ajouter au dossier"
+    }
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "La demande de mise à jour d'unité archivistique a bien été envoyée",
+    "MESSAGE": "Voulez-vous confirmer la mise à jour des métadonnées de cette unité archivistique ?",
+    "HINT": "Validation de mise à jour",
+    "NO_PERMISSION": "Votre contrat d'accès n'autorise pas cette action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "FERMER",
+    "CONFIRM_CLOSE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
+    "CLOSE_WINDOW_HINT": "Quitter la mise à jour",
+    "RECORDGRP": "Groupes de dossiers",
+    "FILE": "Dossier",
+    "ITEM": "Pièce",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Sous-fonds",
+    "CLASS": "Classe",
+    "SUBGRP": "Sous-groupe de documents",
+    "OTHERLEVEL": "Autre niveau",
+    "SERIES": "Série",
+    "SUBSERIES": "Sous-série",
+    "FONDS": "Fonds",
+    "SAVE": "ENREGISTRER"
+  }
 }

@@ -1,0 +1,16 @@
+db = db.getSiblingDB('iam');
+
+print("START 53_migration_role_update_desc_unit_metadata_script.js");
+
+db.profiles.updateMany({
+   "name": "Archiviste administrateur"
+},
+{
+   "$addToSet": {
+          "roles": {
+                   "name":"ROLE_UPDATE_UNIT_DESC_METADATA"
+          }
+   }
+});
+
+print("END 53_migration_role_update_desc_unit_metadata_script.js");

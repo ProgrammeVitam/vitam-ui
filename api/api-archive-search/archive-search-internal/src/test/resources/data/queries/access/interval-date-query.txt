@@ -1,0 +1,1 @@
+[{"$or":[{"$and":[{"$gte":{"#management.AccessRule.Rules.EndDate":"2011-11-02"}},{"$lte":{"#management.AccessRule.Rules.EndDate":"2021-11-02"}}]},{"$and":[{"$gte":{"#computedInheritedRules.AccessRule.MaxEndDate":"2011-11-02"}},{"$lte":{"#computedInheritedRules.AccessRule.MaxEndDate":"2021-11-02"}}]}]}]

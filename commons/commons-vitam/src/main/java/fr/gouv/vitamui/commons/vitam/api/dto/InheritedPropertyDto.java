@@ -42,15 +42,44 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
 public class InheritedPropertyDto {
 
+    /**
+     * Unit id
+     */
+    @JsonProperty("UnitId")
+    private String unitId;
+
+    /**
+     * Originating Agency Name
+     */
+    @JsonProperty("OriginatingAgency")
+    private String originatingAgency;
+
+    /**
+     * PropertyName
+     */
     @JsonProperty("PropertyName")
     private String propertyName;
 
+
+    /**
+     * PropertyValue
+     */
     @JsonProperty("PropertyValue")
     private Object propertyValue;
+
+
+    /**
+     * Paths
+     */
+    @JsonProperty("Paths")
+    private List<ArrayList<String>> paths = new ArrayList<>();
 
 }

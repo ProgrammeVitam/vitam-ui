@@ -19,7 +19,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
-import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.service.ApplicationInternalService;
 import fr.gouv.vitamui.iam.internal.server.common.ApiIamInternalConstants;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;

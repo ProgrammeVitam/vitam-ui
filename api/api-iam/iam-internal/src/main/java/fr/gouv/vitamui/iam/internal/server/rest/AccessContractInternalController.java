@@ -46,6 +46,8 @@ import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
 import fr.gouv.vitamui.iam.internal.server.common.converter.AccessContractConverter;
@@ -53,9 +55,13 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -65,7 +71,7 @@ import java.util.List;
 @RequestMapping(CommonConstants.API_VERSION_1)
 @Api(tags = "accesscontracts", value = "Access contacts", description = "Access contracts Management")
 public class AccessContractInternalController {
-
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractInternalController.class);
     protected final InternalSecurityService securityService;
     private final AccessContractService accessContractService;
     private final ObjectMapper objectMapper;
@@ -99,5 +105,27 @@ public class AccessContractInternalController {
             throw new InternalServerException("Unable to get Access Contrats", e);
         }
     }
+
+    @GetMapping(path = "/accesscontracts/{identifier:.+}")
+    public AccessContractsDto getAccessContractById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+        LOGGER.debug("get accessContract identifier={} / {}", identifier, URLDecoder.decode(identifier, StandardCharsets.UTF_8.toString()));
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+
+        try {
+
+            LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
+            final AccessContractsResponseDto accessContractResponseDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), AccessContractsResponseDto.class);
+            if (accessContractResponseDto.getResults().size() == 0) {
+                return null;
+            } else {
+                return converter.convertVitamToDto(accessContractResponseDto.getResults().get(0));
+            }
+        } catch (VitamClientException | JsonProcessingException e) {
+            throw new InternalServerException("Unable to get Access Contrat", e);
+        }
+    }
+
 
 }

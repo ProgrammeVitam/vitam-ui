@@ -18,8 +18,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
     <div layout:fragment="content">
         <div>
-            <h4 th:utext="#{screen.blocked.header}">Access Denied</h4>
-            <p th:utext="#{screen.blocked.message}">You've entered the wrong password for the user too many times.
+            <h4 th:text="#{screen.blocked.header}">Access Denied</h4>
+            <p th:text="#{screen.blocked.message}">You've entered the wrong password for the user too many times.
                 You've been throttled.</p>
         </div>
     </div>

@@ -78,6 +78,7 @@ import javax.ws.rs.Produces;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Api(tags = "providers")
@@ -140,12 +141,14 @@ public class ProviderController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity request to upload the file", produces = "application/json", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'keystore' must not be blank
-    public IdentityProviderDto create(@RequestPart final String provider, @RequestPart("keystore") final MultipartFile keystore,
-            @RequestPart("idpMetadata") final MultipartFile idpMetadata) throws Exception {
+    public IdentityProviderDto create(@RequestPart final String provider, @RequestPart(value = "keystore",required = false) final MultipartFile keystore,
+            @RequestPart(value = "idpMetadata",required = false) final MultipartFile idpMetadata) throws Exception {
         LOGGER.debug("Create provider: {}", provider);
-        ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, idpMetadata);
-        SanityChecker.isValidFileName(keystore.getOriginalFilename());
-        SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
+
+        if(Objects.nonNull(keystore) && Objects.nonNull(idpMetadata)) {
+            SanityChecker.isValidFileName(keystore.getOriginalFilename());
+            SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
+        }
         return service.create(buildUiHttpContext(), keystore, idpMetadata, provider);
     }
 

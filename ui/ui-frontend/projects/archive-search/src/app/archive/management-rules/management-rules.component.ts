@@ -48,6 +48,8 @@ import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto } from '../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+
 @Component({
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
@@ -66,9 +68,15 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
-  private ruleCategoryDuaActions: RuleCategoryAction = {
+  private ruleCategoryDuaActionsToAdd: RuleCategoryAction = {
     rules: [],
     finalAction: '',
+  };
+  private ruleCategoryDuaActionsToUpdate: RuleCategoryAction = {
+    rules: [],
+  };
+  private ruleCategoryDuaActionsToDelete: RuleCategoryAction = {
+    rules: [],
   };
   actionSelected: string;
 
@@ -84,9 +92,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
   indexOfSelectedCategory = 0;
-  ruleCategorySelected: string;
-  isRuleCategorySelected = false;
+
   ruleSearchCriteriaDto: RuleSearchCriteriaDto;
+
+  isRuleCategorySelected = false;
+  isAddValidActions = false;
+  isUpdateValidActions = false;
+  isAddPropertyValidActions = false;
+  isUpdateValidActionsWithProperty = false;
+  isDeleteValidActions = false;
+  isDeleteValidActionsWithProperty = false;
+  isDeletePropertyDisabled = false;
+
+  messageNotUpdate: string;
+  messageNotAdd: string;
+  ruleCategorySelected: string;
+  messageNotAddProperty: string;
+  messageNotDelete: string;
+  messageNotToDeleteProperty: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -102,7 +125,53 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private startupService: StartupService,
     private translateService: TranslateService,
     private logger: Logger
-  ) {}
+  ) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      this.isUpdateValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+        ).length !== 0;
+      this.isUpdateValidActionsWithProperty =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+      this.isAddValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
+        ).length !== 0;
+      this.isAddPropertyValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+      this.isDeleteValidActions =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length !== 0 &&
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+        ).length !== 0;
+
+      this.isDeleteValidActionsWithProperty =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES
+        ).length !== 0;
+    });
+  }
 
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
@@ -117,6 +186,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.initializeParameters();
       this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
     }
+    this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
+    this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
+    this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
+    this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
+    this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
   }
 
   initializeParameters() {
@@ -136,6 +210,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   }
 
   selectRule(rule: any) {
+    this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
+
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.length - 1;
@@ -148,7 +224,13 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   loadCriteriaSearchDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
-      this.criteriaSearchDSLQuery = response;
+      this.criteriaSearchDSLQuery = {
+        criteriaList: response?.criteriaList.filter((criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+        pageNumber: response?.pageNumber,
+        size: response?.size,
+        sortingCriteria: response?.sortingCriteria,
+        language: response?.language,
+      };
     });
   }
 
@@ -217,17 +299,59 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const dialogToOpen = this.confirmRuleActionsDialog;
     const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
     const actionAddOnRules: any = {};
+    const actionUpdateOnRules: any = {};
+    const actionDeleteOnRules: any = {};
 
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      this.ruleCategoryDuaActions = data.find((rule) => rule.category === RuleTypeEnum.APPRAISALRULE)?.ruleCategoryAction;
-    });
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
 
-    actionAddOnRules.AppraisalRule = { rules: this.ruleCategoryDuaActions.rules, finalAction: this.ruleCategoryDuaActions?.finalAction };
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+          };
+        }
+      }
+    });
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
-      update: [],
-      delete: [],
+      update: this.objectToArray(actionUpdateOnRules),
+      delete: this.objectToArray(actionDeleteOnRules),
     };
 
     this.showConfirmRuleActionsDialogSuscription = dialogRef

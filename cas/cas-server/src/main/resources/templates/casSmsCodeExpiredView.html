@@ -10,12 +10,12 @@
 
     <div class="mfa-expired">
 
-        <p class="text1" th:utext="#{screen.mfa.sms.expired.text1}"/>
+        <p class="text1" th:text="#{screen.mfa.sms.expired.text1}"/>
 
         <form method="post" id="resendCodeForm">
             <input type="hidden" name="execution" th:value="${flowExecutionKey}"/>
             <input type="hidden" name="_eventId" value="resend"/>
-            <a class="button" th:utext="#{screen.mfa.sms.expired.resend(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
+            <a class="button" th:text="#{screen.mfa.sms.expired.resend(${mobile})}" href="javascript:void(0)" onclick="$('#resendCodeForm').submit();"/>
         </form>
 
     </div>

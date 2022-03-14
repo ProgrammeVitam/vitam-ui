@@ -61,7 +61,7 @@
         </div>
         <div class="login-box login-padding step-email">
         <div>
-            <h4 th:utext="#{screen.logout.header}">Logout successful</h4>
+            <h4 th:text="#{screen.logout.header}">Logout successful</h4>
             <p th:utext="#{screen.logout.fc.success}">You have successfully logged out of the Central Authentication
                 Service. Given single logout is enabled with CAS, \
                 the following list of applications are <strong> only notified</strong> to log you out and destroy your
@@ -70,7 +70,7 @@
                 and properly take action to log you \
                 out.</p>
 
-            <p th:utext="#{screen.logout.security}">For security reasons, exit your web browser.</p>
+            <p th:text="#{screen.logout.security}">For security reasons, exit your web browser.</p>
 
             <button type="button" th:if="${logoutRedirectUrl}" class="vitamui-secondary" name="submit" accesskey="l" onclick="redirectToApp();">[[${'Go to ' + logoutRedirectUrl}]]</button>
 

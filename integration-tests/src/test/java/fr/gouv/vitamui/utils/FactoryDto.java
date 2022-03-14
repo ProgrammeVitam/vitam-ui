@@ -12,7 +12,7 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.ContextDto;
 import fr.gouv.vitamui.referential.common.dto.IngestContractDto;

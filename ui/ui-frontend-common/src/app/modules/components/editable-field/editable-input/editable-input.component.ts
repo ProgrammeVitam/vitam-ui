@@ -56,6 +56,7 @@ export class EditableInputComponent extends EditableFieldComponent {
 
   @Input() maxlength: number;
   @Input() type = 'text';
+  @Input() writeDisabled : boolean;
   @ViewChild('input') private input: ElementRef;
 
   constructor(elementRef: ElementRef) {

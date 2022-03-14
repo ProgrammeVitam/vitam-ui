@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'vitamui-icon';
-  src:  url('fonts/vitamui-icon.eot?pn2e13');
-  src:  url('fonts/vitamui-icon.eot?pn2e13#iefix') format('embedded-opentype'),
-    url('fonts/vitamui-icon.ttf?pn2e13') format('truetype'),
-    url('fonts/vitamui-icon.woff?pn2e13') format('woff'),
-    url('fonts/vitamui-icon.svg?pn2e13#vitamui-icon') format('svg');
+  src:  url('fonts/vitamui-icon.eot?46ngw2');
+  src:  url('fonts/vitamui-icon.eot?46ngw2#iefix') format('embedded-opentype'),
+    url('fonts/vitamui-icon.ttf?46ngw2') format('truetype'),
+    url('fonts/vitamui-icon.woff?46ngw2') format('woff'),
+    url('fonts/vitamui-icon.svg?46ngw2#vitamui-icon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,18 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-trash:before {
+  content: "\e963";
+  color: #474d4a;
+}
+.vitamui-icon-import-csv:before {
+  content: "\e962";
+  color: #757575;
+}
+.vitamui-icon-icone-arbre:before {
+  content: "\e961";
+  color: #616161;
+}
 .vitamui-icon-ic24-user-transfer:before {
   content: "\e95e";
   color: #757575;
@@ -772,9 +784,6 @@ i.vitamui-icon {
 }
 .vitamui-icon-support-keys:before {
   content: "\e91c";
-}
-.vitamui-icon-bin:before {
-  content: "\e9ac";
 }
 .vitamui-icon-cross:before {
   content: "\ea0f";

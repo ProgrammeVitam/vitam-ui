@@ -17,9 +17,8 @@ import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.enums.OtpEnum;
-import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.application.domain.Application;
-import fr.gouv.vitamui.iam.internal.server.common.builder.ExternalParamProfileDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.common.domain.Address;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.Customer;
 import fr.gouv.vitamui.iam.internal.server.customer.domain.GraphicIdentity;
@@ -29,12 +28,10 @@ import fr.gouv.vitamui.iam.internal.server.owner.domain.Owner;
 import fr.gouv.vitamui.iam.internal.server.profile.domain.Profile;
 import fr.gouv.vitamui.iam.internal.server.tenant.domain.Tenant;
 import fr.gouv.vitamui.iam.internal.server.user.domain.User;
-import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

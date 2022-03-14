@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="10 - Referential-Internal" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="/usr/lib/jvm/jre-11-openjdk" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="fr.gouv.vitamui.referential.internal.server.ApiReferentialInternalServerApplication" />
+    <module name="referential-internal" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/api/api-referential/referential-internal" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
