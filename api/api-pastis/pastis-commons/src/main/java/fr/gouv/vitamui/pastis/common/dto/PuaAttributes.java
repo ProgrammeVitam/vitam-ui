@@ -1,5 +1,5 @@
 /*
-Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2020)
+Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2021)
 
 [dad@cines.fr]
 
@@ -35,30 +35,44 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { BASE_URL } from 'ui-frontend-common';
-import { PastisConfiguration } from '../classes/pastis-configuration';
-import { ArchivalProfileUnitApiService } from './archival-profile-unit-api.service';
-import { ArchiveProfileApiService } from './archive-profile-api.service';
 
-import { ProfileService } from './profile.service';
+package fr.gouv.vitamui.pastis.common.dto;
 
-describe('ProfileService', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    imports: [
-      HttpClientTestingModule,
-    ],
-    providers: [
-      ArchiveProfileApiService,
-      ArchivalProfileUnitApiService,
-      PastisConfiguration,
-      { provide: BASE_URL, useValue: '/pastis-api' },
-    ]
-  }));
+public enum PuaAttributes {
+	REF("$ref"),
+	ENUM("enum"),
+	PATTERN("pattern"),
+	MIN_LENGTH("minLength"),
+	MAX_LENGTH("maxLength"),
+	MINIMUM("minimum"),
+	MAXIMUM("maximum"),
+	ADDITIONAL_PROPERTIES("additionalProperties"),
+	EXCLUSIVE_MINIMUM("exclusiveMinimum"),
+	EXCLUSIVE_MAXIMUM("exclusiveMaximum"),
+	DESCRIPTION("description"),
+	MIN_ITEMS("minItems"),
+	MAX_ITEMS("maxItems"),
+	TYPE("type");    	
 
-  it('should be created', () => {
-    const service: ProfileService = TestBed.get(ProfileService);
-    expect(service).toBeTruthy();
-  });
-});
+	private String name;
+	
+	PuaAttributes(String s) {
+		name = s;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public static PuaAttributes fromString(String s) {
+		for (PuaAttributes att : PuaAttributes.values()) {
+			if (att.name.equals(s)) return att;
+		}
+		return null;
+	}
+}

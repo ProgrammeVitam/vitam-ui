@@ -17,21 +17,12 @@ db.applications.insert({
     "hasTenantList" : true,
     "hasHighlight" : false,
     "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
-    "target" : "_self"
+    "target" : "_self",
+    {% if vitamui.pastis.base_url is defined %}
+    	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
+    {% else %}
+    	"serviceId": "^{{ url_prefix }}/pastis/.*",
+    {% endif %}
 });
-
-db.applications.update({
-    "identifier" : "PASTIS_APP",
-}, {
-    $set: {
-{% if vitamui.pastis.base_url is defined %}
-	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
-{% else %}
-	"serviceId": "^{{ url_prefix }}/pastis/.*",
-{% endif %}
-    },
-    }
-);
-
 
 print("END 221_pastis_application_ref.js");

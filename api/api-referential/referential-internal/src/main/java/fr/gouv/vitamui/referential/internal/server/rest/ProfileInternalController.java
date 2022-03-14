@@ -170,31 +170,4 @@ public class ProfileInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return profileInternalService.importProfile(vitamContext, fileName, file);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*    @PostMapping(CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> checkExist(@RequestBody ProfileDto archivalProfile, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
-        LOGGER.debug("check exist file format={}", archivalProfile);
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        final boolean exist = profileInternalService.check(vitamContext, archivalProfile);
-        return RestUtils.buildBooleanResponse(exist);
-    }*/
 }
