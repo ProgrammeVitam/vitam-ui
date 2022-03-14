@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.ApiUtils;
@@ -57,6 +58,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -78,14 +80,14 @@ public class ArchivalProfileUnitExternalController {
     private ArchivalProfileUnitExternalService archivalProfileUnitExternalService;
 
     @GetMapping()
-    //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
     public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all archival unit profiles criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         return archivalProfileUnitExternalService.getAll(criteria);
     }
 
-  //  @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
                                                                       @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
@@ -94,7 +96,7 @@ public class ArchivalProfileUnitExternalController {
         return archivalProfileUnitExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
-  //  @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ArchivalProfileUnitDto getOne(final @PathVariable("identifier") String identifier) {
         LOGGER.debug("get archival unit profile identifier={}");
@@ -102,7 +104,7 @@ public class ArchivalProfileUnitExternalController {
         return archivalProfileUnitExternalService.getOne(identifier);
     }
 
-    //  @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES_UNIT)
     @PutMapping(CommonConstants.PATH_ID)
     public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @Valid @RequestBody ArchivalProfileUnitDto dto) {
         LOGGER.debug("Update archival unit profile with identifier metadata {} to {}", id, dto);
@@ -116,7 +118,7 @@ public class ArchivalProfileUnitExternalController {
      * @param archivalProfileUnitDto Entity to create
      * @return entity created
      */
-    //@Secured(ServicesData.ROLE_CREATE_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_CREATE_ARCHIVE_PROFILES_UNIT)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ArchivalProfileUnitDto create(final @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) {
@@ -131,7 +133,7 @@ public class ArchivalProfileUnitExternalController {
      * @param file the agency csv file to import
      * @return the vitam response
      */
-    //@Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES_UNIT)
+    @Secured(ServicesData.ROLE_IMPORT_ARCHIVE_PROFILES_UNIT)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public ResponseEntity<JsonNode> importArchivalUnitProfiles(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("Import Archival Unit Profile file {}", fileName);
@@ -140,26 +142,7 @@ public class ArchivalProfileUnitExternalController {
         return archivalProfileUnitExternalService.importArchivalUnitProfiles(fileName, file);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //@Secured({ ServicesData.ROLE_GET_PASTIS })
+    @Secured({ ServicesData.ROLE_GET_PASTIS })
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("check exist accessContract={}", archivalProfileUnitDto);
@@ -168,10 +151,8 @@ public class ArchivalProfileUnitExternalController {
         return RestUtils.buildBooleanResponse(exist);
     }
 
-
-
     @PatchMapping(CommonConstants.PATH_ID)
-  //  @Secured(ServicesData.ROLE_UPDATE_PASTIS)
+    @Secured(ServicesData.ROLE_UPDATE_PASTIS)
     public ArchivalProfileUnitDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
@@ -179,14 +160,11 @@ public class ArchivalProfileUnitExternalController {
         return archivalProfileUnitExternalService.patch(partialDto);
     }
 
-   // @Secured(ServicesData.ROLE_GET_PASTIS)
+    @Secured(ServicesData.ROLE_GET_PASTIS)
     @GetMapping("/{id}/history")
     public JsonNode findHistoryById(final @PathVariable("id") String id) {
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
         return archivalProfileUnitExternalService.findHistoryById(id);
     }
-
-
-
 }

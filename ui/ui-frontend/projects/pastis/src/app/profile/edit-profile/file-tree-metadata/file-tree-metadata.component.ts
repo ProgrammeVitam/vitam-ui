@@ -225,7 +225,7 @@ export class FileTreeMetadataComponent {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
     this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe(node => {
@@ -395,7 +395,6 @@ export class FileTreeMetadataComponent {
   }
 
   setNodeValue(metadata: MetadataHeaders, newValue: string) {
-    console.log(metadata.cardinalite + 'new Value ' + newValue);
     if (newValue != null) {
       const updatedValue = newValue.length > 0 ? newValue : null;
       if (this.clickedNode.name === metadata.nomDuChamp) {
@@ -430,7 +429,6 @@ export class FileTreeMetadataComponent {
 
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
-      console.log('Yes');
       let elements: SedaData[];
       elements.push({
         Name: 'ArchiveUnit',
@@ -477,7 +475,6 @@ export class FileTreeMetadataComponent {
       popData.cancelLabel = this.popupAnnuler;
 
       const popUpAnswer = await this.fileService.openPopup(popData) as AttributeData[];
-      console.log('The answer for edit attributte was ', popUpAnswer);
 
       if (popUpAnswer) {
 
@@ -664,7 +661,6 @@ export class FileTreeMetadataComponent {
 
   onChange(val: any, $event: MatCheckboxChange) {
 
-    console.log('onChange file tree metadata go dans methode setNodeValue' + val + ' et event ' + $event);
     // @ts-ignore
     this.setNodeValue(val, $event);
 
@@ -677,7 +673,7 @@ export class FileTreeMetadataComponent {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
   }

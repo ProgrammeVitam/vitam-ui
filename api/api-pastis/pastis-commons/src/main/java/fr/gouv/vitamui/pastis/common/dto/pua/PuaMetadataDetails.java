@@ -54,6 +54,5 @@ public class PuaMetadataDetails {
     Boolean additionalProperties;
     JSONObject properties;
     List<String> required;
-    PuaMetadata items;
     List<String> enums;
 }

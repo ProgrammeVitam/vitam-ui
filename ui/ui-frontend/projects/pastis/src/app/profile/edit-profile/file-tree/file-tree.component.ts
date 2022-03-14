@@ -275,6 +275,82 @@ export class FileTreeComponent implements OnDestroy {
         this.loggingService.showSuccess(this.notificationAddmetadonneeSOne + ' ' + names + ' ' + this.notificationAddmetadonneeSTwo);
     }
   }
+  insertItemIterate(parent: FileNode, elementsToAddFromSeda: SedaData [] , node?: FileNode, insertItemDuplicate?: boolean) {
+    for (const element of elementsToAddFromSeda) {
+      // 1. Define a new file node, its id and seda data;
+      const newNode = {} as FileNode;
+      const newId = window.crypto.getRandomValues(new Uint32Array(10))[0];
+      const sedaChild = element;
+
+      // 1.2. New node type is defined acording to the seda element type
+      sedaChild.Element === SedaElementConstants.attribute ?
+        newNode.type = TypeConstants.attribute :
+        newNode.type = TypeConstants.element;
+      // 1.3. Fill the missing new node data
+      if (insertItemDuplicate) {
+        newNode.cardinality = node.cardinality;
+        newNode.value = node.value;
+        newNode.documentation = node.documentation;
+        newNode.type = node.type;
+      } else {
+      newNode.cardinality = Object.values(CardinalityConstants).find(c => c.valueOf() === sedaChild.Cardinality);
+      }
+      newNode.name = element.Name;
+      newNode.id = newId;
+      newNode.level = parent.level + 1;
+      newNode.dataType = DataTypeConstants[sedaChild.Type as keyof typeof DataTypeConstants];
+      newNode.parentId = parent.id;
+      newNode.parent = parent;
+      newNode.children = [];
+      newNode.sedaData = sedaChild;
+      console.log('Parent node name: ' + parent.name);
+      console.log('New node  : ', newNode);
+
+      // 1.4. Update parent->children relashionship
+      parent.children.push(newNode);
+      this.parentNodeMap.set(newNode, parent);
+      console.log('Seda children and file children: ', parent.sedaData.Children, parent.children);
+
+      // 2. Insert all children of complex elements based on SEDA definition
+      if (sedaChild.Element === SedaElementConstants.complex) {
+        const childrenOfComplexElement: string[] = [];
+        sedaChild.Children.forEach((child: { Cardinality: any; Name: string; }) => {
+          if (child.Cardinality === SedaCardinalityConstants.one ||
+            child.Cardinality === SedaCardinalityConstants.oreOrMore) {
+            childrenOfComplexElement.push(child.Name);
+          }
+        });
+        this.insertItem(newNode, childrenOfComplexElement);
+      }
+
+      if (insertItemDuplicate) {
+        this.insertAttributes(newNode, null, node, insertItemDuplicate);
+      } else {
+
+        // 3. Insert all olbigatory attributes of the added node, if there is
+        if (sedaChild.Children.some((child: { Element: any; }) => child.Element === SedaElementConstants.attribute)) {
+          const attributes: FileNode[] = [];
+          sedaChild.Children.filter((c: { Element: any; }) => c.Element === SedaElementConstants.attribute).forEach((child: { Name: string; Element: any; Cardinality: any; }) => {
+            const isAttributeAlreadyIncluded = newNode.children.some(nodeChild => nodeChild.name.includes(child.Name));
+            // If the added node contains an obligatory attribute,
+            // on its seda definition and the attribute is not already part of the node,
+            // we then, build an attribute node based on the seda atribute defintion
+            if (child.Element === SedaElementConstants.attribute &&
+              child.Cardinality === SedaCardinalityConstants.one &&
+              !isAttributeAlreadyIncluded) {
+              const childAttribute = {} as FileNode;
+              childAttribute.name = child.Name;
+              childAttribute.cardinality = child.Cardinality === SedaCardinalityConstants.one ? '1' : null;
+              childAttribute.sedaData = sedaChild;
+              attributes.push(childAttribute);
+            }
+          });
+          this.insertAttributes(newNode, attributes);
+        }
+      }
+
+    }
+  }
 
   /** Add an item (or a list of items) in the Tree */
   insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
@@ -289,80 +365,7 @@ export class FileTreeComponent implements OnDestroy {
     }
 
     if (parent.children && elementsToAddFromSeda) {
-      for (const element of elementsToAddFromSeda) {
-        // 1. Define a new file node, its id and seda data;
-        const newNode = {} as FileNode;
-        const newId = window.crypto.getRandomValues(new Uint32Array(10))[0];
-        const sedaChild = element;
-
-        // 1.2. New node type is defined acording to the seda element type
-        sedaChild.Element === SedaElementConstants.attribute ?
-          newNode.type = TypeConstants.attribute :
-          newNode.type = TypeConstants.element;
-        // 1.3. Fill the missing new node data
-        if (insertItemDuplicate) {
-          newNode.cardinality = node.cardinality;
-          newNode.value = node.value;
-          newNode.documentation = node.documentation;
-          newNode.type = node.type;
-        } else {
-        newNode.cardinality = Object.values(CardinalityConstants).find(c => c.valueOf() === sedaChild.Cardinality);
-        }
-        newNode.name = element.Name;
-        newNode.id = newId;
-        newNode.level = parent.level + 1;
-        newNode.dataType = DataTypeConstants[sedaChild.Type as keyof typeof DataTypeConstants];
-        newNode.parentId = parent.id;
-        newNode.parent = parent;
-        newNode.children = [];
-        newNode.sedaData = sedaChild;
-        console.log('Parent node name: ' + parent.name);
-        console.log('New node  : ', newNode);
-
-        // 1.4. Update parent->children relashionship
-        parent.children.push(newNode);
-        this.parentNodeMap.set(newNode, parent);
-        console.log('Seda children and file children: ', parent.sedaData.Children, parent.children);
-
-        // 2. Insert all children of complex elements based on SEDA definition
-        if (sedaChild.Element === SedaElementConstants.complex) {
-          const childrenOfComplexElement: string[] = [];
-          sedaChild.Children.forEach((child: { Cardinality: any; Name: string; }) => {
-            if (child.Cardinality === SedaCardinalityConstants.one ||
-              child.Cardinality === SedaCardinalityConstants.oreOrMore) {
-              childrenOfComplexElement.push(child.Name);
-            }
-          });
-          this.insertItem(newNode, childrenOfComplexElement);
-        }
-
-        if (insertItemDuplicate) {
-          this.insertAttributes(newNode, null, node, insertItemDuplicate);
-        } else {
-
-          // 3. Insert all olbigatory attributes of the added node, if there is
-          if (sedaChild.Children.some((child: { Element: any; }) => child.Element === SedaElementConstants.attribute)) {
-            const attributes: FileNode[] = [];
-            sedaChild.Children.filter((c: { Element: any; }) => c.Element === SedaElementConstants.attribute).forEach((child: { Name: string; Element: any; Cardinality: any; }) => {
-              const isAttributeAlreadyIncluded = newNode.children.some(nodeChild => nodeChild.name.includes(child.Name));
-              // If the added node contains an obligatory attribute,
-              // on its seda definition and the attribute is not already part of the node,
-              // we then, build an attribute node based on the seda atribute defintion
-              if (child.Element === SedaElementConstants.attribute &&
-                child.Cardinality === SedaCardinalityConstants.one &&
-                !isAttributeAlreadyIncluded) {
-                const childAttribute = {} as FileNode;
-                childAttribute.name = child.Name;
-                childAttribute.cardinality = child.Cardinality === SedaCardinalityConstants.one ? '1' : null;
-                childAttribute.sedaData = sedaChild;
-                attributes.push(childAttribute);
-              }
-            });
-            this.insertAttributes(newNode, attributes);
-          }
-        }
-
-      }
+      this.insertItemIterate(parent, elementsToAddFromSeda, node, insertItemDuplicate);
       // 4. Order elements according to seda definition
       const sedaChildrenName: string[] = [];
       parent.sedaData.Children.forEach((child: { Name: string; }) => {

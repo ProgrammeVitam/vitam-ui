@@ -133,7 +133,6 @@ export class FileTreeMetadataService {
     }
     this.allowedSedaCardinalities.next(allowedCardList);
     this.selectedCardinalities.next(this.findCardinalities(clickedNode, sedaChild, data));
-    console.log('Data on fillDataTable', data, 'with selected cards :', this.selectedCardinalities.getValue());
     return data;
   }
 
@@ -163,7 +162,6 @@ export class FileTreeMetadataService {
     // If the clicked node has the same name was the seda node, the node is already found
     if (sedaNode.Name === fileNode.name) {
       allowedCardinalityListResult = this.allowedCardinality.get(sedaNode.Cardinality);
-      return allowedCardinalityListResult;
     }
     if (sedaNode.Children.length > 0) {
       // Search the sedaNode children to find the correnpondent cardinality list
@@ -173,39 +171,26 @@ export class FileTreeMetadataService {
           // the seda cardinality wont include the cardinality retrieved by node's rng file.
           // In this case, the condition will return the rng file cardinality list
           // instead of node's cardinality list in accordance with the SEDA specification.
-          // if (child.Cardinality !== sedaNode.Cardinality){
-          // allowedCardinalityListResult = this.allowedCardinality.get(clickedNode.cardinality);
-          // return allowedCardinalityListResult;
-          // }
           allowedCardinalityListResult = this.allowedCardinality.get(child.Cardinality);
           resultList.push(allowedCardinalityListResult);
           this.allowedSedaCardinalities.next(resultList);
-
-          return allowedCardinalityListResult;
         }
       }
     } else {
-      // console.error("Final CARDINALITY LIST (NO seda children found) : ", allowedCardinalityListResult, " for ", sedaNode.Name);
       for (const [card, cardlist] of this.allowedCardinality) {
         if (card === fileNode.cardinality) {
           !fileNode.cardinality ? allowedCardinalityListResult.push('1') : allowedCardinalityListResult = cardlist;
-          // result = cardlist;
           resultList.push(cardlist);
           this.allowedSedaCardinalities.next(resultList);
-          // console.error("Final CARDINALITY LIST : ", allowedCardinalityListResult)
-          return allowedCardinalityListResult;
         }
       }
     }
     this.allowedSedaCardinalities.next(resultList);
-
     if (allowedCardinalityListResult.length < 1) {
-      // console.error("Card not found for : ", clickedNode.name, "..assuming attribute cardinality :", clickedNode.cardinality);
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);
-      // !clickedNode.cardinality ? result.push("1") : result = this.allowedCardinality[clickedNode.cardinality];
-      return allowedCardinalityListResult;
 
     }
+    return allowedCardinalityListResult;
   }
 
   findCardinalities(clickedNode: FileNode, sedaNode: SedaData, data: MetadataHeaders[]): string[] {

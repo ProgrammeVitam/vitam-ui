@@ -14,3 +14,19 @@ export interface Profile extends Id {
   format: string;
   path: string;
 }
+
+export class ProfileModel implements Profile {
+  id: string;
+  status: string;
+  tenant: number;
+  version: number;
+  identifier: string;
+  name: string;
+  description: string;
+  creationDate: string;
+  lastUpdate: string;
+  activationDate: string;
+  deactivationDate: string;
+  format: string;
+  path: string;
+}
