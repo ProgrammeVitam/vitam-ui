@@ -145,9 +145,9 @@ public class PastisService {
     }
 
 
-    public String getArchiveUnitProfile(final ProfileNotice json) throws TechnicalException {
+    public String getArchiveUnitProfile(final ProfileNotice json, final boolean standalone) throws TechnicalException {
         Notice notice = new Notice();
-        if (json.getNotice() != null) {
+        if (!standalone && json.getNotice() != null) {
             notice = json.getNotice();
 
         }
