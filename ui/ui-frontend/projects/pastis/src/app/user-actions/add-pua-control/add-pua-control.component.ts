@@ -35,17 +35,26 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { SedaData, SedaElementConstants } from '../../models/seda-data';
-import { FileNode } from '../../models/file-node';
-import { FileService } from '../../core/services/file.service';
-import { SedaService } from '../../core/services/seda.service';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PopupService } from '../../core/services/popup.service';
-import { Subscription } from 'rxjs';
-import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import { environment } from 'projects/pastis/src/environments/environment';
+import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+
+
+const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
+
+function constantToTranslate() {
+  this.enumerationsLabel = this.translated('.ENUMERATIONS_LABEL');
+  this.expressionReguliereLabel = this.translated('.EXPRESSION_REGULIERE_LABEL');
+  this.lengthMinMaxLabel = this.translated('.LENGTH_MIN_MAX_LABEL');
+  this.valueMinMaxLabel = this.translated('.VALUE_MIN_MAX_LABEL');
+  this.enumerationsDefinition = this.translated('.ENUMERATIONS_DEFINITION');
+  this.expressionReguliereDefinition = this.translated('.EXPRESSION_REGULIERE_DEFINITION');
+}
+
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -55,45 +64,30 @@ import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-me
 export class UserActionAddPuaControlComponent implements OnInit {
 
   btnIsDisabled: boolean;
-
-  sedaData: SedaData;
-  allowedChildren: string[] = [
-    "Enumération",
-    "Expression régulière",
-    "Longueur Min/Max",
-    "Valeur Min/Max"
-  ]
-  namesFiltered: any = [];
-  sedaNodeFound: SedaData;
-  selectedSedaNode: SedaData;
+  enumerationsLabel: string = "Enumération";
+  expressionReguliereLabel: string = "Expression régulière";
+  lengthMinMaxLabel: string = "Longueur Min/Max";
+  valueMinMaxLabel: string = "Valeur Min/Max";
+  enumerationsDefinition: string = "Signaler les valeurs autorisées";
+  expressionReguliereDefinition: string = "Définir une expression régulière pour la valeur de la métadonnée";
+  allowedChildren: string[];
   addedItems: string[] = [];
   dialogData: PastisDialogData;
 
   atLeastOneIsSelected: boolean;
-  customTemplate: TemplateRef<any>
-  fileNode: FileNode;
-  sedaLanguage: boolean;
-  sedaLanguageSub: Subscription;
+  isStandalone: boolean = environment.standalone;
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private fileService: FileService, private sedaService: SedaService,
-    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService) { }
+    private popUpService: PopupService, private translateService: TranslateService) {
+      if(!this.isStandalone){
+        constantToTranslate.call(this);
+        this.translatedOnChange();
+      }
+      this.refreshAllowedChildren();
+    }
 
   ngOnInit() {
-    this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
-      (value: boolean) => {
-        this.sedaLanguage = value;
-      },
-      (error) => {
-        console.log(error)
-      }
-    );
-    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode })
-    this.sedaData = this.sedaService.sedaRules[0];
-
-    this.sedaNodeFound = this.fileNode.sedaData;
-
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
@@ -101,28 +95,26 @@ export class UserActionAddPuaControlComponent implements OnInit {
     })
   }
 
-
-  isElementSelected(element: string) {
-    if (this.addedItems) {
-      return this.addedItems.includes(element);
-    }
-  }
-
   onRemoveSelectedElement(element: string) {
-    let indexOfElement = this.addedItems.indexOf(element)
-    console.log(indexOfElement)
-    if (indexOfElement >= 0) {
-      this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
+    if(this.isExclusive(element)){
+      this.refreshAllowedChildren();
+    }else{
+      let indexOfElement = this.addedItems.indexOf(element)
+      if (indexOfElement >= 0) {
+        this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
+      }
     }
-    console.error(this.allowedChildren)
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
 
   onAddSelectedElement(element: string) {
     this.addedItems.push(element);
-
-    this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    if(this.isExclusive(element)){
+      this.refreshAllowedChildren(element);
+    }else{
+      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    }
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
     this.upateButtonStatusAndDataToSend();
   }
@@ -132,43 +124,44 @@ export class UserActionAddPuaControlComponent implements OnInit {
     this.popUpService.disableYesButton(!this.atLeastOneIsSelected)
   }
 
-  onAllItemsAdded() {
-    return this.allowedChildren.length === this.addedItems.length;
+  getDefinition(element: string): string {
+    if(element === this.enumerationsLabel){
+      return this.enumerationsDefinition
+    }
+    if(element === this.expressionReguliereLabel){
+      return this.expressionReguliereDefinition
+    }
+    return '';
   }
 
-  isElementComplex(element: SedaData) {
-    if (element) {
-      return element.Element === SedaElementConstants.complex;
+  isExclusive(element: string): boolean{
+    return element === this.valueMinMaxLabel || element === this.enumerationsLabel;
+  }
+
+  refreshAllowedChildren(element?: string){
+
+    if(element){
+      this.addedItems = [element];
+      this.allowedChildren = [];
+    }else{
+      this.allowedChildren = [
+        this.enumerationsLabel,
+        this.expressionReguliereLabel
+      ];
+      this.addedItems = [];
     }
   }
 
-  getDefinition(element: SedaData): string {
-    return element ? element.Definition : '';
+  translatedOnChange(): void {
+    this.translateService.onLangChange
+      .subscribe((event: LangChangeEvent) => {
+        constantToTranslate.call(this);
+        console.log(event.lang);
+      });
   }
 
-  onYesClick(): void {
-    console.log("Clicked ok on dialog : %o", this.selectedSedaNode);
-
-  }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  onResolveName(element: SedaData): string {
-    if (this.sedaLanguage) {
-      return element.Name;
-    }
-    else {
-      if (element.NameFr) {
-        return element.NameFr;
-      }
-    }
-    return element.Name;
-  }
-  ngOnDestroy(): void {
-    if (this.sedaLanguageSub != null) {
-      this.sedaLanguageSub.unsubscribe();
-    }
+  translated(nameOfFieldToTranslate: string): string {
+    return this.translateService.instant(ADD_PUA_CONTROL_TRANSLATE_PATH + nameOfFieldToTranslate);
   }
 
 }

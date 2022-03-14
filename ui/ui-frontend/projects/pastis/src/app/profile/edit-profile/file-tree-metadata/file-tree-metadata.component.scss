@@ -9,7 +9,15 @@
 @import '~ui-frontend-common/sass/icons/vitamui-icons';
 @import '~ui-frontend-common/sass/variables/colors';
 @import '~ui-frontend-common/sass/editable-field';
+@import '../../../user-actions/add-metadata/add-metadata.component.scss';
 
+
+.pastis-container-selected-items{
+  margin-left: 50px;
+}
+.pastis-container-button-submit-controls{
+  margin-left: 50px;
+}
 
 td {
   padding-right: 20px !important;
@@ -157,6 +165,7 @@ td {
 }
 
 
+
 .commentaire-pastis {
   .editable-field {
     min-height: 50px !important;
@@ -209,7 +218,6 @@ td {
 .radio-button {
   margin: 5px;
 }
-
 
 table {
   width: 100%;

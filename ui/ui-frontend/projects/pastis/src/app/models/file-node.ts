@@ -93,6 +93,12 @@ export enum ValueOrDataConstants {
     undefined = 'undefined'
 }
 
+export enum DateFormatType {
+  dateType = 'DateType',
+  date = 'date',
+  dateTime = "dateTime"
+}
+
 export interface FileNode {
   additionalProperties:boolean;
   id: number;

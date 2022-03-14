@@ -184,7 +184,10 @@
           "NOM_ATTRIBUT": "Nom de l'attribut",
           "VALEUR_FIXE": "Valeur fixe",
           "COMMENTAIRE": "Commentaire"
-        }
+        },
+        "POPUP_CONTROL_OK_BUTTON_LABEL": "AJOUTER LES CONTROLES",
+        "POPUP_CONTROL_SUB_TITLE_DIALOG": "Ajouter des contrôles supplémentaires à",
+        "POPUP_CONTROL_TITLE_DIALOG": "Veuillez séléctionner un ou plusieurs contrôles"
       }
     },
     "LIST_PROFILE": {
@@ -216,6 +219,14 @@
       "METADATA_ADD": "Les métadonnées à ajouter",
       "BOUTON_AJOUTER": "Ajouter",
       "MESSAGE_PLUS_METADONNEE": "Il n'y a plus de métadonnées à ajouter"
+    },
+    "ADD_PUA_CONTROL": {
+      "ENUMERATIONS_LABEL": "Enumération",
+      "EXPRESSION_REGULIERE_LABEL": "Expression régulière",
+      "LENGTH_MIN_MAX_LABEL": "Longueur Min/Max",
+      "VALUE_MIN_MAX_LABEL": "Valeur Min/Max",
+      "ENUMERATIONS_DEFINITION": "Signaler les valeurs autorisées",
+      "EXPRESSION_REGULIERE_DEFINITION": "Définir une expression régulière pour la valeur de la métadonnée"
     }
   },
   "COMMON": {

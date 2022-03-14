@@ -13,7 +13,7 @@
   </div>
 
   <!-- The list of items to be selected-->
-  <mat-list *ngIf="allowedChildren?.length; else noItemsLeftToAdd" class="list-box-head">
+  <mat-list *ngIf="allowedChildren?.length" class="list-box-head">
         <span class="list-box-content-title">
           <span [ngStyle]="{'margin-top': atLeastOneIsSelected ? '40px' : '0px'}"
                 class="paragraph-metadata-subtitle">Les contrôles à ajouter</span>
@@ -39,10 +39,5 @@
       </mat-list>
     </mat-selection-list>
   </mat-list>
-
-  <ng-template #noItemsLeftToAdd>
-    <p class="paragraph-metadata-subtitle" style="margin-top: 40px;">
-      {{'USER_ACTION.ADD_METADATA.MESSAGE_PLUS_METADONNEE' | translate}}</p>
-  </ng-template>
 
 </div>
