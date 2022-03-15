@@ -34,62 +34,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ui.commons.config;
+package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.ui.commons.property.BaseUrl;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Map;
+/**
+ * A Web flux client to get logbooks.
+ */
+public class LogbookInternalWebClient<C extends AbstractHttpContext> extends BaseWebClient<C> {
 
-@Getter
-@Setter
-public class UIPropertiesImpl implements UIProperties {
-    /**
-     * Prefix URL RestController
-     */
-    private String prefix;
+    public LogbookInternalWebClient(final WebClient webClient, final String baseUrl) {
+        super(webClient, baseUrl);
+    }
 
-    /**
-     * Limitation for pagination
-     */
-    private Integer limitPagination = Integer.MAX_VALUE;
+    @Override
+    public String getPathUrl() {
+        return CommonConstants.API_VERSION_1;
+    }
 
-    /**
-     * baseUrl for applications
-     */
-    private BaseUrl baseUrl = new BaseUrl();
-
-    private RestClientConfiguration iamExternalClient;
-
-    private String portalLogo;
-
-    private String headerLogo;
-
-    private String footerLogo;
-
-    private String portalTitle;
-
-    private String portalMessage;
-
-    private Map<String, String> themeColors;
-
-    private String assets;
-
-    private String platformName;
-
-    private Map<String, String> customer;
-
-    private String userLogo;
 
     /**
-     * Map of application categories (key: category ID, value: category properties)
+     * Download an operation report
+     *
+     * @param context
+     * @param id
+     * @return
      */
-    private Map<String, Map<String, Object>> portalCategories;
+    public Mono<ResponseEntity<Resource>> downloadReport(final C context, final String id, final String downloadType) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
+        uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH);
 
-    private String versionRelease;
+        Flux<DataBuffer> dataBuffer = webClient
+            .get()
+            .uri(uriBuilder.build(id, downloadType))
+            .headers(addHeaders(buildHeaders(context)))
+            .retrieve()
+            .bodyToFlux(DataBuffer.class);
 
-    private RestClientConfiguration referentialExternalClient;
+        return Mono.just(ResponseEntity
+            .ok().cacheControl(CacheControl.noCache())
+            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
+    }
 }

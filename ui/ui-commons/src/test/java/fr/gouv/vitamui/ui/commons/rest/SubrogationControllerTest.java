@@ -41,6 +41,7 @@ public class SubrogationControllerTest extends UIControllerTest<SubrogationDto> 
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
 

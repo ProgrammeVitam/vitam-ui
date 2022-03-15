@@ -2,6 +2,8 @@ package fr.gouv.vitamui.ui.commons.config;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -36,6 +38,9 @@ public class UICommonsAutoConfigurationTest {
             assertThat(context).hasSingleBean(IamExternalRestClientFactory.class);
             assertThat(context).hasSingleBean(SubrogationController.class);
             assertThat(context).hasSingleBean(AccountController.class);
+            assertThat(context).hasSingleBean(ReferentialExternalRestClientFactory.class);
+            assertThat(context).hasSingleBean(ReferentialExternalWebClientFactory.class);
+
         });
     }
 
@@ -47,6 +52,7 @@ public class UICommonsAutoConfigurationTest {
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
 
@@ -55,7 +61,6 @@ public class UICommonsAutoConfigurationTest {
             final CasLogoutUrl casBean = new CasLogoutUrl("url");
             return casBean;
         }
-
     }
 
 }

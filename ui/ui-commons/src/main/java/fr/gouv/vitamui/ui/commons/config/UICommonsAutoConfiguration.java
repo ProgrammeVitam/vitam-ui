@@ -36,6 +36,13 @@
  */
 package fr.gouv.vitamui.ui.commons.config;
 
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
+import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -45,13 +52,9 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
-import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-
 @Configuration
-@Import(value = { AutoConfigurationVitam.class, AutoConfigurationRestController.class, AutoConfigurationService.class, RestExceptionHandler.class })
+@Import(value = {AutoConfigurationVitam.class, AutoConfigurationRestController.class, AutoConfigurationService.class,
+    RestExceptionHandler.class})
 @AutoConfigureAfter
 @EnableScheduling
 public class UICommonsAutoConfiguration {
@@ -65,7 +68,33 @@ public class UICommonsAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @DependsOn("uiProperties")
-    public IamExternalRestClientFactory iamRestClientFactory(final UIProperties uiProperties, final RestTemplateBuilder restTemplateBuilder) {
+    public IamExternalRestClientFactory iamRestClientFactory(final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
         return new IamExternalRestClientFactory(uiProperties.getIamExternalClient(), restTemplateBuilder);
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public IamExternalWebClientFactory iamExternalWebClientFactory(final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new IamExternalWebClientFactory(uiProperties.getIamExternalClient());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalRestClientFactory referentialRestClientFactory(final UIProperties uiProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new ReferentialExternalRestClientFactory(uiProperties.getReferentialExternalClient(),
+            restTemplateBuilder);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public ReferentialExternalWebClientFactory referentialWebClientFactory(final UIProperties uiProperties) {
+        return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    }
+
 }

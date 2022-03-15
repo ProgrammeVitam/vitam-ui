@@ -53,6 +53,7 @@ import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.CasInternalRestClient;
@@ -189,7 +190,14 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public LogbookInternalWebClient<InternalHttpContext> logbookInternalWebClient(
+        final IamInternalWebClientFactory iamInternalWebClientFactory) {
+        return iamInternalWebClientFactory.getLogbookInternalWebClient();
+    }
+
+    @Bean
+    public ApplicationInternalRestClient applicationInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
 
