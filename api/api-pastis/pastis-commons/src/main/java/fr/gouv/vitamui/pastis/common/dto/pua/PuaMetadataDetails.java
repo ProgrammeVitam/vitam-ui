@@ -39,6 +39,10 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.common.dto.pua;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import lombok.Data;
 import org.json.JSONObject;
 
@@ -55,6 +59,14 @@ public class PuaMetadataDetails {
     JSONObject properties;
     List<String> required;
     PuaMetadata items;
+    @JsonProperty("enum")
     List<String> enums;
     String pattern;
+
+
+    public String serialiseString() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new AfterburnerModule());
+        return mapper.writeValueAsString(this);
+    }
 }

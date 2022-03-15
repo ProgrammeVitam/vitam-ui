@@ -536,7 +536,7 @@ public class PuaPastisValidator {
             puaMetadataDetails.setRequired(getRequiredProperties(elementProperties));
         }
         JSONObject json = new JSONObject();
-        json.put(elementProperties.getName(), new JSONObject(puaMetadataDetails));
+        json.put(elementProperties.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
         if (!elementProperties.getChildren().isEmpty()) {
             json.getJSONObject(elementProperties.getName()).put(PROPERTIES, new JSONObject());
             getJSONObjectFromElement(elementProperties,
