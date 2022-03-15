@@ -234,11 +234,11 @@
                 </button>
 
                 <!-- Contrôle de métadonées => PUA -->
-                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id && !isAppliedControl(element.id)"
                   style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onEditControlClick(element.id)"
-                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                <button (click)="onControlClick(element.id)"
+                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id && !isAppliedControl(element.id)"
                   mat-menu-item>
                   <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' |
@@ -246,11 +246,11 @@
                 </button>
 
                 <!-- Edition des contres de nétadonnées -->
-                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id && isAppliedControl(element.id)"
                   style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button 
-                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                <button (click)="onEditControlClick(element.id)"
+                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id && isAppliedControl(element.id)"
                   mat-menu-item>
                   <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' |
@@ -342,7 +342,7 @@
             </button></div>
         </div>
         <mat-radio-group [(ngModel)]="radioExpressionReguliere">
-          
+
           <div class="ml-5">
             <div class="row">
               <div>
@@ -353,17 +353,17 @@
               </div>
               <div>
                 <mat-form-field class="ml-3 vitamui-mat-select " >
-                  
-                    <mat-select  *ngIf="availableRegex.length > 1; else valueUnique" 
+
+                    <mat-select  *ngIf="availableRegex.length > 1; else valueUnique"
                       disableRipple="true" panelClass="vitamui-mat-select" [(value)]="regex">
                       <mat-option *ngFor="let predefiniElement of availableRegex" [value]="predefiniElement.value">
 
                         {{predefiniElement.label}}
                       </mat-option>
                     </mat-select>
-                  
+
                   <ng-template #valueUnique>
-                    <mat-select 
+                    <mat-select
                       disableRipple="true" panelClass="vitamui-mat-select" [(value)]="regex" disabled>
                       <mat-option *ngFor="let predefiniElement of availableRegex"
                         [value]="availableRegex[0].value">

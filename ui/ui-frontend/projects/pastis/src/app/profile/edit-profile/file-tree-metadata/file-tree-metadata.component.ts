@@ -572,7 +572,7 @@ export class FileTreeMetadataComponent {
     }
   }
 
-  async onEditControlClick(fileNodeId: number) {
+  async onControlClick(fileNodeId: number) {
     const popData = {} as PastisDialogData;
     if (fileNodeId && fileNodeId === this.clickedNode.id) {
       this.resetContols();
@@ -595,6 +595,37 @@ export class FileTreeMetadataComponent {
     }
   }
 
+  onEditControlClick(fileNodeId: number){
+    const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+    this.clickedControl = fileNode;
+    if(fileNode.puaData && fileNode.puaData.enum && fileNode.puaData.enum.length > 0){
+      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(fileNode.name, this.selectedSedaNode).Enumeration;
+      this.enumerationControl = true;
+      this.editedEnumControl = [];
+      this.enumsControlSeleted = [];
+      this.openControls = true;
+      fileNode.puaData.enum.forEach(e => {
+        this.editedEnumControl.push(e)
+        this.enumsControlSeleted.push(e)
+      })
+    }
+    if(fileNode.puaData && fileNode.puaData.pattern){
+      this.openControls = true;
+      this.expressionControl = true;
+      this.customRegex = fileNode.puaData.pattern;
+      this.radioExpressionReguliere = 'select';
+    }
+  }
+
+  isAppliedControl(fileNodeId: number): boolean{
+    const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+    if(fileNode.puaData && fileNode.puaData.enum) return true;
+    if(fileNode.puaData && fileNode.puaData.pattern) return true;
+    return false;
+  }
+
+
+
   resetContols(){
     this.arrayControl = [];
     this.enumerationControl = false;
@@ -604,10 +635,13 @@ export class FileTreeMetadataComponent {
     this.enumsControlSeleted = [];
     this.editedEnumControl = [];
     this.openControls = false;
+    this.regex = undefined;
+    this.customRegex = undefined;
+    this.enumerationsSedaControl = [];
   }
 
   setControlsVues(elements: string[], sedaName: string){
-    if ((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
+    if((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))){
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
     }
@@ -816,7 +850,7 @@ export class FileTreeMetadataComponent {
   }
 
   isEmptyEnumeration(enumerations: string[]): boolean{
-    return enumerations.length === 0;
+    return enumerations ? enumerations.length === 0 : false;
   }
 
   setPatternExpressionReguliere() {
@@ -828,15 +862,18 @@ export class FileTreeMetadataComponent {
   }
 
   onSubmitControls() {
-    if (this.enumerationControl && this.enumsControlSeleted.length > 0){
-      if (this.clickedNode.puaData) {
-        this.clickedNode.puaData.enum = this.enumsControlSeleted;
-      } else {
-        this.clickedNode.puaData = {
-          enum: this.enumsControlSeleted
-        };
+    if (this.enumerationControl){
+      if(this.enumsControlSeleted.length > 0){
+        if (this.clickedNode.puaData) {
+          this.clickedNode.puaData.enum = this.enumsControlSeleted;
+        } else {
+          this.clickedNode.puaData = {
+            enum: this.enumsControlSeleted
+          };
+        }
+      }else{
+        this.clickedNode.puaData.enum = null;
       }
-
     }
     if (this.expressionControl) {
       this.setPatternExpressionReguliere();
