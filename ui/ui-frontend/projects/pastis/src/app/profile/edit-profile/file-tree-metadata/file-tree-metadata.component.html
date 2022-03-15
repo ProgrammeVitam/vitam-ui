@@ -354,9 +354,9 @@
               <div>
                 <mat-form-field class="ml-3 vitamui-mat-select " >
                   
-                    <mat-select *ngIf="formatagePredefini.length > 1; else valueUnique" 
+                    <mat-select  *ngIf="availableRegex.length > 1; else valueUnique" 
                       disableRipple="true" panelClass="vitamui-mat-select" [(value)]="regex">
-                      <mat-option *ngFor="let predefiniElement of formatagePredefini" [value]="predefiniElement.value">
+                      <mat-option *ngFor="let predefiniElement of availableRegex" [value]="predefiniElement.value">
 
                         {{predefiniElement.label}}
                       </mat-option>
@@ -365,8 +365,8 @@
                   <ng-template #valueUnique>
                     <mat-select 
                       disableRipple="true" panelClass="vitamui-mat-select" [(value)]="regex" disabled>
-                      <mat-option *ngFor="let predefiniElement of formatagePredefini"
-                        [value]="formatagePredefini[0].value">
+                      <mat-option *ngFor="let predefiniElement of availableRegex"
+                        [value]="availableRegex[0].value">
 
                         {{predefiniElement.label}}
                       </mat-option>
@@ -384,11 +384,11 @@
           <div class="ml-5 mt-4">
             <div class="row">
               <div>
-                <mat-radio-button value="input">
+                <mat-radio-button value="input" [disabled]="isNotRegexCustomisable()">
                 </mat-radio-button>
               </div>
               <div class="col-6">
-                <vitamui-common-textarea [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
+                <vitamui-common-textarea [disabled]="isNotRegexCustomisable()" [placeholder]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SAISIR_EXPRESSION' |
               translate" [(ngModel)]="customRegex">
                 </vitamui-common-textarea>
               </div>

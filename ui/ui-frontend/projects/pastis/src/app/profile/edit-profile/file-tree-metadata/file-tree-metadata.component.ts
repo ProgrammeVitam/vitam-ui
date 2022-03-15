@@ -150,7 +150,7 @@ export class FileTreeMetadataComponent {
   editedEnumControl: string[];
   openControls: boolean;
 
-  radioExpressionReguliere = 'select';
+  radioExpressionReguliere: string;
   regex: string;
   customRegex: string;
   formatagePredefini: Array<{label: string, value: string}> =
@@ -161,6 +161,7 @@ export class FileTreeMetadataComponent {
     { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' },
     { label: 'Adresse mail', value: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}' }
   ];
+  availableRegex: Array<{label: string, value: string}>;
 
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
@@ -606,25 +607,27 @@ export class FileTreeMetadataComponent {
   }
 
   setControlsVues(elements: string[], sedaName: string){
-    if((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))){
+    if ((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
     }
-    if((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))){
+    if ((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
+      this.radioExpressionReguliere = 'select';
       this.expressionControl = true;
-      let type: string =  this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      this.customRegex = '';
+      const type: string =  this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
       switch (type) {
         case DateFormatType.date:
-          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
+          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
           break;
         case DateFormatType.dateTime:
-          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
+          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
           break;
         case DateFormatType.dateType:
-          this.formatagePredefini.pop();
+          this.availableRegex = this.formatagePredefini.slice(0, -1);
           break;
         default:
-          this.formatagePredefini = this.formatagePredefini
+          this.availableRegex = this.formatagePredefini
            .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
           break;
       }
@@ -637,6 +640,11 @@ export class FileTreeMetadataComponent {
       this.valueControl = true;
     }
 
+  }
+
+  isNotRegexCustomisable(): boolean {
+    const type: string = this.sedaService.findSedaChildByName(this.clickedControl.name, this.selectedSedaNode).Type;
+    return (type === DateFormatType.date || type === DateFormatType.dateTime);
   }
 
   onDeleteNode(nodeId: number) {
