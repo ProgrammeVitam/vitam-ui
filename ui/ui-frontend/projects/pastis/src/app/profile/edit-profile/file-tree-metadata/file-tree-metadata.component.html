@@ -234,16 +234,29 @@
                 </button>
 
                 <!-- Contrôle de métadonées => PUA -->
-                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
                   style="border-top-color:#E0E0E0;">
                 </mat-divider>
                 <button (click)="onEditControlClick(element.id)"
-                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp)"
+                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
                   mat-menu-item>
                   <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.CONTROLE_METADONNEE' |
                     translate}}</span>
                 </button>
+
+                <!-- Edition des contres de nétadonnées -->
+                <mat-divider *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                  style="border-top-color:#E0E0E0;">
+                </mat-divider>
+                <button 
+                  *ngIf="this.profileService.profileMode === 'PUA' && !isElementComplex(element.nomDuChamp) && element.id === clickedNode.id"
+                  mat-menu-item>
+                  <mat-icon style="color:#757575"><i class="vitamui-icon vitamui-icon-ic24-PUA"></i></mat-icon>
+                  <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.EDITION_CONTROLE' |
+                    translate}}</span>
+                </button>
+
               </mat-menu>
             </div>
           </td>
@@ -257,7 +270,7 @@
       </table>
     </div>
 
-    <!-- Metatdata Control Part-->
+    <!-- Metadata Control Part-->
     <div *ngIf="this.profileService.profileMode === 'PUA' && openControls">
       <div class="pastis-panel-metadata-control"
         *ngIf=" enumerationControl && (clickedControl.name === clickedNode.name  )">

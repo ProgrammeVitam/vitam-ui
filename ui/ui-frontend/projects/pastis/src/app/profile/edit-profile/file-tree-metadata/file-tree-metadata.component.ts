@@ -586,9 +586,9 @@ export class FileTreeMetadataComponent {
 
       const popUpAnswer = <string[]> await this.fileService.openPopup(popData);
       console.log('The answer for arrays control was ', popUpAnswer);
-      if(popUpAnswer){
+      if (popUpAnswer) {
         this.arrayControl = popUpAnswer;
-        this.setControlsVues(this.arrayControl, popData.fileNode.name)
+        this.setControlsVues(this.arrayControl, popData.fileNode.name);
         this.openControls = true;
       }
     }
