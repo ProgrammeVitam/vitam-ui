@@ -44,12 +44,9 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.domain.UserInfoDto;
 import fr.gouv.vitamui.commons.api.enums.UserTypeEnum;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.CustomSequencesConstants;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
-import fr.gouv.vitamui.commons.mongo.domain.CustomSequence;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.common.enums.Application;
@@ -89,7 +86,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -170,6 +166,7 @@ public class InitCustomerService {
         final List<OwnerDto> createdOwnerDtos = createOwners(ownerDtos, customerDto.getId());
 
         createIdentityProvider(customerDto.getId(), customerDto.getDefaultEmailDomain());
+        LOGGER.debug("Initializing External Parameter with Customer Identifier {} and tenant Name {}", customerDto.getIdentifier(), tenantName);
         ExternalParametersDto fullAccessContract =
             initFullAccessContractExternalParameter(customerDto.getIdentifier(), tenantName);
 
@@ -180,6 +177,10 @@ public class InitCustomerService {
             createExternalParameterProfileForDefaultAccessContract(customerDto.getId(), proofTenantDto.getIdentifier(),
                 fullAccessContract.getId());
         createdAdminProfiles.add(fullAccessContractProfile);
+        fullAccessContract.setName(ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX
+            + proofTenantDto.getIdentifier());
+        LOGGER.debug("External Parameter added into DataBase {}", fullAccessContract);
+        externalParametersInternalService.update(fullAccessContract);
 
         final Group createdAdminGroup = createAdminGroup(customerDto, createdAdminProfiles);
         createAdminUser(customerDto, createdAdminGroup);
