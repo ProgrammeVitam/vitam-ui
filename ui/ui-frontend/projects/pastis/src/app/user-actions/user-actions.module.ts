@@ -54,6 +54,7 @@ import {VitamUIInputModule} from 'vitamui-library';
 import {CoreModule} from '../core/core.module';
 import {CreateNoticeComponent} from './create-notice/create-notice.component';
 import {SaveProfileOptionsComponent} from './save-profile-options/save-profile-options.component';
+import { AllowAdditionalPropertiesComponent } from './allow-additional-properties/allow-additional-properties.component';
 
 
 @NgModule({
