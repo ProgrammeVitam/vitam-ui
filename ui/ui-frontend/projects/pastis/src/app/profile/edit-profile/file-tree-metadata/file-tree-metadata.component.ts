@@ -112,7 +112,7 @@ export class FileTreeMetadataComponent {
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
 
-  selectedRegex: string = "";
+  selectedRegex = '';
 
   clickedNode: FileNode = {} as FileNode;
 
@@ -150,7 +150,7 @@ export class FileTreeMetadataComponent {
   editedEnumControl: string[];
   openControls: boolean;
 
-  radioExpressionReguliere: string = "select";
+  radioExpressionReguliere = 'select';
   regex: string;
   customRegex: string;
   formatagePredefini: Array<{label: string, value: string}> =
@@ -252,8 +252,8 @@ export class FileTreeMetadataComponent {
       this.popupSousTitre = 'Edition des attributs de';
       this.popupValider = 'Valider';
       this.popupAnnuler = 'Annuler';
-      this.popupControlTitleDialog = "Veuillez séléctionner un ou plusieurs contrôles";
-      this.popupControlSubTitleDialog = "Ajouter des contrôles supplémentaires à";
+      this.popupControlTitleDialog = 'Veuillez séléctionner un ou plusieurs contrôles';
+      this.popupControlSubTitleDialog = 'Ajouter des contrôles supplémentaires à';
       this.popupControlOkLabel = 'AJOUTER LES CONTROLES';
     }
 
@@ -314,7 +314,8 @@ export class FileTreeMetadataComponent {
           const filteredData = this.fileService.filteredNode.getValue();
           // Initial data for metadata table based on rules defined by tabChildrenRulesChange
           if (filteredData) {
-            const dataTable = this.fileMetadataService.fillDataTable(this.selectedSedaNode, filteredData, tabChildrenToInclude, tabChildrenToExclude);
+            const dataTable = this.fileMetadataService
+             .fillDataTable(this.selectedSedaNode, filteredData, tabChildrenToInclude, tabChildrenToExclude);
             this.matDataSource = new MatTableDataSource<MetadataHeaders>(dataTable);
           }
         }
@@ -571,7 +572,7 @@ export class FileTreeMetadataComponent {
   }
 
   async onEditControlClick(fileNodeId: number) {
-    let popData = {} as PastisDialogData;
+    const popData = {} as PastisDialogData;
     if (fileNodeId && fileNodeId === this.clickedNode.id) {
       this.resetContols();
       popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
@@ -583,8 +584,8 @@ export class FileTreeMetadataComponent {
       popData.okLabel = this.popupControlOkLabel;
       popData.cancelLabel = this.popupAnnuler;
 
-      let popUpAnswer = <string[]>await this.fileService.openPopup(popData);
-      console.log("The answer for arrays control was ", popUpAnswer);
+      const popUpAnswer = <string[]> await this.fileService.openPopup(popData);
+      console.log('The answer for arrays control was ', popUpAnswer);
       if(popUpAnswer){
         this.arrayControl = popUpAnswer;
         this.setControlsVues(this.arrayControl, popData.fileNode.name)
@@ -623,7 +624,8 @@ export class FileTreeMetadataComponent {
           this.formatagePredefini.pop();
           break;
         default:
-          this.formatagePredefini = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
+          this.formatagePredefini = this.formatagePredefini
+           .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
           break;
       }
       this.regex = this.formatagePredefini[0].value;
@@ -810,46 +812,45 @@ export class FileTreeMetadataComponent {
   }
 
   setPatternExpressionReguliere() {
-    if(!this.clickedControl.puaData){
+    if (!this.clickedControl.puaData) {
       this.clickedControl.puaData = {} as PuaData;
     }
 
     this.clickedControl.puaData.pattern = (this.radioExpressionReguliere === 'select') ? this.regex : this.customRegex;
-    console.log(this.clickedControl)
   }
 
-  onSubmitControls(){
-    if(this.enumerationControl && this.enumsControlSeleted.length > 0){
-      if(this.clickedNode.puaData){
+  onSubmitControls() {
+    if (this.enumerationControl && this.enumsControlSeleted.length > 0){
+      if (this.clickedNode.puaData) {
         this.clickedNode.puaData.enum = this.enumsControlSeleted;
-      }else{
+      } else {
         this.clickedNode.puaData = {
           enum: this.enumsControlSeleted
-        }
+        };
       }
 
     }
-    if(this.expressionControl){
+    if (this.expressionControl) {
       this.setPatternExpressionReguliere();
     }
-    this.resetContols()
+    this.resetContols();
   }
 
   onRemoveEnumsControl(element: string) {
-    let indexOfElement = this.enumsControlSeleted.indexOf(element)
+    let indexOfElement = this.enumsControlSeleted.indexOf(element);
     if (indexOfElement >= 0) {
       this.enumsControlSeleted.splice(indexOfElement, 1)[0];
-      this.editedEnumControl = []
+      this.editedEnumControl = [];
       this.enumsControlSeleted.forEach( e => {
-        this.editedEnumControl.push(e)
-      })
+        this.editedEnumControl.push(e);
+      });
     }
 
-    if(this.editedEnumControl.includes(element)){
-      indexOfElement = this.editedEnumControl.indexOf(element)
+    if (this.editedEnumControl.includes(element)) {
+      indexOfElement = this.editedEnumControl.indexOf(element);
       this.editedEnumControl.splice(indexOfElement, 1)[0];
     }
-    if(this.enumsControlSeleted.length === 0) this.editedEnumControl = null;
+    if (this.enumsControlSeleted.length === 0) { this.editedEnumControl = null; }
   }
 
   addEnumsControl(element: string){
@@ -870,18 +871,18 @@ export class FileTreeMetadataComponent {
 
 
   isElementNameNotContentManagement(nomDuChamp: string) {
-    return !(nomDuChamp == "Content" || nomDuChamp == "Management");
+    return !(nomDuChamp === 'Content' || nomDuChamp === 'Management');
   }
 
   changeAutorisation($event: MatCheckboxChange, element: any) {
-    console.log($event.checked + "test" + element.nomDuChamp);
+    console.log($event.checked + 'test' + element.nomDuChamp);
     this.additionalPropertiesMetadonnee = $event.checked;
     this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
   }
 
   private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
 
-    for (let node of this.clickedNode.children) {
+    for (const node of this.clickedNode.children) {
       if (node.name === element.nomDuChamp && node.id === element.id) {
 
         node.puaData.additionalProperties = additionalPropertiesMetadonnee;
