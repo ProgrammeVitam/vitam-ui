@@ -476,7 +476,7 @@ public abstract class BaseWebClient<C extends AbstractHttpContext> extends BaseC
      * @return
      */
     protected InputStreamResource convertDataBufferFileToInputStreamResponse(Flux<DataBuffer> dataBufferFlux) {
-        PipedInputStream isPipe = null;
+        PipedInputStream isPipe;
         try {
             PipedOutputStream osPipe = new PipedOutputStream();
             isPipe = new PipedInputStream(osPipe);

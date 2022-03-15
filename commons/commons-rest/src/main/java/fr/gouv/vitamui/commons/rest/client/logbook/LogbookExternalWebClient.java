@@ -34,54 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.external.client;
+package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+/**
+ * A Web flux client to get logbooks for an External API.
+ *
+ *
+ */
+public class LogbookExternalWebClient extends LogbookInternalWebClient<ExternalHttpContext> {
 
-public class IamExternalWebClientFactory extends BaseWebClientFactory {
-
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfiguration
-     */
-    @Deprecated
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
-        super(restClientConfiguration);
+    public LogbookExternalWebClient(final WebClient webClient, final String baseUrl) {
+        super(webClient, baseUrl);
     }
 
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfig
-     * @param httpPoolConfig
-     */
-    @Deprecated
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
-        super(restClientConfig, httpPoolConfig);
-    }
-
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
-        super(restClientConfiguration, webClientBuilder);
-    }
-
-    public IamExternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
-        super(restClientConfig, httpPoolConfig, webClientBuilder);
-    }
-
-    public CustomerExternalWebClient getCustomerWebClient() {
-        return new CustomerExternalWebClient(getWebClient(), getBaseUrl());
-    }
-
-    public LogbookExternalWebClient getLogbookExternalWebClient() {
-        return new LogbookExternalWebClient(getWebClient(), getBaseUrl());
-    }
-
-    @Override
-    public String getBaseUrl() {
-        return super.getBaseUrl();
-    }
 }

@@ -34,55 +34,55 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.iam.internal.client;
+package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
-import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.rest.client.AbstractHttpContext;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+/**
+ * A Web flux client to get logbooks.
+ */
+public class LogbookInternalWebClient<C extends AbstractHttpContext> extends BaseWebClient<C> {
 
-public class IamInternalWebClientFactory extends BaseWebClientFactory {
-
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfiguration
-     */
-    @Deprecated
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
-        super(restClientConfiguration);
-    }
-
-    /**
-     * This method don't use WebBuilder configured by spring boot
-     * @param restClientConfig
-     * @param httpPoolConfig
-     */
-    @Deprecated
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig) {
-        super(restClientConfig, httpPoolConfig);
-    }
-
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfiguration, final WebClient.Builder webClientBuilder) {
-        super(restClientConfiguration, webClientBuilder);
-    }
-
-    public IamInternalWebClientFactory(final RestClientConfiguration restClientConfig, final HttpPoolConfiguration httpPoolConfig, final WebClient.Builder webClientBuilder) {
-        super(restClientConfig, httpPoolConfig, webClientBuilder);
-    }
-
-    public CustomerInternalWebClient getCustomerInternalRestClient() {
-        return new CustomerInternalWebClient(getWebClient(), getBaseUrl());
-    }
-
-    public LogbookInternalWebClient getLogbookInternalWebClient() {
-        return new LogbookInternalWebClient(getWebClient(), getBaseUrl());
+    public LogbookInternalWebClient(final WebClient webClient, final String baseUrl) {
+        super(webClient, baseUrl);
     }
 
     @Override
-    public String getBaseUrl() {
-        return super.getBaseUrl();
+    public String getPathUrl() {
+        return CommonConstants.API_VERSION_1;
+    }
+
+
+    /**
+     * Download an operation report
+     *
+     * @param context
+     * @param id
+     * @return
+     */
+    public Mono<ResponseEntity<Resource>> downloadReport(final C context, final String id, final String downloadType) {
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
+        uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH);
+
+        Flux<DataBuffer> dataBuffer = webClient
+            .get()
+            .uri(uriBuilder.build(id, downloadType))
+            .headers(addHeaders(buildHeaders(context)))
+            .retrieve()
+            .bodyToFlux(DataBuffer.class);
+
+        return Mono.just(ResponseEntity
+            .ok().cacheControl(CacheControl.noCache())
+            .body(convertDataBufferFileToInputStreamResponse(dataBuffer)));
     }
 }
