@@ -208,9 +208,7 @@ export class ArchiveService extends SearchService<any> {
     if (facetResults && facetResults.length > 0) {
       for (let facet of facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
-          let nodesFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
+          for (let bucket of facet.buckets) {
             nodesFacets.push({ node: bucket.value, count: bucket.count });
           }
         }

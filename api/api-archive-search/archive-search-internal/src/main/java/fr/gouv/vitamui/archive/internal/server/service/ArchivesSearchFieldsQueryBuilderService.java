@@ -70,7 +70,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID:
+                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE:
                         queryToFill.add(buildEliminationAnalysisSearchQuery(
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
@@ -110,13 +110,33 @@ public class ArchivesSearchFieldsQueryBuilderService {
                                 VitamQueryHelper.addParameterCriteria(queryToFill,
                                     ArchiveSearchConsts.CriteriaOperators.NOT_EQ,
                                     ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
-                                        .get(ArchiveSearchConsts.WAITING_RECALCULATE),
+                                        .get(ArchiveSearchConsts.RULES_COMPUTED),
                                     List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
                             } else {
                                 VitamQueryHelper.addParameterCriteria(queryToFill,
                                     ArchiveSearchConsts.CriteriaOperators.EQ,
                                     ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
-                                        .get(ArchiveSearchConsts.WAITING_RECALCULATE),
+                                        .get(ArchiveSearchConsts.RULES_COMPUTED),
+                                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
+                            }
+                        }
+                        break;
+                    case ArchiveSearchConsts.RULES_COMPUTED:
+                        Optional<String> computedValidInheritedRulesValueOpt =
+                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).findAny();
+                        if (computedValidInheritedRulesValueOpt.isPresent()) {
+                            if (computedValidInheritedRulesValueOpt.get()
+                                .equals(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)) {
+                                VitamQueryHelper.addParameterCriteria(queryToFill,
+                                    ArchiveSearchConsts.CriteriaOperators.EQ,
+                                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                                        .get(ArchiveSearchConsts.RULES_COMPUTED),
+                                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
+                            } else {
+                                VitamQueryHelper.addParameterCriteria(queryToFill,
+                                    ArchiveSearchConsts.CriteriaOperators.NOT_EQ,
+                                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                                        .get(ArchiveSearchConsts.RULES_COMPUTED),
                                     List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
                             }
                         }

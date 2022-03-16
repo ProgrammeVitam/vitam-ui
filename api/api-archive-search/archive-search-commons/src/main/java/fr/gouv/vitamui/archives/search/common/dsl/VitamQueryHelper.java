@@ -75,27 +75,21 @@ public class VitamQueryHelper {
             BooleanQuery subQueryOr = or();
             BooleanQuery subQueryAnd = and();
             //The case of multiple values
-            if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+            if (operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
                 for (String value : searchValues) {
                     subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
-
                 }
                 query.add(subQueryAnd);
-            }
-            else {
+            } else {
                 for (String value : searchValues) {
                     subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
                 query.add(subQueryOr);
             }
-
         } else if (searchValues.size() == 1) {
             //the case of one value
             query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
         }
-
-
-
     }
 
     public static Query buildSubQueryByOperator(String searchKey, String value,
@@ -130,7 +124,7 @@ public class VitamQueryHelper {
                 criteriaSubQuery = missing(searchKey);
                 break;
             case IN:
-                if(!ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.containsValue(value)){
+                if (!ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.containsValue(value)) {
                     criteriaSubQuery = in(searchKey, value);
                 } else {
                     criteriaSubQuery = eq(searchKey, value);

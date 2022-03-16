@@ -152,7 +152,7 @@
         "CREATE_INTERVAL": "Créer un intervale",
         "DELETE_INTERVAL": "Supprimer l'intervale",
         "FINAL_ACTION_APPRAISAL_RULE": "Sort final DUA",
-        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
+        "RULE_TITLE_APPRAISAL_RULE": "Intitulé règle DUA",
         "RULE_IDENTIFIER_APPRAISAL_RULE": "Identifiant règle DUA",
         "APPRAISAL_RULE_START_DATE": "Date de début règle DUA",
         "RULE_END_DATE_APPRAISAL_RULE": "Date de fin DUA",
@@ -166,7 +166,8 @@
         "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
         "ORIGIN_HAS_NO_ONE": "Non définies",
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
-        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
+        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
       },
       "ACCESS_RULE": {
         "RULE_END_DATE_END": "Communicabilité: Date de fin max",
@@ -229,7 +230,7 @@
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
         "WAITING_RECALCULATE": "En attente de recalcul",
         "ORIGIN_WAITING_RECALCULATE": "Oui",
-
+        "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Identifiant technique de l'analyse d'élimination",
         "ORIGIN": {
           "TITLE": "L'unité archivistique",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Hérite d'au moins une règle DUA",

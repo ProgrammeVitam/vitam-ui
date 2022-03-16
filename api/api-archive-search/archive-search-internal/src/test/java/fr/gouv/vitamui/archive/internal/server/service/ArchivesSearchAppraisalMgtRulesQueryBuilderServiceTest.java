@@ -453,7 +453,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("guid")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());

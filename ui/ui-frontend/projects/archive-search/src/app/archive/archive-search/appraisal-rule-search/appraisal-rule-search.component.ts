@@ -28,7 +28,7 @@ const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const RULE_ORIGIN = 'RULE_ORIGIN';
 
 const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const APPRAISAL_RULE_TITLE = 'APPRAISAL_RULE_TITLE';
+const RULE_TITLE = 'RULE_TITLE';
 const RULE_END_DATE = 'RULE_END_DATE';
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 
@@ -113,7 +113,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value !== ''
       ) {
         this.addCriteria(
-          APPRAISAL_RULE_TITLE + RULE_TYPE_SUFFIX,
+          RULE_TITLE + RULE_TYPE_SUFFIX,
           { id: value, value: value },
           value,
           true,
@@ -390,7 +390,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         return true;
       } else if (formData.appraisalRuleTitle) {
         this.addCriteria(
-          APPRAISAL_RULE_TITLE + RULE_TYPE_SUFFIX,
+          RULE_TITLE + RULE_TYPE_SUFFIX,
           { id: formData.appraisalRuleTitle.trim(), value: formData.appraisalRuleTitle.trim() },
           formData.appraisalRuleTitle.trim(),
           true,
