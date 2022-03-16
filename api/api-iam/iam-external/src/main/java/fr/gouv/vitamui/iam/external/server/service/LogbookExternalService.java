@@ -36,22 +36,15 @@
  */
 package fr.gouv.vitamui.iam.external.server.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.logbook.LogbookLifecycle;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.rest.client.BaseRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookLifeCycleResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
@@ -60,11 +53,16 @@ import fr.gouv.vitamui.iam.security.client.AbstractInternalClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import reactor.core.publisher.Mono;
 
 /**
  * The service to interact with logbooks.
- *
- *
  */
 @Getter
 @Setter
@@ -72,12 +70,15 @@ import lombok.Setter;
 public class LogbookExternalService extends AbstractInternalClientService {
 
     private final LogbookInternalRestClient<InternalHttpContext> logbookRestClient;
+    private final LogbookInternalWebClient<InternalHttpContext> logbookWebClient;
 
     @Autowired
     public LogbookExternalService(final LogbookInternalRestClient<InternalHttpContext> logbookRestClient,
-            final ExternalSecurityService externalSecurityService) {
+        final ExternalSecurityService externalSecurityService,
+        final LogbookInternalWebClient<InternalHttpContext> logbookWebClient) {
         super(externalSecurityService);
         this.logbookRestClient = logbookRestClient;
+        this.logbookWebClient = logbookWebClient;
     }
 
     public static <T> T responseMapping(final JsonNode json, final Class<T> clazz) {
@@ -90,29 +91,35 @@ public class LogbookExternalService extends AbstractInternalClientService {
 
     /**
      * Finds an operation by id.
+     *
      * @param id
      * @return
      */
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findOperationById(getInternalHttpContext(), id), LogbookOperationsResponseDto.class);
+        return responseMapping(logbookRestClient.findOperationById(getInternalHttpContext(), id),
+            LogbookOperationsResponseDto.class);
     }
 
     /**
      * Finds {@link LogbookLifecycle} by archive unit id.
+     *
      * @param id
      * @return
      */
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findUnitLifeCyclesByUnitId(getInternalHttpContext(), id), LogbookLifeCycleResponseDto.class);
+        return responseMapping(logbookRestClient.findUnitLifeCyclesByUnitId(getInternalHttpContext(), id),
+            LogbookLifeCycleResponseDto.class);
     }
 
     /**
      * Finds {@link LogbookLifecycle} by archive unit id.
+     *
      * @param id
      * @return
      */
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
-        return responseMapping(logbookRestClient.findObjectLifeCyclesByUnitId(getInternalHttpContext(), id), LogbookLifeCycleResponseDto.class);
+        return responseMapping(logbookRestClient.findObjectLifeCyclesByUnitId(getInternalHttpContext(), id),
+            LogbookLifeCycleResponseDto.class);
     }
 
     /**
@@ -123,7 +130,8 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @throws VitamClientException
      */
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws VitamClientException {
-        return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select), LogbookOperationsResponseDto.class);
+        return responseMapping(logbookRestClient.findOperations(getInternalHttpContext(), select),
+            LogbookOperationsResponseDto.class);
     }
 
     /**
@@ -152,8 +160,12 @@ public class LogbookExternalService extends AbstractInternalClientService {
      * @param id
      * @return
      */
-    public ResponseEntity<Resource> downloadReport(final String id, final String downloadType) {
-        return logbookRestClient.downloadReport(getInternalHttpContext(), id, downloadType);
+
+    public Mono<ResponseEntity<Resource>> downloadReport(final String id, final String downloadType) {
+        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
+            logbookWebClient
+                .downloadReport(getInternalHttpContext(), id, downloadType);
+        return resourceResponseEntityResponse;
     }
 
     @Override

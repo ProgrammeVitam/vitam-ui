@@ -52,6 +52,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,18 +64,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.QueryParam;
 import java.util.Optional;
 
 /**
  * UI logbook controller.
- *
- *
  */
 @Api(tags = "logbooks")
 @RequestMapping("${ui-prefix}")
 @RestController
 @ResponseBody
 public class LogbookController extends AbstractUiRestController {
+
+    private final String DOWNLOAD_TYPE_DIP = "dip";
+    private final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
+    private final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
+    private final String DOWNLOAD_TYPE_OBJECT = "object";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookController.class);
 
@@ -122,7 +127,8 @@ public class LogbookController extends AbstractUiRestController {
     @ApiOperation(value = "Download the manifest for a given operation")
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadManifest(@PathVariable final String id, @RequestParam final Optional<ContentDispositionType> disposition) {
+    public ResponseEntity<Resource> downloadManifest(@PathVariable final String id,
+        @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final ResponseEntity<Resource> response = logbookService.downloadManifest(buildUiHttpContext(), id);
@@ -132,22 +138,38 @@ public class LogbookController extends AbstractUiRestController {
     @ApiOperation(value = "Download the ATR file for a given operation")
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id, @RequestParam final Optional<ContentDispositionType> disposition) {
+    public ResponseEntity<Resource> downloadAtr(@PathVariable final String id,
+        @RequestParam final Optional<ContentDispositionType> disposition) {
         LOGGER.debug("downloadAtr: id={}, disposition={}", id, disposition);
         final ResponseEntity<Resource> response = logbookService.downloadAtr(buildUiHttpContext(), id);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }
 
     @ApiOperation(value = "Download the report file for a given operation")
-    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH)
+    @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadReport(@PathVariable final String id,
-                                                   @PathVariable final String downloadType,
-                                                   @RequestParam final Optional<ContentDispositionType> disposition) {
+        @PathVariable final String downloadType,
+        @RequestParam final Optional<ContentDispositionType> disposition,
+        @QueryParam("tenantId") Integer tenantId,
+        @QueryParam("contractId") String contractId) {
         LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
-        ParameterChecker.checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
-        final ResponseEntity<Resource> response = logbookService.downloadReport(buildUiHttpContext(), id, downloadType);
-        return RestUtils.buildFileResponse(response, disposition, Optional.empty());
+        ParameterChecker
+            .checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
+        String fileName = id + ".json";
+        if (DOWNLOAD_TYPE_OBJECT.equals(downloadType)) {
+            fileName = id + ".xml";
+        }
+
+        if (DOWNLOAD_TYPE_BATCH_REPORT.equals(downloadType)) {
+            fileName = id + ".jsonl";
+        }
+        if (DOWNLOAD_TYPE_DIP.equals(downloadType) || DOWNLOAD_TYPE_TRANSFER_SIP.equals(downloadType)) {
+            fileName = id + ".zip";
+        }
+        final ResponseEntity<Resource> response =
+            logbookService.downloadReport(buildUiHttpContext(tenantId, contractId), id, downloadType).block();
+        return RestUtils.buildFileResponse(response, disposition, Optional.of(fileName));
     }
 
 }
