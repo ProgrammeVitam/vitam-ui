@@ -52,7 +52,8 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
+import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
@@ -72,7 +73,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 
-class AccessionRegisterDetailInternalServiceTest {
+class AccessionRegisterInternalServiceTest {
 
     @Mock
     private AgencyService agencyService;
@@ -81,20 +82,23 @@ class AccessionRegisterDetailInternalServiceTest {
     private AdminExternalClient adminExternalClient;
 
     @Mock
+    private AccessionRegisterService accessionRegisterService;
+
+    @Mock
     private VitamUILogger vitamUILogger;
 
     private ObjectMapper objectMapper;
 
     @InjectMocks
-    AccessionRegisterDetailInternalService accessionRegisterDetailInternalService;
+    AccessionRegisterInternalService accessionRegisterInternalService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        accessionRegisterDetailInternalService = new AccessionRegisterDetailInternalService(objectMapper,
-            adminExternalClient, agencyService);
+        accessionRegisterInternalService = new AccessionRegisterInternalService(objectMapper,
+            adminExternalClient, agencyService, accessionRegisterService);
 
         doNothing().when(vitamUILogger).info(any());
     }
@@ -114,7 +118,7 @@ class AccessionRegisterDetailInternalServiceTest {
             .when(agencyService).findAgencies(any(VitamContext.class), any(JsonNode.class));
 
         //When
-        accessionRegisterDetailInternalService
+        accessionRegisterInternalService
             .getAllPaginated(pageNumber, size, Optional.empty(), Optional.empty(), vitamContext, Optional.empty());
 
         //Then
@@ -123,7 +127,7 @@ class AccessionRegisterDetailInternalServiceTest {
     }
 
     private <T> RequestResponse<T> buildResponseFrom(String filename, Class<T> clazz) throws IOException, InvalidParseOperationException {
-        InputStream inputStream = AccessionRegisterDetailInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = AccessionRegisterInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         assert inputStream != null;
         JsonNode data = objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class);
         return RequestResponseOK.getFromJsonNode(data, clazz);

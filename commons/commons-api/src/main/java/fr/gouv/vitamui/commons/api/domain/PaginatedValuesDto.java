@@ -38,6 +38,8 @@ package fr.gouv.vitamui.commons.api.domain;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Common class which can be used to return a paginated list of values.
@@ -59,6 +61,8 @@ public class PaginatedValuesDto<T> implements Serializable {
 
     private boolean hasMore;
 
+    private transient Map<String, Object> optionalValues;
+
     public PaginatedValuesDto() {
         // Intentionally empty.
     }
@@ -69,6 +73,16 @@ public class PaginatedValuesDto<T> implements Serializable {
         this.pageNum = pageNum;
         this.pageSize = maxResults;
         this.hasMore = hasMore;
+        this.optionalValues = new HashMap<>();
+    }
+
+    public PaginatedValuesDto(final Collection<T> values, final int pageNum, final int maxResults,
+        final boolean hasMore, Map<String, Object> optionalValues) {
+        this.values = values;
+        this.pageNum = pageNum;
+        this.pageSize = maxResults;
+        this.hasMore = hasMore;
+        this.optionalValues = optionalValues;
     }
 
     public int getPageNum() {
@@ -83,6 +97,10 @@ public class PaginatedValuesDto<T> implements Serializable {
         return hasMore;
     }
 
+    public Map<String, Object> getOptionalValues() {
+        return optionalValues;
+    }
+
     public void setHasMore(final boolean hasMore) {
         this.hasMore = hasMore;
     }
@@ -93,6 +111,10 @@ public class PaginatedValuesDto<T> implements Serializable {
 
     public void setPageSize(final int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public void setOptionalValues(Map<String, Object> optionalValues) {
+        this.optionalValues = optionalValues;
     }
 
     public Collection<T> getValues() {

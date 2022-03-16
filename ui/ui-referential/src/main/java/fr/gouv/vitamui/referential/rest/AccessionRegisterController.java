@@ -36,7 +36,6 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -44,7 +43,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.service.AccessionRegisterDetailService;
 import fr.gouv.vitamui.referential.service.AccessionRegisterSummaryService;
@@ -52,8 +50,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -102,13 +98,6 @@ public class AccessionRegisterController extends AbstractUiRestController {
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return detailsService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
-    }
-
-    @ApiOperation(value = "Get accession register summary entities statistics")
-    @PostMapping("/details/stats")
-    public AccessionRegisterStatsDto getAccessionRegisterDetailStats(@RequestBody
-        AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
-        return detailsService.getAccessionRegisterDetailStats(buildUiHttpContext(), detailsSearchDto);
     }
 
 }

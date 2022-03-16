@@ -34,26 +34,36 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister.summary;
+package fr.gouv.vitamui.referential.internal.server.accessionregister;
 
+import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AccessionRegisterSummaryConverter {
+public class AccessionRegisterConverter {
 
-    private AccessionRegisterSummaryConverter() {
-        throw new UnsupportedOperationException("Utility class");
+    private AccessionRegisterConverter() {
+        throw new UnsupportedOperationException("Utility class !");
     }
 
-    public static AccessionRegisterSummaryDto convertVitamToDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
+    public static AccessionRegisterDetailDto toDetailsDto(final AccessionRegisterDetailModel accessionRegisterDetailModel) {
+        return VitamUIUtils.copyProperties(accessionRegisterDetailModel, new AccessionRegisterDetailDto());
+    }
+
+    public static List<AccessionRegisterDetailDto> toDetailsDtos(final List<AccessionRegisterDetailModel> accessionRegisterDetailModels) {
+        return accessionRegisterDetailModels.stream().map(AccessionRegisterConverter::toDetailsDto).collect(Collectors.toList());
+    }
+
+    public static AccessionRegisterSummaryDto toSummaryDto(final AccessionRegisterSummaryModel accessionRegisterSummaryModel) {
         return VitamUIUtils.copyProperties(accessionRegisterSummaryModel, new AccessionRegisterSummaryDto());
     }
 
-    public static List<AccessionRegisterSummaryDto> convertVitamsToDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
-        return accessionRegisterSummaryModels.stream().map(AccessionRegisterSummaryConverter::convertVitamToDto).collect(Collectors.toList());
+    public static List<AccessionRegisterSummaryDto> toSummaryDtos(final List<AccessionRegisterSummaryModel> accessionRegisterSummaryModels) {
+        return accessionRegisterSummaryModels.stream().map(AccessionRegisterConverter::toSummaryDto).collect(Collectors.toList());
     }
 }

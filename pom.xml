@@ -745,6 +745,12 @@
                 <groupId>org.apache.odftoolkit</groupId>
                 <artifactId>simple-odf</artifactId>
                 <version>${org.apache.odftoolkit.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>tools</artifactId>
+                        <groupId>com.sun</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- APACHE ODFtoolKit-->
 

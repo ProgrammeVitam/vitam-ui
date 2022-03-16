@@ -34,26 +34,45 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister.details;
+package fr.gouv.vitamui.referential.internal.server.accessionregister;
 
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class AccessionRegisterDetailConverter {
+public class AccessRegisterStatsHelper {
 
-    private AccessionRegisterDetailConverter() {
+    private AccessRegisterStatsHelper() {
         throw new UnsupportedOperationException("Utility class !");
     }
 
-    public static AccessionRegisterDetailDto convertVitamToDto(final AccessionRegisterDetailModel accessionRegisterDetailModel) {
-        return VitamUIUtils.copyProperties(accessionRegisterDetailModel, new AccessionRegisterDetailDto());
+    public static AccessionRegisterStatsDto fetchStats(List<AccessionRegisterDetailModel> accessionRegisterDetailModels ) {
+
+        AccessionRegisterStatsDto statsDto = new AccessionRegisterStatsDto();
+
+        Long objectSizes = accessionRegisterDetailModels.parallelStream()
+            .map(ardm -> ardm.getObjectSize().getIngested())
+            .reduce(0L, Long::sum);
+
+        Long totalObjects = accessionRegisterDetailModels.parallelStream()
+            .map(ardm -> ardm.getTotalObjects().getIngested())
+            .reduce(0L, Long::sum);
+
+        Long totalUnits = accessionRegisterDetailModels.parallelStream()
+            .map(ardm -> ardm.getTotalUnits().getIngested())
+            .reduce(0L, Long::sum);
+
+        Long totalObjectsGroups = accessionRegisterDetailModels.parallelStream()
+            .map(ardm -> ardm.getTotalObjectsGroups().getIngested())
+            .reduce(0L, Long::sum);
+
+        statsDto.setObjectSizes(objectSizes);
+        statsDto.setTotalObjects(totalObjects);
+        statsDto.setTotalUnits(totalUnits);
+        statsDto.setTotalObjectsGroups(totalObjectsGroups);
+
+        return statsDto;
     }
 
-    public static List<AccessionRegisterDetailDto> convertVitamsToDtos(final List<AccessionRegisterDetailModel> accessionRegisterDetailModels) {
-        return accessionRegisterDetailModels.stream().map(AccessionRegisterDetailConverter::convertVitamToDto).collect(Collectors.toList());
-    }
 }
