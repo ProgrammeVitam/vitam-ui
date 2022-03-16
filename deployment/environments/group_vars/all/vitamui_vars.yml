@@ -414,7 +414,7 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "DEBUG"
-      
+
   pastis:
     host: "pastis.service.{{ consul_domain }}"
     vitamui_component: "ui-pastis"
@@ -424,6 +424,7 @@ vitamui:
     store_name: "ui-pastis"
     port_service: 9015
     port_admin: 7015
+    server_connection_timeout: 60000
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -433,7 +434,7 @@ vitamui:
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
       vitamui_level: "DEBUG"
-      
+
 
 ################################################################################
 
