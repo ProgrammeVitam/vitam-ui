@@ -49,7 +49,7 @@ import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from 
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
+const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
 @Component({
@@ -381,7 +381,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: RULE_IDENTIFIER,
+      criteria: APPRAISAL_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
       category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
       operator: CriteriaOperator.EQ,

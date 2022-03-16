@@ -89,7 +89,30 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
     public void fillQueryFromCriteriaListByRule(String ruleCategory, BooleanQuery query,
         List<SearchCriteriaEltDto> criteriaList) throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(criteriaList)) {
-            List<SearchCriteriaEltDto> identifiersCriteria =
+
+            SearchCriteriaEltDto appraisalRuleIdentifiersCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                    ->ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                .orElse(null);
+
+            if(appraisalRuleIdentifiersCriteria != null) {
+                List<String> searchValues = appraisalRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                    Collectors.toList());
+                buildRuleIdentifierQuery(searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleIdentifiersCriteria.getOperator()), query);
+            }
+
+            SearchCriteriaEltDto appraisalRuleStarDateCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                    ->ArchiveSearchConsts.APPRAISAL_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                .orElse(null);
+
+            if(appraisalRuleStarDateCriteria != null) {
+                List<String> searchValues = appraisalRuleStarDateCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                    Collectors.toList());
+                buildRuleStartDateQuery(searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleStarDateCriteria.getOperator()), query);
+            }
+
+                List<SearchCriteriaEltDto> identifiersCriteria =
                 criteriaList.stream()
                     .filter(searchCriteriaEltDto -> ArchiveSearchConsts.RULE_IDENTIFIER
                         .equals(searchCriteriaEltDto.getCriteria()))
@@ -125,6 +148,39 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
             }
             buildMgtRulesFinalActionOriginCriteria(ruleCategory, query, criteriaList);
             buildMgtRulesFinalActionCriteria(ruleCategory, query, criteriaList);
+        }
+    }
+
+    private void buildRuleIdentifierQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, value, operator));
+            }
+            subQueryAnd.add(subQueryOr);
+        }
+    }
+
+    private void buildRuleStartDateQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            for (String value : searchValues) {
+
+                LocalDateTime startDate =
+                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+                        .withMinute(0).withSecond(0).withNano(0);
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(
+                        ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
+                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
+            }
+
+            subQueryAnd.add(subQueryOr);
         }
     }
 

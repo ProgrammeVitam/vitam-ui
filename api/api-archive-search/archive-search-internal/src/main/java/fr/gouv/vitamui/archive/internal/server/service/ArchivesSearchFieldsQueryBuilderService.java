@@ -90,13 +90,6 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.RULE_START_DATE:
-                        queryToFill.add(buildRuleStartDateQuery(
-                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                                Collectors.toList()),
-                            ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
-                        break;
-
                     case ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA:
                         queryToFill.add(buildArchiveUnitTypeQuery(
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
@@ -209,28 +202,6 @@ public class ArchivesSearchFieldsQueryBuilderService {
                 subQueryOr
                     .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_FR, value, operator));
             }
-            subQueryAnd.add(subQueryOr);
-        }
-        return subQueryAnd;
-    }
-
-    private Query buildRuleStartDateQuery(final List<String> searchValues,
-        ArchiveSearchConsts.CriteriaOperators operator)
-        throws InvalidCreateOperationException {
-        BooleanQuery subQueryAnd = and();
-        BooleanQuery subQueryOr = or();
-        if (!CollectionUtils.isEmpty(searchValues)) {
-            for (String value : searchValues) {
-
-                LocalDateTime startDate =
-                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                        .withMinute(0).withSecond(0).withNano(0);
-                subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(
-                        ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
-                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
-            }
-
             subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;
