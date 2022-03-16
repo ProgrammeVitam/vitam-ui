@@ -39,31 +39,23 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.server.rest;
 
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
+import fr.gouv.vitamui.pastis.common.exception.TechnicalException;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
 import fr.gouv.vitamui.pastis.server.service.PastisService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 
 @Api(tags = "pastis")
 @RequestMapping(RestApi.PASTIS)
@@ -72,16 +64,17 @@ import java.net.URISyntaxException;
 class PastisController {
 
     private static final String APPLICATION_JSON_UTF8 = "application/json; charset=utf-8";
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(PastisController.class);
 
-    @Autowired
-    private PastisService profileService;
+    private final PastisService profileService;
+
+    public PastisController(PastisService profileService) {
+        this.profileService = profileService;
+    }
 
     @ApiOperation(value = "Download Pa Profile rng file")
     @Secured(ServicesData.ROLE_GET_PROFILES)
-    @RequestMapping(value = RestApi.PASTIS_DOWNLOAD_PA, method = RequestMethod.POST, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_XML_VALUE)
-    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws IOException {
+    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_XML_VALUE)
+    ResponseEntity<String> getArchiveProfile(@RequestBody final ElementProperties json) throws TechnicalException {
         String archiveProfile = profileService.getArchiveProfile(json);
         if (archiveProfile != null) {
             return ResponseEntity.ok(archiveProfile);
@@ -92,9 +85,9 @@ class PastisController {
 
     @ApiOperation(value = "Download Pua Profile json file")
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
-    @RequestMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, method = RequestMethod.POST, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws IOException {
-        String archiveUnitProfile = profileService.getArchiveUnitProfile(json);
+    @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws TechnicalException {
+        String archiveUnitProfile = profileService.getArchiveUnitProfile(json, false);
         if (archiveUnitProfile != null) {
             return ResponseEntity.ok(archiveUnitProfile);
         } else {
@@ -105,9 +98,8 @@ class PastisController {
 
     @ApiOperation(value = "Retrieve json representation from PUA notice")
     @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
-    @RequestMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE, method = RequestMethod.POST)
-    ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice)
-        throws IOException {
+    @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE)
+    ResponseEntity<ProfileResponse> loadProfile(@RequestBody final Notice notice) throws TechnicalException {
         ProfileResponse profileResponse = profileService.loadProfile(notice);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
@@ -118,9 +110,9 @@ class PastisController {
 
     @ApiOperation(value = "Retrieve json representation from input file")
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
-    @RequestMapping(value = RestApi.PASTIS_UPLOAD_PROFILE, method = RequestMethod.POST,
+    @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
         consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) {
+    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
         ProfileResponse profileResponse = profileService.loadProfileFromFile(file);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
@@ -131,9 +123,9 @@ class PastisController {
 
     @ApiOperation(value = "Retrieve json representation from PA file")
     @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
-    @RequestMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE_PA, method = RequestMethod.POST,
+    @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
         consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ElementProperties> loadPA(@RequestParam MultipartFile file) throws IOException {
+    ResponseEntity<ElementProperties> loadPA(@RequestParam MultipartFile file){
         ElementProperties elementProperties = profileService.loadProfilePA(file);
         if (elementProperties != null) {
             return ResponseEntity.ok(elementProperties);
@@ -144,9 +136,8 @@ class PastisController {
 
     @ApiOperation(value = "Get template profile by type")
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
-    @RequestMapping(value = RestApi.PASTIS_CREATE_PROFILE, method = RequestMethod.GET)
-    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType)
-        throws URISyntaxException, IOException {
+    @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
+    ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws NoSuchAlgorithmException, TechnicalException {
         ProfileResponse profileResponse = profileService.createProfile(profileType);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);

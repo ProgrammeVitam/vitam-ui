@@ -42,16 +42,11 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis</artifactId>
-            <version>5.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
                     <artifactId>pastis-client</artifactId>
                 </exclusion>
-                <!--                <exclusion>
-                                    <groupId>fr.gouv.vitamui.commons</groupId>
-                                    <artifactId>commons-api</artifactId>
-                                </exclusion>-->
                 <exclusion>
                     <groupId>fr.gouv.vitamui.commons</groupId>
                     <artifactId>commons-rest</artifactId>
@@ -120,6 +115,9 @@
             <version>${jsonassert.version}</version>
             <scope>compile</scope>
         </dependency>
+        <!--        Dans Java SE 9 et 10, la classe JAXB n'est plus présente dans la variable "classpath" par défaut.
+                A partir de la version 11, elle a complètement disparu de Java en édition standard.
+                Obliger de préciser une version antérieur pour éviter un NoClassDefFoundError à ce niveau-->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
@@ -221,38 +219,53 @@
                     </testResource>
                 </testResources>
                 <plugins>
-
                     <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
                         <executions>
+                            <!-- download openjdk -->
                             <execution>
-                                <id>build-info</id>
+                                <id>download-jdk</id>
+                                <phase>initialize</phase>
                                 <goals>
-                                    <goal>build-info</goal>
+                                    <goal>run</goal>
                                 </goals>
+                                <configuration>
+                                    <target>
+                                        <get src="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip"
+                                             dest="${project.build.directory}/jdk11.zip"
+                                             verbose="false"
+                                             usetimestamp="true"/>
+                                    </target>
+                                </configuration>
                             </execution>
+
+                            <!-- unzip jdk -->
                             <execution>
-                                <id>spring-boot-repackage</id>
+                                <id>unzip-jdk</id>
+                                <phase>package</phase>
+                                <configuration>
+                                    <tasks>
+                                        <echo message="unzipping file" />
+                                        <unzip src="${project.build.directory}/jdk11.zip" dest="${project.build.directory}/jdk11/" />
+                                    </tasks>
+                                </configuration>
                                 <goals>
-                                    <goal>repackage</goal>
+                                    <goal>run</goal>
                                 </goals>
                             </execution>
                         </executions>
-                        <configuration>
-                            <executable>true</executable>
-                            <attach>true</attach> <!-- Need to use the original jar for integration-tests -->
-                            <mainClass>fr.gouv.vitamui.pastis.standalone.ApiPastisStandaloneApplication</mainClass>
-                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>com.github.eirslett</groupId>
                         <artifactId>frontend-maven-plugin</artifactId>
                     </plugin>
+
+                    <!-- Generate pastis exe from jar -->
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.21</version>
+                        <version>${launch4j-maven-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>build-pastis-standalone-executable-windows</id>
@@ -266,7 +279,7 @@
                                     </jar>
                                     <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
                                     <jre>
-                                        <path>./win32/java</path>
+                                        <path>./jdk11/jdk-11.0.2</path>
                                         <bundledJre64Bit>true</bundledJre64Bit>
                                         <runtimeBits>64</runtimeBits>
                                     </jre>
@@ -297,6 +310,7 @@
                         </executions>
                     </plugin>
 
+                    <!-- Assembling all file required to start pastis exe with portable java included -->
                     <plugin>
                         <artifactId>maven-assembly-plugin</artifactId>
                         <executions>
@@ -308,7 +322,7 @@
                                 </goals>
                                 <configuration>
                                     <descriptors>
-                                        <descriptor>assembly.xml</descriptor>
+                                        <descriptor>${project.basedir}/src/main/assembly/packaging-zip.xml</descriptor>
                                     </descriptors>
                                 </configuration>
                             </execution>
@@ -318,5 +332,6 @@
             </build>
         </profile>
     </profiles>
+
 
 </project>

@@ -35,12 +35,35 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
+import { BASE_URL } from 'ui-frontend-common';
+import { FileTreeMetadataService } from '../../profile/edit-profile/file-tree-metadata/file-tree-metadata.service';
+import { PastisConfiguration } from '../classes/pastis-configuration';
 
 import { NoticeService } from './notice.service';
+import { ProfileService } from './profile.service';
+
+
+const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
+matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+
 
 describe('PopupService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach(() => TestBed.configureTestingModule({
+    imports: [
+      HttpClientTestingModule,
+    ],
+    providers: [
+      ProfileService,
+      FileTreeMetadataService,
+      PastisConfiguration,
+      { provide: BASE_URL, useValue: '/pastis-api' },
+      { provide: MatDialog, useValue: matDialogSpy }
+    ]
+  }));
 
   it('should be created', () => {
     const service: NoticeService = TestBed.get(NoticeService);

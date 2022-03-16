@@ -58,7 +58,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.util.List;
@@ -81,13 +80,13 @@ public class PastisTransformationRestClient
 
     @Override
     protected ParameterizedTypeReference<List<ProfileResponse>> getDtoListClass() {
-        return new ParameterizedTypeReference<List<ProfileResponse>>() {
+        return new ParameterizedTypeReference<>() {
         };
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<ProfileResponse>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<PaginatedValuesDto<ProfileResponse>>() {
+        return new ParameterizedTypeReference<>() {
         };
     }
 
@@ -97,21 +96,17 @@ public class PastisTransformationRestClient
     }
 
     public ResponseEntity<ProfileResponse> loadProfile(Notice notice, ExternalHttpContext context)
-        throws IOException {
+    {
         LOGGER.debug("Transform profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<Notice> request = new HttpEntity<>(notice, headers);
-        final ResponseEntity<ProfileResponse> response =
-            restTemplate.exchange(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE, HttpMethod.POST,
+        return restTemplate.exchange(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE, HttpMethod.POST,
                 request, ProfileResponse.class);
-        return response;
     }
 
     public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context)
         throws IOException {
         LOGGER.debug("Upload profile");
-        final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.PASTIS_UPLOAD_PROFILE);
         MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
         bodyMap.add("file", new FileSystemResource(file.getBytes(), file.getOriginalFilename()));
         final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
@@ -122,25 +117,21 @@ public class PastisTransformationRestClient
     }
 
     public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context)
-        throws IOException {
+       {
         LOGGER.debug("Download archive profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ElementProperties> request = new HttpEntity<>(json, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PA, HttpMethod.POST,
+           return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PA, HttpMethod.POST,
                 request, String.class);
-        return response;
     }
 
     public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context)
-        throws IOException {
+        {
         LOGGER.debug("Download Arichivale unit profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ProfileNotice> request = new HttpEntity<>(json, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PUA, HttpMethod.POST,
+            return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PUA, HttpMethod.POST,
                 request, String.class);
-        return response;
     }
 
 
@@ -157,13 +148,11 @@ public class PastisTransformationRestClient
     }
 
     public ResponseEntity<ProfileResponse> createProfile(String profileType, ExternalHttpContext context)
-        throws IOException {
+        {
         LOGGER.debug("Transform profile");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<Notice> request = new HttpEntity<>(headers);
-        final ResponseEntity<ProfileResponse> response =
-            restTemplate.exchange(getUrl() + RestApi.PASTIS_CREATE_PROFILE + "?type=" + profileType, HttpMethod.GET,
+            return restTemplate.exchange(getUrl() + RestApi.PASTIS_CREATE_PROFILE + "?type=" + profileType, HttpMethod.GET,
                 request, ProfileResponse.class);
-        return response;
     }
 }

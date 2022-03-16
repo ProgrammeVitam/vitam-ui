@@ -45,15 +45,7 @@ import java.util.Map;
 
 public class PuaMetadata extends JsonElement {
 
-    public Map<String, PuaMetadataDetails> puaDetails = new HashMap<String, PuaMetadataDetails>();
-
-    public Map<String, PuaMetadataDetails> getPuaDetails() {
-        return puaDetails;
-    }
-
-    public void setPuaDetails(Map<String, PuaMetadataDetails> puaDetails) {
-        this.puaDetails = puaDetails;
-    }
+    private Map<String, PuaMetadataDetails> puaDetails = new HashMap<>();
 
     @Override
     public JsonElement deepCopy() {

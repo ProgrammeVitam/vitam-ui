@@ -57,11 +57,8 @@ public class VitamArchivalProfileUnitService {
      */
     public RequestResponse<ArchiveUnitProfileModel> findArchivalProfiles(final VitamContext vitamContext, final JsonNode select) throws VitamClientException {
         LOGGER.info("Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
-        System.out.println(vitamContext.getTenantId());
         final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfiles(vitamContext, select);
         VitamRestUtils.checkResponse(response);
-        System.out.println(response);
         return response;
     }
 
@@ -75,7 +72,6 @@ public class VitamArchivalProfileUnitService {
      */
     public RequestResponse<ArchiveUnitProfileModel> findArchivalProfileById(final VitamContext vitamContext, final String contractId) throws VitamClientException {
         LOGGER.info("Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         final RequestResponse<ArchiveUnitProfileModel> response = adminExternalClient.findArchiveUnitProfileById(vitamContext, contractId);
         VitamRestUtils.checkResponse(response);
         return response;
@@ -95,7 +91,6 @@ public class VitamArchivalProfileUnitService {
     public RequestResponse<?> updateArchiveUnitProfile(final VitamContext vitamContext, final String id, JsonNode jsonNode) throws VitamClientException, InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
         LOGGER.info("Update Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         return adminExternalClient.updateArchiveUnitProfile(vitamContext, id, jsonNode);
     }
 
@@ -115,7 +110,6 @@ public class VitamArchivalProfileUnitService {
         throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
         LOGGER.info("Create Archival Unit Profile EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        vitamContext.setTenantId(0);
         final List<ArchiveUnitProfileModel> archiveUnitProfileModelsList = new ArrayList<>();
         archiveUnitProfileModelsList.add(newArchivalProfile);
         return importArchivalProfiles(vitamContext, archiveUnitProfileModelsList);
@@ -124,7 +118,6 @@ public class VitamArchivalProfileUnitService {
     private RequestResponse<?> importArchivalProfiles(final VitamContext vitamContext, final List<ArchiveUnitProfileModel> archivalProfileModels)
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeArchivalProfiles(archivalProfileModels)) {
-            vitamContext.setTenantId(0);
             return adminExternalClient.createArchiveUnitProfile(vitamContext, byteArrayInputStream);
         }
     }
@@ -157,7 +150,6 @@ public class VitamArchivalProfileUnitService {
     public RequestResponse<?> importArchivalUnitProfileByFile(VitamContext vitamContext, String fileName, MultipartFile file) throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException {
         {
             LOGGER.debug("Import archival unit profile by file {}", fileName);
-            vitamContext.setTenantId(0);
             return adminExternalClient.createArchiveUnitProfile(vitamContext, file.getInputStream());
         }
     }

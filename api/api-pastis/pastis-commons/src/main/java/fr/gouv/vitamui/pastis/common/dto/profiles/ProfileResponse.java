@@ -41,11 +41,13 @@ package fr.gouv.vitamui.pastis.common.dto.profiles;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ProfileResponse extends IdDto {
     String name;
-    ElementProperties profile;
+    transient ElementProperties profile;
     Notice notice;
     ProfileType type;
 }

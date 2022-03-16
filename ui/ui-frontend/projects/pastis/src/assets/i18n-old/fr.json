@@ -82,7 +82,9 @@
         "CARDINALITE ": "Cardinalité",
         "COMMENTAIRE": "Commentaire",
         "DUPLIQUER": "Dupliquer",
+        "CONTROLE_METADONNEE": "Contrôle de métadonnée",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
+        "INFO_EXPRESSION": "Liste permettant d'effectuer des contrôles prédéfinis pour certaines valeurs (par ex. une date ou une adresse email)",
         "SUPPRIMER": "Supprimer",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "La métadonnée",

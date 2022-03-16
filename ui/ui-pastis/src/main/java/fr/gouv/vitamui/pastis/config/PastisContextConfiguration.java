@@ -39,7 +39,6 @@ package fr.gouv.vitamui.pastis.config;
 
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.pastis.client.PastisRestClientFactory;
 import fr.gouv.vitamui.pastis.client.PastisTransformationRestClient;
 import fr.gouv.vitamui.referential.external.client.ArchivalProfileUnitExternalRestClient;
@@ -48,7 +47,6 @@ import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ProfileExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -64,13 +62,6 @@ import java.util.Arrays;
 @Configuration
 @Import(value = {SecurityConfig.class, SwaggerConfiguration.class, RestExceptionHandler.class})
 public class PastisContextConfiguration {
-
-    @Bean
-    @ConditionalOnMissingBean
-    @DependsOn("uiProperties")
-    public IamExternalWebClientFactory iamWebClientFactory(final UIProperties uiProperties) {
-        return new IamExternalWebClientFactory(uiProperties.getIamExternalClient());
-    }
 
     @Bean
     @ConditionalOnMissingBean

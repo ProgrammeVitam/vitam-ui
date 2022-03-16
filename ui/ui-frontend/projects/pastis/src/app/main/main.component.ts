@@ -35,17 +35,17 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ToggleSidenavService} from '../core/services/toggle-sidenav.service';
 import {ToastContainerDirective, ToastrService} from 'ngx-toastr';
 import {BehaviorSubject, ReplaySubject, Subscription} from 'rxjs';
-import {EditProfileComponent} from '../profile/edit-profile/edit-profile.component';
-import {FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams} from "../models/file-node";
 import { FileService } from '../core/services/file.service';
-import { ProfileResponse } from '../models/profile-response';
+import {ToggleSidenavService} from '../core/services/toggle-sidenav.service';
+import {FileNode, FileNodeInsertAttributeParams, FileNodeInsertParams} from '../models/file-node';
 import { ProfileDescription } from '../models/profile-description.model';
+import { ProfileResponse } from '../models/profile-response';
+import {EditProfileComponent} from '../profile/edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-home',
@@ -71,14 +71,14 @@ export class MainComponent implements OnInit, OnDestroy {
 
   uploadedProfileSelected: ProfileDescription;
 
-  private _routeParamsSubscription : Subscription;
+  private _routeParamsSubscription: Subscription;
 
-  constructor(private route: ActivatedRoute,private sideNavService : ToggleSidenavService, private toastrService: ToastrService,
-    public fileService: FileService, private router: Router) {
+  constructor(private route: ActivatedRoute, private sideNavService: ToggleSidenavService, private toastrService: ToastrService,
+              public fileService: FileService, private router: Router) {
     this.uploadedProfileResponse = this.router.getCurrentNavigation().extras.state as ProfileResponse;
     this.uploadedProfileSelected = this.router.getCurrentNavigation().extras.state as ProfileDescription;
 
-    this.sideNavService.isOpened.subscribe(status=>{
+    this.sideNavService.isOpened.subscribe(status => {
       this.opened = status;
     })
     this.pendingSub = this.sideNavService.isPending.subscribe(status=>{
@@ -92,12 +92,12 @@ export class MainComponent implements OnInit, OnDestroy {
     this.fileService.allData = new BehaviorSubject<FileNode[]>([]);
     this.toastrService.overlayContainer = this.toastContainer;
     this._routeParamsSubscription = this.route.params.subscribe(params => {
-      let profileId = params['id'];
+      const profileId = params.id;
       // If a profileId has been defined, it is retrieved from backend
       if (profileId !== undefined) {
-        if(this.uploadedProfileSelected === undefined){
-          this.router.navigate(['/pastis/tenant/1'],{skipLocationChange: false})
-        }else{
+        if (this.uploadedProfileSelected === undefined) {
+          this.router.navigate(['/pastis/tenant/1'], {skipLocationChange: false});
+        } else {
           this.fileService.getProfileAndUpdateTree(this.uploadedProfileSelected);
         }
       } else {
@@ -110,15 +110,15 @@ export class MainComponent implements OnInit, OnDestroy {
     this.opened = true;
   }
 
-  openSideNav(){
+  openSideNav() {
     this.opened = true;
     this.sideNavService.show();
   }
 
   insertionItem($event: FileNodeInsertParams) {
-    let names: string[] = $event.elementsToAdd.map(e => e.Name);
+    const names: string[] = $event.elementsToAdd.map(e => e.Name);
     this.editProfileComponent.fileTreeComponent.insertItem($event.node, names);
-    console.log("Params : ", $event);
+    console.log('Params : ', $event);
   }
 
   addNode($event: FileNode) {
@@ -127,7 +127,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   insertAttribute($event: FileNodeInsertAttributeParams) {
-    console.log("Params in attributes : ", $event);
+    console.log('Params in attributes : ', $event);
     this.editProfileComponent.fileTreeComponent.insertAttributes($event.node, $event.elementsToAdd);
   }
 
@@ -142,7 +142,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this._routeParamsSubscription!= null){
+    if (this._routeParamsSubscription != null) {
       this._routeParamsSubscription.unsubscribe();
     }
     if(this.pendingSub) this.pendingSub.unsubscribe();

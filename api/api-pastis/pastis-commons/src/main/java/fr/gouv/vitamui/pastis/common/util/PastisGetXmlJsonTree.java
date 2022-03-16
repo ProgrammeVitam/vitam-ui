@@ -41,21 +41,11 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.ElementRNG;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.AnnotationXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.AttributeXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.BaliseXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.ChoiceXml;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.DataXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.DocumentationXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.ElementXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.OneOrMoreXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.OptionalXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.ValueXML;
-import fr.gouv.vitamui.pastis.common.dto.jaxb.ZeroOrMoreXML;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -66,79 +56,13 @@ import java.io.IOException;
 
 public class PastisGetXmlJsonTree {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisGetXmlJsonTree.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PastisGetXmlJsonTree.class);
     //ElementRNG elementRNGRoot;
     public String jsonParsed = "";
 
     public ElementProperties getJsonParsedTree(ElementRNG elementRNGRoot) {
         ElementRNG.buildElementPropertiesTree(elementRNGRoot, 0, null);
-        return ElementRNG.elementStaticRoot;
+        return ElementRNG.getElementStaticRoot();
     }
-
-    // Test an xml to json and a json to xml.
-    // TODO Move this code in test package
-    public String getJsonParsedTreeTest(ElementRNG elementRNGRoot) throws JAXBException, FileNotFoundException {
-
-        //vWhen the handler is called, the proprities tree (json) is build
-        // using its ElementRNG(elementRngRoot) object.
-        // The elementRngRoot is filled when the xml file is read, by passing
-        // it to the contentHanler of the  Xml reader.
-        // The methods used are the 5 main methods of a DefaultHandler type
-        // See methods bellow
-        ElementRNG.buildElementPropertiesTree(elementRNGRoot, 0, null);
-        ElementProperties eparent = ElementRNG.elementStaticRoot;
-
-
-        // The eparentRng is an object of type BalizeXML. It is  built using the
-        // object eparent (of type ElementProperties) that, in fact, represent the json
-        // prouced during the parser's first call.
-        BaliseXML.buildBaliseXMLTree(eparent, 0, null);
-        BaliseXML eparentRng = BaliseXML.baliseXMLStatic;
-
-
-        // Transforms java objects to Xml file (Marshalling)
-        JAXBContext contextObj =
-            JAXBContext.newInstance(AttributeXML.class, ElementXML.class, DataXML.class, ValueXML.class,
-                OptionalXML.class, OneOrMoreXML.class,
-                ZeroOrMoreXML.class, AnnotationXML.class, DocumentationXML.class, ChoiceXml.class);
-        Marshaller marshallerObj = contextObj.createMarshaller();
-        marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshallerObj.setProperty("com.sun.xml.bind.marshaller.CharacterEscapeHandler",
-            new PastisCustomCharacterEscapeHandler());
-
-        marshallerObj.marshal(eparentRng, new FileOutputStream("generated_test.xml"));
-
-
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = "";
-        try {
-            jsonString = mapper.writeValueAsString(eparent);
-        } catch (JsonGenerationException e1) {
-            e1.printStackTrace();
-        } catch (JsonMappingException e1) {
-            e1.printStackTrace();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "[" + jsonString + "]";
-    }
-
-
-    public String getXmlParsedTree(String jsonString) throws IOException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        ObjectMapper xmlMapper = new ObjectMapper();
-        JsonNode tree = objectMapper.readTree(jsonString);
-        String jsonAsXml = xmlMapper.writeValueAsString(tree);
-
-        return jsonAsXml;
-    }
-
-
-    public void setJsonParsed(String jsonParsed) {
-        this.jsonParsed = jsonParsed;
-    }
-
-
 
 }

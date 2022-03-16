@@ -178,8 +178,16 @@
         "CARDINALITE": "Cardinality",
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
+        "CONTROLE_METADONNEE": "Metadata control",
+        "EDITION_CONTROLE": "Edit controls",
+        "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
+        "FORMATAGE_PREDEFINI": "Use predefined formatting",
+        "SAISIR_EXPRESSION": "Enter a regular expression",
+        "EXPRESSION_CONTROLE": "\"Regular expression\" type control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",
+        "AUTORISER_PRESENCE_METADONNEE": "Allow the presence of undeclared metadata",
+        "ADDITIONAL_PROPERTIES_TOOLTIP": "Authorize or not the presence, in a slip, of metadata not declared in the PUA",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "The metadata",
           "PARTIEDEUX": "does not contain any child metadata. You must add at least one to it to be able to use it in your profile."
@@ -188,7 +196,10 @@
           "NOM_ATTRIBUT": "Attribute name",
           "VALEUR_FIXE": "Fixed value",
           "COMMENTAIRE": "Comment"
-        }
+        },
+        "POPUP_CONTROL_OK_BUTTON_LABEL": "ADD CONTROLS",
+        "POPUP_CONTROL_SUB_TITLE_DIALOG": "Add additional controls to",
+        "POPUP_CONTROL_TITLE_DIALOG": "Please select one or more controls"
       }
     },
     "LIST_PROFILE": {
@@ -220,6 +231,14 @@
       "METADATA_ADD": "The metadata to add",
       "BOUTON_AJOUTER": "Add",
       "MESSAGE_PLUS_METADONNEE": "There is no more metadata to add"
+    },
+    "ADD_PUA_CONTROL": {
+      "ENUMERATIONS_LABEL": "Enumeration",
+      "EXPRESSION_REGULIERE_LABEL": "Regular expression",
+      "LENGTH_MIN_MAX_LABEL": "Length Min/Max",
+      "VALUE_MIN_MAX_LABEL": "Value Min/Max",
+      "ENUMERATIONS_DEFINITION": "Report allowed values",
+      "EXPRESSION_REGULIERE_DEFINITION": "Define a regular expression for the metadata value"
     }
   },
   "COMMON": {

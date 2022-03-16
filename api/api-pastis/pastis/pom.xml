@@ -25,12 +25,10 @@
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis-commons</artifactId>
-            <version>5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>pastis-client</artifactId>
-            <version>5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
@@ -194,13 +192,11 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.1</version>
         </dependency>
 
         <dependency>
@@ -214,25 +210,25 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20180813</version>
+            <version>${json.version}</version>
         </dependency>
 
         <dependency>
             <groupId>javax.xml.parsers</groupId>
             <artifactId>jaxp-api</artifactId>
-            <version>1.4.5</version>
+            <version>${jaxp-api.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml</groupId>
             <artifactId>jackson-xml-databind</artifactId>
-            <version>0.6.2</version>
+            <version>${jackson-xml-databind.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.thaiopensource</groupId>
             <artifactId>jing</artifactId>
-            <version>20091111</version>
+            <version>${thaiopensource.jing.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>xml-apis</groupId>
@@ -252,7 +248,7 @@
         <dependency>
             <groupId>com.thaiopensource</groupId>
             <artifactId>trang</artifactId>
-            <version>20091111</version>
+            <version>${thaiopensource.trang.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>xml-apis</groupId>
@@ -272,13 +268,13 @@
         <dependency>
             <groupId>org.opengis.cite.xerces</groupId>
             <artifactId>xercesImpl-xsd11</artifactId>
-            <version>2.12-beta-r1667115</version>
+            <version>${xercesImpl-xsd11.version}</version>
         </dependency>
 
         <dependency>
             <groupId>xml-resolver</groupId>
             <artifactId>xml-resolver</artifactId>
-            <version>1.2</version>
+            <version>${xml-resolver.version}</version>
         </dependency>
         <dependency>
             <groupId>org.skyscreamer</groupId>
@@ -288,11 +284,6 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
         </dependency>
     </dependencies>
 
@@ -325,111 +316,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <!-- Start of standalone profile -->
-        <profile>
-            <id>standalone</id>
-            <build>
-                <!-- Start of stadalone profile plugins -->
-                <plugins>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <dependencies>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui</groupId>
-                                <artifactId>pastis-client</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui.commons</groupId>
-                                <artifactId>commons-api</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui.commons</groupId>
-                                <artifactId>commons-rest</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui.commons</groupId>
-                                <artifactId>commons-vitam</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui</groupId>
-                                <artifactId>security-client</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                            <dependency>
-                                <groupId>fr.gouv.vitamui</groupId>
-                                <artifactId>iam-internal-client</artifactId>
-                                <version>5.0-SNAPSHOT</version>
-                                <exclusions>
-                                    <exclusion>
-                                        <groupId>*</groupId>
-                                        <artifactId>*</artifactId>
-                                    </exclusion>
-                                </exclusions>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>build-info</id>
-                                <goals>
-                                    <goal>build-info</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <executable>true</executable>
-                            <attach>false</attach> <!-- Need to use the original jar for integration-tests -->
-                            <mainClass>fr.gouv.vitamui.pastis.server.ApiPastisServerApplication</mainClass>
-                            <arguments>
-                                <argument>--spring.profiles.active=dev</argument>
-                            </arguments>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
-    </profiles>
 
 </project>

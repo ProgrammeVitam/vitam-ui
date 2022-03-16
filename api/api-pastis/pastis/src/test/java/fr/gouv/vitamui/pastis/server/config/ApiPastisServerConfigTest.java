@@ -41,7 +41,6 @@ import fr.gouv.vitam.access.external.client.AccessExternalClient;
 import fr.gouv.vitam.access.external.client.AdminExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.pastis.common.service.JsonFromPUA;
-import fr.gouv.vitamui.pastis.common.service.PuaDefinitions;
 import fr.gouv.vitamui.pastis.common.service.PuaFromJSON;
 import fr.gouv.vitamui.pastis.common.service.PuaPastisValidator;
 import fr.gouv.vitamui.pastis.common.util.NoticeUtils;
@@ -74,9 +73,6 @@ public class ApiPastisServerConfigTest extends AbstractContextConfiguration {
 
     @MockBean
     private NoticeUtils noticeFromPUA;
-
-    @MockBean
-    private PuaDefinitions puaDefinitions;
 
     @MockBean
     private PuaFromJSON puaFromJSON;

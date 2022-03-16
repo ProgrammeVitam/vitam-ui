@@ -37,8 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { CardinalityValues, MetadataHeaders } from '../../../models/models';
 import { CardinalityConstants, FileNode, TypeConstants } from '../../../models/file-node';
+import { CardinalityValues, MetadataHeaders } from '../../../models/models';
 import { SedaData, SedaElementConstants } from '../../../models/seda-data';
 
 @Injectable({
@@ -60,8 +60,8 @@ export class FileTreeMetadataService {
   }
 
   initCardinalityValues() {
-    for (let key in CardinalityConstants) {
-      let cardinality: CardinalityValues = { value: CardinalityConstants[key as keyof typeof CardinalityConstants], viewValue: key };
+    for (const key in CardinalityConstants) {
+      const cardinality: CardinalityValues = { value: CardinalityConstants[key as keyof typeof CardinalityConstants], viewValue: key };
       this.cardinalityValues.push(cardinality);
     }
     this.allowedCardinality = new Map<string, string[]>();
@@ -69,17 +69,17 @@ export class FileTreeMetadataService {
     this.allowedCardinality.set('', ['1']);
     this.allowedCardinality.set(null, ['1']);
     this.allowedCardinality.set(undefined, ['1']);
-    this.allowedCardinality.set("null", ['1']);
+    this.allowedCardinality.set('null', ['1']);
     this.allowedCardinality.set('0-1', ['0-1', '1']);
     this.allowedCardinality.set('0-N', ['0-1', '0-N', '1-N', '1']);
     this.allowedCardinality.set('1-N', ['1', '1-N']);
   }
 
-  fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude:string[], childrenToExclude:string[]): MetadataHeaders[] {
-    let data:MetadataHeaders[] = [];
+  fillDataTable(sedaChild: SedaData, clickedNode: FileNode, _childrenToInclude: string[], childrenToExclude: string[]): MetadataHeaders[] {
+    const data: MetadataHeaders[] = [];
     let allowedCardList: string[][];
     if (clickedNode.children.length > 0 ) {
-      for (let child of clickedNode.children) {
+      for (const child of clickedNode.children) {
        // There are cases where there are no childrenToExclude declared
        // So we must check if it exists to avoid and undefined of includes error
        if (childrenToExclude && !childrenToExclude.includes(child.name) &&
@@ -94,8 +94,8 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, child),
             commentaire: child.documentation,
             type: child.dataType,
-            enumeration: child.sedaData.Enumeration
-          })
+            enumeration: child.sedaData.Enumeration,
+          });
         } else if (!childrenToExclude && child.type !== TypeConstants.attribute) {
           data.push({
             nomDuChampEdit: child.editName,
@@ -106,12 +106,8 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, child),
             commentaire: child.documentation,
             type: child.dataType,
-            enumeration: child.sedaData.Enumeration})
-        }
-        // It should be a simple element with children attributes.
-        // In that case, the data table will be filled with data from the clicked node
-        // (and only once)
-        else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple){
+            enumeration: child.sedaData.Enumeration});
+        } else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple) {
           data.push({
             nomDuChampEdit: child.editName,
             id: clickedNode.id,
@@ -121,14 +117,12 @@ export class FileTreeMetadataService {
             cardinalite: this.findSedaAllowedCardinalityList(sedaChild, clickedNode),
             commentaire: clickedNode.documentation,
             type: clickedNode.dataType,
-            enumeration: clickedNode.sedaData.Enumeration
-          })
+            enumeration: clickedNode.sedaData.Enumeration,
+          });
           break;
         }
       }
-    } // No children : it should be a SEDA simple element type without children
-    //  It this case, the retrieved data is the current clicked node data
-    else {
+    } else {
       data.push({
         nomDuChampEdit: clickedNode.editName,
         id: clickedNode.id,
@@ -138,38 +132,37 @@ export class FileTreeMetadataService {
         cardinalite: this.findSedaAllowedCardinalityList(sedaChild, clickedNode),
         commentaire: clickedNode.documentation,
         type: clickedNode.dataType,
-        enumeration: clickedNode.sedaData.Enumeration
-      })
+        enumeration: clickedNode.sedaData.Enumeration,
+      });
     }
     this.allowedSedaCardinalities.next(allowedCardList);
     this.selectedCardinalities.next(this.findCardinalities(clickedNode, sedaChild, data));
-    console.log("Data on fillDataTable", data, "with selected cards :", this.selectedCardinalities.getValue());
+    console.log('Data on fillDataTable', data, 'with selected cards :', this.selectedCardinalities.getValue());
     return data;
   }
 
   getSedaNode(elementName: string, sedaChild: SedaData): SedaData {
-    for (let node of sedaChild.Children) {
+    for (const node of sedaChild.Children) {
       if (node.Name === elementName) {
-        return node
+        return node;
       }
     }
     return null;
   }
   onResolveName(elementName: string, sedaChild: SedaData) {
-    let node = this.getSedaNode(elementName, sedaChild);
+    const node = this.getSedaNode(elementName, sedaChild);
     if (node != null) {
       if (node.NameFr) {
-        return node.NameFr
+        return node.NameFr;
       }
-      else if(node.e)
-      return node.Name
+      return node.Name;
     }
     return elementName;
   }
 
   findSedaAllowedCardinalityList(sedaNode: SedaData, fileNode: FileNode): string[] {
     let allowedCardinalityListResult: string[] = [];
-    let resultList: string[][] = [];
+    const resultList: string[][] = [];
 
     // If the clicked node has the same name was the seda node, the node is already found
     if (sedaNode.Name === fileNode.name) {
@@ -178,65 +171,65 @@ export class FileTreeMetadataService {
     }
     if (sedaNode.Children.length > 0) {
       // Search the sedaNode children to find the correnpondent cardinality list
-      for (let child of sedaNode.Children) {
+      for (const child of sedaNode.Children) {
         if ((child.Name === fileNode.name) || (sedaNode.Name === fileNode.name)) {
           // Used in the case we wish to "correct" the node's cardinality, since
           // the seda cardinality wont include the cardinality retrieved by node's rng file.
           // In this case, the condition will return the rng file cardinality list
           // instead of node's cardinality list in accordance with the SEDA specification.
-          //if (child.Cardinality !== sedaNode.Cardinality){
-          //allowedCardinalityListResult = this.allowedCardinality.get(clickedNode.cardinality);
-          //return allowedCardinalityListResult;
-          //}
+          // if (child.Cardinality !== sedaNode.Cardinality){
+          // allowedCardinalityListResult = this.allowedCardinality.get(clickedNode.cardinality);
+          // return allowedCardinalityListResult;
+          // }
           allowedCardinalityListResult = this.allowedCardinality.get(child.Cardinality);
-          resultList.push(allowedCardinalityListResult)
-          this.allowedSedaCardinalities.next(resultList)
+          resultList.push(allowedCardinalityListResult);
+          this.allowedSedaCardinalities.next(resultList);
 
           return allowedCardinalityListResult;
         }
       }
     } else {
-      //console.error("Final CARDINALITY LIST (NO seda children found) : ", allowedCardinalityListResult, " for ", sedaNode.Name);
+      // console.error("Final CARDINALITY LIST (NO seda children found) : ", allowedCardinalityListResult, " for ", sedaNode.Name);
       for (const [card, cardlist] of this.allowedCardinality) {
         if (card === fileNode.cardinality) {
-          !fileNode.cardinality ? allowedCardinalityListResult.push("1") : allowedCardinalityListResult = cardlist;
-          //result = cardlist;
-          resultList.push(cardlist)
-          this.allowedSedaCardinalities.next(resultList)
-          //console.error("Final CARDINALITY LIST : ", allowedCardinalityListResult)
+          !fileNode.cardinality ? allowedCardinalityListResult.push('1') : allowedCardinalityListResult = cardlist;
+          // result = cardlist;
+          resultList.push(cardlist);
+          this.allowedSedaCardinalities.next(resultList);
+          // console.error("Final CARDINALITY LIST : ", allowedCardinalityListResult)
           return allowedCardinalityListResult;
         }
       }
     }
-    this.allowedSedaCardinalities.next(resultList)
+    this.allowedSedaCardinalities.next(resultList);
 
     if (allowedCardinalityListResult.length < 1) {
-      //console.error("Card not found for : ", clickedNode.name, "..assuming attribute cardinality :", clickedNode.cardinality);
+      // console.error("Card not found for : ", clickedNode.name, "..assuming attribute cardinality :", clickedNode.cardinality);
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);
-      //!clickedNode.cardinality ? result.push("1") : result = this.allowedCardinality[clickedNode.cardinality];
+      // !clickedNode.cardinality ? result.push("1") : result = this.allowedCardinality[clickedNode.cardinality];
       return allowedCardinalityListResult;
 
     }
   }
 
-  findCardinalities(clickedNode: FileNode, sedaNode: SedaData, data:MetadataHeaders[]):string[] {
-    let childrenCardMap = new Map();
-    let idsToKeep = data.map(name=>name.id);
-    let nodesToKeep = clickedNode.children.filter(child=>idsToKeep.includes(child.id))
+  findCardinalities(clickedNode: FileNode, sedaNode: SedaData, data: MetadataHeaders[]): string[] {
+    const childrenCardMap = new Map();
+    const idsToKeep = data.map(name => name.id);
+    const nodesToKeep = clickedNode.children.filter(child => idsToKeep.includes(child.id));
 
     if (sedaNode.Children.length > 0) {
-        for (let fileNodechild of nodesToKeep) {
-          sedaNode.Children.forEach((sedaGrandChild: { Name: string; })=>{
+        for (const fileNodechild of nodesToKeep) {
+          sedaNode.Children.forEach((sedaGrandChild: { Name: string; }) => {
             if (fileNodechild.name === sedaGrandChild.Name) {
-              fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id,fileNodechild.cardinality) : childrenCardMap.set(fileNodechild.id,"1");
+              fileNodechild.cardinality ? childrenCardMap.set(fileNodechild.id, fileNodechild.cardinality) : childrenCardMap.set(fileNodechild.id, '1');
             }
-          })
+          });
       }
     } else {
-      !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id,"1") : childrenCardMap.set(clickedNode.id,clickedNode.cardinality);
+      !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id, '1') : childrenCardMap.set(clickedNode.id, clickedNode.cardinality);
     }
     if (childrenCardMap.size < 1) {
-      !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id,"1") : childrenCardMap.set(clickedNode.id,clickedNode.cardinality);
+      !clickedNode.cardinality ? childrenCardMap.set(clickedNode.id, '1') : childrenCardMap.set(clickedNode.id, clickedNode.cardinality);
     }
     return Array.from(childrenCardMap.values());
   }
@@ -247,19 +240,19 @@ export class FileTreeMetadataService {
    * @param childName the name of the seda node we want to find
    */
   getEnumerationFromSedaNodeChildren(sedaParent: SedaData, childName: string): string[] {
-    if (sedaParent.Name === childName){
+    if (sedaParent.Name === childName) {
       return sedaParent.Enumeration;
     }
-    let sedaNode: SedaData = sedaParent.Children.find((c: { Name: string; }) => c.Name === childName);
-    if (sedaNode){
-      return sedaNode.Enumeration
+    const sedaNode: SedaData = sedaParent.Children.find((c: { Name: string; }) => c.Name === childName);
+    if (sedaNode) {
+      return sedaNode.Enumeration;
     }
     return [];
   }
-  shouldLoadTable(){
+  shouldLoadTable() {
     return this.shouldLoadMetadataTable.getValue();
   }
-  enableAttributeOption(nodeType:string){
+  enableAttributeOption(nodeType: string) {
     return nodeType === TypeConstants.attribute;
   }
 }

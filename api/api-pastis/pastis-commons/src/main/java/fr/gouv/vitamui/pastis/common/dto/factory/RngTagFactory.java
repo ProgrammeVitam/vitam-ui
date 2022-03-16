@@ -38,58 +38,47 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.factory;
 
-import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import fr.gouv.vitamui.pastis.common.dto.jaxb.BaliseXML;
+import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RngTagFactory implements AbstractTagFactory<RngTag> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RngTagFactory.class);
+    private static final String UNDEFINED = "undefined";
 
     static RngTag rngTree;
+
+    private ValueTag valueRNG;
+    private DataTag dataRNG;
+    private RngTag elementOrAttributeRNG;
+    private AnnotationTag annotationRNG;
+    private DocumentationTag documentationRNG;
 
 
     @Override
     public RngTag createTag(ElementProperties node, Tag parentNode, int profondeur) {
 
-        ValueTag valueRNG = null;
-        DataTag dataRNG = null;
+        valueRNG = null;
+        dataRNG = null;
         CardinalityTag cardinalityRNG = null;
-        RngTag elementOrAttributeRNG = null;
-        AnnotationTag annotationRNG = null;
-        DocumentationTag documentationRNG = null;
-        GroupTag groupTag = null;
-        ChoiceTag choiceTag = null;
+        elementOrAttributeRNG = null;
+        annotationRNG = null;
+        documentationRNG = null;
 
-        // 0 . Create objects according to node data;
-        // If the node has a value
-        if (null != node.getValue() && !node.getValue().equals("undefined")) {
-            valueRNG = new ValueTag();
-            valueRNG.setValue(node.getValue());
-        }
-
-        if (node.getChildren().stream().filter(c -> !c.getType().equals(RNGConstants.MetadaDataType.element)).count() ==
-            0) {
-            if (valueRNG == null && RNGConstants.TypesMap.containsKey(node.getName())) {
-                dataRNG = new DataTag();
-                dataRNG.setDataType(RNGConstants.TypesMap.get(node.getName()).getLabel());
-            }
-        }
+        this.checkNode(node);
 
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
         // to assure that the generated profile is successfully imported by VITAM
-        if (null != node.getValueOrData() && !node.getValueOrData().equals("undefined") && node.getValue() == null) {
-            if (node.getValueOrData().equals("data")) {
-                dataRNG = new DataTag();
-            }
+        if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) && node.getValue() == null && node.getValueOrData().equals("data")) {
+            dataRNG = new DataTag();
         }
         // Sets the type of data (if value or data)
-        if (null != node.getDataType() && !node.getDataType().equals("undefined")) {
+        if (null != node.getDataType() && !node.getDataType().equals(UNDEFINED)) {
             if (null != valueRNG) {
                 valueRNG.setDataType(node.getDataType());
             } else if (null != dataRNG) {
@@ -97,138 +86,232 @@ public class RngTagFactory implements AbstractTagFactory<RngTag> {
             }
         }
         // Set annotation and documentation tags (if exists)
+        this.setElementAnnotationDocumentation(node);
+
+        // Check node's and its children's cardinality
+        if (node.getCardinality() != null) {
+            cardinalityRNG = this.checkCardinality(node, parentNode, profondeur);
+        }
+
+        RngTag currentTag;
+        // 1. Once the objects are created, arrange them accordingly
+        // 1. Check if it is an element
+        currentTag = checkIfElement(node, parentNode, profondeur, valueRNG, dataRNG, cardinalityRNG, elementOrAttributeRNG);
+
+        // Implement Element according to state
+        currentTagImplementationAccordingToState(node, parentNode, profondeur, currentTag);
+        return rngTree;
+    }
+
+    /**
+     * 1. Check if it is an element
+     * @param node
+     * @param parentNode
+     * @param profondeur
+     * @param valueRNG
+     * @param dataRNG
+     * @param cardinalityRNG
+     * @param elementOrAttributeRNG
+     * @return currentTag
+     */
+    private RngTag checkIfElement(ElementProperties node, Tag parentNode, int profondeur, ValueTag valueRNG, DataTag dataRNG, CardinalityTag cardinalityRNG, RngTag elementOrAttributeRNG) {
+        RngTag currentTag = null;
+        if (null != elementOrAttributeRNG) {
+
+            if (parentNode != null)
+                LOGGER.debug(this.getClass().getName(), "Parsing %s", elementOrAttributeRNG.getName());
+            // 1.1 Check if the element has cardinality
+            currentTag = checkCardinalityElement(parentNode, cardinalityRNG, elementOrAttributeRNG);
+
+            // 2. Check data tag
+            currentTag = checkDataTag(node, profondeur, dataRNG, currentTag);
+            // 3. Check value tag
+            checkValueTag(valueRNG, elementOrAttributeRNG, currentTag);
+        }
+        return currentTag;
+    }
+
+    /**
+     * Implement current tag according to state
+     * @param node
+     * @param parentNode
+     * @param profondeur
+     * @param currentTag
+     */
+    private void currentTagImplementationAccordingToState(ElementProperties node, Tag parentNode, int profondeur, RngTag currentTag) {
+        if (null != currentTag) {
+
+            if (null != parentNode) {
+                RngTag optionalWithChildren;
+                optionalWithChildren = (RngTag) parentNode.getChildren()
+                    .stream().filter(CardinalityTag.class::isInstance)
+                    .findAny()
+                    .orElse(null);
+
+                boolean optionalHasAlreadyCurrentTag = optionalWithChildren != null && optionalWithChildren.children.contains(currentTag);
+
+                if (!optionalHasAlreadyCurrentTag) {
+                    currentTag.setParent(parentNode);
+                    parentNode.getChildren().add(currentTag);
+                }
+            } else {
+                RngTagFactory.setRngTree(currentTag);
+            }
+        }
+
+        this.currentNotNullTagImplementationAccordingToState(node, profondeur, currentTag);
+    }
+
+    private static void setRngTree(RngTag currentTag) {
+        rngTree = currentTag;
+    }
+
+    private void currentNotNullTagImplementationAccordingToState(ElementProperties node, int profondeur, RngTag currentTag){
+        if (currentTag instanceof GrammarTag) {
+            this.createTag(node, currentTag.getChildren().get(0), profondeur + 1);
+        } else {
+            for (ElementProperties next : node.getChildren()) {
+                if (currentTag instanceof CardinalityTag) {
+                    this.createTag(next, currentTag.getChildren().get(0), profondeur + 1);
+                } else {
+                    this.createTag(next, currentTag, profondeur + 1);
+                }
+            }
+        }
+    }
+
+
+    /**
+     *  1.1 Check if the element has cardinality
+     * @param parentNode
+     * @param cardinalityRNG
+     * @param elementOrAttributeRNG
+     * @return
+     */
+    private RngTag checkCardinalityElement(Tag parentNode, CardinalityTag cardinalityRNG, RngTag elementOrAttributeRNG) {
+        RngTag currentTag;
+        if (null != cardinalityRNG) {
+            cardinalityRNG.getChildren().add(elementOrAttributeRNG);
+            elementOrAttributeRNG.setParent(cardinalityRNG);
+            currentTag = cardinalityRNG;
+
+        } else {
+            currentTag = elementOrAttributeRNG;
+            //1.2. Check if it's the first grammar node (Archive transfer)
+            if (parentNode == null) {
+                GrammarTag grammarTag = new GrammarTag();
+                StartTag startTag = new StartTag();
+                startTag.setParent(grammarTag);
+                grammarTag.getChildren().add(startTag);
+                currentTag = grammarTag;
+            }
+        }
+        return currentTag;
+    }
+
+    /**
+     * 2.Check data tag
+     * @param node
+     * @param profondeur
+     * @param dataRNG
+     * @param currentTag
+     * @return
+     */
+    private RngTag checkDataTag(ElementProperties node, int profondeur, DataTag dataRNG, RngTag currentTag) {
+        if (null != dataRNG) {
+            DataTagFactory dataTagFactory = new DataTagFactory();
+            HashMap<RngTag,RngTag> dataAndCurrentTagMap =
+                new HashMap<>(dataTagFactory.createTagWithTag(node, dataRNG, currentTag, profondeur));
+
+            currentTag = new ArrayList<>(dataAndCurrentTagMap.values()).get(0);
+
+        }
+        return currentTag;
+    }
+
+    /**
+     * 3. Check value tag
+     * @param valueRNG
+     * @param elementOrAttributeRNG
+     * @param currentTag
+     */
+    private void checkValueTag(ValueTag valueRNG, RngTag elementOrAttributeRNG, RngTag currentTag) {
+        if (null != valueRNG) {
+            // If Children is empty
+            if (currentTag.getChildren().isEmpty()) {
+                if (currentTag instanceof ElementTag) {
+                    setProperties(valueRNG, currentTag);
+
+                }
+                if (currentTag instanceof AttributeTag) {
+                    setProperties(valueRNG, currentTag);
+                }
+                // If children is Element or Attribute, set  accordingly
+            } else if (currentTag instanceof ElementTag) {
+                setProperties(valueRNG, currentTag);
+
+            } else if (currentTag instanceof AttributeTag) {
+                setProperties(valueRNG, currentTag);
+            } else {
+                // Set the value to an simple element
+                elementOrAttributeRNG.setValueTag(valueRNG);
+                valueRNG.setParent(elementOrAttributeRNG);
+            }
+        }
+    }
+
+    private void setProperties(ValueTag valueRNG, RngTag currentTag){
+        currentTag.setValueTag(valueRNG);
+        valueRNG.setParent(currentTag);
+    }
+
+    private void checkNode(ElementProperties node){
+        // Create objects according to node data; If the node has a value
+        if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
+            valueRNG = new ValueTag();
+            valueRNG.setValue(node.getValue());
+        }
+
+        if ((long) node.getChildren().size() == 0
+            && valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName())) {
+            dataRNG = new DataTag();
+            dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
+        }
+    }
+
+    private void setElementAnnotationDocumentation(ElementProperties node){
+        // Set annotation and documentation tags (if exists)
         if (null != node.getDocumentation()) {
             annotationRNG = new AnnotationTag();
             documentationRNG = new DocumentationTag();
             documentationRNG.setDocumentation(node.getDocumentation());
             annotationRNG.setDocumentationTag(documentationRNG);
         }
-
-        if (null != node.getType() && !node.getType().equals("undefined")) {
+        if (null != node.getType() && !node.getType().equals(UNDEFINED)) {
             if (node.getType().equals("element")) {
                 elementOrAttributeRNG = new ElementTag();
             } else if (node.getType().equals("attribute")) {
                 elementOrAttributeRNG = new AttributeTag();
             }
-            if (null != node.getName() && !node.getName().equals("undefined")) {
+            if (null != node.getName() && !node.getName().equals(UNDEFINED) && elementOrAttributeRNG != null) {
                 elementOrAttributeRNG.setName(node.getName());
             }
         }
 
-        if (null != documentationRNG) {
+        if (null != documentationRNG && elementOrAttributeRNG != null) {
             elementOrAttributeRNG.getChildren().add(annotationRNG);
             annotationRNG.setParent(elementOrAttributeRNG);
         }
+    }
 
+    private CardinalityTag checkCardinality(ElementProperties node, Tag parentNode, int profondeur){
         // Check node's and its children's cardinality
-        if (node.getCardinality() != null) {
-            CardinalityTagFactory cardinalityFactory = new CardinalityTagFactory();
-            CardinalityTag cardinalityTag = cardinalityFactory.createTag(node, parentNode, profondeur);
-            LOGGER.info("Parsing " + cardinalityTag.getTagName());
-            cardinalityRNG = cardinalityTag;
-        }
-
-        RngTag currentTag = null;
-        // 1. Once the objects are created, arrange them accordingly
-        // 1. Check if it is an element
-        if (null != elementOrAttributeRNG) {
-
-            if (parentNode != null)
-                LOGGER.info("Parsing " + elementOrAttributeRNG.getName());
-            // 1.1 Check if the element has cardinality
-            if (null != cardinalityRNG) {
-                cardinalityRNG.getChildren().add(elementOrAttributeRNG);
-                elementOrAttributeRNG.setParent(cardinalityRNG);
-                currentTag = cardinalityRNG;
-
-            } else {
-                currentTag = elementOrAttributeRNG;
-                //1.2. Check if it's the first grammar node (Archive transfer)
-                if (parentNode == null) {
-                    GrammarTag grammarTag = new GrammarTag();
-                    StartTag startTag = new StartTag();
-                    startTag.setParent(grammarTag);
-                    grammarTag.getChildren().add(startTag);
-                    currentTag = grammarTag;
-                }
-            }
-
-            // 2. Check data tag
-            if (null != dataRNG) {
-                DataTagFactory dataTagFactory = new DataTagFactory();
-                HashMap dataAndCurrentTagMap =
-                    new HashMap(dataTagFactory.createTagWithTag(node, dataRNG, currentTag, profondeur));
-
-                currentTag = (RngTag) new ArrayList(dataAndCurrentTagMap.values()).get(0);
-
-            }
-            // 3. Check value tag
-            if (null != valueRNG) {
-                // If Children is empty
-                if (currentTag.getChildren().isEmpty()) {
-                    if (currentTag instanceof ElementTag) {
-                        currentTag.setValueTag(valueRNG);
-                        valueRNG.setParent(currentTag);
-
-                    } else if (currentTag instanceof AttributeTag) {
-                        currentTag.setValueTag(valueRNG);
-                        valueRNG.setParent(currentTag);
-                    }
-                    // If children is Element or Attribute, set  accordingly
-                } else if (currentTag instanceof ElementTag) {
-                    currentTag.setValueTag(valueRNG);
-                    valueRNG.setParent(currentTag);
-
-                } else if (currentTag instanceof AttributeTag) {
-                    currentTag.setValueTag(valueRNG);
-                    valueRNG.setParent(currentTag);
-                } else {
-                    // Set the value to an simple element
-                    elementOrAttributeRNG.setValueTag(valueRNG);
-                    valueRNG.setParent(elementOrAttributeRNG);
-                }
-            }
-        }
-
-        if (null != currentTag) {
-
-            if (null != parentNode) {
-                RngTag optionalWithChildren;
-                optionalWithChildren = (RngTag) parentNode.getChildren()
-                    .stream().filter(cardinality -> cardinality instanceof CardinalityTag)
-                    .findAny()
-                    .orElse(null);
-
-                Boolean optionalHasAlreadyCurrentTag = optionalWithChildren == null
-                    ? false : optionalWithChildren.children.contains(currentTag);
-
-                if (!optionalHasAlreadyCurrentTag) {
-                    currentTag.setParent(parentNode);
-                    parentNode.getChildren().add(currentTag);
-                }
-
-            } else {
-                rngTree = currentTag;
-            }
-        }
-
-        if (currentTag instanceof GrammarTag) {
-            this.createTag(node, (RngTag) currentTag.getChildren().get(0), profondeur + 1);
-        } else {
-            for (ElementProperties next : node.getChildren()) {
-                if (currentTag instanceof CardinalityTag) {
-                    this.createTag(next, (RngTag) currentTag.getChildren().get(0), profondeur + 1);
-                } else {
-                    this.createTag(next, currentTag, profondeur + 1);
-                }
-            }
-        }
-        return rngTree;
+        CardinalityTagFactory cardinalityFactory = new CardinalityTagFactory();
+        CardinalityTag cardinalityTag = cardinalityFactory.createTag(node, parentNode, profondeur);
+        LOGGER.debug(this.getClass().getName(), "Parsing %s", cardinalityTag.getTagName());
+        return cardinalityTag;
     }
 
-    @Override
-    public Map<RngTag, RngTag> createTagWithTag(ElementProperties node, RngTag tag, RngTag currentTag, int level) {
-        return null;
-    }
+
 
 }

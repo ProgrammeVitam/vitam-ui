@@ -39,8 +39,6 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -80,13 +78,6 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
     }
 
     @Override
-    public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(final Integer page, final Integer size,
-        final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final ExternalHttpContext context) {
-        return super.getAllPaginated(page, size, criteria, orderBy, direction, context);
-    }
-
-    @Override
     protected Integer beforePaginate(final Integer page, final Integer size) {
         return commonService.checkPagination(page, size);
     }
@@ -96,15 +87,17 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
         return client;
     }
 
+    @Override
     public Collection<ArchivalProfileUnitDto> getAll(final ExternalHttpContext context,
         final Optional<String> criteria) {
         return client.getAll(context, criteria);
     }
 
-    public boolean check(ExternalHttpContext context, ArchivalProfileUnitDto ArchivalProfileUnitDto) {
-        return client.check(context, ArchivalProfileUnitDto);
+    public boolean check(ExternalHttpContext context, ArchivalProfileUnitDto archivalProfileUnitDto) {
+        return client.check(context, archivalProfileUnitDto);
     }
 
+    @Override
     public ArchivalProfileUnitDto update(final ExternalHttpContext c, final ArchivalProfileUnitDto dto) {
         if (StringUtils.isBlank(dto.getIdentifier())) {
             throw new IllegalArgumentException("Profile is mandatory.");
@@ -113,6 +106,7 @@ public class ArchivalProfileUnitService extends AbstractPaginateService<Archival
     }
 
 
+    @Override
     public void delete(ExternalHttpContext context, String id) {
         client.delete(context, id);
     }

@@ -40,19 +40,20 @@ package fr.gouv.vitamui.pastis.common.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class PuaData {
+public class PuaData implements Serializable {
 
-    Boolean AdditionalProperties;
+    Boolean additionalProperties;
     List<String> Enum;
-    String Pattern;
-    Integer MinLenght;
-    Integer MaxLenght;
-    Integer Minimum;
-    Integer Maximum;
-    Boolean ExclusiveMinimum;
-    Boolean ExclusiveMaximum;
+    String pattern;
+    Integer minLenght;
+    Integer maxLenght;
+    Integer minimum;
+    Integer maximum;
+    Boolean exclusiveMinimum;
+    Boolean exclusiveMaximum;
 
 }

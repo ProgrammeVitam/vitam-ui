@@ -37,12 +37,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 */
 package fr.gouv.vitamui.pastis.common.dto;
 
-import fr.gouv.vitamui.pastis.common.util.RNGConstants;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import fr.gouv.vitamui.pastis.common.dto.factory.RngTagFactory;
+import fr.gouv.vitamui.pastis.common.util.RNGConstants;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAnyElement;
@@ -52,9 +53,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
-
-import static fr.gouv.vitamui.pastis.common.util.RNGConstants.TypesMap;
-
 /**
  * @author Paulo Pimenta <pimenta@cines.fr>
  */
@@ -65,23 +63,24 @@ import static fr.gouv.vitamui.pastis.common.util.RNGConstants.TypesMap;
 public class ElementRNG {
 
 
-    public static ElementProperties elementStatic = new ElementProperties();
-    public static ElementProperties elementStaticRoot = new ElementProperties();
-    private static Logger LOGGER = LoggerFactory.getLogger(ElementRNG.class);
+    private static ElementProperties elementStatic = new ElementProperties();
+    @Getter
+    private static ElementProperties elementStaticRoot = new ElementProperties();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElementRNG.class);
     private static long idCounter = 0;
     String name;
     String type;
     String dataType;
     String value;
     ElementRNG parent;
-    List<ElementRNG> children = new ArrayList<ElementRNG>();
+    List<ElementRNG> children = new ArrayList<>();
 
     public static void setDataForParentElementOrAttribute(ElementProperties parentNode, ElementRNG node) {
-        if (null != parentNode.getType() && (RNGConstants.MetadaDataType.element.toString().equals(parentNode.getType())
-            || RNGConstants.MetadaDataType.attribute.toString().equals(parentNode.getType()))) {
+        if (null != parentNode.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())
+            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(parentNode.getType()))) {
             parentNode.setValueOrData(node.getType());
-            if (TypesMap.containsKey(parentNode.getName())) {
-                parentNode.setDataType(TypesMap.get(parentNode.getName()).getLabel());
+            if (RNGConstants.getTypesMap().containsKey(parentNode.getName())) {
+                parentNode.setDataType(RNGConstants.getTypesMap().get(parentNode.getName()).getLabel());
             }
             parentNode.setValue(node.getValue());
         } else {
@@ -91,20 +90,10 @@ public class ElementRNG {
 
     public static void setDocumentationForParentElement(ElementProperties parentNode, ElementRNG node) {
         if (null != parentNode.getType() &&
-            RNGConstants.MetadaDataType.element.toString().equals(parentNode.getType())) {
+            RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
             parentNode.setDocumentation(node.getValue());
         } else {
             setDocumentationForParentElement(parentNode.getParent(), node);
-        }
-    }
-
-    public static void setElementsForGroupOrChoice(ElementProperties parentNode, ElementRNG node) {
-
-        if (null != parentNode.getType() && (RNGConstants.GroupOrChoice.group.toString().equals(parentNode.getType())
-            || RNGConstants.GroupOrChoice.choice.toString().equals(parentNode.getType()))) {
-            parentNode.setGroupOrChoice(node.getType());
-        } else {
-            setElementsForGroupOrChoice(parentNode.getParent(), node);
         }
     }
 
@@ -112,12 +101,12 @@ public class ElementRNG {
     // a node
     //the level of the node
     //the parent of the node
-    public static ElementProperties buildElementPropertiesTree(ElementRNG node, int profondeur,
+    public static void buildElementPropertiesTree(ElementRNG node, int profondeur,
         ElementProperties parentNode) {
         ElementProperties local = new ElementProperties();
-        LOGGER.info("Generating JSON element {}", node.getName());
-        if (null != node.getType() && RNGConstants.MetadaDataType.element.toString().equals(node.getType())
-            || RNGConstants.MetadaDataType.attribute.toString().equals(node.getType())) {
+        LOGGER.debug("Generating JSON element {}", node.getName());
+        if (null != node.getType() && RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(node.getType())
+            || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(node.getType())) {
 
             local.setCardinality(elementStatic.getCardinality());
             local.setGroupOrChoice(elementStatic.getGroupOrChoice());
@@ -147,24 +136,24 @@ public class ElementRNG {
                 elementStatic.setCardinality(node.getType());
             } else if (RNGConstants.hasGroupOrChoice(node.getType())) {
                 elementStatic.setGroupOrChoice(node.getType());
-            } else if ("documentation".equals(node.getType())) {
-                if (null != node.getValue()) {
-                    setDocumentationForParentElement(parentNode, node);
-                }
+            } else if ( "documentation".equals(node.getType()) && null != node.getValue()) {
+                setDocumentationForParentElement(parentNode, node);
             }
 
             local = parentNode;
         }
+        buildTree(node, profondeur, local);
+    }
 
+    private static void buildTree(ElementRNG node, int profondeur, ElementProperties local){
         for (ElementRNG next : node.getChildren()) {
-            if (null != next.getType() && (RNGConstants.MetadaDataType.element.toString().equals(next.getType())
-                || RNGConstants.MetadaDataType.attribute.toString().equals(next.getType()))) {
+            if (null != next.getType() && (RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(next.getType())
+                || RNGConstants.MetadaDataType.ATTRIBUTE.getLabel().equals(next.getType()))) {
                 buildElementPropertiesTree(next, profondeur + 1, local);
             } else {
                 buildElementPropertiesTree(next, profondeur, local);
             }
         }
-        return local;
     }
 
     @XmlAttribute

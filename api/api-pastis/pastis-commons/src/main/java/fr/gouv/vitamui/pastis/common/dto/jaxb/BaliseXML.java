@@ -38,13 +38,13 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.dto.jaxb;
 
-import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
-import fr.gouv.vitamui.pastis.common.util.RNGConstants;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
+import fr.gouv.vitamui.pastis.common.util.RNGConstants;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -55,13 +55,14 @@ import java.util.List;
 
 
 @XmlRootElement
-@Data
+@Getter@Setter
 @NoArgsConstructor
 public class BaliseXML {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BaliseXML.class);
-    public static BaliseXML baliseXMLStatic;
+    private static final String UNDEFINED = "undefined";
+    private static BaliseXML baliseXMLStatic;
     String name;
     String dataType;
     String cardinality;
@@ -69,6 +70,17 @@ public class BaliseXML {
     BaliseXML parent;
     ValueXML valueXML;
     List<BaliseXML> children = new ArrayList<>();
+
+    private static ValueXML valueRNG;
+    private static DataXML dataRNG;
+    private static BaliseXML cardinalityRNG;
+    private static BaliseXML elementOrAttributeRNG;
+    private static AnnotationXML annotationXML;
+    private static DocumentationXML documentationXML;
+
+    public static BaliseXML getBaliseXMLStatic() {
+        return baliseXMLStatic;
+    }
 
     /**
      * @param node node représentant l'arbre ElementProperties correspondant au json reçu du front
@@ -78,194 +90,267 @@ public class BaliseXML {
     public static void buildBaliseXMLTree(ElementProperties node, int profondeur, BaliseXML parentNode) {
 
         if (node.getName() != null) {
-            ValueXML valueRNG = null;
-            DataXML dataRNG = null;
-            BaliseXML cardinalityRNG = null;
-            BaliseXML elementOrAttributeRNG = null;
-            AnnotationXML annotationXML = null;
-            DocumentationXML documentationXML = null;
-            BaliseXML groupOrChoice = null;
+            valueRNG = null;
+            dataRNG = null;
+            cardinalityRNG = null;
+            elementOrAttributeRNG = null;
+            annotationXML = null;
+            documentationXML = null;
 
-            // If the node has a value
-            if (null != node.getValue() && !node.getValue().equals("undefined")) {
-                valueRNG = new ValueXML();
-                valueRNG.setValue(node.getValue());
-            }
-
-            // When a value is declared in a profile element, the <rng:data> tag must be suppressed
-            // to assure that the generated profile is successfully imported by VITAM
-            if (null != node.getValueOrData() && !node.getValueOrData().equals("undefined") &&
-                node.getValue() == null) {
-                if (node.getValueOrData().equals("data")) {
-                    dataRNG = new DataXML();
-                }
-            }
-
-            if (node.getName() != null && (node.getName().equals("CodeListVersions") ||
-                node.getChildren().stream().filter(c -> c.getType().equals(RNGConstants.MetadaDataType.attribute))
-                    .count() == 0)) {
-                if (valueRNG == null && RNGConstants.TypesMap.containsKey(node.getName())) {
-                    dataRNG = new DataXML();
-                    dataRNG.setDataType(RNGConstants.TypesMap.get(node.getName()).getLabel());
-                }
-            }
-
-            // Sets the type of data (if value or data)
-            if (null != node.getDataType() && !node.getDataType().equals("undefined")) {
-                if (null != valueRNG) {
-                    valueRNG.setDataType(node.getDataType());
-                } else if (null != dataRNG) {
-                    dataRNG.setDataType(node.getDataType());
-                }
-            }
+            setValueAndDataRNG(node);
             // Set annotation and documentation tags (if exists)
-            if (null != node.getDocumentation()) {
-                annotationXML = new AnnotationXML();
-                documentationXML = new DocumentationXML();
-                documentationXML.setDocumentation(node.getDocumentation());
-                annotationXML.setDocumentationXML(documentationXML);
-            }
-
-            if (null != node.getType() && !node.getType().equals("undefined")) {
-                if (node.getType().equals("element")) {
-                    elementOrAttributeRNG = new ElementXML();
-                } else if (node.getType().equals("attribute")) {
-                    elementOrAttributeRNG = new AttributeXML();
-                }
-                if (null != node.getName() && !node.getName().equals("undefined")) {
-                    elementOrAttributeRNG.setName(node.getName());
-                }
-            }
-
-            if (null != documentationXML) {
-                elementOrAttributeRNG.getChildren().add(annotationXML);
-                annotationXML.setParent(elementOrAttributeRNG);
-            }
+            setDocumentationAnnotationElementAttribute(node);
 
             // Check node's and its children's cardinality
             if (node.getCardinality() != null) {
 
-                if (node.getCardinality().equals(RNGConstants.Cardinality.zeroOrMore.getLabel())) {
-                    cardinalityRNG = new ZeroOrMoreXML();
-                    if (elementOrAttributeRNG != null) {
-                        elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.zeroOrMore);
-                    }
-                } else if (node.getCardinality().equals(RNGConstants.Cardinality.oneOrMore.getLabel())) {
-                    cardinalityRNG = new OneOrMoreXML();
-                    if (elementOrAttributeRNG != null) {
-                        elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.oneOrMore);
-                    }
-                } else if (node.getCardinality().equals(RNGConstants.Cardinality.optional.getLabel())) {
-                    cardinalityRNG = new OptionalXML();
-                    if (elementOrAttributeRNG != null) {
-                        elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.optional);
-                    }
-                }
+                cardinalityRNG = defineElementOrAttributeCardinality(node, cardinalityRNG, elementOrAttributeRNG);
             }
 
-            BaliseXML currentXmlTag = null;
+            buildBaliseXmlTreeFin(node, profondeur, parentNode);
 
-            // 1. Check if it is an element
-            if (null != elementOrAttributeRNG) {
+        }
+    }
 
-                LOGGER.info("Parsing " + elementOrAttributeRNG.getName());
-                // 1.1 Check if the element has cardinality
-                if (null != cardinalityRNG) {
-                    cardinalityRNG.getChildren().add(elementOrAttributeRNG);
-                    elementOrAttributeRNG.setParent(cardinalityRNG);
-                    currentXmlTag = cardinalityRNG;
+    private static void setValueAndDataRNG(ElementProperties node){
+        // If the node has a value
+        if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
+            valueRNG = new ValueXML();
+            valueRNG.setValue(node.getValue());
+        } else if (null == node.getValue() && node.getName().equals("Language")) {
+            valueRNG = new ValueXML();
+        }
 
-                } else {
-                    currentXmlTag = elementOrAttributeRNG;
-                    //1.2. Check if it's the first grammarnode (Archive transfer)
-                    if (parentNode == null) {
-                        GrammarXML grammar = new GrammarXML();
-                        StartXML start = new StartXML();
-                        start.setParent(grammar);
-                        grammar.getChildren().add(start);
-                        currentXmlTag = grammar;
-                    }
-                }
+        // When a value is declared in a profile element, the <rng:data> tag must be suppressed
+        // to assure that the generated profile is successfully imported by VITAM
+        if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) &&
+            node.getValue() == null && node.getValueOrData().equals("data")) {
+            dataRNG = new DataXML();
+        }
 
-                // 2. Check data tag
-                if (null != dataRNG) {
-                    if (!currentXmlTag.getChildren().isEmpty() &&
-                        (currentXmlTag.getChildren().get(0) instanceof ElementXML
-                            || currentXmlTag.getChildren().get(0) instanceof AttributeXML)) {
-                        currentXmlTag.getChildren().get(0).getChildren().add(dataRNG);
-                        dataRNG.setParent(currentXmlTag);
+        if ((node.getName() != null && (node.getName().equals("CodeListVersions") || (long) node.getChildren().size() == 0))
+            && (valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName()))) {
+            dataRNG = new DataXML();
+            dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
+        }
 
-                    } else {
-                        currentXmlTag.getChildren().add(dataRNG);
-                        dataRNG.setParent(currentXmlTag);
-                    }
-                }
-                // 3. Check value tag
-                if (null != valueRNG) {
-                    // If Children is empty
-                    if (currentXmlTag.getChildren().isEmpty()) {
-                        if (currentXmlTag instanceof ElementXML) {
-                            ((ElementXML) currentXmlTag).setValueXML(valueRNG);
-                            valueRNG.setParent(currentXmlTag);
-
-                        } else if (currentXmlTag instanceof AttributeXML) {
-                            ((AttributeXML) currentXmlTag).setValueXML(valueRNG);
-                            valueRNG.setParent(currentXmlTag);
-                        }
-                        // If children is Element or Attribute, set  accordingly
-                    } else if (currentXmlTag instanceof ElementXML) {
-                        ((ElementXML) currentXmlTag).setValueXML(valueRNG);
-                        valueRNG.setParent(currentXmlTag);
-
-                    } else if (currentXmlTag instanceof AttributeXML) {
-                        ((AttributeXML) currentXmlTag).setValueXML(valueRNG);
-                        valueRNG.setParent(currentXmlTag);
-                    } else {
-                        // Set the value to an simple element
-                        elementOrAttributeRNG.setValueXML(valueRNG);
-                        valueRNG.setParent(elementOrAttributeRNG);
-                    }
-                }
+        // Sets the type of data (if value or data)
+        if (null != node.getDataType() && !node.getDataType().equals(UNDEFINED)) {
+            if (null != valueRNG) {
+                valueRNG.setDataType(node.getDataType());
+            } else if (null != dataRNG) {
+                dataRNG.setDataType(node.getDataType());
             }
+        }
+    }
 
-            if (null != currentXmlTag) {
+    private static void buildBaliseXmlTreeFin(ElementProperties node, int profondeur, BaliseXML parentNode){
+        BaliseXML currentXmlTag = null;
+        // 1. Check if it is an element
+        if (null != elementOrAttributeRNG) {
+            currentXmlTag = implementAndReturnCurrentXmlTag(parentNode, valueRNG, dataRNG, cardinalityRNG, elementOrAttributeRNG);
+        }
+        if (null != currentXmlTag) {
+            currentTagExist(parentNode, currentXmlTag);
+        }
+        if (currentXmlTag instanceof GrammarXML) {
+            buildBaliseXMLTree(node, profondeur + 1, currentXmlTag.getChildren().get(0));
+        } else {
+            currentTagNotInstanceOfGrammarXML(node, profondeur, currentXmlTag);
+        }
+    }
 
-                if (null != parentNode) {
-                    BaliseXML optionalWithChildren = parentNode.getChildren()
-                        .stream().filter(cardinality -> cardinality instanceof OptionalXML
-                            || cardinality instanceof ZeroOrMoreXML
-                            || cardinality instanceof OneOrMoreXML)
-                        .findAny()
-                        .orElse(null);
-
-                    Boolean optionalHasAlreadyCurrentTag = optionalWithChildren == null
-                        ? false : optionalWithChildren.children.contains(currentXmlTag);
-
-                    if (!optionalHasAlreadyCurrentTag) {
-                        currentXmlTag.setParent(parentNode);
-                        parentNode.getChildren().add(currentXmlTag);
-                    }
-
-
-                } else {
-                    baliseXMLStatic = currentXmlTag;
-                }
+    private static void setDocumentationAnnotationElementAttribute(ElementProperties node){
+        // Set annotation and documentation tags (if exists)
+        if (null != node.getDocumentation()) {
+            annotationXML = new AnnotationXML();
+            documentationXML = new DocumentationXML();
+            documentationXML.setDocumentation(node.getDocumentation());
+            annotationXML.setDocumentationXML(documentationXML);
+        }
+        if (null != node.getType() && !node.getType().equals(UNDEFINED)) {
+            if (node.getType().equals("element")) {
+                elementOrAttributeRNG = new ElementXML();
+            } else if (node.getType().equals("attribute")) {
+                elementOrAttributeRNG = new AttributeXML();
             }
-
-            if (currentXmlTag instanceof GrammarXML) {
-                buildBaliseXMLTree(node, profondeur + 1, currentXmlTag.getChildren().get(0));
-            } else {
-                for (ElementProperties next : node.getChildren()) {
-                    if (currentXmlTag instanceof OptionalXML || currentXmlTag instanceof OneOrMoreXML
-                        || currentXmlTag instanceof ZeroOrMoreXML) {
-                        buildBaliseXMLTree(next, profondeur + 1, currentXmlTag.getChildren().get(0));
-                    } else {
-                        buildBaliseXMLTree(next, profondeur + 1, currentXmlTag);
-                    }
-                }
+            if (null != node.getName() && !node.getName().equals(UNDEFINED) && elementOrAttributeRNG != null) {
+                elementOrAttributeRNG.setName(node.getName());
             }
         }
 
+        if (null != documentationXML && elementOrAttributeRNG != null) {
+            elementOrAttributeRNG.getChildren().add(annotationXML);
+            annotationXML.setParent(elementOrAttributeRNG);
+        }
+    }
+
+    /**
+     * Set Cardinality to element or attribute Rng
+     * @param node
+     * @param cardinalityRNG
+     * @param elementOrAttributeRNG
+     * @return
+     */
+    private static BaliseXML defineElementOrAttributeCardinality(ElementProperties node, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+        if (node.getCardinality().equals(RNGConstants.Cardinality.ZERO_OR_MORE.getLabel())) {
+            cardinalityRNG = new ZeroOrMoreXML();
+            if (elementOrAttributeRNG != null) {
+                elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.ZERO_OR_MORE);
+            }
+        } else if (node.getCardinality().equals(RNGConstants.Cardinality.ONE_OR_MORE.getLabel())) {
+            cardinalityRNG = new OneOrMoreXML();
+            if (elementOrAttributeRNG != null) {
+                elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.ONE_OR_MORE);
+            }
+        } else if (node.getCardinality().equals(RNGConstants.Cardinality.OPTIONAL.getLabel())) {
+            cardinalityRNG = new OptionalXML();
+            if (elementOrAttributeRNG != null) {
+                elementOrAttributeRNG.setCardinality(RNGConstants.Cardinality.OPTIONAL);
+            }
+        }
+        return cardinalityRNG;
+    }
+
+    /**
+     * if element exist, implement it and return
+     * @param parentNode
+     * @param valueRNG
+     * @param dataRNG
+     * @param cardinalityRNG
+     * @param elementOrAttributeRNG
+     * @return
+     */
+    private static BaliseXML implementAndReturnCurrentXmlTag(BaliseXML parentNode, ValueXML valueRNG, DataXML dataRNG, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+        BaliseXML currentXmlTag;
+        LOGGER.debug(BaliseXML.class.getName(), "Parsing %s", elementOrAttributeRNG.getName());
+        // 1.1 Check if the element has cardinality
+        currentXmlTag = defineCurrentXmlTag(parentNode, cardinalityRNG, elementOrAttributeRNG);
+
+        // 2. Check data tag
+        if (null != dataRNG) {
+            dataRNG(dataRNG, currentXmlTag);
+        }
+        // 3. Check value tag
+        if (null != valueRNG) {
+            valueRng(valueRNG, elementOrAttributeRNG, currentXmlTag);
+        }
+        return currentXmlTag;
+    }
+
+    /**
+     * Define valueRNG
+     * @param valueRNG
+     * @param elementOrAttributeRNG
+     * @param currentXmlTag
+     */
+    private static void valueRng(ValueXML valueRNG, BaliseXML elementOrAttributeRNG, BaliseXML currentXmlTag) {
+        // If Children is empty
+        if (currentXmlTag.getChildren().isEmpty()) {
+            if (currentXmlTag instanceof ElementXML || currentXmlTag instanceof AttributeXML) {
+                currentXmlTag.setValueXML(valueRNG);
+                valueRNG.setParent(currentXmlTag);
+            }
+            // If children is Element or Attribute, set  accordingly
+        } else if (currentXmlTag instanceof ElementXML|| currentXmlTag instanceof AttributeXML) {
+            currentXmlTag.setValueXML(valueRNG);
+            valueRNG.setParent(currentXmlTag);
+        } else {
+            // Set the value to an simple element
+            elementOrAttributeRNG.setValueXML(valueRNG);
+            valueRNG.setParent(elementOrAttributeRNG);
+        }
+    }
+
+    /**
+     * Define DataRNG of current XML TAG
+     * @param dataRNG
+     * @param currentXmlTag
+     */
+    private static void dataRNG(DataXML dataRNG, BaliseXML currentXmlTag) {
+        if (!currentXmlTag.getChildren().isEmpty() &&
+            (currentXmlTag.getChildren().get(0) instanceof ElementXML
+                || currentXmlTag.getChildren().get(0) instanceof AttributeXML)) {
+            currentXmlTag.getChildren().get(0).getChildren().add(dataRNG);
+            dataRNG.setParent(currentXmlTag);
+
+        } else {
+            currentXmlTag.getChildren().add(dataRNG);
+            dataRNG.setParent(currentXmlTag);
+        }
+    }
+
+    /**
+     * Define current Xml Tag according to element cardinality
+     * @param parentNode
+     * @param cardinalityRNG
+     * @param elementOrAttributeRNG
+     * @return
+     */
+    private static BaliseXML defineCurrentXmlTag(BaliseXML parentNode, BaliseXML cardinalityRNG, BaliseXML elementOrAttributeRNG) {
+        BaliseXML currentXmlTag;
+        if (null != cardinalityRNG) {
+            cardinalityRNG.getChildren().add(elementOrAttributeRNG);
+            elementOrAttributeRNG.setParent(cardinalityRNG);
+            currentXmlTag = cardinalityRNG;
+
+        } else {
+            currentXmlTag = elementOrAttributeRNG;
+            //1.2. Check if it's the first grammarnode (Archive transfer)
+            if (parentNode == null) {
+                GrammarXML grammar = new GrammarXML();
+                StartXML start = new StartXML();
+                start.setParent(grammar);
+                grammar.getChildren().add(start);
+                currentXmlTag = grammar;
+            }
+        }
+        return currentXmlTag;
+    }
+
+    /**
+     * If current xml tag not a GrammarXML Object
+     * @param node
+     * @param profondeur
+     * @param currentXmlTag
+     */
+    private static void currentTagNotInstanceOfGrammarXML(ElementProperties node, int profondeur, BaliseXML currentXmlTag) {
+        for (ElementProperties next : node.getChildren()) {
+            if (currentXmlTag instanceof OptionalXML || currentXmlTag instanceof OneOrMoreXML
+                || currentXmlTag instanceof ZeroOrMoreXML) {
+                buildBaliseXMLTree(next, profondeur + 1, currentXmlTag.getChildren().get(0));
+            } else {
+                buildBaliseXMLTree(next, profondeur + 1, currentXmlTag);
+            }
+        }
+    }
+
+
+    /**
+     * Implement current tag if exist
+     * @param parentNode
+     * @param currentXmlTag
+     */
+    private static void currentTagExist(BaliseXML parentNode, BaliseXML currentXmlTag) {
+        if (null != parentNode) {
+            BaliseXML optionalWithChildren = parentNode.getChildren()
+                .stream().filter(cardinality -> cardinality instanceof OptionalXML
+                    || cardinality instanceof ZeroOrMoreXML
+                    || cardinality instanceof OneOrMoreXML)
+                .findAny()
+                .orElse(null);
+
+            Boolean optionalHasAlreadyCurrentTag = optionalWithChildren != null && optionalWithChildren.children.contains(currentXmlTag);
+
+            if (Boolean.FALSE.equals(optionalHasAlreadyCurrentTag)) {
+                currentXmlTag.setParent(parentNode);
+                parentNode.getChildren().add(currentXmlTag);
+            }
+
+
+        } else {
+            baliseXMLStatic = currentXmlTag;
+        }
     }
 
     public static void addRecipTags() {
@@ -291,7 +376,7 @@ public class BaliseXML {
         NsNameXML nsNameRNG = new NsNameXML();
         NsNameXML nsNameRNGNs = new NsNameXML();
         nsNameRNGNs.setNs("");
-        attributeRNG.setCardinality(RNGConstants.Cardinality.zeroOrMore);
+        attributeRNG.setCardinality(RNGConstants.Cardinality.ZERO_OR_MORE);
         exceptRNG.getChildren().add(nsNameRNG);
         exceptRNG.getChildren().add(nsNameRNGNs);
         anyNameRNG.getChildren().add(exceptRNG);
@@ -322,8 +407,8 @@ public class BaliseXML {
         return children;
     }
 
-    public String setCardinality(RNGConstants.Cardinality cardinality) {
-        return this.cardinality = cardinality.getLabel();
+    public void setCardinality(RNGConstants.Cardinality cardinality) {
+        this.cardinality = cardinality.getLabel();
     }
 
     @XmlElement(name = "rng:value")
@@ -333,7 +418,6 @@ public class BaliseXML {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return this.name;
     }
 
