@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.referential.internal.server.accessionregister.details;
+package fr.gouv.vitamui.referential.internal.server.accessionregister;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -51,6 +51,7 @@ import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.QueryProjection;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.administration.AccessionRegisterDetailModel;
+import fr.gouv.vitam.common.model.administration.AccessionRegisterSummaryModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -60,10 +61,13 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.model.HitsDto;
-import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailResponseDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
+import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AgencyResponseDto;
+import fr.gouv.vitamui.referential.common.service.AccessionRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,10 +82,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
-public class AccessionRegisterDetailInternalService {
+public class AccessionRegisterInternalService {
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalService.class);
+        VitamUILoggerFactory.getInstance(AccessionRegisterInternalService.class);
 
     private final ObjectMapper objectMapper;
 
@@ -89,12 +93,29 @@ public class AccessionRegisterDetailInternalService {
 
     private final AdminExternalClient adminExternalClient;
 
+    private final AccessionRegisterService accessionRegisterService;
+
     @Autowired
-    public AccessionRegisterDetailInternalService(ObjectMapper objectMapper, AdminExternalClient adminExternalClient,
-        AgencyService agencyService) {
+    public AccessionRegisterInternalService(ObjectMapper objectMapper, AdminExternalClient adminExternalClient,
+        AgencyService agencyService, AccessionRegisterService accessionRegisterService) {
         this.objectMapper = objectMapper;
         this.agencyService = agencyService;
         this.adminExternalClient = adminExternalClient;
+        this.accessionRegisterService = accessionRegisterService;
+    }
+
+    public List<AccessionRegisterSummaryDto> getAll(VitamContext context) {
+        RequestResponse<AccessionRegisterSummaryModel> requestResponse;
+        try {
+            LOGGER.debug("List of Accession Register EvIdAppSession : {} " , context.getApplicationSessionId());
+            requestResponse = accessionRegisterService.findAccessionRegisterSummary(context);
+            final AccessionRegisterSummaryResponseDto accessionRegisterSymbolicResponseDto = objectMapper
+                .treeToValue(requestResponse.toJsonNode(), AccessionRegisterSummaryResponseDto.class);
+            return AccessionRegisterConverter.toSummaryDtos(accessionRegisterSymbolicResponseDto.getResults());
+        } catch (JsonProcessingException | VitamClientException e) {
+            LOGGER.error("Error when getting Accession Register summaries : {} " , e);
+            throw new InternalServerException("Unable to find accessionRegisterSymbolic", e);
+        }
     }
 
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(final Integer pageNumber, final Integer size,
@@ -120,10 +141,15 @@ public class AccessionRegisterDetailInternalService {
         }
 
         boolean hasMore = pageNumber * size + resultSize < resultTotal;
-        List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterDetailConverter.convertVitamsToDtos(results.getResults());
+        List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterConverter.toDetailsDtos(results.getResults());
         valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
 
-        return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore);
+        //Build statistique datas
+        Map<String, Object> optionalValues = new HashMap<>();
+        AccessionRegisterStatsDto statsDto = AccessRegisterStatsHelper.fetchStats(results.getResults());
+        optionalValues.put("stats", statsDto);
+
+        return new PaginatedValuesDto<>(valuesDto, pageNumber, size, hasMore, optionalValues);
     }
 
     private JsonNode buildAllPaginatedJsonQuery(Integer pageNumber, Integer size, Optional<String> orderBy,
@@ -135,8 +161,7 @@ public class AccessionRegisterDetailInternalService {
             if (criteria.isPresent()) {
                 vitamCriteria = objectMapper.readValue(criteria.get(), new TypeReference<HashMap<String, Object>>() {});
             }
-            query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
-            LOGGER.debug("jsonQuery: {}", query);
+            query = AccessRegisterVitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, orderBy, direction);
         } catch (InvalidParseOperationException | InvalidCreateOperationException ioe) {
             LOGGER.error("Can't create dsl query to get paginated accession registers : {}", ioe);
             throw new InternalServerException("Can't create dsl query to get paginated accession registers", ioe);

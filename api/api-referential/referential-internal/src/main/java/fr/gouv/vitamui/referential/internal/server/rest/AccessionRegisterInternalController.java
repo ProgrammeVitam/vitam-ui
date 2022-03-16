@@ -38,7 +38,6 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -46,14 +45,10 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,18 +64,14 @@ public class AccessionRegisterInternalController {
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(AccessionRegisterInternalController.class);
 
-    private final AccessionRegisterSummaryInternalService summaryInternalService;
-
-    private final AccessionRegisterDetailInternalService detailInternalService;
+    private final AccessionRegisterInternalService detailInternalService;
 
     private final InternalSecurityService securityService;
 
     public AccessionRegisterInternalController(
-        AccessionRegisterSummaryInternalService accessionRegisterSummaryInternalService,
-        AccessionRegisterDetailInternalService accessionRegisterDetailInternalService,
+        AccessionRegisterInternalService accessionRegisterInternalService,
         InternalSecurityService securityService) {
-        this.summaryInternalService = accessionRegisterSummaryInternalService;
-        this.detailInternalService = accessionRegisterDetailInternalService;
+        this.detailInternalService = accessionRegisterInternalService;
         this.securityService = securityService;
     }
 
@@ -91,7 +82,7 @@ public class AccessionRegisterInternalController {
         RestUtils.checkCriteria(criteria);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return summaryInternalService.getAll(vitamContext);
+        return detailInternalService.getAll(vitamContext);
     }
 
     @GetMapping(value = "/details", params = {"page", "size"})
@@ -104,13 +95,6 @@ public class AccessionRegisterInternalController {
             page, size, criteria, orderBy, direction);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return detailInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
-    }
-
-    @PostMapping("/details/stats")
-    public AccessionRegisterStatsDto getAccessionRegisterDetailStats(@RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId,
-        @RequestBody AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
-        return summaryInternalService.getAccessionRegisterDetailStats(vitamContext, detailsSearchDto);
     }
 
 }

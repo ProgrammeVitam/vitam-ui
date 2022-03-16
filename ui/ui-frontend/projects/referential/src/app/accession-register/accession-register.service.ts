@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, EMPTY, Observable, of, Subject } from 'rxjs';
-import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { catchError, map, withLatestFrom } from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
   AccessionRegisterStats,
@@ -49,8 +49,8 @@ import {
   ExternalParametersService,
   SearchService,
 } from 'ui-frontend-common';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
+import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -72,7 +72,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   private globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    private accessionRegisterApiService: AccessionRegisterDetailApiService,
+    accessionRegisterApiService: AccessionRegisterDetailApiService,
     http: HttpClient,
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
@@ -112,37 +112,20 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
       .pipe(map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)));
   }
 
-  getFacetDetailsStats(): Observable<FacetDetails[]> {
-    return this.globalSearchButtonEvent$.pipe(
-      withLatestFrom(this.searchTextChange$, this.statusFilterChange$, this.dateIntervalChange$, this.advancedSearchData$),
-      exhaustMap((changes: any) => {
-        const globalSearch = changes[0];
-        if (globalSearch) {
-          const search = {
-            searchText: changes[1],
-            statusFilter: changes[2],
-            dateInterval: changes[3],
-            advancedSearch: changes[4],
-          };
-
-          return this.fetchUserAccessContract().pipe(
-            exhaustMap((accessContract) => {
-              let headers = new HttpHeaders().append('Content-Type', 'application/json');
-              headers = headers.append('X-Access-Contract-Id', accessContract);
-              return this.accessionRegisterApiService
-                .getAccessionRegisterDetailStats(headers, search)
-                .pipe(map((accessionRegisterStats) => this.fetchFacetDetails(accessionRegisterStats)));
-            })
-          );
+  getStats(): Observable<FacetDetails[]> {
+    return this.optionalValues.asObservable().pipe(
+      map((m: any) => {
+        if (m === undefined || m['stats'] === undefined) {
+          return [];
         }
-        return EMPTY;
+        const accessionRegisterStats: AccessionRegisterStats = m['stats'] as AccessionRegisterStats;
+        return this.fetchFacetDetails(accessionRegisterStats);
       })
     );
   }
 
-  private fetchFacetDetails(accessionRegisterStats: AccessionRegisterStats): FacetDetails[] {
+  public fetchFacetDetails(accessionRegisterStats: AccessionRegisterStats): FacetDetails[] {
     const stateFacetDetails: FacetDetails[] = [];
-
     stateFacetDetails.push({
       title: this.translateService.instant('ACCESSION_REGISTER.FACETS.TOTAL_OPERATION_ENTRIES'),
       totalResults: this.data?.length,
