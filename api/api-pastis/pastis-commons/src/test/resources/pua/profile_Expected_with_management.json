@@ -1,4 +1,5 @@
 {
+  "additionalProperties": null,
   "name": "DescriptiveMetadata",
   "type": "element",
   "cardinality": null,
@@ -13,6 +14,7 @@
   "choices": [],
   "children": [
     {
+      "additionalProperties": null,
       "name": "ArchiveUnit",
       "type": "element",
       "cardinality": null,
@@ -27,6 +29,7 @@
       "choices": [],
       "children": [
         {
+          "additionalProperties": null,
           "name": "id",
           "type": "attribute",
           "cardinality": null,
@@ -43,6 +46,7 @@
           "puaData": null
         },
         {
+          "additionalProperties": null,
           "name": "ArchiveUnitProfile",
           "type": "element",
           "cardinality": "0-1",
@@ -59,6 +63,7 @@
           "puaData": null
         },
         {
+          "additionalProperties": null,
           "name": "Management",
           "type": "element",
           "cardinality": "0-1",
@@ -73,6 +78,7 @@
           "choices": [],
           "children": [
             {
+              "additionalProperties": null,
               "name": "AppraisalRule",
               "type": "element",
               "cardinality": "0-1",
@@ -87,6 +93,7 @@
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": null,
                   "name": "Rule",
                   "type": "element",
                   "cardinality": "1",
@@ -103,6 +110,7 @@
                   "puaData": null
                 },
                 {
+                  "additionalProperties": null,
                   "name": "StartDate",
                   "type": "element",
                   "cardinality": "1",
@@ -119,6 +127,7 @@
                   "puaData": null
                 },
                 {
+                  "additionalProperties": null,
                   "name": "FinalAction",
                   "type": "element",
                   "cardinality": "1",
@@ -136,21 +145,22 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             }
           ],
           "puaData": null
         },
         {
+          "additionalProperties": null,
           "name": "Content",
           "type": "element",
           "cardinality": null,
@@ -165,6 +175,7 @@
           "choices": [],
           "children": [
             {
+              "additionalProperties": null,
               "name": "DescriptionLevel",
               "type": "element",
               "cardinality": "0-1",
@@ -179,12 +190,14 @@
               "choices": [],
               "children": [],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": null,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
+                "minLenght": null,
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
                 "enum": [
                   "Fonds",
                   "Subfonds",
@@ -197,12 +210,11 @@
                   "File",
                   "Item",
                   "OtherLevel"
-                ],
-                "minLenght": null,
-                "maxLenght": null
+                ]
               }
             },
             {
+              "additionalProperties": null,
               "name": "Title",
               "type": "element",
               "cardinality": "0-N",
@@ -219,6 +231,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": null,
               "name": "FilePlanPosition",
               "type": "element",
               "cardinality": "0-N",
@@ -235,6 +248,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": null,
               "name": "Tag",
               "type": "element",
               "cardinality": "0-N",
@@ -251,6 +265,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": null,
               "name": "Keyword",
               "type": "element",
               "cardinality": "0-1",
@@ -265,6 +280,7 @@
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": null,
                   "name": "KeywordContent",
                   "type": "element",
                   "cardinality": "1",
@@ -282,18 +298,19 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             },
             {
+              "additionalProperties": null,
               "name": "OriginatingAgency",
               "type": "element",
               "cardinality": "0-1",
@@ -308,6 +325,7 @@
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": null,
                   "name": "Identifier",
                   "type": "element",
                   "cardinality": "1",
@@ -325,15 +343,15 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             }
           ],

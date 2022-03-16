@@ -117,8 +117,8 @@ public class BaliseXML {
         if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
             valueRNG = new ValueXML();
             valueRNG.setValue(node.getValue());
-        } else if (null == node.getValue() && node.getName().equals("Language")) {
-            valueRNG = new ValueXML();
+        } else if (node.getName().equals("Language")) {
+            dataRNG = new DataXML();
         }
 
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
