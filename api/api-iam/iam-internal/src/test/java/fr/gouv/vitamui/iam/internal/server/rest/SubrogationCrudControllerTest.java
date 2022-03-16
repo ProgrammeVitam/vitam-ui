@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -158,7 +160,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     }
 
     @Override
-    public void testCreationOK() {
+    public void testCreationOK() throws InvalidParseOperationException, PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
@@ -170,7 +172,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testCreationFailed() {
+    public void testCreationFailed() throws InvalidParseOperationException, PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setSurrogate(SURROGATE_CREATE_EMAIL);
         prepareServices();
@@ -185,7 +187,7 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     @Override
     @Test(expected = NotImplementedException.class)
-    public void testUpdateOK() {
+    public void testUpdateOK() throws InvalidParseOperationException, PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setId(ID);
         prepareServices();
@@ -194,7 +196,8 @@ public final class SubrogationCrudControllerTest extends AbstractCrudControllerT
 
     @Override
     @Test(expected = NotImplementedException.class)
-    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() {
+    public void testUpdateFailsAsDtoIdAndPathIdAreDifferentOK() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final SubrogationDto dto = buildDto();
         dto.setId("anotherId");
         prepareServices();

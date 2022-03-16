@@ -259,7 +259,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
             default:
                 criteria = null;
         }
-        LOGGER.info("The search criteria Date is {} ", criteria);
+        LOGGER.debug("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
                 LocalDateTime searchDate =

@@ -37,12 +37,14 @@
 package fr.gouv.vitamui.referential.rest;
 
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.service.AccessionRegisterDetailService;
@@ -88,9 +90,11 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @ApiOperation(value = "Get accession register summary entities")
     @GetMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
+    public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return summaryService.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -100,9 +104,12 @@ public class AccessionRegisterController extends AbstractUiRestController {
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
         @RequestParam final Integer page,
         @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria,
-        @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
+        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()){
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return detailsService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -114,7 +121,7 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestBody final AccessionRegisterSearchDto searchQuery
-    ) {
+    ) throws InvalidParseOperationException, PreconditionFailedException{
         LOGGER.debug("Export accession register by criteria into csv format = {}", searchQuery);
         Resource exportedCsvResult =
             detailsService.exportAccessionRegisterCsv(searchQuery, buildUiHttpContext()).getBody();

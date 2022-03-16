@@ -104,7 +104,6 @@ public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<R
 
     public boolean patchRule(final ExternalHttpContext context, final Map<String, Object> partialDto, final String id) {
         LOGGER.debug("Patch {}", partialDto);
-        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for patch.");
 
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
@@ -118,7 +117,6 @@ public class RuleExternalRestClient extends BasePaginatingAndSortingRestClient<R
 
     public boolean deleteRule(ExternalHttpContext context, String id) {
         LOGGER.debug("Delete {}", id);
-        SanityChecker.check(id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id);
         checkResponse(response, 200, 201, 202, 204);

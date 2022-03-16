@@ -118,7 +118,7 @@ public class IngestStreamingInternalRestClient
         final ResponseEntity<Void> response =
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
                 request, Void.class);
-        LOGGER.info("The response on ingest is {} ", response.toString());
+        LOGGER.debug("The response on ingest is {} ", response.toString());
         return response;
     }
 }

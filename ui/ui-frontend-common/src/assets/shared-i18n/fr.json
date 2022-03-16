@@ -28,6 +28,18 @@
       "OPERATIONS": "Journal des opérations"
     }
   },
+  "EXCEPTIONS" : {
+    "HTTP_STATUS_CODE_BAD_REQUEST" : "Erreur : requête invalide",
+    "HTTP_STATUS_CODE_FORBIDDEN" : "Vous n'avez pas les droits nécessaires pour effectuer cette opération.",
+    "HTTP_STATUS_CODE_NOT_FOUND" : "Erreur : La ressource n'existe pas",
+    "HTTP_STATUS_CODE_SERVICE_UNAVAILABLE" : "Une erreur technique est survenue : service indisponible",
+    "HTTP_STATUS_CODE_GATEWAY_TIMEOUT" : "Une erreur technique est survenue : le serveur ne répond pas.",
+    "HTTP_STATUS_CODE_EXPECTATION_FAILED" : "La configuration de la plateforme ne vous permet pas d'executer cette action, merci de contacter votre administrateur",
+    "HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION" : "Le parametre ajouté est invalide et non propre merci de le corriger",
+    "CLIENT_ERROR_START" : "Une erreur technique est survenue : requête invalide",
+    "SERVER_ERROR_START" : "Une erreur technique est survenue : erreur interne",
+    "TIME_OUT_ERROR" : "Une erreur technique est survenue : le serveur ne répond pas."
+  },
   "COLOR": {
     "PRIMARY": "Couleur primaire",
     "SECONDARY": "Couleur secondaire",

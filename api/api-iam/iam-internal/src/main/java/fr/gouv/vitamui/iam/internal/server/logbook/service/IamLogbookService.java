@@ -115,7 +115,7 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createCustomerEvent(final CustomerDto sourceEvent) {
-        LOGGER.info("Create Customer {}", sourceEvent.toString());
+        LOGGER.debug("Create Customer {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.CUSTOMERS, EventType.EXT_VITAMUI_CREATE_CUSTOMER,
                 converters.getCustomerConverter().convertToLogbook(sourceEvent));
     }
@@ -142,7 +142,7 @@ public class IamLogbookService {
             default :
                 break;
         }
-        LOGGER.info(msg + "{}", sourceEvent.toString());
+        LOGGER.debug(msg + "{}", sourceEvent.toString());
         create(getProofTenantIdentifierByCustomerId(sourceEvent.getSuperUserCustomerId()), sourceEvent.getId(), MongoDbCollections.SUBROGATIONS, eventType,
                 converters.getSubrogationConverter().convertToLogbook(sourceEvent));
     }
@@ -156,7 +156,7 @@ public class IamLogbookService {
      * @param sourceEvent
      */
     public void createProfileEvent(final ProfileDto sourceEvent) {
-        LOGGER.info("Create Profile {}", sourceEvent.toString());
+        LOGGER.debug("Create Profile {}", sourceEvent.toString());
          create(sourceEvent.getTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_CREATE_PROFILE,
             converters.getProfileConverter().convertToLogbook(sourceEvent));
     }
@@ -166,7 +166,7 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createIdpEvent(final IdentityProviderDto sourceEvent) {
-        LOGGER.info("Create Provider {}", sourceEvent.toString());
+        LOGGER.debug("Create Provider {}", sourceEvent.toString());
          create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS,
                 EventType.EXT_VITAMUI_CREATE_IDP, converters.getIdpConverter().convertToLogbook(sourceEvent));
     }
@@ -184,7 +184,7 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createIdpEventInitCustomer(final IdentityProvider sourceEvent) {
-        LOGGER.info("Create Provider {}", sourceEvent.toString());
+        LOGGER.debug("Create Provider {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_CREATE_IDP,
                 converters.getIdpConverter().convertToLogbook(converters.getIdpConverter().convertEntityToDto(sourceEvent)));
     }
@@ -202,7 +202,7 @@ public class IamLogbookService {
      * @param sourceEvent
      */
     public void createUserEvent(final UserDto sourceEvent) {
-        LOGGER.info("Create User {}", sourceEvent.toString());
+        LOGGER.debug("Create User {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_CREATE_USER,
                 converters.getUserConverter().convertToLogbook(sourceEvent));
     }
@@ -212,13 +212,13 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createOwnerEvent(final OwnerDto sourceEvent) {
-        LOGGER.info("Create Owner {}", sourceEvent.toString());
+        LOGGER.debug("Create Owner {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS,
                 EventType.EXT_VITAMUI_CREATE_OWNER, converters.getOwnerConverter().convertToLogbook(sourceEvent));
     }
 
     public void createOwnerEventInitCustomer(final OwnerDto sourceEvent) {
-        LOGGER.info("Create Owner {}", sourceEvent.toString());
+        LOGGER.debug("Create Owner {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_CREATE_OWNER,
                 converters.getOwnerConverter().convertToLogbook(sourceEvent));
     }
@@ -228,7 +228,7 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createGroupEvent(final GroupDto sourceEvent) {
-        LOGGER.info("Create Group {}", sourceEvent.toString());
+        LOGGER.debug("Create Group {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), sourceEvent.getIdentifier(), MongoDbCollections.GROUPS, EventType.EXT_VITAMUI_CREATE_GROUP,
                 converters.getGroupConverter().convertToLogbook(sourceEvent));
     }
@@ -243,14 +243,14 @@ public class IamLogbookService {
     * @param sourceEvent
     */
     public void createTenantEvent(final TenantDto sourceEvent) {
-        LOGGER.info("Create Tenant {}", sourceEvent.toString());
+        LOGGER.debug("Create Tenant {}", sourceEvent.toString());
 
         create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_CREATE_TENANT, converters.getTenantConverter().convertToLogbook(sourceEvent));
     }
 
     public void createTenantEventInitCustomer(final Tenant sourceEvent) {
-        LOGGER.info("Create Tenant {}", sourceEvent.toString());
+        LOGGER.debug("Create Tenant {}", sourceEvent.toString());
         create(getCurrentProofTenantIdentifier(), String.valueOf(sourceEvent.getIdentifier()), MongoDbCollections.TENANTS, EventType.EXT_VITAMUI_CREATE_TENANT,
                 converters.getTenantConverter().convertToLogbook(converters.getTenantConverter().convertEntityToDto(sourceEvent)));
     }
@@ -265,7 +265,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateProfileEvent(final Profile profile, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update Profile {}", profile.toString());
+        LOGGER.debug("Update Profile {}", profile.toString());
          update(profile.getTenantIdentifier(), profile.getIdentifier(), MongoDbCollections.PROFILES, EventType.EXT_VITAMUI_UPDATE_PROFILE, logbooks);
     }
 
@@ -275,7 +275,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateGroupEvent(final Group group, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update Group {}", group.toString());
+        LOGGER.debug("Update Group {}", group.toString());
         update(getCurrentProofTenantIdentifier(), group.getIdentifier(), MongoDbCollections.GROUPS, EventType.EXT_VITAMUI_UPDATE_GROUP, logbooks);
     }
 
@@ -285,7 +285,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateUserEvent(final User user, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update User {}", user.toString());
+        LOGGER.debug("Update User {}", user.toString());
         update(getCurrentProofTenantIdentifier(), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_UPDATE_USER, logbooks);
     }
 
@@ -295,7 +295,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateTenantEvent(final Tenant tenant, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update tenant {}", tenant.toString());
+        LOGGER.debug("Update tenant {}", tenant.toString());
         update(getCurrentProofTenantIdentifier(), String.valueOf(tenant.getIdentifier()), MongoDbCollections.TENANTS,
                 EventType.EXT_VITAMUI_UPDATE_TENANT, logbooks);
     }
@@ -306,7 +306,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateOwnerEvent(final Owner owner, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update Owner {}", owner.toString());
+        LOGGER.debug("Update Owner {}", owner.toString());
         update(getCurrentProofTenantIdentifier(), owner.getIdentifier(), MongoDbCollections.OWNERS, EventType.EXT_VITAMUI_UPDATE_OWNER,
                 logbooks);
     }
@@ -317,7 +317,7 @@ public class IamLogbookService {
      * @param logbooks
      */
     public void updateIdpEvent(final IdentityProvider idp, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update Provider {}", idp.toString());
+        LOGGER.debug("Update Provider {}", idp.toString());
         update(getCurrentProofTenantIdentifier(), idp.getIdentifier(), MongoDbCollections.PROVIDERS, EventType.EXT_VITAMUI_UPDATE_IDP,
                 logbooks);
     }
@@ -328,7 +328,7 @@ public class IamLogbookService {
     * @param logbooks
     */
     public void updateCustomerEvent(final Customer customer, final Collection<EventDiffDto> logbooks) {
-        LOGGER.info("Update Customer {}", customer.toString());
+        LOGGER.debug("Update Customer {}", customer.toString());
         update(getCurrentProofTenantIdentifier(), customer.getIdentifier(), MongoDbCollections.CUSTOMERS, EventType.EXT_VITAMUI_UPDATE_CUSTOMER, logbooks);
     }
 
@@ -338,7 +338,7 @@ public class IamLogbookService {
      * @param user the user for whom the password is changed
      */
     public void createPasswordEvent(final User user) {
-        LOGGER.info("create password for user: {}", user.toString());
+        LOGGER.debug("create password for user: {}", user.toString());
         create(getProofTenantIdentifierByCustomerId(user.getCustomerId()), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_PASSWORD_INIT,
                 "");
     }
@@ -349,7 +349,7 @@ public class IamLogbookService {
      * @param user the user for whom the password is updated
      */
     public void updatePasswordEvent(final User user) {
-        LOGGER.info("update password for user: {}", user.toString());
+        LOGGER.debug("update password for user: {}", user.toString());
         create(getProofTenantIdentifierByCustomerId(user.getCustomerId()), user.getIdentifier(), MongoDbCollections.USERS, EventType.EXT_VITAMUI_PASSWORD_CHANGE,
                 "");
     }
@@ -362,7 +362,7 @@ public class IamLogbookService {
      */
     public void revokePasswordEvent(final User user, final String superUser) {
 
-        LOGGER.info("revoke password for user: {} / superUser: {}", user, superUser);
+        LOGGER.debug("revoke password for user: {} / superUser: {}", user, superUser);
         final Map<String, String> logbookData = new HashMap<>();
         if (superUser != null) {
             logbookData.put("Super utilisateur", superUser);
@@ -385,7 +385,7 @@ public class IamLogbookService {
      */
     public void blockUserEvent(final User user, final UserStatusEnum oldStatus, final Duration duration) {
 
-        LOGGER.info("block user: {} / oldStatus: {}", user.toString(), oldStatus);
+        LOGGER.debug("block user: {} / oldStatus: {}", user.toString(), oldStatus);
         final List<EventDiffDto> updates = Arrays.asList(new EventDiffDto("Statut", oldStatus.toString(), user.getStatus().toString()));
         final ObjectNode evDetData = LogbookUtils.getEvData(updates);
         evDetData.put(UserConverter.BLOCKED_DURATION, duration.toString());
@@ -402,7 +402,7 @@ public class IamLogbookService {
      * @param errorMessage the error message
      */
     public void loginEvent(final User user, final String surrogateIdentifier, final String ip, final String errorMessage) {
-        LOGGER.info("Login statut: {} / user: {} - {} / surrogate: {} / IP: {} / errorMessage: {}", errorMessage != null ? StatusCode.KO : StatusCode.OK,
+        LOGGER.debug("Login statut: {} / user: {} - {} / surrogate: {} / IP: {} / errorMessage: {}", errorMessage != null ? StatusCode.KO : StatusCode.OK,
                 user.getIdentifier(), user.getEmail(), surrogateIdentifier, ip, errorMessage);
     }
 

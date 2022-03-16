@@ -38,6 +38,9 @@ package fr.gouv.vitamui.ui.commons.rest;
 
 import java.util.Map;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +80,10 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Create analytics")
     @PostMapping(CommonConstants.PATH_ANALYTICS)
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto) {
+    public UserDto patchAnalytics(@RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch analytics with {}", partialDto);
         return service.patchAnalytics(buildUiHttpContext(), partialDto);
     }

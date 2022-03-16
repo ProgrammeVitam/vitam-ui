@@ -36,12 +36,14 @@
  */
 package fr.gouv.vitamui.ingest.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -50,7 +52,6 @@ import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.service.IngestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,10 +68,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Api(tags = "ingest")
 @RestController
@@ -80,8 +78,6 @@ import java.util.concurrent.atomic.AtomicLong;
 public class IngestController extends AbstractUiRestController {
 
     private final IngestService ingestService;
-
-    private final Map<String, AtomicLong> uploadMap = new ConcurrentHashMap<>();
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestController.class);
 
@@ -96,7 +92,15 @@ public class IngestController extends AbstractUiRestController {
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<DirectionDto> direction) throws PreconditionFailedException,
+        InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return ingestService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -105,16 +109,20 @@ public class IngestController extends AbstractUiRestController {
     @ApiOperation(value = "Get one ingest operation details")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookOperationDto getOne(final @PathVariable("id") String id) {
+    public LogbookOperationDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        LOGGER.error("Get Ingest={}", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get Ingest={}", id);
         return ingestService.getOne(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "download ODT Report for an ingest operation")
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("download ODT report for the ingest with id :{}", id);
         byte[] bytes = ingestService.generateODTReport(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
@@ -131,16 +139,17 @@ public class IngestController extends AbstractUiRestController {
         @RequestHeader(value = CommonConstants.X_ACTION) final String xAction,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = "fileName") final String fileName,
-        final InputStream inputStream) {
+        final InputStream inputStream) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker
             .checkParameter("The tenantId, xAction and contextId are mandatory parameters : ",
                 tenantId, xAction, contextId);
         SafeFileChecker.checkSafeFilePath(fileName);
-        LOGGER.info("Start uploading file ...{} ", fileName);
+        SanityChecker.checkSecureParameter(tenantId, xAction, fileName, contextId, inputStream.toString());
+        LOGGER.debug("Start uploading file ...{} ", fileName);
         ResponseEntity<Void> response =
             ingestService.streamingUpload(buildUiHttpContext(), fileName, inputStream, contextId, xAction);
 
-        LOGGER.info("The response in ui Ingest is {} ", response.toString());
+        LOGGER.debug("The response in ui Ingest is {} ", response.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

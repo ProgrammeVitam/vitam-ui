@@ -36,15 +36,16 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.external.server.service.SubrogationExternalService;
@@ -97,16 +98,22 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @Override
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_SUBROGATIONS)
-    public SubrogationDto getOne(final @PathVariable("id") String id) {
-        LOGGER.debug("Get {}", id);
+    public SubrogationDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get {}", id);
         return subrogationExternalService.getOne(id);
     }
 
     @Override
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_SUBROGATIONS)
-    public SubrogationDto create(@Valid @RequestBody final  SubrogationDto dto) {
+    public SubrogationDto create(@Valid @RequestBody final  SubrogationDto dto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return subrogationExternalService.create(dto);
     }
@@ -115,18 +122,28 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @GetMapping(path = "/users/generic", params = { "page", "size" })
     public PaginatedValuesDto<UserDto> getGenericUsers(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()){
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
-        RestUtils.checkCriteria(criteria);
         return subrogationExternalService.getGenericUsers(page, size, criteria, orderBy, direction);
     }
 
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_GROUPS_SUBROGATIONS)
-    public GroupDto getGroupById(final @PathVariable("id") String id) {
-        LOGGER.debug("Get group {}", id);
+    public GroupDto getGroupById(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get group {}", id);
         return subrogationExternalService.getGroupById(id);
     }
 
@@ -137,18 +154,22 @@ public class SubrogationExternalController implements CrudController<Subrogation
     }
 
     @PatchMapping("/surrogate/accept/{id}")
-    public SubrogationDto accept(final @PathVariable("id") String id) {
-        LOGGER.debug("Accepte subrogation id : {}", id);
+    public SubrogationDto accept(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Accepte subrogation id : {}", id);
         return subrogationExternalService.accept(id);
     }
 
     @DeleteMapping("/surrogate/decline/{id}")
-    public void decline(final @PathVariable("id") String id) {
-        LOGGER.debug("Decline subrogation id : {}", id);
+    public void decline(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Decline subrogation id : {}", id);
         subrogationExternalService.decline(id);
     }
 
@@ -165,8 +186,10 @@ public class SubrogationExternalController implements CrudController<Subrogation
     @Override
     @DeleteMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_DELETE_SUBROGATIONS)
-    public void delete(@PathVariable final String id) {
+    public void delete(@PathVariable final String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         subrogationExternalService.delete(id);
     }
 }

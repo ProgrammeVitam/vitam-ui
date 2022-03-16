@@ -37,8 +37,11 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -93,34 +96,45 @@ public class LogbookController extends AbstractUiRestController {
     @ApiOperation(value = "Get operation by id")
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
-        LOGGER.info("Get Logbook operation by id : {}", id);
+    public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get Logbook operation by id : {}", id);
         return logbookService.findOperationById(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook unit lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
-        LOGGER.info("Get logbook unit lifecycle by archive unit id : {}", id);
+    public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get logbook unit lifecycle by archive unit id : {}", id);
         return logbookService.findUnitLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook object lifecycle by archive unit id")
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
-        LOGGER.info("Get logbook object lifecycle by archive unit id : {}", id);
+    public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get logbook object lifecycle by archive unit id : {}", id);
         return logbookService.findObjectLifeCyclesByUnitId(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get logbook operations by json select")
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
-    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) {
+    public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Parameter is a mandatory parameter: ", select);
+        SanityChecker.sanitizeJson(select);
         return logbookService.findOperations(buildUiHttpContext(), select);
     }
 
@@ -128,9 +142,14 @@ public class LogbookController extends AbstractUiRestController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_MANIFEST_PATH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id,
-        @RequestParam final Optional<ContentDispositionType> disposition) {
-        LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
+        @RequestParam final Optional<ContentDispositionType> disposition) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        if(disposition.isPresent()){
+            SanityChecker.sanitizeCriteria(disposition.get());
+        }
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
         final ResponseEntity<Resource> response = logbookService.downloadManifest(buildUiHttpContext(), id);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
     }
@@ -139,7 +158,13 @@ public class LogbookController extends AbstractUiRestController {
     @GetMapping(value = CommonConstants.LOGBOOK_DOWNLOAD_ATR_PATH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadAtr(@PathVariable final String id,
-        @RequestParam final Optional<ContentDispositionType> disposition) {
+        @RequestParam final Optional<ContentDispositionType> disposition) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        if(disposition.isPresent()){
+            SanityChecker.sanitizeCriteria(disposition.get());
+        }
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("downloadAtr: id={}, disposition={}", id, disposition);
         final ResponseEntity<Resource> response = logbookService.downloadAtr(buildUiHttpContext(), id);
         return RestUtils.buildFileResponse(response, disposition, Optional.empty());
@@ -152,10 +177,16 @@ public class LogbookController extends AbstractUiRestController {
         @PathVariable final String downloadType,
         @RequestParam final Optional<ContentDispositionType> disposition,
         @QueryParam("tenantId") Integer tenantId,
-        @QueryParam("contractId") String contractId) {
-        LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
+        @QueryParam("contractId") String contractId) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        if(disposition.isPresent()){
+            SanityChecker.sanitizeCriteria(disposition.get());
+        }
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker
             .checkParameter("The Identifier, the downloadType are mandatory parameters: ", id, downloadType);
+        SanityChecker.checkSecureParameter(id, String.valueOf(tenantId), contractId, downloadType);
         String fileName = id + ".json";
         if (DOWNLOAD_TYPE_OBJECT.equals(downloadType)) {
             fileName = id + ".xml";
@@ -167,6 +198,7 @@ public class LogbookController extends AbstractUiRestController {
         if (DOWNLOAD_TYPE_DIP.equals(downloadType) || DOWNLOAD_TYPE_TRANSFER_SIP.equals(downloadType)) {
             fileName = id + ".zip";
         }
+        LOGGER.debug("downloadReport: id={}, downloadType:{}, disposition={}", id, downloadType, disposition);
         final ResponseEntity<Resource> response =
             logbookService.downloadReport(buildUiHttpContext(tenantId, contractId), id, downloadType).block();
         return RestUtils.buildFileResponse(response, disposition, Optional.of(fileName));

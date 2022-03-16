@@ -37,10 +37,13 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -77,7 +80,7 @@ public class AccessContractExternalController {
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     public Collection<AccessContractDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return accessContractExternalService.getAll(criteria);
     }
 
@@ -85,7 +88,12 @@ public class AccessContractExternalController {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException , PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return accessContractExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }

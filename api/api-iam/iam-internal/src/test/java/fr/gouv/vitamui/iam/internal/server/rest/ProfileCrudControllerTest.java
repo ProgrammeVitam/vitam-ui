@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.FieldUtils;
 import fr.gouv.vitamui.iam.internal.server.customer.config.CustomerInitConfig;
@@ -150,7 +152,8 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     }
 
     @Test
-    public void testCreationFailsAsTheTenantDoesNotExist() {
+    public void testCreationFailsAsTheTenantDoesNotExist() throws InvalidParseOperationException,
+        PreconditionFailedException  {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -167,7 +170,8 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     }
 
     @Test
-    public void testCreationFailsAsTheRoleDoesNotExist() {
+    public void testCreationFailsAsTheRoleDoesNotExist() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
         dto.setRoles(null);
@@ -184,7 +188,8 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     }
 
     @Test
-    public void testCreationFailsAsTheRolesAreNotAllowed() {
+    public void testCreationFailsAsTheRolesAreNotAllowed() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final Role role = new Role("Bad Role");
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
@@ -202,7 +207,7 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     }
 
     @Test
-    public void testCreationFailsAsTheNameAlreadyExists() {
+    public void testCreationFailsAsTheNameAlreadyExists() throws InvalidParseOperationException, PreconditionFailedException {
         final ProfileDto dto = buildProfileDto();
         dto.setId(null);
 
@@ -240,7 +245,7 @@ public final class ProfileCrudControllerTest extends AbstractServerIdentityBuild
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         prepareServices();
         controller.delete(PROFILE_ID);
     }

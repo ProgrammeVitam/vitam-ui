@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -86,9 +89,11 @@ public class AccessContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<AccessContractDto> getAll(final Optional<String> criteria) {
+    public Collection<AccessContractDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -96,14 +101,21 @@ public class AccessContractController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<AccessContractDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
-    public AccessContractDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public AccessContractDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
@@ -116,7 +128,9 @@ public class AccessContractController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create entity")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody  AccessContractDto accessContractDto) {
+    public ResponseEntity<Void> check(@RequestBody  AccessContractDto accessContractDto)
+        throws PreconditionFailedException, InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(accessContractDto);
         LOGGER.debug("check ability to create accessContract={}", accessContractDto);
         final boolean exist = service.check(buildUiHttpContext(), accessContractDto);
         LOGGER.debug("response value={}" + exist);
@@ -126,7 +140,10 @@ public class AccessContractController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccessContractDto create(@Valid @RequestBody  AccessContractDto accessContractDto) {
+    public AccessContractDto create(@Valid @RequestBody  AccessContractDto accessContractDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(accessContractDto);
         LOGGER.debug("create accessContract={}", accessContractDto);
         return service.create(buildUiHttpContext(), accessContractDto);
     }
@@ -134,7 +151,11 @@ public class AccessContractController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch accessContract {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch accessContract : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
@@ -142,7 +163,10 @@ public class AccessContractController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by accessContract's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }

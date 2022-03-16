@@ -36,24 +36,23 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import java.util.Collection;
-import java.util.Optional;
-
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.referential.common.dto.ProfileDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.external.server.service.ProfileExternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.referential.common.dto.ProfileDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.external.server.service.ProfileExternalService;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.PROFILES_URL)
@@ -70,7 +69,7 @@ public class ProfileExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all profile criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return profileExternalService.getAll(criteria);
     }
 

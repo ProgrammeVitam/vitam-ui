@@ -36,7 +36,9 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -76,14 +78,16 @@ public class ApplicationController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Return config about applications and categories")
     @RequestMapping(method = RequestMethod.GET)
-    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp) {
+    public Map<String, Object> getApplications(@RequestParam(defaultValue = "true") final boolean filterApp)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("getApplications");
         return service.getApplications(buildUiHttpContext(), filterApp);
     }
 
     @ApiOperation(value = "Check if an application can have an external identifier")
     @GetMapping(path = "/{identifier:.+}/externalid")
-    public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier) {
+    public Boolean isApplicationExternalIdentifierEnabled(final @PathVariable("identifier") String identifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("isApplicationExternalIdentifierEnabled");
         return service.isApplicationExternalIdentifierEnabled(buildUiHttpContext(), identifier);
     }

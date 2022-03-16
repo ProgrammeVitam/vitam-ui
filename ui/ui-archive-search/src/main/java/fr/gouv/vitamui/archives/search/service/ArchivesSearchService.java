@@ -91,7 +91,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery,
         final ExternalHttpContext context) {
-        LOGGER.info("calling find archive units by criteria {} ", searchQuery);
+        LOGGER.debug("calling find archive units by criteria {} ", searchQuery);
         ArchiveUnitsDto archiveUnits = getClient().searchArchiveUnitsByCriteria(context, searchQuery);
         return archiveUnits;
     }
@@ -102,7 +102,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, ObjectData objectData,
         ExternalHttpContext context) {
-        LOGGER.info("Download the Archive Unit Object with id {}", id);
+        LOGGER.debug("Download the Archive Unit Object with id {}", id);
 
         ResultsDto got = findObjectById(id, context).getBody();
         String usage = getUsage(Objects.requireNonNull(got), objectData);
@@ -113,18 +113,18 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
-        LOGGER.info("Get the Archive Unit with ID {}", id);
+        LOGGER.debug("Get the Archive Unit with ID {}", id);
         return archiveSearchExternalRestClient.findUnitById(id, context);
     }
 
     public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
-        LOGGER.info("Get the Object Group with Identifier {}", id);
+        LOGGER.debug("Get the Object Group with Identifier {}", id);
         return archiveSearchExternalRestClient.findObjectById(id, context);
     }
 
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
         ExternalHttpContext context) {
-        LOGGER.info("export search archives Units by criteria into csv format with criteria {}", searchQuery);
+        LOGGER.debug("export search archives Units by criteria into csv format with criteria {}", searchQuery);
         return archiveSearchExternalRestClient.exportCsvArchiveUnitsByCriteria(searchQuery, context);
     }
 

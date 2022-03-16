@@ -36,15 +36,16 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -85,7 +86,7 @@ public class AccessionRegisterExternalController {
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     public Collection<AccessionRegisterSummaryDto> getAccessionRegisterSummaries(
         @RequestParam final Optional<String> criteria) {
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all accessionRegister criteria={}", criteria);
         return accessionRegisterSummaryExternalService.getAll(criteria);
     }
@@ -105,7 +106,8 @@ public class AccessionRegisterExternalController {
 
     @PostMapping(RestApi.DETAILS_EXPORT_CSV)
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
-    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody AccessionRegisterSearchDto query) {
+    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody AccessionRegisterSearchDto query)
+        throws InvalidParseOperationException, PreconditionFailedException{
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
         LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);

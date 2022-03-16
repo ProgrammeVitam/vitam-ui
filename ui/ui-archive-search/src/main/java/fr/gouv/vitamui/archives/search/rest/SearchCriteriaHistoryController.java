@@ -36,10 +36,12 @@
  */
 package fr.gouv.vitamui.archives.search.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -80,7 +82,8 @@ public class SearchCriteriaHistoryController extends AbstractUiRestController {
     @GetMapping
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory() {
+    public List<SearchCriteriaHistoryDto> getSearchCritriaHistory() throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("Get the search criteria history");
 
         List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtoList = service.getSearchCritriaHistory(buildUiHttpContext());
@@ -91,22 +94,26 @@ public class SearchCriteriaHistoryController extends AbstractUiRestController {
     @ApiOperation(value = "Create search criteria history")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SearchCriteriaHistoryDto create(@RequestBody final SearchCriteriaHistoryDto entityDto) {
+    public SearchCriteriaHistoryDto create(@RequestBody final SearchCriteriaHistoryDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
 
     @ApiOperation(value = "delete Search criteria history")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory by id :{}", id);
-        SanityChecker.check(id);
         service.delete(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Update Search criteria history")
     @PutMapping(CommonConstants.PATH_ID)
-    public SearchCriteriaHistoryDto update(@RequestBody final SearchCriteriaHistoryDto entity) {
+    public SearchCriteriaHistoryDto update(@RequestBody final SearchCriteriaHistoryDto entity)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(entity);
         LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
         return service.update(buildUiHttpContext(), entity);
     }

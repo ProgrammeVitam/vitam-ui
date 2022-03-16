@@ -66,15 +66,15 @@ public class LogbookManagementOperationService extends AbstractPaginateService<P
     }
 
     public ResponseEntity<ProcessDetailDto> searchOperationsDetails(ExternalHttpContext context, ProcessQuery processQuery) {
-        LOGGER.info("Get All Operations Details with processQuery = {}", processQuery);
+        LOGGER.debug("Get All Operations Details with processQuery = {}", processQuery);
         return logbookManagementOperationExternalRestClient.searchOperationsDetails(context,processQuery);
     }
     public ResponseEntity<ProcessDetailDto> cancelOperationProcessExecution(ExternalHttpContext context, String operationId) {
-        LOGGER.info("Cancel the operation Id = {}", operationId);
+        LOGGER.debug("Cancel the operation Id = {}", operationId);
         return logbookManagementOperationExternalRestClient.cancelOperationProcessExecution(context,operationId);
     }
     public ResponseEntity<ProcessDetailDto> updateOperationActionProcess(ExternalHttpContext context,  String actionId, String operationId) {
-        LOGGER.info("Update the operation id={} with the Action ={}",operationId, actionId);
+        LOGGER.debug("Update the operation id={} with the Action ={}",operationId, actionId);
         return logbookManagementOperationExternalRestClient.updateOperationActionProcess(context,actionId, operationId);
     }
 }

@@ -28,6 +28,18 @@
       "OPERATIONS": "Logbook"
     }
   },
+    "EXCEPTIONS" : {
+     "HTTP_STATUS_CODE_BAD_REQUEST": "Error: invalid request",
+     "HTTP_STATUS_CODE_FORBIDDEN" : "You do not have the necessary rights to perform this operation.",
+     "HTTP_STATUS_CODE_NOT_FOUND": "Error: Resource does not exist",
+     "HTTP_STATUS_CODE_SERVICE_UNAVAILABLE": "A technical error has occurred: service unavailable",
+     "HTTP_STATUS_CODE_GATEWAY_TIMEOUT" : "A technical error has occurred: the server is not responding.",
+     "HTTP_STATUS_CODE_EXPECTATION_FAILED": "The platform configuration does not allow you to perform this action, please contact your administrator",
+     "HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION": "The added parameter is invalid and not proper, please correct it",
+     "CLIENT_ERROR_START": "A technical error has occurred: invalid request",
+     "SERVER_ERROR_START": "A technical error has occurred: internal error",
+     "TIME_OUT_ERROR" : "A technical error has occurred: the server is not responding."
+  },
   "COLOR": {
     "PRIMARY": "Primary color",
     "SECONDARY": "Secondary color",

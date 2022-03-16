@@ -36,12 +36,14 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -90,8 +92,9 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto getOne(final @PathVariable String id) {
+    public UserDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get user={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
@@ -105,7 +108,9 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update(@RequestBody final UserDto userDto) {
+    public UserDto update(@RequestBody final UserDto userDto) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(userDto);
         LOGGER.debug("update user {}", userDto.getId());
         return service.update(buildUiHttpContext(), userDto);
     }
@@ -119,7 +124,9 @@ public class UserController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@RequestBody final UserDto dto) {
+    public UserDto create(@RequestBody final UserDto dto) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("create user = {}", dto.getEmail());
         return service.create(buildUiHttpContext(), dto);
     }
@@ -137,18 +144,29 @@ public class UserController extends AbstractUiRestController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<UserDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Optional<String> criteria,
-            @RequestParam final Integer size, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Integer size, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
-        RestUtils.checkCriteria(criteria);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
@@ -161,9 +179,12 @@ public class UserController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check entity exist by params")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExistByParams(@RequestParam final String criteria) {
+    public ResponseEntity<Void> checkExistByParams(@RequestParam final String criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("check exist by criteria={}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
         LOGGER.debug("response value={}" + exist);
         return RestUtils.buildBooleanResponse(exist);
@@ -171,9 +192,11 @@ public class UserController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by user's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for users with id :{}", id);
-        SanityChecker.check(id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -183,9 +206,10 @@ public class UserController extends AbstractUiRestController {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    public List<String> getLevels(final Optional<String> criteria) {
+    public List<String> getLevels(final Optional<String> criteria) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getLevels(buildUiHttpContext(), criteria);
     }
 }

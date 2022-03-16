@@ -42,8 +42,11 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +90,7 @@ public class RuleExternalController {
     @Secured(ServicesData.ROLE_GET_RULES)
     public Collection<RuleDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all rules criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return ruleExternalService.getAll(criteria);
     }
 
@@ -95,7 +98,12 @@ public class RuleExternalController {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<RuleDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
         return ruleExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
@@ -160,7 +168,7 @@ public class RuleExternalController {
     public ResponseEntity<Resource> export() {
         return ruleExternalService.export();
     }
-    
+
     /***
      * Import agencies from a csv file
      * @param fileName the file name
