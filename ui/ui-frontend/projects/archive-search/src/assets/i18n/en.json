@@ -197,6 +197,8 @@
         "FILING_UNIT": "Filing plan",
         "DESCRIPTION_LEVEL": "Archive unit type",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
+        "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Elimination analysis operation Identifier",
+
         "ORIGIN": {
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
           "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
