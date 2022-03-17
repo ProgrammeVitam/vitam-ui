@@ -58,6 +58,7 @@ import {
   PagedResult,
   ResultFacet,
   ResultFacetList,
+  SearchCriteria,
   SearchCriteriaDto,
   SearchCriteriaEltDto,
   SearchCriteriaTypeEnum,
@@ -435,6 +436,17 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract).append('X-Tenant-Id', '' + tenantIdentifier);
     return this.archiveApiService.updateUnit(id, unitMDDDto, headers);
+  }
+
+  isWaitingToRecalculateCriteria(criteriaKey: string): boolean {
+    return criteriaKey === 'WAITING_RECALCULATE' || criteriaKey === 'ORIGIN_WAITING_RECALCULATE';
+  }
+  isEliminationTenchnicalIdCriteria(criteriaKey: string): boolean {
+    return criteriaKey === 'ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE';
+  }
+
+  isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
   }
 }
 
