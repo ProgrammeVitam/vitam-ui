@@ -11,7 +11,40 @@ mat-toolbar {
   position: fixed;
   top: 0;
   display: flex;
+  font-size: 15px;
+  font-family: Mulish;
 }
 .separator{
   margin-top: 100px;
+}
+
+.logo {
+  max-height : 100%;
+  width : auto;
+  padding: 10px;
+}
+
+
+ .footer {
+  position: static;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  margin-top: 50px;
+  box-shadow: 0 4px 16px rgba(var(--vitamui-primary-rgb), 0.4), 0 8px 32px rgba(var(--vitamui-primary-rgb), 0.2);
+  background-color: var(--vitamui-primary-600);
+  
+}
+
+.footer p {
+  color: white;
+  text-align: center;
+  font-family: Mulish;
+  font-size: 12px;
+  margin-bottom: 0%;
+}
+
+.pastis-footer-href {
+  color: white;
+  
 }
