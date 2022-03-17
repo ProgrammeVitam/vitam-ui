@@ -66,6 +66,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   updateStarted = false;
   @Input()
   hasAccessContractManagementPermissions: boolean;
+  @Input()
+  hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';
   constructor(private route: ActivatedRoute, private translateService: TranslateService) {
     this.route.params.subscribe((params) => {

@@ -38,15 +38,20 @@
   padding-left: 40px;
 }
 
-.red-button-cancel {
-  background-color: #e24242;
-  width: 10;
-  height: 10;
-  position: absolute;
-  right: 16px;
-  bottom: 10px;
-}
-
 .margin_right {
   margin-right: 0px;
+}
+
+.btn-size {
+  background-color: #e24242;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
+.close-color {
+  color: white;
 }

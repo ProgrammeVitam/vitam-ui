@@ -60,6 +60,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
   errorMessageSub: Subscription;
   isLPExtended = false;
   hasAccessContractManagementPermissions = false;
+  hasUpdateDescriptiveUnitMetadataRole = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -86,7 +87,13 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     });
 
     this.fetchUserAccessContractFromExternalParameters();
-    //this.fetchVitamAccessContract();
+    this.hasUpdateUnitDescriptiveMetadataPermission();
+  }
+
+  public hasUpdateUnitDescriptiveMetadataPermission() {
+    this.archiveService.hasArchiveSearchRole('ROLE_UPDATE_UNIT_DESC_METADATA', Number(this.tenantIdentifier)).subscribe((result) => {
+      this.hasUpdateDescriptiveUnitMetadataRole = result;
+    });
   }
 
   ngOnDestroy() {
