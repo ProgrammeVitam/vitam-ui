@@ -849,14 +849,12 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
-  isElementEdit(clickedNode: FileNode) : boolean {
-    if (clickedNode.nonEditFileNode){
-      console.log(clickedNode.editName + "TEST EDIT")
+  isElementEdit(node: MetadataHeaders) : boolean {
+    if(this.profileService.profileMode==='PUA') return false;
+    if (node.nomDuChampEdit){
     return true;
     }
-    else{
-      return false
-    }
+    return false;
   }
   isEmptyEnumeration(enumerations: string[]): boolean{
     return enumerations ? enumerations.length === 0 : false;

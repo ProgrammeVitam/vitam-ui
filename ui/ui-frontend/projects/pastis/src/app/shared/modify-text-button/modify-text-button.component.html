@@ -1,7 +1,7 @@
 <div class ="ok">
  <span>
   <span *ngIf="editText ; else elseBlock">{{editText}}</span>
-  <ng-template #elseBlock> {{ text }}</ng-template>
+  <ng-template #elseBlock> {{ node.editName ? node.editName : node.name}}</ng-template>
   <input [(ngModel)]="editText" *ngIf="editmode" type="text" />
 </span>
 

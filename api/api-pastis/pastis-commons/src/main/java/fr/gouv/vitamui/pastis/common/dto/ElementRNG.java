@@ -91,7 +91,12 @@ public class ElementRNG {
     public static void setDocumentationForParentElement(ElementProperties parentNode, ElementRNG node) {
         if (null != parentNode.getType() &&
             RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
-            parentNode.setDocumentation(node.getValue());
+            if(parentNode.getName() != null && parentNode.getName().equals("ArchiveUnit")
+                && parentNode.getDocumentation() != null && node.getValue().contains("Commentaire : ")){
+                parentNode.setEditName(node.getValue().replaceAll("Commentaire : ", ""));
+            }else{
+                parentNode.setDocumentation(node.getValue());
+            }
         } else {
             setDocumentationForParentElement(parentNode.getParent(), node);
         }

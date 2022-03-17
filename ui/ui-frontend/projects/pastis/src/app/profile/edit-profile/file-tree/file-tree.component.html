@@ -52,7 +52,8 @@
               <span class="pastis-tree-node-name">
                 <span [ngClass]="{'text-medium-normal':!selectedItem(node),'text-medium-primary':selectedItem(node)}"
                       class="text text-medium" *ngIf="node.nonEditFileNode || node.name==='ArchiveUnit'; else elseBlock">
-                    <modify-text-button  (textEdit)="changeFileNode($event, node)" [text]="node.name"></modify-text-button>
+                    <modify-text-button  *ngIf="this.profileService.profileMode==='PA'" (textEdit)="changeFileNode($event, node)" [node]="node"></modify-text-button>
+                    {{this.profileService.profileMode==='PUA' ? onResolveName(node) : ''}}
                   </span>
                 <ng-template #elseBlock>{{onResolveName(node)}}</ng-template>
                 <span *ngIf="node.nonEditFileNode || node.name === 'ArchiveUnit'"

@@ -60,6 +60,7 @@ public class ElementProperties {
     private String dataType;
     private String value;
     private String documentation;
+    private String editName;
 
     @JsonIgnore
     private Object sedaData;

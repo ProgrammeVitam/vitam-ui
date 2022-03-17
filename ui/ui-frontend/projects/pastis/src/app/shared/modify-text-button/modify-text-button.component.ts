@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { FileNode } from '../../models/file-node';
 
 @Component({
   selector: 'modify-text-button',
@@ -8,7 +9,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class ModifyTextButtonComponent implements OnInit {
 
   @Input()
-  text: string;
+  node: FileNode;
 
   @Output()
   textEdit: EventEmitter<string> = new EventEmitter();
@@ -22,12 +23,12 @@ export class ModifyTextButtonComponent implements OnInit {
   }
   edit() {
     this.editmode = true;
-    this.editText = this.text;
+    this.node.editName ? this.editText = this.node.editName : this.editText = this.node.name;
   }
 
   save() {
     this.editmode = false;
-    this.text = this.editText;
+    this.node.editName = this.editText;
     this.textEdit.emit(this.editText);
 
   }

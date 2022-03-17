@@ -80,8 +80,7 @@
                   class="path4"></span><span class="path5"></span>
               </i>
 
-              <span *ngIf="isElementEdit(clickedNode) else nonEdit">{{clickedNode.editName}}
-              Edit</span>
+              <span *ngIf="isElementEdit(element) else nonEdit">{{element.nomDuChampEdit}}</span>
               <ng-template #nonEdit>  {{onResolveName(element.nomDuChamp)}}</ng-template>
 
 
