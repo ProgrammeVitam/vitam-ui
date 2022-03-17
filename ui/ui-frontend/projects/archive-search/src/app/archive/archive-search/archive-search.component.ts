@@ -52,7 +52,17 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { ArchiveSearchResultFacets, CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -259,7 +269,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
   trackTotalHits: boolean;
-  hasAppraisalRules = false;
+  showFacets = false;
   ontologies: any;
   selectedValueOntolonogy: any;
 
@@ -610,7 +620,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.buildAccessCriteriaListForQuery();
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.callVitamApiService();
-      this.hasAppraisalRules = this.checkIfCriteriaContainsAppraisalRule();
+      this.showFacets = this.checkIfShowingFacetsRule();
     }
   }
 
@@ -1613,15 +1623,19 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  checkIfCriteriaContainsAppraisalRule(): boolean {
+  checkIfShowingFacetsRule(): boolean {
     let hasAppraisalRuleCriteria = false;
     if (this.searchCriterias && this.searchCriterias.size > 0) {
-      for (let value of this.searchCriterias.values()) {
-        if (!hasAppraisalRuleCriteria && SearchCriteriaTypeEnum[value.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+      for (let criteria of this.searchCriterias.values()) {
+        if (
+          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria) ||
+          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
+          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key        ) {
           hasAppraisalRuleCriteria = true;
         }
       }
     }
     return hasAppraisalRuleCriteria;
   }
+
 }

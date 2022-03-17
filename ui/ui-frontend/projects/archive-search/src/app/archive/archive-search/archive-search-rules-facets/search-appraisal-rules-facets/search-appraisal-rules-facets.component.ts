@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors } from 'ui-frontend-common';
@@ -10,7 +11,7 @@ import { AppraisalRuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
 })
 export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
   appraisalRuleFacets: AppraisalRuleFacets;
@@ -43,6 +44,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
   private handleRulesExpirationFacets() {
     let unexpiredRulesNb = 0;
     let expiredRulesNb = 0;
+    this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
     if (this.appraisalRuleFacets.expiredRulesListFacets && this.appraisalRuleFacets.expiredRulesListFacets.length > 0) {
       this.appraisalRuleFacets.expiredRulesListFacets.forEach((elt) => {

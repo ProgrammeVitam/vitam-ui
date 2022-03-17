@@ -58,7 +58,7 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="!pending && submited && hasAppraisalRules">
+  <div class="row" *ngIf="!pending && submited && showFacets">
     <app-archive-search-rules-facets
       class="facet-div"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
