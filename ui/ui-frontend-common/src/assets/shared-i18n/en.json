@@ -201,8 +201,8 @@
       "TOOLTIP": "Access to dashboards of the archiving service"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
-      "NAME": "Archives Search Service",
-      "TOOLTIP": "Archives Search Service"
+      "NAME": "Research, consultation and management of archives",
+      "TOOLTIP": "Search, manage and consult the archives"
     },
     "INGEST_MANAGEMENT_APP": {
       "NAME": "Ingest management",
