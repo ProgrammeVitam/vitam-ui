@@ -1,0 +1,14 @@
+db = db.getSiblingDB('iam')
+
+print("START_54_update_archive_search_application_informations.js");
+
+db.applications.update({
+    "identifier" : "ARCHIVE_SEARCH_MANAGEMENT_APP"
+}, {
+    $set: {
+        "tooltip": "Recherche, consultation et gestion des archives",
+        "name": "Recherche, consultation et gestion des archives"
+    },
+});
+
+print("END_54_update_archive_search_application_informations.js");
