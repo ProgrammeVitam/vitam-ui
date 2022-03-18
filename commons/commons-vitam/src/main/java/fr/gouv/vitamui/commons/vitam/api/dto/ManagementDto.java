@@ -48,6 +48,24 @@ import lombok.ToString;
 public class ManagementDto {
 
     @JsonProperty("AppraisalRule")
-    private RuleCategoryDto appraisalRule;
+    private RuleCategoryVitamUiDto appraisalRule;
+
+    @JsonProperty("HoldRule")
+    private RuleCategoryVitamUiDto holdRule;
+
+    @JsonProperty("StorageRule")
+    private RuleCategoryVitamUiDto storageRule;
+
+    @JsonProperty("ReuseRule")
+    private RuleCategoryVitamUiDto reuseRule;
+
+    @JsonProperty("ClassificationRule")
+    private RuleCategoryVitamUiDto classificationRule;
+
+    @JsonProperty("DisseminationRule")
+    private RuleCategoryVitamUiDto disseminationRule;
+
+    @JsonProperty("AccessRule")
+    private RuleCategoryVitamUiDto accessRule;
 
 }

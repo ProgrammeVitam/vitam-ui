@@ -42,8 +42,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.details.AccessionRegisterDetailInternalService;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
+import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
 import fr.gouv.vitamui.referential.internal.server.common.rest.ApiReferentialControllerTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,10 +62,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AccessionRegisterDetailInternalControllerTest extends ApiReferentialControllerTest<AccessionRegisterDetailDto> {
 
     @MockBean
-    AccessionRegisterSummaryInternalService summaryInternalService;
-
-    @MockBean
-    AccessionRegisterDetailInternalService detailInternalService;
+    AccessionRegisterInternalService detailInternalService;
 
     @MockBean
     public InternalSecurityService securityService;

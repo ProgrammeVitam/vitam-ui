@@ -47,16 +47,11 @@ import java.util.stream.Collectors;
 public class AccessContractConverter {
 
     public AccessContractVitamDto convertDtoToVitam(final AccessContractDto dto) {
-
-        final AccessContractVitamDto accessContract = VitamUIUtils.copyProperties(dto, new AccessContractVitamDto());
-
-        return accessContract;
+        return VitamUIUtils.copyProperties(dto, new AccessContractVitamDto());
     }
 
     public AccessContractDto convertVitamToDto(final AccessContractVitamDto accessContract) {
-        final AccessContractDto dto = VitamUIUtils.copyProperties(accessContract, new AccessContractDto());
-
-        return dto;
+        return VitamUIUtils.copyProperties(accessContract, new AccessContractDto());
     }
 
     public List<AccessContractModelDto> convertDtosToVitams(final List<AccessContractDto> dtos) {

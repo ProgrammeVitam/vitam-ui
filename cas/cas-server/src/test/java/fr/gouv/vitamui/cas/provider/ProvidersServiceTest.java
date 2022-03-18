@@ -52,7 +52,7 @@ public final class ProvidersServiceTest {
         val clients = new Clients();
         val builder = mock(Pac4jClientBuilder.class);
         restClient = mock(IdentityProviderExternalRestClient.class);
-        val utils = new Utils(null, 0, null, null);
+        val utils = new Utils(null, 0, null, null, "");
         service = new ProvidersService(clients, restClient, builder, utils);
 
         provider = new IdentityProviderDto();

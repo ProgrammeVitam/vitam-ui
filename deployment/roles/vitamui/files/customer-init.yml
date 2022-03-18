@@ -162,7 +162,7 @@ customer-init:
         - ROLE_LOGBOOKS
 
     - name: Consultation
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, sans export DIP et sans élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -170,9 +170,10 @@ customer-init:
         - ROLE_GET_ARCHIVE_SEARCH
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
 
     - name: Archiviste
-      description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles de gestion, avec export DIP et sans élimination
+      description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
       app-name: ARCHIVE_SEARCH_MANAGEMENT_APP
       level:
       roles:
@@ -181,6 +182,7 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_EXPORT_DIP
         - ROLE_SEARCH_WITH_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
 
     - name: Archiviste administrateur
       description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
@@ -194,6 +196,10 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_ELIMINATION
         - ROLE_UPDATE_MANAGEMENT_RULES
+        - ROLE_COMPUTED_INHERITED_RULES
+        - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_RECLASSIFICATION
+        - ROLE_UPDATE_UNIT_DESC_METADATA
 
     - name: Registre des fonds
       description: Visualisation de l'ensemble des données du registre des fonds

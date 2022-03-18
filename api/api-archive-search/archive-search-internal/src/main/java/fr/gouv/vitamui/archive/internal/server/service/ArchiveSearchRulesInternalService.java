@@ -58,7 +58,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -77,7 +76,7 @@ public class ArchiveSearchRulesInternalService {
 
 
     private final ObjectMapper objectMapper;
-    final private RuleService ruleService;
+    private final RuleService ruleService;
 
     @Autowired
     public ArchiveSearchRulesInternalService(final ObjectMapper objectMapper, final RuleService ruleService) {
@@ -85,58 +84,73 @@ public class ArchiveSearchRulesInternalService {
         this.ruleService = ruleService;
     }
 
-    public void mapAppraisalRulesTitlesToCodes(SearchCriteriaDto searchQuery,
-        VitamContext vitamContext) throws VitamClientException {
-        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed = new ArrayList<>();
+    public void mapManagementRulesTitlesToCodes(SearchCriteriaDto searchQuery, VitamContext vitamContext)
+        throws VitamClientException {
         if (!CollectionUtils.isEmpty(searchQuery.getCriteriaList())) {
-            Optional<SearchCriteriaEltDto> titleCriteriaEltOpt =
-                searchQuery.getCriteriaList().stream()
-                    .filter(criteriaElt -> ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE
-                        .equals(criteriaElt.getCategory()) &&
-                        criteriaElt.getCriteria().equals(ArchiveSearchConsts.APPRAISAL_RULE_TITLE)).findAny();
-            appraisalMgtRulesCriteriaListProcessed = searchQuery.getCriteriaList().stream()
-                .filter(criteriaElt -> !ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE
-                    .equals(criteriaElt.getCategory()) ||
-                    !criteriaElt.getCriteria().equals(ArchiveSearchConsts.APPRAISAL_RULE_TITLE)).collect(
-                    Collectors.toList());
+            for (ArchiveSearchConsts.CriteriaMgtRulesCategory mgtRulesCategory : ArchiveSearchConsts.CriteriaMgtRulesCategory
+                .values()) {
+                ArchiveSearchConsts.CriteriaCategory category =
+                    ArchiveSearchConsts.CriteriaCategory.valueOf(mgtRulesCategory.name());
+                if (category != null) {
+                    List<SearchCriteriaEltDto> titleRulesCriteriaList = searchQuery
+                        .extractCriteriaListByCategoryAndFieldNames(category, List.of(ArchiveSearchConsts.RULE_TITLE));
 
-            if (titleCriteriaEltOpt.isPresent()) {
-                SearchCriteriaEltDto titleCriteriaElt = titleCriteriaEltOpt.get();
-                if (!CollectionUtils.isEmpty(titleCriteriaElt.getValues())) {
-                    List<String> mgtRulesIdsFound = findRulesByNames(vitamContext,
-                        titleCriteriaElt.getValues().stream().map(value -> value.getValue()).collect(
-                            Collectors.toList()),
-                        ArchiveSearchConsts.APPRAISAL_RULE_TYPE).stream().map(rule -> rule.getRuleId())
-                        .collect(Collectors.toList());
-                    if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-                        Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap =
-                            appraisalMgtRulesCriteriaListProcessed.stream()
-                                .collect(Collectors.toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
-                        SearchCriteriaEltDto ruleIdCriteria;
-                        if (appraisalMgtRulesCriteriaMap.containsKey(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER)) {
-                            ruleIdCriteria =
-                                appraisalMgtRulesCriteriaMap.get(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
-                            if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-                                mgtRulesIdsFound
-                                    .addAll(ruleIdCriteria.getValues().stream().map(value -> value.getValue()).collect(
+                    List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed =
+                        searchQuery.getCriteriaList().stream()
+                            .filter(criteriaElt -> !category.equals(criteriaElt.getCategory()) ||
+                                !criteriaElt.getCriteria().equals(ArchiveSearchConsts.RULE_TITLE))
+                            .collect(Collectors.toList());
+
+                    if (!CollectionUtils.isEmpty(titleRulesCriteriaList)) {
+                        for (SearchCriteriaEltDto titleCriteriaElt : titleRulesCriteriaList) {
+                            if (!CollectionUtils.isEmpty(titleCriteriaElt.getValues())) {
+                                List<String> mgtRulesIdsFound = findRulesByNames(vitamContext,
+                                    titleCriteriaElt.getValues().stream().map(CriteriaValue::getValue)
+                                        .collect(Collectors.toList()),
+                                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name())
+                                        .getFieldMapping())
+                                    .stream()
+                                    .map(FileRulesModel::getRuleId)
+                                    .collect(Collectors.toList());
+                                if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+                                    Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap =
+                                        appraisalMgtRulesCriteriaListProcessed.stream()
+                                            .collect(
+                                                Collectors
+                                                    .toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
+                                    SearchCriteriaEltDto ruleIdCriteria;
+                                    if (appraisalMgtRulesCriteriaMap
+                                        .containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
+                                        ruleIdCriteria =
+                                            appraisalMgtRulesCriteriaMap
+                                                .get(ArchiveSearchConsts.RULE_IDENTIFIER);
+                                        if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+                                            mgtRulesIdsFound
+                                                .addAll(ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue)
+                                                    .collect(Collectors.toList()));
+                                        }
+                                    } else {
+                                        ruleIdCriteria = new SearchCriteriaEltDto();
+                                        ruleIdCriteria
+                                            .setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+                                        ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+                                        ruleIdCriteria.setCategory(category);
+                                    }
+                                    ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(
                                         Collectors.toList()));
+                                    appraisalMgtRulesCriteriaMap
+                                        .put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
+                                    searchQuery.setCriteriaList(appraisalMgtRulesCriteriaMap.values().stream().collect(
+                                        Collectors.toList()));
+                                }
                             }
-                        } else {
-                            ruleIdCriteria = new SearchCriteriaEltDto();
-                            ruleIdCriteria.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER);
-                            ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-                            ruleIdCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
                         }
-                        ruleIdCriteria
-                            .setValues(mgtRulesIdsFound.stream().map(value -> new CriteriaValue(value)).collect(
-                                Collectors.toList()));
-                        appraisalMgtRulesCriteriaMap.put(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, ruleIdCriteria);
-                        searchQuery.setCriteriaList(appraisalMgtRulesCriteriaMap.values().stream().collect(
-                            Collectors.toList()));
                     }
                 }
             }
         }
+
+
     }
 
 

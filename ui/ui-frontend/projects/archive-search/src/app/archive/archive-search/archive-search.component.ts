@@ -44,7 +44,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, Direction, StartupService, VitamuiRoles } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -53,6 +53,7 @@ import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
 import {
+  ArchiveSearchResultFacets,
   CriteriaValue,
   PagedResult,
   SearchCriteria,
@@ -65,16 +66,16 @@ import {
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
+import { ReclassificationComponent } from './reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
-const MAX_DIP_EXPORT_THRESHOLD = 10000;
-const MAX_ELIMINATION_ACTION_THRESHOLD = 10000;
 const BUTTON_MAX_TEXT = 40;
 const DESCRIPTION_MAX_TEXT = 60;
 const PAGE_SIZE = 10;
 const FILTER_DEBOUNCE_TIME_MS = 400;
-const MAX_ELIMINATION_ANALYSIS_THRESHOLD = 10000;
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 
 @Component({
   selector: 'app-archive-search',
@@ -82,6 +83,8 @@ const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
+  DEFAULT_RESULT_THRESHOLD = 10000;
+
   constructor(
     private archiveService: ArchiveService,
     private translateService: TranslateService,
@@ -104,10 +107,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           { id: node.id, value: node.id },
           node.title,
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           false
         );
       } else {
@@ -160,6 +163,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
+    this.archiveExchangeDataService.receiveAccessSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        this.addCriteria(
+          criteria.keyElt,
+          criteria.valueElt,
+          criteria.labelElt,
+          criteria.keyTranslated,
+          criteria.operator,
+          criteria.category,
+          criteria.valueTranslated,
+          criteria.dataType,
+          false
+        );
+      }
+    });
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
       this.ontologies.sort(function (a: any, b: any) {
@@ -169,81 +187,111 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
     });
   }
-  @Output() archiveUnitClick = new EventEmitter<any>();
 
-  private readonly orderChange = new Subject<string>();
-  orderBy = 'Title';
   direction = Direction.ASCENDANT;
   @Input()
   accessContract: string;
+  @Output() archiveUnitClick = new EventEmitter<any>();
+
+  tenantIdentifier: number;
+  appraisalRuleCriteriaForm: FormGroup;
+  nodeData: NodeData;
+  searchCriterias: Map<string, SearchCriteria>;
+  searchCriteriaHistoryToSave: Map<string, SearchCriteriaHistory>;
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
+  private readonly orderChange = new Subject<string>();
+
+  orderBy = 'Title';
+  otherCriteriaValueType = 'DATE';
+
+  isIndeterminate: boolean;
+  isAllchecked: boolean;
+  hasResults = false;
+  hasAppraisalRulesCriteria = false;
+
+  show = true;
+  showUnitPreviewBlock = false;
+  hasDipExportRole = false;
+  hasUpdateManagementRuleRole = false;
+  @Input()
+  hasAccessContractManagementPermissions: boolean;
+  hasEliminationAnalysisOrActionRole = false;
+  hasComputedInheritedRulesRole = false;
+  hasReclassificationRole = false;
+  waitingToGetFixedCount = false;
+  showDuaEndDate = false;
+  otherCriteriaValueEnabled = false;
+  pending = false;
+  submited = false;
+  pendingGetFixedCount = false;
+  submitedGetFixedCount = false;
+  included = false;
+  canLoadMore = false;
+  shouldShowPreviewArchiveUnit = false;
+  showCriteriaPanel = true;
+  showSearchCriteriaPanel = false;
+
+  currentPage = 0;
+  pageNumbers = 0;
+  totalResults = 0;
+  itemSelected = 0;
+  itemNotSelected = 0;
+  numberOfHoldingUnitType = 0;
+  numberOfHoldingUnitTypeOnComputedRules = 0;
+  additionalSearchCriteriaCategoryIndex = 0;
   nbQueryCriteria = 0;
+
+  listOfUAIdToInclude: CriteriaValue[] = [];
+  listOfUAIdToExclude: CriteriaValue[] = [];
+  nodeArray: FilingHoldingSchemeNode[] = [];
+  entireNodesIds: string[];
+  archiveUnits: Unit[];
+  searchCriteriaHistory: SearchCriteriaHistory[] = [];
+  criteriaSearchList: SearchCriteriaEltDto[] = [];
+  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
+  searchCriteriaKeys: string[];
+  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
+
+  openDialogSubscription: Subscription;
+  analysisliminationSuscription: Subscription;
+  showConfirmEliminationSuscription: Subscription;
+  showConfirmBigNumberOfResultsSuscription: Subscription;
+  actionliminationSuscription: Subscription;
+  updateArchiveUnitAlerteMessageDialogSubscription: Subscription;
+  reclassificationAlerteMessageDialogSubscription: Subscription;
+  launchComputeInheritedRuleAlerteMessageDialogSubscription: Subscription;
+  computedInheritedRulesSuscription: Subscription;
   subscriptionNodes: Subscription;
   subscriptionSimpleSearchCriteriaAdd: Subscription;
   subscriptionEntireNodes: Subscription;
   subscriptionFilingHoldingSchemeNodes: Subscription;
-  currentPage = 0;
-  pageNumbers = 0;
-  totalResults = 0;
-  pending = false;
-  included = false;
-  canLoadMore = false;
-  tenantIdentifier: string;
-  appraisalRuleCriteriaForm: FormGroup;
-  submited = false;
-  searchCriterias: Map<string, SearchCriteria>;
-  searchCriteriaKeys: string[];
-  otherCriteriaValueEnabled = false;
-  otherCriteriaValueType = 'DATE';
-  showCriteriaPanel = true;
-  showSearchCriteriaPanel = false;
-  selectedValueOntolonogy: any;
-  archiveUnits: Unit[];
-  ontologies: any;
-  filterMapType: { [key: string]: string[] } = {
-    status: ['Folder', 'Document'],
-  };
-  shouldShowPreviewArchiveUnit = false;
-
-  criteriaSearchList: SearchCriteriaEltDto[] = [];
-  listOfUACriteriaSearch: SearchCriteriaEltDto[] = [];
-
-  additionalSearchCriteriaCategories: SearchCriteriaCategory[];
-  additionalSearchCriteriaCategoryIndex = 0;
-  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
-  showDuaEndDate = false;
-  searchCriteriaHistory: SearchCriteriaHistory[] = [];
-  searchCriteriaHistoryToSave: Map<string, SearchCriteriaHistory>;
-  searchCriteriaHistoryLength: number = null;
-  hasResults = false;
-
-  show = true;
-  showUnitPreviewBlock = false;
-  nodeArray: FilingHoldingSchemeNode[] = [];
-  nodeData: NodeData;
-  entireNodesIds: string[];
-
-  itemSelected = 0;
-  itemNotSelected = 0;
-  isAllchecked: boolean;
-  listOfUAIdToInclude: CriteriaValue[] = [];
-  listOfUAIdToExclude: CriteriaValue[] = [];
-  isIndeterminate: boolean;
-  hasDipExportRole = false;
-  hasUpdateManagementRuleRole = false;
-  hasEliminationAnalysisOrActionRole = false;
-  openDialogSubscription: Subscription;
-  analysisliminationSuscription: Subscription;
-  showConfirmEliminationSuscription: Subscription;
-  actionliminationSuscription: Subscription;
 
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
+  trackTotalHits: boolean;
+  showFacets = false;
+  ontologies: any;
+  selectedValueOntolonogy: any;
 
-  @ViewChild('confirmEliminationActionDialog', { static: true }) confirmEliminationActionDialog: TemplateRef<ArchiveSearchComponent>;
+  archiveUnitGuidSelected: string;
+  archiveUnitAllunitup: string[];
+  hasAccessContractManagementPermissionsMessage = '';
+  @ViewChild('confirmSecondActionBigNumberOfResultsActionDialog', { static: true })
+  confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('updateArchiveUnitAlerteMessageDialog', { static: true })
+  updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('reclassificationAlerteMessageDialog', { static: true })
+  reclassificationAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+
+  @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
+  launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
   }
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
 
   addCriteriaCategory(categoryName: string) {
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
@@ -290,13 +338,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.additionalSearchCriteriaCategoryIndex = 0;
     this.additionalSearchCriteriaCategories = [];
     this.route.params.subscribe((params) => {
-      this.tenantIdentifier = params.tenantIdentifier;
+      this.tenantIdentifier = +params.tenantIdentifier;
     });
-
+    this.hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
     this.searchCriterias = new Map();
     this.searchCriteriaKeys = [];
-    this.filterMapType.Type = ['Folder', 'Document'];
-
     const searchCriteriaChange = merge(this.orderChange, this.filterChange).pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
 
     searchCriteriaChange.subscribe(() => {
@@ -306,6 +352,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.checkUserHasRole('DIPExport', VitamuiRoles.ROLE_EXPORT_DIP, +this.tenantIdentifier);
     this.checkUserHasRole('EliminationAnalysisOrAction', VitamuiRoles.ROLE_ELIMINATION, +this.tenantIdentifier);
     this.checkUserHasRole('UpdateRule', VitamuiRoles.ROLE_UPDATE_MANAGEMENT_RULES, +this.tenantIdentifier);
+    this.checkUserHasRole('ComputedInheritedRulesRole', VitamuiRoles.ROLE_COMPUTED_INHERITED_RULES, +this.tenantIdentifier);
+    this.checkUserHasRole('ReclassificationRole', VitamuiRoles.ROLE_RECLASSIFICATION, +this.tenantIdentifier);
 
     const ruleActions: ActionsRules[] = [];
     this.managementRulesSharedDataService.emitRuleActions(ruleActions);
@@ -317,11 +365,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.show = true;
       this.archiveExchangeDataService.emitToggle(this.show);
     }
-  }
-
-  onFilterChange(key: string, values: any[]) {
-    this.filterMapType[key] = values;
-    this.filterChange.next(this.filterMapType);
   }
 
   showHidePanel(show: boolean) {
@@ -352,6 +395,28 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   removeCriteria(keyElt: string, valueElt: CriteriaValue, emit: boolean) {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
+      if (valueElt && valueElt.id === 'WAITING_RECALCULATE') {
+        valueElt.id = 'ORIGIN_WAITING_RECALCULATE';
+        valueElt.value = 'ORIGIN_WAITING_RECALCULATE';
+        if (emit === true) {
+          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
+            keyElt: keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+        }
+        if (emit === true) {
+          this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
+            keyElt: keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+        }
+        valueElt.id = 'WAITING_RECALCULATE';
+      }
+      if (valueElt && valueElt.id === 'ORIGIN_WAITING_RECALCULATE') {
+        this.removeCriteria('WAITING_RECALCULATE', { id: 'WAITING_RECALCULATE', value: valueElt.value }, emit);
+      }
       this.searchCriterias.forEach((val, key) => {
         if (key === keyElt) {
           let values = val.values;
@@ -376,7 +441,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
               keyElt,
               valueElt,
-              action: 'REMOVE',
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+            this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
+            this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
             });
           }
         }
@@ -437,7 +516,26 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     emit: boolean
   ) {
     if (keyElt && valueElt) {
-      if (this.searchCriterias) {
+      if (valueElt && valueElt.id === 'ORIGIN_WAITING_RECALCULATE') {
+        this.addCriteria(
+          'WAITING_RECALCULATE',
+          { id: 'WAITING_RECALCULATE', value: 'true' },
+          labelElt,
+          keyTranslated,
+          operator,
+          SearchCriteriaTypeEnum.FIELDS,
+          valueTranslated,
+          dataType,
+          emit
+        );
+
+        if (category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+        if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+          this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+      } else if (this.searchCriterias) {
         this.nbQueryCriteria++;
         let criteria: SearchCriteria;
         if (this.searchCriterias.has(keyElt)) {
@@ -448,7 +546,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           const filtredValues = values.filter((elt) =>
-            criteria.dataType === 'STRING' || criteria.dataType === 'DATE'
+            criteria.dataType === CriteriaDataType.STRING || criteria.dataType === CriteriaDataType.DATE
               ? elt.value.value === valueElt.value
               : elt.value.beginInterval === valueElt.beginInterval && elt.value.endInterval === valueElt.endInterval
           );
@@ -494,10 +592,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.searchCriterias.set(keyElt, criteriaToAdd);
         }
         if (emit === true && category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: 'ADD' });
+          this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+        if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+          this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
       }
     }
+  }
+
+  containsWaitingToRecalculateInheritenceRuleCriteria() {
+    return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
   }
 
   submit() {
@@ -512,8 +617,34 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.buildNodesListForQUery();
     this.buildFieldsCriteriaListForQUery();
     this.buildAppraisalCriteriaListForQUery();
+    this.buildAccessCriteriaListForQuery();
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.callVitamApiService();
+      this.showFacets = this.checkIfShowingFacetsRule();
+    }
+  }
+
+  loadExactCount() {
+    if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.pendingGetFixedCount = true;
+      this.submitedGetFixedCount = true;
+
+      this.archiveService.getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract).subscribe(
+        (exactCountResults: number) => {
+          if (exactCountResults !== -1) {
+            this.totalResults = exactCountResults;
+            if (this.isAllchecked) {
+              this.itemSelected = this.totalResults - this.itemNotSelected;
+            }
+            this.waitingToGetFixedCount = false;
+          }
+          this.pendingGetFixedCount = false;
+        },
+        (error: HttpErrorResponse) => {
+          this.pendingGetFixedCount = false;
+          console.log('error : ', error.message);
+        }
+      );
     }
   }
 
@@ -529,18 +660,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return nodesIdList;
   }
 
-  addAllDescriptionLevelValues(typesFilterValues: CriteriaValue[]) {
-    typesFilterValues.push({ id: 'Item', value: 'Item' });
-    typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
-    typesFilterValues.push({ id: 'File', value: 'File' });
-    typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
-    typesFilterValues.push({ id: 'Class', value: 'Class' });
-    typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
-    typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
-    typesFilterValues.push({ id: 'Series', value: 'Series' });
-    typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
-    typesFilterValues.push({ id: 'Collection', value: 'Collection' });
-    typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
+  getArchiveUnitType(archiveUnit: any) {
+    if (archiveUnit) {
+      return archiveUnit['#unitType'];
+    }
   }
 
   buildNodesListForQUery() {
@@ -575,70 +698,42 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         });
       }
     });
-
-    if (this.filterMapType.Type.length !== 2) {
-      const typesFilterValues: CriteriaValue[] = [];
-      if (this.filterMapType.Type.length === 0) {
-        this.addAllDescriptionLevelValues(typesFilterValues);
-      }
-
-      this.filterMapType.Type.forEach((filterType) => {
-        if (filterType === 'Document') {
-          typesFilterValues.push({ id: 'Item', value: 'Item' });
-        } else if (filterType === 'Folder') {
-          typesFilterValues.push({ id: 'RecordGrp', value: 'RecordGrp' });
-          typesFilterValues.push({ id: 'File', value: 'File' });
-          typesFilterValues.push({ id: 'Subfonds', value: 'Subfonds' });
-          typesFilterValues.push({ id: 'Class', value: 'Class' });
-          typesFilterValues.push({ id: 'Subgrp', value: 'Subgrp' });
-          typesFilterValues.push({ id: 'Otherlevel', value: 'Otherlevel' });
-          typesFilterValues.push({ id: 'Series', value: 'Series' });
-          typesFilterValues.push({ id: 'Subseries', value: 'Subseries' });
-          typesFilterValues.push({ id: 'Collection', value: 'Collection' });
-          typesFilterValues.push({ id: 'Fonds', value: 'Fonds' });
-        }
-      });
-
-      this.criteriaSearchList.push({
-        criteria: 'DescriptionLevel',
-        values: typesFilterValues,
-        operator: CriteriaOperator.EQ,
-        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING,
-      });
-    }
   }
 
   buildAppraisalCriteriaListForQUery() {
     this.searchCriterias.forEach((criteria: SearchCriteria) => {
       if (criteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
-        if (criteria.key === 'APPRAISAL_RULE_ORIGIN') {
-          const originRuleCriteria: Map<CriteriaValue, string> = new Map();
-          criteria.values.forEach((elt) => {
-            originRuleCriteria.set(elt.value, 'true');
-          });
-          originRuleCriteria.forEach((value: string, key: CriteriaValue) => {
-            this.criteriaSearchList.push({
-              criteria: key.value,
-              values: [...new Array({ id: value, value })],
-              operator: 'EQ',
-              category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
-              dataType: criteria.dataType,
-            });
-          });
-        } else {
-          const strValues: CriteriaValue[] = [];
-          criteria.values.forEach((elt) => {
-            strValues.push(elt.value);
-          });
-          this.criteriaSearchList.push({
-            criteria: criteria.key,
-            values: strValues,
-            operator: criteria.operator,
-            category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
-            dataType: criteria.dataType,
-          });
-        }
+        const strValues: CriteriaValue[] = [];
+        criteria.values.forEach((elt) => {
+          strValues.push(elt.value);
+        });
+        this.criteriaSearchList.push({
+          criteria: criteria.key.replace('_APPRAISAL_RULE', ''),
+          values: strValues,
+          operator: criteria.operator,
+          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE],
+          dataType: criteria.dataType,
+        });
+        this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
+      }
+    });
+  }
+
+  buildAccessCriteriaListForQuery() {
+    this.searchCriterias.forEach((criteria: SearchCriteria) => {
+      if (criteria.category === SearchCriteriaTypeEnum.ACCESS_RULE) {
+        const strValues: CriteriaValue[] = [];
+        criteria.values.forEach((elt) => {
+          strValues.push(elt.value);
+        });
+        this.criteriaSearchList.push({
+          criteria: criteria.key.replace('_ACCESS_RULE', ''),
+          values: strValues,
+          operator: criteria.operator,
+          category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE],
+          dataType: criteria.dataType,
+        });
+
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.NOT_INCLUDED, SearchCriteriaStatusEnum.IN_PROGRESS);
       }
     });
@@ -646,20 +741,23 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   private callVitamApiService() {
     this.pending = true;
-
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       sortingCriteria,
+      trackTotalHits: false,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
-          this.archiveExchangeDataService.emitFacets(pagedResult.facets);
+          this.archiveSearchResultFacets.nodesFacets = this.archiveService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+          this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveService.extractAppraisalRulesFacetsResults(pagedResult.facets);
           this.hasResults = true;
+          this.totalResults = pagedResult.totalResults;
         } else {
           if (pagedResult.results) {
             this.hasResults = true;
@@ -668,7 +766,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         this.pageNumbers = pagedResult.pageNumbers;
-        this.totalResults = pagedResult.totalResults;
+
+        if (this.totalResults === this.DEFAULT_RESULT_THRESHOLD) {
+          this.waitingToGetFixedCount = true;
+        } else {
+          this.waitingToGetFixedCount = false;
+        }
         if (this.isAllchecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
@@ -676,6 +779,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         this.updateCriteriaStatus(SearchCriteriaStatusEnum.IN_PROGRESS, SearchCriteriaStatusEnum.INCLUDED);
         this.pending = false;
         this.included = true;
+        this.listOfUAIdToInclude = [];
       },
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
@@ -746,10 +850,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           { id: nodeId, value: nodeId },
           node.title,
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.NODES,
           false,
-          'STRING',
+          CriteriaDataType.STRING,
           false
         );
       } else if (node.children.length > 0) {
@@ -814,6 +918,33 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
               true
             );
           }
+        } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE]) {
+          this.addCriteriaCategory(SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE]);
+          if (criteria.dataType === 'INTERVAL') {
+            this.addCriteria(
+              c,
+              value,
+              value.value,
+              criteria.keyTranslated,
+              criteria.operator,
+              SearchCriteriaTypeEnum.ACCESS_RULE,
+              criteria.valueTranslated,
+              criteria.dataType,
+              true
+            );
+          } else {
+            this.addCriteria(
+              c,
+              value,
+              value.value,
+              criteria.keyTranslated,
+              criteria.operator,
+              SearchCriteriaTypeEnum.ACCESS_RULE,
+              criteria.valueTranslated,
+              criteria.dataType,
+              true
+            );
+          }
         } else if (criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES]) {
           this.addCriteria(
             c,
@@ -830,7 +961,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.addCriteria(
             c,
             value,
-            value.value,
+            c === ALL_ARCHIVE_UNIT_TYPES
+              ? this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.' + value.id)
+              : value.value,
             criteria.keyTranslated,
             criteria.operator,
             SearchCriteriaTypeEnum.FIELDS,
@@ -887,6 +1020,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.criteriaSearchList = [];
       this.buildFieldsCriteriaListForQUery();
       this.buildAppraisalCriteriaListForQUery();
+      this.buildAccessCriteriaListForQuery();
+
       this.buildNodesListForQUery();
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.callVitamApiService();
@@ -906,15 +1041,21 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.subscriptionSimpleSearchCriteriaAdd?.unsubscribe();
     this.openDialogSubscription?.unsubscribe();
     this.showConfirmEliminationSuscription?.unsubscribe();
+    this.showConfirmBigNumberOfResultsSuscription?.unsubscribe();
     this.actionliminationSuscription?.unsubscribe();
     this.analysisliminationSuscription?.unsubscribe();
+    this.updateArchiveUnitAlerteMessageDialogSubscription?.unsubscribe();
+    this.reclassificationAlerteMessageDialogSubscription?.unsubscribe();
+    this.launchComputeInheritedRuleAlerteMessageDialogSubscription?.unsubscribe();
+    this.computedInheritedRulesSuscription?.unsubscribe();
   }
 
   exportArchiveUnitsToCsvFile() {
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
       const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
       const searchCriteria = {
-        criteriaList: this.criteriaSearchList,
+        criteriaList: this.listOfUACriteriaSearch,
         pageNumber: this.currentPage,
         size: PAGE_SIZE,
         sortingCriteria,
@@ -1016,9 +1157,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         listOfUACriteriaSearch.push({
           criteria: 'GUID',
           values: listOfUAIdToInclude,
-          operator: 'EQ',
+          operator: CriteriaOperator.EQ,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: 'String',
+          dataType: CriteriaDataType.STRING,
         });
       }
 
@@ -1026,9 +1167,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         listOfUACriteriaSearch.push({
           criteria: 'GUID',
           values: listOfUAIdToExclude,
-          operator: 'NOT_EQ',
+          operator: CriteriaOperator.NOT_EQ,
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: 'String',
+          dataType: CriteriaDataType.STRING,
         });
       }
     }
@@ -1067,22 +1208,61 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         case 'UpdateRule':
           this.hasUpdateManagementRuleRole = result;
           break;
+        case 'ComputedInheritedRulesRole':
+          this.hasComputedInheritedRulesRole = result;
+          break;
+        case 'ReclassificationRole':
+          this.hasReclassificationRole = result;
+          break;
         default:
           break;
       }
     });
   }
 
-  openExportDIPRequestCreateDialog() {
-    if (this.itemSelected > MAX_DIP_EXPORT_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'exportDIPLimitReached' },
-        duration: 10000,
-      });
-      return;
+  prepareToLaunchExportDIP() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchExportDipMoadal();
+          });
+      }
+    } else {
+      this.launchExportDipMoadal();
     }
+  }
 
+  launchExportDipMoadal() {
+    if (!this.isAllchecked && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
+      this.launchExportDIP();
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+        { panelClass: 'vitamui-dialog' }
+      );
+
+      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchExportDIP();
+        });
+    }
+  }
+  launchExportDIP() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
@@ -1101,6 +1281,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         exportDIPSearchCriteria,
         accessContract: this.accessContract,
         tenantIdentifier: this.tenantIdentifier,
+        selectedItemCountKnown: this.selectedItemCountKnown(),
       },
     });
     this.openDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
@@ -1110,16 +1291,97 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  startEliminationAnalysis() {
-    if (this.itemSelected > MAX_ELIMINATION_ANALYSIS_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
-        duration: 10000,
-      });
-      return;
-    }
+  launchReclassification() {
+    // reclassification can not be launched on more than one archive unit
+    if (this.itemSelected > 1) {
+      const dialogToOpen = this.reclassificationAlerteMessageDialog;
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+      this.reclassificationAlerteMessageDialogSubscription = dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {});
+    } else if (this.itemSelected === 1) {
+      this.archiveUnitGuidSelected = this.isAllchecked ? this.archiveUnits[0]['#id'] : this.listOfUAIdToInclude[0].id;
+      this.archiveUnitAllunitup = this.archiveUnits.find((au) => au['#id'] == this.archiveUnitGuidSelected)['#unitups'];
+      this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+      const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
 
+      const reclassificationCriteria = {
+        criteriaList: this.listOfUACriteriaSearch,
+        pageNumber: this.currentPage,
+        size: PAGE_SIZE,
+        sortingCriteria,
+        language: this.translateService.currentLang,
+      };
+
+      const dialogRef = this.dialog.open(ReclassificationComponent, {
+        panelClass: 'vitamui-modal',
+        disableClose: false,
+        data: {
+          itemSelected: this.itemSelected,
+          reclassificationCriteria: reclassificationCriteria,
+          accessContract: this.accessContract,
+          tenantIdentifier: this.tenantIdentifier,
+          archiveUnitGuidSelected: this.archiveUnitGuidSelected,
+          archiveUnitAllunitup: this.archiveUnitAllunitup,
+        },
+      });
+      this.openDialogSubscription = dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          return;
+        }
+      });
+    }
+  }
+
+  selectedItemCountKnown(): boolean {
+    return !this.waitingToGetFixedCount || !this.isAllchecked;
+  }
+
+  prepareToLaunchEliminationAnalysis() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchEliminationAnalysisMoadal();
+          });
+      }
+    } else {
+      this.launchEliminationAnalysisMoadal();
+    }
+  }
+
+  launchEliminationAnalysisMoadal() {
+    if (this.selectedItemCountKnown() && this.itemSelected < this.DEFAULT_RESULT_THRESHOLD) {
+      this.launchEliminationAnalysis();
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+        { panelClass: 'vitamui-dialog' }
+      );
+
+      this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchEliminationAnalysis();
+        });
+    }
+  }
+
+  launchEliminationAnalysis() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const exportDIPSearchCriteria = {
@@ -1146,62 +1408,234 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  launchEliminationAction() {
-    if (this.itemSelected > MAX_ELIMINATION_ACTION_THRESHOLD) {
-      this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-        panelClass: 'vitamui-snack-bar',
-        data: { type: 'thresholdExceeded', name: 'thresholdExceeded' },
-        duration: 10000,
-      });
-      return;
+  prepareToLaunchElimination() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchEliminationMoadal();
+          });
+      }
+    } else {
+      this.launchEliminationMoadal();
     }
-    const dialogToOpen = this.confirmEliminationActionDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+  }
 
-    this.showConfirmEliminationSuscription = dialogRef
+  launchEliminationMoadal() {
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+      { panelClass: 'vitamui-dialog' }
+    );
+
+    this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
-        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
-        const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
-        const exportDIPSearchCriteria = {
-          criteriaList: this.listOfUACriteriaSearch,
-          pageNumber: this.currentPage,
-          size: PAGE_SIZE,
-          sortingCriteria,
-          language: this.translateService.currentLang,
-        };
+        this.launchEliminationAction();
+      });
+  }
 
-        this.actionliminationSuscription = this.archiveService
-          .launchEliminationAction(exportDIPSearchCriteria, this.accessContract)
-          .subscribe((response) => {
-            this.eliminationActionResponse = response.$results;
+  private launchEliminationAction() {
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const exportDIPSearchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      sortingCriteria,
+      language: this.translateService.currentLang,
+    };
 
-            if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
-              const guid = this.eliminationActionResponse[0].itemId;
-              const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
-              const serviceUrl =
-                this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+    this.actionliminationSuscription = this.archiveService
+      .launchEliminationAction(exportDIPSearchCriteria, this.accessContract)
+      .subscribe((response) => {
+        this.eliminationActionResponse = response.$results;
 
-              this.openSnackBarForWorkflow(message, serviceUrl);
-            }
-          });
+        if (this.eliminationActionResponse && this.eliminationActionResponse[0].itemId) {
+          const guid = this.eliminationActionResponse[0].itemId;
+          const message = this.translateService.instant('ARCHIVE_SEARCH.ELIMINATION.ELIMINATION_LAUNCHED');
+          const serviceUrl =
+            this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+          this.openSnackBarForWorkflow(message, serviceUrl);
+        }
       });
   }
 
   updateManagementRule() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.goToUpdateManagementRule();
+          });
+      }
+    } else {
+      this.goToUpdateManagementRule();
+    }
+  }
+
+  goToUpdateManagementRule() {
     this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+
+    this.listOfUACriteriaSearch.push({
+      criteria: ARCHIVE_UNIT_HOLDING_UNIT,
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      dataType: CriteriaDataType.STRING,
+    });
+
     const criteriaSearchDSLQuery = {
       criteriaList: this.listOfUACriteriaSearch,
       pageNumber: this.currentPage,
       size: PAGE_SIZE,
       language: this.translateService.currentLang,
     };
+    this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+      this.numberOfHoldingUnitType = data.totalResults;
+      if (this.numberOfHoldingUnitType > 0) {
+        const dialogToOpen = this.updateArchiveUnitAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        this.updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {});
+      } else {
+        const criteriaSearchDSLQueryToSend = {
+          criteriaList: this.listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+          pageNumber: this.currentPage,
+          size: PAGE_SIZE,
+          language: this.translateService.currentLang,
+        };
+        this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
+        this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
+        this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
-    this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
-    this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
-    this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQuery);
+        this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+      }
+    });
+  }
 
-    this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+  launchComputedInheritedRules() {
+    if (!this.selectedItemCountKnown()) {
+      if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+        this.pendingGetFixedCount = true;
+        this.submitedGetFixedCount = true;
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchList, this.accessContract)
+          .subscribe((exactCountResults: number) => {
+            if (exactCountResults !== -1) {
+              this.totalResults = exactCountResults;
+              if (this.isAllchecked) {
+                this.itemSelected = this.totalResults - this.itemNotSelected;
+              }
+              this.waitingToGetFixedCount = false;
+            }
+            this.pendingGetFixedCount = false;
+            this.launchComputedInheritedRulesModal();
+          });
+      }
+    } else {
+      this.launchComputedInheritedRulesModal();
+    }
+  }
+
+  launchComputedInheritedRulesModal() {
+    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    this.listOfUACriteriaSearch.push({
+      criteria: ARCHIVE_UNIT_HOLDING_UNIT,
+      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+      operator: CriteriaOperator.EQ,
+      category: SearchCriteriaTypeEnum.FIELDS,
+      dataType: CriteriaDataType.STRING,
+    });
+    const computedInheritedRulesSearchCriteria = {
+      criteriaList: this.listOfUACriteriaSearch,
+      pageNumber: this.currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+    };
+
+    this.archiveService.searchArchiveUnitsByCriteria(computedInheritedRulesSearchCriteria, this.accessContract).subscribe((response) => {
+      this.numberOfHoldingUnitTypeOnComputedRules = response.totalResults;
+      if (this.numberOfHoldingUnitTypeOnComputedRules > 0) {
+        const dialogToOpen = this.launchComputeInheritedRuleAlerteMessageDialog;
+        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+        this.launchComputeInheritedRuleAlerteMessageDialogSubscription = dialogRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {});
+      } else {
+        const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+        const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+          dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+          { panelClass: 'vitamui-dialog' }
+        );
+
+        this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+          .afterClosed()
+          .pipe(filter((result) => !!result))
+          .subscribe(() => {
+            const computedInheritedRulesDSLQuery = {
+              criteriaList: computedInheritedRulesSearchCriteria.criteriaList.filter(
+                (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT
+              ),
+              pageNumber: this.currentPage,
+              size: PAGE_SIZE,
+              language: this.translateService.currentLang,
+            };
+            this.computedInheritedRulesSuscription = this.archiveService
+              .launchComputedInheritedRules(computedInheritedRulesDSLQuery, this.accessContract)
+              .subscribe((operationId) => {
+                const guid = operationId;
+                const message = this.translateService.instant('ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.OPERATION_MESSAGE');
+                const serviceUrl =
+                  this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + guid;
+
+                this.openSnackBarForWorkflow(message, serviceUrl);
+              });
+          });
+      }
+    });
+  }
+
+  checkIfShowingFacetsRule(): boolean {
+    let hasAppraisalRuleCriteria = false;
+    if (this.searchCriterias && this.searchCriterias.size > 0) {
+      for (let criteria of this.searchCriterias.values()) {
+        if (
+          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria)) ||
+          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
+          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
+        ) {
+          hasAppraisalRuleCriteria = true;
+        }
+      }
+    }
+    return hasAppraisalRuleCriteria;
   }
 }

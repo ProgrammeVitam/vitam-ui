@@ -1,0 +1,10 @@
+.text-color {
+    color: var(--vitamui-primary);
+}
+
+.disabled-div {
+    pointer-events: none;
+}
+.enabled-div {
+    pointer-events: painted;
+}

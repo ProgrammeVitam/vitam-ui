@@ -27,12 +27,15 @@
 package fr.gouv.vitamui.archives.search.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.service.ArchivesSearchService;
@@ -57,6 +60,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -222,5 +226,48 @@ public class ArchivesSearchController extends AbstractUiRestController {
         LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);
         String result = archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
         return result;
+    }
+
+    @ApiOperation(value = "computed Inherited Rules by criteria")
+    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public String computedInheritedRules(@RequestBody final SearchCriteriaDto searchCriteriaDto) {
+        LOGGER.debug("Computed Inherited Rules with criteria {}", searchCriteriaDto);
+        String result = archivesSearchService.computedInheritedRules(searchCriteriaDto, buildUiHttpContext()).getBody();
+        return result;
+    }
+
+
+    @ApiOperation(value = "select Unit With Inherited Rules")
+    @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
+    @ResponseStatus(HttpStatus.OK)
+    public ResultsDto selectUnitsWithInheritedRules(@RequestBody final SearchCriteriaDto searchQuery) {
+        ArchiveUnitsDto archiveUnits;
+        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
+        LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
+        ResultsDto resultsDto = archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
+        return resultsDto;
+
+    }
+
+    @ApiOperation(value = "launch reclassification by criteria")
+    @PostMapping(RestApi.RECLASSIFICATION)
+    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.convertValue(reclassificationCriteriaDto, JsonNode.class);
+        LOGGER.debug("Reclassification query JSON {}", node.toPrettyString());
+        return archivesSearchService.reclassification(reclassificationCriteriaDto, buildUiHttpContext()).getBody();
+    }
+
+    @ApiOperation(value = "Update the Archive Unit descriptive metadata")
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter("The Unit Descriptive Metadata Dto sould not be empty: ", unitDescriptiveMetadataDto);
+        LOGGER.debug("Update the Archive Unit with id {}", id);
+        LOGGER.debug("Update the Archive Unit update query {}", unitDescriptiveMetadataDto);
+        return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
     }
 }

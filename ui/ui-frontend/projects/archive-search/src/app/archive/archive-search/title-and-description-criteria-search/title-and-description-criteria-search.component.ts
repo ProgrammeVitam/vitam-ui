@@ -39,14 +39,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const UPDATE_DEBOUNCE_TIME = 200;
+const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
 @Component({
-  selector: 'title-and-description-criteria-search',
+  selector: 'app-title-and-description-criteria-search',
   templateUrl: './title-and-description-criteria-search.component.html',
 })
 export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
@@ -88,11 +89,11 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
     if (formData) {
       if (formData.archiveCriteria) {
         this.addCriteria(
-          'TITLE_OR_DESCRIPTION',
+          TITLE_OR_DESCRIPTION,
           { value: formData.archiveCriteria.trim(), id: formData.archiveCriteria.trim() },
           formData.archiveCriteria.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false
         );
         return true;
@@ -113,20 +114,16 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
   addCriteria(keyElt: string, valueElt: CriteriaValue, labelElt: string, translated: boolean, operator: string, valueTranslated: boolean) {
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
-        keyElt: keyElt,
-        valueElt: valueElt,
-        labelElt: labelElt,
+        keyElt,
+        valueElt,
+        labelElt,
         keyTranslated: translated,
-        operator: operator,
+        operator,
         category: SearchCriteriaTypeEnum.FIELDS,
-        valueTranslated: valueTranslated,
-        dataType: 'STRING',
+        valueTranslated,
+        dataType: CriteriaDataType.STRING,
       });
     }
-  }
-
-  ngOnDestroy() {
-    // unsubscribe to ensure no memory leaks
   }
 
   get archiveCriteria() {

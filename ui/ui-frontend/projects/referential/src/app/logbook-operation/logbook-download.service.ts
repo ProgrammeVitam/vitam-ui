@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Event, LogbookApiService, SearchService, VitamUISnackBar } from 'ui-frontend-common';
@@ -46,7 +46,7 @@ const DOWNLOAD_TYPE_REPORT = 'report';
 const DOWNLOAD_TYPE_OBJECT = 'object';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LogbookDownloadService extends SearchService<Event> {
   updated = new Subject<Event>();
@@ -97,7 +97,7 @@ export class LogbookDownloadService extends SearchService<Event> {
       'IMPORT_GRIFFIN',
       'STP_IMPORT_GRIFFIN',
       'PRESERVATION',
-      'INGEST_CLEANUP'
+      'INGEST_CLEANUP',
     ];
     const evTypeProcAllowed = ['AUDIT', 'EXPORT_DIP', 'ARCHIVE_TRANSFER', 'TRANSFER_REPLY', 'INGEST', 'MASS_UPDATE'];
 
@@ -156,7 +156,7 @@ export class LogbookDownloadService extends SearchService<Event> {
     }
   }
 
-  downloadReport(event: Event, tenantIdentifier: number, accessContractId: string) {
+  launchDownloadReport(event: Event, tenantIdentifier: number, accessContractId: string) {
     if (this.isOperationInProgress(event)) {
       return;
     }
@@ -166,43 +166,18 @@ export class LogbookDownloadService extends SearchService<Event> {
     var eventTypeProc = event.typeProc.toUpperCase();
     var eventType = event.type.toUpperCase();
     var downloadType = this.getDownloadType(eventTypeProc, eventType);
-
     if (downloadType) {
-      const headers = new HttpHeaders({
-        'X-Tenant-Id': tenantIdentifier.toString(),
-        'X-Access-Contract-Id': accessContractId
-      });
-
-      this.logbookApiService.downloadReport(id, downloadType, headers).subscribe(
-        (response) => {
-          const element = document.createElement('a');
-          const blob = new Blob([response.body], { type: 'octet/stream' });
-          const url = window.URL.createObjectURL(blob);
-          element.href = url;
-          element.download = id + '.json';
-          if (DOWNLOAD_TYPE_OBJECT == downloadType) {
-            element.download = id + '.xml';
-          }
-          if (DOWNLOAD_TYPE_BATCH_REPORT == downloadType) {
-            element.download = id + '.jsonl';
-          }
-          if (DOWNLOAD_TYPE_DIP == downloadType) {
-            element.download = id + '.zip';
-          }
-          element.click();
-          window.URL.revokeObjectURL(url);
-        },
-        (error) => {
-          this.snackBar.open(error.error.message, null, {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000
-          });
-        }
-      );
+      let downloadUrl = this.logbookApiService.getDownloadReportUrl(id, downloadType, accessContractId, tenantIdentifier);
+      window.addEventListener('focus', window_focus, false);
+      function window_focus() {
+        window.removeEventListener('focus', window_focus, false);
+        URL.revokeObjectURL(downloadUrl);
+      }
+      location.href = downloadUrl;
     } else {
       this.snackBar.open('Impossible de télécharger le rapport pour cette opération', null, {
         panelClass: 'vitamui-snack-bar',
-        duration: 10000
+        duration: 10000,
       });
     }
   }

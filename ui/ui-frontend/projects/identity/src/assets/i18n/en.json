@@ -44,6 +44,11 @@
       "PASSWORD_PLACEHOLDER": "Password",
       "WRONG_PASSWORD": "Wrong password"
     },
+    "EDITABLE_PARAMS": {
+      "KEY": "Key",
+      "VALUE": "Value",
+      "CUSTOM_PARAMS": "Customs settings"
+    },
     "PATTERN": "Pattern",
     "PATTERN_ALREADY_USED": "(Already used)",
     "SNACKBAR": {
@@ -68,7 +73,8 @@
       "SUBROGATION_CANCEL": "Your subrogation request has been canceled",
       "SUBROGATION_DENIED": "Your subrogation request has been refused",
       "SUBROGATION_UNAVAILABLE": "Subrogation for this user is temporarily impossible",
-      "ACCOUNT_UPDATE": "Information has been updated"
+      "ACCOUNT_UPDATE": "Information has been updated",
+      "OIDC_UPDATE":"For the OIDC protocol, these fields must be filled in: url discovery, client identifier and client secret for the modification to take place"
     }
   },
   "CUSTOMER": {
@@ -156,12 +162,23 @@
       "IDP_METADATA": "IDP Metadata",
       "MAIL_ATTRIBUTE": "Attribute of the email",
       "IDENTIFIER_ATTRIBUTE": "Attribute of the identifier",
+      "CLIENT_IDENTIFIER": "Customer ID",
+      "CLIENT_SECRET": "Customer secret",
+      "URL_DISCOVERY": "URL Discovery",
+      "PERIMETER": "Perimeter",
+      "JWS_ALGORITHME": " JWS algorithm",
+      "STATEFUL": "With State",
+      "USE_NONCE": "Use Nonce",
+      "USE_PKCE": "With Pkce",
+      "PROTOCOL_TYPE": "protocol type",
       "MODAL": {
         "TITLE": "IDP Creation for",
         "KEYSTORE_PWD": "Keystore password",
         "WRONG_PASSWORD": "Wrong password",
         "UPLOAD_KEYSTORE": "Upload the CAS keystore file",
-        "UPLOAD_METADATA": "Upload the IDP metadata file"
+        "UPLOAD_METADATA": "Upload the IDP metadata file",
+        "SUBTITLE_SAML": "SAML specific parameters",
+        "SUBTITLE_OIDC": "OIDC specific parameters"
       },
       "AUTO_PROVISIONING": "Automatic user update"
     },
@@ -284,7 +301,7 @@
         "MOBILE": "Phone number",
         "FIX": "Home phone number"
       },
-      "CENTER_CODE":"Center code",
+      "CENTER_CODE": "Center code",
       "SITE_CODE": "Site code",
       "INTERNAL_CODE": "Internal code",
       "DEFAULT_LANGUAGE": "Interface language",
@@ -428,7 +445,7 @@
         "SAFE": "Safe",
         "PROFILE": "Profile"
       }
-  },
+    },
     "UNITS_FORM": {
       "INPUT_PLACEHOLDER": "Unit of belonging",
       "UNIT_ALREADY_EXIST": "Unit already associated with a group",
@@ -492,4 +509,3 @@
     "NOTIF_EXTERNAL_PARAM_PROFILE_UPDATED": "External settings profile {{ name }} has been updated"
   }
 }
-

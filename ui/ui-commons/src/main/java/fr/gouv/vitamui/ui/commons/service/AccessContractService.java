@@ -25,28 +25,21 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
-import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractExternalRestClient;
-import fr.gouv.vitamui.commons.utils.JsonUtils;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Access Contract Service
  */
 @Service
-public class AccessContractService {
+public class AccessContractService  {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessContractService.class);
 
@@ -65,4 +58,7 @@ public class AccessContractService {
         return accessContractExternalRestClient.getAll(context);
     }
 
+    public AccessContractsDto getAccessContractById(final ExternalHttpContext context, String identifier) {
+        return accessContractExternalRestClient.getAccessContractById(context, identifier);
+    }
 }

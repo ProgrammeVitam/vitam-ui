@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -56,10 +56,17 @@ describe('ArchivePreviewComponent', () => {
   let component: ArchivePreviewComponent;
   let fixture: ComponentFixture<ArchivePreviewComponent>;
 
+  @Pipe({ name: 'truncate' })
+  class MockTruncatePipe implements PipeTransform {
+    transform(value: number): number {
+      return value;
+    }
+  }
+
   beforeEach(
     waitForAsync(() => {
       const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1}),
+        params: of({ tenantIdentifier: 1 }),
         data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
       };
 
@@ -82,7 +89,7 @@ describe('ArchivePreviewComponent', () => {
           BrowserAnimationsModule,
           TranslateModule.forRoot(),
         ],
-        declarations: [ArchivePreviewComponent],
+        declarations: [ArchivePreviewComponent, MockTruncatePipe],
         providers: [
           { provide: ArchiveService, useValue: archiveServiceMock },
           { provide: BASE_URL, useValue: '/fake-api' },
@@ -113,7 +120,22 @@ describe('ArchivePreviewComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should the selectedIndex to be 0 after closing extended panel ', () => {
+    component.emitClose();
+    expect(component.selectedIndex).toEqual(0);
+  });
+
+  it('should the selectedIndex to be 0 after selecting new ArchiveUnit ', () => {
+    component.showNormalPanel();
+    expect(component.selectedIndex).toEqual(0);
+  });
+
+  it('should the selectedIndex to be 1 after choosing the exteded lateral panel ', () => {
+    component.showExtendedPanel();
+    expect(component.selectedIndex).toEqual(1);
   });
 });

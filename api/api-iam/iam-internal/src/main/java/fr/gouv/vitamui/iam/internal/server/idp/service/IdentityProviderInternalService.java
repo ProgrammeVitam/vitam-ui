@@ -326,6 +326,10 @@ public class IdentityProviderInternalService extends VitamUICrudService<Identity
                     logbooks.add(new EventDiffDto(IdentityProviderConverter.USE_PKCE_KEY, entity.getUsePkce(), entry.getValue()));
                     entity.setUsePkce(CastUtils.toBoolean(entry.getValue()));
                     break;
+                case "protocoleType":
+                    logbooks.add(new EventDiffDto(IdentityProviderConverter.PROTOCOLE_TYPE, entity.getProtocoleType(), entry.getValue()));
+                    entity.setProtocoleType(CastUtils.toString(entry.getValue()));
+                    break;
                 default :
                     throw new IllegalArgumentException("Unable to patch provider " + entity.getId() + ": key " + entry.getKey() + " is not allowed");
             }

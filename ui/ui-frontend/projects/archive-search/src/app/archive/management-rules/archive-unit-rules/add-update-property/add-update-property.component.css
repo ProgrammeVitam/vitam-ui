@@ -1,0 +1,21 @@
+.container {
+  border-radius: 20px;
+  background-color: #ffffff;
+  font-style: Mulish;
+  font-weight: 800;
+  line-height: 32px;
+}
+.title-text {
+  font-style: Mulish;
+  font-weight: bold;
+  font-size: 14px;
+  color: #9c31b5;
+}
+
+.message-text-ok {
+  color: green;
+}
+
+.margin-btn {
+  margin-right: 300px;
+}

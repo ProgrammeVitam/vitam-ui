@@ -1,0 +1,17 @@
+.action-style {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    margin-bottom: 10px;
+}
+
+.arrow-icon {
+    position: absolute;
+    right: 0px;
+    font-size: 30px;
+}
+
+.margin-style {
+    margin-top: 10px;
+}
