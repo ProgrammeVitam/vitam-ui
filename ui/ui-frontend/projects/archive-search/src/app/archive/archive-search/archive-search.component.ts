@@ -61,7 +61,7 @@ import {
   SearchCriteriaEltDto,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue
+  SearchCriteriaValue,
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
@@ -1628,14 +1628,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     if (this.searchCriterias && this.searchCriterias.size > 0) {
       for (let criteria of this.searchCriterias.values()) {
         if (
-          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria) ||
+          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria)) ||
           this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
-          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key        ) {
+          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
+        ) {
           hasAppraisalRuleCriteria = true;
         }
       }
     }
     return hasAppraisalRuleCriteria;
   }
-
 }
