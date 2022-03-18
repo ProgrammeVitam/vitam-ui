@@ -165,19 +165,9 @@ public class BaliseXML {
     }
 
     private static void setDocumentationAnnotationElementAttribute(ElementProperties node){
-        // Set annotation and documentation tags (if exists)
-        if (null != node.getDocumentation()) {
-            annotationXML = new AnnotationXML();
-            documentationXML = new DocumentationXML();
-            documentationXML.setDocumentation(node.getDocumentation());
-            annotationXML.setDocumentationXML(documentationXML);
-            if(node.getName().equals("ArchiveUnit") && node.getEditName() != null){
-                annotationCommentXML = new AnnotationXML();
-                documentationCommentXML = new DocumentationXML();
-                documentationCommentXML.setDocumentation("Commentaire : " + node.getEditName());
-                annotationCommentXML.setDocumentationXML(documentationCommentXML);
-            }
-        }
+
+        setAnnotationDocumentationXML(node);
+
         if (null != node.getType() && !node.getType().equals(UNDEFINED)) {
             if (node.getType().equals("element")) {
                 elementOrAttributeRNG = new ElementXML();
@@ -189,9 +179,11 @@ public class BaliseXML {
             }
         }
 
-        if (null != documentationXML && elementOrAttributeRNG != null) {
-            elementOrAttributeRNG.getChildren().add(annotationXML);
-            annotationXML.setParent(elementOrAttributeRNG);
+        if (elementOrAttributeRNG != null) {
+            if(null != documentationXML){
+                elementOrAttributeRNG.getChildren().add(annotationXML);
+                annotationXML.setParent(elementOrAttributeRNG);
+            }
             if(annotationCommentXML != null){
                 elementOrAttributeRNG.getChildren().add(annotationCommentXML);
                 annotationCommentXML.setParent(elementOrAttributeRNG);
@@ -199,6 +191,26 @@ public class BaliseXML {
         }
     }
 
+    public static void setAnnotationDocumentationXML(ElementProperties node) {
+        // Set annotation and documentation tags (if exists)
+        if (null != node.getDocumentation()) {
+            annotationXML = new AnnotationXML();
+            documentationXML = new DocumentationXML();
+            documentationXML.setDocumentation(node.getDocumentation());
+            annotationXML.setDocumentationXML(documentationXML);
+        }
+
+        if(node.getName().equals("ArchiveUnit") && node.getEditName() != null){
+            annotationCommentXML = new AnnotationXML();
+            documentationCommentXML = new DocumentationXML();
+            documentationCommentXML.setDocumentation(node.getEditName());
+            annotationCommentXML.setDocumentationXML(documentationCommentXML);
+            if(node.getDocumentation() != null){
+                documentationXML.setDocumentation("Commentaire : " + node.getDocumentation());
+                annotationXML.setDocumentationXML(documentationXML);
+            }
+        }
+    }
     /**
      * Set Cardinality to element or attribute Rng
      * @param node
