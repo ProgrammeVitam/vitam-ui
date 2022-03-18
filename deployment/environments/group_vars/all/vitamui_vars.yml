@@ -400,7 +400,7 @@ vitamui:
     host: "vitamui-pastis-external.service.{{ consul_domain }}"
     vitamui_component: "pastis-external"
     vitamui_component_type: "external"
-    package_name: "vitamui-pastis-external"
+    package_name: "vitamui-pastis"
     service_name: "vitamui-pastis-external"
     store_name: "pastis-external"
     port_service: 8015
