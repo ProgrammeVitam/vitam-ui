@@ -17,13 +17,13 @@ export class ModifyTextButtonComponent implements OnInit {
 
   editmode = false;
   editText = '';
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
+
   edit() {
     this.editmode = true;
-    this.node.editName ? this.editText = this.node.editName : this.editText = this.node.name;
+    this.editText = this.node.editName ? this.node.editName : this.node.name;
   }
 
   save() {

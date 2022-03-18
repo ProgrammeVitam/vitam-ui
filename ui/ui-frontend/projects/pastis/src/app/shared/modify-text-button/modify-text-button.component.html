@@ -1,14 +1,16 @@
-<div class ="ok">
- <span>
-  <span *ngIf="editText ; else elseBlock">{{editText}}</span>
-  <ng-template #elseBlock> {{ node.editName ? node.editName : node.name}}</ng-template>
-  <input [(ngModel)]="editText" *ngIf="editmode" type="text" />
-</span>
+<div class="ok row mb-2">
 
-  <button *ngIf="!editmode" (click)="edit()">edit</button>
-  <button *ngIf="editmode" (click)="save()">save</button>
-  <button *ngIf="editmode" (click)="cancel()">cancel</button>
+  <div class="col-6 mr-5" *ngIf="editmode ; else elseBlock">
+    <input class="pastis-input-edit" [(ngModel)]="editText" type="text" />
+  </div>
+  <div class="col-2">
+    <button class="pastis-button" *ngIf="!editmode" (click)="edit()">edit</button>
+    <button class="pastis-button" *ngIf="editmode" (click)="save()">save</button>
+  </div>
+  <div class="col-2">
+    <button class="pastis-button" *ngIf="editmode" (click)="cancel()">cancel</button>
+  </div>
 </div>
 
 
-
+<ng-template #elseBlock> <div class="col-6">{{ node.editName ? node.editName : node.name}}</div></ng-template>
