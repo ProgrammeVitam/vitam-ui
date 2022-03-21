@@ -35,9 +35,7 @@ import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.administration.AgenciesModel;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
-import fr.gouv.vitamui.archives.search.common.dto.AgencyResponseDto;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
@@ -49,13 +47,13 @@ import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -64,7 +62,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -82,33 +82,36 @@ public class ArchiveInternalService {
     public static final String ARCHIVE_UNIT_USAGE = "qualifier";
     public static final String ARCHIVE_UNIT_VERSION = "DataObjectVersion";
 
-
     private final ObjectMapper objectMapper;
 
-    final private UnitService unitService;
+    private final UnitService unitService;
 
-    final private AgencyService agencyService;
+    private final ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
 
     @Autowired
     public ArchiveInternalService(final ObjectMapper objectMapper, final UnitService unitService,
-        final AgencyService agencyService) {
+        ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService) {
         this.unitService = unitService;
         this.objectMapper = objectMapper;
-        this.agencyService = agencyService;
-
+        this.archiveSearchAgenciesInternalService = archiveSearchAgenciesInternalService;
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(final SearchCriteriaDto searchQuery,
         final VitamContext vitamContext)
         throws VitamClientException, IOException {
-        RequestResponse<AgenciesModel> requestResponse =
-            agencyService.findAgencies(vitamContext, new Select().getFinalSelect());
-        final List<AgencyModelDto> actualAgencies = objectMapper
-            .treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
 
-        mapAgenciesLabelsToAgenciesCodesInCriteria(searchQuery, actualAgencies);
-        Map<String, AgencyModelDto> actualAgenciesMapByIdentifier =
-            actualAgencies.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
+        List<AgencyModelDto> actualAgencies = archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, vitamContext);
+        SearchCriteriaEltDto searchCriteriaEltDtoAgencies = new SearchCriteriaEltDto();
+        if(!CollectionUtils.isEmpty(actualAgencies)) {
+            mapAgenciesLabelsToAgenciesCodesInCriteria(searchQuery, actualAgencies);
+
+            List<String> agenciesIdentifiers = actualAgencies.stream().map(AgencyModelDto::getIdentifier)
+                .filter(Objects::nonNull).collect(Collectors.toList());
+            searchCriteriaEltDtoAgencies.setCriteria(ORIGINATING_AGENCY_ID_FIELD);
+            searchCriteriaEltDtoAgencies.setValues(agenciesIdentifiers);
+        }
+
+        searchQuery.getCriteriaList().add(searchCriteriaEltDtoAgencies);
         LOGGER.debug("calling find archive units by criteria {} ", searchQuery.toString());
         List<String> archiveUnits = Arrays.asList(INGEST_ARCHIVE_TYPE);
         JsonNode response = searchUnits(mapRequestToDslQuery(archiveUnits, searchQuery), vitamContext);
@@ -116,8 +119,17 @@ public class ArchiveInternalService {
             objectMapper.treeToValue(response, VitamUISearchResponseDto.class);
         List<ArchiveUnit> archivesFilled = new ArrayList<>();
         if (archivesOriginResponse != null) {
+
+            Set<String> originatingAgenciesCodes = archivesOriginResponse.getResults().stream().map(
+                    ResultsDto::getOriginatingAgency).
+                filter(Objects::nonNull).collect(Collectors.toSet());
+            List<AgencyModelDto> originAgenciesFound =
+                archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(vitamContext, originatingAgenciesCodes);
+            Map<String, AgencyModelDto> agenciesMapByIdentifier =
+                originAgenciesFound.stream().collect(Collectors.toMap(AgencyModelDto::getIdentifier, agency -> agency));
+
             archivesFilled = archivesOriginResponse.getResults().stream().map(
-                archiveUnit -> fillOriginatingAgencyName(archiveUnit, actualAgenciesMapByIdentifier)
+                archiveUnit -> fillOriginatingAgencyName(archiveUnit, agenciesMapByIdentifier)
             ).collect(Collectors.toList());
         }
 
@@ -148,13 +160,13 @@ public class ArchiveInternalService {
         if (searchQuery != null && searchQuery.getCriteriaList() != null && !searchQuery.getCriteriaList().isEmpty()) {
             List<String> originatingAgencyLabelList = searchQuery.getCriteriaList().stream()
                 .filter(criteria -> ORIGINATING_AGENCY_LABEL_FIELD.equals(criteria.getCriteria()))
-                .map(criteria -> criteria.getValues()).flatMap(List::stream)
+                .map(SearchCriteriaEltDto::getValues).flatMap(List::stream)
                 .collect(Collectors.toList());
 
             if (originatingAgencyLabelList != null && !originatingAgencyLabelList.isEmpty()) {
                 List<String> filteredAgenciesId = actualAgencies.stream()
                     .filter(agency -> originatingAgencyLabelList.contains(agency.getName()))
-                    .map(agency -> agency.getIdentifier())
+                    .map(AgencyModelDto::getIdentifier)
                     .collect(Collectors.toList());
                 AtomicInteger i = new AtomicInteger();
                 int indexOpt = searchQuery.getCriteriaList().stream().peek(v -> i.incrementAndGet())
@@ -198,7 +210,7 @@ public class ArchiveInternalService {
                     .filter(criteria -> criteria.getValues() != null && !criteria.getValues().isEmpty())
                     .forEach(criteria -> vitamCriteria.put(criteria.getCriteria(), criteria.getValues()));
             }
-            if (searchQuery.getSortingCriteria() != null) {
+            if (searchQuery != null && searchQuery.getSortingCriteria() != null) {
                 direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
                 orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
             }
