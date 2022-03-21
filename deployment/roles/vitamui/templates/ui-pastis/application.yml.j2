@@ -26,10 +26,10 @@ server:
   servlet.context-path: /
   servlet.session.cookie.path: /
 {% else %}
-  servlet.context-path: /referential
-  servlet.session.cookie.path: /referential
+  servlet.context-path: /pastis
+  servlet.session.cookie.path: /pastis
 {% endif %}
-  scheme: {% if vitamui.referential.secure|lower =='true' %}https{% else %}http{% endif %}
+  scheme: {% if vitamui.pastis.secure|lower =='true' %}https{% else %}http{% endif %}
 
 {% if vitamui_struct.secure|lower =='true' %}
   ssl:
@@ -125,7 +125,7 @@ ui-pastis:
 {% if vitamui.referential.base_url is defined %}
     referential: "{{ vitamui.referential.base_url }}"
 {% else %}
-    referential: "{{ url_prefix }}/referential"
+    referential: "{{ url_prefix }}/pastis"
 {% endif %}
 {% if vitamui.pastis.base_url is defined %}
     pastis: "{{ vitamui.pastis.base_url }}"
@@ -144,7 +144,7 @@ ui:
 {% if vitamui_struct.base_url is defined %}
   url: "{{ vitamui_struct.base_url }}"
 {% else %}
-  url: "{{ url_prefix }}/referential"
+  url: "{{ url_prefix }}/pastis"
 {% endif %}
   redirect-url: ${ui.url}/${ui-prefix}
 
