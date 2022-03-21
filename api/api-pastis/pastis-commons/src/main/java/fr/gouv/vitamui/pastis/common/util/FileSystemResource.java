@@ -38,12 +38,9 @@ knowledge of the CeCILL-C license and that you accept its terms.
 
 package fr.gouv.vitamui.pastis.common.util;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.lang.Nullable;
 
-@Getter@Setter
 public final class FileSystemResource extends ByteArrayResource {
 
     private String fileName;
@@ -51,6 +48,14 @@ public final class FileSystemResource extends ByteArrayResource {
     public FileSystemResource(byte[] byteArray, String filename) {
         super(byteArray);
         this.fileName = filename;
+    }
+
+    public String getFilename() {
+        return fileName;
+    }
+
+    public void setFilename(String fileName) {
+        this.fileName = fileName;
     }
 
     @Override
