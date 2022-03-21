@@ -280,8 +280,10 @@
           <div class="col">
             <h2 class="pastis-dialog-config-title" matDialogTitle>
               <span class="pastis-dialog-title">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENUMERATION_CONTROLE' |
-                translate}}<mat-icon class="pastis-icon-primary"><i class="vitamui-icon vitamui-icon-info"></i>
-                </mat-icon>
+                translate}}<mat-icon class="pastis-icon-primary "> <i
+                  class="vitamui-icon vitamui-icon-info primary clickable" [matTooltip]="'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.INFO_ENNUMERATION' |
+                 translate" matTooltipClass="vitamui-tooltip"></i>
+              </mat-icon>
               </span>
             </h2>
           </div>
@@ -339,7 +341,7 @@
 
           </div>
           <div style="position: relative; right:20px; "><button class="btn btn-circle large "
-              style="background-color: transparent; border-width: 0ch;">
+              style="background-color: transparent; border-width: 0ch;" (click)="closeControlsVue()">
               <i class="material-icons">close</i>
             </button></div>
         </div>
@@ -402,10 +404,17 @@
 
       <div class="pastis-container-button-submit-controls">
         <!--Button add metadata-->
-        <button *ngIf=" (enumerationControl || expressionControl ) && (clickedControl.name === clickedNode.name  )" [disabled]="this.enumsControlSeleted.length <= 0 && regex === null && customRegex === null"
+        <div class="row mt-3">
+          <button *ngIf=" (enumerationControl || expressionControl ) && (clickedControl.name === clickedNode.name  )" [disabled]="this.enumsControlSeleted.length <= 0 && regex === null && customRegex === null"
           class="btn primary  ml-5" style="text-transform: uppercase;" (click)="onSubmitControls()">
           {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate}}
         </button>
+        <button *ngIf=" (enumerationControl || expressionControl ) && (clickedControl.name === clickedNode.name  ) && isAppliedControl(clickedControl.id)" 
+        class="btn secondary  ml-5" style="text-transform: uppercase;" (click)="onDeleteControls()">
+        {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_DELETE_BUTTON_LABEL' | translate}}
+      </button>
+        </div>
+        
       </div>
 
     </div>

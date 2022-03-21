@@ -185,6 +185,8 @@
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
+        "INFO_EXPRESSION": "Liste permettant d'effectuer des contrôles prédéfinis pour certaines valeurs (par ex. une date ou une adresse email)",
+        "INFO_ENNUMERATION": "Signaler les valeurs autorisées",
         "SUPPRIMER": "Supprimer",
         "AUTORISER_PRESENCE_METADONNEE": "Autoriser la presence de metadonnee non declarees",
         "ADDITIONAL_PROPERTIES_TOOLTIP": "Autoriser ou non la présence, dans un bordereau, de métadonnées non déclarées dans le PUA",
@@ -198,6 +200,7 @@
           "COMMENTAIRE": "Commentaire"
         },
         "POPUP_CONTROL_OK_BUTTON_LABEL": "AJOUTER LES CONTROLES",
+        "POPUP_CONTROL_DELETE_BUTTON_LABEL": "SUPPRIMER LES CONTROLES",
         "POPUP_CONTROL_SUB_TITLE_DIALOG": "Ajouter des contrôles supplémentaires à",
         "POPUP_CONTROL_TITLE_DIALOG": "Veuillez séléctionner un ou plusieurs contrôles"
       }
