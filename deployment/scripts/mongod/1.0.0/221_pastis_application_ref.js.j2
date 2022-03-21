@@ -8,8 +8,10 @@ db.applications.insert({
     "identifier" : "PASTIS_APP",
 {% if vitamui.pastis.base_url is defined %}
     "url": "{{ vitamui.pastis.base_url }}/pastis",
+    "serviceId": "^{{ vitamui.pastis.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/pastis/pastis",
+    "serviceId": "^{{ url_prefix }}/pastis/.*",
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-ontologie",
     "name" : "Profils Documentaires",
@@ -20,11 +22,6 @@ db.applications.insert({
     "hasHighlight" : false,
     "tooltip" : "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique",
     "target" : "_self",
-    {% if vitamui.pastis.base_url is defined %}
-    	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
-    {% else %}
-    	"serviceId": "^{{ url_prefix }}/pastis/.*",
-    {% endif %}
 });
 
 print("END 221_pastis_application_ref.js");
