@@ -406,6 +406,7 @@ vitamui:
     port_service: 8015
     port_admin: 7115
     secure: true
+    server_connection_timeout: 60000
     jvm_log: false
     logging_level: "INFO"
     log:
