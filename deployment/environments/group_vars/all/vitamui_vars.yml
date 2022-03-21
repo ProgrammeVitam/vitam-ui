@@ -331,7 +331,7 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
-    tmp_folder_path : "{{ vitamui_defaults.folder.root_path }}/tmp"
+    tmp_folder_path: "{{ vitamui_defaults.folder.root_path }}/tmp"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -400,7 +400,7 @@ vitamui:
     host: "vitamui-pastis-external.service.{{ consul_domain }}"
     vitamui_component: "pastis-external"
     vitamui_component_type: "external"
-    package_name: "vitamui-pastis"
+    package_name: "vitamui-pastis-external"
     service_name: "vitamui-pastis-external"
     store_name: "pastis-external"
     port_service: 8015
