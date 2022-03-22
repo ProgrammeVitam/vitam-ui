@@ -2,28 +2,21 @@
 
 - name: Install mongo-express package
   package:
-    name: vitamui-mongo-express
+    name: "{{ package_name }}"
     state: latest
   tags:
-    - mongod
+    - mongo-express
 
-# TODO OMA : finaliser ce truc...
-- name: Push mongo-express scripts and config
+- name: Push mongo-express script and config
   template:
     src: "env.sh.j2"
     dest: "{{ vitamui_defaults.folder.root_path }}/conf/mongo-express/env.sh"
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: 0755
-
-- name: Ensure mongo-express is started
-  systemd:
-    name: vitamui-mongo-express
-    state: restarted
-    enabled: yes
-    daemon_reload: yes
+  notify: restart mongo-express
   tags:
-    - mongod
+    - mongo-express
 
 #### Consul configuration ####
 - name: Deploy consul agent service declaration
@@ -37,5 +30,20 @@
     - "mongo-express-{{ mongo_cluster_name }}"
   tags:
     - consul_conf
+    - mongo-express
   notify:
-   - reload consul configuration
+   - reload consul configuration for mongo-express
+
+- meta: flush_handlers
+  tags:
+    - consul_conf
+    - mongo-express
+
+- name: Ensure mongo-express is started & at boot
+  systemd:
+    name: "{{ service_name }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags:
+    - mongo-express
