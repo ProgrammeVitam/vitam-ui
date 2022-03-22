@@ -397,7 +397,7 @@ vitamui:
       vitamui_level: "DEBUG"
 
   pastis_external:
-    host: "vitamui-pastis-external.service.{{ consul_domain }}"
+    host: "pastis-external.service.{{ consul_domain }}"
     vitamui_component: "pastis-external"
     vitamui_component_type: "external"
     package_name: "vitamui-pastis-external"
