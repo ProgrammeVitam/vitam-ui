@@ -75,6 +75,7 @@
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
     state: directory
   tags:
+    - consul_conf
     - update_mongodb_configuration
 
 - name: Deploy consul agent service declaration
@@ -88,12 +89,12 @@
     - consul_conf
     - update_mongodb_configuration
   notify:
-   - reload consul configuration
-
+   - reload consul configuration for mongo
 
 # Ensure that the installation is complete and consul up before contnuing...
 - meta: flush_handlers
   tags:
+    - consul_conf
     - update_mongodb_configuration
 
 - name: Ensure service is started

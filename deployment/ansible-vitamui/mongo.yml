@@ -4,10 +4,10 @@
   roles:
     - mongo_common
     - mongo
-    - { role: mongo-express, when: "mongo_express_enabled | default(false) | bool == true" }
     - {
         role: mongo_init,
         mongod_source_template_dir: "../scripts/mongod/",
         tags: mongo_init
       }
     - mongo_configure
+    - { role: mongo-express, when: "mongo_express_enabled | default(false) | bool == true" }

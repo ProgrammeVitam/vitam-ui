@@ -1,6 +1,6 @@
 ---
 
-- name: reload consul configuration
+- name: reload consul configuration for mongo
   service:
     name: "{{ consul_service }}"
     state: reloaded
