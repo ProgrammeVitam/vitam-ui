@@ -42,7 +42,6 @@ import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
-import { CardinalityConstants, FileNode } from '../../models/file-node';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
