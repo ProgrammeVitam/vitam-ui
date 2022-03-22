@@ -158,8 +158,7 @@ export class FileTreeMetadataComponent {
       { label: 'AAAA-MM-JJ', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}' },
       { label: 'AAAA-MM-JJTHH:MM:SS', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}' },
       { label: 'AAAA', value: '[0-9]{4}' },
-      { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' },
-      { label: 'Adresse mail', value: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}' }
+      { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' }
     ];
   availableRegex: Array<{ label: string, value: string }>;
 
@@ -658,11 +657,11 @@ export class FileTreeMetadataComponent {
           this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
           break;
         case DateFormatType.dateType:
-          this.availableRegex = this.formatagePredefini.slice(0, -1);
+          this.availableRegex = this.formatagePredefini;
           break;
         default:
           this.availableRegex = this.formatagePredefini
-            .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
+            .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA');
           break;
       }
       this.regex = this.formatagePredefini[0].value;
@@ -849,9 +848,9 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
-  isElementEdit(node: MetadataHeaders) : boolean {
-    if(this.profileService.profileMode==='PUA') return false;
-    if (node.nomDuChampEdit){
+  isElementEdit(node: MetadataHeaders): boolean {
+    if (this.profileService.profileMode === 'PUA') { return false; }
+    if (node.nomDuChampEdit) {
     return true;
     }
     return false;

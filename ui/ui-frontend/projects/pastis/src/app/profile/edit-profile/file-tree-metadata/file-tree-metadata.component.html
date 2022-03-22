@@ -107,13 +107,14 @@
                                                     [dpDayPicker]="config"
                                                     [maxlength]="120"
                                                     [ngModel]="element.valeurFixe"
-                                                    class="valeur-fixe-pastis">
+                                                    class="valeur-fixe-pastis"
+                                                    [disabled]="this.profileService.profileMode === 'PUA'">
                   </vitamui-common-editable-textarea>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'enumeration'">
                 <mat-select [ngModel]="element.valeurFixe" class="mat-select-valeur-fixe"
-                  placeholder="Choisissez une valeur">
+                  placeholder="Choisissez une valeur" [disabled]="this.profileService.profileMode === 'PUA'">
                   <mat-option [value]=""></mat-option>
                   <mat-option *ngFor="let val of element.enumeration; let i =index" [value]="val">
                     <mat-checkbox (change)="onChange(element,val);selected = i" [checked]="selected === i"> {{val}}
@@ -124,8 +125,8 @@
               <ng-container *ngIf="!checkElementType(element.nomDuChamp)">
                 <div *ngSwitchDefault class="pastis-vitamui-container-editable-valeur-fixe">
                   <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)" [maxlength]="120"
-                    [ngModel]="element.valeurFixe" class="valeur-fixe-pastis">
-                  </vitamui-common-editable-textarea>
+                    [ngModel]="element.valeurFixe" class="valeur-fixe-pastis" [disabled]="this.profileService.profileMode === 'PUA'">
+                  </vitamui-common-editable-textarea >
                 </div>
               </ng-container>
             </ng-container>
@@ -410,7 +411,7 @@
           {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_OK_BUTTON_LABEL' | translate}}
         </button>
         <button *ngIf=" (enumerationControl || expressionControl ) && (clickedControl.name === clickedNode.name  ) && isAppliedControl(clickedControl.id)" 
-        class="btn secondary  ml-5" style="text-transform: uppercase;" (click)="onDeleteControls()">
+        class="btn delete  ml-5" style="text-transform: uppercase;" (click)="onDeleteControls()">
         {{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.POPUP_CONTROL_DELETE_BUTTON_LABEL' | translate}}
       </button>
         </div>
