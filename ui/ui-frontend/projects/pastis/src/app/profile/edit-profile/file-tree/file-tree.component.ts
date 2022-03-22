@@ -136,7 +136,6 @@ export class FileTreeComponent implements OnDestroy {
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
   viewChild: FileNode[] = [];
-
   notificationRemoveSuccessOne: string;
   notificationRemoveSuccessTwo: string;
   notificationAddMetadonneePOne: string;
@@ -793,10 +792,10 @@ export class FileTreeComponent implements OnDestroy {
     }
   }
 
-  changeFileNode($event: string, node:FileNode) {
+  changeFileNode($event: string, node: FileNode) {
     node.nonEditFileNode = true;
     node.editName = $event;
-    this.fileService.nodeChange.next(node)
+    this.fileService.nodeChange.next(node);
 
     this.updateMedataTable(node);
   }
