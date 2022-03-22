@@ -44,8 +44,3 @@ mongodb:
         user: versioning
         password: changeit_versioning
         roles: '[{ role: "readWrite", db: "versioning" }]'
-    archivesearch:
-      db: archivesearch
-      user: api-archive-search
-      password: changeit_archivesearch
-      roles: '[{ role: "readWrite", db: "archivesearch" }]'
