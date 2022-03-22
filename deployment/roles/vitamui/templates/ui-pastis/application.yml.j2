@@ -48,6 +48,13 @@ server:
         enabled: "{{ vitamui_struct.jvm_log|lower }}"
         directory: "{{ vitamui_folder_log }}"
 
+management.endpoints.web.exposure.include: "*"
+
+logging:
+  config: {{ vitamui_folder_conf }}/logback.xml
+  level:
+    fr.gouv.vitamui.pastis.*: {{ vitamui_struct.log.vitamui_level }}
+
 
 management:
   server:
@@ -55,8 +62,6 @@ management:
     ssl:
       enabled: false
 
-logging:
-    config: {{ vitamui_folder_conf }}/logback.xml
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
@@ -115,6 +120,26 @@ ui-pastis:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
+  pastis-external-client:
+    server-host: {{ vitamui.pastis_external.host }}
+    server-port: {{ vitamui.pastis_external.port_service }}
+    connect-time-out: {{ vitamui.pastis_external.connect_timeout }}
+    read-time-out: {{ vitamui.pastis_external.read_timeout }}
+    write-time-out: {{ vitamui.pastis_external.write_timeout }}
+
+{% if vitamui.pastis_external.secure|lower == "true" %}
+    secure: {{ vitamui.pastis_external.secure|lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{%endif %}
+
   assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
   base-url:
 {% if vitamui.portal.base_url is defined %}
@@ -186,3 +211,6 @@ opentracing:
       host: {{ opentracing.jaeger.udp_sender.host }}
       port: {{ opentracing.jaeger.udp_sender.port }}
 
+pua:
+  definitions:
+    file: pua_validation/ProfileJson
