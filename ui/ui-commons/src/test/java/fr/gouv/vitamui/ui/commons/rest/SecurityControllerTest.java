@@ -38,6 +38,7 @@ public class SecurityControllerTest extends UIControllerTest<UserDto> {
         public UIProperties uiProperties() {
             final UIPropertiesImpl properties = new UIPropertiesImpl();
             properties.setIamExternalClient(new RestClientConfiguration());
+            properties.setReferentialExternalClient(new RestClientConfiguration());
             return properties;
         }
     }

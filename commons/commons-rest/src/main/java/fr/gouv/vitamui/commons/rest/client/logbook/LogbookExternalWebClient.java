@@ -34,62 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-package fr.gouv.vitamui.ui.commons.config;
+package fr.gouv.vitamui.commons.rest.client.logbook;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.ui.commons.property.BaseUrl;
-import fr.gouv.vitamui.ui.commons.property.UIProperties;
-import lombok.Getter;
-import lombok.Setter;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Map;
+/**
+ * A Web flux client to get logbooks for an External API.
+ *
+ *
+ */
+public class LogbookExternalWebClient extends LogbookInternalWebClient<ExternalHttpContext> {
 
-@Getter
-@Setter
-public class UIPropertiesImpl implements UIProperties {
-    /**
-     * Prefix URL RestController
-     */
-    private String prefix;
+    public LogbookExternalWebClient(final WebClient webClient, final String baseUrl) {
+        super(webClient, baseUrl);
+    }
 
-    /**
-     * Limitation for pagination
-     */
-    private Integer limitPagination = Integer.MAX_VALUE;
-
-    /**
-     * baseUrl for applications
-     */
-    private BaseUrl baseUrl = new BaseUrl();
-
-    private RestClientConfiguration iamExternalClient;
-
-    private String portalLogo;
-
-    private String headerLogo;
-
-    private String footerLogo;
-
-    private String portalTitle;
-
-    private String portalMessage;
-
-    private Map<String, String> themeColors;
-
-    private String assets;
-
-    private String platformName;
-
-    private Map<String, String> customer;
-
-    private String userLogo;
-
-    /**
-     * Map of application categories (key: category ID, value: category properties)
-     */
-    private Map<String, Map<String, Object>> portalCategories;
-
-    private String versionRelease;
-
-    private RestClientConfiguration referentialExternalClient;
 }

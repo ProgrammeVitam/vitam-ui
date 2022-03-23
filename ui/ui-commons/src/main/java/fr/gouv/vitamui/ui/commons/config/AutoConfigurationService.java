@@ -38,6 +38,7 @@ package fr.gouv.vitamui.ui.commons.config;
 
 import fr.gouv.vitamui.commons.security.client.logout.CasLogoutUrl;
 import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.ExternalParamProfileService;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
@@ -74,8 +75,8 @@ public class AutoConfigurationService {
     @Bean
     @DependsOn("iamRestClientFactory")
     @ConditionalOnMissingBean
-    public LogbookService logbookService(final IamExternalRestClientFactory factory) {
-        return new LogbookService(factory.getLogbookExternalRestClient());
+    public LogbookService logbookService(final IamExternalRestClientFactory factory, final IamExternalWebClientFactory webClientFactory) {
+        return new LogbookService(factory.getLogbookExternalRestClient(), webClientFactory.getLogbookExternalWebClient());
     }
 
     @Bean

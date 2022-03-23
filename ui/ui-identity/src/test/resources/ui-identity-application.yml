@@ -34,6 +34,19 @@ ui-identity:
     portal: "https://localhost:4200"
     admin-identity: "${ui.url}"
     identity: "${ui.url}"
+  referential-external-client:
+    server-host: localhost
+    server-port: 8087
+    secure: true
+    ssl-configuration:
+      keystore:
+        key-path: src/main/config/dev/keystore_ui-referential.jks
+        key-password: changeme
+        type: JKS
+      truststore:
+        key-path: src/main/config/truststore_server.jks
+        key-password: changeme
+      hostname-verification: false
 
 ui-prefix: identity-api
 
