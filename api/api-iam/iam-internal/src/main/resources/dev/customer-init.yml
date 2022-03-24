@@ -177,6 +177,7 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_UPDATE_UNIT_DESC_METADATA
 
     - name: Archiviste administrateur
       description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination

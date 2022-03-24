@@ -35,17 +35,28 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subscription } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Logger, Option, StartupService } from 'ui-frontend-common';
-import { extend, isEmpty } from 'underscore';
-import { ArchiveService } from '../../archive.service';
-import { Unit } from '../../models/unit.interface';
-import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
+} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {Observable, of, Subscription} from 'rxjs';
+import {catchError, filter, map, switchMap} from 'rxjs/operators';
+import {diff, Logger, Option, StartupService} from 'ui-frontend-common';
+import {extend, isEmpty} from 'underscore';
+import {ArchiveService} from '../../archive.service';
+import {Unit} from '../../models/unit.interface';
+import {UnitDescriptiveMetadataDto} from '../../models/unitDescriptiveMetadata.interface';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
@@ -81,7 +92,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   hasEnDescription = false;
   hasNoDescription = false;
   updateFormSub: Subscription;
-  @Output() 
+  @Output()
   showNormalPanel = new EventEmitter<any>();
   @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteMessageDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
@@ -103,17 +114,17 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   descriptionLevels: Option[] = [
-    { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
-    { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
     { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
-    { key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION') },
-    { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
-    { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
-    { key: 'Subgrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP')},
-    { key: 'Otherlevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') },
-    { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
+    { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
+    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP')},
+    { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
     { key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES') },
-    { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') }
+    { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
+    { key: 'Collection', label: this.translateService.instant('UNIT_UPDATE.COLLECTION') },
+    { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
+    { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
+    { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') },
+    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') }
   ];
 
   ngOnInit() {
@@ -277,21 +288,44 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
       .subscribe((formData: any) => console.log('value au = ', formData));
   }
 
-  updateStatusInvalid(): boolean {
-    return (
-      (this.form.get('title').value == this.previousValue.title || this.form.get('title').invalid || this.form.get('title').pending) &&
-      (this.form.get('description').invalid ||
-        this.form.get('description').pending ||
-        this.form.get('description').value == this.previousValue.description
-        ||
-        (this.form.get('description').value === '' && this.hasNoDescription)
-        ) &&
-      (this.form.get('descriptionLevel').invalid ||
-        this.form.get('descriptionLevel').pending ||
-        this.form.get('descriptionLevel').value == this.previousValue.descriptionLevel) &&
-      this.getStartDate(this.form.get('startDate').value) === this.getStartDate(this.previousValue.startDate) &&
-      this.getStartDate(this.form.get('endDate').value) === this.getStartDate(this.previousValue.endDate)
-    );
+  private formHasValidTitle(): boolean {
+    var title = this.form.get('title');
+    return title != null && !title.invalid && !title.pending
+  }
+
+  private formHasValidDescription(): boolean {
+    var description = this.form.get('description');
+    return !description.invalid && !description.pending
+  }
+
+  private formHasValidDescriptionLevel(): boolean {
+    var descriptionLevel = this.form.get('descriptionLevel');
+    return !descriptionLevel.invalid && !descriptionLevel.pending
+  }
+
+  private formDescriptionHasChanged() {
+    const formVal = this.form.get('description').value;
+    const previousVal = this.previousValue.description;
+    if((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
+      return false;
+    }
+    return formVal != previousVal;
+  }
+
+  private formHasChanges() {
+    return this.form.get('title').value != this.previousValue.title ||
+      this.formDescriptionHasChanged() ||
+      this.form.get('descriptionLevel').value != this.previousValue.descriptionLevel ||
+      this.getStartDate(this.form.get('startDate').value) != this.getStartDate(this.previousValue.startDate) ||
+      this.getStartDate(this.form.get('endDate').value) != this.getStartDate(this.previousValue.endDate)
+  }
+
+  private formIsValid() {
+    return this.formHasValidTitle() && this.formHasValidDescription() && this.formHasValidDescriptionLevel()
+  }
+
+  formHasChangesAndIsValid(): boolean {
+    return this.formIsValid() && this.formHasChanges();
   }
 
   launchUpdate() {
@@ -313,7 +347,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         }
 
         let desc = null;
-        if(this.hasNoDescription && dif?.description ?.length > 0 && !this.hasFrDescription && !this.hasEnDescription){
+        if(this.hasNoDescription || ( dif?.description ?.length > 0 && !this.hasFrDescription && !this.hasEnDescription)){
             desc = dif.description;
         }
 
@@ -332,7 +366,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
           unsetAction: this.unsetAction
         }
         this.updateUnit(this.archiveUnit, metadataToUpdate);
-
       });
   }
 
@@ -412,7 +445,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
           this.translateService.instant('UNIT_UPDATE.EXECUTE_UNIT_UPDATE_MESSAGE'),
           serviceUrl
         );
-      
+
     },
       (error: any) => {
         this.logger.error('Error message :', error);
@@ -466,7 +499,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   ngOnDestroy() {
-    this.updateFormSub.unsubscribe();
+    this.updateFormSub?.unsubscribe();
   }
 
 }

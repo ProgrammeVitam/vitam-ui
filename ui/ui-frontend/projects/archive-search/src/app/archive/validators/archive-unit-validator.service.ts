@@ -77,7 +77,7 @@ export class ArchiveUnitValidatorService {
       const auditExists: any = {};
       auditExists[existTag] = true;
       let criteria = cloneDeep(criteriaDto);
-
+      criteria.pageNumber = 0;
       criteria.criteriaList.forEach((v) =>
         v.values.forEach((v) => {
           v.id = control.value;
@@ -91,7 +91,6 @@ export class ArchiveUnitValidatorService {
                 .searchArchiveUnitsByCriteria(criteria, accessContract)
                 .toPromise()
                 .then((data) => {
-                  console.log('AU EXISTENCE = ', data);
                   if (data.totalResults === 1) {
                     this.shared.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
                     return false;

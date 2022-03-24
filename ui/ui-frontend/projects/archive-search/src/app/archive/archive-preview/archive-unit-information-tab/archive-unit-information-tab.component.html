@@ -19,8 +19,10 @@
           </ng-template>
         </div>
       </div>
-      <div class="form-control" *ngIf="updateStarted">
-        <vitamui-common-input formControlName="title" required placeholder="Title" class="col-6 px-0" [value]="getAuTitle(archiveUnit)">
+      <div class="form-control read-only-field" *ngIf="updateStarted">
+        <vitamui-common-input formControlName="title" required
+                              placeholder="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.NAME' | translate }}"
+                              class="col-6 px-0" [value]="getAuTitle(archiveUnit)">
         </vitamui-common-input>
         <div class="col-6"></div>
       </div>
@@ -70,7 +72,7 @@
       <div class="form-control" *ngIf="updateStarted">
         <vitamui-common-input
           formControlName="description"
-          placeholder="description"
+          placeholder="{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }}"
           class="col-6 px-0"
           [value]="getAuDescription(archiveUnit)"
         >
@@ -104,7 +106,7 @@
     <div class="col-6">
       <div class="read-only-field">
         <label
-          >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }}
+          >{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.PATH' | translate }} :
           <button class="ml-2 btn-show-full-path" type="button" (click)="showArchiveUniteFullPath()">
             {{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.BTN_SHOW_COMPLETE_PATH' | translate }}
           </button>
@@ -119,21 +121,24 @@
       <div class="read-only-field" *ngIf="!updateStarted">
         <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
         <div>
-          {{ archiveUnit.DescriptionLevel }}
+          {{ 'UNIT_UPDATE.' + archiveUnit.DescriptionLevel.toUpperCase() | translate }}
         </div>
       </div>
 
-      <div class="form-group select-group-info" *ngIf="updateStarted">
-        <mat-form-field class="vitamui-mat-select">
-          <mat-select formControlName="descriptionLevel" placeholder="Niveau de description" panelclass="vitamui-mat-select" required>
-            <mat-option *ngFor="let descriptionLevel of descriptionLevels" [value]="descriptionLevel.key">{{
-              descriptionLevel.label
-            }}</mat-option>
-          </mat-select>
-          <div class="select-arrow">
-            <i class="material-icons">keyboard_arrow_down</i>
-          </div>
-        </mat-form-field>
+      <div class="form-group select-group-info read-only-field" *ngIf="updateStarted">
+        <label>{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_PREVIEW.FIELDS.DESCRIPTION_LEVEL' | translate }} :</label>
+        <div>
+          <mat-form-field class="vitamui-mat-select">
+            <mat-select formControlName="descriptionLevel" placeholder="Niveau de description" panelclass="vitamui-mat-select" required>
+              <mat-option *ngFor="let descriptionLevel of descriptionLevels" [value]="descriptionLevel.key">
+                {{ descriptionLevel.label }}
+              </mat-option>
+            </mat-select>
+            <div class="select-arrow">
+              <i class="material-icons">keyboard_arrow_down</i>
+            </div>
+          </mat-form-field>
+        </div>
       </div>
     </div>
   </div>
@@ -151,14 +156,8 @@
         <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
         <mat-datepicker #pickerSatrDate></mat-datepicker>
       </div>
-      <button
-        class="red-button-cancel"
-        *ngIf="form.get('startDate').value"
-        type="button"
-        mat-mini-fab
-        (click)="clearDate('startDate')"
-      >
-        <i class="material-icons">close</i>
+      <button class="btn-circle btn-size" *ngIf="form.get('startDate').value" type="button" (click)="clearDate('startDate')">
+        <i class="material-icons close-color">close</i>
       </button>
     </div>
 
@@ -174,9 +173,8 @@
         <input class="hidden" size="0" [matDatepicker]="pickerEndDate" formControlName="endDate" />
         <mat-datepicker #pickerEndDate></mat-datepicker>
       </div>
-      <button  
-        class="red-button-cancel" *ngIf="form.get('endDate').value" type="button" mat-mini-fab (click)="clearDate('endDate')">
-        <i class="material-icons">close</i>
+      <button class="btn-circle btn-size" *ngIf="form.get('endDate').value" type="button" (click)="clearDate('endDate')">
+        <i class="material-icons close-color">close</i>
       </button>
     </div>
     <div class="col-6" *ngIf="updateStarted"></div>
@@ -208,7 +206,7 @@
   </div>
   <div class="row padding-style" *ngIf="updateStarted">
     <div class="col-2 actions">
-      <button type="button" class="btn primary" [disabled]="updateStatusInvalid()" (click)="launchUpdate()">
+      <button type="button" class="btn primary" [disabled]="!formHasChangesAndIsValid()" (click)="launchUpdate()">
         {{ 'UNIT_UPDATE.SAVE' | translate }}
       </button>
     </div>
