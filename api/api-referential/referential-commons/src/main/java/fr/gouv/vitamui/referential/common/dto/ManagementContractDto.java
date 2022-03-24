@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -70,5 +71,7 @@ public class ManagementContractDto extends IdDto implements Serializable {
     private String deactivationDate;
 
     private StorageDto storage;
+
+    private VersionRetentionPolicyDto versionRetentionPolicy;
 
 }

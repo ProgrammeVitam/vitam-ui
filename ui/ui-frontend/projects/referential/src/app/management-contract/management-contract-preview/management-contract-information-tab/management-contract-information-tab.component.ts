@@ -1,5 +1,5 @@
 import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
-import {FormBuilder,FormGroup,Validators} from '@angular/forms';
+import {FormBuilder,FormControl,FormGroup,Validators} from '@angular/forms';
 import {ManagementContract} from 'projects/vitamui-library/src/public-api';
 import {Observable,of} from 'rxjs';
 import {catchError,filter,map,switchMap} from 'rxjs/operators';
@@ -24,7 +24,8 @@ export class ManagementContractInformationTabComponent implements OnInit {
     if(!managementContract.description) {
       this._inputManagementContract.description='';
     }
-
+    this.form.controls.status.setValue(managementContract.status);
+    this.statusControl = new FormControl(managementContract.status === 'ACTIVE');
     this.resetForm(this.inputManagementContract);
     this.updated.emit(false);
   }
@@ -35,6 +36,7 @@ export class ManagementContractInformationTabComponent implements OnInit {
 
   // tslint:disable-next-line:variable-name
   public _inputManagementContract: ManagementContract;
+  public statusControl = new FormControl();
 
   @Input()
   set readOnly(readOnly: boolean) {
@@ -58,7 +60,7 @@ export class ManagementContractInformationTabComponent implements OnInit {
       identifier: [null,Validators.required],
       name: [null,Validators.required],
       description: [null,Validators.required],
-      status: [null,Validators.required],
+      status: [null],
       storage: this.formBuilder.group({ 
         unitStrategy: ['', Validators.required],
         objectGroupStrategy: ['', Validators.required],
@@ -68,12 +70,10 @@ export class ManagementContractInformationTabComponent implements OnInit {
     this.form.disable({emitEvent: false});
   }
 
-  ngOnInit(): void {}
-
-  updateStatus(event: any):void {
-    if (event.pointerId === -1) {
-      this.form.controls['status'].setValue(((event.target as HTMLInputElement).checked)?'ACTIVE':'INACTIVE');
-    }
+  ngOnInit(): void {
+    this.statusControl.valueChanges.subscribe((value:boolean) => {
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+    });
   }
 
   unchanged(): boolean {
@@ -83,12 +83,26 @@ export class ManagementContractInformationTabComponent implements OnInit {
   }
 
   prepareSubmit(): Observable<ManagementContract> {
-    return of(diff(this.form.getRawValue(),this.previousValue())).pipe(
+    return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id,identifier: this.previousValue().identifier},formData)),
-      switchMap((formData: {id: string,[key: string]: any}) => this.managementContractService.patch(formData).pipe(catchError(() => of(null)))));
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
+      switchMap((formData: { id: string; [key: string]: any }) => {
+        // Update the activation and deactivation dates if the contract status has changed before sending the data
+        if (formData.status) {
+          if (formData.status === 'ACTIVE') {
+            formData.activationDate = new Date();
+            formData.deactivationDate = null;
+          } else {
+            formData.status = 'INACTIVE';
+            formData.activationDate = null;
+            formData.deactivationDate = new Date();
+          }
+        }
+        return this.managementContractService.patch(formData).pipe(catchError(() => of(null)));
+      })
+    );
   }
-
+  
   onSubmit() {
     this.submited=true;
     this.prepareSubmit().subscribe(() => {

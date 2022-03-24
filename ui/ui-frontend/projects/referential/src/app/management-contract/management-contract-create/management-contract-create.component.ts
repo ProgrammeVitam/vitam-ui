@@ -39,6 +39,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService } from 'ui-frontend-common';
+import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
 
@@ -53,6 +54,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   form: FormGroup;
   stepIndex = 0;
   isDisabledButton = false;
+  isSlaveMode: boolean;
 
   // stepCount is the total number of steps and is used to calculate the advancement of the progress bar.
   // We could get the number of steps using ViewChildren(StepComponent) but this triggers a
@@ -82,9 +84,9 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       description: [null, Validators.required],
       // Step 2
       storage: this.formBuilder.group({ 
-        unitStrategy: ['', Validators.required],
-        objectGroupStrategy: ['', Validators.required],
-        objectStrategy: ['', Validators.required],
+        unitStrategy: ['default', Validators.required],
+        objectGroupStrategy: ['default', Validators.required],
+        objectStrategy: ['default', Validators.required],
       }),
       // Step 3
     });
@@ -114,7 +116,11 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       return;
     }
     this.isDisabledButton = true;
-    this.managementContractService.create(this.form.value).subscribe(
+    const managementContract = this.form.value as ManagementContract;
+    managementContract.status === 'ACTIVE'
+      ? (managementContract.activationDate = new Date().toISOString())
+      : (managementContract.deactivationDate = new Date().toISOString());
+    this.managementContractService.create(managementContract).subscribe(
       () => {
         this.isDisabledButton = false;
         this.dialogRef.close({ success: true, action: 'none' });
@@ -140,6 +146,17 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       this.form.get('description').pending ||
       this.form.get('status').invalid ||
       this.form.get('status').pending
+    );
+  }
+
+  secondStepInvalid(): boolean {
+    return (
+      this.form.controls.storage.get('unitStrategy').invalid ||
+      this.form.controls.storage.get('unitStrategy').pending ||
+      this.form.controls.storage.get('objectGroupStrategy').invalid ||
+      this.form.controls.storage.get('objectGroupStrategy').pending ||
+      this.form.controls.storage.get('objectStrategy').invalid ||
+      this.form.controls.storage.get('objectStrategy').pending
     );
   }
 }

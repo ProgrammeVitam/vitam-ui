@@ -71,6 +71,7 @@
         <div class="content">
           <h5>Création d'un contrat de gestion</h5>
           <h4>Paramétrage des stratégies de stockage</h4>
+          <i class="vitamui-icon vitamui-icon-info" vitamuicommontooltip="RIGHT" type="RIGHT" outline="true" ng-reflect-text="Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques." ng-reflect-type="RIGHT" ng-reflect-outline="true"></i>
 
           <div class="form-group">
             <div class="row">
@@ -95,7 +96,7 @@
           </div>
           <div class="actions">
             <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
             <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
           </div>
         </div>

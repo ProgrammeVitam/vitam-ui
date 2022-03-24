@@ -57,9 +57,11 @@ public class StorageDto implements Serializable {
     private String objectStrategy;
 
     public StorageDto (StorageDetailDto storageDetailDto){
-        this.unitStrategy = storageDetailDto.getUnitStrategy();
-        this.objectGroupStrategy = storageDetailDto.getObjectGroupStrategy();
-        this.objectStrategy = storageDetailDto.getObjectStrategy();
+        if (storageDetailDto != null) {
+            this.unitStrategy = storageDetailDto.getUnitStrategy();
+            this.objectGroupStrategy = storageDetailDto.getObjectGroupStrategy();
+            this.objectStrategy = storageDetailDto.getObjectStrategy();
+        }
     }
 
     @JsonCreator

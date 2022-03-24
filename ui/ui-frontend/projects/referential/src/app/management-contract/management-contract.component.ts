@@ -81,7 +81,6 @@ export class ManagementContractComponent extends SidenavPage<ManagementContract>
         panelClass: 'vitamui-modal',
         disableClose: true,
       });
-      dialogRef.componentInstance.tenantIdentifier = this.tenantId;
       dialogRef.componentInstance.isSlaveMode = this.isSlaveMode;
       dialogRef.afterClosed().subscribe((result) => {
         if (result !== undefined) {

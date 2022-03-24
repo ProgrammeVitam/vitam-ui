@@ -15,6 +15,14 @@ public class VersionRetentionPolicyDto implements Serializable {
     private VersionUsageDto.IntermediaryVersionEnum intermediaryVersion;
     Set<VersionUsageDto> usages;
 
+    public VersionRetentionPolicyDto (VersionRetentionPolicyDto versionRetentionPolicyDto){
+        if (versionRetentionPolicyDto != null) {
+            this.initialVersion = versionRetentionPolicyDto.initialVersion;
+            this.intermediaryVersion = versionRetentionPolicyDto.intermediaryVersion;
+            this.usages = versionRetentionPolicyDto.usages;
+        }
+    }
+
     @JsonProperty("usages")
     public Set<VersionUsageDto> getUsages() {
         return usages;

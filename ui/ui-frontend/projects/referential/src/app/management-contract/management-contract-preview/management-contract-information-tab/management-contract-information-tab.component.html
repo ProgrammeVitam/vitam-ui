@@ -1,11 +1,10 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
 
-    <vitamui-common-slide-toggle
-            i18n="Contract Activé@@ActivatedManagementContract"
-            (click)="updateStatus($event)"
-            checked="form.controls['status'].value === 'ACTIVE'"
-    >
-    </vitamui-common-slide-toggle>
+    <div class="row">
+        <div class="col">
+            <vitamui-common-slide-toggle [formControl]="statusControl">Contrat de gestion actif </vitamui-common-slide-toggle>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-10 form-control">

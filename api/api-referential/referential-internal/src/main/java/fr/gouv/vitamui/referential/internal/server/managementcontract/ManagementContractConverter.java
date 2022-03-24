@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.internal.server.managementcontract;
 
 import fr.gouv.vitamui.commons.api.domain.ManagementContractModelDto;
+import fr.gouv.vitamui.commons.api.domain.VersionRetentionPolicyDto;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
@@ -57,7 +58,7 @@ public class ManagementContractConverter {
     public ManagementContractDto convertVitamToDto(final ManagementContractVitamDto managementContract) {
         final ManagementContractDto dto = VitamUIUtils.copyProperties(managementContract, new ManagementContractDto());
         dto.setStorage(new StorageDto(managementContract.getStorage()));
-
+        dto.setVersionRetentionPolicy(new VersionRetentionPolicyDto(managementContract.getVersionRetentionPolicy()));
         return dto;
     }
 

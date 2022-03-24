@@ -12,10 +12,29 @@ export interface ManagementContract extends Id {
   activationDate: string;
   deactivationDate: string;
   storage: StorageStrategy;
+  versionRetentionPolicyDto: VersionRetentionPolicy;
 }
 
 export interface StorageStrategy {
   unitStrategy: string,
   objectGroupStrategy: string,
   objectStrategy: string
+}
+
+export interface VersionRetentionPolicy {
+  initialVersion: boolean;
+  intermediaryVersionEnum: string;
+  usages: Set<VersionUsage>;  
+}
+
+export interface VersionUsage {
+  usageName: string;
+  initialVersion: boolean;
+  intermediaryVersion: IntermediaryVersionEnum;
+}
+
+export enum IntermediaryVersionEnum {
+  ALL = "ALL",
+  LAST = "LAST",
+  NONE = "NONE"
 }
