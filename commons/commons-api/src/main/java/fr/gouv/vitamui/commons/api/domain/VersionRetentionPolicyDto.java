@@ -1,14 +1,17 @@
 package fr.gouv.vitamui.commons.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @ToString
+
 public class VersionRetentionPolicyDto implements Serializable {
 
     private boolean initialVersion;
@@ -20,7 +23,18 @@ public class VersionRetentionPolicyDto implements Serializable {
             this.initialVersion = versionRetentionPolicyDto.initialVersion;
             this.intermediaryVersion = versionRetentionPolicyDto.intermediaryVersion;
             this.usages = versionRetentionPolicyDto.usages;
+        } else {
+            this.usages = new HashSet<>();
         }
+    }
+
+    @JsonCreator
+    public VersionRetentionPolicyDto(@JsonProperty("initialVersion") boolean initialVersion,
+                                     @JsonProperty("intermediaryVersion") VersionUsageDto.IntermediaryVersionEnum intermediaryVersion,
+                                     @JsonProperty("usages") Set<VersionUsageDto> usages) {
+        this.initialVersion = initialVersion;
+        this.intermediaryVersion = intermediaryVersion;
+        this.usages = usages;
     }
 
     @JsonProperty("usages")
