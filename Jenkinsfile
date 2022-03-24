@@ -9,7 +9,7 @@ pipeline {
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         CI = credentials("app-jenkins")
         SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
-        SERVICE_SONAR_URL = credentials("service-sonar-url")
+        SERVICE_SONAR_URL = credentials("service-sonar-java11-url")
         SERVICE_GIT_URL = credentials("service-gitlab-url")
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
@@ -83,7 +83,7 @@ pipeline {
                 NODE_OPTIONS="--max_old_space_size=12288"
             }
             steps {
-                sh 'node -v'                
+                sh 'node -v'
                 sh 'npmrc default'
                 //sh 'export NODE_OPTIONS="--max-old-space-size=12288"'
 
