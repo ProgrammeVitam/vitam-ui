@@ -93,6 +93,7 @@ export class ManagementContractListComponent extends InfiniteScrollTable<Managem
           activationDate: managementContract.activationDate,
           deactivationDate: managementContract.deactivationDate,
           storage: managementContract.storage,
+          versionRetentionPolicy: managementContract.versionRetentionPolicy,
         };
       }
     });
