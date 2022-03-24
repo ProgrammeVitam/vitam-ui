@@ -3,8 +3,7 @@
       <app-management-contract-preview
         *ngIf="openedItem"
         (previewClose)="closePanel()"
-        [managementContract]="openedItem"
-        [tenantIdentifier]="tenantId"
+        [inputManagementContract]="openedItem"
       >
       </app-management-contract-preview>
     </mat-sidenav>

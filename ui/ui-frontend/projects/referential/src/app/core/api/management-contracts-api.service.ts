@@ -49,7 +49,7 @@ const HTTP_STATUS_OK = 200;
 export class ManagementContractsApiService extends BaseHttpClient<ManagementContract> {
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/managementcontract');
+    super(http, baseUrl + '/management-contract');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {

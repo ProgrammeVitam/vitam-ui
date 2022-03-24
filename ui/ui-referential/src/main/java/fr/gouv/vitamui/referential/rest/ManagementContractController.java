@@ -66,9 +66,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
-@Api(tags = "managementcontract")
+@Api(tags = "management-contract")
 @RestController
-@RequestMapping("${ui-referential.prefix}/managementcontract")
+@RequestMapping("${ui-referential.prefix}/management-contract")
 @Consumes("application/json")
 @Produces("application/json")
 public class ManagementContractController extends AbstractUiRestController {
@@ -88,7 +88,9 @@ public class ManagementContractController extends AbstractUiRestController {
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get all with criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
-        return service.getAll(buildUiHttpContext(), criteria);
+        Collection<ManagementContractDto> managementContractDtoList =  service.getAll(buildUiHttpContext(), criteria);
+        LOGGER.debug(managementContractDtoList.stream().iterator().next().getStorage().toString());
+        return  managementContractDtoList;
     }
 
     @ApiOperation(value = "Get entities paginated")

@@ -100,7 +100,7 @@ public class ManagementContractExternalController {
         return managementContractExternalService.getOne(identifier);
     }
 
-    @Secured({ ServicesData.SERVICE_MANAGEMENT_CONTRACT })
+    @Secured({ ServicesData.ROLE_GET_MANAGEMENT_CONTRACT })
     @PostMapping(CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody ManagementContractDto managementContractDto, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("check exist managementContract={}", managementContractDto);

@@ -15,7 +15,7 @@ export interface ManagementContract extends Id {
 }
 
 export interface StorageStrategy {
-  UnitStrategy: string,
-  ObjectGroupStrategy: string,
-  ObjectStrategy: string
+  unitStrategy: string,
+  objectGroupStrategy: string,
+  objectStrategy: string
 }

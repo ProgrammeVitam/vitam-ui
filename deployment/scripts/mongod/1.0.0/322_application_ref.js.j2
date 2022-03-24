@@ -7,7 +7,7 @@ print("START 322_application_ref.js");
 db.applications.insert({
     "identifier" : "MANAGEMENT_CONTRACT_APP",
 {% if vitamui.referential.base_url is defined %}
- "url": "{{ vitamui.referential.base_url }}/management_contract",
+ "url": "{{ vitamui.referential.base_url }}/management-contract",
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-ontologie",
     "name" : "Contrats de Gestion",

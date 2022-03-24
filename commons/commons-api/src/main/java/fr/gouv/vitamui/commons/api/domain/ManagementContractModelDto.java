@@ -46,6 +46,10 @@ import java.io.Serializable;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ManagementContractModelDto implements Serializable {
 
+    private StorageDetailDto storage;
+
+    private VersionRetentionPolicyDto versionRetentionPolicy;
+
     private String id;
 
     private Integer tenant;
@@ -68,65 +72,70 @@ public class ManagementContractModelDto implements Serializable {
 
     private String activationDate;
 
-    private StorageDto storage;
+
+
+    @JsonProperty("versionRetentionPolicy")
+    public void setVersionRetentionPolicy(VersionRetentionPolicyDto versionRetentionPolicy) {
+        this.versionRetentionPolicy = versionRetentionPolicy;
+    }
 
     @JsonProperty("#id")
     public void setId(String id) {
         this.id = id;
     }
 
-    @JsonProperty("tenant")
+    @JsonProperty("#tenant")
     public void setTenant(Integer tenant) {
         this.tenant = tenant;
     }
 
-    @JsonProperty("version")
+    @JsonProperty("#version")
     public void setVersion(Integer version) {
         this.version = version;
     }
 
-    @JsonProperty("name")
+    @JsonProperty("Name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @JsonProperty("identifier")
+    @JsonProperty("Identifier")
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
     }
 
-    @JsonProperty("description")
+    @JsonProperty("Description")
     public void setDescription(String description) {
         this.description = description;
     }
 
-    @JsonProperty("status")
+    @JsonProperty("Status")
     public void setStatus(String status) {
         this.status = status;
     }
 
-    @JsonProperty("creationDate")
+    @JsonProperty("CreationDate")
     public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
-    @JsonProperty("lastUpdate")
+    @JsonProperty("LastUpdate")
     public void setLastUpdate(String lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
-    @JsonProperty("activationDate")
+    @JsonProperty("ActivationDate")
     public void setActivationDate(String activationDate) {
         this.activationDate = activationDate;
     }
 
-    @JsonProperty("deactivationDate")
+    @JsonProperty("DeactivationDate")
     public void setDeactivationDate(String deactivationDate) {
         this.deactivationDate = deactivationDate;
     }
 
-    @JsonProperty("storage")
-    public void setStorage(StorageDto storage) {
+    @JsonProperty("Storage")
+    public void setStorage(StorageDetailDto storage) {
         this.storage = storage;
     }
 
@@ -135,54 +144,64 @@ public class ManagementContractModelDto implements Serializable {
         return id;
     }
 
-    @JsonProperty("#tenant")
+    @JsonProperty("tenant")
     public Integer getTenant() {
         return tenant;
     }
 
-    @JsonProperty("#version")
+    @JsonProperty("version")
     public Integer getVersion() {
         return version;
     }
 
-    @JsonProperty("Name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
 
-    @JsonProperty("Identifier")
+    @JsonProperty("identifier")
     public String getIdentifier() {
         return identifier;
     }
 
-    @JsonProperty("Description")
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
 
-    @JsonProperty("Status")
+    @JsonProperty("status")
     public String getStatus() {
         return status;
     }
 
-    @JsonProperty("CreationDate")
+    @JsonProperty("creationDate")
     public String getCreationDate() {
         return creationDate;
     }
 
-    @JsonProperty("LastUpdate")
+    @JsonProperty("lastUpdate")
     public String getLastUpdate() {
         return lastUpdate;
     }
 
-    @JsonProperty("ActivationDate")
+    @JsonProperty("activationDate")
     public String getActivationDate() {
         return activationDate;
     }
 
-    @JsonProperty("Storage")
-    public StorageDto getStorage() {
+    @JsonProperty("storage")
+    public StorageDetailDto getStorage() {
         return storage;
+    }
+
+    @JsonProperty("versionRetentionPolicy")
+    public VersionRetentionPolicyDto getVersionRetentionPolicy() {
+        return versionRetentionPolicy;
+    }
+
+    @JsonProperty("deactivationDate")
+    public String getDeactivationDate() {
+        return deactivationDate;
     }
 
 }

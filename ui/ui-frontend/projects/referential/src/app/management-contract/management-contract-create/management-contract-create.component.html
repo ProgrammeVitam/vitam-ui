@@ -69,326 +69,35 @@
 
       <cdk-step>
         <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>Informations</h4>
+          <h5>Création d'un contrat de gestion</h5>
+          <h4>Paramétrage des stratégies de stockage</h4>
 
           <div class="form-group">
             <div class="row">
-              <div class="col-6 form-control">
-                <mat-form-field class="vitamui-mat-select">
-                  <mat-select formControlName="archiveProfiles" placeholder="Profil d'archivage" panelclass="vitamui-mat-select" multiple>
-                    <mat-option *ngFor="let profiles of archiveProfiles" [value]="profiles.identifier">{{ profiles.name }} </mat-option>
-                  </mat-select>
-                  <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                  </div>
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6 form-control">
-                <mat-form-field class="vitamui-mat-select">
-                  <mat-select formControlName="managementContractId" placeholder="Contrat de gestion" panelclass="vitamui-mat-select">
-                    <mat-option *ngFor="let managementContract of managementContracts" [value]="managementContract.identifier"
-                      >{{ managementContract.name }}
-                    </mat-option>
-                  </mat-select>
-                  <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_up</i>
-                    <i class="material-icons">keyboard_arrow_down</i>
-                  </div>
-                </mat-form-field>
-              </div>
-            </div>
-          </div>
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>Format des fichiers</h4>
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col-8 form-control">
-                <vitamui-common-slide-toggle formControlName="everyFormatType">Tous les formats de fichiers </vitamui-common-slide-toggle>
-                <i
-                  class="material-icons field-tooltip"
-                  matTooltip="Autoriser tout les formats d'objets binaires existant dans le référentiel des formats"
-                  matTooltipClass="vitamui-tooltip"
-                  >info</i
-                >
-              </div>
-            </div>
-
-            <div class="row" *ngIf="form?.controls.everyFormatType?.value === false">
-              <div class="form-control col-8">
-                <mat-form-field class="vitamui-mat-select">
-                  <mat-select
-                    formControlName="formatType"
-                    placeholder="Sélectionnez les formats de fichiers"
-                    panelclass="vitamui-mat-select"
-                    required
-                    multiple
-                  >
-                    <mat-option *ngFor="let fileFormat of formatTypeList" [value]="fileFormat.puid">{{ fileFormat.name }} </mat-option>
-                  </mat-select>
-                  <div class="select-arrow">
-                    <i class="material-icons">keyboard_arrow_down</i>
-                  </div>
-                </mat-form-field>
-              </div>
-              <i
-                class="material-icons field-tooltip select-tooltip"
-                matTooltip="Choisir les formats binaires que vous souhaitez autoriser"
-                matTooltipClass="vitamui-tooltip"
-                >info</i
-              >
-            </div>
-
-            <div class="row">
-              <div class="col-12 form-control">
-                <vitamui-common-slide-toggle formControlName="formatUnidentifiedAuthorized">
-                  Autoriser les formats non identifiés
-                </vitamui-common-slide-toggle>
-                <i
-                  class="material-icons field-tooltip"
-                  matTooltip="Autoriser les formats d'objets binaires non référencés dans le référentiel des formats"
-                  matTooltipClass="vitamui-tooltip"
-                  >info</i
-                >
-              </div>
-            </div>
-          </div>
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>Objets</h4>
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col-6 form-control">
-                <vitamui-common-slide-toggle formControlName="binaryObjectMandatory"
-                  >Original binaire obligatoire
-                </vitamui-common-slide-toggle>
-                <i
-                  class="material-icons field-tooltip"
-                  matTooltip="option permettant de rendre obligatoire ou non la présence d’un objet binaire de type « Master »"
-                  matTooltipClass="vitamui-tooltip"
-                  >info</i
-                >
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4 form-)control">
-                <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous usages autorisés </vitamui-common-slide-toggle>
-                <div class="form-control" *ngIf="form?.controls.everyDataObjectVersion?.value === false">
-                  <mat-form-field class="vitamui-mat-select">
-                    <mat-select
-                      formControlName="dataObjectVersion"
-                      required="required"
-                      placeholder="Sélectionnez les usages"
-                      panelclass="vitamui-mat-select"
-                      multiple
-                    >
-                      <mat-option *ngFor="let usage of usages" [value]="usage.key">
-                        {{ usage.label }}
-                      </mat-option>
-                    </mat-select>
-                    <div class="select-arrow">
-                      <i class="material-icons">keyboard_arrow_down</i>
-                    </div>
-                  </mat-form-field>
+              <div formGroupName="storage" style="width: 100%;">
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="unitStrategy" placeholder="Pour les métadonnées décrivant des unités d’archives (et leur journal du cycle de vie)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
+                </div>
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="objectGroupStrategy" placeholder="Pour les métadonnées décrivant des groupes d’objets techniques (et leur journal du cycle de vie)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
+                </div>
+                <div class="col-12 form-control">
+                    <vitamui-common-input formControlName="objectStrategy" placeholder="Pour les fichiers numériques (objets binaires)"
+                        i18n-placeholder="Identifiant@@managementContractPreviewTabInformation">
+                    </vitamui-common-input>
                 </div>
               </div>
-              <div class="col-3">
-                <i
-                  style="margin-top: 5px"
-                  class="material-icons field-tooltip"
-                  matTooltip="usage(s) autorisé(s) dans le cas de l’ajout d’un objet binaire à un groupe d’objets techniques existant"
-                  matTooltipClass="vitamui-tooltip"
-                  >info</i
-                >
-              </div>
             </div>
           </div>
           <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="fourthStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="firstStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
             <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
           </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat de gestion</h5>
-          <h4>Héritage</h4>
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col-12 form-control">
-                <vitamui-common-slide-toggle formControlName="computeInheritedRulesAtManagement"
-                  >Calcul des héritages de règles et d'indexation des échéances
-                </vitamui-common-slide-toggle>
-                <i
-                  class="material-icons field-tooltip"
-                  matTooltip="Indexation des unités archivistiques indiquée comme invalide lors de leur entrée afin
-                  qu'elles fassent l'objet d'un calcul lors d'un processus automatique déclenché périodiquement"
-                  matTooltipClass="vitamui-tooltip"
-                  >info</i
-                >
-              </div>
-            </div>
-          </div>
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext>Suivant</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">Annuler</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>Retour</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>
-            Position de rattachement<i
-              class="material-icons field-tooltip"
-              matTooltip="Ajouter si nécessaire la position de rattachement auquel on souhaite rattacher le SIP"
-              matTooltipClass="vitamui-tooltip"
-              >info</i
-            >
-          </h4>
-
-          <div class="form-group">
-            <vitamui-library-filing-plan
-              [formControl]="linkParentIdControl"
-              [tenantIdentifier]="tenantIdentifier"
-              [accessContract]="accessContractSelect.value"
-              [mode]="FILLING_PLAN_MODE.SOLO"
-            ></vitamui-library-filing-plan>
-          </div>
-
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>
-            Contrôle des rattachements
-            <i
-              class="material-icons field-tooltip radio-tooltip"
-              style="top: 0"
-              matTooltip="Option permettant de contrôler la déclaration de rattachement dans un bordereau"
-              matTooltipClass="vitamui-tooltip"
-              >info</i
-            >
-          </h4>
-
-          <div class="form-group">
-            <div class="row">
-              <div class="col">
-                <vitamui-radio-group formControlName="checkParentLink">
-                  <vitamui-radio
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltip]="'Autorisé un bordereau à contenir des nœuds sans que cela soit obligatoire'"
-                    label="Autorisé"
-                    value="AUTHORIZED"
-                    [checked]="true"
-                  ></vitamui-radio>
-                  <vitamui-radio
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltip]="'Rend obligatoire la présence d\'au moins un nœud'"
-                    label="Obligatoire"
-                    value="REQUIRED"
-                  ></vitamui-radio>
-                  <vitamui-radio
-                    matTooltipClass="vitamui-tooltip"
-                    [matTooltip]="'Interdit la présence de nœuds de rattachement dans le bordereau'"
-                    label="Interdit"
-                    value="UNAUTHORIZED"
-                  ></vitamui-radio>
-                </vitamui-radio-group>
-              </div>
-            </div>
-          </div>
-          <div class="actions">
-            <button type="button" class="btn primary" cdkStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
-        </div>
-      </cdk-step>
-
-      <cdk-step>
-        <div class="content">
-          <h5>Création d'un contrat d'entrée</h5>
-          <h4>
-            Contrôle des rattachements<i
-              class="material-icons field-tooltip"
-              matTooltip="Sélection des positions de l'arbre"
-              matTooltipClass="vitamui-tooltip"
-              >info</i
-            >
-          </h4>
-
-          <div class="form-group">
-            <vitamui-library-filing-plan
-              [formControl]="checkParentIdControl"
-              [tenantIdentifier]="tenantIdentifier"
-              [accessContract]="accessContractSelect.value"
-              [mode]="FILLING_PLAN_MODE.INCLUDE_ONLY"
-              [required]="checkParentIdControl.value === 'REQUIRED'"
-            ></vitamui-library-filing-plan>
-          </div>
-          <div class="actions">
-            <button type="submit" class="btn primary" [disabled]="seventhStepInvalid()">{{ 'COMMON.SUBMIT' | translate }}</button>
-            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
-          </div>
-          <button type="button" class="back" cdkStepperPrevious>
-            <i class="material-icons">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
-          </button>
         </div>
       </cdk-step>
     </vitamui-common-stepper>

@@ -44,7 +44,7 @@ import {BASE_URL, BaseHttpClient} from 'ui-frontend-common';
 export class ManagementContractApiService extends BaseHttpClient<any> {
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/managementcontract');
+    super(http, baseUrl + '/management-contract');
   }
 
   getAllByParams(params: HttpParams, headers?: HttpHeaders) {

@@ -66,7 +66,7 @@ public class ManagementContractDto implements Serializable {
 
     private String activationDate;
 
-    private StorageDto storage;
+    private StorageDetailDto storage;
 
     @JsonProperty("tenant")
     public void setTenant(Integer tenant) {
@@ -165,7 +165,7 @@ public class ManagementContractDto implements Serializable {
 
 
     @JsonProperty("Storage")
-    public StorageDto getStorage() {
+    public StorageDetailDto getStorage() {
         return storage;
     }
 

@@ -36,17 +36,57 @@
  */
 package fr.gouv.vitamui.commons.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+
+import java.io.Serializable;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-public class StorageDto {
+public class StorageDetailDto implements Serializable {
+
     private String unitStrategy;
     private String objectGroupStrategy;
     private String objectStrategy;
+
+    @JsonCreator
+    public StorageDetailDto(@JsonProperty("UnitStrategy") String unitStrategy,
+                            @JsonProperty("ObjectGroupStrategy") String objectGroupStrategy,
+                            @JsonProperty("ObjectStrategy") String objectStrategy){
+        this.unitStrategy = unitStrategy;
+        this.objectGroupStrategy = objectGroupStrategy;
+        this.objectStrategy = objectStrategy;
+    }
+
+    @JsonProperty("UnitStrategy")
+    public String getUnitStrategy() {
+        return unitStrategy;
+    }
+
+    @JsonProperty("unitStrategy")
+    public void setUnitStrategy(String unitStrategy) {
+        this.unitStrategy = unitStrategy;
+    }
+
+    @JsonProperty("ObjectGroupStrategy")
+    public String getObjectGroupStrategy() {
+        return objectGroupStrategy;
+    }
+
+    @JsonProperty("objectGroupStrategy")
+    public void setObjectGroupStrategy(String objectGroupStrategy) {
+        this.objectGroupStrategy = objectGroupStrategy;
+    }
+
+    @JsonProperty("ObjectStrategy")
+    public String getObjectStrategy() {
+        return objectStrategy;
+    }
+
+    @JsonProperty("objectStrategy")
+    public void setObjectStrategy(String objectStrategy) {
+        this.objectStrategy = objectStrategy;
+    }
 }

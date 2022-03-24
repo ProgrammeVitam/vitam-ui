@@ -39,6 +39,7 @@ package fr.gouv.vitamui.referential.internal.server.managementcontract;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -65,6 +66,7 @@ import fr.gouv.vitamui.referential.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractVitamDto;
+import fr.gouv.vitamui.referential.common.dto.StorageDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
 import fr.gouv.vitamui.referential.common.service.VitamUIManagementContractService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
@@ -164,11 +166,11 @@ public class ManagementContractInternalService {
             requestResponse = managementContractService.findManagementContracts(vitamContext, query);
             LOGGER.debug("VITAM Response: {}", requestResponse.toJsonNode().toPrettyString());
             final ManagementContractResponseDto managementContractResponseDto = objectMapper
-                .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
+                .convertValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
             LOGGER.debug("VITAM DTO: {}", managementContractResponseDto);
 
             return managementContractResponseDto;
-        } catch (VitamClientException | JsonProcessingException e) {
+        } catch (VitamClientException  e) {
             throw new InternalServerException("Unable to find Management Contracts", e);
         }
     }
@@ -222,7 +224,15 @@ public class ManagementContractInternalService {
             propertiesToUpdate.put("CreationDate", (String) partialDto.get("creationDate"));
         }
         if (partialDto.get("storage") != null) {
-            propertiesToUpdate.put("Storage", (String) partialDto.get("storage"));
+            for (Map.Entry<String, String> entry: ((LinkedHashMap<String,String>) partialDto.get("storage")).entrySet()) {
+                String propertyName = "";
+                switch (entry.getKey()){
+                    case "unitStrategy": propertyName = "UnitStrategy";break;
+                    case "objectGroupStrategy": propertyName = "ObjectGroupStrategy";break;
+                    case "objectStrategy": propertyName = "ObjectStrategy";break;
+                }
+                propertiesToUpdate.put("Storage." + propertyName, entry.getValue());
+            }
         }
         return propertiesToUpdate;
     }
