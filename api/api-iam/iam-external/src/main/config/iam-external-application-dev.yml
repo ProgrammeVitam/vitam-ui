@@ -29,7 +29,7 @@ server:
     trust-store: ../../../dev-deployment/environments/keystores/server/truststore_server.jks
     trust-store-password: changeme
     client-auth: need
-    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    enabled-protocols: TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
 management:
