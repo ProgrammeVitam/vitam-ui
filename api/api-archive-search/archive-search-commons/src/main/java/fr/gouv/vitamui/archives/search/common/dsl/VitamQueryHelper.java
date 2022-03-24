@@ -34,6 +34,8 @@ import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.database.facet.model.FacetOrder;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
+import fr.gouv.vitam.common.model.QueryProjection;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -43,6 +45,7 @@ import org.springframework.util.StringUtils;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -57,6 +60,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 
 public class VitamQueryHelper {
@@ -190,6 +194,113 @@ public class VitamQueryHelper {
         LOGGER.info("Final query: {}", select.getFinalSelect().toPrettyString());
         return select.getFinalSelect();
     }
+
+
+
+
+
+    /**
+     * create a valid VITAM DSL Query from a map of criteria
+     *
+     * @param searchCriteriaMap the input criteria. Should match pattern Map(FieldName, SearchValue)
+     * @return The JsonNode required by VITAM external API for a DSL query
+     * @throws InvalidParseOperationException
+     * @throws InvalidCreateOperationException
+     */
+    public static JsonNode createAgenciesQueryDSL(Map<String, Object> searchCriteriaMap,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+
+        final Select select = new Select();
+        final BooleanQuery query = and();
+        BooleanQuery queryOr = or();
+        boolean isEmpty = true;
+        boolean haveOrParameters = false;
+
+        // Manage Filters
+        if (orderBy.isPresent()) {
+            if (direction.isPresent() && DirectionDto.DESC.equals(direction.get())) {
+                select.addOrderByDescFilter(orderBy.get());
+            } else {
+                select.addOrderByAscFilter(orderBy.get());
+            }
+        }
+        Map<String, Integer> projection = new HashMap<>();
+        projection.put("Identifier", 1);
+        projection.put("Name", 1);
+
+        QueryProjection queryProjection = new QueryProjection();
+        queryProjection.setFields(projection);
+        try {
+            select.setProjection(JsonHandler.toJsonNode(queryProjection));
+        } catch (InvalidParseOperationException e) {
+            LOGGER.error("Error constructing vitam query : {}", e);
+            throw new InvalidCreateOperationException("Invalid vitam query", e);
+        }
+        // Manage Query
+        if (!searchCriteriaMap.isEmpty()) {
+            isEmpty = false;
+            Set<Map.Entry<String, Object>> entrySet = searchCriteriaMap.entrySet();
+
+            for (final Map.Entry<String, Object> entry : entrySet) {
+                final String searchKey = entry.getKey();
+
+                switch (searchKey) {
+                    case "Identifier":
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String elt : stringsValues) {
+                                queryOr.add(eq(searchKey, elt));
+                            }
+                            haveOrParameters = true;
+                        } else if (entry.getValue() instanceof String) {
+                            // string equals operation
+                            final String stringValue = (String) entry.getValue();
+                            queryOr.add(eq(searchKey, stringValue));
+                            haveOrParameters = true;
+                        }
+
+                        break;
+
+                    case "Name":
+                    case "ShortName":
+                    case "#id":
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String name : stringsValues) {
+                                queryOr.add(matchPhrasePrefix(searchKey, name));
+                            }
+                            haveOrParameters = true;
+                        } else if (entry.getValue() instanceof String) {
+                            final String stringValue = (String) entry.getValue();
+                            queryOr.add(matchPhrasePrefix(searchKey, stringValue));
+                            haveOrParameters = true;
+                        }
+
+                        break;
+
+                    default:
+                        LOGGER.error("Can not find binding for key: {}", searchKey);
+                        break;
+                }
+            }
+        }
+
+        if (!isEmpty) {
+            if (haveOrParameters) {
+                query.add(queryOr);
+            }
+
+            select.setQuery(query);
+        }
+
+        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+        return select.getFinalSelect();
+    }
+
+
+
+
 
     private static boolean addParameterCriteria(BooleanQuery query, CRITERIA_OPERATORS operator, String searchKey,
         final List<String> searchValues)

@@ -41,7 +41,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
@@ -75,8 +74,8 @@ public class ArchiveInternalServiceTest {
     @MockBean(name = "unitService")
     private UnitService unitService;
 
-    @MockBean(name = "agencyService")
-    private AgencyService agencyService;
+    @MockBean(name = "archiveSearchAgenciesInternalService")
+    private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
 
     @InjectMocks
     private ArchiveInternalService archiveInternalService;
@@ -86,7 +85,8 @@ public class ArchiveInternalServiceTest {
     @Before
     public void setUp() {
         ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
-        archiveInternalService = new ArchiveInternalService(objectMapper, unitService, agencyService);
+        archiveInternalService = new ArchiveInternalService(objectMapper, unitService,
+            archiveSearchAgenciesInternalService);
     }
 
     @Test(expected = InvalidParseOperationException.class)
