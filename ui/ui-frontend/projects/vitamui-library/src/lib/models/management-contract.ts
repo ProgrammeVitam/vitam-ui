@@ -12,7 +12,7 @@ export interface ManagementContract extends Id {
   activationDate: string;
   deactivationDate: string;
   storage: StorageStrategy;
-  versionRetentionPolicyDto: VersionRetentionPolicy;
+  versionRetentionPolicy: VersionRetentionPolicy;
 }
 
 export interface StorageStrategy {
