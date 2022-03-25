@@ -74,6 +74,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   ) {}
 
   statusControl = new FormControl(false);
+  statusControlValueChangesSubscribe: Subscription;
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -91,7 +92,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       // Step 3
     });
 
-    this.statusControl.valueChanges.subscribe((value:boolean) => {
+    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value:boolean) => {
       this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
 
@@ -99,7 +100,11 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.keyPressSubscription.unsubscribe();
+    if (this.keyPressSubscription)
+      this.keyPressSubscription.unsubscribe();
+    if (this.statusControlValueChangesSubscribe)
+      this.statusControlValueChangesSubscribe.unsubscribe();
+
   }
 
   onCancel() {

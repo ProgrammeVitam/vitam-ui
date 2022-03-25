@@ -1,7 +1,7 @@
 import {Component,EventEmitter,Input,OnInit,Output} from '@angular/core';
 import {FormBuilder,FormControl,FormGroup,Validators} from '@angular/forms';
 import {ManagementContract} from 'projects/vitamui-library/src/public-api';
-import {Observable,of} from 'rxjs';
+import {Observable,of, Subscription} from 'rxjs';
 import {catchError,filter,map,switchMap} from 'rxjs/operators';
 import {diff} from 'ui-frontend-common';
 import {extend,isEmpty} from 'underscore';
@@ -17,6 +17,8 @@ export class ManagementContractInformationTabComponent implements OnInit {
   form: FormGroup;
   submited=false;
 
+  statusControlValueChangesSubscribe: Subscription;
+
   @Input()
   set inputManagementContract(managementContract: ManagementContract) {
     this._inputManagementContract=managementContract;
@@ -28,6 +30,13 @@ export class ManagementContractInformationTabComponent implements OnInit {
     this.statusControl = new FormControl(managementContract.status === 'ACTIVE');
     this.resetForm(this.inputManagementContract);
     this.updated.emit(false);
+
+    if (this.statusControlValueChangesSubscribe) {
+      this.statusControlValueChangesSubscribe.unsubscribe();
+    }
+    this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value:boolean) => {
+      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
+    });
   }
 
   get inputManagementContract(): ManagementContract {
@@ -71,9 +80,7 @@ export class ManagementContractInformationTabComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.statusControl.valueChanges.subscribe((value:boolean) => {
-      this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
-    });
+    
   }
 
   unchanged(): boolean {
@@ -119,5 +126,10 @@ export class ManagementContractInformationTabComponent implements OnInit {
 
   resetForm(managementContract: ManagementContract) {
     this.form.reset(managementContract,{emitEvent: false});
+  }
+
+
+  ngOnDestroy() {
+    this.statusControlValueChangesSubscribe.unsubscribe();
   }
 }

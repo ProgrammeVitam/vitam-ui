@@ -234,6 +234,14 @@ public class ManagementContractInternalService {
                 propertiesToUpdate.put("Storage." + propertyName, entry.getValue());
             }
         }
+        /**
+         * TODO
+         * la propriété versionRetentionPolicy n'est pas prise en compte par le back de vitam
+         * donc impossible à tester pour le moment.
+         */
+        if (partialDto.get("versionRetentionPolicy") != null){
+
+        }
         return propertiesToUpdate;
     }
 
