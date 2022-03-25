@@ -141,7 +141,12 @@ public class AccessRegisterVitamQueryHelper {
                         }
                         break;
                     }
-                    case OPI:
+                    case OPI: {
+                        String stringValue = (String) entry.getValue();
+                        queryOr.add(wildcard("#" + searchKey, "*"+stringValue+"*"));
+                        haveOrParameters = true;
+                        break;
+                    }
                     case ORIGINATING_AGENCY: {
                         String stringValue = (String) entry.getValue();
                         queryOr.add(wildcard(searchKey, "*"+stringValue+"*"));
