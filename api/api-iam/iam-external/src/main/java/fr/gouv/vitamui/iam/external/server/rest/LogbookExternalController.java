@@ -40,8 +40,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -51,7 +49,6 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.iam.external.server.service.LogbookExternalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -67,8 +64,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.common.security.SanityChecker.checkAndSanitizeMandatoryFields;
 
 /**
  * UI logbook controller.
@@ -94,7 +92,7 @@ public class LogbookExternalController {
     @GetMapping(CommonConstants.LOGBOOK_OPERATION_BY_ID_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id) {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        checkAndSanitizeMandatoryFields("Identifier is mandatory : ", id);
         return logbookExternalService.findOperationByUnitId(id);
     }
 
@@ -102,7 +100,7 @@ public class LogbookExternalController {
     @GetMapping(CommonConstants.LOGBOOK_UNIT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id) {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        checkAndSanitizeMandatoryFields("Identifier is mandatory : ", id);
         return logbookExternalService.findUnitLifeCyclesByUnitId(id);
     }
 
@@ -110,7 +108,7 @@ public class LogbookExternalController {
     @GetMapping(CommonConstants.LOGBOOK_OBJECT_LYFECYCLES_PATH)
     @ResponseStatus(HttpStatus.OK)
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id) {
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        checkAndSanitizeMandatoryFields("Identifier is mandatory : ", id);
         return logbookExternalService.findObjectGroupLifeCyclesByUnitId(id);
     }
 
@@ -128,7 +126,7 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadManifest(@PathVariable final String id) {
         LOGGER.debug("Download the manifest for the Vitam operation : {}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        checkAndSanitizeMandatoryFields("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadManifest(id);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
@@ -139,7 +137,7 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadAtr(@PathVariable final String id) {
         LOGGER.debug("Download the ATR file for the Vitam operation : {}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        checkAndSanitizeMandatoryFields("Identifier is mandatory : ", id);
         final ResponseEntity<Resource> response = logbookExternalService.downloadAtr(id);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }
@@ -150,7 +148,8 @@ public class LogbookExternalController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> downloadReport(@PathVariable final String id, @PathVariable final String downloadType) {
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
-        ParameterChecker.checkParameter("The Identifier and the download type are mandatory parameters: ", id, downloadType);
+        checkAndSanitizeMandatoryFields("The Identifier and the download type are mandatory parameters: ", id,
+            downloadType);
         ResponseEntity<Resource> responseResource = logbookExternalService.downloadReport(id, downloadType).block();
         return RestUtils.buildFileResponse(responseResource, Optional.empty(), Optional.empty());
     }

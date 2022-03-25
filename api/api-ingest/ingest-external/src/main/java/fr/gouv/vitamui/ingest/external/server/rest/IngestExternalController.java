@@ -38,7 +38,6 @@ package fr.gouv.vitamui.ingest.external.server.rest;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -64,6 +63,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.common.security.SanityChecker.checkAndSanitizeMandatoryFields;
 
 /**
  * UI Ingest External controller
@@ -99,7 +100,7 @@ public class IngestExternalController {
     @GetMapping(CommonConstants.PATH_ID)
     public LogbookOperationDto getOne(@PathVariable("id") final String id) {
         LOGGER.debug("get One Ingest id={}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        checkAndSanitizeMandatoryFields("The Identifier is a mandatory parameter: ", id);
         return ingestExternalService.getOne(id);
     }
 
@@ -107,7 +108,7 @@ public class IngestExternalController {
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
         LOGGER.debug("export ODT report for ingest with id :{}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
+        checkAndSanitizeMandatoryFields("The Identifier is a mandatory parameter: ", id);
         return ingestExternalService.generateODTReport(id);
     }
 
@@ -120,7 +121,7 @@ public class IngestExternalController {
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     ) {
         LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
-        ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
+        checkAndSanitizeMandatoryFields("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
         return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);

@@ -42,6 +42,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.logging.MDC;
 
@@ -126,6 +127,7 @@ public abstract class AbstractHttpContext implements Serializable {
      * @return
      */
     public static boolean urlNeedsTenantIdHeader(final String url) {
+        SanityChecker.check(url);
         return CALLS_WITHOUT_TENANT_ID.stream().noneMatch(whitelist -> StringUtils.isNotEmpty(url)
                 && (whitelist.equalsIgnoreCase(url) || url.contains(whitelist)));
     }

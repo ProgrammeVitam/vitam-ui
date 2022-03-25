@@ -51,6 +51,8 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
+import static fr.gouv.vitamui.common.security.SanityChecker.checkAndSanitizeMandatoryFields;
+
 /**
  * The context of an external REST call (to any API except security).
  *
@@ -108,10 +110,14 @@ public class ExternalHttpContext extends AbstractHttpContext {
     private static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final String userToken, final Integer tenantIdentifier,
             final String accessContract) {
         LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
+
         String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
+        SanityChecker.check(applicationId, identity);
+
         if (StringUtils.isBlank(requestId)) {
+            SanityChecker.check(requestId);
             requestId = VitamUIUtils.generateRequestId();
         }
 
@@ -121,10 +127,13 @@ public class ExternalHttpContext extends AbstractHttpContext {
         String accessContractToUse = accessContract;
         if (StringUtils.isBlank(accessContractToUse)) {
             accessContractToUse = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
+            SanityChecker.check(accessContractToUse);
         }
         Integer tenantIdentifierToUse = tenantIdentifier;
         if (tenantIdentifierToUse == null) {
-            tenantIdentifierToUse = getTenantIdentifier(request.getHeader(CommonConstants.X_TENANT_ID_HEADER), request.getRequestURI());
+            final String tenantHeader = request.getHeader(CommonConstants.X_TENANT_ID_HEADER);
+            SanityChecker.check(tenantHeader);
+            tenantIdentifierToUse = getTenantIdentifier(tenantHeader, request.getRequestURI());
 
         }
         return new ExternalHttpContext(tenantIdentifierToUse, userToken, applicationId, identity, requestId, accessContractToUse);

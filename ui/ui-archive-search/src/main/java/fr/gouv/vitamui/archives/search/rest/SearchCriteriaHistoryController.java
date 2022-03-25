@@ -93,6 +93,7 @@ public class SearchCriteriaHistoryController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public SearchCriteriaHistoryDto create(@RequestBody final SearchCriteriaHistoryDto entityDto) {
         LOGGER.debug("create class={}", entityDto.getClass().getName());
+        SanityChecker.sanitizeCriteria(entityDto);
         return service.create(buildUiHttpContext(), entityDto);
     }
 

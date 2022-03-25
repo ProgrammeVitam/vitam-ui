@@ -33,6 +33,7 @@ import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.logging.SysErrLogger;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeParameterException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
@@ -212,6 +213,11 @@ public class SanityChecker {
         catch (InvalidParseOperationException e) {
             throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + jsonNode.toPrettyString());
         }
+    }
+
+    public static void checkAndSanitizeMandatoryFields(final String errorMessage, final String... parameters) {
+        ParameterChecker.checkParameter(errorMessage, parameters);
+        check(parameters);
     }
 
     /**
