@@ -851,11 +851,11 @@ export class FileTreeMetadataComponent {
   isElementEdit(node: MetadataHeaders): boolean {
     if (this.profileService.profileMode === 'PUA') { return false; }
     if (node.nomDuChampEdit) {
-    return true;
+      return true;
     }
     return false;
   }
-  isEmptyEnumeration(enumerations: string[]): boolean{
+  isEmptyEnumeration(enumerations: string[]): boolean {
     return enumerations ? enumerations.length === 0 : false;
   }
 
@@ -938,7 +938,7 @@ export class FileTreeMetadataComponent {
   changeAutorisation($event: MatCheckboxChange, element: any) {
     console.log($event.checked + 'test' + element.nomDuChamp);
     this.additionalPropertiesMetadonnee = $event.checked;
-    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element);
   }
 
   private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
@@ -952,4 +952,12 @@ export class FileTreeMetadataComponent {
 
   }
 
+  getNodeAdditionalProperties(element: MetadataHeaders): boolean {
+    for (const node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id && node.puaData) {
+        return node.puaData.additionalProperties;
+      }
+    }
+    return false;
+  }
 }

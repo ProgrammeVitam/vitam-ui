@@ -218,7 +218,7 @@
                 </mat-divider>
                 <mat-checkbox
                   *ngIf="isElementComplex(element.nomDuChamp) && this.profileService.profileMode==='PUA'&& isElementNameNotContentManagement(element.nomDuChamp)"
-                  class="mat-menu-item" (change)="changeAutorisation($event, element)">
+                  class="mat-menu-item" (change)="changeAutorisation($event, element)" [checked]="getNodeAdditionalProperties(element)">
                   <span class="allow_presence_text">Autoriser la presence de <br/> métadonnées non déclarées</span>
                   <div class="placement-tooltip">
                     <i class="vitamui-icon vitamui-icon-info primary clickable"

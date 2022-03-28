@@ -70,7 +70,7 @@ public class PuaFromJSON {
         // 2. Add  type
         controlSchema.put("type", TYPE);
         // 3. Add additionProperties
-        controlSchema.put("additionalProperties", elementProperties.getAdditionalProperties());
+        controlSchema.put("additionalProperties", elementProperties.isAdditionalProperties());
         // 4. Check if tree contains Management metadata
         addPatternProperties(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
