@@ -114,7 +114,7 @@
               </ng-container>
               <ng-container *ngSwitchCase="'enumeration'">
                 <mat-select [ngModel]="element.valeurFixe" class="mat-select-valeur-fixe"
-                  placeholder="Choisissez une valeur" [disabled]="this.profileService.profileMode === 'PUA'">
+                  placeholder="Choisissez une valeur" **ngIf="this.profileService.profileMode === 'PUA'">
                   <mat-option [value]=""></mat-option>
                   <mat-option *ngFor="let val of element.enumeration; let i =index" [value]="val">
                     <mat-checkbox (change)="onChange(element,val);selected = i" [checked]="selected === i"> {{val}}
