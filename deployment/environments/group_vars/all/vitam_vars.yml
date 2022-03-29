@@ -11,6 +11,8 @@ vitam_defaults:
     vitam: "vitam"
     vitamdb: "vitamdb"
     group: "vitam"
+  services:
+    at_boot: false
 
 # Mandatory Vitam services for VitamUI
 vitam_vars:
