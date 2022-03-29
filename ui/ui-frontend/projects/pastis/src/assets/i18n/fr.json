@@ -185,7 +185,7 @@
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
-        "INFO_EXPRESSION": "Liste permettant d'effectuer des contrôles prédéfinis pour certaines valeurs (par ex. une date ou une adresse email)",
+        "INFO_EXPRESSION": "Définir une expression régulière pour la valeur de la métadonnée",
         "INFO_ENNUMERATION": "Signaler les valeurs autorisées",
         "SUPPRIMER": "Supprimer",
         "AUTORISER_PRESENCE_METADONNEE": "Autoriser la presence de metadonnee non declarees",

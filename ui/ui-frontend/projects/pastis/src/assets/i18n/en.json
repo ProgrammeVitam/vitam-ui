@@ -181,7 +181,7 @@
         "CONTROLE_METADONNEE": "Metadata control",
         "EDITION_CONTROLE": "Edit controls",
         "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
-        "INFO_EXPRESSION": "List to perform predefined checks for certain values (e.g. date or email address)",
+        "INFO_EXPRESSION": "Set regular expression for metadata value",
         "INFO_ENNUMERATION": "Mention allowed values",
         "FORMATAGE_PREDEFINI": "Use predefined formatting",
         "SAISIR_EXPRESSION": "Enter a regular expression",
