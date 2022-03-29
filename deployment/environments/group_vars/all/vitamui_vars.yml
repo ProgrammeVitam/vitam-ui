@@ -25,6 +25,7 @@ vitamui_defaults:
     api_long_call_timeout: 300
     status_retries_number: 60
     status_retries_delay: 5
+    at_boot: false
   # Filter for the vitam package version to install
   # FIXME : commented as has to be removed becuase doesn't work under Debain
   #package_version: "*"
