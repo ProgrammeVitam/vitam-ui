@@ -50,7 +50,7 @@
 - name: "restart {{ mongodb.service_name }} service"
   service:
       name: "{{ mongodb.service_name }}"
-      enabled: true
+      enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
       state: restarted
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hosts_vitamui_mongod'] }}"

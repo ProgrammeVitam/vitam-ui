@@ -12,3 +12,5 @@ vitamui_folder_tmp: "{{ vitamui_defaults.folder.root_path }}/tmp/{{ vitamui_stru
 
 vitamui_conf_consul: "{{ consul.conf_folder }}"
 service_consul: "{{ consul.service_name }}"
+
+service_at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"
