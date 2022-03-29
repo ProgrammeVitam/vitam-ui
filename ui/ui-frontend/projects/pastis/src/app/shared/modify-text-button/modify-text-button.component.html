@@ -4,11 +4,13 @@
     <input (click)="$event.stopPropagation()" class="pastis-input-edit" [(ngModel)]="editText" type="text" />
   </span>
   <span class="ml-1">
-    <button class="pastis-button" (click)="$event.stopPropagation()" *ngIf="!editmode" (click)="edit()">edit</button>
-    <button class="pastis-button" (click)="$event.stopPropagation()" *ngIf="editmode" (click)="save()">save</button>
+    <button class="pastis-button" (click)="$event.stopPropagation()" *ngIf="!editmode" (click)="edit()"><i class="material-icons edit-icon">edit</i></button>
+
+    <button  (click)="$event.stopPropagation()" *ngIf="editmode" class="pastis-button-valid" (click)="save()" ><i class="material-icons">check</i></button>
+    
   </span>
   <span class="ml-1">
-    <button class="pastis-button" (click)="$event.stopPropagation()" *ngIf="editmode" (click)="cancel()">cancel</button>
+    <button class="pastis-button-cancel" (click)="$event.stopPropagation()" *ngIf="editmode" (click)="cancel()"><i class="material-icons">clear</i></button>
   </span>
 
 

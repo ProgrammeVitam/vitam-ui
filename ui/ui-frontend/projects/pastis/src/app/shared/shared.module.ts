@@ -42,15 +42,16 @@ import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { PastisMaterialModule} from '../material.module';
 import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
+import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
 import { PastisTitleBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
 import { PastisDialogConfirmComponent } from './pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisGenericPopupComponent } from './pastis-generic-popup/pastis-generic-popup.component';
 import { PastisPopupMetadataLanguageComponent } from './pastis-popup-metadata-language/pastis-popup-metadata-language.component';
 import { PastisPopupOptionComponent } from './pastis-popup-option/pastis-popup-option.component';
-import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisUnderConstructionComponent } from './pastis-under-construction/pastis-under-construction.component';
 
 @NgModule({
@@ -71,7 +72,8 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     PastisMaterialModule,
     MatSlideToggleModule,
     PortalModule,
-    TranslateModule
+    TranslateModule,
+    VitamUICommonModule
   ],
   entryComponents: [PastisDialogConfirmComponent, PastisUnderConstructionComponent],
     exports: [
