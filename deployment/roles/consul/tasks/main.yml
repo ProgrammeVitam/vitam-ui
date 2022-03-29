@@ -4,7 +4,6 @@
   fail: msg="{{ vitam_site_name }} not correctly configured"
   when: vitam_site_name|regex_search('[^a-zA-Z0-9\\-]') # found a bug ; no "_" allowed
 
-
 - name: Install {{ consul.package_name }} package
   package:
     name: "{{ consul.package_name }}"
@@ -20,13 +19,6 @@
   user:
     name: vitam
     groups: vitam, {{ vitamui_defaults.users.group }}
-
-- name: Enable {{ consul.service_name }} service
-  service:
-    name: "{{ consul.service_name }}"
-    enabled: true
-  notify:
-      - restart consul
 
 #### Configuration ####
 
@@ -67,6 +59,7 @@
   service:
     name: "{{ consul.service_name }}"
     state: started
+    enabled: "{{ consul.at_boot | default(service_at_boot) }}"
 
 # Changing the resolv.conf doesn't work into a docker container...
 - name: Add consul nameserver to resolv.conf
