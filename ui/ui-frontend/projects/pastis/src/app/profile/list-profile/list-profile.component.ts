@@ -142,13 +142,15 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   constructor(private profileService: ProfileService, private noticeService: NoticeService,
               private router: Router, private dialog: MatDialog,
-              private startupService: StartupService, private pastisConfig: PastisConfiguration, route: ActivatedRoute, globalEventService: GlobalEventService,
-              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService, private toggleService : ToggleSidenavService) {
+              private startupService: StartupService, private pastisConfig: PastisConfiguration,
+              route: ActivatedRoute, globalEventService: GlobalEventService,
+              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
+              private toggleService: ToggleSidenavService) {
     super(route, globalEventService);
     this.expanded = false;
-    this.pendingSub = this.toggleService.isPending.subscribe(status=>{
+    this.pendingSub = this.toggleService.isPending.subscribe(status => {
       this.pending = status;
-    })
+    });
   }
 
   ngOnInit() {
@@ -290,7 +292,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
-    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe())
+    this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
     if(this.pendingSub) this.pendingSub.unsubscribe();
   }
 

@@ -5,14 +5,11 @@
   </span>
   <span class="ml-1">
     <button class="pastis-button" (click)="$event.stopPropagation()" *ngIf="!editmode" (click)="edit()"><i class="material-icons edit-icon">edit</i></button>
-
-    <button  (click)="$event.stopPropagation()" *ngIf="editmode" class="pastis-button-valid" (click)="save()" ><i class="material-icons">check</i></button>
     
+    <div class="editable-field-actions" *ngIf="editmode">
+      <button type="button" class="editable-field-confirm" (click)="$event.stopPropagation(); save()"><i class="material-icons other-icon">check</i></button>
+      <button type="button" class="editable-field-cancel" (click)="$event.stopPropagation(); cancel()"><i class="material-icons other-icon">clear</i></button>
+    </div>
   </span>
-  <span class="ml-1">
-    <button class="pastis-button-cancel" (click)="$event.stopPropagation()" *ngIf="editmode" (click)="cancel()"><i class="material-icons">clear</i></button>
-  </span>
-
-
 
 <ng-template #elseBlock> <span class="mr-3">{{ node.editName ? node.editName : node.name }}</span> </ng-template>

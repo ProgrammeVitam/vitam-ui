@@ -213,6 +213,7 @@
       "TOUS_LES_PROFILS": "All profiles",
       "TABLE": {
         "TYPE_ETAT": "Type / State",
+        "TYPE": "Type",
         "IDENTIFIANT": "Username",
         "INTITULE": "Entitled",
         "DERNIERES_MODIFICATIONS": "Latest changes"

@@ -64,12 +64,12 @@ function constantToTranslate() {
 export class UserActionAddPuaControlComponent implements OnInit {
 
   btnIsDisabled: boolean;
-  enumerationsLabel: string = "Enumération";
-  expressionReguliereLabel: string = "Expression régulière";
-  lengthMinMaxLabel: string = "Longueur Min/Max";
-  valueMinMaxLabel: string = "Valeur Min/Max";
-  enumerationsDefinition: string = "Signaler les valeurs autorisées";
-  expressionReguliereDefinition: string = "Définir une expression régulière pour la valeur de la métadonnée";
+  enumerationsLabel = 'Enumération';
+  expressionReguliereLabel = 'Expression régulière';
+  lengthMinMaxLabel = 'Longueur Min/Max';
+  valueMinMaxLabel = 'Valeur Min/Max';
+  enumerationsDefinition = 'Signaler les valeurs autorisées';
+  expressionReguliereDefinition = 'Définir une expression régulière pour la valeur de la métadonnée';
   allowedChildren: string[];
   addedItems: string[] = [];
   dialogData: PastisDialogData;
@@ -79,11 +79,12 @@ export class UserActionAddPuaControlComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-    private popUpService: PopupService, private translateService: TranslateService) {
-      if(!this.isStandalone){
+              private popUpService: PopupService, private translateService: TranslateService) {
+      if (!this.isStandalone) {
         constantToTranslate.call(this);
         this.translatedOnChange();
       }
+      this.dialogData = this.dialogRef.componentInstance.dialogReceivedData;
       this.refreshAllowedChildren();
     }
 
@@ -92,58 +93,63 @@ export class UserActionAddPuaControlComponent implements OnInit {
     // set the inital state of the ok button to disabled
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
       this.btnIsDisabled = status;
-    })
+    });
+    
   }
 
   onRemoveSelectedElement(element: string) {
-    if(this.isExclusive(element)){
+    if (this.isExclusive(element)) {
       this.refreshAllowedChildren();
-    }else{
-      let indexOfElement = this.addedItems.indexOf(element)
+    } else {
+      const indexOfElement = this.addedItems.indexOf(element);
       if (indexOfElement >= 0) {
-        this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0])
+        this.allowedChildren.push(this.addedItems.splice(indexOfElement, 1)[0]);
       }
     }
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
+    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
     this.upateButtonStatusAndDataToSend();
   }
 
   onAddSelectedElement(element: string) {
     this.addedItems.push(element);
-    if(this.isExclusive(element)){
+    if (this.isExclusive(element)) {
       this.refreshAllowedChildren(element);
-    }else{
-      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    } else {
+      this.allowedChildren = this.allowedChildren.filter(e => e !== element);
     }
-    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false
+    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
     this.upateButtonStatusAndDataToSend();
   }
 
   upateButtonStatusAndDataToSend() {
     this.popUpService.setPopUpDataOnClose(this.addedItems);
-    this.popUpService.disableYesButton(!this.atLeastOneIsSelected)
+    this.popUpService.disableYesButton(!this.atLeastOneIsSelected);
   }
 
   getDefinition(element: string): string {
-    if(element === this.enumerationsLabel){
-      return this.enumerationsDefinition
+    if (element === this.enumerationsLabel) {
+      return this.enumerationsDefinition;
     }
-    if(element === this.expressionReguliereLabel){
-      return this.expressionReguliereDefinition
+    if (element === this.expressionReguliereLabel) {
+      return this.expressionReguliereDefinition;
     }
     return '';
   }
 
-  isExclusive(element: string): boolean{
+  isExclusive(element: string): boolean {
     return element === this.valueMinMaxLabel || element === this.enumerationsLabel;
   }
 
-  refreshAllowedChildren(element?: string){
-
-    if(element){
+  refreshAllowedChildren(element?: string) {
+    if (element) {
       this.addedItems = [element];
       this.allowedChildren = [];
-    }else{
+    } else if (this.dialogData.fileNode.sedaData.Enumeration.length > 0) {
+      this.allowedChildren = [
+        this.enumerationsLabel
+      ];
+      this.addedItems = [];
+    } else {
       this.allowedChildren = [
         this.enumerationsLabel,
         this.expressionReguliereLabel

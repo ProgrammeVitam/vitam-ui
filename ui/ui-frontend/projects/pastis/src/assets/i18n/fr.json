@@ -213,6 +213,7 @@
       "TOUS_LES_PROFILS": "Tous les profils",
       "TABLE": {
         "TYPE_ETAT": "Type/Etat",
+        "TYPE": "Type",
         "IDENTIFIANT": "Identifiant",
         "INTITULE": "Intitulé",
         "DERNIERES_MODIFICATIONS": "Dernières modifications"

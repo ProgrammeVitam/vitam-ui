@@ -8,16 +8,16 @@
   color: var(--vitamui-primary-600);
 }
 
-.pastis-button-valid {
-  background-color: transparent;
-  border-width: 0px;
-  color: green;
+.other-icon {
+  padding: 6px;
 }
 
-.pastis-button-cancel {
-  background-color: transparent;
-  border-width: 0px;
-  color: red;
+.editable-field-actions {
+  display: inline;
+}
+
+.editable-field-confirm {
+  margin-right: 2px;
 }
 
 .pastis-input-edit {

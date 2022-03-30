@@ -96,6 +96,8 @@ public class Notice extends IdDto {
     private String path;
     @JsonProperty("format")
     private ProfileFormat format;
+    @JsonProperty("type")
+    private ProfileType type;
 
     public Notice(Resource r) throws IOException {
         String fileName = r.getFilename();
@@ -114,6 +116,7 @@ public class Notice extends IdDto {
             this.creationDate = new Timestamp(updateDate).toString();
             this.tenant = 1;
             this.version = 1;
+            this.type = getFileType(fileName);
             this.name = getFileBaseName(fileName);
             if (getFileType(fileName).equals(ProfileType.PUA)) {
                 InputStream inputStream = getClass().getClassLoader().getResourceAsStream("rng/" +

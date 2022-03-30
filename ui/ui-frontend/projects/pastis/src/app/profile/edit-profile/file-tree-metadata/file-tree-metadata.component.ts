@@ -227,10 +227,10 @@ export class FileTreeMetadataComponent {
   additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
-    private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService,
-    private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
-    private translateService: TranslateService) {
+              private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
+              private router: Router, private startupService: StartupService, public profileService: ProfileService,
+              private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
+              private translateService: TranslateService) {
 
     this.config = {
       locale: 'fr',
@@ -595,6 +595,7 @@ export class FileTreeMetadataComponent {
   }
 
   onEditControlClick(fileNodeId: number) {
+    this.resetContols();
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
     this.clickedControl = fileNode;
     if (fileNode.puaData && fileNode.puaData.enum && fileNode.puaData.enum.length > 0) {
@@ -604,22 +605,33 @@ export class FileTreeMetadataComponent {
       this.enumsControlSeleted = [];
       this.openControls = true;
       fileNode.puaData.enum.forEach(e => {
-        this.editedEnumControl.push(e)
-        this.enumsControlSeleted.push(e)
-      })
+        this.editedEnumControl.push(e);
+        this.enumsControlSeleted.push(e);
+      });
     }
     if (fileNode.puaData && fileNode.puaData.pattern) {
+      const actualPattern = fileNode.puaData.pattern;
       this.openControls = true;
       this.expressionControl = true;
-      this.customRegex = fileNode.puaData.pattern;
-      this.radioExpressionReguliere = 'select';
+      if (this.formatagePredefini.map( e => e.value).includes(actualPattern)) {
+        const sedaName = this.fileService.findChildById(fileNodeId, this.clickedNode);
+        const type: string = this.sedaService.findSedaChildByName(sedaName.name, this.selectedSedaNode).Type;
+        this.setAvailableRegex(type);
+        this.regex = this.availableRegex.filter(e => e.value === actualPattern).map( e => e.value)[0];
+        this.radioExpressionReguliere = 'select';
+      } else {
+        this.customRegex = actualPattern;
+        this.radioExpressionReguliere = 'input';
+      }
+    } else {
+      this.customRegex = '';
     }
   }
 
   isAppliedControl(fileNodeId: number): boolean {
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
-    if (fileNode.puaData && fileNode.puaData.enum) return true;
-    if (fileNode.puaData && fileNode.puaData.pattern) return true;
+    if (fileNode.puaData && fileNode.puaData.enum) { return true; }
+    if (fileNode.puaData && fileNode.puaData.pattern) { return true; }
     return false;
   }
 
@@ -639,37 +651,46 @@ export class FileTreeMetadataComponent {
     this.enumerationsSedaControl = [];
   }
 
+  private setAvailableRegex(type: string) {
+    switch (type) {
+      case DateFormatType.date:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
+        break;
+      case DateFormatType.dateTime:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
+        break;
+      case DateFormatType.dateType:
+        this.availableRegex = this.formatagePredefini;
+        break;
+      default:
+        this.availableRegex = this.formatagePredefini
+          .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA');
+        break;
+    }
+  }
+
   setControlsVues(elements: string[], sedaName: string) {
-    if ((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Enumération'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
+      this.editedEnumControl = this.enumerationsSedaControl;
     }
-    if ((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Expression régulière'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
       this.radioExpressionReguliere = 'select';
       this.expressionControl = true;
       this.customRegex = '';
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
-      switch (type) {
-        case DateFormatType.date:
-          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
-          break;
-        case DateFormatType.dateTime:
-          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
-          break;
-        case DateFormatType.dateType:
-          this.availableRegex = this.formatagePredefini;
-          break;
-        default:
-          this.availableRegex = this.formatagePredefini
-            .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA');
-          break;
-      }
+      this.setAvailableRegex(type);
       this.regex = this.formatagePredefini[0].value;
     }
-    if ((this.isStandalone && elements.includes("Longueur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Longueur Min/Max'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))) {
       this.lengthControl = true;
     }
-    if ((this.isStandalone && elements.includes("Valeur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Valeur Min/Max'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))) {
       this.valueControl = true;
     }
 
@@ -734,7 +755,7 @@ export class FileTreeMetadataComponent {
     const node = this.sedaService.findSedaChildByName(nodeName, this.selectedSedaNode);
 
     if (node && node.Children.length > 0) {
-      return (node.Children.find(c => c.Element == SedaElementConstants.attribute) !== undefined);
+      return (node.Children.find(c => c.Element === SedaElementConstants.attribute) !== undefined);
     }
     return false;
   }
