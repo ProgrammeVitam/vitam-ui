@@ -158,7 +158,7 @@ export class EditProfileComponent implements OnDestroy {
     this.rulesTabChildrenToInclude.push();
     this.rulesTabChildrenToExclude.push();
     this.treeTabChildrenToInclude.push();
-    this.treeTabChildrenToExclude.push();
+    this.treeTabChildrenToExclude.push('ManagementMetadata', 'ArchiveUnit', 'DescriptiveMetadata');
     this.objectTabChildrenToInclude.push('BinaryDataObject', 'PhysicalDataObject');
     this.objectTabChildrenToExclude.push('ManagementMetadata', 'ArchiveUnit', 'DescriptiveMetadata');
     this.tabShowElementRules.push(

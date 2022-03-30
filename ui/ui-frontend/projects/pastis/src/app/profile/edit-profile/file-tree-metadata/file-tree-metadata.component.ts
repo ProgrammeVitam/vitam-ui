@@ -675,6 +675,7 @@ export class FileTreeMetadataComponent {
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
       this.editedEnumControl = this.enumerationsSedaControl;
+      this.enumsControlSeleted = this.enumerationsSedaControl;
     }
     if ((this.isStandalone && elements.includes('Expression régulière'))
      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
