@@ -53,6 +53,7 @@ import {environment} from "../../../environments/environment";
 import {Router} from '@angular/router';
 import {NoticeService} from '../../core/services/notice.service';
 import {NotificationService} from '../../core/services/notification.service';
+import {ToggleSidenavService} from "../../core/services/toggle-sidenav.service";
 
 export interface PastisDialogDataCreate {
   height: string;
@@ -119,7 +120,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   constructor(private profileService: ProfileService, private fileService: FileService,
               private dataGeneriquePopupService: DataGeneriquePopupService, private noticeService: NoticeService,
               private translateService: TranslateService, public dialog: MatDialog, private router: Router,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService, private toggleService : ToggleSidenavService) {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 
@@ -198,6 +199,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             }
           );
           dialogRef.afterClosed().subscribe((result) => {
+            this.toggleService.showPending();
             let retour;
             if (result.success) {
               retour = result.data;
@@ -216,14 +218,16 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                   // Create ro update existing PUA
                     if (!this.editProfile) {
                     this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
-                      console.log('ok create');
-                      this.success('La création du profil a bien été effectué');
-                    });
-                  } else {
+                      this.toggleService.hidePending();
+                      console.log("ok create")
+                      this.success("La création du profil a bien été effectué");
+                    })
+                  }else{
                     this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
-                      console.log('ok update');
-                      this.success('La modification du profil a bien été effectué');
-                    });
+                      this.toggleService.hidePending();
+                      console.log("ok update")
+                      this.success("La modification du profil a bien été effectué");
+                    })
                   }
                   });
                 });
@@ -260,8 +264,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(createdProfile,  myFile).subscribe(() => {
-              this.success('La création du profil a bien été effectué');
-            });
+              this.toggleService.hidePending();
+              this.success("La création du profil a bien été effectué");
+            })
           });
         }
       });
@@ -272,8 +277,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false),  myFile).subscribe(() => {
-              this.success('La modification du profil a bien été effectué');
-            });
+              this.toggleService.hidePending();
+              this.success("La modification du profil a bien été effectué");
+            })
           });
         }
       });

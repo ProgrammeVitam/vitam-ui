@@ -3,7 +3,7 @@
 
   <div class="row">
     <div class=" col-6">
-      <vitamui-common-slide-toggle [formControl]="statusProfile" checked="form.controls.status.value === 'ACTIVE'">
+      <vitamui-common-slide-toggle [formControl]="statusProfile" [checked]="form.controls.status.value === 'ACTIVE'">
         {{ 'PROFILE_PREVIEW.INFORMATION_TAB.PROFILE' | translate }} <span
         *ngIf="form.controls.status.value === 'INACTIVE'">in</span>{{ 'PROFILE_PREVIEW.INFORMATION_TAB.ACTIF' |
         translate }}

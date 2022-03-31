@@ -95,12 +95,23 @@
       "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
       "POPUP_CREATION_TITLE_DIALOG":  "Choice of profile type",
       "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a profile",
-      "POPUP_CREATION_OK_LABEL": "TERMINATE",
+      "POPUP_CREATION_OK_LABEL": "CONFIRM",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Select an archive profile"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choose the type of record to create :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choice of record type",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a record",
+      "POPUP_CREATION_OK_LABEL": "TERMINATE"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -160,7 +171,7 @@
         "POPUP_SOUS_TITRE": "Editing attributes of",
         "POPUP_VALIDER": "Validate",
         "POPUP_ANNULER": "Cancel",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Save profile",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Export profile",
         "TELECHARGER_MANUEL_TOOLTIP": "Setting",
         "NOM_METADONNEE": "Metadata name",
         "VALEUR_FIXE": "Fixed value",
@@ -170,7 +181,7 @@
         "CONTROLE_METADONNEE": "Metadata control",
         "EDITION_CONTROLE": "Edit controls",
         "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
-        "INFO_EXPRESSION": "List to perform predefined checks for certain values (e.g. date or email address)",
+        "INFO_EXPRESSION": "Set regular expression for metadata value",
         "INFO_ENNUMERATION": "Mention allowed values",
         "FORMATAGE_PREDEFINI": "Use predefined formatting",
         "SAISIR_EXPRESSION": "Enter a regular expression",
@@ -202,6 +213,7 @@
       "TOUS_LES_PROFILS": "All profiles",
       "TABLE": {
         "TYPE_ETAT": "Type / State",
+        "TYPE": "Type",
         "IDENTIFIANT": "Username",
         "INTITULE": "Entitled",
         "DERNIERES_MODIFICATIONS": "Latest changes"

@@ -23,7 +23,6 @@ td {
   padding-right: 20px !important;
 }
 
-
 .button-filter {
   margin-top: 67px;
   margin-left: 74px;
@@ -439,6 +438,10 @@ dp-day-calendar .dp-day-calendar-container {
     color: white;
     background-color: map-get($colors, 'ligthly-purple' ) !important;
   }
+}
+
+button.delete {
+  border: 1px solid
 }
 
 .pastis-vitamui-container-editable-commentaire{

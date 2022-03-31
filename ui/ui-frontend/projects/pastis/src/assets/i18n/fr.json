@@ -95,12 +95,23 @@
       "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
       "POPUP_CREATION_TITLE_DIALOG":"Choix du type de profil" ,
       "POPUP_CREATION_SUBTITLE_DIALOG": "Création d'un profil",
-      "POPUP_CREATION_OK_LABEL": "TERMINER",
+      "POPUP_CREATION_OK_LABEL": "VALIDER",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Sélectionner un profil d'archivage :"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choisir le type de notice à créer :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choix du type de notice",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Création d'une notice",
+      "POPUP_CREATION_OK_LABEL": "TERMINER"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -160,7 +171,7 @@
         "POPUP_SOUS_TITRE": "Edition des attributs de",
         "POPUP_VALIDER": "Valider",
         "POPUP_ANNULER": "Annuler",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Enregistrer le profil",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Exporter le profil",
         "TELECHARGER_MANUEL_TOOLTIP": "Paramètres",
         "NOM_METADONNEE": "Nom de la métadonnée",
         "VALEUR_FIXE": "Valeur fixe",
@@ -174,7 +185,7 @@
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
-        "INFO_EXPRESSION": "Liste permettant d'effectuer des contrôles prédéfinis pour certaines valeurs (par ex. une date ou une adresse email)",
+        "INFO_EXPRESSION": "Définir une expression régulière pour la valeur de la métadonnée",
         "INFO_ENNUMERATION": "Signaler les valeurs autorisées",
         "SUPPRIMER": "Supprimer",
         "AUTORISER_PRESENCE_METADONNEE": "Autoriser la presence de metadonnee non declarees",
@@ -202,6 +213,7 @@
       "TOUS_LES_PROFILS": "Tous les profils",
       "TABLE": {
         "TYPE_ETAT": "Type/Etat",
+        "TYPE": "Type",
         "IDENTIFIANT": "Identifiant",
         "INTITULE": "Intitulé",
         "DERNIERES_MODIFICATIONS": "Dernières modifications"

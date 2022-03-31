@@ -136,7 +136,6 @@ export class FileTreeComponent implements OnDestroy {
   sedaLanguage: boolean;
   sedaLanguageSub: Subscription;
   viewChild: FileNode[] = [];
-
   notificationRemoveSuccessOne: string;
   notificationRemoveSuccessTwo: string;
   notificationAddMetadonneePOne: string;
@@ -165,6 +164,9 @@ export class FileTreeComponent implements OnDestroy {
   popupDuplicateSousTitreMetadonnee: string;
   popupDuplicateDeleteTypeTextM: string;
   popupDuplicateDeleteTypeTextF: string ;
+  text: string;
+
+  nonEditFileNode: boolean= false;
 
   private _fileServiceTabChildrenRulesChange: Subscription;
   private _fileServiceCollectionName: Subscription;
@@ -447,7 +449,7 @@ export class FileTreeComponent implements OnDestroy {
     }
     let counter = 0;
     archiveUnit.children.forEach(child => {
-      if (child.name === 'ArchiveUnit') {
+      if (child.name === 'ArchiveUnit' || child.nonEditFileNode) {
         counter++;
         const archiveUnitLevel = archiveUnit.level - 1 + '.' + counter;
         FileTreeComponent.uaIdAndPosition.set(archiveUnitLevel, child.id);
@@ -533,15 +535,15 @@ export class FileTreeComponent implements OnDestroy {
   async remove(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveSedaElementAttribut : this.popupRemoveSedaElementMetadonnee;
-    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + node.name + '" ?';
-    dataToSendToPopUp.subTitleDialog = node.sedaData.Element == SedaElementConstants.attribute ?
+    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + this.onResolveName(node) + '" ?';
+    dataToSendToPopUp.subTitleDialog = node.sedaData.Element === SedaElementConstants.attribute ?
       this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.component = UserActionRemoveMetadataComponent;
 
     const popUpAnswer = await this.fileService.openPopup(dataToSendToPopUp) as FileNode;
     if (popUpAnswer) {
-      const deleteTypeText = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
+      const deleteTypeText = node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
       this.removeItem(node, this.fileService.nodeChange.getValue());
       this.loggingService.showSuccess(nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo);
     }
@@ -715,8 +717,8 @@ export class FileTreeComponent implements OnDestroy {
   }
 
   addArchiveUnit(node: FileNode) {
-    if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit') {
-      console.log('Clicked seda node : ', node.sedaData);
+    if (node.name == 'DescriptiveMetadata' || node.name == 'ArchiveUnit' || node.nonEditFileNode) {
+      console.log("Clicked seda node : ", node.sedaData);
       this.insertItem(node, ['ArchiveUnit']);
       // Refresh the metadata tree and the metadatatable
       this.renderChanges(node);
@@ -788,5 +790,13 @@ export class FileTreeComponent implements OnDestroy {
     if (this._fileTreeServiceUpdateMedataTable != null) {
       this._fileTreeServiceUpdateMedataTable.unsubscribe();
     }
+  }
+
+  changeFileNode($event: string, node: FileNode) {
+    node.nonEditFileNode = true;
+    node.editName = $event;
+    this.fileService.nodeChange.next(node);
+
+    this.updateMedataTable(node);
   }
 }

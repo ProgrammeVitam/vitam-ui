@@ -100,6 +100,7 @@ export enum DateFormatType {
 }
 
 export interface FileNode {
+  editName?: string;
   additionalProperties:boolean;
   id: number;
   parentId: number;
@@ -116,6 +117,7 @@ export interface FileNode {
   children: FileNode[];
   parent: FileNode;
   sedaData: SedaData;
+  nonEditFileNode ?: boolean;
   puaData?: PuaData;
 }
 

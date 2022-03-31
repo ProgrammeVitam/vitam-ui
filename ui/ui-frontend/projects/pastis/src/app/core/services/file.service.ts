@@ -131,7 +131,8 @@ export class FileService implements OnDestroy {
         if (nodeName === 'ArchiveUnit' && this.sedaDataArchiveUnit != undefined) {
           // Alors on utilise la définition SEDA de l'ArchiveUnit mère..
           sedaDataMatch = this.sedaDataArchiveUnit;
-        } else {
+        }
+        else {
           // Sinon on recherche la définition SEDA dans l'arbre
           sedaDataMatch = sedaData.find(seda => seda.Name === nodeName);
           // sedaDataMatch = this.sedaService.getSedaNodeRecursively(sedaData[0],nodeName)

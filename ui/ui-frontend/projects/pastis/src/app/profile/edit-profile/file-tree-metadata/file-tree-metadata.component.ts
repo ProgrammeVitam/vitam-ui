@@ -158,8 +158,7 @@ export class FileTreeMetadataComponent {
       { label: 'AAAA-MM-JJ', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}' },
       { label: 'AAAA-MM-JJTHH:MM:SS', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}' },
       { label: 'AAAA', value: '[0-9]{4}' },
-      { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' },
-      { label: 'Adresse mail', value: '[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}' }
+      { label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}' }
     ];
   availableRegex: Array<{ label: string, value: string }>;
 
@@ -228,10 +227,10 @@ export class FileTreeMetadataComponent {
   additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
-    private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
-    private router: Router, private startupService: StartupService, public profileService: ProfileService,
-    private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
-    private translateService: TranslateService) {
+              private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
+              private router: Router, private startupService: StartupService, public profileService: ProfileService,
+              private fileTreeService: FileTreeService, private metadataLanguageService: PastisPopupMetadataLanguageService,
+              private translateService: TranslateService) {
 
     this.config = {
       locale: 'fr',
@@ -596,6 +595,7 @@ export class FileTreeMetadataComponent {
   }
 
   onEditControlClick(fileNodeId: number) {
+    this.resetContols();
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
     this.clickedControl = fileNode;
     if (fileNode.puaData && fileNode.puaData.enum && fileNode.puaData.enum.length > 0) {
@@ -605,22 +605,33 @@ export class FileTreeMetadataComponent {
       this.enumsControlSeleted = [];
       this.openControls = true;
       fileNode.puaData.enum.forEach(e => {
-        this.editedEnumControl.push(e)
-        this.enumsControlSeleted.push(e)
-      })
+        this.editedEnumControl.push(e);
+        this.enumsControlSeleted.push(e);
+      });
     }
     if (fileNode.puaData && fileNode.puaData.pattern) {
+      const actualPattern = fileNode.puaData.pattern;
       this.openControls = true;
       this.expressionControl = true;
-      this.customRegex = fileNode.puaData.pattern;
-      this.radioExpressionReguliere = 'select';
+      if (this.formatagePredefini.map( e => e.value).includes(actualPattern)) {
+        const sedaName = this.fileService.findChildById(fileNodeId, this.clickedNode);
+        const type: string = this.sedaService.findSedaChildByName(sedaName.name, this.selectedSedaNode).Type;
+        this.setAvailableRegex(type);
+        this.regex = this.availableRegex.filter(e => e.value === actualPattern).map( e => e.value)[0];
+        this.radioExpressionReguliere = 'select';
+      } else {
+        this.customRegex = actualPattern;
+        this.radioExpressionReguliere = 'input';
+      }
+    } else {
+      this.customRegex = '';
     }
   }
 
   isAppliedControl(fileNodeId: number): boolean {
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
-    if (fileNode.puaData && fileNode.puaData.enum) return true;
-    if (fileNode.puaData && fileNode.puaData.pattern) return true;
+    if (fileNode.puaData && fileNode.puaData.enum) { return true; }
+    if (fileNode.puaData && fileNode.puaData.pattern) { return true; }
     return false;
   }
 
@@ -640,37 +651,47 @@ export class FileTreeMetadataComponent {
     this.enumerationsSedaControl = [];
   }
 
+  private setAvailableRegex(type: string) {
+    switch (type) {
+      case DateFormatType.date:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
+        break;
+      case DateFormatType.dateTime:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
+        break;
+      case DateFormatType.dateType:
+        this.availableRegex = this.formatagePredefini;
+        break;
+      default:
+        this.availableRegex = this.formatagePredefini
+          .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA');
+        break;
+    }
+  }
+
   setControlsVues(elements: string[], sedaName: string) {
-    if ((this.isStandalone && elements.includes("Enumération")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Enumération'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
+      this.editedEnumControl = this.enumerationsSedaControl;
+      this.enumsControlSeleted = this.enumerationsSedaControl;
     }
-    if ((this.isStandalone && elements.includes("Expression régulière")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Expression régulière'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
       this.radioExpressionReguliere = 'select';
       this.expressionControl = true;
       this.customRegex = '';
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
-      switch (type) {
-        case DateFormatType.date:
-          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
-          break;
-        case DateFormatType.dateTime:
-          this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
-          break;
-        case DateFormatType.dateType:
-          this.availableRegex = this.formatagePredefini.slice(0, -1);
-          break;
-        default:
-          this.availableRegex = this.formatagePredefini
-            .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA' || e.label === 'Adresse mail');
-          break;
-      }
+      this.setAvailableRegex(type);
       this.regex = this.formatagePredefini[0].value;
     }
-    if ((this.isStandalone && elements.includes("Longueur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Longueur Min/Max'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))) {
       this.lengthControl = true;
     }
-    if ((this.isStandalone && elements.includes("Valeur Min/Max")) || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))) {
+    if ((this.isStandalone && elements.includes('Valeur Min/Max'))
+     || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))) {
       this.valueControl = true;
     }
 
@@ -735,7 +756,7 @@ export class FileTreeMetadataComponent {
     const node = this.sedaService.findSedaChildByName(nodeName, this.selectedSedaNode);
 
     if (node && node.Children.length > 0) {
-      return (node.Children.find(c => c.Element == SedaElementConstants.attribute) !== undefined);
+      return (node.Children.find(c => c.Element === SedaElementConstants.attribute) !== undefined);
     }
     return false;
   }
@@ -849,6 +870,13 @@ export class FileTreeMetadataComponent {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
 
+  isElementEdit(node: MetadataHeaders): boolean {
+    if (this.profileService.profileMode === 'PUA') { return false; }
+    if (node.nomDuChampEdit) {
+      return true;
+    }
+    return false;
+  }
   isEmptyEnumeration(enumerations: string[]): boolean {
     return enumerations ? enumerations.length === 0 : false;
   }
@@ -932,7 +960,7 @@ export class FileTreeMetadataComponent {
   changeAutorisation($event: MatCheckboxChange, element: any) {
     console.log($event.checked + 'test' + element.nomDuChamp);
     this.additionalPropertiesMetadonnee = $event.checked;
-    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element)
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element);
   }
 
   private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
@@ -946,4 +974,12 @@ export class FileTreeMetadataComponent {
 
   }
 
+  getNodeAdditionalProperties(element: MetadataHeaders): boolean {
+    for (const node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id && node.puaData) {
+        return node.puaData.additionalProperties;
+      }
+    }
+    return false;
+  }
 }

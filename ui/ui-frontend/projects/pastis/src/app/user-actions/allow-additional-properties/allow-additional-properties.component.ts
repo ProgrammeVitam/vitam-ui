@@ -15,7 +15,9 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
   }
   @Output() stateToggleButton = new EventEmitter<boolean>();
 
-  checked: false;
+  
+  checked = false;
+  
   text : string;
   text1: string;
 
@@ -29,7 +31,7 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
       this.text1="Métadonnées supplémentaires "
       this.text = "non autorisées"
     }
-    this.stateToggleButton.emit(this.checked)
+    this.stateToggleButton.emit(this.checked);
   }
 }
 
