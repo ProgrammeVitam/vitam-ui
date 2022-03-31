@@ -95,7 +95,7 @@
       "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
       "POPUP_CREATION_TITLE_DIALOG":"Choix du type de profil" ,
       "POPUP_CREATION_SUBTITLE_DIALOG": "Création d'un profil",
-      "POPUP_CREATION_OK_LABEL": "TERMINER",
+      "POPUP_CREATION_OK_LABEL": "VALIDER",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
@@ -171,7 +171,7 @@
         "POPUP_SOUS_TITRE": "Edition des attributs de",
         "POPUP_VALIDER": "Valider",
         "POPUP_ANNULER": "Annuler",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Enregistrer le profil",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Exporter le profil",
         "TELECHARGER_MANUEL_TOOLTIP": "Paramètres",
         "NOM_METADONNEE": "Nom de la métadonnée",
         "VALEUR_FIXE": "Valeur fixe",

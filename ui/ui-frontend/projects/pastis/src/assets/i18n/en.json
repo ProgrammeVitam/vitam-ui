@@ -95,7 +95,7 @@
       "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
       "POPUP_CREATION_TITLE_DIALOG":  "Choice of profile type",
       "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a profile",
-      "POPUP_CREATION_OK_LABEL": "TERMINATE",
+      "POPUP_CREATION_OK_LABEL": "CONFIRM",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
@@ -171,7 +171,7 @@
         "POPUP_SOUS_TITRE": "Editing attributes of",
         "POPUP_VALIDER": "Validate",
         "POPUP_ANNULER": "Cancel",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Save profile",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Export profile",
         "TELECHARGER_MANUEL_TOOLTIP": "Setting",
         "NOM_METADONNEE": "Metadata name",
         "VALEUR_FIXE": "Fixed value",

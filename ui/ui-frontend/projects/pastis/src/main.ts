@@ -44,5 +44,8 @@ if (environment.production) {
   enableProdMode();
 }
 
+if (environment.standalone) {
+  document.getElementById('favicon').setAttribute('href', '../assets/favicon.ico');
+}
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

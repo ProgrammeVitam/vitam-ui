@@ -535,15 +535,15 @@ export class FileTreeComponent implements OnDestroy {
   async remove(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveSedaElementAttribut : this.popupRemoveSedaElementMetadonnee;
-    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + node.name + '" ?';
-    dataToSendToPopUp.subTitleDialog = node.sedaData.Element == SedaElementConstants.attribute ?
+    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + this.onResolveName(node) + '" ?';
+    dataToSendToPopUp.subTitleDialog = node.sedaData.Element === SedaElementConstants.attribute ?
       this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.component = UserActionRemoveMetadataComponent;
 
     const popUpAnswer = await this.fileService.openPopup(dataToSendToPopUp) as FileNode;
     if (popUpAnswer) {
-      const deleteTypeText = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
+      const deleteTypeText = node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
       this.removeItem(node, this.fileService.nodeChange.getValue());
       this.loggingService.showSuccess(nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo);
     }
