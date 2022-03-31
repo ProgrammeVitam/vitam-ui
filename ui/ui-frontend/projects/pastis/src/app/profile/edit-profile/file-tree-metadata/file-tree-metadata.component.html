@@ -25,13 +25,13 @@
         <!--Toggle button allow additional properties-->
         <div *ngIf="this.profileService.profileMode==='PUA' && this.isStandalone" class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' |
              translate}}">
-          <allow-additional-properties (stateToggleButton)="changeStatusAditionalProperties($event)">
+          <allow-additional-properties [checked]="additionalProperties" (stateToggleButton)="changeStatusAditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ENREGISTRER_PROFIL_TOOLTIP' |
              translate}}" placement="top" show-delay="0">
-          <pastis-user-action-save-profile [additional]="additionalProperties"></pastis-user-action-save-profile>
+          <pastis-user-action-save-profile ></pastis-user-action-save-profile>
         </div>
         <!--Button setting-->
         <div class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.TELECHARGER_MANUEL_TOOLTIP' |

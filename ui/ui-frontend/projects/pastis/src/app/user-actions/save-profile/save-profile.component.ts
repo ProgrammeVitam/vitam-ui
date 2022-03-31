@@ -113,8 +113,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   profileDescription: ProfileDescription;
   fileRng: File;
 
-  @Input() additional: boolean;
-
   @Output() close = new EventEmitter();
 
   constructor(private profileService: ProfileService, private fileService: FileService,
@@ -159,7 +157,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
-    this.data[0].additionalProperties = this.additional;
     if (this.isStandalone) {
       this.downloadProfiles(true);
     } else {

@@ -271,6 +271,7 @@ export class FileTreeMetadataComponent {
     );
     this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe(node => {
       this.clickedNode = node;
+      this.additionalProperties = node.additionalProperties;
       // BreadCrumb for navigation through metadatas
       if (node && node !== undefined) {
         const breadCrumbNodeLabel: string = node.name;
@@ -949,7 +950,7 @@ export class FileTreeMetadataComponent {
   }
 
   changeStatusAditionalProperties($event: boolean) {
-    this.additionalProperties = $event;
+    this.clickedNode.additionalProperties = $event;
   }
 
 
@@ -982,4 +983,6 @@ export class FileTreeMetadataComponent {
     }
     return false;
   }
+
+  
 }
