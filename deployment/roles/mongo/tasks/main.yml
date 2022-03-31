@@ -14,7 +14,7 @@
 - name: "enable {{ service_name }} service at boot"
   service:
     name: "{{ service_name }}"
-    enabled: true
+    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
   notify:
     - restart mongod
 
