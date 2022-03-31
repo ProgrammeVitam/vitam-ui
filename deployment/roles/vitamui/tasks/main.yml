@@ -14,13 +14,6 @@
     - restart service
   when: force_vitamui_version is not defined
 
-- name: Ensure {{ service_name }} service is enabled at boot
-  service:
-    name: "{{ service_name }}"
-    enabled: true
-  notify:
-    - restart service
-
 #### Configuration ####
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
@@ -60,7 +53,7 @@
     group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
   loop: "{{ vitamui_struct.dirs }}"
-  when: 
+  when:
     - vitamui_struct.dirs is defined
     - vitamui_struct.dirs|length > 0
   notify:
@@ -128,9 +121,9 @@
     owner: "{{ vitamui_defaults.users.vitamui }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: 
+  when:
     - vitamui_struct.secure|lower == 'true'
-    - vitamui_certificate_type is defined 
+    - vitamui_certificate_type is defined
     - "vitamui_certificate_type|lower == '{{ item.name }}'"
     - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
   with_items:
@@ -143,16 +136,15 @@
   notify:
     - restart service
 
-- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}" 
+- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}"
   include_tasks: "{{ vitamui_struct.vitamui_component_type }}.yml"
   when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component_type }}.yml || echo nofile') == \"\" }}"
 
-- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}" 
+- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}"
   include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"
   when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component }}.yml || echo nofile') == \"\" }}"
 
-- name: flush_handlers
-  meta: flush_handlers
+- meta: flush_handlers
   tags:
     - always
 
@@ -160,3 +152,4 @@
   service:
     name: "{{ service_name }}"
     state: started
+    enabled: "{{ vitamui_struct.at_boot | default(service_at_boot) }}"
