@@ -54,10 +54,6 @@ export class AppComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    if (this.isStandalone) {
-      document.title = 'PASTIS';
-    }
-  }
+  ngOnInit() {}
 
 }

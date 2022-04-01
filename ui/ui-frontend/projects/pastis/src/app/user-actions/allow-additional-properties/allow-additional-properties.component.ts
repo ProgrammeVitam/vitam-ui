@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'allow-additional-properties',
@@ -15,8 +15,8 @@ export class AllowAdditionalPropertiesComponent implements OnInit {
   }
   @Output() stateToggleButton = new EventEmitter<boolean>();
 
-  
-  checked = false;
+  @Input()
+  checked: boolean;
   
   text : string;
   text1: string;

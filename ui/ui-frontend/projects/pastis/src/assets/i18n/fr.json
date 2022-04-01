@@ -111,7 +111,7 @@
       "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
       "POPUP_CREATION_TITLE_DIALOG":  "Choix du type de notice",
       "POPUP_CREATION_SUBTITLE_DIALOG":"Création d'une notice",
-      "POPUP_CREATION_OK_LABEL": "TERMINER"
+      "POPUP_CREATION_OK_LABEL": "VALIDER"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -172,7 +172,7 @@
         "POPUP_VALIDER": "Valider",
         "POPUP_ANNULER": "Annuler",
         "ENREGISTRER_PROFIL_TOOLTIP": "Exporter le profil",
-        "TELECHARGER_MANUEL_TOOLTIP": "Paramètres",
+        "TELECHARGER_MANUEL_TOOLTIP": "Paramètres et ressources",
         "NOM_METADONNEE": "Nom de la métadonnée",
         "VALEUR_FIXE": "Valeur fixe",
         "CARDINALITE": "Cardinalité",
@@ -181,6 +181,7 @@
         "CONTROLE_METADONNEE": "Contrôle de métadonnée",
         "EDITION_CONTROLE": "Modifier les contrôles",
         "ENUMERATION_CONTROLE": "Contrôle de type \"Enumération\"",
+        "FORMAT_ENUMERATION_AUTORISES": "Format(s) de date autorisé(s) pour cette métadonnée",
         "FORMATAGE_PREDEFINI": "Utiliser un formatage prédéfini",
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",

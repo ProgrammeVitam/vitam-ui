@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ProfileService} from '../../core/services/profile.service';
 import {FileService} from '../../core/services/file.service';
 import {FileNode} from '../../models/file-node';
@@ -113,8 +113,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   profileDescription: ProfileDescription;
   fileRng: File;
 
-  @Input() additional: boolean;
-
   @Output() close = new EventEmitter();
 
   constructor(private profileService: ProfileService, private fileService: FileService,
@@ -159,7 +157,6 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   saveProfileToFile() {
     // Retrieve the current file tree data as a JSON
     this.data = this.fileService.allData.getValue();
-    this.data[0].additionalProperties = this.additional;
     if (this.isStandalone) {
       this.downloadProfiles(true);
     } else {

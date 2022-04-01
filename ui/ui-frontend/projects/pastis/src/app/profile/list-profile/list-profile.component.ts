@@ -161,7 +161,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       this.popupCreationCancelLabel = 'Annuler';
       this.popupCreationTitleDialog = 'Choix du type de profil';
       this.popupCreationSubTitleDialog = 'Création d\'un profil';
-      this.popupCreationOkLabel = 'TERMINER';
+      this.popupCreationOkLabel = 'VALIDER';
     }
     this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees);
     this.breadcrumbDataTop = [{ label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL', url: this.startupService.getPortalUrl(), external: true}, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'}];

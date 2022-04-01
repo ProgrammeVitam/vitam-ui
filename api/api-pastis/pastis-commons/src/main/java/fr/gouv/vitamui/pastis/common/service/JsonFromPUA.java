@@ -72,6 +72,7 @@ public class JsonFromPUA {
         idCounter = 0L;
         // Adding root element DescriptiveMetadata
         ElementProperties root = new ElementProperties();
+        root.setAdditionalProperties(controlSchema.getBoolean("additionalProperties"));
         root.setName("DescriptiveMetadata");
         root.setId(idCounter++);
         root.setLevel(0);

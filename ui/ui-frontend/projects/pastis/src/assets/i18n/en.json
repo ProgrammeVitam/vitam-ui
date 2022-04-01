@@ -111,7 +111,7 @@
       "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
       "POPUP_CREATION_TITLE_DIALOG":  "Choice of record type",
       "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a record",
-      "POPUP_CREATION_OK_LABEL": "TERMINATE"
+      "POPUP_CREATION_OK_LABEL": "CONFIRM"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -172,7 +172,7 @@
         "POPUP_VALIDER": "Validate",
         "POPUP_ANNULER": "Cancel",
         "ENREGISTRER_PROFIL_TOOLTIP": "Export profile",
-        "TELECHARGER_MANUEL_TOOLTIP": "Setting",
+        "TELECHARGER_MANUEL_TOOLTIP": "Settings and resources",
         "NOM_METADONNEE": "Metadata name",
         "VALEUR_FIXE": "Fixed value",
         "CARDINALITE": "Cardinality",
@@ -181,6 +181,7 @@
         "CONTROLE_METADONNEE": "Metadata control",
         "EDITION_CONTROLE": "Edit controls",
         "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
+        "FORMAT_ENUMERATION_AUTORISES": "Allowed date format(s) for this metadata ",
         "INFO_EXPRESSION": "Set regular expression for metadata value",
         "INFO_ENNUMERATION": "Mention allowed values",
         "FORMATAGE_PREDEFINI": "Use predefined formatting",
