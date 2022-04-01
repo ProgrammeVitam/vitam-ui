@@ -3792,7 +3792,7 @@
                         "NameFr": "Date et heure de l'événement",
                         "Element": "Simple",
                         "Cardinality": "1",
-                        "Type": "token",
+                        "Type": "DateType",
                         "Choice": "no",
                         "Extensible": "no",
                         "Enumeration": [],
