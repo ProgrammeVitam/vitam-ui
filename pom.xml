@@ -129,8 +129,8 @@
         <serenity.spring.version>2.2.2</serenity.spring.version>
         <serenity.version>2.2.2</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.boot.version>2.5.6</spring.boot.version>
-        <spring.version>5.3.12</spring.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
+        <spring.version>5.3.18</spring.version>
         <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
         <spring.security.version>5.5.3</spring.security.version>
         <swagger.version>3.0.0</swagger.version>
@@ -523,6 +523,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -764,6 +770,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -893,6 +905,12 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>xml-apis</groupId>
@@ -1940,9 +1958,12 @@
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
                 <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
                 <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
-                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
-                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
-                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml</sonar.dependencyCheck.xmlReportPath>
+                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html
+                </sonar.dependencyCheck.htmlReportPath>
+                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json
+                </sonar.dependencyCheck.jsonReportPath>
+                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml
+                </sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.host.url/>
