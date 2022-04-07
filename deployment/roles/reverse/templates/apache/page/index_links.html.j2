@@ -1,0 +1,33 @@
+#jinja2: lstrip_blocks: True
+          <div class="panel panel-default col-md-12 container">
+            <a class="panel-header no-toggle" href="#">
+              <h2>Vitam UI - Liens</h2>
+            </a>
+            <div class="panel-body">
+              <p class="row" style="vertical-align: middle">
+                <div class="col-md-3">Métier</div>
+                <div class="col-md-9">
+                  <a href="https://{{ vitam_reverse_external_dns }}" class="btn btn-primary btn-xs" target="_blank">Vitam UI</a>
+                </div>
+              </p>
+              {% if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 %}
+              <p class="row" style="vertical-align: middle">
+                <div class="col-md-3">Consul</div>
+                <div class="col-md-9">
+                  <a href="/ui/{{ vitamui_site_name }}/services" class="btn btn-primary btn-xs" target="_blank">Consul</a>
+                  <a href="https://{{ vitam_reverse_external_dns }}/v1/health/state/any?pretty" class="btn btn-primary btn-xs" target="_blank">Health</a>
+                </div>
+              </p>
+              {% endif %}
+              <p class="row" style="vertical-align: middle">
+                <div class="col-md-3">Mongo Express</div>
+                <div class="col-md-9">
+                  {% for host in groups['hosts_vitamui_mongod'] %}
+                  {% if hostvars[host]['mongo_express_enabled'] | default(false) | bool == true %}
+                  <a href="https://{{ vitam_reverse_external_dns }}/{{ mongo_express.baseuri }}" class="btn btn-primary btn-xs" target="_blank">{{ hostvars[host]['mongo_cluster_name'] }}</a>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+              </p>
+            </div>
+          </div>
