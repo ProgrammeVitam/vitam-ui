@@ -40,7 +40,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, Direction } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { SearchCriteria, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
@@ -74,7 +74,7 @@ export class SearchCriteriaSaverComponent implements OnInit {
     public dialogRef: MatDialogRef<SearchCriteriaSaverComponent>,
     private formBuilder: FormBuilder,
     private searchCriteriaSaverService: SearchCriteriaSaverService,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
     private confirmDialogService: ConfirmDialogService,
     private snackBar: MatSnackBar
   ) {

@@ -44,9 +44,9 @@ import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from
 import { Unit } from '../archive/models/unit.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ArchiveSharedDataServiceService {
+export class ArchiveSharedDataService {
   private sourceNode = new BehaviorSubject<NodeData>(new NodeData());
   private filingHoldingNodesSubject = new BehaviorSubject<FilingHoldingSchemeNode[]>(null);
   private targetNode = new BehaviorSubject<string>('');

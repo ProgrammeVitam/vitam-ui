@@ -48,7 +48,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment.prod';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
@@ -102,7 +102,7 @@ describe('SearchCriteriaSaverComponent', () => {
       providers: [
         FormBuilder,
         HttpClientTestingModule,
-        ArchiveSharedDataServiceService,
+        ArchiveSharedDataService,
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },

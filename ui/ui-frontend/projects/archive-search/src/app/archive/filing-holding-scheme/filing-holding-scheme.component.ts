@@ -39,7 +39,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
@@ -48,7 +48,7 @@ import { ResultFacet } from '../models/search.criteria';
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: ['./filing-holding-scheme.component.scss']
+  styleUrls: ['./filing-holding-scheme.component.scss'],
 })
 export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   @Input()
@@ -79,7 +79,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   constructor(
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
-    private archiveSharedDataServiceService: ArchiveSharedDataServiceService
+    private archiveSharedDataService: ArchiveSharedDataService
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -91,7 +91,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     this.nestedTreeControlFiltred = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
     this.nestedDataSourceFiltred = new MatTreeNestedDataSource();
 
-    this.subscriptionNodesFull = this.archiveSharedDataServiceService.getNodesTarget().subscribe((nodeId) => {
+    this.subscriptionNodesFull = this.archiveSharedDataService.getNodesTarget().subscribe((nodeId) => {
       if (nodeId == null) {
         this.showAllTreeNodes();
       } else {
@@ -100,7 +100,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       }
     });
 
-    this.subscriptionFacets = this.archiveSharedDataServiceService.getFacets().subscribe((facets) => {
+    this.subscriptionFacets = this.archiveSharedDataService.getFacets().subscribe((facets) => {
       this.hasResults = true;
       if (facets && facets.length > 0) {
         for (const node of this.nestedDataSourceFull.data) {
@@ -115,7 +115,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       this.filterNodes();
     });
 
-    this.archiveSharedDataServiceService.getFilingHoldingNodes().subscribe((nodes) => {
+    this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
       if (nodes) {
         this.fullNodes = nodes;
         this.showAllTreeNodes();
@@ -123,7 +123,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     });
   }
   convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
-    let nodeDataList: string[] = [];
+    const nodeDataList: string[] = [];
     for (const node of holdingSchemas) {
       if (node && node.id) {
         nodeDataList.push(node.id);
@@ -197,15 +197,15 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       this.nestedTreeControlFull.dataNodes = nodes;
       this.loadingHolding = false;
       this.filtered = false;
-      this.archiveSharedDataServiceService.emitEntireNodes(this.convertNodesToList(nodes));
-      this.archiveSharedDataServiceService.emitFilingHoldingNodes(nodes);
+      this.archiveSharedDataService.emitEntireNodes(this.convertNodesToList(nodes));
+      this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
     });
   }
 
   filterNodes() {
     this.filtredNodes = [];
     for (const node of this.fullNodes) {
-      let filtredNode = this.buildrecursiveTree(node);
+      const filtredNode = this.buildrecursiveTree(node);
       if (filtredNode !== null) {
         this.filtredNodes.push(filtredNode);
       }
@@ -217,9 +217,10 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   buildrecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) return null;
-    else {
-      let filtredNode: FilingHoldingSchemeNode = {
+    if (node.count === 0) {
+      return null;
+    } else {
+      const filtredNode: FilingHoldingSchemeNode = {
         count: node.count,
         id: node.id,
         label: node.label,
@@ -228,13 +229,13 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
         children: null,
         parents: null,
         vitamId: node.vitamId,
-        checked: node.checked
+        checked: node.checked,
       };
       if (node.children && node.children.length > 0) {
-        let filtredChildren = [];
+        const filtredChildren = [];
 
         for (const child of node.children) {
-          let childFiltred = this.buildrecursiveTree(child);
+          const childFiltred = this.buildrecursiveTree(child);
           if (childFiltred) {
             filtredChildren.push(childFiltred);
           }
@@ -252,7 +253,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   emitNode(node: FilingHoldingSchemeNode) {
     this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
     this.recursiveShowById(this.nestedDataSourceFull.data, node.checked, node.id);
-    this.archiveSharedDataServiceService.emitNode(this.nodeData);
+    this.archiveSharedDataService.emitNode(this.nodeData);
   }
 
   onTouched = () => {};
@@ -290,6 +291,6 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
   }
 
   emitClose() {
-    this.archiveSharedDataServiceService.emitToggle(false);
+    this.archiveSharedDataService.emitToggle(false);
   }
 }

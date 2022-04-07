@@ -35,28 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subscription} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff, Logger, Option, StartupService} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
-import {ArchiveService} from '../../archive.service';
-import {Unit} from '../../models/unit.interface';
-import {UnitDescriptiveMetadataDto} from '../../models/unitDescriptiveMetadata.interface';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, Logger, Option, StartupService } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
+import { ArchiveService } from '../../archive.service';
+import { Unit } from '../../models/unit.interface';
+import { UnitDescriptiveMetadataDto } from '../../models/unitDescriptiveMetadata.interface';
 
 @Component({
   selector: 'app-archive-unit-information-tab',
@@ -110,13 +99,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private startupService: StartupService,
     private translateService: TranslateService,
     private logger: Logger
-  ) {
-  }
+  ) {}
 
   descriptionLevels: Option[] = [
     { key: 'Item', label: this.translateService.instant('UNIT_UPDATE.ITEM') },
     { key: 'File', label: this.translateService.instant('UNIT_UPDATE.FILE') },
-    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP')},
+    { key: 'SubGrp', label: this.translateService.instant('UNIT_UPDATE.SUBGRP') },
     { key: 'RecordGrp', label: this.translateService.instant('UNIT_UPDATE.RECORDGRP') },
     { key: 'Subseries', label: this.translateService.instant('UNIT_UPDATE.SUBSERIES') },
     { key: 'Series', label: this.translateService.instant('UNIT_UPDATE.SERIES') },
@@ -124,86 +112,95 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     { key: 'Class', label: this.translateService.instant('UNIT_UPDATE.CLASS') },
     { key: 'Subfonds', label: this.translateService.instant('UNIT_UPDATE.SUBFONDS') },
     { key: 'Fonds', label: this.translateService.instant('UNIT_UPDATE.FONDS') },
-    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') }
+    { key: 'OtherLevel', label: this.translateService.instant('UNIT_UPDATE.OTHERLEVEL') },
   ];
 
   ngOnInit() {
-     this.initTitleAndDescriptionsFlagValues(this.archiveUnit);
-     this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
+    this.initTitleAndDescriptionsFlagValues(this.archiveUnit);
+    this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
 
-     this.form = this.formBuilder.group({
-       title: [null, [Validators.required]],
-       description: [null],
-       descriptionLevel: [null, [Validators.required]],
-       startDate: [this.archiveUnit.StartDate],
-       endDate: [this.archiveUnit.EndDate]
-     });
+    this.form = this.formBuilder.group({
+      title: [null, [Validators.required]],
+      description: [null],
+      descriptionLevel: [null, [Validators.required]],
+      startDate: [this.archiveUnit.StartDate],
+      endDate: [this.archiveUnit.EndDate],
+    });
 
-     this.previousValue = {
-       title: this.getAuTitle(this.archiveUnit),
-       description: this.getAuDescription(this.archiveUnit),
-       descriptionLevel: this.archiveUnit.DescriptionLevel,
-       startDate: this.archiveUnit.StartDate,
-       endDate: this.archiveUnit.EndDate
-     };
+    this.previousValue = {
+      title: this.getAuTitle(this.archiveUnit),
+      description: this.getAuDescription(this.archiveUnit),
+      descriptionLevel: this.archiveUnit.DescriptionLevel,
+      startDate: this.archiveUnit.StartDate,
+      endDate: this.archiveUnit.EndDate,
+    };
 
-     this.form.get('startDate').valueChanges.subscribe(() => {
-       if(this.unsetAction.length > 0) {
-       this.unsetAction = this.unsetAction.filter((el) => el !== 'StartDate');
-       }
-     });
+    this.form.get('startDate').valueChanges.subscribe(() => {
+      if (this.unsetAction.length > 0) {
+        this.unsetAction = this.unsetAction.filter((el) => el !== 'StartDate');
+      }
+    });
 
-     this.form.get('endDate').valueChanges.subscribe(() => {
-       if(this.unsetAction.length > 0) {
-       this.unsetAction = this.unsetAction.filter((el) => el !== 'EndDate');
-       }
-     });
+    this.form.get('endDate').valueChanges.subscribe(() => {
+      if (this.unsetAction.length > 0) {
+        this.unsetAction = this.unsetAction.filter((el) => el !== 'EndDate');
+      }
+    });
 
-     this.form.get('description').valueChanges.subscribe((desc) => {
+    this.form.get('description').valueChanges.subscribe((desc) => {
+      this.cleanUnsetDescription('Description');
+      this.cleanUnsetDescription('Description_.fr');
+      this.cleanUnsetDescription('Description_.en');
+      this.cleanUnsetDescription('Description_');
 
-       this.cleanUnsetDescription('Description');
-       this.cleanUnsetDescription('Description_.fr');
-       this.cleanUnsetDescription('Description_.en');
-       this.cleanUnsetDescription('Description_');
+      if (desc !== undefined && desc !== null && desc.length === 0 && this.hasDescription && !this.unsetAction.includes('Description')) {
+        this.unsetAction.push('Description');
+      }
 
-       if(desc !== undefined && desc !== null && desc.length === 0 && this.hasDescription && !this.unsetAction.includes('Description')) {
-         this.unsetAction.push('Description');
-       }
-
-       if(desc !== undefined && desc !== null && desc.length === 0 && this.hasFrDescription && !this.unsetAction.includes('Description_.fr')) {
-         this.unsetAction.push('Description_.fr');
-
-       }
-       if(desc !== undefined && desc !== null  && desc.length === 0 && this.hasEnDescription && !this.unsetAction.includes('Description_.en')) {
-         this.unsetAction.push('Description_.en');
-       }
-     });
+      if (
+        desc !== undefined &&
+        desc !== null &&
+        desc.length === 0 &&
+        this.hasFrDescription &&
+        !this.unsetAction.includes('Description_.fr')
+      ) {
+        this.unsetAction.push('Description_.fr');
+      }
+      if (
+        desc !== undefined &&
+        desc !== null &&
+        desc.length === 0 &&
+        this.hasEnDescription &&
+        !this.unsetAction.includes('Description_.en')
+      ) {
+        this.unsetAction.push('Description_.en');
+      }
+    });
   }
 
-  cleanUnsetDescription(key: string){
+  cleanUnsetDescription(key: string) {
     const index = this.unsetAction.indexOf(key, 0);
-    if(index > -1) {
+    if (index > -1) {
       this.unsetAction.splice(index, 1);
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
-    if(changes.updateStarted && changes.updateStarted.currentValue) {
-        this.previousValue = {
-          title: this.getAuTitle(this.archiveUnit),
-          description: this.getAuDescription(this.archiveUnit),
-          descriptionLevel: this.archiveUnit.DescriptionLevel,
-          startDate: this.archiveUnit.StartDate,
-          endDate: this.archiveUnit.EndDate
-        };
-        this.form.get('title').setValue(this.getAuTitle(this.archiveUnit));
-        this.form.get('description').setValue(this.getAuDescription(this.archiveUnit));
-        this.form.get('descriptionLevel').setValue(this.archiveUnit.DescriptionLevel);
-        this.form.get('startDate').setValue(this.previousValue.startDate);
-        this.form.get('endDate').setValue(this.previousValue.endDate);
-        this.previousValue = this.form.value;
-        this.initListenersOnFormsValuesChanges();
+    if (changes.updateStarted && changes.updateStarted.currentValue) {
+      this.previousValue = {
+        title: this.getAuTitle(this.archiveUnit),
+        description: this.getAuDescription(this.archiveUnit),
+        descriptionLevel: this.archiveUnit.DescriptionLevel,
+        startDate: this.archiveUnit.StartDate,
+        endDate: this.archiveUnit.EndDate,
+      };
+      this.form.get('title').setValue(this.getAuTitle(this.archiveUnit));
+      this.form.get('description').setValue(this.getAuDescription(this.archiveUnit));
+      this.form.get('descriptionLevel').setValue(this.archiveUnit.DescriptionLevel);
+      this.form.get('startDate').setValue(this.previousValue.startDate);
+      this.form.get('endDate').setValue(this.previousValue.endDate);
+      this.previousValue = this.form.value;
+      this.initListenersOnFormsValuesChanges();
     }
 
     if (changes.archiveUnit?.currentValue['#id']) {
@@ -215,43 +212,41 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         description: this.getAuDescription(changes.archiveUnit.currentValue),
         descriptionLevel: changes.archiveUnit.currentValue.DescriptionLevel,
         startDate: changes.archiveUnit.currentValue.StartDate,
-        endDate: changes.archiveUnit.currentValue.EndDate
+        endDate: changes.archiveUnit.currentValue.EndDate,
       };
     }
     this.fullPath = false;
   }
 
   initTitleAndDescriptionsFlagValues(archiveUnit: Unit) {
-    if(archiveUnit?.Title) {
+    if (archiveUnit?.Title) {
       this.hasTitle = true;
-    } else if(archiveUnit?.Title_?.fr) {
+    } else if (archiveUnit?.Title_?.fr) {
       this.hasFrTitle = this.hasTitle ? false : true;
     } else {
       this.hasEnTitle = this.hasFrTitle ? false : true;
     }
 
-    if(archiveUnit.Description == undefined) {
+    if (archiveUnit.Description == undefined) {
       this.hasNoDescription = true;
     }
 
-    if(archiveUnit?.Description) {
+    if (archiveUnit?.Description) {
       this.hasDescription = true;
-    } else if(archiveUnit?.Description_?.fr) {
+    } else if (archiveUnit?.Description_?.fr) {
       this.hasFrDescription = this.hasDescription ? false : true;
-    } else if(archiveUnit?.Description_?.en){
+    } else if (archiveUnit?.Description_?.en) {
       this.hasEnDescription = this.hasFrDescription ? false : true;
     }
   }
 
   updateMetadataDesc() {
-
-
     this.previousValue = {
       title: this.getAuTitle(this.archiveUnit),
       description: this.getAuDescription(this.archiveUnit),
       descriptionLevel: this.archiveUnit.DescriptionLevel,
       startDate: this.archiveUnit.StartDate,
-      endDate: this.archiveUnit.EndDate
+      endDate: this.archiveUnit.EndDate,
     };
     this.form.get('title').setValue(this.getAuTitle(this.archiveUnit));
     this.form.get('description').setValue(this.getAuDescription(this.archiveUnit));
@@ -277,7 +272,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
               description: this.previousValue.description,
               descriptionLevel: this.previousValue.descriptionLevel,
               startDate: this.getStartDate(this.previousValue.startDate),
-              endDate: this.getStartDate(this.previousValue.endDate)
+              endDate: this.getStartDate(this.previousValue.endDate),
             },
             formData
           )
@@ -289,39 +284,41 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private formHasValidTitle(): boolean {
-    var title = this.form.get('title');
-    return title != null && !title.invalid && !title.pending
+    const title = this.form.get('title');
+    return title != null && !title.invalid && !title.pending;
   }
 
   private formHasValidDescription(): boolean {
-    var description = this.form.get('description');
-    return !description.invalid && !description.pending
+    const description = this.form.get('description');
+    return !description.invalid && !description.pending;
   }
 
   private formHasValidDescriptionLevel(): boolean {
-    var descriptionLevel = this.form.get('descriptionLevel');
-    return !descriptionLevel.invalid && !descriptionLevel.pending
+    const descriptionLevel = this.form.get('descriptionLevel');
+    return !descriptionLevel.invalid && !descriptionLevel.pending;
   }
 
   private formDescriptionHasChanged() {
     const formVal = this.form.get('description').value;
     const previousVal = this.previousValue.description;
-    if((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
+    if ((formVal == undefined || formVal == '') && (previousVal == undefined || previousVal == '')) {
       return false;
     }
     return formVal != previousVal;
   }
 
   private formHasChanges() {
-    return this.form.get('title').value != this.previousValue.title ||
+    return (
+      this.form.get('title').value != this.previousValue.title ||
       this.formDescriptionHasChanged() ||
       this.form.get('descriptionLevel').value != this.previousValue.descriptionLevel ||
       this.getStartDate(this.form.get('startDate').value) != this.getStartDate(this.previousValue.startDate) ||
       this.getStartDate(this.form.get('endDate').value) != this.getStartDate(this.previousValue.endDate)
+    );
   }
 
   private formIsValid() {
-    return this.formHasValidTitle() && this.formHasValidDescription() && this.formHasValidDescriptionLevel()
+    return this.formHasValidTitle() && this.formHasValidDescription() && this.formHasValidDescriptionLevel();
   }
 
   formHasChangesAndIsValid(): boolean {
@@ -339,49 +336,57 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         const dif = diff(this.form.value, this.previousValue);
         let startDate = null;
         let endDate = null;
-        if(dif.startDate != undefined && dif.startDate != null && this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate)) {
+        if (
+          dif.startDate != undefined &&
+          dif.startDate != null &&
+          this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate)
+        ) {
           startDate = this.getStartDate(this.form.get('startDate').value);
         }
-        if(dif.endDate != undefined && dif.endDate != null && this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)) {
+        if (
+          dif.endDate != undefined &&
+          dif.endDate != null &&
+          this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
+        ) {
           endDate = this.getStartDate(this.form.get('endDate').value);
         }
 
         let desc = null;
-        if(this.hasNoDescription || ( dif?.description ?.length > 0 && !this.hasFrDescription && !this.hasEnDescription)){
-            desc = dif.description;
+        if (this.hasNoDescription || (dif?.description?.length > 0 && !this.hasFrDescription && !this.hasEnDescription)) {
+          desc = dif.description;
         }
 
-          metadataToUpdate = {
+        metadataToUpdate = {
           id: null,
-          Title: this.hasTitle ? dif?.title: null,
+          Title: this.hasTitle ? dif?.title : null,
           DescriptionLevel: dif?.descriptionLevel,
-          "Title_.fr": this.hasFrTitle ? dif?.title : null,
-          "Title_.en": this.hasEnTitle ? dif?.title : null,
+          'Title_.fr': this.hasFrTitle ? dif?.title : null,
+          'Title_.en': this.hasEnTitle ? dif?.title : null,
           Description: desc,
-          "Description_.fr": this.hasFrDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
-          "Description_.en": this.hasEnDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
+          'Description_.fr': this.hasFrDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
+          'Description_.en': this.hasEnDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
           StartDate: startDate != null ? this.getStartDate(this.form.get('startDate').value) : null,
           EndDate: endDate != null ? this.getStartDate(this.form.get('endDate').value) : null,
 
-          unsetAction: this.unsetAction
-        }
+          unsetAction: this.unsetAction,
+        };
         this.updateUnit(this.archiveUnit, metadataToUpdate);
       });
   }
 
   cancelUpdate() {
-    if(this.form.dirty) {
-    const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    this.updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        this.updateStarted = false;
-        this.previousValue = null;
-        this.form.reset();
-        this.showNormalPanel.emit();
-      });
+    if (this.form.dirty) {
+      const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
+      const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+      this.updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription = dialogRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.updateStarted = false;
+          this.previousValue = null;
+          this.form.reset();
+          this.showNormalPanel.emit();
+        });
     } else {
       this.updateStarted = false;
       this.previousValue = null;
@@ -392,12 +397,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      if(this.archiveUnit && this.archiveUnit.StartDate) {
+      if (this.archiveUnit && this.archiveUnit.StartDate) {
         this.unsetAction.push('StartDate');
       }
       this.form.get(date).reset(null, { emitEvent: false });
     } else if (date === 'endDate') {
-      if(this.archiveUnit && this.archiveUnit.EndDate) {
+      if (this.archiveUnit && this.archiveUnit.EndDate) {
         this.unsetAction.push('EndDate');
       }
       this.form.get(date).reset(null, { emitEvent: false });
@@ -407,26 +412,24 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   updateUnit(archiveUnit: Unit, metadataToUpdate: UnitDescriptiveMetadataDto) {
-
     this.archiveService.updateUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract, metadataToUpdate).subscribe(
       (response) => {
         this.updateStarted = false;
         this.showNormalPanel.emit();
 
-        if(this.hasTitle){
-          this.archiveUnit.Title =this.form.get('title').value;
+        if (this.hasTitle) {
+          this.archiveUnit.Title = this.form.get('title').value;
         } else if (this.hasFrTitle) {
           this.archiveUnit.Title_.fr = this.form.get('title').value;
         } else {
           this.archiveUnit.Title_.en = this.form.get('title').value;
         }
 
-
-        if(this.hasDescription) {
+        if (this.hasDescription) {
           this.archiveUnit.Description = this.form.get('description').value;
-        } else if(this.hasFrDescription) {
+        } else if (this.hasFrDescription) {
           this.archiveUnit.Description_.fr = this.form.get('description').value;
-        } else if(this.hasEnDescription){
+        } else if (this.hasEnDescription) {
           this.archiveUnit.Description_.en = this.form.get('description').value;
         } else {
           this.archiveUnit.Description = this.form.get('description').value;
@@ -435,26 +438,19 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
         this.archiveUnit.DescriptionLevel = this.form.get('descriptionLevel').value;
         this.archiveUnit.StartDate = this.form.get('startDate').value;
         this.archiveUnit.EndDate = this.form.get('endDate').value;
-
-
-        this.archiveUnit
         const serviceUrl =
           this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + response;
 
-        this.archiveService.openSnackBarForWorkflow(
-          this.translateService.instant('UNIT_UPDATE.EXECUTE_UNIT_UPDATE_MESSAGE'),
-          serviceUrl
-        );
-
-    },
+        this.archiveService.openSnackBarForWorkflow(this.translateService.instant('UNIT_UPDATE.EXECUTE_UNIT_UPDATE_MESSAGE'), serviceUrl);
+      },
       (error: any) => {
         this.logger.error('Error message :', error);
-      });
+      }
+    );
   }
 
-
   private getStartDate(originStartDate: Date): string {
-    if(originStartDate) {
+    if (originStartDate) {
       const startDate =
         this.getDay(new Date(originStartDate).getDate()) +
         '/' +
@@ -466,7 +462,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private getMonth(num: number): string {
-    if(num > 9) {
+    if (num > 9) {
       return num.toString();
     } else {
       return '0' + num.toString();
@@ -474,20 +470,25 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   private getDay(day: number): string {
-    if(day > 9) {
+    if (day > 9) {
       return day.toString();
     } else {
       return '0' + day.toString();
     }
   }
 
-
   private getAuTitle(unit: any) {
     return unit?.Title ? unit?.Title : unit?.Title_ ? (unit?.Title_?.fr ? unit?.Title_?.fr : unit?.Title_?.en) : unit?.Title_?.en;
   }
 
   private getAuDescription(unit: any) {
-    return unit?.Description ? unit?.Description : unit.Description_ ? (unit.Description_?.fr ? unit.Description_?.fr : unit.Description_?.en) : unit.Description_?.en;
+    return unit?.Description
+      ? unit?.Description
+      : unit.Description_
+      ? unit.Description_?.fr
+        ? unit.Description_?.fr
+        : unit.Description_?.en
+      : unit.Description_?.en;
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
@@ -501,5 +502,4 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   ngOnDestroy() {
     this.updateFormSub?.unsubscribe();
   }
-
 }
