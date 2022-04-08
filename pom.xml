@@ -156,7 +156,7 @@
         <maven.antrun.plugin.version>1.8</maven.antrun.plugin.version>
         <maven.asciidoctor.plugin.version>2.0.0</maven.asciidoctor.plugin.version>
         <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
-        <maven.dependencycheck.version>6.1.1</maven.dependencycheck.version>
+        <maven.dependencycheck.version>6.0.1</maven.dependencycheck.version>
         <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
         <maven.exec.plugin.version>1.6.0</maven.exec.plugin.version>
         <maven.directory.plugin.version>0.1</maven.directory.plugin.version>
@@ -1298,28 +1298,6 @@
     <build>
         <plugins>
             <plugin>
-                <!-- Security check for dependencies -->
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${maven.dependencycheck.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <cveUrlModified>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-modified.json.gz</cveUrlModified>
-                    <cveUrlBase>${env.SERVICE_REPOSITORY_URL}/nist/nvdcve-1.1-%d.json.gz</cveUrlBase>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
-                    <failOnError>false</failOnError>
-                </configuration>
-
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>3.0</version>
@@ -1974,7 +1952,13 @@
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
                         <version>${maven.dependencycheck.version}</version>
+                         <inherited>false</inherited>
                         <configuration>
+                            <cveUrlModified>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-modified.json.gz</cveUrlModified>
+                            <cveUrlBase>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-%d.json.gz</cveUrlBase>                            
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                            <retireJsAnalyzerEnabled>false</retireJsAnalyzerEnabled>
+                            <failOnError>false</failOnError>
                             <formats>
                                 <format>XML</format>
                                 <format>HTML</format>
