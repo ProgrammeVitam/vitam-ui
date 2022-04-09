@@ -113,8 +113,8 @@ pipeline {
                     'Build and Test Ui Frontend Common': {
                         sh 'node -v'
                         sh 'npmrc default'
-                        sh ''' $MVN_COMMAND clean verify  -Psonar-metrics,vitam -f ui/ui-frontend-common/pom.xml  '''
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml '''
+                        sh ''' $MVN_COMMAND clean verify  -U -Psonar-metrics,vitam -f ui/ui-frontend-common/pom.xml  '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-frontend/pom.xml '''
                     }
                 )
             }
@@ -131,19 +131,19 @@ pipeline {
             steps {
                 parallel(
                     'Front portal': {
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-portal/pom.xml '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-portal/pom.xml '''
                     },
                     'Front identity': {
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-identity/pom.xml '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-identity/pom.xml '''
                     },
                     'Front ingest': {
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-ingest/pom.xml '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-ingest/pom.xml '''
                     },
                     'Front archive-search': {
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-archive-search/pom.xml '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-archive-search/pom.xml '''
                     },
                     'Front referential': {
-                        sh ''' $MVN_COMMAND verify -Pvitam,sonar-metrics -f ui/ui-referential/pom.xml '''
+                        sh ''' $MVN_COMMAND verify -U -Pvitam,sonar-metrics -f ui/ui-referential/pom.xml '''
                     }
                 )
             }
