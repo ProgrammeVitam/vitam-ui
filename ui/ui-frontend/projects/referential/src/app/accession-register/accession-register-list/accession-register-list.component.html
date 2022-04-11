@@ -2,8 +2,7 @@
   <div vitamuiCommonInfiniteScroll (vitamuiScroll)="onScroll()">
     <div class="vitamui-table">
       <div class="vitamui-table-head title-text result-layout">
-        <div class="col-11">
-          {{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: { nb: dataSource?.length } }}
+        <div class="col-11">{{ 'ACCESSION_REGISTER.LIST.NB_ENTRIES' | translate: {nb: dataSource?.length} }}
         </div>
         <div class="col-1 area-download" [ngClass]="dataSource?.length > 0 ? 'enabled-div' : 'disabled-div'">
           <i (click)="exportAccessionRegisterCsv()" class="vitamui-icon vitamui-icon-import-csv vitamui-row-icon clickable"></i>
@@ -78,10 +77,12 @@
       </div>
 
       <div class="vitamui-table-body">
-        <div class="vitamui-table-rows" *ngFor="let accessionRegisterDetail of dataSource" (click)="onSelectRow(accessionRegisterDetail)">
+        <div class="vitamui-table-rows"
+             *ngFor="let accessionRegisterDetail of dataSource"
+             (click)="onSelectRow(accessionRegisterDetail)">
           <div class="vitamui-row d-flex align-items-center clickable">
             <div class="col-1">{{ accessionRegisterDetail.endDate | date: 'dd/MM/yyyy' }}</div>
-            <div class="col-3">{{ accessionRegisterDetail.opi }}</div>
+            <div class="col-3">{{ accessionRegisterDetail.obIdIn }}</div>
             <div class="col-1">
               <p
                 matTooltip="{{ accessionRegisterDetail.originatingAgencyLabel }}"
@@ -92,7 +93,8 @@
               </p>
             </div>
             <div class="col-1">
-              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300">
+              <p matTooltip="{{ accessionRegisterDetail.archivalAgreement }}" matTooltipClass="vitamui-tooltip"
+                 [matTooltipShowDelay]="300">
                 {{ accessionRegisterDetail.archivalAgreement | truncate: 12 }}
               </p>
             </div>
@@ -113,6 +115,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div *ngIf="!dataSource || pending; then loadingSpinner"></div>

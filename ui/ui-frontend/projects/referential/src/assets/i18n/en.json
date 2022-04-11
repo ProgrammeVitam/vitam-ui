@@ -4,13 +4,13 @@
     "SUBMIT": "Confirm",
     "UPDATE": "Update",
     "APPLY_UPDATE": "Apply changes",
-    "REQUIRED" : "Required field"
+    "REQUIRED": "Required field"
   },
   "LOGBOOK_OPERATION_LIST": {
-    "NO_RESULTS" : "End of results",
-    "HOUR" : "Hour",
-    "NEXT" : "Next",
-    "PREVIOUS" : "Previous",
+    "NO_RESULTS": "End of results",
+    "HOUR": "Hour",
+    "NEXT": "Next",
+    "PREVIOUS": "Previous",
     "STATE": "State",
     "STATUS": "Status",
     "RESULTS": "Results",
@@ -42,19 +42,19 @@
     "AND": "and the :",
     "ADD_INTREVAL": "ADD INTERVAL",
     "DELETE_INTERVAL": "DELETE INTERVAL",
-      "OPERATION_CATEGORY" : {
-      "TRACEABILITY" : "Securing",
-      "INGEST" : "Entry",
-      "STORAGE_BACKUP":"Save write logs",
-      "AUDIT":"Audit",
-      "MASTERDATA":"Basic data",
-      "ELIMINATION":"Elimination of archival units",
-      "CHECK":"Checking secure logs",
-      "UPDATE":"Update",
-      "EXPORT_DIP":"Export of the DIP",
-      "RECLASSIFICATION":"Modification of the tree structure of archival units",
-      "PRESERVATION":"Global preservation process",
-      "EXTERNAL_LOGBOOK":"Logging of external events"
+    "OPERATION_CATEGORY": {
+      "TRACEABILITY": "Securing",
+      "INGEST": "Entry",
+      "STORAGE_BACKUP": "Save write logs",
+      "AUDIT": "Audit",
+      "MASTERDATA": "Basic data",
+      "ELIMINATION": "Elimination of archival units",
+      "CHECK": "Checking secure logs",
+      "UPDATE": "Update",
+      "EXPORT_DIP": "Export of the DIP",
+      "RECLASSIFICATION": "Modification of the tree structure of archival units",
+      "PRESERVATION": "Global preservation process",
+      "EXTERNAL_LOGBOOK": "Logging of external events"
     }
   },
   "STATE_VALUE": {
@@ -104,7 +104,7 @@
     "LIST": {
       "NB_ENTRIES": "{{nb}} entries",
       "DATE": "Date",
-      "OPERATION_IDENTIFIER": "Technical operation identifier",
+      "OPERATION_IDENTIFIER": "Message identifier",
       "ORIGINATING_AGENCY": "Originating Agency",
       "ARCHIVAL_AGREEMENT": "Archival Agreement",
       "ACQUISITION_INFORMATION": "Acquisition Information",
@@ -147,6 +147,36 @@
       "OPERATION_ELIMINATIONS": "Eliminations",
       "OPERATION_TRANSFERTS": "Transfers",
       "OPERATION_PRESERVATIONS": "Preservations"
+    },
+    "PREVIEW": {
+      "OPERATION_LIST": "Operation list",
+      "STATISTICS": "Statistics",
+      "DATE": "Date",
+      "ORIGINATING_AGENCY": "Producer service",
+      "ARCHIVAL_AGREEMENT": "Entry contract",
+      "ARCHIVAL_PROFILE": "Archival Profile",
+      "ACQUISITION_INFORMATION": "Entry modality",
+      "STATUS": "Status",
+      "LEGAL_STATUS": "Archive status",
+      "OPERATION_TECHNICAL_IDENTIFIER": "Ingest GUID",
+      "SUBMISSION_AGENCY": "Submission service",
+      "COMMENTS": "Comments",
+      "OPERATIONS": {
+        "COUNTER": "operation",
+        "COUNTER_PLURAL": "operations",
+        "FILTER_BY_OPERATIONS": "Operation type",
+        "ORDER_BY_CREATION_DATE": "Operation date",
+        "ORDER_BY_UNITS": "Nb UA",
+        "ORDER_BY_OBJECTS": "Nb OT",
+        "ORDER_BY_GOTS": "Nb GOT",
+        "ORDER_BY_OBJ_SIZE": "Volumetry",
+        "TYPE": {
+          "INGEST": "Ingest",
+          "PRESERVATION": "Preservation",
+          "TRANSFERT": "Transfer",
+          "ELIMINATION": "Elimination"
+        }
+      }
     }
   }
 }

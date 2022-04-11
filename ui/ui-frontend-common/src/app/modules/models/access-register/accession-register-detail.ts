@@ -7,8 +7,9 @@ export interface AccessionRegisterDetail extends Id {
   tenant: number;
   version: number;
   originatingAgency: string;
-  submissionAgency: string;
   originatingAgencyLabel: string;
+  submissionAgency: string;
+  submissionAgencyLabel: string;
   archivalAgreement: string;
   startDate: string;
   endDate: string;
@@ -29,3 +30,4 @@ export interface AccessionRegisterDetail extends Id {
   obIdIn: string;
   comment: string[];
 }
+
