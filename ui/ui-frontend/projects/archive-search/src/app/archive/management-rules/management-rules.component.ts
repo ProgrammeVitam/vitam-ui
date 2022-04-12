@@ -49,6 +49,7 @@ import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSea
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+const RESULTS_MAX_NUMBER = 10000;
 
 @Component({
   selector: 'app-management-rules',
@@ -64,7 +65,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   accessContractSubscription: Subscription;
   tenantIdentifier: string;
   tenantIdentifierSubscription: Subscription;
+  hasExactCountSubscription: Subscription;
   selectedItem: number;
+  selectedItemToShow: string;
   selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
@@ -110,6 +113,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   messageNotAddProperty: string;
   messageNotDelete: string;
   messageNotToDeleteProperty: string;
+  hasExactCount: boolean;
+  resultNumberToShow: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -181,6 +186,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.loadSelectedItem();
     this.loadCriteriaSearchListToSave();
     this.loadCriteriaSearchDSLQuery();
+    this.loadHasExactCount();
 
     if (this.criteriaSearchListToSave.length === 0) {
       this.initializeParameters();
@@ -191,6 +197,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
     this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
     this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
 
   initializeParameters() {
@@ -207,6 +214,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.showConfirmRuleActionsDialogSuscription?.unsubscribe();
     this.showConfirmLeaveRuleActionsDialogSuscription?.unsubscribe();
     this.tenantIdentifierSubscription?.unsubscribe();
+    this.hasExactCountSubscription?.unsubscribe();
   }
 
   selectRule(rule: any) {
@@ -249,6 +257,13 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   loadSelectedItem() {
     this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
       this.selectedItem = response;
+      this.selectedItemToShow = response === RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
+    });
+  }
+
+  loadHasExactCount() {
+    this.hasExactCountSubscription = this.managementRulesSharedDataService.getHasExactCount().subscribe((paramater) => {
+      this.hasExactCount = paramater;
     });
   }
 
@@ -358,6 +373,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
+        this.criteriaSearchDSLQuery.trackTotalHits = this.hasExactCount;
         const ruleSearchCriteriaDto: RuleSearchCriteriaDto = {
           searchCriteriaDto: this.criteriaSearchDSLQuery,
           ruleActions: allRuleActions,

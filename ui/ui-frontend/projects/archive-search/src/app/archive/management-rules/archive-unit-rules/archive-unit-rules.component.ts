@@ -61,6 +61,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: string;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
   ruleCategoryDuaActions: RuleCategoryAction;
 
   managementRules: ManagementRules[] = [];

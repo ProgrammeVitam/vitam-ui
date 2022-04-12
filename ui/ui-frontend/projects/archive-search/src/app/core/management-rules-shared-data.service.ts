@@ -51,12 +51,14 @@ export class ManagementRulesSharedDataService {
   private ruleActions = new BehaviorSubject<ActionsRules[]>([]);
 
   private managementRules = new BehaviorSubject<ManagementRules[]>([]);
+  private hasExactCount = new BehaviorSubject<boolean>(false);
 
   selectedItem = this.selectedItems.asObservable();
   allCriteriaSearchListToSave = this.criteriaSearchListToSave.asObservable();
   allCriteriaSearchDSLQuery = this.criteriaSearchDSLQuery.asObservable();
   allRuleActions = this.ruleActions.asObservable();
   allManagementRules = this.managementRules.asObservable();
+  hasExactCounts = this.hasExactCount.asObservable();
 
   constructor() {}
 
@@ -106,5 +108,13 @@ export class ManagementRulesSharedDataService {
 
   getManagementRules(): Observable<ManagementRules[]> {
     return this.managementRules.asObservable();
+  }
+
+  emitHasExactCount(hasExactCount: boolean) {
+    this.hasExactCount.next(hasExactCount);
+  }
+
+  getHasExactCount(): Observable<boolean> {
+    return this.hasExactCount.asObservable();
   }
 }

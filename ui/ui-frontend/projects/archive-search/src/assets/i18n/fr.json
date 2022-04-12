@@ -466,7 +466,7 @@
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validation de changement(s) de règle(s)",
       "DELETE_COMPONENT": "Êtes-vous sur de vouloir supprimer ce bloc de mise à jour des règles ?",
-      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur {{ ua_selected }} unités archivistiques. Confirmez-vous cette mise à jour ?",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, vous êtes sur le point de valider les changements de règle(s) sur l'ensemble des unités archivistiques prises en compte dans la mise à jour demandée. Confirmez-vous cette mise à jour ?",
       "EXIT_CONFIRM_MESSAGE": "Êtes-vous sur de vouloir quitter la mise à jour des règles de gestion sur les {{ua_selected}} unités archivistiques sélectionnées ?"
     },
 

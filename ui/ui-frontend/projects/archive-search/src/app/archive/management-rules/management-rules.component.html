@@ -124,7 +124,7 @@
               <div class="row">
                 <div class="col-7">
                   <span class="details-ua">
-                    {{ 'RULES.UA_SELECTED' | translate: { ua_selected: selectedItem } }}
+                    {{ 'RULES.UA_SELECTED' | translate: { ua_selected: selectedItemToShow } }}
                   </span>
                 </div>
                 <div class="col-5">
@@ -145,6 +145,7 @@
                       [accessContract]="accessContract"
                       [selectedItem]="selectedItem"
                       [ruleCategory]="item.id"
+                      [hasExactCount]="hasExactCount"
                     ></app-archive-unit-rules>
                   </mat-tab>
                 </div>
@@ -162,7 +163,7 @@
     <br />
     <div class="text-title">{{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_TITLE_MESSAGE' | translate }}</div>
     <div class="text large bold">
-      {{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate: { ua_selected: selectedItem } }}
+      {{ 'RULES.DIALOG_MESSAGE.UPDATE_CONFIRM_MESSAGE' | translate }}
     </div>
   </mat-dialog-content>
   <br />

@@ -38,6 +38,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -52,6 +53,7 @@ const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const APPRAISAL_RULE_START_DATE = 'APPRAISAL_RULE_START_DATE';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
+const RESULTS_MAX_NUMBER = 10000;
 
 @Component({
   selector: 'app-add-management-rules',
@@ -68,6 +70,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   selectedItem: number;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
   ruleDetailsForm: FormGroup;
   ruleTypeDUA: RuleCategoryAction;
   public previousRuleDetails: {
@@ -81,15 +85,15 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   showText = false;
 
   selectedItemSubscription: Subscription;
-  itemsWithSameRule: number;
-  itemsWithSameRuleAndDate: number;
-  itemsToUpdate: number;
+  itemsWithSameRule: string;
+  itemsWithSameRuleAndDate: string;
+  itemsToUpdate: string;
 
   showConfirmDeleteAddRuleSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
-
   criteriaSearchDSLQuerySuscription: Subscription;
   getRuleSuscription: Subscription;
+  searchArchiveUnitsByCriteriaSubscription: Subscription;
 
   isLoading = false;
   isWarningLoading = false;
@@ -98,6 +102,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   managementRulesSubscription: Subscription;
   rule: Rule;
   selectedStartDate: any;
+  resultNumberToShow: string;
 
   @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<AddManagementRulesComponent>;
 
@@ -107,7 +112,8 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     public ruleService: RuleService,
-    private managementRulesValidatorService: ManagementRulesValidatorService
+    private managementRulesValidatorService: ManagementRulesValidatorService,
+    private translateService: TranslateService
   ) {
     this.previousRuleDetails = {
       rule: '',
@@ -165,9 +171,12 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSubscription?.unsubscribe();
     this.criteriaSearchDSLQuerySuscription?.unsubscribe();
     this.getRuleSuscription?.unsubscribe();
+    this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
+  }
 
   initDSLQuery() {
     this.criteriaSearchDSLQuerySuscription = this.managementRulesSharedDataService.getCriteriaSearchDSLQuery().subscribe((response) => {
@@ -198,11 +207,32 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-      this.itemsWithSameRule = data.totalResults;
-      this.itemsToUpdate = this.selectedItem - data.totalResults;
-      this.isLoading = false;
-    });
+    if (this.hasExactCount) {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .subscribe((resultsNumber) => {
+          this.itemsWithSameRule = resultsNumber.toString();
+          this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
+          this.isLoading = false;
+        });
+    } else {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .subscribe((data) => {
+          if (data.totalResults === RESULTS_MAX_NUMBER) {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToUpdate = this.resultNumberToShow;
+          } else {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToUpdate =
+              this.selectedItem === RESULTS_MAX_NUMBER ? this.resultNumberToShow : (this.selectedItem - data.totalResults).toString();
+          }
+          this.isLoading = false;
+        });
+    }
+    if (this.ruleDetailsForm.get('startDate').value) {
+      this.addRuleAndStartDateToQuery();
+    }
   }
 
   addRuleAndStartDateToQuery() {
@@ -239,10 +269,23 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
       this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithDate);
       this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-      this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-        this.itemsWithSameRuleAndDate = data.totalResults;
+      if (this.hasExactCount) {
+        this.archiveService
+          .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+          .subscribe((resultsNumber) => {
+            this.itemsWithSameRuleAndDate = resultsNumber.toString();
+            this.isWarningLoading = false;
+          });
+      } else {
+        this.archiveService.searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+          if (data.totalResults === RESULTS_MAX_NUMBER) {
+            this.itemsWithSameRuleAndDate = this.resultNumberToShow;
+          } else {
+            this.itemsWithSameRuleAndDate = data.totalResults.toString();
+          }
+        });
         this.isWarningLoading = false;
-      });
+      }
     }
   }
 
@@ -354,11 +397,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
 
     this.addRuleToQuery();
-    if (this.ruleDetailsForm.get('startDate').value) {
-      this.addRuleAndStartDateToQuery();
-    }
     this.confirmStep.emit();
-
     this.lastRuleId = this.ruleDetailsForm.get('rule').value;
   }
 
