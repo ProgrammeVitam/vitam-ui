@@ -60,7 +60,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class PastisTransformationRestClient
     extends BasePaginatingAndSortingRestClient<ProfileResponse, ExternalHttpContext> {
@@ -102,18 +105,6 @@ public class PastisTransformationRestClient
         final HttpEntity<Notice> request = new HttpEntity<>(notice, headers);
         return restTemplate.exchange(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE, HttpMethod.POST,
                 request, ProfileResponse.class);
-    }
-
-    public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context)
-        throws IOException {
-        LOGGER.debug("Upload profile");
-        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
-        bodyMap.add("file", new FileSystemResource(file.getBytes(), file.getOriginalFilename()));
-        final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_UPLOAD_PROFILE,
-            HttpMethod.POST,
-            request,
-            ProfileResponse.class);
     }
 
     public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context)

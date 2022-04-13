@@ -112,8 +112,8 @@ class PastisController {
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
     @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
         consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file);
+    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName) throws NoSuchAlgorithmException, TechnicalException {
+        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, fileName);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {

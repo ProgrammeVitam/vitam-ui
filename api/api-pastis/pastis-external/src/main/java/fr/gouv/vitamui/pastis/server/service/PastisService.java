@@ -278,7 +278,7 @@ public class PastisService {
         return profileResponse;
     }
 
-    public ProfileResponse loadProfileFromFile(MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
+    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName) throws NoSuchAlgorithmException, TechnicalException {
 
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
@@ -286,7 +286,7 @@ public class PastisService {
         this.rand = SecureRandom.getInstanceStrong();
 
         try {
-            String originalFileName = file.getOriginalFilename();
+            String originalFileName = fileName;
             if (originalFileName != null) {
                 String fileExtension = originalFileName.split("\\.")[1];
                 String profileName = originalFileName.split("\\.(?=[^\\.]+$)")[0];
@@ -301,7 +301,7 @@ public class PastisService {
                 xmlReader.setContentHandler(handler);
                 xmlReader.parse(inputSource);
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
-                LOGGER.info("Starting editing Archive Profile from file : {}", file.getOriginalFilename());
+                LOGGER.info("Starting editing Archive Profile from file : {}", fileName);
 
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
@@ -313,7 +313,7 @@ public class PastisService {
             }
 
         } catch (SAXException | IOException e) {
-            throw new TechnicalException("Failed to load profile " + file.getOriginalFilename(), e);
+            throw new TechnicalException("Failed to load profile " + fileName, e);
         } catch (AssertionError ae) {
             throw new TechnicalException("Failed to load pua ", ae);
         }
