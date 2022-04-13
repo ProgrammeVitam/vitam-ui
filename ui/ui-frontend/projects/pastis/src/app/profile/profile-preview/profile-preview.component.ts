@@ -3,7 +3,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StartupService} from 'ui-frontend-common';
 import {ConfirmActionComponent} from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
 import {environment} from '../../../environments/environment';
 import {PastisConfiguration} from '../../core/classes/pastis-configuration';
@@ -46,7 +45,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private router: Router, private startupService: StartupService,
+  constructor(private matDialog: MatDialog, private router: Router, 
               private pastisConfig: PastisConfiguration, private profileService: ProfileService, private route: ActivatedRoute) {
   }
 
