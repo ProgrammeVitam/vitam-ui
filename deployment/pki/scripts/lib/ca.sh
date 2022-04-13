@@ -35,7 +35,7 @@ function generate_ca_root {
         -keyout ${REPERTOIRE_CA}/${REPERTOIRE_SORTIE}/ca-root.key \
         -passout pass:${MDP_CAROOT_KEY} \
         -batch
-    
+
     pki_logger "Create CA certificate... $(pwd)"
     openssl ca \
         -config ${REPERTOIRE_CONFIG}/ca-config \
@@ -147,17 +147,20 @@ function main() {
     autorities="$(get_autorities)"
     for ITEM in ${autorities[@]}
     do
-        if [ ! -d ${REPERTOIRE_CA}/${ITEM} ]; then
-            mkdir -p ${REPERTOIRE_CA}/${ITEM}
-            init_config_ca ${ITEM}
+        mkdir -p ${REPERTOIRE_CA}/${ITEM}
+        init_config_ca ${ITEM}
 
-            pki_logger "Création de CA root pour ${ITEM}..."
+        if [ ! -f ${REPERTOIRE_CA}/${ITEM}/ca-root.crt ]; then
+            pki_logger "Création de CA-root pour ${ITEM}..."
             # Génération du CA_ROOT_PASSWORD & stockage dans le vault-ca
             CA_ROOT_PASSWORD=$(generatePassphrase)
             setComponentPassphrase ca "ca_root_${ITEM}" "${CA_ROOT_PASSWORD}"
             generate_ca_root ${CA_ROOT_PASSWORD} ${ITEM} ${ITEM}
-
-            pki_logger "Création du CA intermediate pour ${ITEM}..."
+        else
+            pki_logger "Le CA-root ${ITEM} existe déjà, il ne sera pas recréé..."
+        fi
+        if [ ! -f ${REPERTOIRE_CA}/${ITEM}/ca-intermediate.crt ]; then
+            pki_logger "Création du CA-intermediate pour ${ITEM}..."
             # Génération du CA_INTERMEDIATE_PASSWORD & stockage dans le vault-ca
             CA_INTERMEDIATE_PASSWORD=$(generatePassphrase)
             setComponentPassphrase ca "ca_intermediate_${ITEM}" "${CA_INTERMEDIATE_PASSWORD}"
@@ -166,7 +169,7 @@ function main() {
             purge_directory "${REPERTOIRE_CONFIG}/${ITEM}"
             purge_directory "${REPERTOIRE_CA}/${ITEM}"
         else
-            pki_logger "Le CA ${ITEM} existe déjà, il ne sera pas recrée ..."
+            pki_logger "Le CA-intermediate ${ITEM} existe déjà, il ne sera pas recréé..."
         fi
         pki_logger "----------------------------------------------"
     done
