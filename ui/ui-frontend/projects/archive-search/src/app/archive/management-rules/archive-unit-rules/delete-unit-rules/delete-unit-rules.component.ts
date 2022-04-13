@@ -38,6 +38,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
 import { ManagementRulesSharedDataService } from 'projects/archive-search/src/app/core/management-rules-shared-data.service';
 import { merge, Subscription } from 'rxjs';
@@ -51,6 +52,7 @@ import { ManagementRulesValidatorService } from '../../../validators/management-
 const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
+const RESULTS_MAX_NUMBER = 10000;
 
 @Component({
   selector: 'app-delete-unit-rules',
@@ -67,13 +69,15 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: number;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
 
   showText = false;
   isLoading = false;
   disabledControl = true;
   lastRuleId: string;
-  itemsWithSameRule: number;
-  itemsToNotUpdate: number;
+  itemsWithSameRule: string;
+  itemsToNotUpdate: string;
   rule: Rule;
 
   ruleDetailsForm: FormGroup;
@@ -90,6 +94,7 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
   criteriaSearchDSLQuerySuscription: Subscription;
   searchArchiveUnitsByCriteriaSubscription: Subscription;
   getRuleSuscription: Subscription;
+  resultNumberToShow: string;
 
   @ViewChild('confirmDeleteBlocRuleDialog', { static: true }) confirmDeleteBlocRuleDialog: TemplateRef<DeleteUnitRulesComponent>;
 
@@ -99,7 +104,8 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     private archiveService: ArchiveService,
     private ruleService: RuleService,
     private formBuilder: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translateService: TranslateService
   ) {
     this.previousRuleDetails = {
       rule: '',
@@ -152,7 +158,9 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
+  }
 
   ngOnDestroy() {
     this.managementRulesSubscription?.unsubscribe();
@@ -247,13 +255,29 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-      .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
-      .subscribe((data) => {
-        this.itemsWithSameRule = data.totalResults;
-        this.itemsToNotUpdate = this.selectedItem - data.totalResults;
-        this.isLoading = false;
-      });
+    if (this.hasExactCount) {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .subscribe((resultsNumber) => {
+          this.itemsWithSameRule = resultsNumber.toString();
+          this.itemsToNotUpdate = (this.selectedItem - resultsNumber).toString();
+          this.isLoading = false;
+        });
+    } else {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .subscribe((data) => {
+          if (data.totalResults === RESULTS_MAX_NUMBER) {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToNotUpdate = this.resultNumberToShow;
+          } else {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToNotUpdate =
+              this.selectedItem === RESULTS_MAX_NUMBER ? this.resultNumberToShow : (this.selectedItem - data.totalResults).toString();
+          }
+          this.isLoading = false;
+        });
+    }
   }
 
   initDSLQuery() {

@@ -38,6 +38,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
@@ -51,6 +52,7 @@ import { ManagementRulesValidatorService } from '../../../validators/management-
 const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
+const RESULTS_MAX_NUMBER = 10000;
 
 @Component({
   selector: 'app-update-unit-rules',
@@ -67,6 +69,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: number;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
   isStartDateDisabled = true;
@@ -99,8 +103,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   selectedStartDate: any;
   isDateValidated = true;
 
-  itemsWithSameRule: number;
-  itemsToUpdate: number;
+  itemsWithSameRule: string;
+  itemsToUpdate: string;
   showMessages = false;
   lastRuleId: string;
 
@@ -109,6 +113,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   disabledControl = true;
   isValidRule = false;
   isValidForm = false;
+  resultNumberToShow: string;
 
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
@@ -118,7 +123,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private formBuilder: FormBuilder,
-    private managementRulesValidatorService: ManagementRulesValidatorService
+    private managementRulesValidatorService: ManagementRulesValidatorService,
+    private translateService: TranslateService
   ) {
     this.previousRuleDetails = {
       oldRule: '',
@@ -251,7 +257,9 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
+  }
   submit() {
     this.disabledControl = true;
     this.showText = true;
@@ -391,13 +399,29 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-      .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
-      .subscribe((data) => {
-        this.itemsWithSameRule = data.totalResults;
-        this.itemsToUpdate = this.selectedItem - data.totalResults;
-        this.isLoading = false;
-      });
+    if (this.hasExactCount) {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .subscribe((resultsNumber) => {
+          this.itemsWithSameRule = resultsNumber.toString();
+          this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
+          this.isLoading = false;
+        });
+    } else {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .subscribe((data) => {
+          if (data.totalResults === RESULTS_MAX_NUMBER) {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToUpdate = this.resultNumberToShow;
+          } else {
+            this.itemsWithSameRule = data.totalResults.toString();
+            this.itemsToUpdate =
+              this.selectedItem === RESULTS_MAX_NUMBER ? this.resultNumberToShow : (this.selectedItem - data.totalResults).toString();
+          }
+          this.isLoading = false;
+        });
+    }
   }
 
   private getMonth(num: number): string {

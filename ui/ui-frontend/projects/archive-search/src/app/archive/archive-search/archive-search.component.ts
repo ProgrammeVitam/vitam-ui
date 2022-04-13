@@ -52,7 +52,17 @@ import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
-import { ArchiveSearchResultFacets, CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto, SearchCriteriaStatusEnum, SearchCriteriaTypeEnum, SearchCriteriaValue } from '../models/search.criteria';
+import {
+  ArchiveSearchResultFacets,
+  CriteriaValue,
+  PagedResult,
+  SearchCriteria,
+  SearchCriteriaCategory,
+  SearchCriteriaEltDto,
+  SearchCriteriaStatusEnum,
+  SearchCriteriaTypeEnum,
+  SearchCriteriaValue,
+} from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
 import { VitamUISnackBarComponent } from '../shared/vitamui-snack-bar';
 import { DipRequestCreateComponent } from './dip-request-create/dip-request-create.component';
@@ -73,8 +83,6 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   styleUrls: ['./archive-search.component.scss'],
 })
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
-  DEFAULT_RESULT_THRESHOLD = 10000;
-
   constructor(
     private archiveService: ArchiveService,
     private translateService: TranslateService,
@@ -177,6 +185,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
     });
   }
+  DEFAULT_RESULT_THRESHOLD = 10000;
 
   direction = Direction.ASCENDANT;
   @Input()
@@ -277,11 +286,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('launchComputeInheritedRuleAlerteMessageDialog', { static: true })
   launchComputeInheritedRuleAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>;
+  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
 
   selectedCategoryChange(selectedCategoryIndex: number) {
     this.additionalSearchCriteriaCategoryIndex = selectedCategoryIndex;
   }
-  archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
 
   addCriteriaCategory(categoryName: string) {
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
@@ -390,14 +399,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         valueElt.value = 'ORIGIN_WAITING_RECALCULATE';
         if (emit === true) {
           this.archiveExchangeDataService.sendAppraisalFromMainSearchCriteriaAction({
-            keyElt: keyElt,
+            keyElt,
             valueElt,
             action: ActionOnCriteria.REMOVE,
           });
         }
         if (emit === true) {
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
-            keyElt: keyElt,
+            keyElt,
             valueElt,
             action: ActionOnCriteria.REMOVE,
           });
@@ -1308,7 +1317,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         disableClose: false,
         data: {
           itemSelected: this.itemSelected,
-          reclassificationCriteria: reclassificationCriteria,
+          reclassificationCriteria,
           accessContract: this.accessContract,
           tenantIdentifier: this.tenantIdentifier,
           archiveUnitGuidSelected: this.archiveUnitGuidSelected,
@@ -1477,56 +1486,69 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
                 this.itemSelected = this.totalResults - this.itemNotSelected;
               }
               this.waitingToGetFixedCount = false;
+              this.managementRulesSharedDataService.emitHasExactCount(true);
             }
             this.pendingGetFixedCount = false;
             this.goToUpdateManagementRule();
           });
       }
     } else {
+      this.managementRulesSharedDataService.emitHasExactCount(false);
       this.goToUpdateManagementRule();
     }
   }
 
   goToUpdateManagementRule() {
-    this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = this.confirmSecondActionBigNumberOfResultsActionDialog;
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+      { panelClass: 'vitamui-dialog' }
+    );
 
-    this.listOfUACriteriaSearch.push({
-      criteria: ARCHIVE_UNIT_HOLDING_UNIT,
-      values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
-      operator: CriteriaOperator.EQ,
-      category: SearchCriteriaTypeEnum.FIELDS,
-      dataType: CriteriaDataType.STRING,
-    });
+    this.showConfirmBigNumberOfResultsSuscription = dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.listOfUACriteriaSearch = this.prepareUAIdList(this.criteriaSearchList, this.listOfUAIdToInclude, this.listOfUAIdToExclude);
 
-    const criteriaSearchDSLQuery = {
-      criteriaList: this.listOfUACriteriaSearch,
-      pageNumber: this.currentPage,
-      size: PAGE_SIZE,
-      language: this.translateService.currentLang,
-    };
-    this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
-      this.numberOfHoldingUnitType = data.totalResults;
-      if (this.numberOfHoldingUnitType > 0) {
-        const dialogToOpen = this.updateArchiveUnitAlerteMessageDialog;
-        const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-        this.updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
-          .afterClosed()
-          .pipe(filter((result) => !!result))
-          .subscribe(() => {});
-      } else {
-        const criteriaSearchDSLQueryToSend = {
-          criteriaList: this.listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+        this.listOfUACriteriaSearch.push({
+          criteria: ARCHIVE_UNIT_HOLDING_UNIT,
+          values: [{ value: 'HOLDING_UNIT', id: 'HOLDING_UNIT' }],
+          operator: CriteriaOperator.EQ,
+          category: SearchCriteriaTypeEnum.FIELDS,
+          dataType: CriteriaDataType.STRING,
+        });
+
+        const criteriaSearchDSLQuery = {
+          criteriaList: this.listOfUACriteriaSearch,
           pageNumber: this.currentPage,
           size: PAGE_SIZE,
           language: this.translateService.currentLang,
         };
-        this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
-        this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
-        this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
+        this.archiveService.searchArchiveUnitsByCriteria(criteriaSearchDSLQuery, this.accessContract).subscribe((data) => {
+          this.numberOfHoldingUnitType = data.totalResults;
+          if (this.numberOfHoldingUnitType > 0) {
+            const dialogToOpen = this.updateArchiveUnitAlerteMessageDialog;
+            const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+            this.updateArchiveUnitAlerteMessageDialogSubscription = dialogRef
+              .afterClosed()
+              .pipe(filter((result) => !!result))
+              .subscribe(() => {});
+          } else {
+            const criteriaSearchDSLQueryToSend = {
+              criteriaList: this.listOfUACriteriaSearch.filter((criteria) => criteria.criteria !== ARCHIVE_UNIT_HOLDING_UNIT),
+              pageNumber: this.currentPage,
+              size: PAGE_SIZE,
+              language: this.translateService.currentLang,
+            };
+            this.managementRulesSharedDataService.emitselectedItems(this.itemSelected);
+            this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchList);
+            this.managementRulesSharedDataService.emitCriteriaSearchDSLQuery(criteriaSearchDSLQueryToSend);
 
-        this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
-      }
-    });
+            this.router.navigate(['/archive-search/update-rules/tenant/', this.tenantIdentifier]);
+          }
+        });
+      });
   }
 
   launchComputedInheritedRules() {
@@ -1615,7 +1637,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   checkIfShowingFacetsRule(): boolean {
     let hasAppraisalRuleCriteria = false;
     if (this.searchCriterias && this.searchCriterias.size > 0) {
-      for (let criteria of this.searchCriterias.values()) {
+      for (const criteria of this.searchCriterias.values()) {
         if (
           (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria)) ||
           this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||

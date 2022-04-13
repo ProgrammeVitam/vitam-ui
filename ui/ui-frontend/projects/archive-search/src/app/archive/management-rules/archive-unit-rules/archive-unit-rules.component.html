@@ -16,6 +16,7 @@
         [accessContract]="accessContract"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
+        [hasExactCount]="hasExactCount"
       ></app-add-management-rules>
     </div>
   </div>
@@ -51,6 +52,7 @@
         (delete)="deleteForm(actionName.id, $event, action)"
         (confirmStep)="confirmStep(actionName.id)"
         (cancelStep)="cancelStep(actionName.id)"
+        [hasExactCount]="hasExactCount"
       ></app-delete-unit-rules>
     </div>
   </div>
@@ -85,6 +87,7 @@
         [accessContract]="accessContract"
         [selectedItem]="selectedItem"
         [ruleCategory]="ruleCategory"
+        [hasExactCount]="hasExactCount"
       ></app-update-unit-rules>
     </div>
   </div>
