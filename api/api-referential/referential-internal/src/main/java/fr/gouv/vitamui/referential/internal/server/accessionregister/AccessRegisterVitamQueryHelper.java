@@ -74,11 +74,14 @@ public class AccessRegisterVitamQueryHelper {
     private static final String DATE_FORMAT = "dd/MM/yyyy";
     private static final String DATE_FORMAT_DB_PATTERN = "yyyy-MM-dd";
     private static final Collection<String> staticAcquisitionInformations = List.of("Versement", "Protocole", "Achat",
-        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", AccessRegisterVitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE,
-        AccessRegisterVitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
+        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration",
+        AccessRegisterVitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE,
+        AccessRegisterVitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE
+    );
     private static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
     private static final String ACQUISITION_INFORMATION_NON_AUTRES = "Autres";
     private static final String ORIGINATING_AGENCIES = "originatingAgencies";
+    private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
     private static final String STATUS = "Status";
     private static final String ARCHIVAL_AGREEMENTS = "archivalAgreements";
@@ -119,12 +122,6 @@ public class AccessRegisterVitamQueryHelper {
             for (final Map.Entry<String, Object> entry : entrySet) {
                 final String searchKey = entry.getKey();
                 switch (searchKey) {
-                    case ORIGINATING_AGENCY: {
-                        String stringValue = (String) entry.getValue();
-                        queryAnd.add(wildcard(searchKey, "*"+stringValue+"*"));
-                        haveAndParameters = true;
-                        break;
-                    }
                     case STATUS: {
                         List<String> stringValues = (ArrayList<String>) entry.getValue();
                         queryAnd.add(in(searchKey, stringValues.toArray(new String[] {})));
@@ -134,6 +131,26 @@ public class AccessRegisterVitamQueryHelper {
                     case END_DATE: {
                         addEndDateToQuery(queryAnd, entry.getValue());
                         haveAndParameters = true;
+                        break;
+                    }
+                    case ELIMINATION:
+                    case TRANSFER_REPLY: {
+                        boolean queryHaveBeenModified = addEventsToQuery(queryAnd, (String) entry.getValue(), searchKey.toUpperCase());
+                        if (queryHaveBeenModified) {
+                            haveAndParameters = true;
+                        }
+                        break;
+                    }
+                    case OPI: {
+                        String stringValue = (String) entry.getValue();
+                        queryOr.add(wildcard("#" + searchKey, "*"+stringValue+"*"));
+                        haveOrParameters = true;
+                        break;
+                    }
+                    case ORIGINATING_AGENCY: {
+                        String stringValue = (String) entry.getValue();
+                        queryOr.add(wildcard(searchKey, "*"+stringValue+"*"));
+                        haveOrParameters = true;
                         break;
                     }
                     case ORIGINATING_AGENCIES: {
@@ -159,14 +176,6 @@ public class AccessRegisterVitamQueryHelper {
                         if (queryHaveBeenModified) {
                             haveOrParameters = true;
                         }
-                        break;
-                    }
-                    case ELIMINATION:
-                    case TRANSFER_REPLY: {
-                        boolean queryHaveBeenModified = addEventsToQuery(queryOr, (String) entry.getValue(), searchKey.toUpperCase());
-                         if (queryHaveBeenModified) {
-                             haveOrParameters = true;
-                         }
                         break;
                     }
                     default:

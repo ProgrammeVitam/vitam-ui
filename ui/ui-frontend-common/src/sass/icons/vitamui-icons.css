@@ -25,6 +25,56 @@ i.vitamui-icon {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.vitamui-icon-alternate_email_black_24dp:before {
+  content: "\e961";
+}
+.vitamui-icon-arborescence:before {
+  content: "\e962";
+  color: #757575;
+}
+.vitamui-icon-arrows:before {
+  content: "\e963";
+}
+.vitamui-icon-complex-element-1-1 .path1:before {
+  content: "\e964";
+  color: rgb(157, 157, 157);
+}
+.vitamui-icon-complex-element-1-1 .path2:before {
+  content: "\e965";
+  margin-left: -1em;
+  color: rgb(157, 157, 157);
+}
+.vitamui-icon-complex-element-1-1 .path3:before {
+  content: "\e966";
+  margin-left: -1em;
+  color: rgb(255, 255, 255);
+}
+.vitamui-icon-complex-element-1-1 .path4:before {
+  content: "\e967";
+  margin-left: -1em;
+  color: rgb(157, 157, 157);
+}
+.vitamui-icon-complex-element-1-1 .path5:before {
+  content: "\e968";
+  margin-left: -1em;
+  color: rgb(157, 157, 157);
+}
+.vitamui-icon-dossier-physique:before {
+  content: "\e969";
+  color: #757575;
+}
+.vitamui-icon-ic24-journal:before {
+  content: "\e96a";
+  color: #757575;
+}
+.vitamui-icon-ic24-PUA:before {
+  content: "\e96b";
+  color: #757575;
+}
+.vitamui-icon-ic40-close:before {
+  content: "\e96c";
+  color: #757575;
+}
 .vitamui-icon-trash:before {
   content: "\e963";
   color: #474d4a;

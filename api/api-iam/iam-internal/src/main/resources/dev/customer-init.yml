@@ -177,6 +177,7 @@ customer-init:
         - ROLE_EXPORT_DIP
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_UPDATE_UNIT_DESC_METADATA
 
     - name: Archiviste administrateur
       description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
@@ -194,6 +195,18 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
         - ROLE_UPDATE_UNIT_DESC_METADATA
+
+    - name: Pastis-Gestion des profils documentaires
+      description: Pastis-Gestion des profils documentaires
+      app-name: PASTIS_APP
+      level:
+      roles:
+        - ROLE_GET_ARCHIVE_PROFILES_UNIT
+        - ROLE_UPDATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_CREATE_ARCHIVE_PROFILES_UNIT
+        - ROLE_IMPORT_ARCHIVE_PROFILES_UNIT
+        - ROLE_DELETE_ARCHIVE_PROFILES_UNIT
+
 
   #- name: profileName
   #  description: desc

@@ -57,6 +57,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -171,7 +172,7 @@ public class ArchivesSearchController extends AbstractUiRestController {
                 : "attachment";
 
         return ResponseEntity.ok()
-            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .contentType(new MediaType(MimeType.valueOf(objectData.getMimeType())))
             .header("Content-Disposition", fileNameHeader)
             .body(responseResource.getBody());
     }
@@ -224,7 +225,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public String updateArchiveUnitsRules(@RequestBody final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
         LOGGER.debug("Update Archive Units Rules  with criteria {} ", ruleSearchCriteriaDto);
-        String result = archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
+        String result =
+            archivesSearchService.updateArchiveUnitsRules(ruleSearchCriteriaDto, buildUiHttpContext()).getBody();
         return result;
     }
 
@@ -245,7 +247,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
         ArchiveUnitsDto archiveUnits;
         ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
         LOGGER.debug("select Unit With Inherited Rules by criteria = {}", searchQuery);
-        ResultsDto resultsDto = archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
+        ResultsDto resultsDto =
+            archivesSearchService.selectUnitsWithInheritedRules(searchQuery, buildUiHttpContext()).getBody();
         return resultsDto;
 
     }
@@ -263,9 +266,11 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @ApiOperation(value = "Update the Archive Unit descriptive metadata")
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+    public ResponseEntity<String> updateUnitById(final @PathVariable("id") String id,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        ParameterChecker.checkParameter("The Unit Descriptive Metadata Dto sould not be empty: ", unitDescriptiveMetadataDto);
+        ParameterChecker
+            .checkParameter("The Unit Descriptive Metadata Dto sould not be empty: ", unitDescriptiveMetadataDto);
         LOGGER.debug("Update the Archive Unit with id {}", id);
         LOGGER.debug("Update the Archive Unit update query {}", unitDescriptiveMetadataDto);
         return archivesSearchService.updateUnitById(id, unitDescriptiveMetadataDto, buildUiHttpContext());
