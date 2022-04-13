@@ -1,22 +1,22 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { FileUploader } from 'ng2-file-upload';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { environment } from 'projects/pastis/src/environments/environment';
-import { Subscription } from 'rxjs';
-import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
-import { ProfileService } from '../../core/services/profile.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
-import { FileNode } from '../../models/file-node';
-import { Profile } from '../../models/profile';
-import { ProfileDescription } from '../../models/profile-description.model';
-import { CreateProfileComponent } from '../../profile/create-profile/create-profile.component';
-import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
-import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
-import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {FileUploader} from 'ng2-file-upload';
+import {NgxUiLoaderService} from 'ngx-ui-loader';
+import {environment} from 'projects/pastis/src/environments/environment';
+import {Subscription} from 'rxjs';
+import {NoticeService} from '../../core/services/notice.service';
+import {NotificationService} from '../../core/services/notification.service';
+import {ProfileService} from '../../core/services/profile.service';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {FileNode} from '../../models/file-node';
+import {Profile} from '../../models/profile';
+import {ProfileDescription} from '../../models/profile-description.model';
+import {CreateProfileComponent} from '../../profile/create-profile/create-profile.component';
+import {CreateNoticeComponent} from '../../user-actions/create-notice/create-notice.component';
+import {PastisDialogDataCreate} from '../../user-actions/save-profile/save-profile.component';
+import {PastisDialogData} from '../pastis-dialog/classes/pastis-dialog-data';
 
 
 function constantToTranslate(edit: boolean) {
@@ -108,7 +108,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   goToSedaView() {
-    const url = this.router.serializeUrl(this.router.createUrlTree(['sedaview'], {relativeTo: this.route}));
+    const url = document.URL+ '/sedaview'
     window.open(url, '_blank');
   }
 
