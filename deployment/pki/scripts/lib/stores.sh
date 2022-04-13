@@ -138,7 +138,7 @@ function generateTrustStore {
 
     # Add the server certificates to the truststore
     pki_logger "Ajout des certificats serveur dans le truststore"
-    for CRT_FILE in  $(ls ${REPERTOIRE_CERTIFICAT}/server/ca/*.crt); do
+    for CRT_FILE in $(ls ${REPERTOIRE_CERTIFICAT}/server/ca/*.crt); do
         pki_logger "Ajout de ${CRT_FILE} dans le truststore ${CLIENT_TYPE}"
         ALIAS="server-$(basename ${CRT_FILE})"
         addCrtInJks ${JKS_TRUST_STORE} \
@@ -250,7 +250,7 @@ function main() {
         # fi
         mkdir -p ${REPERTOIRE_KEYSTORES}/client-${CLIENT_TYPE}
         # # client-${CLIENT_TYPE} keystores generation
-        for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null | grep -v "^external$"); do
+        for COMPONENT in $( ls ${REPERTOIRE_CERTIFICAT}/client-${CLIENT_TYPE}/clients 2>/dev/null | grep -vF -e "README" -e "external" ); do
 
             # Generate the p12 keystore
             pki_logger "-------------------------------------------"
