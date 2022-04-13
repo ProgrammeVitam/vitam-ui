@@ -37,27 +37,48 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AccessionRegisterDetail, AccessionRegisterSummary, SidenavPage } from 'ui-frontend-common';
+import { map } from 'rxjs/operators';
+import {
+  AccessionRegisterDetail,
+  AccessionRegisterSummary,
+  ExternalParameters,
+  ExternalParametersService,
+  SidenavPage
+} from 'ui-frontend-common';
 import { AccessionRegistersService } from './accession-register.service';
 
 @Component({
   selector: 'app-accession-register',
   templateUrl: './accession-register.component.html',
-  styleUrls: ['./accession-register.component.scss'],
+  styleUrls: ['./accession-register.component.scss']
 })
 export class AccessionRegisterComponent extends SidenavPage<AccessionRegisterDetail> implements OnInit, OnDestroy {
   accessionRegisterSummary: AccessionRegisterSummary[] = [];
   search: string;
   advancedSearchPanelOpenState$: Observable<boolean>;
   isAdvancedFormChanged$: Observable<boolean>;
+  accessContract: string;
 
-  constructor(private accessionRegistersService: AccessionRegistersService, route: ActivatedRoute) {
+  constructor(
+    private accessionRegistersService: AccessionRegistersService,
+    route: ActivatedRoute,
+    private externalParameterService: ExternalParametersService
+  ) {
     super(route, accessionRegistersService);
   }
 
   ngOnInit(): void {
     this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();
     this.isAdvancedFormChanged$ = this.accessionRegistersService.isAdvancedFormChanged();
+    this.fetchUserAccessContract().subscribe((accessContract) => {
+      this.accessContract = accessContract;
+    });
+  }
+
+  fetchUserAccessContract(): Observable<string> {
+    return this.externalParameterService
+      .getUserExternalParameters()
+      .pipe(map((parameters) => parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT)));
   }
 
   ngOnDestroy() {

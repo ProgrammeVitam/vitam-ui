@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.referential.service;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
@@ -43,10 +46,16 @@ import fr.gouv.vitamui.referential.external.client.AccessionRegisterDetailExtern
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccessionRegisterDetailService extends AbstractPaginateService<AccessionRegisterDetailDto> {
+
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterDetailService.class);
 
     private final AccessionRegisterDetailExternalRestClient client;
 
@@ -56,6 +65,12 @@ public class AccessionRegisterDetailService extends AbstractPaginateService<Acce
     public AccessionRegisterDetailService(final CommonService commonService, final AccessionRegisterDetailExternalRestClient client) {
         this.commonService = commonService;
         this.client = client;
+    }
+
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(final AccessionRegisterDetailsSearchStatsDto searchQuery,
+                                                               ExternalHttpContext context) {
+        LOGGER.info("Accession register details csv export: {}", searchQuery);
+        return client.exportAccessionRegisterCsv(searchQuery, context);
     }
 
     @Override

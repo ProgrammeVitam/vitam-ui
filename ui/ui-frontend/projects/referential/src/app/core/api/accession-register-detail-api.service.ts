@@ -37,10 +37,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AccessionRegisterDetail, BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import {
+  AccessionRegisterDetail,
+  BaseHttpClient,
+  BASE_URL,
+  PageRequest,
+  PaginatedResponse
+} from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionRegisterDetail> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -53,5 +59,12 @@ export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionR
     headers?: HttpHeaders
   ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
+  }
+
+  exportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/export-csv`, criteria, {
+      responseType: 'blob',
+      headers: headers
+    });
   }
 }

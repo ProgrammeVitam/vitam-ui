@@ -36,6 +36,9 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -48,8 +51,11 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterDetailExternalService;
 import fr.gouv.vitamui.referential.external.server.service.AccessionRegisterSummaryExternalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -82,13 +88,22 @@ public class AccessionRegisterExternalController {
         return accessionRegisterSummaryExternalService.getAll(criteria);
     }
 
+    @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
-    @GetMapping(value = "/details", params = { "page", "size" })
     public PaginatedValuesDto<AccessionRegisterDetailDto> getAccessionRegisterDetails(@RequestParam final Integer page, @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+    }
+
+    @PostMapping(RestApi.DETAILS_EXPORT_CSV)
+    @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
+    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody AccessionRegisterDetailsSearchStatsDto query) {
+        LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return accessionRegisterDetailExternalService.exportCsvArchiveUnitsByCriteria(query);
     }
 
 }

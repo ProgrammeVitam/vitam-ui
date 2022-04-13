@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -46,6 +47,7 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.internal.client.AccessionRegisterDetailInternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -74,6 +76,10 @@ public class AccessionRegisterDetailExternalService extends
     @Override
     protected BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> getClient() {
         return accessionRegisterDetailInternalRestClient;
+    }
+
+    public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterDetailsSearchStatsDto query) {
+        return accessionRegisterDetailInternalRestClient.exportAccessionRegisterCsv(query, getInternalHttpContext());
     }
 
 }

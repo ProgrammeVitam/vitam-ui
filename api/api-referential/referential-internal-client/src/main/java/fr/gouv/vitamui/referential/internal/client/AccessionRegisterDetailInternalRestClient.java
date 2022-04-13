@@ -36,17 +36,28 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
+
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalRestClient.class);
 
     public AccessionRegisterDetailInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
         super(restTemplate, baseUrl);
@@ -58,7 +69,7 @@ public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAnd
 
     @Override
     public String getPathUrl() {
-        return RestApi.ACCESSION_REGISTER_URL + "/details";
+        return RestApi.ACCESSION_REGISTER_URL + RestApi.DETAILS;
     }
 
     @Override protected Class<AccessionRegisterDetailDto> getDtoClass() {
@@ -67,6 +78,17 @@ public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAnd
 
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
         return new ParameterizedTypeReference<>() { };
+    }
+
+    public Resource exportAccessionRegisterCsv(final AccessionRegisterDetailsSearchStatsDto query,
+                                               final InternalHttpContext context) {
+        LOGGER.debug("Calling exportAccessionRegisterCsv with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<AccessionRegisterDetailsSearchStatsDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<Resource> response = restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV ,
+            HttpMethod.POST, request, Resource.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
 }
