@@ -178,7 +178,6 @@ hosts_vitamui_consul_server
 hosts_consul_server
 hosts_ingest_external
 hosts_access_external
-hosts_ihm_demo
 hosts_elasticsearch_log
 hosts_functionnal_admin
 hosts_security_internal
