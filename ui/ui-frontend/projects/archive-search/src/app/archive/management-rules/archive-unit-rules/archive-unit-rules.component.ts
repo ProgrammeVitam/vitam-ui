@@ -76,6 +76,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   updatePropertyCollapsed = false;
   deletePropertyCollapsed = false;
   deleteRuleCollapsed = false;
+  blockCategoryInheritanceCollapsed = false;
+  unlockCategoryInheritanceCollapsed = false;
 
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
@@ -195,5 +197,13 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
 
   showDeletePropertyBloc() {
     this.deletePropertyCollapsed = !this.deletePropertyCollapsed;
+  }
+
+  showBlockCategoryInheritanceloc() {
+    this.blockCategoryInheritanceCollapsed = !this.blockCategoryInheritanceCollapsed;
+  }
+
+  showUnlockCategoryInheritanceloc() {
+    this.unlockCategoryInheritanceCollapsed = !this.unlockCategoryInheritanceCollapsed;
   }
 }

@@ -90,6 +90,7 @@
               >
                 {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option
               >
+
               <mat-option
                 value="DELETE_PROPERTY"
                 [disabled]="isDeletePropertyDisabled"
@@ -98,10 +99,20 @@
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
               >
-              <mat-option value="BlockPropertyInheritance" [disabled]="true">
+              <mat-option
+                value="BLOCK_CATEGORY_INHERITANCE"
+                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
+                (click)="onSelectAction(actionSelected)"
+              >
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
-              <mat-option value="deleteBlockPropertyInheritance" [disabled]="true">
+              <mat-option
+                value="UNLOCK_CATEGORY_INHERITANCE"
+                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
+                (click)="onSelectAction(actionSelected)"
+                matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
+                matTooltipClass="vitamui-tooltip-rules"
+              >
                 {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
             </mat-select>

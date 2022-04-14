@@ -77,6 +77,9 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
     public static String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
     public static String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
 
+    public static String SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE =
+        "appraisal/expected-search-query-with-appraisal-inheritance.txt";
+
 
 
     @InjectMocks
@@ -642,6 +645,33 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         assertThat(query.getQueries().size()).isEqualTo(2);
         String queryStr = query.getQueries().toString();
         String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_STARDATE);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListRulesWithInheritedParameterThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("true")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+        //then
+        assertThat(query.getQueries().isEmpty()).isFalse();
+        assertThat(query.getQueries().size()).isEqualTo(1);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }

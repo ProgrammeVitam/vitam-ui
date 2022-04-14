@@ -5,12 +5,11 @@ import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { RuleValidator } from '../rule.validator';
 
 const RULE_TYPE_SUFFIX = '_APPRAISAL_RULE';
-
-const UPDATE_DEBOUNCE_TIME = 200;
 
 const FINAL_ACTION_TYPE_ELIMINATION = 'FINAL_ACTION_TYPE_ELIMINATION';
 const FINAL_ACTION_TYPE_KEEP = 'FINAL_ACTION_TYPE_KEEP';
@@ -98,7 +97,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     });
     merge(this.appraisalRuleCriteriaForm.statusChanges, this.appraisalRuleCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.appraisalRuleCriteriaForm.value),
         map(() => diff(this.appraisalRuleCriteriaForm.value, this.previousAppraisalCriteriaValue)),
         filter((formData) => this.isEmpty(formData))

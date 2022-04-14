@@ -426,6 +426,8 @@
     "RULES_TO_ADD": "Règle(s) à ajouter",
     "RULES_TO_UPDATE": "Règle(s) à modifier",
     "RULES_TO_DELETE": "Règle(s) à supprimer",
+    "CATEGORY_TO_BLOCK": "Catégorie à bloquer",
+    "CATEGORY_TO_UNLOCK": "Catégorie à débloquer",
     "ACTIONS": {
       "ADD_RULE": "Ajouter une règle",
       "DELETE_RULE": "Supprimer une règle",
@@ -457,7 +459,8 @@
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
       "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
-      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées"
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
+      "UA_INHERITANCE_TO_IGNORE" :"Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

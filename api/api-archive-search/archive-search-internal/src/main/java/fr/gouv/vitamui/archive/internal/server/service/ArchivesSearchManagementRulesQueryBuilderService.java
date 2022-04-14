@@ -112,6 +112,17 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                     ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleStarDateCriteria.getOperator()), query);
             }
 
+            SearchCriteriaEltDto appraisalRuleInheritanceCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                    ->ArchiveSearchConsts.APPRAISAL_RULE_INHERITED_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                .orElse(null);
+
+            if(appraisalRuleInheritanceCriteria != null) {
+                List<String> searchValues = appraisalRuleInheritanceCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                    Collectors.toList());
+                buildInheritedCategoryQuery(searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleInheritanceCriteria.getOperator()), query);
+            }
+
                 List<SearchCriteriaEltDto> identifiersCriteria =
                 criteriaList.stream()
                     .filter(searchCriteriaEltDto -> ArchiveSearchConsts.RULE_IDENTIFIER
@@ -156,12 +167,33 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
-            for (String value : searchValues) {
-                subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, value, operator));
-            }
+            searchValues.forEach(value -> {
+                try {
+                    subQueryOr
+                        .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, value, operator));
+                } catch (InvalidCreateOperationException exception) {
+                    LOGGER.error("Invalid creation operation exception {}", exception);
+                }
+            });
             subQueryAnd.add(subQueryOr);
         }
+    }
+    private void buildInheritedCategoryQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+                searchValues.forEach(searchValue ->
+                {
+                    try {
+                        subQueryOr
+                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED, searchValue, operator));
+                    } catch (InvalidCreateOperationException exception) {
+                        LOGGER.error("Invalid creation operation exception {}", exception);
+                    }
+                });
+            }
+            subQueryAnd.add(subQueryOr);
     }
 
     private void buildRuleStartDateQuery(final List<String> searchValues,
@@ -169,17 +201,19 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
-            for (String value : searchValues) {
-
+            searchValues.forEach(searchValue -> {
                 LocalDateTime startDate =
-                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
+                    LocalDateTime.parse(searchValue, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
                         .withMinute(0).withSecond(0).withNano(0);
-                subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(
-                        ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
-                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
-            }
-
+                try {
+                    subQueryOr
+                        .add(VitamQueryHelper.buildSubQueryByOperator(
+                            ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
+                            ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
+                } catch (InvalidCreateOperationException exception) {
+                    LOGGER.error("Invalid create operation {}", exception);
+                }
+            });
             subQueryAnd.add(subQueryOr);
         }
     }
