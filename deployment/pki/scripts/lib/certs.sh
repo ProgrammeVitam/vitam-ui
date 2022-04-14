@@ -200,7 +200,7 @@ function generateHostCertAndStorePassphrase {
             setComponentPassphrase certs "server_${COMPONENT}_key" \
                                         "${CERT_KEY}"
         else
-            pki_logger "Le certificat SERVER - ${SERVER} - ${COMPONENT}.crt existe déjà. Il ne sera pas recrée..."
+            pki_logger "Le certificat SERVER - ${SERVER} - ${COMPONENT}.crt existe déjà, il ne sera pas recréé..."
         fi
     done
 }
@@ -225,7 +225,7 @@ function generateTimestampCertAndStorePassphrase {
         setComponentPassphrase certs "timestamping_${USAGE}_key" \
                                     "${CERT_KEY}"
     else
-        pki_logger "Le certificat ${TIMESTAMP_CERTIFICAT_TYPE} - ${USAGE}.crt existe déjà. Il ne sera pas recrée..."
+        pki_logger "Le certificat ${TIMESTAMP_CERTIFICAT_TYPE} - ${USAGE}.crt existe déjà, il ne sera pas recréé..."
     fi
 }
 
@@ -235,7 +235,7 @@ function generateClientCertAndStorePassphrase {
     local CLIENT_TYPE="${2}"
 
     local CLIENT_CERTIFICATE_PATH=$(getClientCertificatePath ${CLIENT_TYPE} ${COMPONENT})
-    if [ ! -d "${CLIENT_CERTIFICATE_PATH}" ]; then
+    if [ ! -f "${CLIENT_CERTIFICATE_PATH}/${COMPONENT}.crt" ]; then
         # Récupération du password de la CA_INTERMEDIATE dans le vault-ca
         CA_INTERMEDIATE_PASSWORD=$(getComponentPassphrase ca "ca_intermediate_${CLIENT_TYPE}")
 
@@ -250,7 +250,7 @@ function generateClientCertAndStorePassphrase {
         setComponentPassphrase certs "client_${CLIENT_TYPE}_${COMPONENT}_key" \
                                     "${CERT_KEY}"
     else
-        pki_logger "Le certificat CLIENT - ${CLIENT_TYPE} - ${COMPONENT} existe déjà. Il ne sera pas recrée..."
+        pki_logger "Le certificat CLIENT - ${CLIENT_TYPE} - ${COMPONENT} existe déjà, il ne sera pas recréé..."
     fi
 }
 
