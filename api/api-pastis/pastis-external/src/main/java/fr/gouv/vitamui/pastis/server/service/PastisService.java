@@ -61,6 +61,7 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -172,14 +173,20 @@ public class PastisService {
     }
 
     public ProfileResponse createProfile(String type) throws TechnicalException, NoSuchAlgorithmException {
-        Resource resource;
+        Resource resource = null;
         ProfileResponse profileResponse = null;
         if (type != null && !type.isEmpty()) {
             ProfileType profileType = ProfileType.valueOf(type);
             if (type.equals(ProfileType.PA.getType())) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                resource = new ClassPathResource(jsonFile);
+                try {
+                    FileInputStream fileInputStream = new FileInputStream("/vitamui/data/pastis-external/AUP_default_PASTIS.json");
+                    resource = new InputStreamResource(fileInputStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                //resource = new ClassPathResource(jsonFile);
             }
             profileResponse = createProfileByType(resource, profileType);
         }
