@@ -59,14 +59,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { VitamUILibraryModule } from 'projects/vitamui-library/src/public-api';
 import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
-import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
 import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
 import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 import { ArchiveRoutingModule } from './archive-routing.module';
-import { ArchiveSearchResolverService } from './archive-search-resolver.service';
 import { AccessRuleSearchComponent } from './archive-search/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
@@ -81,6 +80,11 @@ import { SearchCriteriaSaverService } from './archive-search/search-criteria-sav
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
 import { ArchiveComponent } from './archive.component';
+import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
+import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
+import { ArchiveUnitExportService } from './common-services/archive-unit-export.service';
+import { ComputeInheritedRulesService } from './common-services/compute-inherited-rules.service';
+import { UpdateUnitManagementRuleService } from './common-services/update-unit-management-rule.service';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
 import { FilingHoldingSchemeComponent } from './filing-holding-scheme/filing-holding-scheme.component';
 import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/filing-holding-node.component';
@@ -125,15 +129,19 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
   ],
   providers: [
     ArchiveApiService,
-    ArchiveSharedDataServiceService,
+    ArchiveSharedDataService,
     DatePipe,
-    ArchiveSearchResolverService,
     TranslateService,
     SearchCriteriaSaverService,
     RuleValidator,
     ManagementRulesSharedDataService,
     ManagementRulesValidatorService,
     ArchiveUnitValidatorService,
+    ArchiveSearchHelperService,
+    UpdateUnitManagementRuleService,
+    ComputeInheritedRulesService,
+    ArchiveUnitExportService,
+    ArchiveUnitEliminationService,
   ],
   declarations: [
     ArchiveComponent,

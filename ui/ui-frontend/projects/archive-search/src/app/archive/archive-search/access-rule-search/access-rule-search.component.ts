@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { RuleValidator } from './../rule.validator';
 
@@ -65,7 +65,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
     private ruleValidator: RuleValidator
   ) {
     this.accessRuleCriteriaForm = this.formBuilder.group({
@@ -94,7 +94,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value: value },
+          { id: value, value },
           value,
           true,
           'EQ',

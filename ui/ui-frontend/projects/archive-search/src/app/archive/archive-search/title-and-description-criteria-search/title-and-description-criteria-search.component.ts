@@ -40,7 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const UPDATE_DEBOUNCE_TIME = 200;
@@ -60,11 +60,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
     archiveCriteria: '',
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    public dialog: MatDialog
-  ) {
+  constructor(private formBuilder: FormBuilder, private archiveExchangeDataService: ArchiveSharedDataService, public dialog: MatDialog) {
     this.previousTitleDescriptionCriteriaValue = {
       archiveCriteria: '',
     };

@@ -35,14 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { TestBed } from '@angular/core/testing';
-
-import { ArchiveSharedDataServiceService } from './archive-shared-data-service.service';
+import { ArchiveSharedDataService } from './archive-shared-data.service';
 
 describe('ArchiveSharedDataServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ArchiveSharedDataServiceService = TestBed.get(ArchiveSharedDataServiceService);
+    const service: ArchiveSharedDataService = TestBed.get(ArchiveSharedDataService);
     expect(service).toBeTruthy();
   });
 });

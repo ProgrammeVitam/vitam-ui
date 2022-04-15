@@ -88,6 +88,10 @@ export class ArchiveService extends SearchService<any> {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
   }
 
+  public static fetchAuTitle(unit: any) {
+    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
+  }
+
   public getOntologiesFromJson(): Observable<any> {
     return this.http.get('assets/ontologies/ontologies.json').pipe(map((resp) => resp));
   }
@@ -132,10 +136,6 @@ export class ArchiveService extends SearchService<any> {
     });
 
     return this.sortByTitle(out);
-  }
-
-  public static fetchAuTitle(unit: any) {
-    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
@@ -191,7 +191,7 @@ export class ArchiveService extends SearchService<any> {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
   }
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = {
+    const pagedResult: PagedResult = {
       results: response.$results,
       totalResults: response.$hits.total,
       pageNumbers:
@@ -204,12 +204,12 @@ export class ArchiveService extends SearchService<any> {
   }
 
   extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    let nodesFacets: ResultFacet[] = [];
+    const nodesFacets: ResultFacet[] = [];
 
     if (facetResults && facetResults.length > 0) {
-      for (let facet of facetResults) {
+      for (const facet of facetResults) {
         if (facet.name === 'COUNT_BY_NODE') {
-          for (let bucket of facet.buckets) {
+          for (const bucket of facet.buckets) {
             nodesFacets.push({ node: bucket.value, count: bucket.count });
           }
         }
@@ -219,46 +219,46 @@ export class ArchiveService extends SearchService<any> {
   }
 
   extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
-    let appraisalRulesFacets = new AppraisalRuleFacets();
+    const appraisalRulesFacets = new AppraisalRuleFacets();
     if (facetResults && facetResults.length > 0) {
-      for (let facet of facetResults) {
-        if (facet.name === 'FINAL_ACTION_COMPUTED') {
-          let buckets = facet.buckets;
-          let finalActionsFacets = [];
-          for (let bucket of buckets) {
+      for (const facet of facetResults) {
+        if (facet.name === 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE') {
+          const buckets = facet.buckets;
+          const finalActionsFacets = [];
+          for (const bucket of buckets) {
             finalActionsFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
         }
         if (facet.name === 'RULES_COMPUTED_NUMBER') {
-          let rulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
+          const rulesListFacets = [];
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
             rulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.rulesListFacets = rulesListFacets;
         }
-        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
-          let expiredRulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
+        if (facet.name === 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE') {
+          const expiredRulesListFacets = [];
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
             expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
         }
         if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
-          let buckets = facet.buckets;
-          let waitingToRecalculateRulesListFacets = [];
-          for (let bucket of buckets) {
+          const buckets = facet.buckets;
+          const waitingToRecalculateRulesListFacets = [];
+          for (const bucket of buckets) {
             waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
         }
 
-        if (facet.name === 'COUNT_WITHOUT_RULES') {
-          let buckets = facet.buckets;
-          let noAppraisalRulesFacets = [];
-          for (let bucket of buckets) {
+        if (facet.name === 'COUNT_WITHOUT_RULES_APPRAISAL_RULE') {
+          const buckets = facet.buckets;
+          const noAppraisalRulesFacets = [];
+          for (const bucket of buckets) {
             noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
           }
           appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
@@ -318,6 +318,12 @@ export class ArchiveService extends SearchService<any> {
 
   hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
     return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
+  }
+
+  prepareHeaders(accessContract: string): HttpHeaders {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return headers;
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {

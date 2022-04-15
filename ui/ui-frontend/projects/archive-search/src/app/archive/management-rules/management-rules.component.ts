@@ -257,6 +257,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   loadSelectedItem() {
     this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
       this.selectedItem = response;
+      this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
       this.selectedItemToShow = response === RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
     });
   }

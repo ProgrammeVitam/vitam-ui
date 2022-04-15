@@ -230,12 +230,12 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="prepareToLaunchExportDIP()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="prepareToLaunchVitamAction('EXPORT_DIP')" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="updateManagementRule()"
+            (click)="prepareToLaunchVitamAction('UPDATE_MANAGEMENT_RULES')"
             matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
@@ -245,19 +245,23 @@
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchEliminationAnalysis()"
+            (click)="prepareToLaunchVitamAction('ELIMINATION_ANALYSIS')"
             [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchElimination()"
+            (click)="prepareToLaunchVitamAction('ELIMINATION_ACTION')"
             [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
-          <button mat-menu-item (click)="launchComputedInheritedRules()" [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="prepareToLaunchVitamAction('COMPUTED_INHERITED_RULES')"
+            [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
 

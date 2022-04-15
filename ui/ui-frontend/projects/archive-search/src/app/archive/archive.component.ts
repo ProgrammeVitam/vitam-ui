@@ -42,14 +42,14 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AccessContract, ExternalParameters, ExternalParametersService, GlobalEventService, SidenavPage } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../core/management-rules-shared-data.service';
 import { ArchiveService } from './archive.service';
 
 @Component({
   selector: 'app-archive',
   templateUrl: './archive.component.html',
-  styleUrls: ['./archive.component.scss']
+  styleUrls: ['./archive.component.scss'],
 })
 export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   show = true;
@@ -67,7 +67,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
     private router: Router,
     globalEventService: GlobalEventService,
     public dialog: MatDialog,
-    private archiveSharedDataServiceService: ArchiveSharedDataServiceService,
+    private archiveSharedDataService: ArchiveSharedDataService,
     private externalParameterService: ExternalParametersService,
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
@@ -82,7 +82,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
       this.tenantIdentifier = params.tenantIdentifier;
     });
 
-    this.archiveSharedDataServiceService.getToggle().subscribe((hidden) => {
+    this.archiveSharedDataService.getToggle().subscribe((hidden) => {
       this.show = hidden;
     });
 
@@ -118,7 +118,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
             map((message) => {
               this.snackBar.open(message, null, {
                 panelClass: 'vitamui-snack-bar',
-                duration: 10000
+                duration: 10000,
               });
             })
           )
@@ -137,7 +137,7 @@ export class ArchiveComponent extends SidenavPage<any> implements OnInit, OnDest
         const message = this.translateService.instant('ARCHIVE_SEARCH.ACCESS_CONTRACT_NOT_FOUND_IN_VITAM');
         this.snackBar.open(message + ': ' + this.accessContract, null, {
           panelClass: 'vitamui-snack-bar',
-          duration: 10000
+          duration: 10000,
         });
       }
     );

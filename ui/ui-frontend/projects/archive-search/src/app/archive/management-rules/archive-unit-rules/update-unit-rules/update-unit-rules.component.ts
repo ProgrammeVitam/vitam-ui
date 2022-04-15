@@ -264,6 +264,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.disabledControl = true;
     this.showText = true;
     this.isLoading = !this.isLoading;
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('newRule').value,

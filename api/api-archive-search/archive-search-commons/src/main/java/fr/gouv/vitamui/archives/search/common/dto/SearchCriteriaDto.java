@@ -59,11 +59,6 @@ public class SearchCriteriaDto implements Serializable {
     private boolean trackTotalHits;
 
 
-    public int computeNodesCriteria() {
-        List<String> nodesCriteriaList = this.extractNodesCriteria();
-        return nodesCriteriaList.size();
-    }
-
     public List<String> extractNodesCriteria() {
         return this.getCriteriaList().stream().filter(
             Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
