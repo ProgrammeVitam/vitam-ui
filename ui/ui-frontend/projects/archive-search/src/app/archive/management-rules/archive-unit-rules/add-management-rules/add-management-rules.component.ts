@@ -349,6 +349,7 @@ export class AddManagementRulesComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.isDisabled = true;
     this.showText = true;
     this.isLoading = !this.isLoading;

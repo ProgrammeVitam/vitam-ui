@@ -59,6 +59,43 @@ export class UpdateUnitManagementRuleService {
     router: Router,
     itemSelected: number,
     updateArchiveUnitAlerteMessageDialogSubscription: Subscription,
+    updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>,
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+  ) {
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
+    const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
+      { panelClass: 'vitamui-dialog' }
+    );
+    dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+      .afterClosed()
+      .pipe(filter((result) => !!result))
+      .subscribe(() => {
+        this.updateManagementRule(
+          listOfUACriteriaSearch,
+          criteriaSearchList,
+          accessContract,
+          currentPage,
+          tenantIdentifier,
+          numberOfHoldingUnitType,
+          router,
+          itemSelected,
+          updateArchiveUnitAlerteMessageDialogSubscription,
+          updateArchiveUnitAlerteMessageDialog
+        );
+      });
+  }
+
+  private updateManagementRule(
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    criteriaSearchList: SearchCriteriaEltDto[],
+    accessContract: string,
+    currentPage: number,
+    tenantIdentifier: number,
+    numberOfHoldingUnitType: number,
+    router: Router,
+    itemSelected: number,
+    updateArchiveUnitAlerteMessageDialogSubscription: Subscription,
     updateArchiveUnitAlerteMessageDialog: TemplateRef<ArchiveSearchComponent>
   ) {
     listOfUACriteriaSearch.push({

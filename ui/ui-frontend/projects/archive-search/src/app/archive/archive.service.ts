@@ -222,7 +222,7 @@ export class ArchiveService extends SearchService<any> {
     const appraisalRulesFacets = new AppraisalRuleFacets();
     if (facetResults && facetResults.length > 0) {
       for (const facet of facetResults) {
-        if (facet.name === 'FINAL_ACTION_COMPUTED') {
+        if (facet.name === 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE') {
           const buckets = facet.buckets;
           const finalActionsFacets = [];
           for (const bucket of buckets) {
@@ -238,7 +238,7 @@ export class ArchiveService extends SearchService<any> {
           }
           appraisalRulesFacets.rulesListFacets = rulesListFacets;
         }
-        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
+        if (facet.name === 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE') {
           const expiredRulesListFacets = [];
           const buckets = facet.buckets;
           for (const bucket of buckets) {
@@ -255,7 +255,7 @@ export class ArchiveService extends SearchService<any> {
           appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
         }
 
-        if (facet.name === 'COUNT_WITHOUT_RULES') {
+        if (facet.name === 'COUNT_WITHOUT_RULES_APPRAISAL_RULE') {
           const buckets = facet.buckets;
           const noAppraisalRulesFacets = [];
           for (const bucket of buckets) {

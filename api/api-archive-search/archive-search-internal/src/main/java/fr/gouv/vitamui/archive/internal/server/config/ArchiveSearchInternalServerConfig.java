@@ -61,15 +61,15 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
 
     @Bean
     @ConfigurationProperties(prefix = "clients.iam-internal")
-    public RestClientConfiguration IamInternalRestClientConfiguration() {
+    public RestClientConfiguration iamInternalRestClientConfiguration() {
         return new RestClientConfiguration();
     }
 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
-        final RestClientConfiguration IamInternalRestClientConfiguration,
+        final RestClientConfiguration iamInternalRestClientConfiguration,
         final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
+        return new IamInternalRestClientFactory(iamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
     @Bean

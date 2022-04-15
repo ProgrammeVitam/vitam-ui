@@ -869,12 +869,15 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
                 this.itemSelected = this.totalResults - this.itemNotSelected;
               }
               this.waitingToGetFixedCount = false;
+              this.managementRulesSharedDataService.emitHasExactCount(true);
             }
             this.pendingGetFixedCount = false;
+
             this.launchVitamAction(actionType);
           });
       }
     } else {
+      this.managementRulesSharedDataService.emitHasExactCount(false);
       this.launchVitamAction(actionType);
     }
   }
@@ -904,7 +907,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.router,
           this.itemSelected,
           this.updateArchiveUnitAlerteMessageDialogSubscription,
-          this.updateArchiveUnitAlerteMessageDialog
+          this.updateArchiveUnitAlerteMessageDialog,
+          this.confirmSecondActionBigNumberOfResultsActionDialog
         );
         break;
       case 'ELIMINATION_ANALYSIS':

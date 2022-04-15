@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -112,37 +113,8 @@ public class ArchiveSearchRulesInternalService {
                                     .stream()
                                     .map(FileRulesModel::getRuleId)
                                     .collect(Collectors.toList());
-                                if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-                                    Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap =
-                                        appraisalMgtRulesCriteriaListProcessed.stream()
-                                            .collect(
-                                                Collectors
-                                                    .toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
-                                    SearchCriteriaEltDto ruleIdCriteria;
-                                    if (appraisalMgtRulesCriteriaMap
-                                        .containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
-                                        ruleIdCriteria =
-                                            appraisalMgtRulesCriteriaMap
-                                                .get(ArchiveSearchConsts.RULE_IDENTIFIER);
-                                        if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
-                                            mgtRulesIdsFound
-                                                .addAll(ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue)
-                                                    .collect(Collectors.toList()));
-                                        }
-                                    } else {
-                                        ruleIdCriteria = new SearchCriteriaEltDto();
-                                        ruleIdCriteria
-                                            .setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-                                        ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-                                        ruleIdCriteria.setCategory(category);
-                                    }
-                                    ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(
-                                        Collectors.toList()));
-                                    appraisalMgtRulesCriteriaMap
-                                        .put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
-                                    searchQuery.setCriteriaList(appraisalMgtRulesCriteriaMap.values().stream().collect(
-                                        Collectors.toList()));
-                                }
+                                handleFoundRules(searchQuery, category, appraisalMgtRulesCriteriaListProcessed,
+                                    mgtRulesIdsFound);
                             }
                         }
                     }
@@ -151,6 +123,41 @@ public class ArchiveSearchRulesInternalService {
         }
 
 
+    }
+
+    private void handleFoundRules(SearchCriteriaDto searchQuery, ArchiveSearchConsts.CriteriaCategory category,
+        List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaListProcessed, List<String> mgtRulesIdsFound) {
+        if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+            Map<String, SearchCriteriaEltDto> appraisalMgtRulesCriteriaMap =
+                appraisalMgtRulesCriteriaListProcessed.stream()
+                    .collect(
+                        Collectors
+                            .toMap(SearchCriteriaEltDto::getCriteria, Function.identity()));
+            SearchCriteriaEltDto ruleIdCriteria;
+            if (appraisalMgtRulesCriteriaMap
+                .containsKey(ArchiveSearchConsts.RULE_IDENTIFIER)) {
+                ruleIdCriteria =
+                    appraisalMgtRulesCriteriaMap
+                        .get(ArchiveSearchConsts.RULE_IDENTIFIER);
+                if (!CollectionUtils.isEmpty(mgtRulesIdsFound)) {
+                    mgtRulesIdsFound
+                        .addAll(ruleIdCriteria.getValues().stream().map(CriteriaValue::getValue)
+                            .collect(Collectors.toList()));
+                }
+            } else {
+                ruleIdCriteria = new SearchCriteriaEltDto();
+                ruleIdCriteria
+                    .setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+                ruleIdCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+                ruleIdCriteria.setCategory(category);
+            }
+            ruleIdCriteria.setValues(mgtRulesIdsFound.stream().map(CriteriaValue::new).collect(
+                Collectors.toList()));
+            appraisalMgtRulesCriteriaMap
+                .put(ArchiveSearchConsts.RULE_IDENTIFIER, ruleIdCriteria);
+            searchQuery.setCriteriaList(appraisalMgtRulesCriteriaMap.values().stream().collect(
+                Collectors.toList()));
+        }
     }
 
 
