@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {FileUploader} from 'ng2-file-upload';
 import {NgxUiLoaderService} from 'ngx-ui-loader';
@@ -88,7 +88,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private profileService: ProfileService,
               public dialog: MatDialog, private noticeService: NoticeService,
               private translateService: TranslateService, private loaderService: NgxUiLoaderService,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     constantToTranslate.call(this, this.editProfile);
@@ -108,7 +108,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   goToSedaView() {
-    window.open(this.sedaUrl);
+    const url = document.URL+ '/sedaview'
+    window.open(url, '_blank');
   }
 
   uploadProfile(files: File[]): void {
@@ -121,7 +122,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
         if (response) {
           console.log('File submited! Reponse is : ', response);
 
-          this.router.navigateByUrl(this.newProfileUrl, { state: response });
+          this.router.navigate([this.newProfileUrl], { state: response, relativeTo: this.route});
         }
       });
     }
