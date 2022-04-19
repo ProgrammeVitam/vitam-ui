@@ -349,7 +349,7 @@ public class JsonFromPUA {
 		ElementProperties children = new ElementProperties();
 		children.setName(realName);
 		children.setId(idCounter++);
-		children.setParent(parent);
+		//children.setParent(parent);
 		children.setParentId(parent.getId());
 		children.setLevel(parent.getLevel() + 1);
 		parent.getChildren().add(children);

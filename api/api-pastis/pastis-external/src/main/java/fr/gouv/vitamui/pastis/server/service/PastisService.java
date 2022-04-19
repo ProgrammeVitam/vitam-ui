@@ -173,20 +173,14 @@ public class PastisService {
     }
 
     public ProfileResponse createProfile(String type) throws TechnicalException, NoSuchAlgorithmException {
-        Resource resource = null;
+        Resource resource;
         ProfileResponse profileResponse = null;
         if (type != null && !type.isEmpty()) {
             ProfileType profileType = ProfileType.valueOf(type);
             if (type.equals(ProfileType.PA.getType())) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                try {
-                    FileInputStream fileInputStream = new FileInputStream("/vitamui/data/pastis-external/AUP_default_PASTIS.json");
-                    resource = new InputStreamResource(fileInputStream);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                //resource = new ClassPathResource(jsonFile);
+                resource = new ClassPathResource(jsonFile);
             }
             profileResponse = createProfileByType(resource, profileType);
         }
@@ -279,9 +273,6 @@ public class PastisService {
         } catch (AssertionError ae) {
             throw new TechnicalException("Failed to load pua ", ae);
         }
-
-        profileResponse.setId(String.valueOf((Math.abs((this.rand.nextLong()) / 1000) != 0)));
-
         return profileResponse;
     }
 
@@ -324,8 +315,6 @@ public class PastisService {
         } catch (AssertionError ae) {
             throw new TechnicalException("Failed to load pua ", ae);
         }
-
-        profileResponse.setId(String.valueOf((Math.abs((this.rand.nextLong()) / 1000) != 0)));
 
         return profileResponse;
     }
