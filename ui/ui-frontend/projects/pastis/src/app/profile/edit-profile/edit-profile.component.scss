@@ -137,8 +137,16 @@
     position: absolute;
     left: 90%;
     top: 31px;
-    color: #FFFFFF;
+    color: #757575;
     cursor: pointer;
     font-size: 24px;
+}
+
+.vitamui-icon-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: var(--vitamui-grey-900);
+  font-size: 20px;
 }
 

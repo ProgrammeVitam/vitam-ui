@@ -40,13 +40,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
+import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
 import { FileNode } from '../../models/file-node';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
-import { ProfileService } from '../../core/services/profile.service';
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -74,8 +74,9 @@ export class UserActionAddMetadataComponent implements OnInit {
 
 
   constructor(public dialogRef: MatDialogRef<PastisDialogConfirmComponent>,
-              private fileService: FileService, private sedaService: SedaService,
-              private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService, private profileService: ProfileService) { }
+    private fileService: FileService, private sedaService: SedaService,
+    private popUpService: PopupService, private sedaLanguageService: PastisPopupMetadataLanguageService,
+    private profileService: ProfileService) { }
 
   ngOnInit() {
     this.sedaLanguageSub = this.sedaLanguageService.sedaLanguage.subscribe(
@@ -86,21 +87,29 @@ export class UserActionAddMetadataComponent implements OnInit {
         console.log(error);
       }
     );
-    this.fileService.nodeChange.subscribe(fileNode => {this.fileNode = fileNode; });
+    this.fileService.nodeChange.subscribe(fileNode => { this.fileNode = fileNode; });
     this.sedaData = this.sedaService.sedaRules[0];
 
     this.sedaNodeFound = this.fileNode.sedaData;
 
-    if (this.profileService.profileMode === "PA") {
+    if (this.profileService.profileMode === 'PA') {
       this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
-      .filter(e => e.Element !== SedaElementConstants.attribute);
-    } else if (this.profileService.profileMode === "PUA" ) {
-      if ( this.sedaNodeFound.Name === "ArchiveUnit"){
-        this.allowedChildren = this.sedaNodeFound.Children
-        .filter(e => e.Name === "Management" || e.Name === "ArchiveUnitProfile");
+        .filter(e => e.Element !== SedaElementConstants.attribute);
+    } else if (this.profileService.profileMode === 'PUA') {
+      if (this.fileNode.name === 'ArchiveUnit') {
+        if (this.fileNode.children.map((nodeChildren: FileNode) => nodeChildren.name).includes('ArchiveUnitProfile')) {
+          this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
+            .filter(e => e.Element !== SedaElementConstants.attribute)
+            .filter(e => e.Name === 'Management');
+        } else {
+          this.allowedChildren = this.sedaService.findSelectableElementList(this.sedaNodeFound, this.fileNode)
+            .filter(e => e.Element !== SedaElementConstants.attribute)
+            .filter(e => e.Name === 'Management' || e.Name === 'ArchiveUnitProfile');
+        }
       } else {
-        this.allowedChildren = this.sedaNodeFound.Children
+        this.allowedChildren = this.sedaNodeFound.Children;
       }
+
     }
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
@@ -139,13 +148,13 @@ export class UserActionAddMetadataComponent implements OnInit {
   }
 
   onAddSelectedElement(element: SedaData) {
-      this.addedItems.push(element);
+    this.addedItems.push(element);
 
-      if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
-        this.allowedChildren = this.allowedChildren.filter(e => e != element);
-      }
-      this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
-      this.upateButtonStatusAndDataToSend();
+    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+      this.allowedChildren = this.allowedChildren.filter(e => e != element);
+    }
+    this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
+    this.upateButtonStatusAndDataToSend();
   }
 
   upateButtonStatusAndDataToSend() {
@@ -168,7 +177,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   }
 
   onYesClick(): void {
-    console.log('Clicked ok on dialog : %o' , this.selectedSedaNode);
+    console.log('Clicked ok on dialog : %o', this.selectedSedaNode);
 
   }
   onNoClick(): void {
@@ -196,15 +205,18 @@ export class UserActionAddMetadataComponent implements OnInit {
 
 }
 
-@Pipe({name: 'filterByName'})
+@Pipe({ name: 'filterByName' })
 export class FilterByNamePipe implements PipeTransform {
   transform(listOfElements: SedaData[], nameToFilter: string, sedaLanguage: boolean): SedaData[] {
     if (!listOfElements) { return null; }
     if (!nameToFilter) { return listOfElements; }
     if (sedaLanguage) {
-      return listOfElements.filter(element => element.Name != undefined).filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+      return listOfElements.filter(element => element.Name !== undefined)
+        .filter(element => element.Name.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     } else {
-      return listOfElements.filter(element => element.NameFr != undefined).filter(element => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
+      return listOfElements
+        .filter(element => element.NameFr !== undefined)
+        .filter(element => element.NameFr.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
     }
 
   }

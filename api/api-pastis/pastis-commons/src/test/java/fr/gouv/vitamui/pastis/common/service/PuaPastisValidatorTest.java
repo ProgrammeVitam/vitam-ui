@@ -52,6 +52,6 @@ public class PuaPastisValidatorTest {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream(pathFile);
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson);
+        puaPastisValidator.validatePUA(profileJson, false);
     }
 }

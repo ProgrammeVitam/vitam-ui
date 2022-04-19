@@ -95,12 +95,23 @@
       "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
       "POPUP_CREATION_TITLE_DIALOG":"Choix du type de profil" ,
       "POPUP_CREATION_SUBTITLE_DIALOG": "Création d'un profil",
-      "POPUP_CREATION_OK_LABEL": "TERMINER",
+      "POPUP_CREATION_OK_LABEL": "VALIDER",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Sélectionner un profil d'archivage :"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choisir le type de notice à créer :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"ANNULER",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choix du type de notice",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Création d'une notice",
+      "POPUP_CREATION_OK_LABEL": "VALIDER"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -160,19 +171,23 @@
         "POPUP_SOUS_TITRE": "Edition des attributs de",
         "POPUP_VALIDER": "Valider",
         "POPUP_ANNULER": "Annuler",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Enregistrer le profil",
-        "TELECHARGER_MANUEL_TOOLTIP": "Paramètres",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Exporter le profil",
+        "TELECHARGER_MANUEL_TOOLTIP": "Paramètres et ressources",
         "NOM_METADONNEE": "Nom de la métadonnée",
         "VALEUR_FIXE": "Valeur fixe",
         "CARDINALITE": "Cardinalité",
         "COMMENTAIRE": "Commentaire",
         "DUPLIQUER": "Dupliquer",
         "CONTROLE_METADONNEE": "Contrôle de métadonnée",
+        "EDITION_CONTROLE": "Modifier les contrôles",
         "ENUMERATION_CONTROLE": "Contrôle de type \"Enumération\"",
+        "FORMAT_ENUMERATION_AUTORISES": "Format(s) de date autorisé(s) pour cette métadonnée",
         "FORMATAGE_PREDEFINI": "Utiliser un formatage prédéfini",
         "SAISIR_EXPRESSION": "Saisir une expression régulière",
         "EXPRESSION_CONTROLE": "Contrôle de type \"Expression régulière\"",
         "ATTRIBUT_METADONNEE": "Attributs de métadonnée",
+        "INFO_EXPRESSION": "Définir une expression régulière pour la valeur de la métadonnée",
+        "INFO_ENNUMERATION": "Signaler les valeurs autorisées",
         "SUPPRIMER": "Supprimer",
         "AUTORISER_PRESENCE_METADONNEE": "Autoriser la presence de metadonnee non declarees",
         "ADDITIONAL_PROPERTIES_TOOLTIP": "Autoriser ou non la présence, dans un bordereau, de métadonnées non déclarées dans le PUA",
@@ -186,6 +201,7 @@
           "COMMENTAIRE": "Commentaire"
         },
         "POPUP_CONTROL_OK_BUTTON_LABEL": "AJOUTER LES CONTROLES",
+        "POPUP_CONTROL_DELETE_BUTTON_LABEL": "SUPPRIMER LES CONTROLES",
         "POPUP_CONTROL_SUB_TITLE_DIALOG": "Ajouter des contrôles supplémentaires à",
         "POPUP_CONTROL_TITLE_DIALOG": "Veuillez séléctionner un ou plusieurs contrôles"
       }
@@ -198,6 +214,7 @@
       "TOUS_LES_PROFILS": "Tous les profils",
       "TABLE": {
         "TYPE_ETAT": "Type/Etat",
+        "TYPE": "Type",
         "IDENTIFIANT": "Identifiant",
         "INTITULE": "Intitulé",
         "DERNIERES_MODIFICATIONS": "Dernières modifications"

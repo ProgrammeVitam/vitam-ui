@@ -57,8 +57,9 @@ export class SedaService {
 
   getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
   if (currentNode && nameNode) {
-    let i: number, currentChild: SedaData;
-    if (nameNode == currentNode.Name ) {
+    let i: number;
+    let currentChild: SedaData;
+    if (nameNode === currentNode.Name ) {
      return currentNode;
     } else {
       // Use a for loop instead of forEach to avoid nested functions
@@ -82,7 +83,8 @@ export class SedaService {
 
   getSedaNodeRecursively(currentNode: SedaData, nameNode: string): SedaData {
     // console.log("Node to be searched on : %o", currentNode, nameNode, )
-    let i: number, currentChild: SedaData;
+    let i: number;
+    let currentChild: SedaData;
     if (currentNode) {
     if (nameNode == currentNode.Name ) {
       return currentNode;
@@ -134,20 +136,19 @@ export class SedaService {
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
     const fileNodesNames = fileNode.children.map(e => e.name);
-    const allowedSelectableList = sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
+    return sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
                                                       x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
                                                       ||
                                                       (fileNodesNames.includes(x.Name) &&
                                                       (x.Cardinality === CardinalityConstants['Zero or More'].valueOf())
                                                       ));
-    return allowedSelectableList;
   }
 
   findCardinalityName(clickedNode: FileNode, cardlinalityValues: CardinalityValues[]): string {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-        return cardlinalityValues.find(c => c.value == clickedNode.cardinality).value;
+        return cardlinalityValues.find(c => c.value === clickedNode.cardinality).value;
     }
   }
 
@@ -156,8 +157,7 @@ export class SedaService {
    * @param sedaNode the seda node we want to query
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
-    // if (!sedaNode) return;
-    return sedaNode.Children.filter(children => children.Element == 'Attribute'
+    return sedaNode.Children.filter(children => children.Element === 'Attribute'
                                     && sedaNode.Collection === collection);
   }
 
@@ -175,12 +175,12 @@ export class SedaService {
   }
 
   isDuplicated(nomDuChamp: string, sedaParent: SedaData) {
-    if (sedaParent.Name == nomDuChamp) {
+    if (sedaParent.Name === nomDuChamp) {
       return sedaParent.Cardinality.includes('N');
     }
     if (sedaParent) {
       for (const child of sedaParent.Children) {
-        if (child.Name == nomDuChamp) {
+        if (child.Name === nomDuChamp) {
           return child.Cardinality.includes('N');
         }
       }
@@ -190,17 +190,17 @@ export class SedaService {
   checkSedaElementType(nodeName: string, sedaNode: SedaData): string {
     if (sedaNode.Name === nodeName) { return sedaNode.Element; }
 
-    const node = sedaNode.Children.find(c => c.Name == nodeName);
+    const node = sedaNode.Children.find(c => c.Name === nodeName);
     if (node) {
       return node.Element;
     }
-    // return false;
   }
+
   findSedaChildByName(nodeName: string, sedaNode: SedaData): SedaData {
     if (nodeName === sedaNode.Name) {
       return sedaNode;
     }
-    const childFound = sedaNode.Children.find(c => c.Name == nodeName);
+    const childFound = sedaNode.Children.find(c => c.Name === nodeName);
     return childFound ? childFound : null;
   }
 

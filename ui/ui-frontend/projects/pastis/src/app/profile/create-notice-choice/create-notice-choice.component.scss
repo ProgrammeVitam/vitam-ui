@@ -1,0 +1,93 @@
+@import '../../../assets/css/mixins';
+
+.pastis-dialog-config-title {
+  bottom: 10px;
+  position: relative;
+}
+
+.icon-close {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+
+.pastis-dialog-subtitle {
+  @extend .pastis-font-popup-subtitle;
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-bottom: 0;
+  font-family: Mulish, sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  color: var(--vitamui-grey-600);
+}
+
+.pastis-dialog-title {
+  @extend .pastis-font-popup-title;
+  /* Positioning */
+  position: relative;
+  margin-left: 5%;
+  margin-right: 40px;
+  margin-top: 10px;
+  font-family: Mulish, sans-serif;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  color: var(--vitamui-grey-900);
+}
+
+.conteneur{
+  display: block;
+  margin: 35px 23px;
+}
+
+.gauche{
+  margin: 10px 0px -20px 30px;
+  float: left;
+  width:34%
+}
+
+.flex{
+  flex-grow: 1;
+}
+
+.pastis-dialog-confirm-buttons {
+  position: relative;
+  margin : 0 0 10px 5%;
+}
+
+.pastis-btn-oui-dialog-confirm {
+  background: var(--vitamui-primary) !important;
+  font-size: 0.9em;
+  font-family: Mulish, sans-serif !important;
+  border-radius: 100px;
+  padding:0 30px;
+  min-width: 92px;
+  height: 50px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  @extend .pastis-btn-primary-enabled;
+}
+
+.pastis-btn-non-dialog-confirm {
+ padding: 0 30px;
+  border: none;
+  min-width: 92px;
+  height: 50px;
+  margin-left: 24px;
+  background-color: transparent;
+  color: var(--vitamui-grey-900);
+  font-family: Mulish, sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 0.9em;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+}
+
+

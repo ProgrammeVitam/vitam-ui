@@ -1,3 +1,12 @@
+<div  *ngIf="pending then loadingSpinner"></div>
+
+
+<ng-template #loadingSpinner>
+  <div class="steackhouse">
+    <mat-spinner class="vitamui-spinner x-large my-3"></mat-spinner>
+  </div>
+</ng-template>
+
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
 
 
@@ -68,7 +77,12 @@
           <div class="vitamui-table">
             <div class="vitamui-table-head">
               <div class="col-2 d-flex align-items-center">
-                {{'PROFILE.LIST_PROFILE.TABLE.TYPE_ETAT' | translate}}
+                <div *ngIf="isStandalone">
+                  {{'PROFILE.LIST_PROFILE.TABLE.TYPE' | translate}}
+                </div>
+                <div *ngIf="!isStandalone">
+                  {{'PROFILE.LIST_PROFILE.TABLE.TYPE_ETAT' | translate}}
+                </div>
                 <vitamui-common-order-by-button [(direction)]="direction" [(orderBy)]="orderBy"
                                                 orderByKey="type">
                 </vitamui-common-order-by-button>
@@ -97,13 +111,16 @@
             <div *ngFor="let element of retrievedProfiles | filterByType:filterType | filterByStringName:search;"
                  class="vitamui-table-rows">
               <div class="vitamui-row d-flex align-items-center">
-                <div (click)="showProfile(element)" class="col-2 clickable">
-                  {{element.type}}<i *ngIf="element.status == 'ACTIVE'"
+                <div (click)="showProfile(element)" class="col-2 clickable" >
+                  {{element.type}}
+                  <div *ngIf="!isStandalone">
+                    <i *ngIf="element.status == 'ACTIVE'"
                                      class="status-badge-green ml-3"></i>
                   <i *ngIf="element.status == 'INACTIVE'" class="status-badge-red ml-3"></i>
+                  </div>
                 </div>
-                <div (click)="showProfile(element)" class="col-3 clickable">{{element.identifier}}</div>
-                <div (click)="showProfile(element)" class="col-3 clickable">{{element.name}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.identifier}}</div>
+                <div (click)="showProfile(element)" class="col-3 clickable" style="word-wrap: break-word;">{{element.name}}</div>
                 <div (click)="showProfile(element)" class="col-2 mr-3 clickable">{{element.lastUpdate}}</div>
                 <div class="col-2  actions">
                   <div>
@@ -115,7 +132,7 @@
                          matTooltipPosition="above" matTooltipClass="modifierToolTip"></i>
                     </button>
 
-                    <button (click)="changeExpand(element)" class="btn btn-circle outlin outline-primary mr-3">
+                    <button (click)="changeExpand(element)" class="btn btn-circle outlin outline-primary mr-3" *ngIf="!isStandalone">
                       <i [style.fontSize.px]="25"
                          class="vitamui-icon vitamui-icon-more-horiz"></i>
                     </button>

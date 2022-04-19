@@ -23,7 +23,6 @@ td {
   padding-right: 20px !important;
 }
 
-
 .button-filter {
   margin-top: 67px;
   margin-left: 74px;
@@ -226,6 +225,15 @@ table {
     cardinalite:(width:120px!important)
   ));
 }
+
+.pastis-indication {
+  font-size: 16px;
+  font-family: 'Mulish', sans-serif;
+  color: #212121 ;
+  font-weight: 400;
+  vertical-align: middle;
+}
+
 
 .pastis-btn-add-tag {
   width: 210px;
@@ -439,6 +447,10 @@ dp-day-calendar .dp-day-calendar-container {
     color: white;
     background-color: map-get($colors, 'ligthly-purple' ) !important;
   }
+}
+
+button.delete {
+  border: 1px solid
 }
 
 .pastis-vitamui-container-editable-commentaire{

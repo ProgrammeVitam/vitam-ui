@@ -51,7 +51,7 @@ import java.util.stream.Stream;
 @NoArgsConstructor
 public class ElementProperties {
 
-    private String additionalProperties;
+    private boolean additionalProperties;
     private String name;
     private String type;
     private String cardinality;
@@ -60,6 +60,7 @@ public class ElementProperties {
     private String dataType;
     private String value;
     private String documentation;
+    private String editName;
 
     @JsonIgnore
     private Object sedaData;

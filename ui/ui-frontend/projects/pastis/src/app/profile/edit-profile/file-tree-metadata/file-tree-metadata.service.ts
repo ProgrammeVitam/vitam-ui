@@ -86,6 +86,7 @@ export class FileTreeMetadataService {
           child.type !== TypeConstants.attribute) {
 
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -97,6 +98,7 @@ export class FileTreeMetadataService {
           });
         } else if (!childrenToExclude && child.type !== TypeConstants.attribute) {
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -107,6 +109,7 @@ export class FileTreeMetadataService {
             enumeration: child.sedaData.Enumeration});
         } else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple) {
           data.push({
+            nomDuChampEdit: child.editName,
             id: clickedNode.id,
             nomDuChamp: clickedNode.name,
             nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),
@@ -121,6 +124,7 @@ export class FileTreeMetadataService {
       }
     } else {
       data.push({
+        nomDuChampEdit: clickedNode.editName,
         id: clickedNode.id,
         nomDuChamp: clickedNode.name,
         nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),

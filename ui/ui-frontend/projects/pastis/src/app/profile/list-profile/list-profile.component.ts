@@ -41,13 +41,13 @@ import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {FileUploader} from 'ng2-file-upload';
-import {NgxUiLoaderService} from 'ngx-ui-loader';
 import {Subscription} from 'rxjs';
 import {Direction, GlobalEventService, SidenavPage, StartupService} from 'ui-frontend-common';
 import {environment} from '../../../environments/environment';
 import {PastisConfiguration} from '../../core/classes/pastis-configuration';
 import { NoticeService } from '../../core/services/notice.service';
 import {ProfileService} from '../../core/services/profile.service';
+import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
 import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import {BreadcrumbDataTop} from '../../models/breadcrumb';
 import {MetadataHeaders} from '../../models/models';
@@ -128,6 +128,10 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   expanded: boolean;
 
+  pending: boolean;
+
+  pendingSub: Subscription;
+
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
 
   popupCreationCancelLabel: string;
@@ -137,11 +141,16 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   profilesChargees = false;
 
   constructor(private profileService: ProfileService, private noticeService: NoticeService,
-              private ngxLoader: NgxUiLoaderService, private router: Router, private dialog: MatDialog,
-              private startupService: StartupService, private pastisConfig: PastisConfiguration, route: ActivatedRoute, globalEventService: GlobalEventService,
-              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService) {
+              private router: Router, private dialog: MatDialog,
+              private startupService: StartupService, private pastisConfig: PastisConfiguration,
+              route: ActivatedRoute, globalEventService: GlobalEventService,
+              private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
+              private toggleService: ToggleSidenavService) {
     super(route, globalEventService);
     this.expanded = false;
+    this.pendingSub = this.toggleService.isPending.subscribe(status => {
+      this.pending = status;
+    });
   }
 
   ngOnInit() {
@@ -152,7 +161,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       this.popupCreationCancelLabel = 'Annuler';
       this.popupCreationTitleDialog = 'Choix du type de profil';
       this.popupCreationSubTitleDialog = 'Création d\'un profil';
-      this.popupCreationOkLabel = 'TERMINER';
+      this.popupCreationOkLabel = 'VALIDER';
     }
     this.dataGeneriquePopupService.currentDonnee.subscribe(donnees => this.donnees = donnees);
     this.breadcrumbDataTop = [{ label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL', url: this.startupService.getPortalUrl(), external: true}, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'}];
@@ -163,14 +172,14 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   private refreshListProfiles() {
-    this.ngxLoader.startLoader('table-profiles'); // start non-master loader
+    this.toggleService.showPending();
     this.profileService.refreshListProfiles();
     return this.profileService.retrievedProfiles.subscribe((profileList: ProfileDescription[]) => {
       if (profileList) {
         this.retrievedProfiles = profileList;
         console.log('Profiles: ', this.retrievedProfiles);
         this.profilesChargees = true;
-        this.ngxLoader.stopLoader('table-profiles');
+        this.toggleService.hidePending();
       }
       this.matDataSource = new MatTableDataSource<ProfileDescription>(this.retrievedProfiles);
       this.numPA = this.retrievePAorPUA('PA', false);
@@ -284,6 +293,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   ngOnDestroy() {
     this.profileService.retrievedProfiles.next([]);
     this.subscriptions.forEach((subscriptions) => subscriptions.unsubscribe());
+    if(this.pendingSub) this.pendingSub.unsubscribe();
   }
 
 

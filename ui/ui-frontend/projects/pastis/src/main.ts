@@ -44,5 +44,9 @@ if (environment.production) {
   enableProdMode();
 }
 
+if (environment.standalone) {
+  document.title = 'PASTIS';
+  document.getElementById('favicon').setAttribute('href', '../assets/favicon.ico');
+}
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

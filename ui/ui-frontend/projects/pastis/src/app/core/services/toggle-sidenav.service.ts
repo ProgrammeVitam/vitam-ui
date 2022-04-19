@@ -45,6 +45,7 @@ export class ToggleSidenavService {
 
     constructor() { }
     isOpened = new BehaviorSubject<boolean>(true);
+    isPending = new BehaviorSubject<boolean>(false);
 
     show() {
         this.isOpened.next(true);
@@ -53,5 +54,13 @@ export class ToggleSidenavService {
     hide() {
         this.isOpened.next(false);
         console.log('SideNav is closed');
+    }
+
+    showPending(){
+        this.isPending.next(true);
+    }
+
+    hidePending(){
+        this.isPending.next(false);
     }
 }
