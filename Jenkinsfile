@@ -223,5 +223,22 @@ pipeline {
                 }
             }
         }
+
+        stage('Upgrade build context') {
+           when {
+                environment(name: 'DO_MAJ_CONTEXT', value: 'true')
+           }
+           environment {
+                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+           }
+           steps {
+                sh 'sudo yum install -y wget'
+                sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
+                sh 'gzip -d ScaResolver-linux64.tar.gz'
+                sh './ScaResolver -h'
+           }
+        }
+
     }
 }
