@@ -14,6 +14,9 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
         SERVICE_PROXY_PORT = credentials("http-proxy-port")
+        SERVICE_CX_SCA_USER = credentials("service-cx-sca-user")
+        SERVICE_CX_SCA_PASSWORD = credentials("service-cx-sca-password")
+        SERVICE_CX_SCA_ACCOUNT = credentials("service-cx-sca-account")
         NOPROXY_HOST = credentials("http_nonProxyHosts")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
@@ -236,7 +239,8 @@ pipeline {
                 sh 'sudo yum install -y wget'
                 sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
-                sh './ScaResolver -h'
+                sh 'tar -xvf ScaResolver-linux64.tar'
+                sh './ScaResolver -s ui -n vitam-ui -u ${env.SERVICE_CX_SCA_USER} -p ${env.SERVICE_CX_SCA_PASSWORD} -a ${env.SERVICE_CX_SCA_ACCOUNT}'
            }
         }
 
