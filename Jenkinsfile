@@ -224,7 +224,7 @@ pipeline {
             }
         }
 
-        stage('Upgrade build context') {
+        stage('Checkmarx SCA step') {
            when {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
            }
