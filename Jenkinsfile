@@ -243,7 +243,7 @@ pipeline {
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
                 sh 'tar -xvf ScaResolver-linux64.tar'
                 sh 'export CX_NAME=vitam-ui.$GIT_BRANCH'
-                sh './ScaResolver -s ui -n $CX_NAME -u ${env.SERVICE_CX_SCA_USER} -p ${env.SERVICE_CX_SCA_PASSWORD} -a ${env.SERVICE_CX_SCA_ACCOUNT} --server-url ${env.SERVICE_CX_SCA_SERVER} --authentication-server-url ${env.SERVICE_CX_SCA_AUTH_SERVER} -s ui' 
+                sh './ScaResolver -s ui -n $CX_NAME -u $SERVICE_CX_SCA_USER -p $SERVICE_CX_SCA_PASSWORD -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui' 
            }
         }
 
