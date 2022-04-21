@@ -166,6 +166,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
             let retour;
             if (result.success) {
               retour = result.data;
+              console.log(retour.identifier + "identifier")
               if (result.mode === 'PUA') {
                 console.log('je suis sur un enregistrement d\'un PUA');
 

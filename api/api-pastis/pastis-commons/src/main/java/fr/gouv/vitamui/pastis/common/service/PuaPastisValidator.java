@@ -82,6 +82,8 @@ public class PuaPastisValidator {
     private static final String CONTENT = "Content";
     private static final String COMPLEX = "Complex";
     private static final String REQUIRED = "required";
+    private static final String ID = "id";
+    private static final String SCHEMA = "$schema";
 
     private JSONObject getProfileJsonExpected() {
         if (profileJsonExpected == null) {
@@ -124,28 +126,30 @@ public class PuaPastisValidator {
      * @param pua The string containing the JSON file to be validated
      * @throws AssertionError
      */
-    public void validatePUA(JSONObject pua) throws AssertionError {
+    public void validatePUA(JSONObject pua, boolean standalone) throws AssertionError {
         JSONObject profileJson = getProfileJsonExpected();
 
         // Compare list of field at the root level
-        Set<String> actualFieldList = pua.keySet().stream().collect(toSet());
-        Set<String> expectedFieldList = profileJson.keySet().stream().collect(Collectors.toSet());
-        if (!actualFieldList.equals(expectedFieldList)) {
-            throw new AssertionError("PUA field list does not contains the expected values");
+        if (!standalone) {
+            Set<String> actualFieldList = pua.keySet().stream().collect(toSet());
+            if(!actualFieldList.contains("name") && !actualFieldList.contains("controlSchema")){
+                throw new AssertionError("Notice not contains the expected keys 'name' and 'controlSchema'");
+            }
         }
 
-        // Next tests are controlling the ControlSchema
-        String controlSchemaString = pua.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
-        controlSchemaString = profileJson.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
 
-        // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
-        JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
+    // Next tests are controlling the ControlSchema
+    String controlSchemaString = pua.getString(CONTROLSCHEMA);
+    JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
+    controlSchemaString = profileJson.getString(CONTROLSCHEMA);
+    JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
+        if(standalone) {
+            // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
+            JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
 
-        // Checking that the definitions list is exactly the same as expected
-        JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
-            controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
+            // Checking that the definitions list is exactly the same as expected
+            JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
+                controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
 
         // Checking that #management object is present and at the correct position
         if (controlSchemaActual.has("patternProperties")) {
@@ -167,6 +171,15 @@ public class PuaPastisValidator {
             }
             // #HAVEFUN
         }
+        }
+        else{
+                if (!controlSchemaActual.has(ID)) {
+                    throw new AssertionError("Missing 'id' key in 'controlSchema' object");
+                }
+                if (!controlSchemaActual.has(SCHEMA)) {
+                    throw new AssertionError("Missing '$schema' key in controlSchema' object");
+                }
+            }
     }
 
     public JSONObject getDefinitionsFromExpectedProfile() {

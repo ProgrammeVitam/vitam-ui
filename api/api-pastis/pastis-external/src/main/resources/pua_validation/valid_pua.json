@@ -12,5 +12,6 @@
   "tenant": 8,
   "version": 1,
   "fields": [
-  ]
+  ],
+  "type": "PUA"
 }

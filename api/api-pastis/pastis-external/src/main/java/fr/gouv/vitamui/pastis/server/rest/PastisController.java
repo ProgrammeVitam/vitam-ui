@@ -87,7 +87,7 @@ class PastisController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws TechnicalException {
-        String archiveUnitProfile = profileService.getArchiveUnitProfile(json);
+        String archiveUnitProfile = profileService.getArchiveUnitProfile(json, false);
         if (archiveUnitProfile != null) {
             return ResponseEntity.ok(archiveUnitProfile);
         } else {
@@ -112,8 +112,8 @@ class PastisController {
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
     @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
         consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam("file") MultipartFile file, @RequestParam("fileName") String fileName) throws NoSuchAlgorithmException, TechnicalException {
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, fileName);
+    ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file, @RequestParam("fileName") String fileName) throws NoSuchAlgorithmException, TechnicalException {
+        ProfileResponse profileResponse = profileService.loadProfileFromFile(file,fileName, false);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {

@@ -159,7 +159,7 @@ public class ProfileInternalController {
     public ProfileDto create(@Valid @RequestBody ProfileDto archivalProfile, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("create profile={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        archivalProfile.setTenant(0);
+        archivalProfile.setTenant(vitamContext.getTenantId());
         return profileInternalService.create(vitamContext, archivalProfile);
     }
 

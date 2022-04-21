@@ -146,9 +146,9 @@ public class PastisService {
     }
 
 
-    public String getArchiveUnitProfile(final ProfileNotice json) throws TechnicalException {
+    public String getArchiveUnitProfile(final ProfileNotice json, final boolean standalone) throws TechnicalException {
         Notice notice = new Notice();
-        if (json.getNotice() != null) {
+        if (!standalone && json.getNotice() != null) {
             notice = json.getNotice();
 
         }
@@ -215,7 +215,7 @@ public class PastisService {
                 profileResponse.setProfile(getJson.getJsonParsedTree(handler.getElementRNGRoot()));
                 LOGGER.info("Starting editing Archive Profile with id : {}", notice.getId());
             } else if (fileType.equals(ProfileType.PUA)) {
-                puaPastisValidator.validatePUA(profileJson);
+                puaPastisValidator.validatePUA(profileJson, false);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
             }
             profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
@@ -269,7 +269,7 @@ public class PastisService {
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
-                puaPastisValidator.validatePUA(profileJson);
+                puaPastisValidator.validatePUA(profileJson, false);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", resource.getFilename());
@@ -285,7 +285,7 @@ public class PastisService {
         return profileResponse;
     }
 
-    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName) throws NoSuchAlgorithmException, TechnicalException {
+    public ProfileResponse loadProfileFromFile(MultipartFile file, String fileName, boolean standalone) throws NoSuchAlgorithmException, TechnicalException {
 
         PastisSAX2Handler handler = new PastisSAX2Handler();
         PastisGetXmlJsonTree getJson = new PastisGetXmlJsonTree();
@@ -313,7 +313,7 @@ public class PastisService {
             } else {
                 JSONTokener tokener = new JSONTokener(new InputStreamReader(fileInputStream));
                 JSONObject profileJson = new JSONObject(tokener);
-                puaPastisValidator.validatePUA(profileJson);
+                puaPastisValidator.validatePUA(profileJson, standalone);
                 profileResponse.setProfile(jsonFromPUA.getProfileFromPUA(profileJson));
                 profileResponse.setNotice(NoticeUtils.getNoticeFromPUA(profileJson));
                 LOGGER.info("Starting editing Archive Unit Profile with name : {}", file.getOriginalFilename());
