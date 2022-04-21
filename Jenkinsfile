@@ -17,6 +17,8 @@ pipeline {
         SERVICE_CX_SCA_USER = credentials("service-cx-sca-user")
         SERVICE_CX_SCA_PASSWORD = credentials("service-cx-sca-password")
         SERVICE_CX_SCA_ACCOUNT = credentials("service-cx-sca-account")
+        SERVICE_CX_SCA_SERVER = credentials("service-cx-sca-server")
+        SERVICE_CX_SCA_AUTH_SERVER = credentials("service-cx-sca-auth-server")
         NOPROXY_HOST = credentials("http_nonProxyHosts")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
@@ -240,7 +242,7 @@ pipeline {
                 sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
                 sh 'tar -xvf ScaResolver-linux64.tar'
-                sh './ScaResolver -s ui -n vitam-ui -u ${env.SERVICE_CX_SCA_USER} -p ${env.SERVICE_CX_SCA_PASSWORD} -a ${env.SERVICE_CX_SCA_ACCOUNT}'
+                sh './ScaResolver -s ui -n vitam-ui-${env.GIT_BRANCH} -u ${env.SERVICE_CX_SCA_USER} -p ${env.SERVICE_CX_SCA_PASSWORD} -a ${env.SERVICE_CX_SCA_ACCOUNT}' --server-url -u ${env.SERVICE_CX_SCA_SERVER} --authentication-server-url -u ${env.SERVICE_CX_SCA_AUTH_SERVER} -s ui
            }
         }
 
