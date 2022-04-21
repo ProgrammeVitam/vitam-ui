@@ -236,14 +236,14 @@ pipeline {
            environment {
                 http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
                 https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                CX_NAME="vitam-ui.${env.GIT_BRANCH}"
            }
            steps {
                 sh 'sudo yum install -y wget'
                 sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
                 sh 'tar -xvf ScaResolver-linux64.tar'
-                sh 'export CX_NAME=vitam-ui.$GIT_BRANCH'
-                sh './ScaResolver -s ui -n $CX_NAME -u $SERVICE_CX_SCA_USER -p $SERVICE_CX_SCA_PASSWORD -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui' 
+                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -p $SERVICE_CX_SCA_PASSWORD -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui' 
            }
         }
 
