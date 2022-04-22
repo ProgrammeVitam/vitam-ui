@@ -125,7 +125,7 @@ class PastisController {
     @Secured({ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES, ServicesData.ROLE_UPDATE_PROFILES})
     @PostMapping(value = RestApi.PASTIS_TRANSFORM_PROFILE_PA,
         consumes = "multipart/form-data", produces = "application/json")
-    ResponseEntity<ElementProperties> loadPA(@RequestParam MultipartFile file){
+    ResponseEntity<ElementProperties> loadPA(@RequestParam("file") MultipartFile file){
         ElementProperties elementProperties = profileService.loadProfilePA(file);
         if (elementProperties != null) {
             return ResponseEntity.ok(elementProperties);
