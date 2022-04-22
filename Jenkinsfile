@@ -57,6 +57,7 @@ pipeline {
         stage('Checkmarx SCA step debug') {
            when {
                 environment(name: 'DO_MAJ_CONTEXT', value: 'true')
+                environment(name: 'GIT_BRANCH', value: 'develop')
            }
            environment {
                 http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
@@ -262,7 +263,7 @@ pipeline {
                 sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
                 sh 'tar -xvf ScaResolver-linux64.tar'
-                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -p "$SERVICE_CX_SCA_PASSWORD" -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui' 
+                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD"' 
            }
         }
 
