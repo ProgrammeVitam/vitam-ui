@@ -48,10 +48,10 @@ public class PuaPastisValidatorTest {
 
     PuaPastisValidator puaPastisValidator = new PuaPastisValidator();
 
-    public void testImport(String pathFile) {
+    public void testImport(String pathFile, boolean environnementStandalone) {
         InputStream inputStreamPua = getClass().getClassLoader().getResourceAsStream(pathFile);
         JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStreamPua));
         JSONObject profileJson = new JSONObject(tokener);
-        puaPastisValidator.validatePUA(profileJson, false);
+        puaPastisValidator.validatePUA(profileJson, environnementStandalone);
     }
 }

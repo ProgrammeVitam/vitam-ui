@@ -69,7 +69,7 @@ public class PuaPastisValidatorOKTest {
 
     @Test
     public void testImports() {
-        puaPastisValidatorTest.testImport(fileName);
+        puaPastisValidatorTest.testImport(fileName, true);
     }
 
 
