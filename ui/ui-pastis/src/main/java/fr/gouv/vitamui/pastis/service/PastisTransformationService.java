@@ -109,7 +109,7 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
 
     public ElementProperties loadProfilePA(Resource resource, ExternalHttpContext context) throws IOException {
         LOGGER.info("Start transform profile PA By ui-pastis-service");
-        return pastisTransformationRestClient.loadProfilePA(resource, context).getBody();
+        return pastisTransformationWebClient.loadProfilePA(resource, context).getBody();
     }
 
     public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context)
@@ -118,14 +118,12 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
         return pastisTransformationWebClient.loadProfileFromFile(file, context);
     }
 
-    public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context) throws
-        IOException {
+    public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context) {
         LOGGER.info("Start Download PA By ui-pastis-service");
         return pastisTransformationRestClient.getArchiveProfile(json, context);
     }
 
-    public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context)
-        throws IOException {
+    public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context) {
         LOGGER.info("Start Download PUA By ui-pastis-service");
         return pastisTransformationRestClient.getArchiveUnitProfile(json, context);
     }
