@@ -33,7 +33,8 @@ rng.base.file: rng/Profil_seda_pastis_mvp.rng
 rng.base.directory: rng/
 json.base.file: rng/ProfileJson.json
 pua.definitions.file: pua_validation/ProfileJson.json
-json.template.file: rng/AUP_default_PASTIS.json
+json.template.fileStandalone: rng/AUP_default_PASTIS.json
+json.template.fileVitam: rng/AUP_default_VITAM.json
 
 #PORT
 server.port: 8096

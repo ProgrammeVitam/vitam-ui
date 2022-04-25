@@ -60,7 +60,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -82,13 +81,17 @@ public class PuaPastisValidator {
     private static final String CONTENT = "Content";
     private static final String COMPLEX = "Complex";
     private static final String REQUIRED = "required";
-    private static final String ID = "id";
     private static final String SCHEMA = "$schema";
 
-    private JSONObject getProfileJsonExpected() {
+    private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
+            InputStream inputStream;
+            if(standalone)
+                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
 
+            else{
+                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua_vitam.json");
+            }
             assert inputStream != null;
             JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
             setProfileJsonExpected(new JSONObject(tokener));
@@ -127,7 +130,7 @@ public class PuaPastisValidator {
      * @throws AssertionError
      */
     public void validatePUA(JSONObject pua, boolean standalone) throws AssertionError {
-        JSONObject profileJson = getProfileJsonExpected();
+        JSONObject profileJson = getProfileJsonExpected(standalone);
 
         // Compare list of field at the root level
         if (!standalone) {
@@ -143,6 +146,8 @@ public class PuaPastisValidator {
     JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
     controlSchemaString = profileJson.getString(CONTROLSCHEMA);
     JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
+    LOGGER.error(controlSchemaActual.toString() + " control shema actuelle");
+        LOGGER.error(controlSchemaExpected.toString() + " control shema Expected");
         if(standalone) {
             // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
             JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
@@ -173,9 +178,6 @@ public class PuaPastisValidator {
         }
         }
         else{
-                if (!controlSchemaActual.has(ID)) {
-                    throw new AssertionError("Missing 'id' key in 'controlSchema' object");
-                }
                 if (!controlSchemaActual.has(SCHEMA)) {
                     throw new AssertionError("Missing '$schema' key in controlSchema' object");
                 }
@@ -184,8 +186,9 @@ public class PuaPastisValidator {
 
     public JSONObject getDefinitionsFromExpectedProfile() {
 
-        JSONObject baseProfile = getProfileJsonExpected();
+        JSONObject baseProfile = getProfileJsonExpected(true);
         String controlSchema = baseProfile.get(CONTROLSCHEMA).toString();
+        LOGGER.error(controlSchema + " control shema");
         JSONObject controlSchemaAsJSON = new JSONObject(controlSchema);
 
         return controlSchemaAsJSON.getJSONObject(DEFINITIONS);

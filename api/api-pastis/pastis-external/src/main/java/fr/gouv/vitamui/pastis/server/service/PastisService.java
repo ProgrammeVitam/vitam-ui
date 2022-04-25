@@ -61,7 +61,6 @@ import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -94,8 +93,10 @@ public class PastisService {
     private final ResourceLoader resourceLoader;
     @Value("${rng.base.file}")
     private String rngFile;
-    @Value("${json.template.file}")
-    private String jsonFile;
+    @Value("${json.template.fileStandalone}")
+    private String jsonFileStandalone;
+    @Value("${json.template.fileVitam}")
+    private String jsonFileVitam;
     @Value("${rng.base.directory}")
     private String rngLocation;
     private final PuaPastisValidator puaPastisValidator;
@@ -172,7 +173,7 @@ public class PastisService {
         return new ClassPathResource(rngLocation + filename + ".rng");
     }
 
-    public ProfileResponse createProfile(String type) throws TechnicalException, NoSuchAlgorithmException {
+    public ProfileResponse createProfile(String type, boolean standalone) throws TechnicalException, NoSuchAlgorithmException {
         Resource resource;
         ProfileResponse profileResponse = null;
         if (type != null && !type.isEmpty()) {
@@ -180,7 +181,11 @@ public class PastisService {
             if (type.equals(ProfileType.PA.getType())) {
                 resource = new ClassPathResource(rngFile);
             } else {
-                resource = new ClassPathResource(jsonFile);
+                if(standalone)
+                resource = new ClassPathResource(jsonFileStandalone);
+                else{
+                    resource = new ClassPathResource(jsonFileVitam);
+                }
             }
             profileResponse = createProfileByType(resource, profileType);
         }

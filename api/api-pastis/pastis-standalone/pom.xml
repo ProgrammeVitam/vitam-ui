@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>pastis</artifactId>
+            <artifactId>pastis-external</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>

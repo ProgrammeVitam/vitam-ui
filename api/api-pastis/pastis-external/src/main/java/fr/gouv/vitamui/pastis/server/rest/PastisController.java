@@ -138,7 +138,7 @@ class PastisController {
     @Secured({ServicesData.ROLE_CREATE_ARCHIVE_PROFILES, ServicesData.ROLE_CREATE_PROFILES})
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
     ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws NoSuchAlgorithmException, TechnicalException {
-        ProfileResponse profileResponse = profileService.createProfile(profileType);
+        ProfileResponse profileResponse = profileService.createProfile(profileType, false);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {
