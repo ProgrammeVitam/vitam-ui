@@ -28,6 +28,7 @@
         <module>packaging</module>
         <module>cots</module>
         <module>ui</module>
+        <module>customers-admin</module>
     </modules>
 
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
