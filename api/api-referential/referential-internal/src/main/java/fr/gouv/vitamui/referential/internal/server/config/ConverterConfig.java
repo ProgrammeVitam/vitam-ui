@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.server.config;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractConverter;
 import fr.gouv.vitamui.referential.internal.server.agency.AgencyConverter;
 import fr.gouv.vitamui.referential.internal.server.context.ContextConverter;
@@ -54,6 +55,11 @@ public class ConverterConfig {
     @Bean
     public AccessContractConverter accessContractConverter() {
         return new AccessContractConverter();
+    }
+
+    @Bean
+    public AccessionRegisterSearchDto accessionRegisterSearchDtoConverter() {
+        return new AccessionRegisterSearchDto();
     }
 
     @Bean

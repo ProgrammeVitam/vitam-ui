@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -113,7 +113,7 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
-        @RequestBody final AccessionRegisterDetailsSearchStatsDto searchQuery
+        @RequestBody final AccessionRegisterSearchDto searchQuery
     ) {
         LOGGER.debug("Export accession register by criteria into csv format = {}", searchQuery);
         Resource exportedCsvResult =

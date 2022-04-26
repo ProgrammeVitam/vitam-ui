@@ -37,9 +37,8 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -53,7 +52,13 @@ import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRe
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -87,27 +92,28 @@ public class AccessionRegisterInternalController {
     }
 
     @GetMapping(value = RestApi.DETAILS, params = {"page", "size"})
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, criteria={}, orderBy={}, ascendant={}",
-            page, size, criteria, orderBy, direction);
+        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, orderBy={}, direction={}, criteria={}",
+            page, size, orderBy, direction, criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return detailInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+        return detailInternalService.getAllPaginated(criteria, page, size,
+            orderBy.orElse(null), direction.orElse(null),
+            vitamContext);
     }
 
     @PostMapping(RestApi.DETAILS_EXPORT_CSV)
     public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
-        @RequestBody final AccessionRegisterDetailsSearchStatsDto searchQuery)
-        throws VitamClientException {
+        @RequestBody final AccessionRegisterSearchDto searchQuery) {
         LOGGER.info("Export to CSV of accession register details {}", searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        Resource exportedResult =
-            detailInternalService.exportToCsvAccessionRegister(searchQuery, vitamContext);
+        Resource exportedResult = detailInternalService.exportToCsvAccessionRegister(searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 

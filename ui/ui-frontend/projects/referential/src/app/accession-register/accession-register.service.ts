@@ -63,7 +63,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   updated = new Subject<AccessionRegisterDetail>();
 
   private searchTextChange$ = new BehaviorSubject<string>('');
-  private statusFilterChange$ = new BehaviorSubject<{ [key: string]: any[] }>(null);
+  private statusFilterChange$ = new BehaviorSubject<Map<string, Array<string>>>(null);
   private dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
 
   private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -194,7 +194,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     return stateFacetDetails;
   }
 
-  notifyFilterChange(value: { [key: string]: any[] }) {
+  notifyFilterChange(value: Map<string, Array<string>>) {
     this.statusFilterChange$.next(value);
     this.globalSearchButtonEvent$.next(true);
   }
@@ -214,10 +214,6 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   getSearchTextChange(): BehaviorSubject<string> {
     return this.searchTextChange$;
-  }
-
-  getStatusFilterChange(): BehaviorSubject<{ [key: string]: any[] }> {
-    return this.statusFilterChange$;
   }
 
   toggleOpenAdvancedSearchPanel() {

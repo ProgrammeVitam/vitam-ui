@@ -60,6 +60,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Security;
+import java.text.CharacterIterator;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.StringCharacterIterator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -81,9 +85,14 @@ import java.util.stream.Collectors;
 
 public final class VitamUIUtils {
 
-    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final String EMAIL_PATTERN =
+        "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public static final String PRINT_ALGORITHM = "SHA-512";
+
+    public static final DecimalFormat UI_DECIMAL_FORMAT_2_DIGITS = decimalFormat2digits();
+    public static final String BYTE_SIZES_LETTERS = "kMGTPE";
+    public static final String OCTET = " octet";
 
     private VitamUIUtils() {
         // empty
@@ -99,7 +108,6 @@ public final class VitamUIUtils {
      *
      * @param email the parameter to be tested
      * @return true if email is valid else false
-     *
      */
     public static boolean isValidEmail(final String email) {
         final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
@@ -108,8 +116,7 @@ public final class VitamUIUtils {
     }
 
     /**
-     * @param length
-     *            the length of array
+     * @param length the length of array
      * @return a byte array with random values
      */
     public static byte[] getRandom(final int length) {
@@ -142,11 +149,11 @@ public final class VitamUIUtils {
 
     /**
      * Cast the object into the given type.
+     *
      * @param value
      * @param clazz
-     * @throws ClassCastException
-     *             If the object is not null and is not assignable to the type T
      * @return
+     * @throws ClassCastException If the object is not null and is not assignable to the type T
      */
     public static <T> T castValue(final Object value, final Class<T> clazz) throws ClassCastException {
         return clazz.cast(value);
@@ -157,13 +164,13 @@ public final class VitamUIUtils {
         try {
             t = clazz.cast(value);
             return true;
-        }
-        catch (final ClassCastException e) {
+        } catch (final ClassCastException e) {
             return false;
         }
     }
 
-    public static <T> T convertObjectFromJson(final String json, final Class<T> clazz) throws JsonParseException, JsonMappingException, IOException {
+    public static <T> T convertObjectFromJson(final String json, final Class<T> clazz)
+        throws JsonParseException, JsonMappingException, IOException {
         final T object = new ObjectMapper().readValue(json, clazz);
         return object;
     }
@@ -196,30 +203,28 @@ public final class VitamUIUtils {
         try {
             final LocalDate date = LocalDate.parse(content);
             return Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             // do nothing
         }
 
         try {
             final LocalDateTime date = LocalDateTime.parse(content);
             return Date.from(date.toInstant(ZoneOffset.UTC));
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             // do nothing
         }
 
         try {
             final OffsetDateTime date = OffsetDateTime.parse(content);
             return Date.from(date.toInstant());
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new DateTimeParseException("Text '" + content + "' could not be parsed", content, -1);
         }
     }
 
     /**
      * Method allowing to generate a request ID.
+     *
      * @return The generated identifier.
      */
     public static String generateRequestId() {
@@ -227,8 +232,8 @@ public final class VitamUIUtils {
     }
 
     /**
-     *
      * Method allowing to generate an application ID.
+     *
      * @param requestId
      * @param applicationIdExt Give by the caller
      * @param applicationName Name of the client certificate
@@ -236,10 +241,11 @@ public final class VitamUIUtils {
      * @param superUserIdentifier Exist if the user is in "Subrogation mode"
      * @param customerIdentifier
      * @param requestId Request identifier linked to the current request.
-     * @return  The generated application ID.
+     * @return The generated application ID.
      */
-    public static String generateApplicationId(final String applicationIdExt, final String applicationName, final String userIdentifier,
-            final String superUserIdentifier, final String customerIdentifier, final String requestId) {
+    public static String generateApplicationId(final String applicationIdExt, final String applicationName,
+        final String userIdentifier,
+        final String superUserIdentifier, final String customerIdentifier, final String requestId) {
         // Application-Id format: applicationIdExt:requestId:applicationName:userIdentifier:superUserIdentifier:customerIdentifier.
         final String msg = "Missing %s information for construct X-Application-Id header";
         ParamsUtils.checkParameter(String.format(msg, "applicationName"), applicationName);
@@ -247,8 +253,10 @@ public final class VitamUIUtils {
         ParamsUtils.checkParameter(String.format(msg, "customerIdentifier"), customerIdentifier);
         ParamsUtils.checkParameter(String.format(msg, "requestId"), requestId);
 
-        return String.format("%s:%s:%s:%s:%s:%s", formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")), requestId, applicationName,
-                userIdentifier, formatOptionalEntriesForApplicationId(superUserIdentifier), customerIdentifier);
+        return String.format("%s:%s:%s:%s:%s:%s",
+            formatOptionalEntriesForApplicationId(StringUtils.remove(applicationIdExt, ":")), requestId,
+            applicationName,
+            userIdentifier, formatOptionalEntriesForApplicationId(superUserIdentifier), customerIdentifier);
     }
 
     private static String formatOptionalEntriesForApplicationId(final String entry) {
@@ -277,7 +285,8 @@ public final class VitamUIUtils {
         return Collections.unmodifiableList(unionList);
     }
 
-    public static String getSha512Print(final byte[] data) throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
+    public static String getSha512Print(final byte[] data)
+        throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         Security.addProvider(new BouncyCastleProvider());
         final MessageDigest digest = MessageDigest.getInstance(PRINT_ALGORITHM, "BC");
         digest.digest(data);
@@ -294,7 +303,7 @@ public final class VitamUIUtils {
                 if (values.size() == 1) {
 
                     return (entry.getKey().equalsIgnoreCase(HttpHeaders.AUTHORIZATION) ||
-                        entry.getKey().equalsIgnoreCase( HttpHeaders.PROXY_AUTHORIZATION) ||
+                        entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHORIZATION) ||
                         entry.getKey().equalsIgnoreCase(HttpHeaders.PROXY_AUTHENTICATE)) ?
                         (entry.getKey() + ":" + "\"" +
                             (values.get(0).split(" ")[0] + " **********" + "\"")) :
@@ -308,4 +317,42 @@ public final class VitamUIUtils {
             })
             .collect(Collectors.joining(", ", "[", "]"));
     }
+
+    private static final DecimalFormat decimalFormat2digits() {
+        DecimalFormat df = new DecimalFormat();
+        DecimalFormatSymbols symbols = df.getDecimalFormatSymbols();
+        symbols.setGroupingSeparator(' ');
+        symbols.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(symbols);
+        df.setMaximumFractionDigits(2);
+        return df;
+    }
+
+    /**
+     * 1 k = 1,000
+     */
+    public static String humanReadableByteCountSI(long bytes) {
+        if (-1000 < bytes && bytes < 1000) {
+            return bytes + OCTET;
+        }
+        CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
+        while (bytes <= -999_950 || bytes >= 999_950) {
+            bytes /= 1000;
+            ci.next();
+        }
+        return UI_DECIMAL_FORMAT_2_DIGITS.format(bytes / 1000.0) + ' ' + ci.current() + 'o';
+    }
+
+    public static String humanReadableByteCountBin(long bytes) {
+        if (-1000 < bytes && bytes < 1000) {
+            return bytes + OCTET;
+        }
+        CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
+        while (bytes <= -999_950 || bytes >= 999_950) {
+            bytes /= 1000;
+            ci.next();
+        }
+        return UI_DECIMAL_FORMAT_2_DIGITS.format(bytes / 1024.0) + ' ' + ci.current() + 'o';
+    }
+
 }
