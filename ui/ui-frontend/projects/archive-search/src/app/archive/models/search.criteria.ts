@@ -142,13 +142,14 @@ export interface CriteriaValue {
 
 export class ArchiveSearchResultFacets {
   nodesFacets?: ResultFacet[];
-  appraisalRuleFacets?: AppraisalRuleFacets;
+  appraisalRuleFacets?: RuleFacets;
+  accessRuleFacets?: RuleFacets;
 }
 
-export class AppraisalRuleFacets {
+export class RuleFacets {
   waitingToRecalculateRulesListFacets: ResultFacet[];
   expiredRulesListFacets: ResultFacet[];
   rulesListFacets: ResultFacet[];
-  finalActionsFacets: ResultFacet[];
-  noAppraisalRulesFacets: ResultFacet[];
+  finalActionsFacets?: ResultFacet[];
+  noRulesFacets: ResultFacet[];
 }

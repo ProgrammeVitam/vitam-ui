@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
-import { AppraisalRuleFacets } from '../../../models/search.criteria';
+import { RuleFacets } from '../../../models/search.criteria';
 
 @Component({
   selector: 'app-search-appraisal-rules-facets',
@@ -14,7 +14,7 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
   constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
-  appraisalRuleFacets: AppraisalRuleFacets;
+  appraisalRuleFacets: RuleFacets;
 
   @Input()
   totalResults: number;
@@ -177,8 +177,8 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.appraisalRuleFacets.noAppraisalRulesFacets && this.appraisalRuleFacets.noAppraisalRulesFacets.length > 0) {
-      this.appraisalRuleFacets.noAppraisalRulesFacets.forEach((elt) => {
+    if (this.appraisalRuleFacets.noRulesFacets && this.appraisalRuleFacets.noRulesFacets.length > 0) {
+      this.appraisalRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
           totalResults: elt.count ? elt.count : 0,
