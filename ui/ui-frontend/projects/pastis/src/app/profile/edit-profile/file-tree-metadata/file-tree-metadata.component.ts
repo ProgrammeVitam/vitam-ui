@@ -256,7 +256,7 @@ export class FileTreeMetadataComponent {
       this.popupControlOkLabel = 'AJOUTER LES CONTROLES';
     }
 
-   
+
     this.additionalPropertiesMetadonnee = false;
     this.docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
@@ -850,14 +850,28 @@ export class FileTreeMetadataComponent {
     }
   }
 
-  onChange(val: any, $event: MatCheckboxChange) {
-
-    console.log('onChange file tree metadata go dans methode setNodeValue' + val + ' et event ' + $event);
-    // @ts-ignore
-    this.setNodeValue(val, $event);
-
+  onChangeSelected(element: any, value: any) {
+    if(value === undefined){
+      this.setOrigineNodeValue(element,value)
+    }
+    else {
+      console.log(value + " Valeur On Change Selected")
+      this.setNodeValue(element, value);
+    }
 
   }
+
+  private setOrigineNodeValue(metadata: any, newValue: any) {
+    console.log(metadata.cardinalite + 'new Value ' + newValue);
+      if (this.clickedNode.name === metadata.nomDuChamp) {
+        this.clickedNode.value = null;
+      } else if (this.clickedNode.children.length > 0) {
+        const childNode = this.fileService.getFileNodeById(this.clickedNode, metadata.id);
+        if (childNode) {
+          childNode.value = null;
+        }
+      }
+    }
 
   changeSedaLanguage() {
     this.metadataLanguageService.sedaLanguage.subscribe(
@@ -991,5 +1005,6 @@ export class FileTreeMetadataComponent {
     return false;
   }
 
-  
+
+
 }

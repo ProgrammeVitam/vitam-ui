@@ -108,14 +108,13 @@
               </ng-container>
               <ng-container *ngSwitchCase="'enumeration'">
                 <mat-select [ngModel]="element.valeurFixe" class="mat-select-valeur-fixe"
-                  placeholder="Choisissez une valeur" *ngIf="profileService.profileMode === 'PA'">
-                  <mat-option [value]=""></mat-option>
-                  <mat-option *ngFor="let val of element.enumeration; let i =index" [value]="val">
-                    <mat-checkbox (change)="onChange(element,val);selected = i" [checked]="selected === i"> {{val}}
-                    </mat-checkbox>
+                  placeholder="Choisissez une valeur" *ngIf="profileService.profileMode === 'PA'" (selectionChange)="onChangeSelected(element,$event.value)">
+                  <mat-option [value]="">--None--</mat-option>
+                  <mat-option *ngFor="let val of element.enumeration; let i =index" [value]="val"> {{val}}
                   </mat-option>
                 </mat-select>
               </ng-container>
+
               <ng-container *ngIf="!checkElementType(element.nomDuChamp)">
                 <div *ngSwitchDefault class="pastis-vitamui-container-editable-valeur-fixe">
                   <vitamui-common-editable-textarea (ngModelChange)="setNodeValue(element,$event)" [maxlength]="120"
@@ -306,7 +305,7 @@
             </mat-form-field>
             <ng-template #blockInput>
               <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
-              </vitamui-common-editable-input> 
+              </vitamui-common-editable-input>
             </ng-template>
           </div>
           <div class="col-8" *ngIf="isEmptyEnumeration(enumerationsSedaControl) && isDataType()"><p class="pastis-indication">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMAT_ENUMERATION_AUTORISES' |
