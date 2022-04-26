@@ -1,0 +1,47 @@
+[
+  {
+    "gdprAlert": true,
+    "gdprAlertDelay": 72,
+    "enabled": true,
+    "code": "787878755",
+    "name": "ben",
+    "companyName": "ben",
+    "passwordRevocationDelay": 6,
+    "otp": "OPTIONAL",
+    "address": {
+      "street": "ben",
+      "zipCode": "bneb",
+      "city": "ben",
+      "country": "FR"
+    },
+    "internalCode": null,
+    "language": "FRENCH",
+    "emailDomains": [
+      "ben.fr"
+    ],
+    "defaultEmailDomain": "ben.fr",
+    "hasCustomGraphicIdentity": false,
+    "themeColors": null,
+    "portalMessages": {},
+    "portalTitles": {},
+    "owners": [
+      {
+        "id": null,
+        "customerId": null,
+        "identifier": null,
+        "code": "787878755",
+        "name": "ben",
+        "companyName": "ben",
+        "internalCode": null,
+        "address": {
+          "street": null,
+          "zipCode": null,
+          "city": null,
+          "country": "FR"
+        },
+        "readonly": false
+      }
+    ],
+    "id": null
+  }
+]
