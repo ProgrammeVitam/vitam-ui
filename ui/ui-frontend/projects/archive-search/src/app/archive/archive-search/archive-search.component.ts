@@ -38,6 +38,7 @@ import { CriteriaDataType, CriteriaOperator, Direction, Logger, VitamuiRoles } f
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
+import { ArchiveFacetsService } from '../common-services/archive-facets.service';
 import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
 import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
 import { ArchiveUnitExportService } from '../common-services/archive-unit-export.service';
@@ -73,6 +74,7 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private archiveService: ArchiveService,
+    private archiveFacetsService: ArchiveFacetsService,
     private translateService: TranslateService,
     private route: ActivatedRoute,
     private archiveExchangeDataService: ArchiveSharedDataService,
@@ -496,9 +498,17 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       (pagedResult: PagedResult) => {
         if (this.currentPage === 0) {
           this.archiveUnits = pagedResult.results;
-          this.archiveSearchResultFacets.nodesFacets = this.archiveService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
           this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
-          this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveService.extractAppraisalRulesFacetsResults(pagedResult.facets);
+          this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+            pagedResult.facets,
+            SearchCriteriaTypeEnum.APPRAISAL_RULE
+          );
+          this.archiveSearchResultFacets.accessRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+            pagedResult.facets,
+            SearchCriteriaTypeEnum.ACCESS_RULE
+          );
+
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
         } else {

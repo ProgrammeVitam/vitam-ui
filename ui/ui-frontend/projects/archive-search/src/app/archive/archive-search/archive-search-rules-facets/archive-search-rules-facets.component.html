@@ -19,6 +19,18 @@
         ></app-search-appraisal-rules-facets>
       </div>
     </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }} </span>
+      </ng-template>
+
+      <div *ngIf="facetsVisibles" id="facet-content">
+        <app-search-access-rules-facets
+          [totalResults]="totalResults"
+          [accessRuleFacets]="accessRuleFacets"
+        ></app-search-access-rules-facets>
+      </div>
+    </mat-tab>
     <mat-tab [disabled]="true">
       <ng-template mat-tab-label>
         <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }} </span>

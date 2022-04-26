@@ -1,6 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
- *
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -68,6 +67,7 @@ import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.FALSE;
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaDataType.STRING;
@@ -79,9 +79,10 @@ import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.
  */
 @Service
 public class ArchiveSearchFacetsInternalService {
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory
-        .getInstance(ArchiveSearchFacetsInternalService.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ArchiveSearchFacetsInternalService.class);
     public static final String SOME_OLD_DATE = "01/01/0001";
+
 
     private final ArchiveSearchInternalService archiveSearchInternalService;
     private final ObjectMapper objectMapper;

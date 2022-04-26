@@ -1,0 +1,18 @@
+#facet-row {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+#count-facet-details {
+  width: 51%;
+}
+
+#rules-facet-details {
+  width: 16%;
+}
+
+#expired-rules-facet-details {
+  width: 32%;
+}

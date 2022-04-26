@@ -46,7 +46,6 @@
         "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
         "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
       },
-
       "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
@@ -92,6 +91,9 @@
       "EXECUTE": "Delete the archives",
       "EXECUTE_ONE": "Delete the archive"
     },
+    "RULES_ACTION": {
+      "UPDATE_RULE": "Update rules"
+    },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
         "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action on {{elementsSize}} archive units",
@@ -105,9 +107,6 @@
         "CONFIRM": "Confirmer",
         "CANCEL": "Annuler"
       }
-    },
-    "RULES_ACTION": {
-      "UPDATE_RULE": "Update rules"
     },
     "COMPUTED_INHERITED_RULES": {
       "EXECUTION_ACTION": "Launch the inheritance calculation",
@@ -126,6 +125,8 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_BETWEEN": "BETWEEN",
     "SEARCH_CRITERIA_AND": "AND",
+    "SEARCH_CRITERIA_GTE": "After than ",
+    "SEARCH_CRITERIA_LTE": "Before than ",
     "SHOW_SEARCH_CRITERIA": "Show the search filters",
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
     "RETRIVE_EXACT_COUNT": "Load exact count",
@@ -138,8 +139,12 @@
       "DATES": "Dates",
       "UA_TYPE": "Type of archival units",
       "TITLE": "Search filters",
+      "OTHER_FILED_SELECTION": "Other criteria selection",
       "DUA_TITLE": "Administrative useful life",
-      "OTHER_FILED_SELECTION": "Select another criteria",
+      "ACCESS_TITLE": "Access",
+      "NODES": {
+        "NODE": "Position"
+      },
       "APPRAISAL_RULE": {
         "RULE_END_DATE_END": "DUA: max End date",
         "RULE_END_DATE_BEGIN": "DUA: min End date",
@@ -160,6 +165,22 @@
         "ORIGIN_HAS_AT_LEAST_ONE": "Holden rule",
         "ORIGIN_HAS_NO_ONE": "Not defined",
         "ORIGIN_WAITING_RECALCULATE": "Waiting for recalculate",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
+        "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier"
+      },
+      "ACCESS_RULE": {
+        "RULE_END_DATE_END": "Access: Max end date",
+        "RULE_END_DATE_BEGIN": "Access: Min end date",
+        "CREATE_INTERVAL": "Create interval",
+        "DELETE_INTERVAL": "remove interval",
+        "RULE_TITLE_ACCESS_RULE": "Access rule title",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier ",
+        "RULE_START_DATE_ACCESS_RULE": "Access rule start date",
+        "RULE_END_DATE_ACCESS_RULE": "Access rule end date",
+        "RULE_ORIGIN_ACCESS_RULE": "Access rule",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Hold",
+        "ORIGIN_HAS_NO_ONE": "Not specified",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
       },
       "FIELDS": {
@@ -186,9 +207,19 @@
         "OTHER_FIELD": "Another criteria",
         "SELECT_OTHER_FIELD": "Select another criteria",
         "TITLE_DUA": "Title",
+        "TITLE_ACCESS": "Title",
         "ID_DUA": "Id",
+        "ID_ACCESS": "Identifier",
         "START_DATE_DUA": "End Date",
         "END_DATE_DUA": "Start Date",
+        "END_DATE_DUA_EQUAL": "Max end date",
+        "END_DATE_DUA_BEGIN": "Between  ",
+        "END_DATE_DUA_END": "and  ",
+        "END_DATE_ACCESS": "Rule end date",
+        "END_DATE_ACCESS_EQUAL": "Max end date",
+        "END_DATE_ACCESS_BEGIN": "Between ",
+        "END_DATE_ACCESS_END": " and ",
+        "GUID_OPI": "Ingest guid",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
@@ -197,14 +228,39 @@
         "FILING_UNIT": "Filing plan",
         "DESCRIPTION_LEVEL": "Archive unit type",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
+        "WAITING_RECALCULATE": "Waiting to compute",
+        "ORIGIN_WAITING_RECALCULATE": "Yes",
         "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Elimination analysis operation Identifier",
-
         "ORIGIN": {
+          "TITLE": "Archive unit",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
-          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
+          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Define at least one DUA rule",
           "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
           "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Is waiting for rule recalculation",
-          "SELECT_ALL_APPRAISAL_RULE": "Select all"
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Inherits at least one Access rule",
+          "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
+          "HAS_NO_ACCESS_RULE": "Does not define a Access rule defined",
+          "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_ACCESS_RULE": "Select all"
+        },
+        "FINAL_ACTION_TYPE": {
+          "TITLE": "Archive unit",
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "HAS_APPRAISAL_RULE": "Define DUA final action ",
+          "INHERITE_APPRAISAL_RULE": "Inherite DUA final action"
+        },
+        "FINAL_ACTION": {
+          "TITLE": "DUA final action ",
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "ELIMINATION_APPRAISAL_RULE": "Destroy",
+          "KEEP_APPRAISAL_RULE": "Keep",
+          "NC_APPRAISAL_RULE": "Not defined"
+        },
+        "HOLD": {
+          "TITLE": "Archives holded",
+          "INCLUDE": "Include",
+          "EXCLUDE": "Exclude"
         },
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier",
         "UNIT_TYPE": {
@@ -215,6 +271,39 @@
           "ARCHIVE_UNIT_PLAN": "Plan",
           "ARCHIVE_UNIT_HOLDING": "Tree"
         }
+      }
+    },
+    "FACETS": {
+      "APPRAISAL_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "KEEP": "Keep",
+        "DESTROY": "Destroy",
+        "CONFLICT": "Conflict",
+        "NOT_EXPIRED": "Not-Expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With indexed rule"
+      },
+      "ACCESS_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With indexed rule"
       }
     },
     "ARCHIVE_UNIT": {
@@ -233,7 +322,7 @@
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
         "SP_COMM_DT": "Originating agency Comm DT",
-        "TYPE" : "Type"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -394,7 +483,6 @@
       "UPDATE_CONFIRM_MESSAGE": "Attention, you are about to validate the changes of rule(s) on all the archival units taken into account in the requested update. Do you confirm this update? ",
       "EXIT_CONFIRM_MESSAGE": "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
     },
-
     "CATEGORIES_NAME": {
       "STORAGE_RULE": "Current useful life (CUL)",
       "APPRAISAL_RULE": "Administrative useful life (AUL)",
@@ -404,7 +492,6 @@
       "REUSE_RULE": "Reuse",
       "CLASSIFICATION_RULE": "Classification"
     },
-
     "ALERTE_MESSAGES": {
       "BACK_TO_SELECTION": "Return to selection",
       "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",

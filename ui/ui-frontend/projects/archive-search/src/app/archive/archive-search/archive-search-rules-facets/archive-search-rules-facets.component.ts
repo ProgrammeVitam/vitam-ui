@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AppraisalRuleFacets } from '../../models/search.criteria';
+import { RuleFacets } from '../../models/search.criteria';
 
 @Component({
   selector: 'app-archive-search-rules-facets',
@@ -11,7 +11,10 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
   totalResults: number;
 
   @Input()
-  appraisalRuleFacets: AppraisalRuleFacets;
+  appraisalRuleFacets: RuleFacets;
+
+  @Input()
+  accessRuleFacets: RuleFacets;
 
   @Input()
   tenantIdentifier: number;

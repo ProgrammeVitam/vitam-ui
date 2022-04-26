@@ -53,16 +53,7 @@ import { FilingHoldingSchemeNode } from './models/node.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import {
-  AppraisalRuleFacets,
-  PagedResult,
-  ResultFacet,
-  ResultFacetList,
-  SearchCriteria,
-  SearchCriteriaDto,
-  SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum,
-} from './models/search.criteria';
+import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
@@ -201,71 +192,6 @@ export class ArchiveService extends SearchService<any> {
     };
     pagedResult.facets = response.$facetResults;
     return pagedResult;
-  }
-
-  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    const nodesFacets: ResultFacet[] = [];
-
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          for (const bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
-  }
-
-  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
-    const appraisalRulesFacets = new AppraisalRuleFacets();
-    if (facetResults && facetResults.length > 0) {
-      for (const facet of facetResults) {
-        if (facet.name === 'FINAL_ACTION_COMPUTED_APPRAISAL_RULE') {
-          const buckets = facet.buckets;
-          const finalActionsFacets = [];
-          for (const bucket of buckets) {
-            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
-        }
-        if (facet.name === 'RULES_COMPUTED_NUMBER') {
-          const rulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            rulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.rulesListFacets = rulesListFacets;
-        }
-        if (facet.name === 'EXPIRED_RULES_COMPUTED_APPRAISAL_RULE') {
-          const expiredRulesListFacets = [];
-          const buckets = facet.buckets;
-          for (const bucket of buckets) {
-            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
-        }
-        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
-          const buckets = facet.buckets;
-          const waitingToRecalculateRulesListFacets = [];
-          for (const bucket of buckets) {
-            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
-        }
-
-        if (facet.name === 'COUNT_WITHOUT_RULES_APPRAISAL_RULE') {
-          const buckets = facet.buckets;
-          const noAppraisalRulesFacets = [];
-          for (const bucket of buckets) {
-            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
-        }
-      }
-    }
-    return appraisalRulesFacets;
   }
 
   normalizeTitle(title: string): string {

@@ -69,6 +69,7 @@ import { ArchiveRoutingModule } from './archive-routing.module';
 import { AccessRuleSearchComponent } from './archive-search/access-rule-search/access-rule-search.component';
 import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-search/appraisal-rule-search.component';
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
+import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
@@ -80,6 +81,7 @@ import { SearchCriteriaSaverService } from './archive-search/search-criteria-sav
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
 import { ArchiveComponent } from './archive.component';
+import { ArchiveFacetsService } from './common-services/archive-facets.service';
 import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
 import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
 import { ArchiveUnitExportService } from './common-services/archive-unit-export.service';
@@ -142,6 +144,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     ComputeInheritedRulesService,
     ArchiveUnitExportService,
     ArchiveUnitEliminationService,
+    ArchiveFacetsService,
   ],
   declarations: [
     ArchiveComponent,
@@ -158,6 +161,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
     SearchAppraisalRulesFacetsComponent,
+    SearchAccessRulesFacetsComponent,
     ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
