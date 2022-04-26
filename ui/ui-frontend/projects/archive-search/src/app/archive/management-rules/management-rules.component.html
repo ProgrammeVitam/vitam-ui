@@ -54,10 +54,24 @@
                 >
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
                 >
-                <mat-option value="BlockRuleInheritance" [disabled]="true" (click)="onSelectAction('BlockRuleInheritance')">
+                <mat-option
+                  [disabled]="
+                    !isRuleCategorySelected ||
+                    isAddValidActions ||
+                    isAccessRuleActionDisabled ||
+                    isStorageRuleActionDisabled ||
+                    isAccessRuleActionDisabled
+                  "
+                  (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
+                >
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
-                <mat-option value="deleteBlockRuleInheritance" [disabled]="true" (click)="onSelectAction('deleteBlockRuleInheritance')">
+                <mat-option
+                  [disabled]="
+                    !isRuleCategorySelected || isUnlockRulesInheritanceDisabled || isStorageRuleActionDisabled || isAccessRuleActionDisabled
+                  "
+                  (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
+                >
                   {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
               </mat-select>

@@ -33,7 +33,7 @@
       "CATEGORY_NAME": {
         "APPRAISALRULE": "DUA",
         "DUC": "DUC",
-        "HOLDRULE": "GGel / Dégel",
+        "HOLDRULE": "Gel / Dégel",
         "ACCESSRULE": "Communicabilité",
         "DISSEMINATIONRULE": "Diffusion",
         "REUSERULE": "Réutilisation",
@@ -489,6 +489,8 @@
     "RULES_TO_DELETE": "Règle(s) à supprimer",
     "CATEGORY_TO_BLOCK": "Catégorie à bloquer",
     "CATEGORY_TO_UNLOCK": "Catégorie à débloquer",
+    "BLOCK_RULES_INHERITANCE" : "Héritage de règle(s) à bloquer",
+    "UNLOCK_RULES_INHERITANCE" : "Héritage de règle(s) à débloquer",
     "ACTIONS": {
       "ADD_RULE": "Ajouter une règle",
       "DELETE_RULE": "Supprimer une règle",
@@ -519,9 +521,10 @@
       "SOURCE_RULE": "Règle de gestion source *",
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
-      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
-      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées.",
-      "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
+      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
+      "UA_INHERITANCE_TO_IGNORE" :"Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées.",
+      "UA_WITH_NO_PREVENT_RULES" :"Cette règle n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

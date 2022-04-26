@@ -117,6 +117,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   isBlockInheritanceCategoryDisabled = false;
   isUnlockInheritanceCategoryDisabled = false;
   isStorageRuleActionDisabled = false;
+  isUnlockRulesInheritanceDisabled = false;
 
   messageNotUpdate: string;
   messageNotAdd: string;
@@ -151,27 +152,26 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
             (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isUpdateValidActionsWithProperty =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.ruleCategoryAction.rules?.length === 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
       this.isAddValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
             (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isAddPropertyValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules &&
             rule.ruleCategoryAction.rules.length !== 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
@@ -179,7 +179,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.ruleCategoryAction.rules?.length !== 0 &&
             (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
         ).length !== 0;
 
@@ -187,7 +187,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.ruleCategoryAction.rules?.length === 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
 
@@ -197,6 +197,13 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       this.isUnlockInheritanceCategoryDisabled =
         data.filter(
           (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+        ).length !== 0;
+
+      this.isUnlockRulesInheritanceDisabled =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
         ).length !== 0;
     });
   }
@@ -445,6 +452,26 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           this.prepareActionToAdd(rule);
         }
         break;
+      case 'BLOCK_RULE_INHERITANCE':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isAddValidActions &&
+          !this.isStorageRuleActionDisabled &&
+          !this.isAccessRuleActionDisabled
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'UNLOCK_RULE_INHERITANCE':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isUnlockRulesInheritanceDisabled &&
+          !this.isAccessRuleActionDisabled &&
+          !this.isStorageRuleActionDisabled
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
       default:
         this.logger.info('', 'The action could not be created or added');
         break;
@@ -529,22 +556,35 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
             managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       )?.ruleCategoryAction.preventInheritance;
+
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+
       if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
         this.ruleCategoryDuaActionsToAdd = data.find(
           (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
         )?.ruleCategoryAction;
 
-        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+        if (this.ruleCategoryDuaActionsToAdd?.rules?.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
             preventInheritance,
+            preventRulesIdToAdd,
           };
         }
-        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+        if (this.ruleCategoryDuaActionsToAdd?.rules?.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.AppraisalRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
             preventInheritance,
+            preventRulesIdToAdd,
           };
         }
       }
@@ -573,9 +613,23 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionDeleteOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
             preventInheritance,
+            preventRulesIdToRemove,
+          };
+        } else {
+          actionDeleteOnRules.AppraisalRule = {
+            rules: undefined,
+            preventInheritance,
+            preventRulesIdToRemove,
           };
         }
       }
+      if (actionAddOnRules.AppraisalRule && actionAddOnRules.AppraisalRule.preventRulesIdToAdd) {
+        actionAddOnRules.AppraisalRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.AppraisalRule && actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
       const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
       if (
         listOfActionTypes.length === 1 &&

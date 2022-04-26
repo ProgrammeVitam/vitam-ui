@@ -70,6 +70,8 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
     public static final String LOCAL_OR_INHERITED_ORIGIN_TYPE = "LocalAndInherited";
     public static final String LOCAL_ORIGIN_TYPE = "Local";
     public static final String WAITING_TO_COMPUTE_RULES_STATUS = "#validComputedInheritedRules";
+    private static final String INVALID_CREATION_OPERATION = "Invalid creation operation exception {}";
+    private static final String COULD_NOT_CREATE_OPERATION = "Invalid creation operation exception ";
 
 
     public void fillQueryFromMgtRulesCriteriaList(BooleanQuery query, List<SearchCriteriaEltDto> mgtRuleCriteriaList)
@@ -107,9 +109,19 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                     query);
             }
 
+            SearchCriteriaEltDto appraisalPreventRuleIdentifiersCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                    ->ArchiveSearchConsts.APPRAISAL_PREVENT_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                .orElse(null);
+
+            if(appraisalPreventRuleIdentifiersCriteria != null) {
+                List<String> searchValues = appraisalPreventRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                    Collectors.toList());
+                buildAppraisalPreventRuleIdentifierQuery(searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalPreventRuleIdentifiersCriteria.getOperator()), query);
+            }
+
             SearchCriteriaEltDto ruleStarDateCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                -> ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria()))
-                .findFirst()
+                    ->ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria())).findFirst()
                 .orElse(null);
 
             if (ruleStarDateCriteria != null) {
@@ -208,8 +220,27 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                     subQueryOr
                         .add(VitamQueryHelper.buildSubQueryByOperator(finalSearchKey, value, operator));
                 } catch (InvalidCreateOperationException exception) {
-                    LOGGER.error("Invalid creation operation exception {}", exception);
-                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ",
+                    LOGGER.error(INVALID_CREATION_OPERATION, exception);
+                    throw new InvalidCreateOperationVitamUIException(COULD_NOT_CREATE_OPERATION,
+                        exception);
+                }
+            });
+            subQueryAnd.add(subQueryOr);
+        }
+    }
+
+    private void buildAppraisalPreventRuleIdentifierQuery(final List<String> searchValues,
+        ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
+        throws InvalidCreateOperationException {
+        BooleanQuery subQueryOr = or();
+        if (!CollectionUtils.isEmpty(searchValues)) {
+            searchValues.forEach(value -> {
+                try {
+                subQueryOr
+                    .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_PREVENT_RULE_IDENTIFIER, value, operator));
+                } catch (InvalidCreateOperationException exception) {
+                    LOGGER.error(INVALID_CREATION_OPERATION, exception);
+                    throw new InvalidCreateOperationVitamUIException(COULD_NOT_CREATE_OPERATION,
                         exception);
                 }
             });
@@ -230,7 +261,9 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                             .buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED, searchValue,
                                 operator));
                 } catch (InvalidCreateOperationException exception) {
-                    LOGGER.error("Invalid creation operation exception {}", exception);
+                    LOGGER.error(INVALID_CREATION_OPERATION, exception);
+                    throw new InvalidCreateOperationVitamUIException(COULD_NOT_CREATE_OPERATION,
+                        exception);
                 }
             });
         }
@@ -281,7 +314,7 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                             ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error("Invalid create operation {}", exception);
-                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ",
+                    throw new InvalidCreateOperationVitamUIException(COULD_NOT_CREATE_OPERATION,
                         exception);
                 }
             });
