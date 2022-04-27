@@ -45,14 +45,13 @@ import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
+import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
-const UPDATE_DEBOUNCE_TIME = 200;
 const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-const RESULTS_MAX_NUMBER = 10000;
 
 @Component({
   selector: 'app-delete-unit-rules',
@@ -107,6 +106,7 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translateService: TranslateService
   ) {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       rule: '',
       ruleName: '',
@@ -123,7 +123,7 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
 
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData))
@@ -158,9 +158,7 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  ngOnInit() {
-    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.managementRulesSubscription?.unsubscribe();
@@ -185,7 +183,6 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     this.disabledControl = true;
     this.showText = true;
     this.isLoading = !this.isLoading;
-    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
 
     const rule: RuleAction = {
       rule: this.ruleDetailsForm.get('rule').value,
@@ -268,14 +265,14 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
       this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
         .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
         .subscribe((data) => {
-          if (data.totalResults === RESULTS_MAX_NUMBER) {
-            this.itemsWithSameRule = data.totalResults.toString();
-            this.itemsToNotUpdate = this.resultNumberToShow;
-          } else {
-            this.itemsWithSameRule = data.totalResults.toString();
-            this.itemsToNotUpdate =
-              this.selectedItem === RESULTS_MAX_NUMBER ? this.resultNumberToShow : (this.selectedItem - data.totalResults).toString();
-          }
+          this.itemsWithSameRule = data.totalResults.toString();
+          this.itemsToNotUpdate =
+            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              ? this.resultNumberToShow
+              : (this.itemsToNotUpdate =
+                  this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+                    ? this.resultNumberToShow
+                    : (this.selectedItem - data.totalResults).toString());
           this.isLoading = false;
         });
     }

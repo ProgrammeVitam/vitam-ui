@@ -109,6 +109,7 @@ public class ArchiveSearchConsts {
 
     public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
     public final static String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
+    public final static String APPRAISAL_RULE_INHERITED_CRITERIA = "APPRAISAL_RULE_INHERITED_CRITERIA";
     public final static String RULE_TITLE = "RULE_TITLE";
     public final static String RULE_END_DATE = "RULE_END_DATE";
     public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
@@ -118,6 +119,7 @@ public class ArchiveSearchConsts {
 
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
     public final static String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
+    public final static String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";

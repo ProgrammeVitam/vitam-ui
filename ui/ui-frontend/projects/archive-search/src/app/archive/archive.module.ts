@@ -99,6 +99,8 @@ import { ManagementRulesComponent } from './management-rules/management-rules.co
 import { SharedModule } from './shared/shared.module';
 import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
+import { BlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/block-category-inheritance/block-category-inheritance.component';
+import { UnlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/unlock-category-inheritance/unlock-category-inheritance.component';
 
 @NgModule({
   imports: [
@@ -174,6 +176,8 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     ArchiveUnitRulesDetailsTabComponent,
     ArchiveUnitRulesInformationsTabComponent,
     DeleteUnitRulesComponent,
+    BlockCategoryInheritanceComponent,
+    UnlockCategoryInheritanceComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
