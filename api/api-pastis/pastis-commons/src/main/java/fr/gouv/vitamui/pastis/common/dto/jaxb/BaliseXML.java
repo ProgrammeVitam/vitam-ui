@@ -121,6 +121,11 @@ public class BaliseXML {
         if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
             valueRNG = new ValueXML();
             valueRNG.setValue(node.getValue());
+        } else if (!node.getName().isEmpty() && node.getName() != null) {
+            dataRNG = new DataXML();
+            if(RNGConstants.getTypesMap().get(node.getName()) != null) {
+                dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
+            }
         } else if (node.getName().equals("Language")) {
             dataRNG = new DataXML();
         }
