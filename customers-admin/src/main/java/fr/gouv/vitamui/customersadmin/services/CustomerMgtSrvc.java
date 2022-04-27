@@ -39,6 +39,7 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
+import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.apache.commons.lang3.time.DateUtils;
@@ -159,6 +160,18 @@ public class CustomerMgtSrvc {
         getUsersCollection().updateOne(new BsonDocument("_id", new BsonString(ADMIN_USER)),
             new BsonDocument("$set", new BsonDocument("groupId", new BsonString(ADMIN_USER_GROUP))));
         tokenUserAdmin();
+    }
+
+
+    public CustomerDto create(final ExternalHttpContext context,
+        final CustomerCreationFormData customerCreationFormData) {
+        final IamExternalWebClientFactory
+            iamExternalWebClientFactory =
+            getIamWebClientFactory(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
+
+        LOGGER.debug("Create {} ", customerCreationFormData);
+
+        return iamExternalWebClientFactory.getCustomerWebClient().create(context, customerCreationFormData);
     }
 
     public CustomerDto create(final ExternalHttpContext context, final CustomerDto customerDto,
@@ -360,10 +373,10 @@ public class CustomerMgtSrvc {
 
     public void createCustomers() throws IOException {
         //read json file
-        List<CustomerDto> customersListToCreate = readFromCustomersFile();
+        List<CustomerCreationFormData> customersListToCreate = readFromCustomersFile();
         if (customersListToCreate != null) {
-            for (CustomerDto customerDto : customersListToCreate) {
-                create(getSystemTenantUserAdminContext(), customerDto, Optional.empty());
+            for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
+                create(getSystemTenantUserAdminContext(), customerCreationFormData);
             }
         }
     }
@@ -371,10 +384,10 @@ public class CustomerMgtSrvc {
     /**
      * @return
      */
-    private List<CustomerDto> readFromCustomersFile() throws IOException {
+    private List<CustomerCreationFormData> readFromCustomersFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<CustomerDto> customerList =
-            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerDto>>() {
+        List<CustomerCreationFormData> customerList =
+            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerCreationFormData>>() {
             });
         return customerList;
     }

@@ -10,7 +10,7 @@ server-identity:
 
 certs-folder: certs/local/
 generic-cert: ${certs-folder}/generic-it.jks
-jks-password: changeme
+jks-password: FOlyWYMRTIsTqdZiAFKcj9vHbDEw5nn88ZDBNEqUaIPDsg9d
 
 # Iam client configuration
 iam-client:
