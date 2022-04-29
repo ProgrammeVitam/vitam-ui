@@ -37,7 +37,8 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.customersadmin.configs.CustomerMgtProperties;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
@@ -46,14 +47,17 @@ import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -64,7 +68,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Optional;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -73,6 +76,7 @@ public class CustomerMgtSrvc {
 
     protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerMgtSrvc.class);
 
+    protected static final String GENERIC_CERTIFICATE = "generic-it";
     public static final String ADMIN_USER = "admin_user";
     public static final String TOKEN_USER_ADMIN = "tokenadmin";
     protected static final String TESTS_CONTEXT_ID = "integration-tests_context";
@@ -83,7 +87,6 @@ public class CustomerMgtSrvc {
     private static MongoClient mongoClientSecurity;
 
     private MongoCollection<Document> contextsCollection;
-
     private MongoCollection<Document> certificatesCollection;
     protected static final String TESTS_CERTIFICATE_ID = "integration-tests_cert";
 
@@ -97,17 +100,55 @@ public class CustomerMgtSrvc {
 
     public static final String ADMIN_USER_GROUP = "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363";
 
-    @Autowired
-    private CustomerMgtProperties customerMgtProperties;
+    @Value("${jks-password}")
+    private String jksPassword;
 
+    @Value("classpath:data/customers.json")
+    private Resource customersFile;
+
+    @Value("${vitamui_platform_informations.proof_tenant}")
+    protected int proofTenantIdentifier;
+
+
+    @Value("${generic-cert}")
+    private String genericCert;
+
+    @Value("${mongo.security.uri}")
+    private String mongoSecurityUri;
+
+    @Value("${iam-client.ssl.truststore.password}")
+    protected String iamTruststorePassword;
+
+    @Value("${certs-folder}")
+    protected String certsFolder;
+
+    @Value("${iam-client.host}")
+    protected String iamServerHost;
+
+    @Value("${iam-client.port}")
+    protected Integer iamServerPort;
+
+    @Value("${iam-client.ssl.keystore.path}")
+    private String iamKeystoreFilePath;
+
+    @Value("${iam-client.ssl.truststore.path}")
+    protected String iamTrustStoreFilePath;
+
+    @Value("${iam-client.ssl.keystore.password}")
+    protected String iamKeystorePassword;
     @Autowired
-    private IamExternalWebClientFactory iamWebClientFactory;
+    protected WebClient.Builder webClientBuilder;
+    @Autowired
+    protected RestTemplateBuilder restTemplateBuilder;
+
+    @Value("${mongo.iam.uri}")
+    private String mongoIamUri;
 
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(customerMgtProperties.getProofTenantIdentifier(), TOKEN_USER_ADMIN,
-            TESTS_CONTEXT_ID, "admincaller", "requestId", "ContratTNR");
+        return new ExternalHttpContext(proofTenantIdentifier, TOKEN_USER_ADMIN, TESTS_CONTEXT_ID,
+            "admincaller", "requestId", "ContratTNR");
     }
 
     private void buildSystemTenantUserAdminContext() {
@@ -116,32 +157,68 @@ public class CustomerMgtSrvc {
         tokenUserAdmin();
     }
 
-    public CustomerDto createCustomer(final ExternalHttpContext context,
-        final CustomerCreationFormData customerCreationFormData) {
-        LOGGER.debug("Create {} ", customerCreationFormData);
-        CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient().create(context, customerCreationFormData);
 
-        return customerDto;
+    public IamExternalWebClientFactory getIamWebClientFactory() {
+        final IamExternalWebClientFactory restClientFactory =
+            new IamExternalWebClientFactory(
+                getRestClientConfiguration(iamServerHost,
+                    iamServerPort, true,
+                    getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
+                        iamKeystorePassword,
+                        iamTrustStoreFilePath,
+                        iamTruststorePassword)),
+                webClientBuilder);
+        return restClientFactory;
     }
 
-    public CustomerDto createCustomer(final ExternalHttpContext context, final CustomerDto customerDto,
-        final Optional<Path> logoPath) {
-        LOGGER.debug("Create {} with logo : {}", customerDto, logoPath);
-        return iamWebClientFactory.getCustomerWebClient().create(context, customerDto, logoPath);
 
+    protected String tokenUserAdmin() {
+        return writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
     }
 
+    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
+        final String trustStorePathname,
+        final String iamTruststorePassword) {
+        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        keyStore.setKeyPath(keystorePath);
+        keyStore.setKeyPassword(iamKeystorePassword);
+        keyStore.setType("JKS");
+        final SSLConfiguration.CertificateStoreConfiguration trustStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        trustStore.setKeyPath(trustStorePath);
+        trustStore.setKeyPassword(iamTruststorePassword);
+        trustStore.setType("JKS");
 
+        final SSLConfiguration sslConfig = new SSLConfiguration();
+        sslConfig.setKeystore(keyStore);
+        sslConfig.setTruststore(trustStore);
 
-    protected void tokenUserAdmin() {
-        writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
+        return sslConfig;
     }
 
-    protected void writeToken(final String id, final String userId) {
-        getTokensCollection().deleteOne(eq("_id", id));
+    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
+        final boolean secure, final SSLConfiguration sslConfig) {
+        final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
+        restClientConfiguration.setServerHost(host);
+        restClientConfiguration.setServerPort(port);
+        restClientConfiguration.setSecure(secure);
+        if (sslConfig != null) {
+            restClientConfiguration.setSslConfiguration(sslConfig);
+        }
+
+        return restClientConfiguration;
+    }
+
+    protected String writeToken(final String tokenId, final String userId) {
+
         final Document token =
-            new Document("_id", id).append("updatedDate", DateUtils.addDays(new Date(), -10)).append("refId", userId);
+            new Document("_id", tokenId).append("updatedDate", DateUtils.addDays(new Date(), -10))
+                .append("refId", userId);
         getTokensCollection().insertOne(token);
+        return tokenId;
     }
 
     protected MongoCollection<Document> getTokensCollection() {
@@ -153,7 +230,7 @@ public class CustomerMgtSrvc {
 
     protected MongoClient getMongoIam() {
         if (mongoClientIam == null) {
-            mongoClientIam = MongoClients.create(customerMgtProperties.getMongoIamUri());
+            mongoClientIam = MongoClients.create(mongoIamUri);
         }
         return mongoClientIam;
     }
@@ -181,7 +258,7 @@ public class CustomerMgtSrvc {
 
     protected MongoClient getMongoSecurity() {
         if (mongoClientSecurity == null) {
-            mongoClientSecurity = MongoClients.create(customerMgtProperties.getMongoSecurityUri());
+            mongoClientSecurity = MongoClients.create(mongoSecurityUri);
         }
         return mongoClientSecurity;
     }
@@ -201,8 +278,6 @@ public class CustomerMgtSrvc {
     }
 
     protected void prepareGenericContext(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
-        // recreate generic context
-        getContextsCollection().deleteOne(eq("_id", TESTS_CONTEXT_ID));
         //@formatter:off
         final Document itContext = new Document("_id", TESTS_CONTEXT_ID)
             .append("name", "" + new Date())
@@ -216,13 +291,10 @@ public class CustomerMgtSrvc {
         }
         getContextsCollection().insertOne(itContext);
 
-        // recreate generic certificate
-        getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
         //@formatter:off
         try {
             final String certificate =
-                getCertificate("JKS", customerMgtProperties.getGenericCert(),
-                    customerMgtProperties.getJksPassword().toCharArray());
+                getCertificate("JKS", genericCert, jksPassword.toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
                 .append("contextId", TESTS_CONTEXT_ID)
@@ -234,8 +306,7 @@ public class CustomerMgtSrvc {
 
         } catch (final Exception e) {
             LOGGER.error("Retrieving generic certificate failed [cert={}, password:{}, exception :{}]",
-                customerMgtProperties.getGenericCert(),
-                customerMgtProperties.getJksPassword(), e);
+                genericCert, jksPassword, e);
         }
         //@formatter:on
     }
@@ -263,13 +334,29 @@ public class CustomerMgtSrvc {
         //read json file
         List<CustomerCreationFormData> customersListToCreate = readFromCustomersFile();
         if (customersListToCreate != null) {
-            prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
-            for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
-                CustomerDto customerDto = createCustomer(getSystemTenantUserAdminContext(), customerCreationFormData);
-                LOGGER.info("Customer with name {} and id {} is created ", customerDto.getName(),
-                    customerDto.getIdentifier());
+            try {
+                prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
+                for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
+                    LOGGER.debug("Create {} ", customerCreationFormData);
+                    CustomerDto customerDto = getIamWebClientFactory().getCustomerWebClient()
+                        .create(getSystemTenantUserAdminContext(), customerCreationFormData);
+
+
+                    LOGGER.info("Customer with name {} and id {} is created ", customerDto.getName(),
+                        customerDto.getIdentifier());
+                }
+            } finally {
+                dropGenericContext();
             }
         }
+    }
+
+    public void dropGenericContext() {
+        // recreate generic context
+        getContextsCollection().deleteOne(eq("_id", TESTS_CONTEXT_ID));
+        // recreate generic certificate
+        getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
+        getTokensCollection().deleteOne(eq("_id", TESTS_USER_ADMIN));
     }
 
     /**
@@ -278,9 +365,8 @@ public class CustomerMgtSrvc {
     private List<CustomerCreationFormData> readFromCustomersFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<CustomerCreationFormData> customerList =
-            mapper.readValue(customerMgtProperties.getCustomersFile().getFile(),
-                new TypeReference<List<CustomerCreationFormData>>() {
-                });
+            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerCreationFormData>>() {
+            });
         return customerList;
     }
 }
