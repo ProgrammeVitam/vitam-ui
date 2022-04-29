@@ -37,8 +37,7 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
+import fr.gouv.vitamui.customersadmin.configs.CustomerMgtProperties;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
@@ -47,12 +46,8 @@ import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -64,7 +59,6 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -79,7 +73,6 @@ public class CustomerMgtSrvc {
 
     protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerMgtSrvc.class);
 
-    protected static final String GENERIC_CERTIFICATE = "generic-it";
     public static final String ADMIN_USER = "admin_user";
     public static final String TOKEN_USER_ADMIN = "tokenadmin";
     protected static final String TESTS_CONTEXT_ID = "integration-tests_context";
@@ -104,56 +97,17 @@ public class CustomerMgtSrvc {
 
     public static final String ADMIN_USER_GROUP = "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363";
 
-    @Value("${jks-password}")
-    private String jksPassword;
-
-    @Value("classpath:data/customers.json")
-    private Resource customersFile;
-
-    @Value("${vitamui_platform_informations.proof_tenant}")
-    protected int proofTenantIdentifier;
-
-
-    @Value("${generic-cert}")
-    private String genericCert;
-
-    @Value("${mongo.security.uri}")
-    private String mongoSecurityUri;
-
-    @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword;
-
-    @Value("${certs-folder}")
-    protected String certsFolder;
-
-    @Value("${iam-client.host}")
-    protected String iamServerHost;
-
-    @Value("${iam-client.port}")
-    protected Integer iamServerPort;
-
-    @Value("${iam-client.ssl.keystore.path}")
-    private String iamKeystoreFilePath;
-
-    @Value("${iam-client.ssl.truststore.path}")
-    protected String iamTrustStoreFilePath;
-
-    @Value("${iam-client.ssl.keystore.password}")
-    protected String iamKeystorePassword;
     @Autowired
-    protected WebClient.Builder webClientBuilder;
+    private CustomerMgtProperties customerMgtProperties;
 
-    @Value("${mongo.iam.uri}")
-    private String mongoIamUri;
-
+    @Autowired
+    private IamExternalWebClientFactory iamWebClientFactory;
 
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
-        return new ExternalHttpContext(proofTenantIdentifier, TOKEN_USER_ADMIN, TESTS_CONTEXT_ID,
-            "admincaller",
-            "requestId");
-
+        return new ExternalHttpContext(customerMgtProperties.getProofTenantIdentifier(), TOKEN_USER_ADMIN,
+            TESTS_CONTEXT_ID, "admincaller", "requestId", "ContratTNR");
     }
 
     private void buildSystemTenantUserAdminContext() {
@@ -162,92 +116,25 @@ public class CustomerMgtSrvc {
         tokenUserAdmin();
     }
 
-
-    public CustomerDto create(final ExternalHttpContext context,
+    public CustomerDto createCustomer(final ExternalHttpContext context,
         final CustomerCreationFormData customerCreationFormData) {
-        final IamExternalWebClientFactory
-            iamExternalWebClientFactory =
-            getIamWebClientFactory(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
-
         LOGGER.debug("Create {} ", customerCreationFormData);
+        CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient().create(context, customerCreationFormData);
 
-        return iamExternalWebClientFactory.getCustomerWebClient().create(context, customerCreationFormData);
+        return customerDto;
     }
 
-    public CustomerDto create(final ExternalHttpContext context, final CustomerDto customerDto,
+    public CustomerDto createCustomer(final ExternalHttpContext context, final CustomerDto customerDto,
         final Optional<Path> logoPath) {
-        final IamExternalWebClientFactory
-            iamExternalWebClientFactory =
-            getIamWebClientFactory(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
-
         LOGGER.debug("Create {} with logo : {}", customerDto, logoPath);
+        return iamWebClientFactory.getCustomerWebClient().create(context, customerDto, logoPath);
 
-        return iamExternalWebClientFactory.getCustomerWebClient().create(context, customerDto, logoPath);
     }
 
-    protected IamExternalWebClientFactory getIamWebClientFactory(final String keystorePrefix) {
-        final IamExternalWebClientFactory webClientFactory =
-            new IamExternalWebClientFactory(
-                getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                    getSSLConfiguration(certsFolder + keystorePrefix + ".jks",
-                        iamKeystorePassword, iamTrustStoreFilePath,
-                        iamTruststorePassword)), webClientBuilder);
-        return webClientFactory;
-    }
 
-    protected IamExternalWebClientFactory getIamWebClientFactory(final boolean fullAccess, final Integer[] tenants,
-        final String[] roles) {
-        prepareGenericContext(fullAccess, tenants, roles);
-        final IamExternalWebClientFactory restClientFactory =
-            new IamExternalWebClientFactory(
-                getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                    getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
-                        iamKeystorePassword,
-                        iamTrustStoreFilePath, iamTruststorePassword)),
-                webClientBuilder);
-        final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        //interceptors.add(new RegisterRestQueryInterceptor());
-        return restClientFactory;
-    }
 
     protected void tokenUserAdmin() {
         writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
-    }
-
-    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
-        final String trustStorePathname,
-        final String iamTruststorePassword) {
-        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
-        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
-        final SSLConfiguration.CertificateStoreConfiguration keyStore =
-            new SSLConfiguration.CertificateStoreConfiguration();
-        keyStore.setKeyPath(keystorePath);
-        keyStore.setKeyPassword(iamKeystorePassword);
-        keyStore.setType("JKS");
-        final SSLConfiguration.CertificateStoreConfiguration trustStore =
-            new SSLConfiguration.CertificateStoreConfiguration();
-        trustStore.setKeyPath(trustStorePath);
-        trustStore.setKeyPassword(iamTruststorePassword);
-        trustStore.setType("JKS");
-
-        final SSLConfiguration sslConfig = new SSLConfiguration();
-        sslConfig.setKeystore(keyStore);
-        sslConfig.setTruststore(trustStore);
-
-        return sslConfig;
-    }
-
-    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
-        final boolean secure, final SSLConfiguration sslConfig) {
-        final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
-        restClientConfiguration.setServerHost(host);
-        restClientConfiguration.setServerPort(port);
-        restClientConfiguration.setSecure(secure);
-        if (sslConfig != null) {
-            restClientConfiguration.setSslConfiguration(sslConfig);
-        }
-
-        return restClientConfiguration;
     }
 
     protected void writeToken(final String id, final String userId) {
@@ -266,7 +153,7 @@ public class CustomerMgtSrvc {
 
     protected MongoClient getMongoIam() {
         if (mongoClientIam == null) {
-            mongoClientIam = MongoClients.create(mongoIamUri);
+            mongoClientIam = MongoClients.create(customerMgtProperties.getMongoIamUri());
         }
         return mongoClientIam;
     }
@@ -294,7 +181,7 @@ public class CustomerMgtSrvc {
 
     protected MongoClient getMongoSecurity() {
         if (mongoClientSecurity == null) {
-            mongoClientSecurity = MongoClients.create(mongoSecurityUri);
+            mongoClientSecurity = MongoClients.create(customerMgtProperties.getMongoSecurityUri());
         }
         return mongoClientSecurity;
     }
@@ -334,7 +221,8 @@ public class CustomerMgtSrvc {
         //@formatter:off
         try {
             final String certificate =
-                getCertificate("JKS", genericCert, jksPassword.toCharArray());
+                getCertificate("JKS", customerMgtProperties.getGenericCert(),
+                    customerMgtProperties.getJksPassword().toCharArray());
 
             final Document itCertificate = new Document("_id", TESTS_CERTIFICATE_ID)
                 .append("contextId", TESTS_CONTEXT_ID)
@@ -346,8 +234,8 @@ public class CustomerMgtSrvc {
 
         } catch (final Exception e) {
             LOGGER.error("Retrieving generic certificate failed [cert={}, password:{}, exception :{}]",
-                genericCert,
-                jksPassword, e);
+                customerMgtProperties.getGenericCert(),
+                customerMgtProperties.getJksPassword(), e);
         }
         //@formatter:on
     }
@@ -375,8 +263,11 @@ public class CustomerMgtSrvc {
         //read json file
         List<CustomerCreationFormData> customersListToCreate = readFromCustomersFile();
         if (customersListToCreate != null) {
+            prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
             for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
-                create(getSystemTenantUserAdminContext(), customerCreationFormData);
+                CustomerDto customerDto = createCustomer(getSystemTenantUserAdminContext(), customerCreationFormData);
+                LOGGER.info("Customer with name {} and id {} is created ", customerDto.getName(),
+                    customerDto.getIdentifier());
             }
         }
     }
@@ -387,8 +278,9 @@ public class CustomerMgtSrvc {
     private List<CustomerCreationFormData> readFromCustomersFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<CustomerCreationFormData> customerList =
-            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerCreationFormData>>() {
-            });
+            mapper.readValue(customerMgtProperties.getCustomersFile().getFile(),
+                new TypeReference<List<CustomerCreationFormData>>() {
+                });
         return customerList;
     }
 }

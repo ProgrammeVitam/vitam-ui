@@ -27,9 +27,94 @@
 
 package fr.gouv.vitamui.customersadmin.configs;
 
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
+import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class CustomersAdminConfiguration {
+    protected static final String GENERIC_CERTIFICATE = "generic-it";
+
+    @Autowired
+    private CustomerMgtProperties customerMgtProperties;
+
+
+    @Autowired
+    protected WebClient.Builder webClientBuilder;
+
+    @Autowired
+    protected RestTemplateBuilder restTemplateBuilder;
+
+
+    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
+        final boolean secure, final SSLConfiguration sslConfig) {
+        final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
+        restClientConfiguration.setServerHost(host);
+        restClientConfiguration.setServerPort(port);
+        restClientConfiguration.setSecure(secure);
+        if (sslConfig != null) {
+            restClientConfiguration.setSslConfiguration(sslConfig);
+        }
+
+        return restClientConfiguration;
+    }
+
+    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
+        final String trustStorePathname,
+        final String iamTruststorePassword) {
+        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        keyStore.setKeyPath(keystorePath);
+        keyStore.setKeyPassword(iamKeystorePassword);
+        keyStore.setType("JKS");
+        final SSLConfiguration.CertificateStoreConfiguration trustStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        trustStore.setKeyPath(trustStorePath);
+        trustStore.setKeyPassword(iamTruststorePassword);
+        trustStore.setType("JKS");
+
+        final SSLConfiguration sslConfig = new SSLConfiguration();
+        sslConfig.setKeystore(keyStore);
+        sslConfig.setTruststore(trustStore);
+
+        return sslConfig;
+    }
+
+
+    @Bean
+    public IamExternalWebClientFactory getIamWebClientFactory() {
+        //prepareGenericContext(fullAccess, tenants, roles);
+        final IamExternalWebClientFactory restClientFactory =
+            new IamExternalWebClientFactory(
+                getRestClientConfiguration(customerMgtProperties.getIamServerHost(),
+                    customerMgtProperties.getIamServerPort(), true,
+                    getSSLConfiguration(customerMgtProperties.getCertsFolder() + GENERIC_CERTIFICATE + ".jks",
+                        customerMgtProperties.getIamKeystorePassword(),
+                        customerMgtProperties.getIamTrustStoreFilePath(),
+                        customerMgtProperties.getIamTruststorePassword())),
+                webClientBuilder);
+        return restClientFactory;
+    }
+
+
+    @Bean
+    public IamExternalRestClientFactory getIamExternalRestClientFactory() {
+        final IamExternalRestClientFactory iamExternalRestClientFactory =
+            new IamExternalRestClientFactory(getRestClientConfiguration(customerMgtProperties.getIamServerHost(),
+                customerMgtProperties.getIamServerPort(), true,
+                getSSLConfiguration(customerMgtProperties.getCertsFolder() + GENERIC_CERTIFICATE + ".jks",
+                    customerMgtProperties.getIamKeystorePassword(), customerMgtProperties.getIamTrustStoreFilePath(),
+                    customerMgtProperties.getIamTruststorePassword())),
+                restTemplateBuilder);
+        return iamExternalRestClientFactory;
+    }
 
 }
