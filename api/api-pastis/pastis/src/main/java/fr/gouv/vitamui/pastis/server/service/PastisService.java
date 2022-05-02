@@ -273,7 +273,7 @@ public class PastisService {
             throw new TechnicalException("Failed to load pua ", ae);
         }
 
-        profileResponse.setId(String.valueOf((Math.abs((this.rand.nextLong()) / 1000) != 0)));
+
 
         return profileResponse;
     }
@@ -318,7 +318,7 @@ public class PastisService {
             throw new TechnicalException("Failed to load pua ", ae);
         }
 
-        profileResponse.setId(String.valueOf((Math.abs((this.rand.nextLong()) / 1000) != 0)));
+
 
         return profileResponse;
     }

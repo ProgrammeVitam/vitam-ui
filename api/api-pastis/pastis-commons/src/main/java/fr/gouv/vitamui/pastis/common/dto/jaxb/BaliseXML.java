@@ -107,7 +107,6 @@ public class BaliseXML {
 
             // Check node's and its children's cardinality
             if (node.getCardinality() != null) {
-
                 cardinalityRNG = defineElementOrAttributeCardinality(node, cardinalityRNG, elementOrAttributeRNG);
             }
 
