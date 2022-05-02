@@ -40,6 +40,9 @@ server:
         file-date-format: ".yyyy-MM-dd"
         suffix: ".log"
 
+address:
+  max-street-length: {{ vitamui.identity.max_street_length }}
+
 management:
   server:
     port: {{ vitamui_struct.port_admin }}
