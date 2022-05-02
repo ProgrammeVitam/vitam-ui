@@ -1,6 +1,5 @@
 ---
-
-single_vm_hostnames: [ 'localhost' ]
+single_vm_hostnames: ["localhost"]
 
 pki_dir: "{{ inventory_dir }}/certs"
 
@@ -72,6 +71,7 @@ vitamui:
     store_name: "ui-identity"
     port_service: 8002
     port_admin: 7002
+    max_street_length: 250
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -222,6 +222,7 @@ vitamui:
     connect_timeout: 30
     read_timeout: 30
     write_timeout: 30
+    max_street_length: 250
     secure: true
     jvm_log: false
     logging_level: "INFO"
@@ -332,7 +333,7 @@ vitamui:
     secure: true
     jvm_log: false
     logging_level: "INFO"
-    tmp_folder_path : "{{ vitamui_defaults.folder.root_path }}/tmp"
+    tmp_folder_path: "{{ vitamui_defaults.folder.root_path }}/tmp"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -453,7 +454,7 @@ vitamui_password_configurations:
           messages:
             - Avoir une taille d'au moins ${password.length} caractères
           special_chars:
-            title: 'Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:'
+            title: "Contenir au moins 2 caractères issus de chaque catégorie, pour au moins 3 des catégories suivantes:"
             messages:
               - Minuscules (a-z)
               - Majuscules (A-Z)
@@ -464,7 +465,7 @@ vitamui_password_configurations:
             - To be different than ${password.max-old-password} oldest passwords
             - Have a size of at least ${password.length} characters
           special_chars:
-            title: 'Contain at least 2 characters from each category, for at least 3 of the following categories:'
+            title: "Contain at least 2 characters from each category, for at least 3 of the following categories:"
             messages:
               - Uppercases (a-z)
               - Lowercases (A-Z)
@@ -475,7 +476,7 @@ vitamui_password_configurations:
             - Um sich von den ${password.max-old-password} ältesten Passwörtern zu unterscheiden
             - Mindestens ${password.length} Zeichen lang sein
           special_chars:
-            title: 'Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:'
+            title: "Mindestens 2 Zeichen aus jeder Kategorie enthalten, für mindestens 3 der folgenden Kategorien:"
             messages:
               - Großbuchstaben (a-z)
               - Kleinbuchstaben (A-Z)
@@ -483,19 +484,19 @@ vitamui_password_configurations:
               - Spezielle Charaktere (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
       customs:
         fr:
-          title: 'Pour des raisons de sécurité, votre mot de passe doit:'
+          title: "Pour des raisons de sécurité, votre mot de passe doit:"
           messages:
             - Au moins ${password.length} caractères
             - Des minuscules et des majuscules
             - Au moins un chiffre et un caractère spécial (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
         en:
-          title: 'For security reasons, your password must:'
+          title: "For security reasons, your password must:"
           messages:
             - At least ${password.length} characters
             - Lowercase and uppercase
             - At least one number and one special character (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
         de:
-          title: 'Aus Sicherheitsgründen muss Ihr Passwort:'
+          title: "Aus Sicherheitsgründen muss Ihr Passwort:"
           messages:
             - Mindestens ${password.length} Zeichen
             - Klein- und Großbuchstaben
