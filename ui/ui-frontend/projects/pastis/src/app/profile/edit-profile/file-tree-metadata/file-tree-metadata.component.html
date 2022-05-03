@@ -290,23 +290,8 @@
 
         <div class="ml-5 row">
           <div class="col-4">
-            <mat-form-field class="mr-3 vitamui-mat-select"
-              *ngIf="!isEmptyEnumeration(enumerationsSedaControl); else blockInput">
-              <mat-select multiple panelClass="vitamui-mat-select" name="enumsControlSeleted"
-                (selectionChange)="addEnumsControlList($event.value)" [(ngModel)]="editedEnumControl">
-                <mat-option *ngFor="let element of enumerationsSedaControl" [value]="element">
-                  {{element}}
-                </mat-option>
-              </mat-select>
-              <div class="select-arrow">
-                <i class="material-icons">keyboard_arrow_up</i>
-                <i class="material-icons">keyboard_arrow_down</i>
-              </div>
-            </mat-form-field>
-            <ng-template #blockInput>
-              <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
+             <vitamui-common-editable-input (ngModelChange)="addEnumsControl($event)" [ngModel]="editedEnumControl">
               </vitamui-common-editable-input>
-            </ng-template>
           </div>
           <div class="col-8" *ngIf="isEmptyEnumeration(enumerationsSedaControl) && isDataType()"><p class="pastis-indication">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.FORMAT_ENUMERATION_AUTORISES' |
             translate}}: <span *ngFor="let regex of availableRegex">{{ regex.label }}, </span></p></div>

@@ -120,19 +120,19 @@ public class BaliseXML {
         if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
             valueRNG = new ValueXML();
             valueRNG.setValue(node.getValue());
-        } else if (!node.getName().isEmpty() && node.getName() != null) {
+        } /*else if (!node.getName().isEmpty() && node.getName() != null) {
             dataRNG = new DataXML();
             if(RNGConstants.getTypesMap().get(node.getName()) != null) {
                 dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
             }
-        } else if (node.getName().equals("Language")) {
+        }*/ else if (node.getName().equals("Language")) {
             dataRNG = new DataXML();
         }
 
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
         // to assure that the generated profile is successfully imported by VITAM
         if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) &&
-            node.getValue() == null && node.getValueOrData().equals("data")) {
+             node.getValueOrData().equals("data")) {
             dataRNG = new DataXML();
         }
 
@@ -146,7 +146,8 @@ public class BaliseXML {
         if (null != node.getDataType() && !node.getDataType().equals(UNDEFINED)) {
             if (null != valueRNG) {
                 valueRNG.setDataType(node.getDataType());
-            } else if (null != dataRNG) {
+            }
+            if (null != dataRNG) {
                 dataRNG.setDataType(node.getDataType());
             }
         }
