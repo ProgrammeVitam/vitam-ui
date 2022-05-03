@@ -37,32 +37,23 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -168,8 +159,6 @@ public class CustomerMgtSrvc {
     @Autowired
     private IamExternalWebClientFactory iamWebClientFactory;
 
-    @Autowired
-    RestTemplateBuilder restTemplateBuilder;
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
@@ -198,24 +187,7 @@ public class CustomerMgtSrvc {
         return groupId;
     }
 
-    @Bean
-    @DependsOn("restClientConfiguration")
-    public IamExternalWebClientFactory getIamWebClientFactory(
-        @Autowired RestClientConfiguration restClientConfiguration) {
-        final IamExternalWebClientFactory restClientFactory =
-            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
-        return restClientFactory;
-    }
 
-    @Bean
-    public RestClientConfiguration restClientConfiguration() {
-        return getRestClientConfiguration(iamServerHost,
-            iamServerPort, true,
-            getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
-                iamKeystorePassword,
-                iamTrustStoreFilePath,
-                iamTruststorePassword));
-    }
 
     /*
         @Bean
@@ -230,41 +202,7 @@ public class CustomerMgtSrvc {
         return writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
     }
 
-    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
-        final String trustStorePathname,
-        final String iamTruststorePassword) {
-        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
-        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
-        final SSLConfiguration.CertificateStoreConfiguration keyStore =
-            new SSLConfiguration.CertificateStoreConfiguration();
-        keyStore.setKeyPath(keystorePath);
-        keyStore.setKeyPassword(iamKeystorePassword);
-        keyStore.setType("JKS");
-        final SSLConfiguration.CertificateStoreConfiguration trustStore =
-            new SSLConfiguration.CertificateStoreConfiguration();
-        trustStore.setKeyPath(trustStorePath);
-        trustStore.setKeyPassword(iamTruststorePassword);
-        trustStore.setType("JKS");
 
-        final SSLConfiguration sslConfig = new SSLConfiguration();
-        sslConfig.setKeystore(keyStore);
-        sslConfig.setTruststore(trustStore);
-
-        return sslConfig;
-    }
-
-    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
-        final boolean secure, final SSLConfiguration sslConfig) {
-        final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
-        restClientConfiguration.setServerHost(host);
-        restClientConfiguration.setServerPort(port);
-        restClientConfiguration.setSecure(secure);
-        if (sslConfig != null) {
-            restClientConfiguration.setSslConfiguration(sslConfig);
-        }
-
-        return restClientConfiguration;
-    }
 
     protected String writeToken(final String tokenId, final String userId) {
 
@@ -445,6 +383,7 @@ public class CustomerMgtSrvc {
                         Optional<UserDto> userOpt = usersListToCreate.stream()
                             .filter(userDto -> userDto.getEmail().contains(customerDto.getDefaultEmailDomain()))
                             .findAny();
+                        /*
                         if (userOpt.isPresent()) {
                             UserDto userDto = userOpt.get();
                             String userInfoId = generatedUserInfo();
@@ -457,6 +396,7 @@ public class CustomerMgtSrvc {
                             throw new NotFoundException(
                                 "No user found for company email " + customerDto.getDefaultEmailDomain());
                         }
+                        */
                     }
                 }
             } catch (Exception e) {
@@ -494,24 +434,6 @@ public class CustomerMgtSrvc {
         return usersList;
     }
 
-    protected UserExternalRestClient getUserRestClient(final boolean fullAccess, final Integer[] tenants,
-        final String[] roles) {
-        //prepareGenericContext(fullAccess, tenants, roles);
-        return getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient();
-    }
-
-
-    protected IamExternalRestClientFactory getIamRestClientFactory(final String keystorePrefix) {
-        final IamExternalRestClientFactory restClientFactory = new IamExternalRestClientFactory(
-            getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath,
-                    iamTruststorePassword)),
-            restTemplateBuilder);
-        final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        //interceptors.add(new RegisterRestQueryInterceptor());
-        //restClientFactory.setRestClientInterceptor(interceptors);
-        return restClientFactory;
-    }
 
 
 }
