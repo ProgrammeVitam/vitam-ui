@@ -863,7 +863,7 @@ export class FileTreeMetadataComponent {
 
   private setOrigineNodeValue(metadata: any, newValue: any) {
     console.log(metadata.cardinalite + 'new Value ' + newValue);
-      if (this.clickedNode.name === metadata.nomDuChamp) {
+    if (this.clickedNode.name === metadata.nomDuChamp) {
         this.clickedNode.value = null;
       } else if (this.clickedNode.children.length > 0) {
         const childNode = this.fileService.getFileNodeById(this.clickedNode, metadata.id);
@@ -931,6 +931,7 @@ export class FileTreeMetadataComponent {
             enum: this.enumsControlSeleted
           };
         }
+        this.clickedNode.sedaData.Enumeration = [];
       } else {
         this.clickedNode.puaData.enum = null;
       }
