@@ -29,20 +29,14 @@ package fr.gouv.vitamui.customersadmin.configs;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
-import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 public class CustomerMgtConfig {
@@ -80,7 +74,8 @@ public class CustomerMgtConfig {
 
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
-
+    @Autowired
+    SSLConfiguration sSLConfiguration;
 
     @Bean
     @DependsOn("restClientConfiguration")
@@ -92,13 +87,10 @@ public class CustomerMgtConfig {
     }
 
     @Bean
-    public RestClientConfiguration restClientConfiguration() {
+    public RestClientConfiguration restClientConfiguration(@Autowired SSLConfiguration sSLConfiguration) {
         return getRestClientConfiguration(iamServerHost,
             iamServerPort, true,
-            getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
-                iamKeystorePassword,
-                iamTrustStoreFilePath,
-                iamTruststorePassword));
+            sSLConfiguration);
     }
 
     protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
@@ -113,25 +105,25 @@ public class CustomerMgtConfig {
 
         return restClientConfiguration;
     }
-
-    public IamExternalRestClientFactory getIamRestClientFactory(final String keystorePrefix) {
+/*
+    public IamExternalRestClientFactory getIamRestClientFactory(@Autowired SSLConfiguration sSLConfiguration) {
         final IamExternalRestClientFactory restClientFactory = new IamExternalRestClientFactory(
             getRestClientConfiguration(iamServerHost, iamServerPort, true,
-                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath,
-                    iamTruststorePassword)),
+                sSLConfiguration),
             restTemplateBuilder);
         final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         //interceptors.add(new RegisterRestQueryInterceptor());
         //restClientFactory.setRestClientInterceptor(interceptors);
         return restClientFactory;
     }
+*/
 
+    @Bean
+    public SSLConfiguration sSLConfiguration() {
 
-    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
-        final String trustStorePathname,
-        final String iamTruststorePassword) {
-        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
-        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
+        final String keystorePath =
+            getClass().getClassLoader().getResource(certsFolder + GENERIC_CERTIFICATE + ".jks").getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(iamTrustStoreFilePath).getPath();
         final SSLConfiguration.CertificateStoreConfiguration keyStore =
             new SSLConfiguration.CertificateStoreConfiguration();
         keyStore.setKeyPath(keystorePath);
@@ -149,10 +141,10 @@ public class CustomerMgtConfig {
 
         return sslConfig;
     }
-
+/*
     protected UserExternalRestClient getUserRestClient(final boolean fullAccess, final Integer[] tenants,
         final String[] roles) {
         return getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient();
     }
-
+*/
 }

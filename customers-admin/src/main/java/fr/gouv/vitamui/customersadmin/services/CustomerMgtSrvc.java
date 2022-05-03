@@ -383,7 +383,7 @@ public class CustomerMgtSrvc {
                         Optional<UserDto> userOpt = usersListToCreate.stream()
                             .filter(userDto -> userDto.getEmail().contains(customerDto.getDefaultEmailDomain()))
                             .findAny();
-                        /*
+/*
                         if (userOpt.isPresent()) {
                             UserDto userDto = userOpt.get();
                             String userInfoId = generatedUserInfo();
@@ -396,7 +396,7 @@ public class CustomerMgtSrvc {
                             throw new NotFoundException(
                                 "No user found for company email " + customerDto.getDefaultEmailDomain());
                         }
-                        */
+*/
                     }
                 }
             } catch (Exception e) {
