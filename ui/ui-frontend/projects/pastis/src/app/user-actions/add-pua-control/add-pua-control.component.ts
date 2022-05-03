@@ -141,7 +141,6 @@ export class UserActionAddPuaControlComponent implements OnInit {
   }
 
   refreshAllowedChildren(element?: string) {
-    console.log('aaaaaaaaaaaaaaaa ' + element);
     if (element) {
       this.addedItems = [element];
       this.allowedChildren = [];
@@ -157,7 +156,6 @@ export class UserActionAddPuaControlComponent implements OnInit {
       ];
       this.addedItems = [];
     }
-    console.log(this.allowedChildren);
   }
 
   translatedOnChange(): void {
