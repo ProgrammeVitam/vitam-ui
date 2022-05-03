@@ -3,6 +3,7 @@
 ##########################################
 server:
   port: 9800
+
 server-identity:
   identityName: vitamui-dev
   identityRole: integration-tests

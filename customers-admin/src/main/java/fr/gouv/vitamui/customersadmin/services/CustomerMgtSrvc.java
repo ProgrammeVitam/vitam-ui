@@ -29,11 +29,15 @@ package fr.gouv.vitamui.customersadmin.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
@@ -41,7 +45,9 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
+import fr.gouv.vitamui.iam.external.client.UserExternalRestClient;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -49,9 +55,16 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.File;
@@ -63,15 +76,20 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
 
+@Configuration
 @Service
+//@Import(value = {ServerIdentityConfiguration.class})
 public class CustomerMgtSrvc {
 
     protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerMgtSrvc.class);
@@ -83,10 +101,12 @@ public class CustomerMgtSrvc {
     private MongoCollection<Document> tokensCollection;
     private MongoDatabase iamDatabase;
     private MongoCollection<Document> usersCollection;
+    private MongoCollection<Document> usersInfosCollection;
     private MongoDatabase securityDatabase;
     private static MongoClient mongoClientSecurity;
 
     private MongoCollection<Document> contextsCollection;
+    private MongoCollection<Document> groupsCollection;
     private MongoCollection<Document> certificatesCollection;
     protected static final String TESTS_CERTIFICATE_ID = "integration-tests_cert";
 
@@ -105,6 +125,9 @@ public class CustomerMgtSrvc {
 
     @Value("classpath:data/customers.json")
     private Resource customersFile;
+
+    @Value("classpath:data/users.json")
+    private Resource usersFile;
 
     @Value("${vitamui_platform_informations.proof_tenant}")
     protected int proofTenantIdentifier;
@@ -138,12 +161,15 @@ public class CustomerMgtSrvc {
     protected String iamKeystorePassword;
     @Autowired
     protected WebClient.Builder webClientBuilder;
-    @Autowired
-    protected RestTemplateBuilder restTemplateBuilder;
 
     @Value("${mongo.iam.uri}")
     private String mongoIamUri;
 
+    @Autowired
+    private IamExternalWebClientFactory iamWebClientFactory;
+
+    @Autowired
+    RestTemplateBuilder restTemplateBuilder;
 
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
@@ -157,21 +183,49 @@ public class CustomerMgtSrvc {
         tokenUserAdmin();
     }
 
+    private String getGroupIdByCustomer(String customerId) {
+        String groupId = null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("customerId").is(customerId));
 
-    public IamExternalWebClientFactory getIamWebClientFactory() {
+        BsonDocument bsonDocument = new BsonDocument("customerId", new BsonString(customerId));
+        FindIterable<Document> documents = getGroupsCollection().find(bsonDocument);
+        try (MongoCursor<Document> cursor = documents.iterator()) {
+            while (cursor.hasNext()) {
+                groupId = cursor.next().get("_id", String.class);
+            }
+        }
+        return groupId;
+    }
+
+    @Bean
+    @DependsOn("restClientConfiguration")
+    public IamExternalWebClientFactory getIamWebClientFactory(
+        @Autowired RestClientConfiguration restClientConfiguration) {
         final IamExternalWebClientFactory restClientFactory =
-            new IamExternalWebClientFactory(
-                getRestClientConfiguration(iamServerHost,
-                    iamServerPort, true,
-                    getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
-                        iamKeystorePassword,
-                        iamTrustStoreFilePath,
-                        iamTruststorePassword)),
-                webClientBuilder);
+            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
         return restClientFactory;
     }
 
+    @Bean
+    public RestClientConfiguration restClientConfiguration() {
+        return getRestClientConfiguration(iamServerHost,
+            iamServerPort, true,
+            getSSLConfiguration(certsFolder + GENERIC_CERTIFICATE + ".jks",
+                iamKeystorePassword,
+                iamTrustStoreFilePath,
+                iamTruststorePassword));
+    }
 
+    /*
+        @Bean
+        public IamExternalRestClientFactory iamExternalRestClientFactory(final RestTemplateBuilder restTemplateBuilder,
+            final RestClientConfiguration restClientConfiguration) {
+            final IamExternalRestClientFactory restClientFactory =
+                new IamExternalRestClientFactory(restClientConfiguration, restTemplateBuilder);
+            return restClientFactory;
+        }
+    */
     protected String tokenUserAdmin() {
         return writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
     }
@@ -242,12 +296,6 @@ public class CustomerMgtSrvc {
         return iamDatabase;
     }
 
-    protected MongoCollection<Document> getUsersCollection() {
-        if (usersCollection == null) {
-            usersCollection = getIamDatabase().getCollection("users");
-        }
-        return usersCollection;
-    }
 
     protected MongoDatabase getSecurityDatabase() {
         if (securityDatabase == null) {
@@ -275,6 +323,36 @@ public class CustomerMgtSrvc {
             contextsCollection = getSecurityDatabase().getCollection("contexts");
         }
         return contextsCollection;
+    }
+
+    protected MongoCollection<Document> getGroupsCollection() {
+        if (groupsCollection == null) {
+            groupsCollection = getIamDatabase().getCollection("groups");
+        }
+        return groupsCollection;
+    }
+
+    protected MongoCollection<Document> getUsersCollection() {
+        if (usersCollection == null) {
+            usersCollection = getIamDatabase().getCollection("users");
+        }
+        return usersCollection;
+    }
+
+    protected MongoCollection<Document> getUserInfosCollection() {
+        if (usersInfosCollection == null) {
+            usersInfosCollection = getIamDatabase().getCollection("usersInfos");
+        }
+        return usersInfosCollection;
+    }
+
+    protected String generatedUserInfo() {
+        String generatedId = UUID.randomUUID().toString();
+        final Document userInfoEntry =
+            new Document("_id", generatedId).append("language", "FRENCH")
+                .append("_class", "fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo");
+        getTokensCollection().insertOne(userInfoEntry);
+        return generatedId;
     }
 
     protected void prepareGenericContext(final boolean fullAccess, final Integer[] tenants, final String[] roles) {
@@ -331,20 +409,58 @@ public class CustomerMgtSrvc {
     }
 
     public void createCustomers() throws IOException {
+
+        LOGGER.info(getGroupIdByCustomer("626bf4c1a21df47ee9027a005f521a6f27fd49e1b4dac65a45c65eef1ff172f6"));
         //read json file
         List<CustomerCreationFormData> customersListToCreate = readFromCustomersFile();
+        List<CustomerDto> customerDtoList = new ArrayList<>();
         if (customersListToCreate != null) {
             try {
                 prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
+                ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
                 for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
-                    LOGGER.debug("Create {} ", customerCreationFormData);
-                    CustomerDto customerDto = getIamWebClientFactory().getCustomerWebClient()
-                        .create(getSystemTenantUserAdminContext(), customerCreationFormData);
+                    LOGGER.debug("Start creating customer  {} ", customerCreationFormData);
 
+                    boolean existCode = false;
+                    /*
+                    iamExternalRestClientFactory.getCustomerExternalRestClient().checkExist(externalContext,
+                            "{\"queryOperator\":\"AND\",\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"code\",\"value\":\"" +
+                                customerCreationFormData.getCustomerDto().getCode() +
+                                "\",\"operator\":\"EQUALS\"}]}]}");
 
+                     */
+                    if (existCode) {
+                        throw new IllegalArgumentException(String.format("Customer with code exists %S",
+                            customerCreationFormData.getCustomerDto().getCode()));
+                    }
+                    CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient()
+                        .create(externalContext, customerCreationFormData);
+                    customerDtoList.add(customerDto);
                     LOGGER.info("Customer with name {} and id {} is created ", customerDto.getName(),
                         customerDto.getIdentifier());
                 }
+                List<UserDto> usersListToCreate = readFromUsersFile();
+                if (!CollectionUtils.isEmpty(usersListToCreate)) {
+                    for (CustomerDto customerDto : customerDtoList) {
+                        Optional<UserDto> userOpt = usersListToCreate.stream()
+                            .filter(userDto -> userDto.getEmail().contains(customerDto.getDefaultEmailDomain()))
+                            .findAny();
+                        if (userOpt.isPresent()) {
+                            UserDto userDto = userOpt.get();
+                            String userInfoId = generatedUserInfo();
+                            userDto.setUserInfoId(userInfoId);
+                            UserDto createdUser =
+                                getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient()
+                                    .create(externalContext, userDto);
+                            LOGGER.info("User created with id {} ", createdUser.getIdentifier());
+                        } else {
+                            throw new NotFoundException(
+                                "No user found for company email " + customerDto.getDefaultEmailDomain());
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error("Error creating customer due to error {} ", e);
             } finally {
                 dropGenericContext();
             }
@@ -369,4 +485,33 @@ public class CustomerMgtSrvc {
             });
         return customerList;
     }
+
+    private List<UserDto> readFromUsersFile() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<UserDto> usersList =
+            mapper.readValue(usersFile.getFile(), new TypeReference<List<UserDto>>() {
+            });
+        return usersList;
+    }
+
+    protected UserExternalRestClient getUserRestClient(final boolean fullAccess, final Integer[] tenants,
+        final String[] roles) {
+        //prepareGenericContext(fullAccess, tenants, roles);
+        return getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient();
+    }
+
+
+    protected IamExternalRestClientFactory getIamRestClientFactory(final String keystorePrefix) {
+        final IamExternalRestClientFactory restClientFactory = new IamExternalRestClientFactory(
+            getRestClientConfiguration(iamServerHost, iamServerPort, true,
+                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath,
+                    iamTruststorePassword)),
+            restTemplateBuilder);
+        final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        //interceptors.add(new RegisterRestQueryInterceptor());
+        //restClientFactory.setRestClientInterceptor(interceptors);
+        return restClientFactory;
+    }
+
+
 }

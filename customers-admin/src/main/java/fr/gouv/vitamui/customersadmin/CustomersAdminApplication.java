@@ -17,7 +17,6 @@ public class CustomersAdminApplication {
     @Autowired
     private CustomerMgtSrvc customerMgtSrvc;
 
-
     public static void main(String[] args) {
         SpringApplication.run(CustomersAdminApplication.class, args);
     }
