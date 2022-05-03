@@ -71,6 +71,7 @@ import { UserActionAddPuaControlComponent } from '../../../user-actions/add-pua-
 import { AttributesPopupComponent } from './attributes/attributes.component';
 import { FileTreeMetadataService } from './file-tree-metadata.service';
 import { PuaData } from '../../../models/pua-data';
+import { FileTreeComponent } from '../file-tree/file-tree.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
@@ -972,7 +973,7 @@ export class FileTreeMetadataComponent {
   }
 
   changeStatusAditionalProperties($event: boolean) {
-    this.clickedNode.additionalProperties = $event;
+    FileTreeComponent.archiveUnits.additionalProperties = $event;
   }
 
 
