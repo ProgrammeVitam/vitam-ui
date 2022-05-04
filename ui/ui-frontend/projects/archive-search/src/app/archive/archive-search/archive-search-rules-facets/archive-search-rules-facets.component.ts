@@ -21,6 +21,9 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
 
   facetsVisibles = true;
 
+  @Input()
+  defaultFacetTabIndex: number;
+
   showHideFacets(show: boolean) {
     this.facetsVisibles = show;
   }

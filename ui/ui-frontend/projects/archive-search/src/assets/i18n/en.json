@@ -129,6 +129,7 @@
     "SEARCH_CRITERIA_LTE": "Before than ",
     "SHOW_SEARCH_CRITERIA": "Show the search filters",
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
+    "COMPUTE_RULES_FACETS": "Show management rules facets",
     "RETRIVE_EXACT_COUNT": "Load exact count",
     "MORE_THAN": "+ than ",
     "MORE_THAN_THRESHOLD": "+ than 10 000",
@@ -289,7 +290,7 @@
         "FROM_DATE": "From",
         "SHOW_RULES_LIST": "SHOW LIST",
         "WAITING_TO_RECALCULATE": "With not indexed rule",
-        "CALCULATED": "With indexed rule"
+        "CALCULATED": "With computed rule"
       },
       "ACCESS_RULE": {
         "RULES_COUNT": "Rule count",
@@ -303,7 +304,7 @@
         "FROM_DATE": "From",
         "SHOW_RULES_LIST": "SHOW LIST",
         "WAITING_TO_RECALCULATE": "With not indexed rule",
-        "CALCULATED": "With indexed rule"
+        "CALCULATED": "With computed rule"
       }
     },
     "ARCHIVE_UNIT": {

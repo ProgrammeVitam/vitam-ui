@@ -67,12 +67,30 @@ import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.FALSE;
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaDataType.STRING;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaOperators.EQ;
-import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.*;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COUNT_BY_NODE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COUNT_WITHOUT_RULES;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_EXPIRED_RULES_COMPUTED;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_FINAL_ACTION_COMPUTED;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_RULES_COMPUTED_NUMBER;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACET_SIZE_MILTIPLIER;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FINAL_ACTION_CONFLICT_FIELD_VALUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FINAL_ACTION_DESTROY_FIELD_VALUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FINAL_ACTION_KEEP_FIELD_VALUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FINAL_ACTION_TYPE_CONFLICT;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FR_DATE_FORMAT_WITH_SLASH;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ISO_FRENCH_FORMATER;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATTER_WITH_SLASH;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULES_COMPUTED;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_END_DATE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_FINAL_ACTION_TYPE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.RULE_ORIGIN_CRITERIA;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.TRUE_CRITERIA_VALUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.UNITS_UPS;
 
 /**
  * Archive-Search facets Internal service .
@@ -287,7 +305,7 @@ public class ArchiveSearchFacetsInternalService {
 
     public void fillFacets(SearchCriteriaDto searchQuery, ArchiveUnitsDto archiveUnitsDto, VitamContext vitamContext)
         throws InvalidCreateOperationException, VitamClientException, JsonProcessingException {
-        if (computeFacets(searchQuery)) {
+        if (searchQuery.isComputeFacets()) {
             List<FacetResultsDto> facetResults = archiveUnitsDto.getArchives().getFacetResults();
             if (CollectionUtils.isEmpty(facetResults)) {
                 facetResults = new ArrayList<>();
@@ -330,28 +348,6 @@ public class ArchiveSearchFacetsInternalService {
         List<String> nodesCriteriaList = searchQuery.extractNodesCriteria();
         selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COUNT_BY_NODE, UNITS_UPS,
             (nodesCriteriaList.size() + 1) * FACET_SIZE_MILTIPLIER, FacetOrder.ASC));
-    }
-
-    public boolean computeFacets(final SearchCriteriaDto searchQuery) {
-        boolean computeFacetFlag = false;
-        if (!CollectionUtils.isEmpty(searchQuery.getCriteriaList())) {
-            List<SearchCriteriaEltDto> waitingToRecalculateCriteria = searchQuery
-                .extractCriteriaListByCategoryAndFieldNames(FIELDS,
-                    List.of(WAITING_RECALCULATE));
-            computeFacetFlag = !CollectionUtils.isEmpty(waitingToRecalculateCriteria);
-            if (!computeFacetFlag) {
-                List<SearchCriteriaEltDto> appraisalMgtRulesCriteriaList = searchQuery
-                    .extractCriteriaListByCategory(APPRAISAL_RULE);
-                computeFacetFlag = !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList);
-            }
-            if (!computeFacetFlag) {
-                List<SearchCriteriaEltDto> eliminationAnalysisGuidCriteria = searchQuery
-                    .extractCriteriaListByCategoryAndFieldNames(FIELDS,
-                        List.of(ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE));
-                computeFacetFlag = !CollectionUtils.isEmpty(eliminationAnalysisGuidCriteria);
-            }
-        }
-        return computeFacetFlag;
     }
 
     private Integer countArchiveUnitByCriteriaList(List<SearchCriteriaEltDto> criteriaList, VitamContext vitamContext)

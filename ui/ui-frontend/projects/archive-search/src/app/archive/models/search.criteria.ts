@@ -102,6 +102,7 @@ export interface SearchCriteriaDto {
   sortingCriteria?: SearchCriteriaSort;
   language?: string;
   trackTotalHits?: boolean;
+  computeFacets?: boolean;
 }
 
 export interface PagedResult {

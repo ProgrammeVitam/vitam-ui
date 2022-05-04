@@ -2,17 +2,17 @@
   display: flex;
   width: 100%;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: first baseline;
 }
 
 #count-facet-details {
-  width: 51%;
+  width: 35%;
 }
 
 #rules-facet-details {
-  width: 16%;
+  width: 13%;
 }
 
 #expired-rules-facet-details {
-  width: 32%;
+  width: 21%;
 }
