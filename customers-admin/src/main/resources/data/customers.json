@@ -1,90 +1,967 @@
 [
   {
-    "tenantName": "bendemotest",
-    "customerDto": {
-      "gdprAlert": true,
-      "gdprAlertDelay": 72,
-      "enabled": true,
-      "code": "787878755",
-      "name": "ben",
-      "companyName": "ben",
-      "passwordRevocationDelay": 6,
-      "otp": "OPTIONAL",
-      "address": {
-        "street": "ben",
-        "zipCode": "bneb",
-        "city": "ben",
-        "country": "FR"
-      },
-      "internalCode": null,
-      "language": "FRENCH",
-      "emailDomains": [
-        "ben.fr"
-      ],
-      "defaultEmailDomain": "ben.fr",
-      "hasCustomGraphicIdentity": false,
-      "themeColors": null,
-      "portalMessages": {},
-      "portalTitles": {},
-      "owners": [
-        {
-          "id": null,
-          "customerId": null,
-          "identifier": null,
-          "code": "787878755",
-          "name": "ben",
-          "companyName": "ben",
-          "address": {
-            "street": null,
-            "zipCode": null,
-            "city": null,
-            "country": "FR"
-          },
-          "readonly": false
-        }
-      ]
-    }
+    "code": "000001",
+    "name": "Ministère de la Culture",
+    "companyName": "Ministère de la Culture",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "culture.gouv.fr",
+      "departement13.fr",
+      "agriculture.gouv.fr"
+    ],
+    "defaultEmailDomain": "culture.gouv.fr",
+    "address": {
+      "street": "1 rue de Valois",
+      "zipCode": "75001",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {
+      "FRENCH": "Ministère de la Culture",
+      "ENGLISH": "Welcome to ICA Archiving applications portal"
+    },
+    "portalMessages": {
+      "FRENCH": "Bienvenue",
+      "ENGLISH": "Portal of the International council on Archives"
+    },
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
   },
   {
-    "tenantName": "ben customer",
-    "customerDto": {
-      "gdprAlert": true,
-      "gdprAlertDelay": 72,
-      "enabled": true,
-      "code": "787878756",
-      "name": "benaissa",
-      "companyName": "ben",
-      "passwordRevocationDelay": 6,
-      "otp": "OPTIONAL",
-      "address": {
-        "street": "ben",
-        "zipCode": "bneb",
-        "city": "ben",
-        "country": "FR"
-      },
-      "language": "FRENCH",
-      "emailDomains": [
-        "xelians.fr"
-      ],
-      "defaultEmailDomain": "xelians.fr",
-      "hasCustomGraphicIdentity": false,
-      "themeColors": null,
-      "portalMessages": {},
-      "portalTitles": {},
-      "owners": [
-        {
-          "code": "787878756",
-          "name": "ben owner",
-          "companyName": "ben owner",
-          "address": {
-            "street": null,
-            "zipCode": null,
-            "city": null,
-            "country": "FR"
-          },
-          "readonly": false
-        }
-      ]
-    }
+    "code": "000002",
+    "name": "Ministère de la Transition écologique",
+    "companyName": "Ministère de la Transition écologique",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "developpement-durable.gouv.fr"
+    ],
+    "defaultEmailDomain": "developpement-durable.gouv.fr",
+    "address": {
+      "street": "246 Bd Saint-Germain",
+      "zipCode": "75007",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000003",
+    "name": "Ministères sociaux",
+    "companyName": "Ministères sociaux",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "sg.social.gouv.fr"
+    ],
+    "defaultEmailDomain": "sg.social.gouv.fr",
+    "address": {
+      "street": "14 avenue Duquesne",
+      "zipCode": "75007",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000020",
+    "name": "Mintika",
+    "companyName": "Mintika",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "mintika.fr"
+    ],
+    "defaultEmailDomain": "mintika.fr",
+    "address": {
+      "street": "23 Rue Damesme ",
+      "zipCode": "75013",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000004",
+    "name": "Cines",
+    "companyName": "Cines",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "cines.fr"
+    ],
+    "defaultEmailDomain": "cines.fr",
+    "address": {
+      "street": "950 rue de Saint-Priest ",
+      "zipCode": "34097",
+      "city": "Montpellier",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000005",
+    "name": "Communauté d'agglomération de Cergy-Pontoise",
+    "companyName": "CACP",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "cergypontoise.fr"
+    ],
+    "defaultEmailDomain": "cergypontoise.fr",
+    "address": {
+      "street": "CS 80309 ",
+      "zipCode": "95027",
+      "city": "Cergy Pontoise",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000006",
+    "name": "Urssaf - Caisse nationale",
+    "companyName": "Urssaf - Caisse nationale",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "acoss.fr"
+    ],
+    "defaultEmailDomain": "acoss.fr",
+    "address": {
+      "street": "36, rue de Valmy ",
+      "zipCode": "93108",
+      "city": "Montreuil",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000019",
+    "name": "Xdemat",
+    "companyName": "Xdemat",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "xdemat.fr"
+    ],
+    "defaultEmailDomain": "xdemat.fr",
+    "address": {
+      "street": "66 Av. des Champs-Élysées ",
+      "zipCode": "75008",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000007",
+    "name": "CEA",
+    "companyName": "CEA",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "cea.fr"
+    ],
+    "defaultEmailDomain": "cea.fr",
+    "address": {
+      "street": "Centre de Saclay ",
+      "zipCode": "91191",
+      "city": "Gif-sur-Yvette ",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000008",
+    "name": "Centre hospitalier Avranches Granville",
+    "companyName": "CHAG",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "ch-avranches-granville.fr"
+    ],
+    "defaultEmailDomain": "ch-avranches-granville.fr",
+    "address": {
+      "street": "849, rue des Menneries ",
+      "zipCode": "50406",
+      "city": "Granville",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000009",
+    "name": "ANSES",
+    "companyName": "ANSES",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "anses.fr"
+    ],
+    "defaultEmailDomain": "anses.fr",
+    "address": {
+      "street": "14 rue Pierre-et-Marie-Curie ",
+      "zipCode": "94701",
+      "city": "Maisons-Alfort",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000010",
+    "name": "ASP",
+    "companyName": "ASP",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "asp-public.fr"
+    ],
+    "defaultEmailDomain": "asp-public.fr",
+    "address": {
+      "street": "2 rue du Maupas ",
+      "zipCode": "87040",
+      "city": "Limoges",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000011",
+    "name": "Conseil départemental de la Gironde",
+    "companyName": "CD33",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "gironde.fr"
+    ],
+    "defaultEmailDomain": "gironde.fr",
+    "address": {
+      "street": "1 esplanade Charles-de-Gaulle ",
+      "zipCode": "33000",
+      "city": "Bordeaux",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000012",
+    "name": "Conseil départemental de l'Hérault",
+    "companyName": "CD34",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "herault.fr"
+    ],
+    "defaultEmailDomain": "herault.fr",
+    "address": {
+      "street": "1977 avenue des Moulins ",
+      "zipCode": "34000",
+      "city": "Montpellier",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000013",
+    "name": "Conseil départemental du Vaucluse",
+    "companyName": "CD84",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "vaucluse.fr"
+    ],
+    "defaultEmailDomain": "vaucluse.fr",
+    "address": {
+      "street": "Rue Viala",
+      "zipCode": "84909",
+      "city": "Avignon",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000014",
+    "name": "CNAM",
+    "companyName": "CNAM",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "assurance-maladie.fr"
+    ],
+    "defaultEmailDomain": "assurance-maladie.fr",
+    "address": {
+      "street": "50 avenue du Pr-André-Lemierre ",
+      "zipCode": "75986",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000015",
+    "name": "Ministère de l'Europe et des Affaires étrangères",
+    "companyName": "MEAE",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "diplomatie.gouv.fr"
+    ],
+    "defaultEmailDomain": "diplomatie.gouv.fr",
+    "address": {
+      "street": "37, quai d’Orsay ",
+      "zipCode": "75007",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000017",
+    "name": "Ministère des Armées",
+    "companyName": "MinArm",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "intradef.gouv.fr"
+    ],
+    "defaultEmailDomain": "intradef.gouv.fr",
+    "address": {
+      "street": "60 boulevard du général Martial Valin ",
+      "zipCode": "75509",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000016",
+    "name": "Ministère de l'Education nationale",
+    "companyName": "MEN",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "education.gouv.fr"
+    ],
+    "defaultEmailDomain": "education.gouv.fr",
+    "address": {
+      "street": "110 rue de Grenelle",
+      "zipCode": "75007",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000018",
+    "name": "Olkoa",
+    "companyName": "Olkoa",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "olkoa.fr"
+    ],
+    "defaultEmailDomain": "olkoa.fr",
+    "address": {
+      "street": "15 Rue Georges Pérec ",
+      "zipCode": "38400",
+      "city": "Saint-Martin-d'Hères ",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000021",
+    "name": "Atos",
+    "companyName": "Atos",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "atos.net"
+    ],
+    "defaultEmailDomain": "atos.net",
+    "address": {
+      "street": "River Ouest, 80 quai Voltaire ",
+      "zipCode": "95877",
+      "city": "Bezons",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000022",
+    "name": "Smile",
+    "companyName": "Smile",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "smile.fr"
+    ],
+    "defaultEmailDomain": "smile.fr",
+    "address": {
+      "street": "163 Quai du Dr. Dervaux",
+      "zipCode": "92600",
+      "city": "Asnières sur Seine",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000023",
+    "name": "Winbantu",
+    "companyName": "Winbantu",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "winbantu.fr"
+    ],
+    "defaultEmailDomain": "winbantu.fr",
+    "address": {
+      "street": "34 AV DES CHAMPS ELYSEES",
+      "zipCode": "75008",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000024",
+    "name": "INPI",
+    "companyName": "INPI",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "inpi.fr"
+    ],
+    "defaultEmailDomain": "inpi.fr",
+    "address": {
+      "street": "15 rue des Minimes ",
+      "zipCode": "92677",
+      "city": "Courbevoie",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000025",
+    "name": "Akompano",
+    "companyName": "Akompano",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "akompano.fr"
+    ],
+    "defaultEmailDomain": "akompano.fr",
+    "address": {
+      "street": "4 rue Paul Allaine ",
+      "zipCode": "77850",
+      "city": "Hericy",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000026",
+    "name": "ANTAI",
+    "companyName": "ANTAI",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "interieur.gouv.fr"
+    ],
+    "defaultEmailDomain": "interieur.gouv.fr",
+    "address": {
+      "street": "TSA 74000 ",
+      "zipCode": "35094",
+      "city": "Rennes",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000027",
+    "name": "Conseil départemental de Seine-et-Marne",
+    "companyName": "CD77",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "departement77.fr"
+    ],
+    "defaultEmailDomain": "departement77.fr",
+    "address": {
+      "street": "12 rue des Saints-Pères ",
+      "zipCode": "77000",
+      "city": "Melun",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000028",
+    "name": "Lex Persona",
+    "companyName": "Lex Persona",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "lex-persona.com"
+    ],
+    "defaultEmailDomain": "lex-persona.com",
+    "address": {
+      "street": "2 rue Gustave Eiffel",
+      "zipCode": "10430",
+      "city": "ROSIERES-PRES-TROYES ",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000029",
+    "name": "CGI",
+    "companyName": "CGI",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "cgi.com"
+    ],
+    "defaultEmailDomain": "cgi.com",
+    "address": {
+      "street": "17, place des Reflets ",
+      "zipCode": "92400",
+      "city": "Courbevoie",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000030",
+    "name": "Toulon Provence Méditerranée ",
+    "companyName": "Toulon Provence Méditerranée ",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "metropoletpm.fr"
+    ],
+    "defaultEmailDomain": "metropoletpm.fr",
+    "address": {
+      "street": "107 Boulevard Henri Fabre - CS 30536 ",
+      "zipCode": "83041",
+      "city": "Toulon",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000031",
+    "name": "Nantes métropole",
+    "companyName": "Nantes métropole",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "nantesmetropole.fr"
+    ],
+    "defaultEmailDomain": "nantesmetropole.fr",
+    "address": {
+      "street": "2, cours du Champ-de-Mars",
+      "zipCode": "44000",
+      "city": "Nantes",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000032",
+    "name": "Communauté d'agglomération Pau Béarn Pyrénées",
+    "companyName": "Agglo_Pau",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "agglo-pau.fr"
+    ],
+    "defaultEmailDomain": "agglo-pau.fr",
+    "address": {
+      "street": "2 BIS PLACE ROYALE, BP 547",
+      "zipCode": "64010",
+      "city": "Pau",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000033",
+    "name": "RATP",
+    "companyName": "RATP",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "ratp.fr"
+    ],
+    "defaultEmailDomain": "ratp.fr",
+    "address": {
+      "street": "54, quai de la Râpée • LAC LC75",
+      "zipCode": "75599",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {
+      "FRENCH": "RATP - Portail des applications de l'archivage"
+    },
+    "portalMessages": {
+      "FRENCH": "Profitez d'un portail unique pour rechercher dans les archives de vos coffres, pour déposer des éléments en toutes sécurité et pour imprimer des etiquettes en quelques clics."
+    },
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000034",
+    "name": "Salvia développement",
+    "companyName": "Salvia développement",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "salviadeveloppement.com"
+    ],
+    "defaultEmailDomain": "salviadeveloppement.com",
+    "address": {
+      "street": "10 rue Blaise Pascal parc tertiaire du jardin des entreprises",
+      "zipCode": "28000",
+      "city": "Chartres",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000035",
+    "name": "Neoledge",
+    "companyName": "Neoledge",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "neoledge.com"
+    ],
+    "defaultEmailDomain": "neoledge.com",
+    "address": {
+      "street": "47 rue de Monceau",
+      "zipCode": "75008",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000036",
+    "name": "Métropole Nice Côte d'Azur",
+    "companyName": "Métropole Nice Côte d'Azur",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "nicecotedazur.org",
+      "ville-nice.fr",
+      "ccas-nice.fr"
+    ],
+    "defaultEmailDomain": "nicecotedazur.org",
+    "address": {
+      "street": "5 rue de l'Hôtel de Ville",
+      "zipCode": "06364",
+      "city": "Nice",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "code": "000037",
+    "name": "Dinum",
+    "companyName": "Direction interministérielle du numérique",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "modernisation.gouv.fr"
+    ],
+    "defaultEmailDomain": "modernisation.gouv.fr",
+    "address": {
+      "street": "20 avenue de Ségur",
+      "zipCode": "75007",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
+    "identifier": "48",
+    "code": "000038",
+    "name": "Xelians",
+    "companyName": "Xelians",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "xelians.fr"
+    ],
+    "defaultEmailDomain": "xelians.fr",
+    "address": {
+      "street": "43 avenue de la Grande Armée",
+      "zipCode": "75116",
+      "city": "Paris",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {},
+    "portalMessages": {},
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
   }
 ]

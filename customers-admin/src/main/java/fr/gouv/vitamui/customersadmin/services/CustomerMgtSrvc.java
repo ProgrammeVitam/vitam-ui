@@ -35,6 +35,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -462,7 +463,7 @@ public class CustomerMgtSrvc {
 
     private void parseAndCreateCustomers() {
         //read json file
-        List<CustomerCreationFormData> customersListToCreate;
+        List<CustomerDto> customersListToCreate;
         try {
             LOGGER.info("Start parsing customers file");
             customersListToCreate = readFromCustomersFile();
@@ -475,10 +476,22 @@ public class CustomerMgtSrvc {
                     LOGGER.info("Start preparing context");
                     prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
                     ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
-                    for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
-                        LOGGER.debug("Start creating customer with code {} ",
-                            customerCreationFormData.getCustomerDto().getCode());
+                    for (CustomerDto customerDtoToCreate : customersListToCreate) {
+                        LOGGER.debug("Start creating customer with code {} ", customerDtoToCreate.getCode());
 
+                        CustomerCreationFormData customerCreationFormData = new CustomerCreationFormData();
+                        customerCreationFormData.setCustomerDto(customerDtoToCreate);
+                        customerCreationFormData.setTenantName(customerDtoToCreate.getCompanyName());
+
+                        List<OwnerDto> ownerDtos = new ArrayList<>();
+                        OwnerDto ownerDto = new OwnerDto();
+                        ownerDto.setCode(customerDtoToCreate.getCode());
+                        ownerDto.setCompanyName(customerDtoToCreate.getCompanyName());
+                        ownerDto.setName(customerDtoToCreate.getName());
+                        ownerDto.setAddress(customerDtoToCreate.getAddress());
+                        ownerDtos.add(ownerDto);
+
+                        customerDtoToCreate.setOwners(ownerDtos);
                         //boolean existCode = isExistCode(externalContext, customerCreationFormData);
                         CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient()
                             .create(externalContext, customerCreationFormData);
@@ -531,10 +544,10 @@ public class CustomerMgtSrvc {
     /**
      * @return
      */
-    private List<CustomerCreationFormData> readFromCustomersFile() throws IOException {
+    private List<CustomerDto> readFromCustomersFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        List<CustomerCreationFormData> customerList =
-            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerCreationFormData>>() {
+        List<CustomerDto> customerList =
+            mapper.readValue(customersFile.getFile(), new TypeReference<List<CustomerDto>>() {
             });
         return customerList;
     }
