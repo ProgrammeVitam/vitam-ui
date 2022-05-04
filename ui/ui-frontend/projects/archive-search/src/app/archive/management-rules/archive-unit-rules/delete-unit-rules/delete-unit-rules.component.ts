@@ -45,12 +45,13 @@ import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
+import { UpdateUnitManagementRuleService } from '../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../models/search.criteria';
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
-const APPRAISAL_RULE_IDENTIFIER = 'APPRAISAL_RULE_IDENTIFIER';
+const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
 @Component({
@@ -104,7 +105,8 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     private ruleService: RuleService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
@@ -235,7 +237,7 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -243,9 +245,9 @@ export class DeleteUnitRulesComponent implements OnInit, OnDestroy {
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_IDENTIFIER,
+      criteria: MANAGEMENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('rule').value, value: this.ruleDetailsForm.get('rule').value }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };

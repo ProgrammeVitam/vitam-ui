@@ -108,17 +108,42 @@ public class ArchiveSearchConsts {
     public final static String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
 
     public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
-    public final static String APPRAISAL_RULE_IDENTIFIER_CRITERIA = "APPRAISAL_RULE_IDENTIFIER";
-    public final static String APPRAISAL_RULE_INHERITED_CRITERIA = "APPRAISAL_RULE_INHERITED_CRITERIA";
+    public final static String MANAGEMENT_RULE_IDENTIFIER_CRITERIA = "MANAGEMENT_RULE_IDENTIFIER";
+    public final static String MANAGEMENT_RULE_INHERITED_CRITERIA = "MANAGEMENT_RULE_INHERITED_CRITERIA";
     public final static String RULE_TITLE = "RULE_TITLE";
     public final static String RULE_END_DATE = "RULE_END_DATE";
-    public final static String APPRAISAL_RULE_START_DATE = "APPRAISAL_RULE_START_DATE";
+    public final static String MANAGEMENT_RULE_START_DATE = "MANAGEMENT_RULE_START_DATE";
     public final static String WAITING_RECALCULATE = "WAITING_RECALCULATE";
     public final static String RULES_COMPUTED = "RULES_COMPUTED";
 
 
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
+
+    public final static String ACCESS_RULE_START_DATE_FIELD = "#management.AccessRule.Rules.StartDate";
+
+    public final static String REUSE_RULE_START_DATE_FIELD = "#management.ReuseRule.Rules.StartDate";
+
+    public final static String DISSEMINATION_RULE_START_DATE_FIELD = "#management.DisseminationRule.Rules.StartDate";
+
+    public final static String STORAGE_RULE_START_DATE_FIELD = "#management.StorageRule.Rules.StartDate";
+
+    public final static String HOLD_RULE_START_DATE_FIELD = "#management.HoldRule.Rules.StartDate";
+
+    public final static String CLASSIFICATION_RULE_START_DATE_FIELD = "#management.ClassificationRule.Rules.StartDate";
+
     public final static String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
+
+    public final static String ACCESS_RULE_IDENTIFIER = "#management.AccessRule.Rules.Rule";
+
+    public final static String REUSE_RULE_IDENTIFIER = "#management.ReuseRule.Rules.Rule";
+
+    public final static String CLASSIFICATION_RULE_IDENTIFIER = "#management.ClassificationRule.Rules.Rule";
+
+    public final static String HOLD_RULE_IDENTIFIER = "#management.HoldRule.Rules.Rule";
+
+    public final static String STORAGE_RULE_IDENTIFIER = "#management.StorageRule.Rules.Rule";
+
+    public final static String DISSEMINATION_RULE_IDENTIFIER = "#management.Disseminationule.Rules.Rule";
     public final static String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";

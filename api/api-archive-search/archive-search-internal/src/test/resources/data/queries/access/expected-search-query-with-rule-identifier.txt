@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.AccessRule.Rules.Rule":"Rule1"}}]}]

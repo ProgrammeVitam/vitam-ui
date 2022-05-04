@@ -34,6 +34,7 @@ import fr.gouv.vitamui.archives.search.common.common.MgtRuleOriginRuleCriteria;
 import fr.gouv.vitamui.archives.search.common.dsl.VitamQueryHelper;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
+import fr.gouv.vitamui.commons.api.exception.InvalidCreateOperationVitamUIException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.stereotype.Service;
@@ -91,29 +92,30 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         if (!CollectionUtils.isEmpty(criteriaList)) {
 
             SearchCriteriaEltDto appraisalRuleIdentifiersCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                    ->ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
                 .orElse(null);
 
             if(appraisalRuleIdentifiersCriteria != null) {
                 List<String> searchValues = appraisalRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                     Collectors.toList());
-                buildRuleIdentifierQuery(searchValues,
+                buildRuleIdentifierQuery(appraisalRuleIdentifiersCriteria.getCategory().name(), searchValues,
                     ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleIdentifiersCriteria.getOperator()), query);
             }
 
             SearchCriteriaEltDto appraisalRuleStarDateCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.APPRAISAL_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                    ->ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria())).findFirst()
                 .orElse(null);
 
             if(appraisalRuleStarDateCriteria != null) {
                 List<String> searchValues = appraisalRuleStarDateCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                     Collectors.toList());
-                buildRuleStartDateQuery(searchValues,
-                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleStarDateCriteria.getOperator()), query);
+                buildRuleStartDateQuery(appraisalRuleStarDateCriteria.getCategory().name() ,
+                    searchValues, ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleStarDateCriteria.getOperator()),
+                    query);
             }
 
             SearchCriteriaEltDto appraisalRuleInheritanceCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.APPRAISAL_RULE_INHERITED_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+                    ->ArchiveSearchConsts.MANAGEMENT_RULE_INHERITED_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
                 .orElse(null);
 
             if(appraisalRuleInheritanceCriteria != null) {
@@ -162,22 +164,50 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         }
     }
 
-    private void buildRuleIdentifierQuery(final List<String> searchValues,
+    private void buildRuleIdentifierQuery(String ruleCategory, final List<String> searchValues,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
+        String searchKey = null;
+        switch (ruleCategory) {
+            case "APPRAISAL_RULE":
+                searchKey = ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER;
+                break;
+            case "ACCESS_RULE":
+                searchKey = ArchiveSearchConsts.ACCESS_RULE_IDENTIFIER;
+                break;
+            case "STORAGE_RULE":
+                searchKey = ArchiveSearchConsts.STORAGE_RULE_IDENTIFIER;
+                break;
+            case "HOLD_RULE":
+                searchKey = ArchiveSearchConsts.HOLD_RULE_IDENTIFIER;
+                break;
+            case "DISSEMINATION_RULE":
+                searchKey = ArchiveSearchConsts.DISSEMINATION_RULE_IDENTIFIER;
+                break;
+            case "REUSE_RULE":
+                searchKey = ArchiveSearchConsts.REUSE_RULE_IDENTIFIER;
+                break;
+            case "CLASSIFICATION_RULE":
+                searchKey = ArchiveSearchConsts.CLASSIFICATION_RULE_IDENTIFIER;
+                break;
+            default:
+        }
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
+            String finalSearchKey = searchKey;
             searchValues.forEach(value -> {
                 try {
                     subQueryOr
-                        .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_IDENTIFIER, value, operator));
+                        .add(VitamQueryHelper.buildSubQueryByOperator(finalSearchKey , value, operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error("Invalid creation operation exception {}", exception);
+                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ", exception);
                 }
             });
             subQueryAnd.add(subQueryOr);
         }
     }
+
     private void buildInheritedCategoryQuery(final List<String> searchValues,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
@@ -196,11 +226,39 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
             subQueryAnd.add(subQueryOr);
     }
 
-    private void buildRuleStartDateQuery(final List<String> searchValues,
+    private void buildRuleStartDateQuery(String ruleCategory, final List<String> searchValues,
         ArchiveSearchConsts.CriteriaOperators operator, BooleanQuery subQueryAnd)
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
+
+        String searchKey = null;
+        switch (ruleCategory) {
+            case "APPRAISAL_RULE":
+                searchKey = ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD;
+                break;
+            case "ACCESS_RULE":
+                searchKey = ArchiveSearchConsts.ACCESS_RULE_START_DATE_FIELD;
+                break;
+            case "STORAGE_RULE":
+                searchKey = ArchiveSearchConsts.STORAGE_RULE_START_DATE_FIELD;
+                break;
+            case "HOLD_RULE":
+                searchKey = ArchiveSearchConsts.HOLD_RULE_START_DATE_FIELD;
+                break;
+            case "DISSEMINATION_RULE":
+                searchKey = ArchiveSearchConsts.DISSEMINATION_RULE_START_DATE_FIELD;
+                break;
+            case "REUSE_RULE":
+                searchKey = ArchiveSearchConsts.REUSE_RULE_START_DATE_FIELD;
+                break;
+            case "CLASSIFICATION_RULE":
+                searchKey = ArchiveSearchConsts.CLASSIFICATION_RULE_START_DATE_FIELD;
+                break;
+            default:
+        }
+
         if (!CollectionUtils.isEmpty(searchValues)) {
+            String finalSearchKey = searchKey;
             searchValues.forEach(searchValue -> {
                 LocalDateTime startDate =
                     LocalDateTime.parse(searchValue, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
@@ -208,10 +266,11 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                 try {
                     subQueryOr
                         .add(VitamQueryHelper.buildSubQueryByOperator(
-                            ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
+                            finalSearchKey,
                             ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error("Invalid create operation {}", exception);
+                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ", exception);
                 }
             });
             subQueryAnd.add(subQueryOr);

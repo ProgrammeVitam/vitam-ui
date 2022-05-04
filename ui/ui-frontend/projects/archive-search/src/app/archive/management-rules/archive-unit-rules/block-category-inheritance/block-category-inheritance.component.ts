@@ -69,13 +69,15 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       .pipe(filter((result) => !!result))
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-          this.ruleActions = data.filter((action) => action.actionType !== RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE);
+          this.ruleActions = data.filter(
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
+          );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
@@ -98,7 +100,9 @@ export class BlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE).stepValid = true;
+    this.ruleActions.find(
+      (action) => action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory
+    ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
     this.showText = true;

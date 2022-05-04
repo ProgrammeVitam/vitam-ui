@@ -40,6 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
+import { RuleTypeEnum } from '../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
 
 @Component({
@@ -66,7 +67,8 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-      this.isButtonCanceled = data.filter((rule) => rule.actionType === RuleActionsEnum.ADD_RULES).length !== 0;
+      this.isButtonCanceled =
+        data.filter((rule) => rule.actionType === RuleActionsEnum.ADD_RULES && rule.ruleType === RuleTypeEnum.APPRAISALRULE).length !== 0;
     });
   }
 
@@ -105,7 +107,9 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).stepValid = true;
+    this.ruleActions.find(
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
+    ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
     this.isValidValue = true;
@@ -116,7 +120,9 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
     });
-    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).stepValid = false;
+    this.ruleActions.find(
+      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
+    ).stepValid = false;
     this.isValidValue = false;
     this.showText = false;
   }
@@ -130,14 +136,18 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       .pipe(filter((result) => !!result))
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-          this.ruleActions = data.filter((action) => action.actionType !== RuleActionsEnum.UPDATE_PROPERTY);
+          this.ruleActions = data.filter(
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UPDATE_PROPERTY)
+          );
         });
+
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.ADD_RULES
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
           );
         });
+
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
       });
   }
