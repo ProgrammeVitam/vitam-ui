@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
  *
@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-package fr.gouv.vitamui.ingest.internal.server.service;
+package fr.gouv.vitamui.ingest.internal.server.service.ingest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

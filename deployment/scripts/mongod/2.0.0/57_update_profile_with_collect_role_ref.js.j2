@@ -1,0 +1,51 @@
+db = db.getSiblingDB('iam')
+
+print("START_57_update_profile_with_collect_role_ref.js");
+
+// ========================================= COLLECT PROFILE =========================================
+
+var maxIdProfile = db.getCollection('sequences').findOne({'_id': 'profile_identifier'}).sequence;
+
+db.profiles.insert({
+	"_id" : "system_collect",
+	"identifier" : NumberInt(maxIdProfile++),
+	"name" : "Collect Profile",
+	"description" : "Collect Profile",
+	"tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+	"applicationName" : "COLLECT_APP",
+	"enabled" : true,
+	"readonly" : true,
+	"level" : "",
+	"customerId" : "system_customer",
+	"roles" : [
+        { "name": "ROLE_GET_EXTERNAL_PARAMS" },
+        { "name": "ROLE_GET_FILLING_PLAN_ACCESS" },
+        { "name": "ROLE_GET_COLLECT_TRANSACTIONS" },
+        { "name": "ROLE_GET_COLLECT_PROJECTS" },
+	 ]
+});
+
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+	$set: {
+		"sequence": NumberInt(maxIdProfile)
+	}
+});
+
+// ========================================= GROUPS =========================================
+
+// ----------------------------------------- LEVEL "0" -----------------------------------------
+db.groups.updateOne( {
+	"_id": "admin_group"
+}, {
+    $addToSet: { "profileIds":  "system_collect" }
+});
+
+db.groups.updateOne( {
+	"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+}, {
+    $addToSet: { "profileIds":  "system_collect" }
+});
+
+print("END_57_update_profile_with_collect_role_ref.js");

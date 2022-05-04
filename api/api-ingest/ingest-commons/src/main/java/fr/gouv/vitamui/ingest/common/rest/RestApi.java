@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
  *
@@ -26,10 +26,15 @@
  */
 package fr.gouv.vitamui.ingest.common.rest;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class RestApi {
+
     public static final String V1_INGEST = "/iam/v1/ingest";
     public static final String INGEST_REPORT_ODT = "/odtreport";
     public static final String INGEST_UPLOAD_V2 = "/upload-v2";
     public static final String INGEST_ATR = "/atr";
     public static final String INGEST_MANIFEST = "/manifest";
+    public static final String V1_COLLECT = "/collect/v1";
 }

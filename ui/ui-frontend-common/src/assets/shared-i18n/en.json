@@ -275,6 +275,10 @@
     "ACCESSION_REGISTER_APP": {
       "NAME": "Accession Register",
       "TOOLTIP": "View all of the accession register data"
+    },
+    "COLLECT_APP": {
+      "NAME": "Data Collection",
+      "TOOLTIP": "Data Collection, Remittance Preparation Application"
     }
   },
   "FOOTER": {

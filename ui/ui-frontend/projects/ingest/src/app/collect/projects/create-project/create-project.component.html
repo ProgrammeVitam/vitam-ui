@@ -1,0 +1,299 @@
+<div class="header">
+  <vitamui-common-progress-bar [index]="stepIndex" [count]="stepCount"></vitamui-common-progress-bar>
+</div>
+
+<form [formGroup]="projectForm">
+  <vitamui-common-stepper [selectedIndex]="stepIndex">
+
+    <!-- Step 1 : Upload fichiers -->
+    <cdk-step>
+      <div class="content">
+        <h2>{{ 'COLLECT.UPLOAD_TITLE' | translate }}</h2>
+        <h4>{{ 'COLLECT.UPLOAD_SUB_TITLE' | translate }}</h4>
+        <div class="d-flex">
+          <div
+            class="drag-and-drop-area"
+            [ngClass]="{ 'on-over': hasDropZoneOver }"
+            (dragover)="onDragOver($event)"
+            (dragleave)="onDragLeave($event)"
+            (drop)="onDropped($event)"
+          >
+            <div *ngIf="(uploadFiles$|async)?.length > 0" class="drag-container">
+              <div class="file-info-class">
+                <div class="vitamui-chip-list">
+                  <div *ngFor="let uploadFile of (uploadFiles$|async)" class="vitamui-chip">
+                    <div class="vitamui-chip-content" [title]="uploadFile">
+                      {{ uploadFile?.name }}
+                      <span class="file-size">{{ uploadFile?.size | bytes }}</span>
+                    </div>
+                    <div class="vitamui-remove-chip" (click)="removeFile(uploadFile)">
+                      <i class="material-icons">clear</i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <input type="file" #fileSearch class="input-file" (change)="handleFile($event)" webkitdirectory directory multiple />
+            <div class="drop-area">
+              <div class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>
+              <div>
+                <div class="sip-drop">
+                  <div class="upload">
+                    <span class="url-select" (click)="addSip()">{{ 'INGEST_UPLOAD.BROWSE' | translate }}</span>
+                  </div>
+                  <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" (click)="validateAndProcessUpload()" [disabled]="(uploadFiles$|async)?.length === 0">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- Step 2 : Rattachement des archives à une position -->
+    <cdk-step >
+      <div class="content">
+        <h2>{{ 'COLLECT.ARCHIVE_POSITION_TITLE' | translate }}</h2>
+        <h4>{{ 'COLLECT.ARCHIVE_POSITION_SUB_TITLE' | translate }}</h4>
+        <div class="d-flex">
+          <div class="form-group">
+            <vitamui-library-filing-plan
+              [formControl]="linkParentIdControl"
+              [tenantIdentifier]="tenantIdentifier"
+              [accessContract]="accessContractSelect.value"
+              [mode]="FILLING_PLAN_MODE.SOLO"
+            ></vitamui-library-filing-plan>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn primary" (click)="move()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- Step 3 : Description du versement -->
+    <cdk-step>
+      <div class="content">
+        <h2>{{ 'COLLECT.PROJECT_DESCRIPTION_TITLE' | translate }}</h2>
+        <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SUB_TITLE' | translate }}</h4>
+        <div>
+          <vitamui-common-input
+            class="col-12"
+            formControlName="messageIdentifier"
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_LABEL' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-textarea
+            class="col-12"
+            formControlName="comment"
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}"
+          >
+          </vitamui-common-textarea>
+          <div class="col-12">
+            <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_BOUNDED_DATES' | translate }}</h4>
+            <span class="error-message">{{ dateErrorMessage }}</span>
+          </div>
+
+          <div class="col-5 vitamui-input vitamui-date">
+            <input formControlName="startDate" [matDatepicker]="pickerStart"  matInput placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_START_DATE' | translate }}">
+            <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </div>
+
+          <div class="col-5 offset-2 vitamui-input vitamui-date">
+            <input formControlName="endDate" [matDatepicker]="pickerEnd"  matInput placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_END_DATE' | translate }}">
+            <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+          </div>
+
+          <div class="col-12 mt-4 mb-3">
+            <div class="row">
+              <div class="col-7">
+                <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_SERVICES' | translate }}</h4>
+              </div>
+              <div class="col-5 mt-2">
+                <vitamui-common-slide-toggle class="fields-padding" formControlName="referentialCheckup" matTooltipPosition="below">
+                  {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
+                </vitamui-common-slide-toggle>
+              </div>
+            </div>
+          </div>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="originatingAgencyIdentifier"
+            required
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-6 offset-1"
+            [disabled]="true"
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_ORIGINATING_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="submissionAgencyIdentifier"
+            required
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            [disabled]="true"
+            class="col-6 offset-1"
+            placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_SUBMISSION_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn secondary back" (click)="back()">
+            <i class="material-icons mr-2">arrow_back</i>
+            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          </button>
+          <button type="button" class="btn primary" [disabled]="validateThirdStep()" (click)="move()">{{ 'COMMON.NEXT' | translate }}</button>
+          <button type="button" class="btn link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- Step 4 : Contexte de versement -->
+    <cdk-step >
+      <div class="content">
+        <div class="col-12 mt-4 mb-3">
+          <div class="row">
+            <div class="col-7">
+              <h4>{{ 'COLLECT.PROJECT_CONTEXT_SUB_TITLE' | translate }}</h4>
+            </div>
+            <div class="col-5 mt-2">
+              <vitamui-common-slide-toggle class="fields-padding" formControlName="referentialCheckup" matTooltipPosition="below">
+                {{ 'COLLECT.PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP' | translate }}
+              </vitamui-common-slide-toggle>
+            </div>
+          </div>
+        </div>
+        <div>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="archivalAgencyIdentifier"
+            required
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-6 offset-1"
+            [disabled]="true"
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="transferringAgencyIdentifier"
+            required
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-6 offset-1"
+            [disabled]="true"
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="archivalAgreement"
+            required
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-6 offset-1"
+            [disabled]="true"
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-5"
+            formControlName="archivalProfile"
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
+          >
+          </vitamui-common-input>
+          <vitamui-common-input
+            class="col-6 offset-1"
+            [disabled]="true"
+            placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
+          >
+          </vitamui-common-input>
+
+          <mat-form-field appearance="outline" id="acquisition-informations" class="col-12">
+            <label for="acquisition-informations">
+              <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
+            </label>
+            <mat-select formControlName="acquisitionInformation">
+              <mat-option *ngFor="let acqInfo of acquisitionInformations" [value]="acqInfo">{{ acqInfo }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" id="legal-status" class="col-12">
+            <label for="legal-status">
+              <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
+            </label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let lgs of legalStatus" [value]="lgs">{{ lgs }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn secondary back" (click)="back()">
+            <i class="material-icons mr-2">arrow_back</i>
+            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          </button>
+          <button type="button" class="btn primary" (click)="updateProject()" [disabled]="validateFourStep()">{{ 'COMMON.SUBMIT' | translate }}</button>
+          <button type="button" class="btn link" (click)="onCancel()">{{'COMMON.UNDO' | translate}}</button>
+        </div>
+      </div>
+    </cdk-step>
+
+    <!-- Step 5 : Téléchargements -->
+    <cdk-step>
+      <div class="content">
+      <div class="row">
+        <div class="col-11">
+          <h2>{{ 'COLLECT.UPLOAD_TRACKING_TITLE' | translate }}</h2>
+        </div>
+      </div>
+        <table class="vitamui-table">
+          <thead>
+          <tr>
+            <th>{{ 'INGEST_TRACKING.SIP_NAME' | translate }}</th>
+            <th>{{ 'INGEST_TRACKING.WEIGHT' | translate }}</th>
+            <th>{{ 'COLLECT.UPLOAD_ZIP_TRACKING_TITLE' | translate }}</th>
+            <th>{{ 'INGEST_TRACKING.STATUS' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="vitamui-table-row">
+            <td>{{ (zippedFile$|async)?.name }}</td>
+            <td>{{ (zippedFile$|async)?.size | filesize }}</td>
+            <td>
+              <span class="purcent">{{ (zippedFile$|async)?.currentFileUploadedSize | number: '1.0-0' }} %</span>
+              <mat-progress-bar mode="determinate" [value]="(zippedFile$|async)?.currentFileUploadedSize" class="stepper-progress-bar"> </mat-progress-bar>
+            </td>
+            <td>
+              <span class="purcent">{{ (zippedFile$|async)?.uploadedSize | number: '1.0-0' }} %</span>
+              <mat-progress-bar mode="determinate" [value]="(zippedFile$|async)?.uploadedSize" class="stepper-progress-bar"> </mat-progress-bar>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div class="actions">
+          <button type="button" [disabled]="!closeModal" class="btn primary" (click)="close()">{{'COMMON.CLOSE' | translate}}</button>
+        </div>
+      </div>
+    </cdk-step>
+  </vitamui-common-stepper>
+</form>

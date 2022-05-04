@@ -1,0 +1,27 @@
+db = db.getSiblingDB('iam')
+
+print("START_56_application_collect_ref.js");
+
+// -------- VITAM COLLECT -----
+
+db.applications.insert({
+    "identifier" : "COLLECT_APP",
+{% if vitamui.ingest.base_url is defined %}
+    "url": "{{ vitamui.ingest.base_url }}/collect",
+    "serviceId": "^{{ vitamui.ingest.base_url }}/.*",
+{% else %}
+    "url": "{{ url_prefix }}/ingest/collect",
+    "serviceId": "^{{ url_prefix }}/ingest/.*",
+{% endif %}
+    "icon" : "vitamui-icon vitamui-icon-rules",
+    "name" : "Collecte de données",
+    "category" : "ingest_and_consultation",
+    "position" : NumberInt(89),
+    "hasCustomerList" : false,
+    "hasTenantList" : true,
+    "hasHighlight" : false,
+    "tooltip" : "Collecte de données, Application de préparation des versements",
+    "target" : "_self"
+});
+
+print("END_56_application_collect_ref.js");

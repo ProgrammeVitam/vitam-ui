@@ -207,6 +207,16 @@ customer-init:
       level:
       roles:
         - ROLE_GET_ACCESSION_REGISTER_DETAIL
+
+    - name: Collecte de données
+      description: Collecte de données, Application de préparation des versements
+      app-name: COLLECT_APP
+      level:
+      roles:
+        - ROLE_GET_EXTERNAL_PARAMS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_COLLECT_TRANSACTIONS
+        - ROLE_GET_COLLECT_PROJECTS
   # Other Default profiles for admin group
   admin-profiles:
   #- name: profileName

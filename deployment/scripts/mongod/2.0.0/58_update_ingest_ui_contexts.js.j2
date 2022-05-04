@@ -1,0 +1,21 @@
+db = db.getSiblingDB('security')
+
+print("START_58_update_ingest_ui_contexts.js");
+
+db.contexts.updateOne({
+   "_id":"ui_ingest_context"
+},
+{
+   $addToSet:{
+      "roleNames":{
+         $each:[
+            "ROLE_GET_EXTERNAL_PARAMS",
+            "ROLE_GET_FILLING_PLAN_ACCESS",
+            "ROLE_GET_COLLECT_TRANSACTIONS",
+            "ROLE_GET_COLLECT_PROJECTS"
+        	]
+        }
+    }
+});
+
+print("END_58_update_ingest_ui_contexts.js");
