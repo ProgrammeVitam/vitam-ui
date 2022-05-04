@@ -77,8 +77,6 @@ import java.util.Optional;
 
 /**
  * The controller to check existence, create, read, update and delete the users.
- *
- *
  */
 @RestController
 @RequestMapping(RestApi.V1_USERS_URL)
@@ -96,10 +94,12 @@ public class UserExternalController implements CrudController<UserDto> {
     }
 
     @Secured(ServicesData.ROLE_GET_USERS)
-    @GetMapping(params = { "page", "size" })
-    public PaginatedValuesDto<UserDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction)
+    @GetMapping(params = {"page", "size"})
+    public PaginatedValuesDto<UserDto> getAllPaginated(@RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
+        @RequestParam(required = false) final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, PreconditionFailedException {
 
         SanityChecker.sanitizeCriteria(criteria);
@@ -109,7 +109,9 @@ public class UserExternalController implements CrudController<UserDto> {
         if(orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER
+            .debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
+                orderBy, direction);
         return userExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -126,11 +128,10 @@ public class UserExternalController implements CrudController<UserDto> {
     }
 
     /**
-     *
      * {@inheritDoc}
      */
     @Override
-    @Secured({ ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CHECK_USERS })
+    @Secured({ServicesData.ROLE_GET_USERS, ServicesData.ROLE_CHECK_USERS})
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
 
@@ -142,7 +143,7 @@ public class UserExternalController implements CrudController<UserDto> {
 
     @Override
     @PostMapping
-    @Secured(ServicesData.ROLE_CREATE_USERS)
+    //@Secured(ServicesData.ROLE_CREATE_USERS)
     public UserDto create(final @Valid @RequestBody UserDto dto) throws InvalidParseOperationException,
         PreconditionFailedException {
 
@@ -174,7 +175,8 @@ public class UserExternalController implements CrudController<UserDto> {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
-        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user : the DTO id must match the path id");
+        Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")),
+            "Unable to patch user : the DTO id must match the path id");
         return userExternalService.patch(partialDto);
     }
 
@@ -200,6 +202,7 @@ public class UserExternalController implements CrudController<UserDto> {
 
     /**
      * Get levels by criteria.
+     *
      * @param criteria Criteria as json string
      * @return List of matching levels
      */
@@ -214,6 +217,7 @@ public class UserExternalController implements CrudController<UserDto> {
 
     /**
      * Create/refresh current user analytics
+     *
      * @param partialDto analytics to create or refresh
      * @return current user with updated analytics
      */

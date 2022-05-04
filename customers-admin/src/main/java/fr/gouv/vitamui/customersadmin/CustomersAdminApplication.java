@@ -8,11 +8,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class CustomersAdminApplication {
     protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomersAdminApplication.class);
+    @Autowired
+    private ConfigurableApplicationContext context;
+
 
     @Autowired
     private CustomerMgtSrvc customerMgtSrvc;
@@ -25,7 +29,9 @@ public class CustomersAdminApplication {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
             LOGGER.info("Let's start creating customers:");
-            customerMgtSrvc.createCustomers();
+            customerMgtSrvc.createCustomersWithUsers();
+            LOGGER.info("Application terminated:");
+            System.exit(SpringApplication.exit(context));
         };
     }
 }

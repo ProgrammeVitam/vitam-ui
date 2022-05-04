@@ -34,7 +34,6 @@
           "code": "787878755",
           "name": "ben",
           "companyName": "ben",
-          "internalCode": null,
           "address": {
             "street": null,
             "zipCode": null,
@@ -43,8 +42,49 @@
           },
           "readonly": false
         }
+      ]
+    }
+  },
+  {
+    "tenantName": "ben customer",
+    "customerDto": {
+      "gdprAlert": true,
+      "gdprAlertDelay": 72,
+      "enabled": true,
+      "code": "787878756",
+      "name": "benaissa",
+      "companyName": "ben",
+      "passwordRevocationDelay": 6,
+      "otp": "OPTIONAL",
+      "address": {
+        "street": "ben",
+        "zipCode": "bneb",
+        "city": "ben",
+        "country": "FR"
+      },
+      "language": "FRENCH",
+      "emailDomains": [
+        "xelians.fr"
       ],
-      "id": null
+      "defaultEmailDomain": "xelians.fr",
+      "hasCustomGraphicIdentity": false,
+      "themeColors": null,
+      "portalMessages": {},
+      "portalTitles": {},
+      "owners": [
+        {
+          "code": "787878756",
+          "name": "ben owner",
+          "companyName": "ben owner",
+          "address": {
+            "street": null,
+            "zipCode": null,
+            "city": null,
+            "country": "FR"
+          },
+          "readonly": false
+        }
+      ]
     }
   }
 ]

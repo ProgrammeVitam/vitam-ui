@@ -3,10 +3,6 @@
     "email": "useremail@benben.fr",
     "firstname": "user firstname",
     "lastname": "user lastname",
-    "mobile": "mobile",
-    "phone": null,
-    "groupId": "626bffd54f972832718c6f953c348027a3cb4bbfae98b5de62f943cd40ee1604",
-    "customerId": "626bffd24f972832718c6f77f14dcbfed89f41f2bf061b668138629ab2f3998e",
     "otp": false,
     "type": "NOMINATIVE",
     "subrogeable": true,
@@ -16,10 +12,21 @@
       "zipCode": "CP user",
       "city": "town user",
       "country": "FR"
-    },
-    "internalCode": null,
-    "siteCode": null,
-    "centerCode": null,
-    "autoProvisioningEnabled": false
+    }
+  },
+  {
+    "email": "benaissa.benarbia@xelians.fr",
+    "firstname": "Ben",
+    "lastname": "bena lastname",
+    "otp": false,
+    "type": "NOMINATIVE",
+    "subrogeable": true,
+    "status": "ENABLED",
+    "address": {
+      "street": "adresse ben",
+      "zipCode": "CP user ben ",
+      "city": "town user ben ",
+      "country": "FR"
+    }
   }
 ]

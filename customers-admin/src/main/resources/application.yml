@@ -23,7 +23,7 @@ iam-client:
       password: ${jks-password}
     truststore:
       path: ${certs-folder}/truststore_server.jks
-      password: ${jks-password}
+      password: changeme
 
 
 # Mongo

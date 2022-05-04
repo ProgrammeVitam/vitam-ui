@@ -37,11 +37,13 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
@@ -86,7 +88,7 @@ public class CustomerMgtSrvc {
     protected static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CustomerMgtSrvc.class);
 
     protected static final String GENERIC_CERTIFICATE = "generic-it";
-    public static final String ADMIN_USER = "admin_user";
+    public static final String ADMIN_USER = "superadmin_user";
     public static final String TOKEN_USER_ADMIN = "tokenadmin";
     protected static final String TESTS_CONTEXT_ID = "integration-tests_context";
     private MongoCollection<Document> tokensCollection;
@@ -98,6 +100,8 @@ public class CustomerMgtSrvc {
 
     private MongoCollection<Document> contextsCollection;
     private MongoCollection<Document> groupsCollection;
+    private MongoCollection<Document> tenantsCollection;
+    private MongoCollection<Document> customersCollection;
     private MongoCollection<Document> certificatesCollection;
     protected static final String TESTS_CERTIFICATE_ID = "integration-tests_cert";
 
@@ -160,6 +164,16 @@ public class CustomerMgtSrvc {
     private IamExternalWebClientFactory iamWebClientFactory;
 
 
+    @Autowired
+    private IamExternalRestClientFactory iamRestClientFactory;
+
+    List<String> tokensId = new ArrayList<>();
+
+    public ExternalHttpContext createCustomerContext(String customerId, String userId, int tenant) {
+        return new ExternalHttpContext(tenant, "token-" + userId, TESTS_CONTEXT_ID,
+            "admincaller", "requestId", "ContratTNR");
+    }
+
     protected ExternalHttpContext getSystemTenantUserAdminContext() {
         buildSystemTenantUserAdminContext();
         return new ExternalHttpContext(proofTenantIdentifier, TOKEN_USER_ADMIN, TESTS_CONTEXT_ID,
@@ -170,6 +184,37 @@ public class CustomerMgtSrvc {
         getUsersCollection().updateOne(new BsonDocument("_id", new BsonString(ADMIN_USER)),
             new BsonDocument("$set", new BsonDocument("groupId", new BsonString(ADMIN_USER_GROUP))));
         tokenUserAdmin();
+    }
+
+    private Integer getTenantInfosByCustomer(String customerId) {
+        Integer tenantId = null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("customerId").is(customerId));
+
+        BsonDocument bsonDocument = new BsonDocument("customerId", new BsonString(customerId));
+        FindIterable<Document> documents = getTenantsCollection().find(bsonDocument);
+        try (MongoCursor<Document> cursor = documents.iterator()) {
+            while (cursor.hasNext()) {
+                tenantId = cursor.next().get("identifier", Integer.class);
+            }
+        }
+        return tenantId;
+    }
+
+
+    private String getGenericgetGenericUserAdminByCustomerUserAdminIdByCustomer(String customerId) {
+        String userId = null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("customerId").is(customerId).and("type").is("GENERIC"));
+
+        BsonDocument bsonDocument = new BsonDocument("customerId", new BsonString(customerId));
+        FindIterable<Document> documents = getUsersCollection().find(bsonDocument);
+        try (MongoCursor<Document> cursor = documents.iterator()) {
+            while (cursor.hasNext()) {
+                userId = cursor.next().get("_id", String.class);
+            }
+        }
+        return userId;
     }
 
     private String getGroupIdByCustomer(String customerId) {
@@ -187,22 +232,27 @@ public class CustomerMgtSrvc {
         return groupId;
     }
 
+    private List<CustomerDto> getCustomersList() {
+        List<CustomerDto> customers = new ArrayList<>();
 
-
-    /*
-        @Bean
-        public IamExternalRestClientFactory iamExternalRestClientFactory(final RestTemplateBuilder restTemplateBuilder,
-            final RestClientConfiguration restClientConfiguration) {
-            final IamExternalRestClientFactory restClientFactory =
-                new IamExternalRestClientFactory(restClientConfiguration, restTemplateBuilder);
-            return restClientFactory;
+        FindIterable<Document> documents = getCustomersCollection().find();
+        try (MongoCursor<Document> cursor = documents.iterator()) {
+            while (cursor.hasNext()) {
+                Document document = cursor.next();
+                CustomerDto customerDto = new CustomerDto();
+                customerDto.setId(document.get("_id", String.class));
+                customerDto.setName(document.get("name", String.class));
+                customerDto.setDefaultEmailDomain(document.get("defaultEmailDomain", String.class));
+                customerDto.setEmailDomains(document.get("emailDomains", List.class));
+                customers.add(customerDto);
+            }
         }
-    */
+        return customers;
+    }
+
     protected String tokenUserAdmin() {
         return writeToken(TESTS_USER_ADMIN, SYSTEM_USER_ID);
     }
-
-
 
     protected String writeToken(final String tokenId, final String userId) {
 
@@ -268,6 +318,20 @@ public class CustomerMgtSrvc {
             groupsCollection = getIamDatabase().getCollection("groups");
         }
         return groupsCollection;
+    }
+
+    protected MongoCollection<Document> getTenantsCollection() {
+        if (tenantsCollection == null) {
+            tenantsCollection = getIamDatabase().getCollection("tenants");
+        }
+        return tenantsCollection;
+    }
+
+    protected MongoCollection<Document> getCustomersCollection() {
+        if (customersCollection == null) {
+            customersCollection = getIamDatabase().getCollection("customers");
+        }
+        return customersCollection;
     }
 
     protected MongoCollection<Document> getUsersCollection() {
@@ -346,64 +410,111 @@ public class CustomerMgtSrvc {
         return result;
     }
 
-    public void createCustomers() throws IOException {
+    private void parseAndCreateUsers() {
 
-        LOGGER.info(getGroupIdByCustomer("626bf4c1a21df47ee9027a005f521a6f27fd49e1b4dac65a45c65eef1ff172f6"));
-        //read json file
-        List<CustomerCreationFormData> customersListToCreate = readFromCustomersFile();
-        List<CustomerDto> customerDtoList = new ArrayList<>();
-        if (customersListToCreate != null) {
-            try {
-                prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
-                ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
-                for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
-                    LOGGER.debug("Start creating customer  {} ", customerCreationFormData);
-
-                    boolean existCode = false;
-                    /*
-                    iamExternalRestClientFactory.getCustomerExternalRestClient().checkExist(externalContext,
-                            "{\"queryOperator\":\"AND\",\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"code\",\"value\":\"" +
-                                customerCreationFormData.getCustomerDto().getCode() +
-                                "\",\"operator\":\"EQUALS\"}]}]}");
-
-                     */
-                    if (existCode) {
-                        throw new IllegalArgumentException(String.format("Customer with code exists %S",
-                            customerCreationFormData.getCustomerDto().getCode()));
-                    }
-                    CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient()
-                        .create(externalContext, customerCreationFormData);
-                    customerDtoList.add(customerDto);
-                    LOGGER.info("Customer with name {} and id {} is created ", customerDto.getName(),
-                        customerDto.getIdentifier());
-                }
-                List<UserDto> usersListToCreate = readFromUsersFile();
-                if (!CollectionUtils.isEmpty(usersListToCreate)) {
-                    for (CustomerDto customerDto : customerDtoList) {
-                        Optional<UserDto> userOpt = usersListToCreate.stream()
-                            .filter(userDto -> userDto.getEmail().contains(customerDto.getDefaultEmailDomain()))
-                            .findAny();
-/*
-                        if (userOpt.isPresent()) {
-                            UserDto userDto = userOpt.get();
-                            String userInfoId = generatedUserInfo();
-                            userDto.setUserInfoId(userInfoId);
-                            UserDto createdUser =
-                                getIamRestClientFactory(GENERIC_CERTIFICATE).getUserExternalRestClient()
-                                    .create(externalContext, userDto);
-                            LOGGER.info("User created with id {} ", createdUser.getIdentifier());
-                        } else {
-                            throw new NotFoundException(
-                                "No user found for company email " + customerDto.getDefaultEmailDomain());
+        LOGGER.info("Start parsing users file");
+        List<UserDto> usersListToCreate = null;
+        try {
+            usersListToCreate = readFromUsersFile();
+            if (!CollectionUtils.isEmpty(usersListToCreate)) {
+                LOGGER.info("Start creating users from file, users count in file is {} ",
+                    usersListToCreate.size());
+                try {
+                    List<CustomerDto> customerDtoList = getCustomersList();
+                    if (!CollectionUtils.isEmpty(customerDtoList)) {
+                        for (UserDto userDto : usersListToCreate) {
+                            Optional<CustomerDto> customerDtoOpt = customerDtoList.stream()
+                                .filter(customerDto -> customerDto.getDefaultEmailDomain() != null &&
+                                    userDto.getEmail().contains(customerDto.getDefaultEmailDomain()))
+                                .findAny();
+                            if (customerDtoOpt.isPresent()) {
+                                CustomerDto customerDto = customerDtoOpt.get();
+                                Integer tenant = getTenantInfosByCustomer(customerDto.getId());
+                                String groupId = getGroupIdByCustomer(customerDto.getId());
+                                LOGGER.info("Start preparing context for user {} - {} ", userDto.getFirstname(),
+                                    userDto.getLastname());
+                                String genericAdminUserId =
+                                    getGenericgetGenericUserAdminByCustomerUserAdminIdByCustomer(customerDto.getId());
+                                writeToken("token-" + genericAdminUserId, genericAdminUserId);
+                                ExternalHttpContext customerContext =
+                                    createCustomerContext(customerDto.getId(), genericAdminUserId, tenant);
+                                String userInfoId = generatedUserInfo();
+                                userDto.setUserInfoId(userInfoId);
+                                userDto.setCustomerId(customerDto.getId());
+                                userDto.setGroupId(groupId);
+                                UserDto createdUser =
+                                    iamRestClientFactory.getUserExternalRestClient().create(customerContext, userDto);
+                                LOGGER.info("User {}-}{} created with success with id {} ", userDto.getFirstname(),
+                                    userDto.getLastname(), createdUser.getIdentifier());
+                            } else {
+                                throw new NotFoundException("Wrong user / company email {} " + userDto.getEmail());
+                            }
                         }
-*/
                     }
+                } catch (Exception e) {
+                    LOGGER.error("Error creating user due to error {} ", e);
                 }
-            } catch (Exception e) {
-                LOGGER.error("Error creating customer due to error {} ", e);
-            } finally {
-                dropGenericContext();
             }
+        } catch (IOException e) {
+            LOGGER.error("Error parsing users files {} ", e.getMessage());
+        }
+    }
+
+    private void parseAndCreateCustomers() {
+        //read json file
+        List<CustomerCreationFormData> customersListToCreate;
+        try {
+            LOGGER.info("Start parsing customers file");
+            customersListToCreate = readFromCustomersFile();
+
+            List<CustomerDto> customerDtoList = new ArrayList<>();
+            if (customersListToCreate != null) {
+                try {
+                    LOGGER.info("Start creating customers from file, customers count in file is {} ",
+                        customersListToCreate.size());
+                    LOGGER.info("Start preparing context");
+                    prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
+                    ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
+                    for (CustomerCreationFormData customerCreationFormData : customersListToCreate) {
+                        LOGGER.debug("Start creating customer with code {} ",
+                            customerCreationFormData.getCustomerDto().getCode());
+
+                        //boolean existCode = isExistCode(externalContext, customerCreationFormData);
+                        CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient()
+                            .create(externalContext, customerCreationFormData);
+                        customerDtoList.add(customerDto);
+                        LOGGER.info("Customer with name {} and id {} is created with identifier ",
+                            customerDto.getName(),
+                            customerDto.getIdentifier());
+                    }
+                } catch (Exception e) {
+                    LOGGER.error("Error creating customer due to error {} ", e);
+                }
+            }
+        } catch (IOException e) {
+            LOGGER.error("Error parsing customer files {} ", e.getMessage());
+        }
+    }
+
+    /*@TODO add check code after
+     */
+    private boolean isExistCode(ExternalHttpContext externalContext,
+        CustomerCreationFormData customerCreationFormData) {
+        boolean existCode =
+            iamRestClientFactory.getUserExternalRestClient().checkExist(externalContext,
+                "{\"queryOperator\":\"AND\",\"criteria\":[{\"queryOperator\":\"AND\",\"criteria\":[{\"key\":\"code\",\"value\":\"" +
+                    customerCreationFormData.getCustomerDto().getCode() +
+                    "\",\"operator\":\"EQUALS\"}]}]}");
+        return existCode;
+    }
+
+    public void createCustomersWithUsers() {
+        try {
+            tokensId.add(TESTS_USER_ADMIN);
+            parseAndCreateCustomers();
+            parseAndCreateUsers();
+        } finally {
+            dropGenericContext();
         }
     }
 
@@ -412,7 +523,9 @@ public class CustomerMgtSrvc {
         getContextsCollection().deleteOne(eq("_id", TESTS_CONTEXT_ID));
         // recreate generic certificate
         getCertificatesCollection().deleteOne(eq("_id", TESTS_CERTIFICATE_ID));
-        getTokensCollection().deleteOne(eq("_id", TESTS_USER_ADMIN));
+        if (!CollectionUtils.isEmpty(tokensId)) {
+            tokensId.stream().forEach(tokenId -> getTokensCollection().deleteOne(eq("_id", TESTS_USER_ADMIN)));
+        }
     }
 
     /**
@@ -433,7 +546,5 @@ public class CustomerMgtSrvc {
             });
         return usersList;
     }
-
-
 
 }
