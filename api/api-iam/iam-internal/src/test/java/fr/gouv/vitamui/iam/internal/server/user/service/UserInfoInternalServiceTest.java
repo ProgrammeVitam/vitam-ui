@@ -18,7 +18,7 @@ import fr.gouv.vitamui.commons.api.exception.ApplicationServerException;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
-import fr.gouv.vitamui.iam.commons.utils.IamDtoBuilder;
+import fr.gouv.vitamui.iam.common.utils.IamDtoBuilder;
 import fr.gouv.vitamui.iam.internal.server.user.converter.UserInfoConverter;
 import fr.gouv.vitamui.iam.internal.server.user.dao.UserInfoRepository;
 import fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo;

@@ -271,19 +271,6 @@ public class ProfileInternalService {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     private ProfileResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<ProfileModel> requestResponse;
         try {
@@ -300,20 +287,4 @@ public class ProfileInternalService {
             throw new InternalServerException("Unable to find archivalProfiles", e);
         }
     }
-
-/*    public Boolean check(VitamContext vitamContext, ProfileDto archivalProfileDto) {
-        List<ProfileDto> profileDtoList = new ArrayList<>();
-        profileDtoList.add(archivalProfileDto);
-        LOGGER.info("Archival Profile Check EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
-        try {
-            return !vitamProfileService.checkAbilityToCreateArchivalProfileInVitam(converter.convertDtosToVitams(profileDtoList), vitamContext);
-        } catch (ConflictException e) {
-            return true;
-        } catch (VitamUIException e) {
-            throw new InternalServerException("Unable to check archivalProfile", e);
-        }
-    }*/
-
-
-
 }

@@ -61,7 +61,7 @@ public final class UserAuthenticationHandlerTest {
     @Before
     public void setUp() {
         casExternalRestClient = mock(CasExternalRestClient.class);
-        val utils = new Utils(null, 0, null, null);
+        val utils = new Utils(null, 0, null, null, "");
         handler = new UserAuthenticationHandler(null, new DefaultPrincipalFactory(), casExternalRestClient, utils, null);
         credential = new UsernamePasswordCredential(USERNAME, PASSWORD);
     }

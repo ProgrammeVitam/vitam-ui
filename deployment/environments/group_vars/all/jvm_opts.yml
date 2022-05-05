@@ -50,7 +50,7 @@ vitamui:
     jvm_opts:
       # memory: "-Xms512m -Xmx512m"
       # gc: ""
-      # java: ""
+      # java: "-Dhttp.nonProxyHosts=*.programmevitam.fr|localhost|127.0.0.1|*.service.consul -Dhttp.proxyHost=x.x.x.x -Dhttp.proxyPort=xxxx -Dhttps.proxyHost=x.x.x.x -Dhttps.proxyPort=xxxx"
   security_internal:
     jvm_opts:
       # memory: "-Xms512m -Xmx512m"

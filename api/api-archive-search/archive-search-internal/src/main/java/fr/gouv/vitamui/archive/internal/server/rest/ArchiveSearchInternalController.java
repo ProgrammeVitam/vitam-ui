@@ -33,8 +33,10 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -57,6 +59,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -246,5 +249,68 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         String result = archiveInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    public ResponseEntity<String> computedInheritedRules(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchCriteriaDto)
+        throws VitamClientException {
+        LOGGER.info("Computed Inherited Rules  by criteria {}", searchCriteriaDto);
+        SanityChecker.sanitizeCriteria(searchCriteriaDto);
+        ParameterChecker
+            .checkParameter(
+                "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.computedInheritedRules(vitamContext, searchCriteriaDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
+    public ResultsDto selectUnitsWithInheritedRules(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException, IOException {
+        LOGGER.debug("Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
+            accessContractId, searchQuery);
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        return archiveInternalService.selectUnitWithInheritedRules(searchQuery, vitamContext);
+    }
+
+    @PostMapping(RestApi.RECLASSIFICATION)
+    public ResponseEntity<String> reclassification(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) throws VitamClientException {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, reclassificationCriteriaDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = archiveInternalService.reclassification(vitamContext, reclassificationCriteriaDto);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    public String updateUnitById(final @PathVariable("id") String id,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+        throws VitamClientException {
+        LOGGER.debug("update archiveUnit id  {}", id);
+        ParameterChecker
+            .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
+        ParameterChecker
+            .checkParameter("The request body is mandatory: ", unitDescriptiveMetadataDto);
+        VitamContext vitamContext =
+            securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
+        return archiveInternalService.updateUnitById(id, unitDescriptiveMetadataDto, vitamContext);
     }
 }

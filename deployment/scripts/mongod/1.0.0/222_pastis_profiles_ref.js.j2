@@ -1,0 +1,39 @@
+db = db.getSiblingDB('iam')
+
+print("START 222_pastis_profiles_ref.js");
+
+// -------- VITAM ADMINISTRATION -----
+
+
+db.profiles.insert({
+  "_id": "system_pastis",
+  "identifier" : NumberInt(maxIdProfile++),
+  "name": "Pastis-Gestion des profils documentaires",
+  "description": "Pastis-Gestion des profils documentaires",
+  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
+  "applicationName": "PASTIS_APP",
+  "level": "",
+  "enabled": true,
+  "readonly": false,
+  "customerId": "system_customer",
+  "roles": [
+  {
+                 "name": "ROLE_GET_ARCHIVE_PROFILES_UNIT"
+             },
+             {
+                 "name": "ROLE_UPDATE_ARCHIVE_PROFILES_UNIT"
+             },
+             {
+                 "name": "ROLE_CREATE_ARCHIVE_PROFILES_UNIT"
+             },
+              {
+                  "name": "ROLE_IMPORT_ARCHIVE_PROFILES_UNIT"
+              },
+            {
+                "name": "ROLE_DELETE_ARCHIVE_PROFILES_UNIT"
+            }
+   ]
+});
+
+
+print("END 222_pastis_profiles_ref.js");

@@ -34,23 +34,23 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { uniqueId } from 'lodash-es';
-import * as moment_ from 'moment';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap, timeout } from 'rxjs/operators';
-
 import {
   HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse
 } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { uniqueId } from 'lodash-es';
+import * as moment_ from 'moment';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap, timeout } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { ENVIRONMENT, WINDOW_LOCATION } from './injection-tokens';
 import { Logger } from './logger/logger';
 import { StartupService } from './startup.service';
+
+
 
 const moment = moment_;
 
@@ -61,6 +61,7 @@ const HTTP_STATUS_CODE_NOT_FOUND = 404;
 const HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR = 500;
 const HTTP_STATUS_CODE_SERVICE_UNAVAILABLE = 503;
 const HTTP_STATUS_CODE_GATEWAY_TIMEOUT = 504;
+const HTTP_STATUS_CODE_EXPECTATION_FAILED = 417;
 const DEFAULT_API_TIMEOUT = 50000;
 const CLIENT_ERROR_START = 400;
 const SERVER_ERROR_START = 500;
@@ -179,7 +180,12 @@ export class VitamUIHttpInterceptor implements HttpInterceptor {
                 panelClass: 'vitamui-snack-bar',
                 duration: NOTIFICATION_DELAY_MS,
               });
-            } else if (response.status >= CLIENT_ERROR_START) {
+            }else if (response.status === HTTP_STATUS_CODE_EXPECTATION_FAILED) {
+               this.snackBar.open("La configuration de la plateforme ne vous permet pas d'executer cette action, merci de contacter votre administrateur", null, {
+                 panelClass: 'vitamui-snack-bar',
+                 duration: NOTIFICATION_DELAY_MS,
+               });
+           } else if (response.status >= CLIENT_ERROR_START) {
               this.snackBar.open('Une erreur technique est survenue : requête invalide', null, {
                 panelClass: 'vitamui-snack-bar',
                 duration: NOTIFICATION_DELAY_MS,

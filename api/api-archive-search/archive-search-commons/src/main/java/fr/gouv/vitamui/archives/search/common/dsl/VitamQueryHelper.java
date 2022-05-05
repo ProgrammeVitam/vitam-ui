@@ -39,7 +39,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,9 +51,11 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gte;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lte;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.match;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.missing;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
@@ -62,40 +63,33 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 public class VitamQueryHelper {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(VitamQueryHelper.class);
 
-
     public static void addParameterCriteria(BooleanQuery query, ArchiveSearchConsts.CriteriaOperators operator,
         String searchKey, final List<String> searchValues) throws InvalidCreateOperationException {
         if (searchKey == null || "".equals(searchKey.trim())) {
             throw new InvalidCreateOperationException("searchKey is empty or null ");
         }
-            if (CollectionUtils.isEmpty(searchValues)) {
-                //the case of empty list
-                query.add(buildSubQueryByOperator(searchKey, null, operator));
-            } else if (searchValues.size() > 1) {
-                BooleanQuery subQueryOr = or();
-                BooleanQuery subQueryAnd = and();
-                //The case of multiple values
-                if(operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
-                    for (String value : searchValues) {
-                        subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
-
-                    }
-                    query.add(subQueryAnd);
+        if (CollectionUtils.isEmpty(searchValues)) {
+            //the case of empty list
+            query.add(buildSubQueryByOperator(searchKey, null, operator));
+        } else if (searchValues.size() > 1) {
+            BooleanQuery subQueryOr = or();
+            BooleanQuery subQueryAnd = and();
+            //The case of multiple values
+            if (operator == ArchiveSearchConsts.CriteriaOperators.NOT_EQ) {
+                for (String value : searchValues) {
+                    subQueryAnd.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
-                else {
-                    for (String value : searchValues) {
-                        subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
-                    }
-                    query.add(subQueryOr);
+                query.add(subQueryAnd);
+            } else {
+                for (String value : searchValues) {
+                    subQueryOr.add(buildSubQueryByOperator(searchKey, value, operator));
                 }
-
-            } else if (searchValues.size() == 1) {
-                //the case of one value
-                query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+                query.add(subQueryOr);
             }
-
-
-
+        } else if (searchValues.size() == 1) {
+            //the case of one value
+            query.add(buildSubQueryByOperator(searchKey, searchValues.stream().findAny().get(), operator));
+        }
     }
 
     public static Query buildSubQueryByOperator(String searchKey, String value,
@@ -125,8 +119,16 @@ public class VitamQueryHelper {
             case EXISTS:
                 criteriaSubQuery = exists(searchKey);
                 break;
+
             case MISSING:
                 criteriaSubQuery = missing(searchKey);
+                break;
+            case IN:
+                if (!ArchiveSearchConsts.APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING.containsValue(value)) {
+                    criteriaSubQuery = in(searchKey, value);
+                } else {
+                    criteriaSubQuery = eq(searchKey, value);
+                }
                 break;
             default:
                 criteriaSubQuery = eq(searchKey, value);
@@ -142,8 +144,7 @@ public class VitamQueryHelper {
      * @throws InvalidParseOperationException
      * @throws InvalidCreateOperationException
      */
-    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap, final Integer pageNumber,
-        final Integer size,
+    public static JsonNode createQueryDSL(Map<String, Object> searchCriteriaMap,
         final Optional<String> orderBy, final Optional<DirectionDto> direction)
         throws InvalidParseOperationException, InvalidCreateOperationException {
 
@@ -161,7 +162,6 @@ public class VitamQueryHelper {
                 select.addOrderByAscFilter(orderBy.get());
             }
         }
-        select.setLimitFilter(pageNumber * size, size);
         Map<String, Integer> projection = new HashMap<>();
         projection.put("Identifier", 1);
         projection.put("Name", 1);
@@ -183,10 +183,7 @@ public class VitamQueryHelper {
                 final String searchKey = entry.getKey();
 
                 switch (searchKey) {
-                    case ArchiveSearchConsts.NAME:
-                    case ArchiveSearchConsts.SHORT_NAME:
                     case ArchiveSearchConsts.IDENTIFIER:
-                    case ArchiveSearchConsts.ID:
                         if (entry.getValue() instanceof ArrayList) {
                             final List<String> stringsValues = (ArrayList) entry.getValue();
                             for (String elt : stringsValues) {
@@ -197,6 +194,23 @@ public class VitamQueryHelper {
                             // string equals operation
                             final String stringValue = (String) entry.getValue();
                             queryOr.add(eq(searchKey, stringValue));
+                            haveOrParameters = true;
+                        }
+
+                        break;
+
+                    case ArchiveSearchConsts.NAME:
+                    case ArchiveSearchConsts.SHORT_NAME:
+                    case ArchiveSearchConsts.ID:
+                        if (entry.getValue() instanceof ArrayList) {
+                            final List<String> stringsValues = (ArrayList) entry.getValue();
+                            for (String name : stringsValues) {
+                                queryOr.add(matchPhrasePrefix(searchKey, name));
+                            }
+                            haveOrParameters = true;
+                        } else if (entry.getValue() instanceof String) {
+                            final String stringValue = (String) entry.getValue();
+                            queryOr.add(matchPhrasePrefix(searchKey, stringValue));
                             haveOrParameters = true;
                         }
 

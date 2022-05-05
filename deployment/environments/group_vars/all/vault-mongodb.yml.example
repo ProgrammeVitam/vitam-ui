@@ -1,8 +1,10 @@
 ---
 
 ## mongo_express_vars.yml
-mongod_express_basicauth_username: vitam_admin
-mongod_express_basicauth_password: changeit_aadmin1234
+mongo_express:
+    basicauth:
+        username: vitam_admin
+        password: changeit_aadmin1234
 
 ## mongo-vitamui
 mongod_replicaset_passphrase: changeit_passphrase
@@ -43,7 +45,7 @@ mongodb:
         password: changeit_versioning
         roles: '[{ role: "readWrite", db: "versioning" }]'
     archivesearch:
-      db: archivesearch
-      user: api-archive-search
-      password: changeit_archivesearch
-      roles: '[{ role: "readWrite", db: "archivesearch" }]'
+        db: archivesearch
+        user: api-archive-search
+        password: changeit_archivesearch
+        roles: '[{ role: "readWrite", db: "archivesearch" }]'

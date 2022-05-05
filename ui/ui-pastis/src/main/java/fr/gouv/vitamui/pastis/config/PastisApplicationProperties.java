@@ -56,4 +56,6 @@ import org.springframework.stereotype.Component;
 public class PastisApplicationProperties extends UIPropertiesImpl {
 
     public RestClientConfiguration pastisExternalClient;
+
+    public RestClientConfiguration referentialExternalClient;
 }

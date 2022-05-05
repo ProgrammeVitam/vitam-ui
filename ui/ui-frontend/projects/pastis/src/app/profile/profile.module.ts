@@ -56,13 +56,10 @@ import {PastisMaterialModule} from '../material.module';
 import {UserActionsModule} from '../user-actions/user-actions.module';
 import {CreateProfileComponent} from './create-profile/create-profile.component';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
-import {
-  FilterByStringNamePipe,
-  FilterByTypePipe,
-  ListProfileComponent
-} from './list-profile/list-profile.component';
+import { ListProfileComponent} from './list-profile/list-profile.component';
+import { FilterByStringNamePipe } from './list-profile/pipes/filterByStringName.pipe';
+import { FilterByTypePipe } from './list-profile/pipes/filterByType.pipe';
 import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
-import {ProfileComponent} from './profile.component';
 
 
 @NgModule({
@@ -83,9 +80,9 @@ import {ProfileComponent} from './profile.component';
     NgxUiLoaderModule,
     ProfilePreviewModule
   ],
-  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent],
+  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
   providers: [],
-  declarations: [ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
+  declarations: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
 
 })
 export class ProfileModule {

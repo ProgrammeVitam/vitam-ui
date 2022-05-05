@@ -34,15 +34,14 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { Router } from '@angular/router';
-import { AuthService, StartupService } from 'ui-frontend-common';
-import { of } from 'rxjs';
+import { Component } from '@angular/core';
+import { async, TestBed } from '@angular/core/testing';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { Component } from '@angular/core';
-
+import { Router } from '@angular/router';
+import { of } from 'rxjs';
+import { AuthService, StartupService } from 'ui-frontend-common';
+import { AppComponent } from './app.component';
 
 @Component({ selector: 'router-outlet', template: '' })
 class RouterOutletStubComponent {}
@@ -51,25 +50,16 @@ class RouterOutletStubComponent {}
 class SubrogationBannerStubComponent {}
 
 describe('AppComponent', () => {
-
-
   beforeEach(async(() => {
     const startupServiceStub = { configurationLoaded: () => true, printConfiguration: () => {} };
     TestBed.configureTestingModule({
-      imports: [
-        MatSidenavModule,
-        NoopAnimationsModule,
-      ],
-      declarations: [
-        AppComponent,
-        SubrogationBannerStubComponent,
-        RouterOutletStubComponent,
-      ],
+      imports: [MatSidenavModule, NoopAnimationsModule],
+      declarations: [AppComponent, SubrogationBannerStubComponent, RouterOutletStubComponent],
       providers: [
         { provide: StartupService, useValue: startupServiceStub },
         { provide: AuthService, useValue: { userLoaded: of(null) } },
         { provide: Router, useValue: { navigate: () => {} } },
-      ]
+      ],
     }).compileComponents();
   }));
 
@@ -86,6 +76,4 @@ describe('AppComponent', () => {
     console.log('Title App: ', app);
     expect(app.title).toEqual('Archive Search Application');
   }));
-
-
 });

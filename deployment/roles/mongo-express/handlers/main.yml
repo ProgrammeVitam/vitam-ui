@@ -1,0 +1,11 @@
+---
+
+- name: reload consul configuration for mongo-express
+  service:
+    name: "{{ consul.service_name | default('vitam-consul') }}"
+    state: reloaded
+
+- name: restart mongo-express
+  service:
+    name: "{{ service_name }}"
+    state: restarted

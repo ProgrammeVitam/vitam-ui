@@ -134,4 +134,6 @@ public class IdentityProvider extends CustomerIdDocument {
     private Boolean useNonce;
 
     private Boolean usePkce;
+
+    private String protocoleType;
 }

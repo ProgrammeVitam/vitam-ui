@@ -410,6 +410,9 @@ public class ServicesData {
     public static final String ROLE_EXPORT_DIP = ROLE_PREFIX + "EXPORT_DIP";
     public static final String ROLE_ELIMINATION = ROLE_PREFIX + "ELIMINATION";
     public static final String ROLE_UPDATE_MANAGEMENT_RULES = UPDATE_ROLE_PREFIX + "MANAGEMENT_RULES";
+    public static final String ROLE_COMPUTED_INHERITED_RULES = ROLE_PREFIX + "COMPUTED_INHERITED_RULES";
+    public static final String ROLE_RECLASSIFICATION = ROLE_PREFIX + "RECLASSIFICATION";
+    public static final String ROLE_UPDATE_UNIT_DESC_METADATA = ROLE_PREFIX + "UPDATE_UNIT_DESC_METADATA";
 
     //------------------------------------ API TREES & PLANS -----------------------------------------
 
@@ -548,6 +551,7 @@ public class ServicesData {
             ROLE_EXPORT_DIP,
             ROLE_ELIMINATION,
             ROLE_UPDATE_MANAGEMENT_RULES,
+            ROLE_COMPUTED_INHERITED_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -566,7 +570,9 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER_DETAIL
+            ROLE_GET_ACCESSION_REGISTER_DETAIL,
+            ROLE_RECLASSIFICATION,
+            ROLE_UPDATE_UNIT_DESC_METADATA
 
             );
 
@@ -692,6 +698,7 @@ public class ServicesData {
             ROLE_EXPORT_DIP,
             ROLE_ELIMINATION,
             ROLE_UPDATE_MANAGEMENT_RULES,
+            ROLE_COMPUTED_INHERITED_RULES,
 
             ROLE_CREATE_HOLDING_FILLING_SCHEME_ROLE,
             ROLE_GET_HOLDING_FILLING_SCHEME_ROLE,
@@ -710,7 +717,9 @@ public class ServicesData {
             ROLE_SEARCH_ACCESS_CONTRACT_EXTERNAL_PARAM_PROFILE,
             ROLE_GET_ALL_LOGBOOK_OPERATION,
 
-            ROLE_GET_ACCESSION_REGISTER_DETAIL
+            ROLE_GET_ACCESSION_REGISTER_DETAIL,
+            ROLE_RECLASSIFICATION,
+            ROLE_UPDATE_UNIT_DESC_METADATA
             );
     //@formatter:on
 

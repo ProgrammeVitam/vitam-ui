@@ -65,6 +65,7 @@ import { IdentityProviderCreateComponent } from './sso-tab/identity-provider-cre
 import { IdentityProviderDetailsComponent } from './sso-tab/identity-provider-details/identity-provider-details.component';
 import { IdentityProviderService } from './sso-tab/identity-provider.service';
 import { SsoTabComponent } from './sso-tab/sso-tab.component';
+import { CustomParamsModule } from '../../shared/custom-params/custom-params.module';
 
 @NgModule({
   imports: [
@@ -82,6 +83,7 @@ import { SsoTabComponent } from './sso-tab/sso-tab.component';
     MatTooltipModule,
     MatProgressSpinnerModule,
     VitamUICommonModule,
+    CustomParamsModule
   ],
   declarations: [
     CustomerPreviewComponent,

@@ -122,7 +122,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
         when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
 
         // When
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
+        archiveSearchAgenciesInternalService
+            .mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();
@@ -157,7 +158,8 @@ public class ArchiveSearchAgenciesInternalServiceTest {
         when(objectMapper.treeToValue(any(), any())).thenReturn(getResponseAgencies());
 
         // When
-        archiveSearchAgenciesInternalService.mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
+        archiveSearchAgenciesInternalService
+            .mapAgenciesNameToCodes(searchQuery, new VitamContext(1));
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();

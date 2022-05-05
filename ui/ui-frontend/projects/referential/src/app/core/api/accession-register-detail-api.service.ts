@@ -37,14 +37,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  AccessionRegisterDetail,
-  AccessionRegisterStats,
-  BASE_URL,
-  BaseHttpClient,
-  PageRequest,
-  PaginatedResponse,
-} from 'ui-frontend-common';
+import { AccessionRegisterDetail, BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
 
 @Injectable({
   providedIn: 'root',
@@ -60,9 +53,5 @@ export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionR
     headers?: HttpHeaders
   ): Observable<PaginatedResponse<AccessionRegisterDetail>> {
     return super.getAllPaginated(pageRequest, embedded, headers);
-  }
-
-  getAccessionRegisterDetailStats(headers: HttpHeaders, search: any): Observable<AccessionRegisterStats> {
-    return this.http.post<AccessionRegisterStats>(`${this.apiUrl}` + '/stats', search, { headers });
   }
 }

@@ -1,29 +1,31 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav
-    mode="side"
-    [fixedInViewport]="true"
-    [opened]="show"
-    *ngIf="foundAccessContract"
-    vitamuiCommonResizeSidebar="left"
-  >
-    <app-filing-holding-scheme
-      [accessContract]="accessContract"
-    ></app-filing-holding-scheme>
+  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
+    <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
   </mat-sidenav>
 
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true">
+  <mat-sidenav
+    [ngClass]="isLPExtended ? 'extended-lateral-panel' : 'normal-lateral-panel'"
+    #panel
+    mode="side"
+    position="end"
+    [fixedInViewport]="true"
+  >
     <app-archive-preview
       *ngIf="openedItem"
       (previewClose)="closePanel()"
+      (showExtendedLateralPanel)="showExtendedLateralPanel()"
       [archiveUnit]="openedItem"
       [accessContract]="accessContract"
+      (backToNormalLateralPanel)="backToNormalLateralPanel()"
+      [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+      [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
     ></app-archive-preview>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
       <vitamui-common-title-breadcrumb>
-        {{ "ARCHIVE_SEARCH.TITLE_SEARCH_AREA" | translate }}
+        {{ 'ARCHIVE_SEARCH.TITLE_SEARCH_AREA' | translate }}
       </vitamui-common-title-breadcrumb>
     </div>
     <div class="vitamui-content" *ngIf="foundAccessContract">
@@ -43,6 +45,7 @@
       <app-archive-search
         (archiveUnitClick)="showPreviewArchiveUnit($event)"
         [accessContract]="accessContract"
+        [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
       >
       </app-archive-search>
     </div>
