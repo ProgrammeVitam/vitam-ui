@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -55,7 +55,7 @@ const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
 })
-export class ManagementRulesComponent implements OnInit, OnDestroy {
+export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
   criteriaSearchListToSaveSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
@@ -82,14 +82,24 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   };
   actionSelected: string;
 
-  rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
-    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true },
-    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
-    { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
-    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: true },
-    { id: 'DisseminationRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'), isDisabled: true },
-    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true },
-    { id: 'ClassificationRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'), isDisabled: true },
+  rulesCatygories: { id: string; name: string; isDisabled: boolean; checked: boolean }[] = [
+    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true, checked: false },
+    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false, checked: false },
+    { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true, checked: false },
+    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false, checked: false },
+    {
+      id: 'DisseminationRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'),
+      isDisabled: true,
+      checked: false,
+    },
+    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true, checked: false },
+    {
+      id: 'ClassificationRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'),
+      isDisabled: true,
+      checked: false,
+    },
   ];
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
@@ -105,6 +115,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   isDeleteValidActions = false;
   isDeleteValidActionsWithProperty = false;
   isDeletePropertyDisabled = false;
+  isAccessRuleActionDisabled = false;
   isBlockInheritanceCategoryDisabled = false;
   isUnlockInheritanceCategoryDisabled = false;
 
@@ -132,6 +143,10 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private logger: Logger
   ) {
+    this.applyChanges();
+  }
+
+  applyChanges() {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.isUpdateValidActions =
         data.filter(
@@ -187,6 +202,76 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.ruleCategorySelected) {
+      this.applyChanges();
+    }
+  }
+
+  prepareAccessRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.ACCESSRULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AccessRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.AccessRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
   ngOnInit() {
     this.tenantIdentifierSubscription = this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -228,6 +313,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
 
   selectRule(rule: any) {
     this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
+    this.isAccessRuleActionDisabled = rule.id === RuleTypeEnum.ACCESSRULE;
 
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
@@ -236,7 +322,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.indexOf(rule);
     }
     this.ruleCategorySelected = rule.id;
+    this.managementRulesSharedDataService.emitRuleCategory(rule.id);
     this.isRuleCategorySelected = true;
+    this.applyChanges();
   }
 
   loadCriteriaSearchDSLQuery() {
@@ -277,7 +365,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSelectAction(rule: string) {
+  prepareActionToAdd(rule: string) {
     let idToAdd = 0;
     this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
@@ -287,6 +375,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
     if (
       rule === RuleActionsEnum.ADD_RULES &&
+      this.ruleCategorySelected === 'AppraisalRule' &&
       this.ruleActions.filter((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).length === 0
     ) {
       this.ruleActions.push({
@@ -305,6 +394,58 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
 
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
+  }
+
+  onSelectAction(rule: string) {
+    switch (rule) {
+      case 'ADD_RULES':
+        if (this.isRuleCategorySelected && !this.isAddValidActions) {
+          this.prepareActionToAdd(rule);
+        }
+
+        break;
+
+      case 'UPDATE_RULES':
+        if (this.isRuleCategorySelected && !this.isUpdateValidActions && !this.isUpdateValidActionsWithProperty) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'DELETE_RULES':
+        if (this.isRuleCategorySelected && !this.isDeleteValidActions && !this.isDeleteValidActionsWithProperty) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+
+      case 'UPDATE_PROPERTY':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isAddPropertyValidActions &&
+          !this.isAddValidActions &&
+          !this.isUpdateValidActionsWithProperty
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'DELETE_PROPERTY':
+        if (!this.isDeletePropertyDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+
+      case 'BLOCK_CATEGORY_INHERITANCE':
+        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'UNLOCK_CATEGORY_INHERITANCE':
+        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      default:
+        this.logger.info('The action could not be created or added');
+        break;
+    }
   }
 
   returnToArchiveSearchPage() {
@@ -327,7 +468,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};
 
-    this.prepareRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareAppraisalRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareAccessRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
@@ -344,6 +486,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
           searchCriteriaDto: this.criteriaSearchDSLQuery,
           ruleActions: allRuleActions,
         };
+
         this.archiveService.updateUnitsRules(ruleSearchCriteriaDto, this.accessContract).subscribe(
           (response) => {
             const ruleActions: ActionsRules[] = [];
@@ -374,7 +517,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
   }
 
-  prepareRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+  prepareAppraisalRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       const preventInheritance: boolean = data.find(
         (managementRule) =>

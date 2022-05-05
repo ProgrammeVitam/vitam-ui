@@ -16,6 +16,7 @@
                 (change)="selectRule(ruleCategory)"
                 [disabled]="ruleCategory.isDisabled"
                 [value]="ruleCategory.id"
+                [checked]="ruleCategory.checked"
               >
                 {{ ruleCategory.name }}
               </mat-radio-button>
@@ -29,39 +30,35 @@
               <mat-select
                 placeholder="{{ 'RULES.ACTION_ON_RULES' | translate }} "
                 [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
-                [(value)]="actionSelected"
               >
                 <mat-option
-                  value="ADD_RULES"
                   [disabled]="!isRuleCategorySelected || isAddValidActions"
-                  (click)="onSelectAction(actionSelected)"
+                  (click)="onSelectAction('ADD_RULES')"
                   matTooltip="{{ isAddValidActions ? messageNotAdd : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
                 >
                   {{ 'RULES.ACTIONS.ADD_RULE' | translate }}
                 </mat-option>
                 <mat-option
-                  value="UPDATE_RULES"
                   [disabled]="!isRuleCategorySelected || isUpdateValidActions || isUpdateValidActionsWithProperty"
-                  (click)="onSelectAction(actionSelected)"
+                  (click)="onSelectAction('UPDATE_RULES')"
                   matTooltip="{{ isUpdateValidActions || isUpdateValidActionsWithProperty ? messageNotUpdate : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
                 >
                   {{ 'RULES.ACTIONS.UPDATE_RULE' | translate }}</mat-option
                 >
                 <mat-option
-                  value="DELETE_RULES"
                   [disabled]="!isRuleCategorySelected || isDeleteValidActions || isDeleteValidActionsWithProperty"
                   matTooltip="{{ isDeleteValidActions || isDeleteValidActionsWithProperty ? messageNotDelete : '' }}"
                   matTooltipClass="vitamui-tooltip-rules"
-                  (click)="onSelectAction(actionSelected)"
+                  (click)="onSelectAction('DELETE_RULES')"
                 >
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
                 >
-                <mat-option value="BlockRuleInheritance" [disabled]="true" (click)="onSelectAction(actionSelected)">
+                <mat-option value="BlockRuleInheritance" [disabled]="true" (click)="onSelectAction('BlockRuleInheritance')">
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
-                <mat-option value="deleteBlockRuleInheritance" [disabled]="true" (click)="onSelectAction(actionSelected)">
+                <mat-option value="deleteBlockRuleInheritance" [disabled]="true" (click)="onSelectAction('deleteBlockRuleInheritance')">
                   {{ 'RULES.ACTIONS.DELETE_BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
               </mat-select>
@@ -78,15 +75,13 @@
           <mat-form-field class="vitamui-mat-select select-more-actions">
             <mat-select
               placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
-              [disabled]="!isRuleCategorySelected || !isAllActionsValid()"
-              [(value)]="actionSelected"
+              [disabled]="!isRuleCategorySelected || !isAllActionsValid() || isAccessRuleActionDisabled"
             >
               <mat-option
-                value="UPDATE_PROPERTY"
                 [disabled]="!isRuleCategorySelected || isAddPropertyValidActions || isAddValidActions || isUpdateValidActionsWithProperty"
-                (click)="onSelectAction(actionSelected)"
+                (click)="onSelectAction('UPDATE_PROPERTY')"
                 matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
-                matTooltipClass="vitamui-tooltip-rules"
+                matTooltipClass="vitamui-tooltip-rules "
               >
                 {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}</mat-option
               >
@@ -95,23 +90,21 @@
                 value="DELETE_PROPERTY"
                 [disabled]="isDeletePropertyDisabled"
                 matTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
-                matTooltipClass="vitamui-tooltip-rules"
+                matTooltipClass="vitamui-tooltip-rules "
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
               >
               <mat-option
-                value="BLOCK_CATEGORY_INHERITANCE"
                 [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
-                (click)="onSelectAction(actionSelected)"
+                (click)="onSelectAction('BLOCK_CATEGORY_INHERITANCE')"
               >
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
               <mat-option
-                value="UNLOCK_CATEGORY_INHERITANCE"
                 [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
-                (click)="onSelectAction(actionSelected)"
+                (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
                 matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
-                matTooltipClass="vitamui-tooltip-rules"
+                matTooltipClass="vitamui-tooltip-rules "
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >

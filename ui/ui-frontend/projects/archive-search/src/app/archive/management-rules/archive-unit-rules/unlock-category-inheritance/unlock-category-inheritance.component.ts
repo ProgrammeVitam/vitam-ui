@@ -34,12 +34,13 @@ import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator } from 'ui-frontend-common';
 import { ArchiveService } from '../../../archive.service';
+import { UpdateUnitManagementRuleService } from '../../../common-services/update-unit-management-rule.service';
 import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../models/search.criteria';
 
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
-const APPRAISAL_RULE_INHERITED_CRITERIA = 'APPRAISAL_RULE_INHERITED_CRITERIA';
+const MANAGEMENT_RULE_INHERITED_CRITERIA = 'MANAGEMENT_RULE_INHERITED_CRITERIA';
 @Component({
   selector: 'app-unlock-category-inheritance',
   templateUrl: './unlock-category-inheritance.component.html',
@@ -79,7 +80,8 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private archiveService: ArchiveService,
     private translateService: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
   ) {
     this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
@@ -112,7 +114,9 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find((action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE).stepValid = true;
+    this.ruleActions.find(
+      (action) => action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE && action.ruleType === this.ruleCategory
+    ).stepValid = true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
     this.showText = true;
@@ -136,7 +140,7 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -144,9 +148,9 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: APPRAISAL_RULE_INHERITED_CRITERIA,
+      criteria: MANAGEMENT_RULE_INHERITED_CRITERIA,
       values: [{ id: 'true', value: 'true' }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
@@ -187,13 +191,15 @@ export class UnlockCategoryInheritanceComponent implements OnInit, OnDestroy {
       .pipe(filter((result) => !!result))
       .subscribe(() => {
         this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-          this.ruleActions = data.filter((action) => action.actionType !== RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE);
+          this.ruleActions = data.filter(
+            (action) => !(action.ruleType === this.ruleCategory && action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+          );
         });
         this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
 
         this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
           this.managementRules = data.filter(
-            (rule) => rule.category === this.ruleCategory && rule.actionType !== RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
           );
         });
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
