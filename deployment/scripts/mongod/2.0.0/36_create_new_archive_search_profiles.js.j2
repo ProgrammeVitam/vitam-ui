@@ -6,7 +6,7 @@ print("START_36_create_new_archive_search_profiles.js");
 
 db.profiles.insert({
    "_id":"system_archive_search_profile_consultation",
-   "identifier":NumberInt(29),
+   "identifier":NumberInt(34),
    "name":"Consultation",
    "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, sans export DIP et sans élimination",
    "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
@@ -35,7 +35,7 @@ db.profiles.insert({
 
 db.profiles.insert({
    "_id":"system_archive_search_profile_archiviste",
-   "identifier":NumberInt(29),
+   "identifier":NumberInt(35),
    "name":"Archiviste",
    "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles de gestion, avec export DIP et sans élimination",
    "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),
@@ -67,7 +67,7 @@ db.profiles.insert({
 
 db.profiles.insert({
    "_id":"system_archive_search_profile_archiviste_administrator",
-   "identifier":NumberInt(29),
+   "identifier":NumberInt(36),
    "name":"Archiviste administrateur",
    "description":"Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination",
    "tenantIdentifier":NumberInt({{ vitamui_platform_informations.proof_tenant }}),

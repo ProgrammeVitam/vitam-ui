@@ -10,4 +10,4 @@
         tags: mongo_init
       }
     - mongo_configure
-    - { role: mongo-express, when: "mongo_express | default(false) | bool == true" }
+    - { role: mongo-express, when: "mongo_express_enabled | default(false) | bool == true" }

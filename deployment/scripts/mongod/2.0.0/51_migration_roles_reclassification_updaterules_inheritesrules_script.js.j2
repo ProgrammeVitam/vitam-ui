@@ -1,0 +1,26 @@
+db = db.getSiblingDB('iam');
+
+print("START 51_migration_roles_reclassification_updaterules_inheritesrules_script.js");
+
+db.profiles.updateMany({
+   "name": "Archiviste administrateur"
+},
+{
+   "$addToSet": {
+      "roles":{
+           $each: [
+              {
+              "name": "ROLE_RECLASSIFICATION"
+              },
+              {
+              "name": "ROLE_UPDATE_MANAGEMENT_RULES"
+              },
+              {
+              "name": "ROLE_COMPUTED_INHERITED_RULES"
+              }
+          ]
+      }
+   }
+});
+
+print("END 51_migration_roles_reclassification_updaterules_inheritesrules_script.js");

@@ -35,34 +35,44 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
-import { ArchiveComponent } from './archive.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../environments/environment';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialog } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { of } from 'rxjs';
+import {
+  BASE_URL,
+  InjectorModule,
+  LoggerModule,
+  SearchBarModule,
+  SecurityService,
+  WINDOW_LOCATION
+} from 'ui-frontend-common';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
-
+import { ArchiveComponent } from './archive.component';
 
 describe('ArchiveComponent', () => {
   let component: ArchiveComponent;
   let fixture: ComponentFixture<ArchiveComponent>;
 
-
   const archiveServiceMock = {
     archive: () => of('test archive'),
-    search: () => of([])
+    search: () => of([]),
+  };
+  const securityServiceMock = {
+    hasRole: () => of(true),
   };
 
   beforeEach(async(() => {
@@ -76,26 +86,32 @@ describe('ArchiveComponent', () => {
         MatSidenavModule,
         InjectorModule,
         RouterTestingModule,
+        HttpClientTestingModule,
         VitamUICommonTestModule,
         BrowserAnimationsModule,
         LoggerModule.forRoot(),
         RouterTestingModule,
         NoopAnimationsModule,
-        SearchBarModule
+        SearchBarModule,
+        TranslateModule.forRoot(),
+        MatSnackBarModule,
       ],
-      declarations: [
-        ArchiveComponent
-      ],
+      declarations: [ArchiveComponent],
       providers: [
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) } },
-        { provide: environment, useValue: environment }
+        { provide: SecurityService, useValue: securityServiceMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
+        },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -104,7 +120,7 @@ describe('ArchiveComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 });

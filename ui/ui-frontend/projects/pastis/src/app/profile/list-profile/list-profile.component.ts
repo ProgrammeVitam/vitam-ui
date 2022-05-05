@@ -113,7 +113,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   sedaUrl: string = this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
 
-  newProfileUrl: string = this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile;
+  newProfileUrl: string = this.pastisConfig.pastisNewProfile;
 
   docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
 
@@ -215,7 +215,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   editProfile(element: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.pastisEditPage, element.id], {state: element, skipLocationChange: false});
+    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {state: element, relativeTo: this.route, skipLocationChange: false});
   }
 
   uploadProfile(files: File[]): void {
@@ -226,9 +226,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe( (response: any) => {
         if (response) {
-          console.log('File submited! Reponse is : ', response);
-
-          this.router.navigateByUrl(this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile, { state: response });
+          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route});
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -255,8 +253,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         if (result.action === 'PA' || result.action === 'PUA') {
           this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.action).subscribe((response: ProfileResponse) => {
             if (response) {
-              console.log('File submited! Reponse is : ', response);
-              this.router.navigateByUrl(this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile, {state: response});
+              this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response,relativeTo: this.route});
             }
           });
         }
@@ -331,7 +328,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
           });
         };
         fileReader.onerror = (error) => {
-        console.log(error);
+        console.error(error);
         };
       }
     }
@@ -339,34 +336,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeExpand(element: ProfileDescription) {
-    if (element.type == 'PA' && !element.path && element.status === 'ACTIVE') {
+    if (element.type === 'PA' && !element.path && element.status === 'ACTIVE') {
       this.expanded = !this.expanded;
     }
-    if (element.type == 'PUA' && element.status == 'ACTIVE'
-    && (element.controlSchema == '{}' || !element.controlSchema)) {
+    if (element.type === 'PUA' && element.status === 'ACTIVE'
+    && (element.controlSchema === '{}' || !element.controlSchema)) {
       this.expanded = !this.expanded;
     }
   }
 }
 
-@Pipe({name: 'filterByType'})
-export class FilterByTypePipe implements PipeTransform {
-  transform(listOfProfiles: ProfileDescription[], typeToFilter: string): ProfileDescription[] {
-    if (!listOfProfiles) { return null; }
-    if (!typeToFilter) { return listOfProfiles; }
-    if (typeToFilter == 'ALL') { return listOfProfiles; }
-    return listOfProfiles.filter(profile => profile.type == typeToFilter);
-  }
-}
-
-@Pipe({name: 'filterByStringName'})
-export class FilterByStringNamePipe implements PipeTransform {
-  constructor() {}
-  private listOfProfiles: ProfileDescription[];
-  transform(listOfProfiles: ProfileDescription[], nameToFilter: string): ProfileDescription[] {
-    if (!listOfProfiles) { return null; }
-    if (!nameToFilter) { return listOfProfiles; }
-    this.listOfProfiles = listOfProfiles.filter(profile => profile.identifier.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
-    return this.listOfProfiles;
-  }
-}

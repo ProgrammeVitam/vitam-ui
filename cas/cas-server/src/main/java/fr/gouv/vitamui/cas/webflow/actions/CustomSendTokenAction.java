@@ -55,6 +55,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.webflow.execution.Event;
 import org.springframework.webflow.execution.RequestContext;
 
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;
+
 /**
  * The custom action to send SMS for the MFA simple token.
  */
@@ -110,7 +112,7 @@ public class CustomSendTokenAction extends CasSimpleMultifactorSendTokenAction {
 
         // add the obfuscated phone to the webflow in case of success
         if (CasWebflowConstants.TRANSITION_ID_SUCCESS.equals(event.getId())) {
-            requestContext.getFlowScope().put("mobile", obfuscateMobile(mobile));
+            requestContext.getFlowScope().put("mobile", escapeHtml4(obfuscateMobile(mobile)));
         }
 
         return event;

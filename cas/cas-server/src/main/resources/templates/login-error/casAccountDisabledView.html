@@ -11,8 +11,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
-        <h4 th:utext="#{screen.accountdisabled.heading}">This account has been disabled.</h4>
-        <p th:utext="#{screen.accountdisabled.message}">Please contact the system administrator to regain
+        <h4 th:text="#{screen.accountdisabled.heading}">This account has been disabled.</h4>
+        <p th:text="#{screen.accountdisabled.message}">Please contact the system administrator to regain
             access.</p>
     </div>
 </div>

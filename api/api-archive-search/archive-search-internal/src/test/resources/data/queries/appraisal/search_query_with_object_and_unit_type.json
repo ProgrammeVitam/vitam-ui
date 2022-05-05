@@ -1,0 +1,31 @@
+{
+  "$and": [
+    {
+      "$or": [ {
+        "$and" : [
+          {
+            "$eq" : {
+              "#unitType" : "INGEST"
+            }
+          },
+          {
+            "$exists": "#object"
+          }
+        ]
+       },
+        {
+          "$and" : [
+            {
+              "$eq" : {
+                "#unitType" : "INGEST"
+              }
+            },
+            {
+              "$missing": "#object"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

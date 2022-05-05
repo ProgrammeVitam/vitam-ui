@@ -99,7 +99,7 @@ export class CreateNoticeComponent implements OnInit {
       this.modePUA = true;
     }
     this.information = 'texte d\'information';
-    const identifierForm = this.modePUA ? [null, Validators.required] : [null];
+    const identifierForm = [null, Validators.required];
     this.form = this.formBuilder.group({
       identifier: identifierForm,
       intitule: [null, Validators.required],
@@ -155,18 +155,31 @@ export class CreateNoticeComponent implements OnInit {
 
   }
 
-  checkIdentifier() {
+  checkIdentifier(modePUA: boolean) {
 
     if (this.notice.identifier.length !== 0) {
-      this.profileService.getPuaProfile(this.notice.identifier).subscribe(
-        () => {
-          alert('Identifier already exists use another identifier');
-          this.validate = false;
-        }, () => {
-          this.validate = true;
-          this.checkIntitule();
-        }
-      );
+      if(modePUA) {
+        this.profileService.getPuaProfile(this.notice.identifier).subscribe(
+          () => {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          }, () => {
+            this.validate = true;
+            this.checkIntitule();
+          }
+        );
+      }
+      else{
+        this.profileService.getPaProfile(this.notice.identifier).subscribe(
+          () => {
+            alert('Identifier already exists use another identifier');
+            this.validate = false;
+          }, () => {
+            this.validate = true;
+            this.checkIntitule();
+          }
+        );
+      }
     } else {
       this.validate = false;
     }

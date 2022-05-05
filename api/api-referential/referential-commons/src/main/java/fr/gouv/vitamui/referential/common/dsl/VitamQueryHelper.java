@@ -36,25 +36,18 @@
  */
 package fr.gouv.vitamui.referential.common.dsl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.query.CompareQuery;
 import fr.gouv.vitam.common.database.builder.query.QueryHelper;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.database.builder.request.single.Select;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -66,10 +59,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.gt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.lt;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.matchPhrasePrefix;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.ne;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.nin;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.range;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.wildcard;
 
 public class VitamQueryHelper {
@@ -95,24 +85,6 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
-    private static final String ORIGINATING_AGENCIES = "originatingAgencies";
-    private static final String END_DATE = "EndDate";
-    private static final String ARCHIVAL_AGREEMENT = "ArchivalAgreement";
-    private static final String ARCHIVAL_AGREEMENTS = "archivalAgreements";
-    private static final String ARCHIVAL_PROFILE = "ArchivalProfile";
-    private static final String ARCHIVAL_PROFILES = "archivalProfiles";
-    private static final String ACQUISITION_INFORMATION = "AcquisitionInformation";
-    private static final String ACQUISITION_INFORMATIONS = "acquisitionInformations";
-    private static final String EVENTS_OPTYPE = "Events.OpType";
-    private static final String ELIMINATION = "elimination";
-    private static final String TRANSFER_REPLY = "transfer_reply";
-
-    /* */
-    private static final String DATE_FORMAT = "dd/MM/yyyy";
-    public static final Collection<String> staticAcquisitionInformations = List.of("Versement", "Protocole", "Achat",
-        "Copie", "Dation", "Dépôt", "Dévolution", "Don", "Legs", "Réintégration", "Autres",
-        VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
-    public static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
 
     private VitamQueryHelper() {
         throw new UnsupportedOperationException("Utility class");
@@ -197,28 +169,6 @@ public class VitamQueryHelper {
                     case EV_DATE_TIME_END:
                         query.add(lt("evDateTime", (String) entry.getValue()));
                         break;
-                    case END_DATE:
-                        addEndDateToQuery(query, entry.getValue());
-                        break;
-                    case ORIGINATING_AGENCIES:
-                        List<String> originatingAgencies = (ArrayList<String>) entry.getValue();
-                        query.add(in(ORIGINATING_AGENCY, originatingAgencies.toArray(new String[] {})));
-                        break;
-                    case ARCHIVAL_AGREEMENTS:
-                        List<String> archivalAgreements = (ArrayList<String>) entry.getValue();
-                        query.add(in(ARCHIVAL_AGREEMENT, archivalAgreements.toArray(new String[] {})));
-                        break;
-                    case ARCHIVAL_PROFILES:
-                        List<String> archivalProfiles = (ArrayList<String>) entry.getValue();
-                        query.add(in(ARCHIVAL_PROFILE, archivalProfiles.toArray(new String[] {})));
-                        break;
-                    case ACQUISITION_INFORMATIONS:
-                        addAcquisitionInformationsToQuery(query, (ArrayList<String>) entry.getValue());
-                        break;
-                    case ELIMINATION:
-                    case TRANSFER_REPLY:
-                        addEventsToQuery(query, (String) entry.getValue(), searchKey.toUpperCase());
-                        break;
                     default:
                         LOGGER.error("Can not find binding for key: {}", searchKey);
                         break;
@@ -254,57 +204,6 @@ public class VitamQueryHelper {
                 select.setQuery(query);
             }
         }
-    }
-
-    private static void addEventsToQuery(BooleanQuery query, String value, String searchKeyUpperCase) throws InvalidCreateOperationException {
-        if(!value.equals("all")) {
-            boolean cond = Boolean.parseBoolean(value);
-            if(cond) {
-                query.add(eq(EVENTS_OPTYPE, searchKeyUpperCase));
-            } else {
-                query.add(ne(EVENTS_OPTYPE, searchKeyUpperCase));
-            }
-        }
-    }
-
-    private static void addAcquisitionInformationsToQuery(BooleanQuery query, List<String> data) throws InvalidCreateOperationException {
-        List<String> acquisitionInformations = new ArrayList<>(staticAcquisitionInformations);
-        acquisitionInformations.removeAll(data);
-
-        if(!acquisitionInformations.isEmpty()) {
-            if(data.contains(ACQUISITION_INFORMATION_NON_RENSEIGNE) ) {
-                query.add(nin(ACQUISITION_INFORMATION, acquisitionInformations.toArray(new String[] {})));
-            } else {
-                query.add(in(ACQUISITION_INFORMATION, data.toArray(new String[] {})));
-            }
-        }
-    }
-
-    private static void addEndDateToQuery(BooleanQuery query, Object value) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            AccessionRegisterDetailsSearchStatsDto.EndDateInterval dateInterval = mapper.convertValue(value, new TypeReference<>() {});
-
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(DATE_FORMAT).withZone(ZoneOffset.UTC);
-            String dateMinStr = dateInterval.getEndDateMin();
-            String dateMaxStr = dateInterval.getEndDateMax();
-
-            if (dateMinStr != null && dateMaxStr == null) {
-                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.now().toString(), true));
-            }
-
-            if (dateMinStr == null && dateMaxStr != null) {
-                query.add(range(END_DATE, LocalDate.now().toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
-            }
-
-            if (dateMinStr != null && dateMaxStr != null) {
-                query.add(range(END_DATE, LocalDate.parse(dateMinStr, dtf).toString(), true, LocalDate.parse(dateMaxStr, dtf).toString(), true));
-            }
-
-        } catch (InvalidCreateOperationException e) {
-            LOGGER.error("Can not find binding for EndDate key: \n {}", e);
-        }
-
     }
 
     public static JsonNode getLastOperationQuery(String operationType) throws InvalidCreateOperationException, InvalidParseOperationException {

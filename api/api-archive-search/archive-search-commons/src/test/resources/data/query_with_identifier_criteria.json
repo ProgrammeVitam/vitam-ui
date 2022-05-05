@@ -1,0 +1,24 @@
+{
+  "$query":{
+    "$and":[
+      {
+        "$or":[
+          {
+            "$eq":{
+              "Identifier":"originating agency identifier"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "$filter":{
+
+  },
+  "$projection":{
+    "$fields":{
+      "Identifier":1,
+      "Name":1
+    }
+  }
+}

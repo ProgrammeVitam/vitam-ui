@@ -40,8 +40,10 @@ package fr.gouv.vitamui.pastis.service;
 
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.pastis.client.PastisTransformationRestClient;
+import fr.gouv.vitamui.pastis.client.PastisTransformationWebClient;
 import fr.gouv.vitamui.pastis.common.dto.ElementProperties;
 import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
@@ -68,13 +70,16 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(PastisTransformationService.class);
 
     private final PastisTransformationRestClient pastisTransformationRestClient;
+    private final PastisTransformationWebClient pastisTransformationWebClient;
     private final ProfileService profileService;
     private CommonService commonService;
 
     @Autowired
     public PastisTransformationService(final PastisTransformationRestClient pastisTransformationRestClient,
+        final PastisTransformationWebClient pastisTransformationWebClient,
         final ProfileService service, final CommonService commonService) {
         this.pastisTransformationRestClient = pastisTransformationRestClient;
+        this.pastisTransformationWebClient = pastisTransformationWebClient;
         this.profileService = service;
         this.commonService = commonService;
     }
@@ -85,7 +90,7 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
     }
 
     @Override
-    public PastisTransformationRestClient getClient() {
+    public BasePaginatingAndSortingRestClient<ProfileResponse, ExternalHttpContext> getClient() {
         return pastisTransformationRestClient;
     }
 
@@ -104,23 +109,21 @@ public class PastisTransformationService extends AbstractPaginateService<Profile
 
     public ElementProperties loadProfilePA(Resource resource, ExternalHttpContext context) throws IOException {
         LOGGER.info("Start transform profile PA By ui-pastis-service");
-        return pastisTransformationRestClient.loadProfilePA(resource, context).getBody();
+        return pastisTransformationWebClient.loadProfilePA(resource, context).getBody();
     }
 
     public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context)
         throws IOException {
         LOGGER.info("Start Upload profile By ui-pastis-service");
-        return pastisTransformationRestClient.loadProfileFromFile(file, context);
+        return pastisTransformationWebClient.loadProfileFromFile(file, context);
     }
 
-    public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context) throws
-        IOException {
+    public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context) {
         LOGGER.info("Start Download PA By ui-pastis-service");
         return pastisTransformationRestClient.getArchiveProfile(json, context);
     }
 
-    public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context)
-        throws IOException {
+    public ResponseEntity<String> getArchiveUnitProfile(final ProfileNotice json, ExternalHttpContext context) {
         LOGGER.info("Start Download PUA By ui-pastis-service");
         return pastisTransformationRestClient.getArchiveUnitProfile(json, context);
     }

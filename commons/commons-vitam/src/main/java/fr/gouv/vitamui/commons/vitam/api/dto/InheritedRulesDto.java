@@ -50,4 +50,22 @@ public class InheritedRulesDto {
     @JsonProperty("AppraisalRule")
     private InheritedRuleCategoryDto appraisalRule;
 
+    @JsonProperty("HoldRule")
+    private InheritedRuleCategoryDto holdRule;
+
+    @JsonProperty("StorageRule")
+    private InheritedRuleCategoryDto storageRule;
+
+    @JsonProperty("ReuseRule")
+    private InheritedRuleCategoryDto reuseRule;
+
+    @JsonProperty("ClassificationRule")
+    private InheritedRuleCategoryDto classificationRule;
+
+    @JsonProperty("DisseminationRule")
+    private InheritedRuleCategoryDto disseminationRule;
+
+    @JsonProperty("AccessRule")
+    private InheritedRuleCategoryDto accessRule;
+
 }

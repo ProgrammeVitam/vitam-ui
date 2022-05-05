@@ -69,7 +69,7 @@ public class PuaPastisValidatorNOKTest {
 
     @Test(expected = AssertionError.class)
     public void testImports() {
-        puaPastisValidatorTest.testImport(fileName);
+        puaPastisValidatorTest.testImport(fileName, true);
     }
 
 

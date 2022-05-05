@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractInternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.iam.internal.client.ApplicationInternalRestClient;
 import fr.gouv.vitamui.iam.internal.client.CasInternalRestClient;
@@ -75,7 +76,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
-@Import({ RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
+@Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 public class ApiIamServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -94,8 +95,9 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
     }
 
     @Bean
-    public SecurityRestClientFactory securityRestClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties,
-            final RestTemplateBuilder restTemplateBuilder) {
+    public SecurityRestClientFactory securityRestClientFactory(
+        final ApiIamApplicationProperties apiIamApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
         return new SecurityRestClientFactory(apiIamApplicationProperties.getSecurityClient(), restTemplateBuilder);
     }
 
@@ -109,109 +111,136 @@ public class ApiIamServerConfig extends AbstractContextConfiguration {
         return new ExternalSecurityService();
     }
 
+
     @Bean
     public ExternalAuthentificationService externalAuthentificationService(final ContextRestClient contextRestClient,
-            final UserInternalRestClient userInternalRestClient) {
+        final UserInternalRestClient userInternalRestClient) {
         return new ExternalAuthentificationService(contextRestClient, userInternalRestClient);
     }
 
     @Bean
-    public ExternalApiAuthenticationProvider apiAuthenticationProvider(final ExternalAuthentificationService externalAuthentificationService) {
+    public ExternalApiAuthenticationProvider apiAuthenticationProvider(
+        final ExternalAuthentificationService externalAuthentificationService) {
         return new ExternalApiAuthenticationProvider(externalAuthentificationService);
     }
 
     @Bean
-    public IamInternalRestClientFactory iamInternalRestClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties,
-            final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(apiIamApplicationProperties.getIamInternalClient(), restTemplateBuilder);
+    public IamInternalRestClientFactory iamInternalRestClientFactory(
+        final ApiIamApplicationProperties apiIamApplicationProperties,
+        final RestTemplateBuilder restTemplateBuilder) {
+        return new IamInternalRestClientFactory(apiIamApplicationProperties.getIamInternalClient(),
+            restTemplateBuilder);
 
     }
 
     @Bean
-    public IamInternalWebClientFactory internalWebClientFactory(final ApiIamApplicationProperties apiIamApplicationProperties, final WebClient.Builder webClientBuilder) {
+    public IamInternalWebClientFactory internalWebClientFactory(
+        final ApiIamApplicationProperties apiIamApplicationProperties, final WebClient.Builder webClientBuilder) {
         return new IamInternalWebClientFactory(apiIamApplicationProperties.getIamInternalClient(), webClientBuilder);
 
     }
 
     @Bean
-    public CustomerInternalRestClient customerInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public CustomerInternalRestClient customerInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getCustomerInternalRestClient();
     }
 
     @Bean
-    public CustomerInternalWebClient customerInternalV2RestClient(final IamInternalWebClientFactory iamInternalRestClientFactory) {
+    public CustomerInternalWebClient customerInternalV2RestClient(
+        final IamInternalWebClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getCustomerInternalRestClient();
     }
 
     @Bean
-    public IdentityProviderInternalRestClient identityProviderInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public IdentityProviderInternalRestClient identityProviderInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getIdentityProviderInternalRestClient();
     }
 
     @Bean
-    public ProfileInternalRestClient profileInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public ProfileInternalRestClient profileInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getProfileInternalRestClient();
     }
 
     @Bean
-    public GroupInternalRestClient groupInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public GroupInternalRestClient groupInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getProfileGroupInternalRestClient();
     }
 
     @Bean
-    public TenantInternalRestClient tenantInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public TenantInternalRestClient tenantInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getTenantInternalRestClient();
     }
 
     @Bean
-    public UserInternalRestClient userInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public UserInternalRestClient userInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getUserInternalRestClient();
     }
 
 
     @Bean
-    public UserInfoInternalRestClient userInfoInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public UserInfoInternalRestClient userInfoInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getUserInfoInternalRestClient();
     }
 
 
     @Bean
-    public OwnerInternalRestClient ownerInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public OwnerInternalRestClient ownerInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getOwnerInternalRestClient();
     }
 
     @Bean
-    public SubrogationInternalRestClient subrogationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public SubrogationInternalRestClient subrogationInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getSubrogationInternalRestClient();
     }
 
     @Bean
-    public CasInternalRestClient casInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public CasInternalRestClient casInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getCasInternalRestClient();
     }
 
     @Bean
-    public LogbookInternalRestClient<InternalHttpContext> logbookInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public LogbookInternalRestClient<InternalHttpContext> logbookInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getLogbookInternalRestClient();
     }
 
     @Bean
-    public ApplicationInternalRestClient applicationInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public LogbookInternalWebClient<InternalHttpContext> logbookInternalWebClient(
+        final IamInternalWebClientFactory iamInternalWebClientFactory) {
+        return iamInternalWebClientFactory.getLogbookInternalWebClient();
+    }
+
+    @Bean
+    public ApplicationInternalRestClient applicationInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getApplicationInternalRestClient();
     }
 
     @Bean
-    public ExternalParametersInternalRestClient externalParametersInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public ExternalParametersInternalRestClient externalParametersInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getExternalParametersInternalRestClient();
     }
 
     @Bean
-    public ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public ExternalParamProfileInternalRestClient externalParamProfileInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getExternalParamProfileInternalRestClient();
     }
 
     @Bean
-    public AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient(final IamInternalRestClientFactory iamInternalRestClientFactory) {
+    public AccessContractInternalRestClient<InternalHttpContext> accessContractInternalRestClient(
+        final IamInternalRestClientFactory iamInternalRestClientFactory) {
         return iamInternalRestClientFactory.getAccessContractInternalRestClient();
     }
 }

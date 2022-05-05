@@ -28,55 +28,57 @@ db.applications.insert({
 });
 
 // -------- LOGBOOK_MANAGEMENT_OPERATION PROFILE -----
+// Get sequence for profiles
+var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
 db.profiles.insert({
-  "_id": "system_logbook_management_operation",
-  "identifier" : NumberInt(maxIdProfile++),
-  "name": "Gestion des Logbook Opérations",
-  "description": "Logbook Operation Management Profile",
-  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "LOGBOOK_MANAGEMENT_OPERATION_APP",
-  "level": "",
-  "enabled": true,
-  "readonly": false,
-  "customerId": "system_customer",
-  "roles": [
-    {
-      "name": "ROLE_GET_LOGBOOK_OPERATION"
-    },
-    {
-      "name": "ROLE_GET_ALL_LOGBOOK_OPERATION"
-    },
-    {
-      "name": "ROLE_UPDATE_LOGBOOK_OPERATION"
-    }
-   ]
+    "_id": "system_logbook_management_operation",
+    "identifier" : NumberInt(maxIdProfile++),
+    "name": "Gestion des Logbook Opérations",
+    "description": "Logbook Operation Management Profile",
+    "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant | default(1) }}),
+    "applicationName": "LOGBOOK_MANAGEMENT_OPERATION_APP",
+    "level": "",
+    "enabled": true,
+    "readonly": false,
+    "customerId": "system_customer",
+    "roles": [
+        {
+            "name": "ROLE_GET_LOGBOOK_OPERATION"
+        },
+        {
+            "name": "ROLE_GET_ALL_LOGBOOK_OPERATION"
+        },
+        {
+            "name": "ROLE_UPDATE_LOGBOOK_OPERATION"
+        }
+]
 });
 
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(maxIdProfile)
+    }
+});
 
 //---------- Update group admin ----------
 
 db.groups.updateOne( {
-	"_id": "admin_group"
+    "_id": "admin_group"
 }, {
     $addToSet: {
-        "profileIds":  {
-            $each: [
-                "system_logbook_management_operation"
-        	]
-        }
+        "profileIds": "system_logbook_management_operation"
     }
 });
 
 db.groups.updateOne( {
-	"_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
 }, {
     $addToSet: {
-        "profileIds":  {
-            $each: [
-                "system_logbook_management_operation"
-        	]
-        }
+        "profileIds": "system_logbook_management_operation"
     }
 });
 

@@ -30,8 +30,10 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -51,6 +53,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -162,5 +165,43 @@ public class ArchivesSearchExternalController {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", ruleSearchCriteriaDto);
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
         return archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
+    }
+
+    @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
+    @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
+    public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto) {
+        LOGGER.info("Calling computed inherited rules By Criteria {} ", searchCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", searchCriteriaDto);
+        SanityChecker.sanitizeCriteria(searchCriteriaDto);
+        return archivesSearchExternalService.computedInheritedRules(searchCriteriaDto);
+    }
+
+
+    @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE)
+    public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query) {
+        LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
+        SanityChecker.sanitizeCriteria(query);
+        return archivesSearchExternalService.selectUnitWithInheritedRules(query);
+    }
+
+
+    @PostMapping(RestApi.RECLASSIFICATION)
+    @Secured(ServicesData.ROLE_RECLASSIFICATION)
+    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", reclassificationCriteriaDto);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
+    }
+
+
+    @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
+    @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
+    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        LOGGER.debug("update unit by id {} ", id);
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
 }

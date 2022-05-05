@@ -77,8 +77,8 @@ public class PuaFromJSON {
         controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
 
         // 5. Add definitions
-        JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
-        controlSchema.put("definitions", definitionsFromBasePua);
+            JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
+            controlSchema.put("definitions", definitionsFromBasePua);
         // 6. Add ArchiveUnitProfile and the rest of the tree
 
         JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);

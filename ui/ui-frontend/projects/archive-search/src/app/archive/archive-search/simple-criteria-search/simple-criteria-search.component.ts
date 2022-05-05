@@ -37,16 +37,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
-import { diff } from 'ui-frontend-common';
+import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
 const UPDATE_DEBOUNCE_TIME = 200;
-const APPRAISAL_RULE_FINAL_ACTION_TYPE = 'APPRAISAL_RULE_FINAL_ACTION_TYPE';
+const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
+const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
+const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
+const ARCHIVE_UNIT_WITH_OBJECTS = 'ARCHIVE_UNIT_WITH_OBJECTS';
+const ARCHIVE_UNIT_WITHOUT_OBJECTS = 'ARCHIVE_UNIT_WITHOUT_OBJECTS';
+const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
 
 @Component({
   selector: 'app-simple-criteria-search',
@@ -87,13 +93,20 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     otherCriteria: '',
     otherCriteriaValue: '',
   };
+  archiveUnitTypesCriteria: Map<any, boolean> = new Map<any, boolean>([
+    [ARCHIVE_UNIT_FILING_UNIT, false],
+    [ARCHIVE_UNIT_HOLDING_UNIT, false],
+    [ARCHIVE_UNIT_WITH_OBJECTS, true],
+    [ARCHIVE_UNIT_WITHOUT_OBJECTS, true],
+  ]);
 
   constructor(
     private formBuilder: FormBuilder,
     private archiveService: ArchiveService,
     private archiveExchangeDataService: ArchiveSharedDataServiceService,
     public dialog: MatDialog,
-    private managementRulesSharedDataService: ManagementRulesSharedDataService
+    private managementRulesSharedDataService: ManagementRulesSharedDataService,
+    private translateService: TranslateService
   ) {
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
@@ -141,6 +154,16 @@ export class SimpleCriteriaSearchComponent implements OnInit {
       .subscribe(() => {
         this.resetSimpleCriteriaForm();
       });
+
+    this.archiveExchangeDataService.receiveRemoveFromChildSearchCriteriaSubject().subscribe((criteria) => {
+      if (criteria) {
+        if (criteria.action === ActionOnCriteria.ADD) {
+          this.archiveUnitTypesCriteria.set(criteria.valueElt.id, true);
+        } else if (criteria.action === ActionOnCriteria.REMOVE) {
+          this.archiveUnitTypesCriteria.set(criteria.valueElt.id, false);
+        }
+      }
+    });
   }
 
   isEmpty(formData: any): boolean {
@@ -151,9 +174,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: formData.title.trim(), id: formData.title.trim() },
           formData.title.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING'
+          CriteriaDataType.STRING
         );
         return true;
       } else if (formData.description) {
@@ -162,9 +185,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: formData.description.trim(), id: formData.description.trim() },
           formData.description.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING'
+          CriteriaDataType.STRING
         );
         return true;
       } else if (formData.beginDt) {
@@ -173,9 +196,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: this.simpleCriteriaForm.value.beginDt, id: this.simpleCriteriaForm.value.beginDt },
           this.simpleCriteriaForm.value.beginDt,
           true,
-          'GTE',
+          CriteriaOperator.GTE,
           false,
-          'DATE'
+          CriteriaDataType.DATE
         );
         return true;
       } else if (formData.endDt) {
@@ -184,9 +207,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: this.simpleCriteriaForm.value.endDt, id: this.simpleCriteriaForm.value.endDt },
           this.simpleCriteriaForm.value.endDt,
           true,
-          'LTE',
+          CriteriaOperator.LTE,
           false,
-          'DATE'
+          CriteriaDataType.DATE
         );
         return true;
       } else if (formData.serviceProdCode) {
@@ -195,9 +218,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: formData.serviceProdCode.trim(), id: formData.serviceProdCode.trim() },
           formData.serviceProdCode.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING'
+          CriteriaDataType.STRING
         );
         return true;
       } else if (formData.serviceProdLabel) {
@@ -206,9 +229,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           { value: formData.serviceProdLabel.trim(), id: formData.serviceProdLabel.trim() },
           formData.serviceProdLabel.trim(),
           true,
-          'EQ',
+          CriteriaOperator.EQ,
           false,
-          'STRING'
+          CriteriaDataType.STRING
         );
         return true;
       } else if (formData.guid) {
@@ -224,15 +247,15 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         return true;
       } else if (formData.otherCriteriaValue) {
         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);
-        if (this.otherCriteriaValueType === 'DATE') {
+        if (this.otherCriteriaValueType === CriteriaDataType.DATE) {
           this.addCriteria(
             ontologyElt.Value,
             { value: this.simpleCriteriaForm.value.otherCriteriaValue, id: this.simpleCriteriaForm.value.otherCriteriaValue },
             this.simpleCriteriaForm.value.otherCriteriaValue,
             false,
-            'EQ',
+            CriteriaOperator.EQ,
             false,
-            'DATE'
+            CriteriaDataType.DATE
           );
         } else {
           this.addCriteria(
@@ -240,9 +263,9 @@ export class SimpleCriteriaSearchComponent implements OnInit {
             { value: formData.otherCriteriaValue.trim(), id: formData.otherCriteriaValue.trim() },
             formData.otherCriteriaValue.trim(),
             false,
-            'EQ',
+            CriteriaOperator.EQ,
             false,
-            'STRING'
+            CriteriaDataType.STRING
           );
         }
         return true;
@@ -258,11 +281,20 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     this.simpleCriteriaForm.reset(this.emptySimpleCriteriaForm);
   }
 
+  isValueTranslated(criteria: string) {
+    return criteria === FINAL_ACTION_TYPE || criteria === ALL_ARCHIVE_UNIT_TYPES;
+  }
   ngOnInit() {
     this.managementRulesSharedDataService.getCriteriaSearchListToSave().subscribe((data) => {
       this.criteriaSearchListToSave = data;
     });
+
     this.criteriaSearchListToSave.forEach((criteriaSearch) => {
+      if (criteriaSearch.criteria === ALL_ARCHIVE_UNIT_TYPES) {
+        criteriaSearch.values.forEach((unitType) => {
+          this.archiveUnitTypesCriteria.set(unitType.id, true);
+        });
+      }
       criteriaSearch.values.forEach((value) => {
         this.addCriteria(
           criteriaSearch.criteria,
@@ -270,12 +302,35 @@ export class SimpleCriteriaSearchComponent implements OnInit {
           value.id,
           true,
           criteriaSearch.operator,
-          criteriaSearch.criteria === APPRAISAL_RULE_FINAL_ACTION_TYPE ? true : false,
+          this.isValueTranslated(criteriaSearch.criteria),
           criteriaSearch.dataType,
           criteriaSearch.category as SearchCriteriaTypeEnum
         );
       });
     });
+    if (this.criteriaSearchListToSave.length === 0) {
+      this.addCriteria(
+        ALL_ARCHIVE_UNIT_TYPES,
+        { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
+        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING,
+        SearchCriteriaTypeEnum.FIELDS
+      );
+
+      this.addCriteria(
+        ALL_ARCHIVE_UNIT_TYPES,
+        { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
+        this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
+        true,
+        CriteriaOperator.EQ,
+        false,
+        CriteriaDataType.STRING,
+        SearchCriteriaTypeEnum.FIELDS
+      );
+    }
   }
 
   onSelectOtherCriteria() {
@@ -318,6 +373,83 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         dataType,
       });
     }
+  }
+
+  addArchiveUnitTypeCriteria(unitType: string, event: any) {
+    const action = event.target.checked;
+    this.archiveUnitTypesCriteria.set(unitType, action);
+    switch (unitType) {
+      case ARCHIVE_UNIT_FILING_UNIT:
+        if (action) {
+          this.addCriteria(
+            ALL_ARCHIVE_UNIT_TYPES,
+            { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT },
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_PLAN'),
+            true,
+            CriteriaOperator.EQ,
+            false,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.FIELDS
+          );
+        } else {
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_FILING_UNIT, id: ARCHIVE_UNIT_FILING_UNIT });
+        }
+        break;
+      case ARCHIVE_UNIT_HOLDING_UNIT:
+        if (action) {
+          this.addCriteria(
+            ALL_ARCHIVE_UNIT_TYPES,
+            { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT },
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_HOLDING'),
+            true,
+            CriteriaOperator.EQ,
+            false,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.FIELDS
+          );
+        } else {
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_HOLDING_UNIT, id: ARCHIVE_UNIT_HOLDING_UNIT });
+        }
+        break;
+      case ARCHIVE_UNIT_WITH_OBJECTS:
+        if (action) {
+          this.addCriteria(
+            ALL_ARCHIVE_UNIT_TYPES,
+            { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS },
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITH_OBJECTS'),
+            true,
+            CriteriaOperator.EQ,
+            false,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.FIELDS
+          );
+        } else {
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITH_OBJECTS, id: ARCHIVE_UNIT_WITH_OBJECTS });
+        }
+        break;
+      case ARCHIVE_UNIT_WITHOUT_OBJECTS:
+        if (action) {
+          this.addCriteria(
+            ALL_ARCHIVE_UNIT_TYPES,
+            { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS },
+            this.translateService.instant('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.FIELDS.UNIT_TYPE.ARCHIVE_UNIT_WITHOUT_OBJECTS'),
+            true,
+            CriteriaOperator.EQ,
+            false,
+            CriteriaDataType.STRING,
+            SearchCriteriaTypeEnum.FIELDS
+          );
+        } else {
+          this.emitRemoveCriteriaEvent(ALL_ARCHIVE_UNIT_TYPES, { value: ARCHIVE_UNIT_WITHOUT_OBJECTS, id: ARCHIVE_UNIT_WITHOUT_OBJECTS });
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  emitRemoveCriteriaEvent(keyElt: string, valueElt?: CriteriaValue) {
+    this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.REMOVE });
   }
 
   get guid() {

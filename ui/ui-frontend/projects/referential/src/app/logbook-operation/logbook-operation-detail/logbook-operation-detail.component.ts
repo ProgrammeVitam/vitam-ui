@@ -106,7 +106,7 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
       return;
     }
-    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier, this.accessContractId);
+    this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
   updateCanDownload(event: Event) {

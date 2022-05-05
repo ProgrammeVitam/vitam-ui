@@ -1,0 +1,91 @@
+<div *ngFor="let action of getActionByRuleType()">
+  <div class="margin-style" *ngIf="action === 'ADD_RULES'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.RULES_TO_ADD' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
+        {{ collapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="collapsed" *ngFor="let actionName of getActions()">
+      <app-add-management-rules
+        *ngIf="actionName.actionType === action && action === 'ADD_RULES'"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+        [accessContract]="accessContract"
+        [selectedItem]="selectedItem"
+        [ruleCategory]="ruleCategory"
+      ></app-add-management-rules>
+    </div>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'BlockRuleInheritance'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div class="action-style" *ngIf="action === 'deleteBlockRuleInheritance'">
+    {{ action }}
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showAddRuleBloc()">
+      {{ collapsed ? 'expand_more' : 'expand_less' }}
+    </i>
+  </div>
+
+  <div class="margin-style" *ngIf="action === 'DELETE_RULES'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.RULES_TO_DELETE' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showDeleteRuleBloc()">
+        {{ deleteRuleCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="deleteRuleCollapsed" *ngFor="let actionName of getActions()">
+      <app-delete-unit-rules
+        *ngIf="actionName.actionType === action && action === 'DELETE_RULES'"
+        [accessContract]="accessContract"
+        [selectedItem]="selectedItem"
+        [ruleCategory]="ruleCategory"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+      ></app-delete-unit-rules>
+    </div>
+  </div>
+
+  <div class="margin-style" *ngIf="action === 'UPDATE_PROPERTY'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdatePropertyBloc()">
+        {{ updatePropertyCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="updatePropertyCollapsed">
+      <app-add-update-property [ruleCategory]="ruleCategory"></app-add-update-property>
+    </div>
+  </div>
+
+  <div class="margin-style" *ngIf="action === 'UPDATE_RULES'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.RULES_TO_UPDATE' | translate }}
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdateRuleBloc()">
+        {{ updateRuleCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="updateRuleCollapsed" *ngFor="let actionName of getActions()">
+      <app-update-unit-rules
+        *ngIf="actionName.actionType === action && action === 'UPDATE_RULES'"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+        [accessContract]="accessContract"
+        [selectedItem]="selectedItem"
+        [ruleCategory]="ruleCategory"
+      ></app-update-unit-rules>
+    </div>
+  </div>
+</div>

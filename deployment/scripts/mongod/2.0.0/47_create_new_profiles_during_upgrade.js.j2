@@ -1,0 +1,216 @@
+db = db.getSiblingDB('iam');
+
+print("START 47_create_new_profiles_during_upgrade.js");
+
+// Get sequence for profiles
+var maxIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+// For each tenants (except cas tenant)
+db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
+    //= CREATE NEW PROFILES FOR ARCHIVE_SEARCH_MANAGEMENT_APP DURING UPGRADE =//
+
+    // ARCHIVE_SEARCH_MANAGEMENT_APP : CONSULTATION
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-CONSULTATION",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Consultation",
+        "description": "Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles, sans export DIP et sans élimination",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_SEARCH_WITH_RULES"
+            }
+        ]
+    });
+
+    // ARCHIVE_SEARCH_MANAGEMENT_APP : ARCHIVISTE
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-ARCHIVISTE",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Archiviste",
+        "description": "Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_SEARCH_WITH_RULES"
+            },
+            {
+                "name": "ROLE_EXPORT_DIP"
+            }
+        ]
+    });
+
+    // ARCHIVE_SEARCH_MANAGEMENT_APP : ARCHIVISTE ADMINISTRATEUR
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-ARCHIVE_SEARCH_MANAGEMENT_APP-ADMIN",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Archiviste administrateur",
+        "description": "Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "ARCHIVE_SEARCH_MANAGEMENT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_CREATE_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_GET_ALL_ARCHIVE_SEARCH"
+            },
+            {
+                "name": "ROLE_SEARCH_WITH_RULES"
+            },
+            {
+                "name": "ROLE_EXPORT_DIP"
+            },
+            {
+                "name": "ROLE_ELIMINATION"
+            }
+        ]
+    });
+
+    //=============== ADD PROFILES FOR NEW APPS DURING UPGRADE ===============//
+
+    // ACCESSION_REGISTER_APP
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-ACCESSION_REGISTER_APP-DEFAULT",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Profil complet du registre des fonds",
+        "description": "Visualisation de l'ensemble des données du registre des fonds",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "ACCESSION_REGISTER_APP",
+        "enabled": true,
+        "readonly": true,
+        "level": "",
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_GET_ACCESSION_REGISTER_DETAIL"
+            }
+        ]
+    });
+
+    // LOGBOOK_MANAGEMENT_OPERATION_APP
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-LOGBOOK_MANAGEMENT_OPERATION_APP-DEFAULT",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Profil complet de gestion des opérations",
+        "description": "Gérer et consulter l'ensemble des opérations d'entrées qui sont en cours",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "LOGBOOK_MANAGEMENT_OPERATION_APP",
+        "enabled": true,
+        "readonly": true,
+        "level": "",
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_GET_LOGBOOK_OPERATION"
+            },
+            {
+                "name": "ROLE_GET_ALL_LOGBOOK_OPERATION"
+            },
+            {
+                "name": "ROLE_UPDATE_LOGBOOK_OPERATION"
+            }
+        ]
+    });
+
+    // EXTERNAL_PARAM_PROFILE_APP
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-EXTERNAL_PARAM_PROFILE_APP-DEFAULT",
+        "identifier": NumberInt(maxIdProfile++),
+        "name": "Profil complet de gestion des profils paramétrage externe",
+        "description": "Gérer et consulter l'ensemble des profils paramétrage externe",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "EXTERNAL_PARAM_PROFILE_APP",
+        "enabled": true,
+        "readonly": true,
+        "level": "",
+        "customerId": tenant.customerId,
+        "roles": [
+            {
+                "name": "ROLE_CREATE_EXTERNAL_PARAM_PROFILE"
+            },
+            {
+                "name": "ROLE_EDIT_EXTERNAL_PARAM_PROFILE"
+            },
+            {
+                "name": "ROLE_SEARCH_EXTERNAL_PARAM_PROFILE"
+            },
+            {
+                "name": "ROLE_GET_PROFILES"
+            },
+            {
+                "name": "ROLE_UPDATE_PROFILES"
+            },
+            {
+                "name": "ROLE_LOGBOOKS"
+            }
+        ]
+    });
+
+});
+
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(maxIdProfile)
+    }
+});
+
+//============================ UPDATE ADMIN GROUPS =============================
+
+var profileExtParamAppAdminId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-EXTERNAL_PARAM_PROFILE_APP-DEFAULT";
+
+db.groups.updateOne({
+    "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363"
+}, {
+    $addToSet: {
+        "profileIds": profileExtParamAppAdminId
+    }
+});
+
+db.groups.updateOne({
+    "_id": "admin_group"
+}, {
+    $addToSet: {
+        "profileIds": profileExtParamAppAdminId
+    }
+});
+print("END 47_create_new_profiles_during_upgrade.js");

@@ -83,7 +83,7 @@ import {ProfileComponent} from './profile.component';
     NgxUiLoaderModule,
     ProfilePreviewModule
   ],
-  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent],
+  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
   providers: [],
   declarations: [ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
 

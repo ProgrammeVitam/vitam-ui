@@ -219,7 +219,11 @@
         "INTITULE": "Entitled",
         "DERNIERES_MODIFICATIONS": "Latest changes"
       },
-      "MODIFIER_PROFIL_TOOLTIP": "Modify the profile"
+      "MODIFIER_PROFIL_TOOLTIP": "Modify the profile",
+      "PROFILE_PREVIEW": {
+        "MODIFICATION_SUCCESS": "The modification of the profile has been carried out successfully ",
+        "MODIFICATION_ERROR": "Failed to edit profile"
+      }
     },
     "CREATE_PROFILE": {
       "INFORMATION": {

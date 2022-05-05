@@ -266,7 +266,7 @@ export class FileTreeMetadataComponent {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
     this._fileServiceSubscriptionNodeChange = this.fileService.nodeChange.subscribe(node => {
@@ -437,7 +437,6 @@ export class FileTreeMetadataComponent {
   }
 
   setNodeValue(metadata: MetadataHeaders, newValue: string) {
-    console.log(metadata.cardinalite + 'new Value ' + newValue);
     if (newValue != null) {
       const updatedValue = newValue.length > 0 ? newValue : null;
       if (this.clickedNode.name === metadata.nomDuChamp) {
@@ -526,7 +525,6 @@ export class FileTreeMetadataComponent {
       popData.cancelLabel = this.popupAnnuler;
 
       const popUpAnswer = await this.fileService.openPopup(popData) as AttributeData[];
-      console.log('The answer for edit attributte was ', popUpAnswer);
 
       if (popUpAnswer) {
 
@@ -677,7 +675,7 @@ export class FileTreeMetadataComponent {
   }
 
   setControlsVues(elements: string[], sedaName: string) {
-    if ((this.isStandalone && elements.includes('Enumération'))
+    if ((elements.includes('Enumération'))
      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
       this.enumerationControl = true;
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
@@ -686,7 +684,7 @@ export class FileTreeMetadataComponent {
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
       this.setAvailableRegex(type);
     }
-    if ((this.isStandalone && elements.includes('Expression régulière'))
+    if (( elements.includes('Expression régulière'))
      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
       this.radioExpressionReguliere = 'select';
       this.expressionControl = true;
@@ -880,7 +878,7 @@ export class FileTreeMetadataComponent {
         this.sedaLanguage = value;
       },
       (error) => {
-        console.log(error);
+        console.error(error);
       }
     );
   }

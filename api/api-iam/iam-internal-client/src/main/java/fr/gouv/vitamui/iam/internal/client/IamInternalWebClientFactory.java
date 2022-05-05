@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.iam.internal.client;
 
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookInternalWebClient;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
@@ -73,6 +75,10 @@ public class IamInternalWebClientFactory extends BaseWebClientFactory {
 
     public CustomerInternalWebClient getCustomerInternalRestClient() {
         return new CustomerInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    public LogbookInternalWebClient getLogbookInternalWebClient() {
+        return new LogbookInternalWebClient(getWebClient(), getBaseUrl());
     }
 
     @Override

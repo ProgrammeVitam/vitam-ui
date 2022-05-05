@@ -23,3 +23,15 @@
 * Alexis ROUSSET
 * Mahmoud SAYAD
 * Zakaria TIRDAD
+* Gaëlle FOURNIER
+* Nabil EL HAJJIOUI
+* Oussama ZEROUALI
+* Benaissa BENARBIA
+* Passam KASSEM
+* Thierry DEVILLECHABROLLE
+* Julien GEORGES
+* Romain GORDOLO
+* Clément SOL
+* Jérome LELEU
+* Mehdi NAJAHI
+
