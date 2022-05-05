@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { IngestService } from '../../ingest.service';
-import { EventDisplayHelperService } from '../event-display-helper.service';
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
-import { Event } from '../event';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {EventDisplayHelperService} from '../event-display-helper.service';
+import {NestedTreeControl} from '@angular/cdk/tree';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
+import {Event} from '../event';
+import {LogbookOperation} from "../../../models/logbook-event.interface";
 
 
 @Component({
@@ -13,27 +13,22 @@ import { Event } from '../event';
 })
 export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
 
-  @Input()
-  ingest: any;
+  @Input() ingest: LogbookOperation;
 
   ingestErrorsTreeControl: NestedTreeControl<Event>;
   ingestErrorsTreeDataSource: MatTreeNestedDataSource<Event>;
 
 
-  constructor(private ingestService: IngestService, private eventDisplayHelper: EventDisplayHelperService) {
-
+  constructor(private eventDisplayHelper: EventDisplayHelperService) {
     this.ingestErrorsTreeControl = new NestedTreeControl<Event>(node => node.subEvents);
     this.ingestErrorsTreeDataSource = new MatTreeNestedDataSource<Event>();
- 
   }
 
   hasChild = (_: number, node: Event) => !!node.subEvents && node.subEvents.length > 0;
 
-  getAllEvents(ingest: any) {
-    if(ingest) {
-      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
-      this.ingestErrorsTreeDataSource.data = this.eventDisplayHelper.getAllEvents(data.events);
-      });
+  getAllEvents(ingest: LogbookOperation) {
+    if (ingest) {
+      this.ingestErrorsTreeDataSource.data = this.eventDisplayHelper.getAllEvents(ingest.events);
     }
   }
 
@@ -47,16 +42,12 @@ export class IngestErrorsDetailsTabComponent implements OnInit, OnChanges {
     this.getAllEvents(this.ingest);
   }
 
-  getEventStatus(event : Event) {
-      return event.eventData.outcome;
+  getEventStatus(event: Event) {
+    return event.eventData.outcome;
   }
-  isStepOK(event : Event) {
-    if(event.eventData.outcome === "OK") {
-      return true;
-    }
-    else {
-      return false;
-    }
+
+  isStepOK(event: Event) {
+    return event.eventData.outcome === "OK";
   }
 
 
