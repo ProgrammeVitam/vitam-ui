@@ -128,6 +128,7 @@
     "SEARCH_CRITERIA_GTE": "Après le ",
     "SEARCH_CRITERIA_LTE": "Avant le ",
     "SHOW_SEARCH_CRITERIA": "Afficher les filtres de recherche",
+    "COMPUTE_RULES_FACETS": "Afficher les facettes",
     "HIDE_SEARCH_CRITERIA": "Masquer les filtres de recherche",
     "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
     "MORE_THAN": "+ de ",
@@ -287,8 +288,8 @@
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
-        "WAITING_TO_RECALCULATE": "Avec règle non indexée",
-        "CALCULATED": "Avec règle indexée"
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
       },
       "ACCESS_RULE": {
         "RULES_COUNT": "Nombre de règles",
@@ -301,8 +302,8 @@
         "DISTINCT_RULES": "Règles distinctes",
         "FROM_DATE": "A partir du",
         "SHOW_RULES_LIST": "AFFICHER LISTE",
-        "WAITING_TO_RECALCULATE": "Avec règle non indexée",
-        "CALCULATED": "Avec règle indexée"
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
       }
     },
     "ARCHIVE_UNIT": {
@@ -460,7 +461,7 @@
       "TARGET_START_DATE": "Date de début cible",
       "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
       "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
-      "UA_INHERITANCE_TO_IGNORE" :"Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
+      "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",

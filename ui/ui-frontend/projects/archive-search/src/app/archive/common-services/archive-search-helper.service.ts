@@ -300,20 +300,42 @@ export class ArchiveSearchHelperService {
     });
   }
 
-  checkIfShowingFacetsRule(searchCriterias: Map<string, SearchCriteria>): boolean {
-    let hasAppraisalRuleCriteria = false;
+  findDefaultFacetTabIndex(searchCriterias: Map<string, SearchCriteria>): number {
+    let defaultFacetTabIndex = 100;
     if (searchCriterias && searchCriterias.size > 0) {
       for (const criteria of searchCriterias.values()) {
-        if (
-          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria)) ||
-          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
-          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
-        ) {
-          hasAppraisalRuleCriteria = true;
+        if (defaultFacetTabIndex > 0 && this.archiveService.isAppraisalRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 0;
+        }
+        if (defaultFacetTabIndex > 1 && this.archiveService.isAccessRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 1;
+        }
+
+        if (defaultFacetTabIndex > 2 && this.archiveService.isClassificationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 2;
         }
       }
     }
-    return hasAppraisalRuleCriteria;
+    if (defaultFacetTabIndex === 100) {
+      defaultFacetTabIndex = 0;
+    }
+    return defaultFacetTabIndex;
+  }
+  checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
+    let hasMgtRuleCriteria = false;
+    if (searchCriterias && searchCriterias.size > 0) {
+      for (const criteria of searchCriterias.values()) {
+        if (
+          (!hasMgtRuleCriteria &&
+            (this.archiveService.isAppraisalRuleCriteria(criteria) || this.archiveService.isAccessRuleCriteria(criteria))) ||
+          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
+          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
+        ) {
+          hasMgtRuleCriteria = true;
+        }
+      }
+    }
+    return hasMgtRuleCriteria;
   }
 
   buildFieldsCriteriaListForQUery(searchCriterias: Map<string, SearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {

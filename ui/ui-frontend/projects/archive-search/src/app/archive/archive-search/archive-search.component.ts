@@ -225,6 +225,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   showDuaEndDate = false;
   otherCriteriaValueEnabled = false;
   pending = false;
+  pendingComputeFacets = false;
   submited = false;
   pendingGetFixedCount = false;
   submitedGetFixedCount = false;
@@ -232,7 +233,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   canLoadMore = false;
   showCriteriaPanel = true;
   showSearchCriteriaPanel = false;
-
+  defaultFacetTabIndex = 1;
   currentPage = 0;
   pageNumbers = 0;
   totalResults = 0;
@@ -266,7 +267,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   eliminationAnalysisResponse: any;
   eliminationActionResponse: any;
   trackTotalHits: boolean;
-  showFacets = false;
+  rulesFacetsCanBeComputed = false;
+  rulesFacetsComputed = false;
+  showingFacets = false;
+  isComputedRulesFacets: boolean;
   ontologies: any;
   selectedValueOntolonogy: any;
   selectedItemCount: boolean;
@@ -433,6 +437,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     return this.searchCriterias && this.searchCriterias.has('WAITING_RECALCULATE');
   }
 
+  findDefaultFacetTab(): number {
+    return this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+  }
   submit() {
     this.initializeSelectionParams();
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
@@ -440,8 +447,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.archiveHelperService.buildManagementRulesCriteriaListForQuery('APPRAISAL_RULE', this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildManagementRulesCriteriaListForQuery('ACCESS_RULE', this.searchCriterias, this.criteriaSearchList);
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
-      this.callVitamApiService();
-      this.showFacets = this.archiveHelperService.checkIfShowingFacetsRule(this.searchCriterias);
+      this.rulesFacetsComputed = false;
+      this.rulesFacetsCanBeComputed = this.archiveHelperService.checkIfRulesFacetsCanBeComputed(this.searchCriterias);
+      this.callVitamApiService(this.rulesFacetsCanBeComputed);
+      this.showingFacets = this.rulesFacetsCanBeComputed;
     }
   }
 
@@ -484,8 +493,47 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private callVitamApiService() {
+  private launchComputingManagementRulesFacets() {
+    this.pendingComputeFacets = true;
+    const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
+    const searchCriteria = {
+      criteriaList: this.criteriaSearchList,
+      pageNumber: 0,
+      size: 1,
+      sortingCriteria,
+      trackTotalHits: false,
+      computeFacets: true,
+    };
+
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
+      (pagedResult: PagedResult) => {
+        this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+          pagedResult.facets,
+          SearchCriteriaTypeEnum.APPRAISAL_RULE
+        );
+        this.archiveSearchResultFacets.accessRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+          pagedResult.facets,
+          SearchCriteriaTypeEnum.ACCESS_RULE
+        );
+        this.pendingComputeFacets = false;
+        this.rulesFacetsComputed = true;
+        this.showingFacets = true;
+        this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+      },
+      (error: HttpErrorResponse) => {
+        this.pendingComputeFacets = false;
+        this.logger.error('Error message :', error.message);
+      }
+    );
+  }
+
+  private callVitamApiService(includeFacets: boolean) {
+    if (includeFacets) {
+      this.pendingComputeFacets = true;
+      this.showingFacets = false;
+    }
     this.pending = true;
+
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };
     const searchCriteria = {
       criteriaList: this.criteriaSearchList,
@@ -493,13 +541,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       size: PAGE_SIZE,
       sortingCriteria,
       trackTotalHits: false,
+      computeFacets: includeFacets,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
-        if (this.currentPage === 0) {
-          this.archiveUnits = pagedResult.results;
-          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
-          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
+        if (includeFacets) {
           this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
             pagedResult.facets,
             SearchCriteriaTypeEnum.APPRAISAL_RULE
@@ -508,7 +554,14 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
             pagedResult.facets,
             SearchCriteriaTypeEnum.ACCESS_RULE
           );
-
+          this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
+          this.pendingComputeFacets = false;
+          this.rulesFacetsComputed = true;
+        }
+        if (this.currentPage === 0) {
+          this.archiveUnits = pagedResult.results;
+          this.archiveSearchResultFacets.nodesFacets = this.archiveFacetsService.extractNodesFacetsResults(pagedResult.facets);
+          this.archiveExchangeDataService.emitFacets(this.archiveSearchResultFacets.nodesFacets);
           this.hasResults = true;
           this.totalResults = pagedResult.totalResults;
         } else {
@@ -538,8 +591,12 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       (error: HttpErrorResponse) => {
         this.canLoadMore = false;
         this.pending = false;
+        if (includeFacets) {
+          this.pendingComputeFacets = false;
+          this.archiveExchangeDataService.emitFacets([]);
+        }
         this.logger.error('Error message :', error.message);
-        this.archiveExchangeDataService.emitFacets([]);
+
         this.archiveHelperService.updateCriteriaStatus(
           this.searchCriterias,
           SearchCriteriaStatusEnum.IN_PROGRESS,
@@ -679,10 +736,29 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery('ACCESS_RULE', this.searchCriterias, this.criteriaSearchList);
       this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
-        this.callVitamApiService();
+        this.callVitamApiService(false);
       }
     }
   }
+
+  launchFacetsComputing() {
+    if (!this.pendingComputeFacets && this.criteriaSearchList && this.criteriaSearchList.length > 0) {
+      this.launchComputingManagementRulesFacets();
+    }
+  }
+
+  showHideFacets(show: boolean) {
+    if (show === true) {
+      if (this.rulesFacetsComputed === true) {
+        this.showingFacets = true;
+      } else {
+        this.launchFacetsComputing();
+      }
+    } else {
+      this.showingFacets = false;
+    }
+  }
+
   hiddenTreeBlock(hidden: boolean): void {
     this.show = !hidden;
     this.archiveExchangeDataService.emitToggle(this.show);

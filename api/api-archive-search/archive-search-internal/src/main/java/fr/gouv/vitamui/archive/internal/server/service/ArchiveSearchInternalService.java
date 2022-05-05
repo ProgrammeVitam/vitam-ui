@@ -157,7 +157,7 @@ public class ArchiveSearchInternalService {
             fillWaitingToComputeCriteria(searchQuery);
             SelectMultiQuery selectMultiQuery = mapRequestToSelectMultiQuery(searchQuery);
             archiveSearchFacetsInternalService.addPositionsNodesFacet(searchQuery, selectMultiQuery);
-            if (archiveSearchFacetsInternalService.computeFacets(searchQuery)) {
+            if (searchQuery.isComputeFacets()) {
                 selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COMPUTE_RULES_AU_NUMBER,
                     SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
                     FacetOrder.ASC));

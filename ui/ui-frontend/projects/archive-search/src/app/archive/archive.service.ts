@@ -380,6 +380,19 @@ export class ArchiveService extends SearchService<any> {
   isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
   }
+  isAccessRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
+  }
+  isStorageRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
+  }
+
+  isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
+  }
+  isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
+  }
 }
 
 function idExists(units: Unit[], id: string): boolean {
