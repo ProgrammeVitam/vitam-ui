@@ -158,7 +158,10 @@ public class AccessionRegisterInternalService {
 
         boolean hasMore = pageNumber * size + resultSize < resultTotal;
         List<AccessionRegisterDetailDto> valuesDto = AccessionRegisterConverter.toDetailsDtos(results.getResults());
-        valuesDto.forEach(value -> value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency())));
+        valuesDto.forEach(value -> {
+            value.setOriginatingAgencyLabel(agenciesMap.get(value.getOriginatingAgency()));
+            value.setSubmissionAgencyLabel(agenciesMap.get(value.getSubmissionAgency()));
+        });
 
         //Build statistique datas
         Map<String, Object> optionalValues = new HashMap<>();
@@ -324,12 +327,12 @@ public class AccessionRegisterInternalService {
 
     private Map<String, String> findAgencies(VitamContext vitamContext, AccessionRegisterDetailResponseDto results) {
 
-        JsonNode originatingAgencyQuery;
+        JsonNode agencyQuery;
         List<AgencyModelDto> agencies;
         try {
-            originatingAgencyQuery = buildOriginatingAgencyProjectionQuery(results);
+            agencyQuery = buildAgencyProjectionQuery(results);
             RequestResponse<AgenciesModel> requestResponse =
-                agencyService.findAgencies(vitamContext, originatingAgencyQuery);
+                agencyService.findAgencies(vitamContext, agencyQuery);
             agencies = objectMapper.treeToValue(requestResponse.toJsonNode(), AgencyResponseDto.class).getResults();
         } catch (JsonProcessingException e) {
             throw new InternalServerException("Error parsing query", e);
@@ -343,7 +346,7 @@ public class AccessionRegisterInternalService {
             .collect(Collectors.toMap(AgencyModelDto::getIdentifier, AgencyModelDto::getName));
     }
 
-    private JsonNode buildOriginatingAgencyProjectionQuery(AccessionRegisterDetailResponseDto results)
+    private JsonNode buildAgencyProjectionQuery(AccessionRegisterDetailResponseDto results)
         throws InvalidCreateOperationException {
 
         List<String> distinctOriginatingAgencies = new ArrayList<>();
@@ -353,6 +356,11 @@ public class AccessionRegisterInternalService {
                 .filter(Objects::nonNull)
                 .filter(originatingAgency -> ConcurrentHashMap.newKeySet().add(originatingAgency))
                 .collect(Collectors.toList());
+
+            distinctOriginatingAgencies.addAll(results.getResults().stream()
+                .map(AccessionRegisterDetailModel::getSubmissionAgency)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet()));
         }
 
         final Select select = new Select();
