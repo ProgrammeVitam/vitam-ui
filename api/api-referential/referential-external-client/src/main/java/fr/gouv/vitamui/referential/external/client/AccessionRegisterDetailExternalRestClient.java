@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.external.client;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -85,11 +85,11 @@ public class AccessionRegisterDetailExternalRestClient extends
         };
     }
 
-    public ResponseEntity<Resource> exportAccessionRegisterCsv(AccessionRegisterDetailsSearchStatsDto query,
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(AccessionRegisterSearchDto query,
                                                                ExternalHttpContext context) {
         LOGGER.debug("Accession register details csv export");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<AccessionRegisterDetailsSearchStatsDto> request = new HttpEntity<>(query, headers);
+        final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
         return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV, HttpMethod.POST,
                               request, Resource.class);
     }

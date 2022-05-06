@@ -38,7 +38,7 @@ package fr.gouv.vitamui.referential.external.server.rest;
 
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
@@ -67,7 +67,8 @@ import java.util.Optional;
 @RequestMapping(RestApi.ACCESSION_REGISTER_URL)
 public class AccessionRegisterExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterExternalController.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(AccessionRegisterExternalController.class);
 
     private final AccessionRegisterSummaryExternalService accessionRegisterSummaryExternalService;
     private final AccessionRegisterDetailExternalService accessionRegisterDetailExternalService;
@@ -82,27 +83,32 @@ public class AccessionRegisterExternalController {
 
     @GetMapping("/summary")
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
-    public Collection<AccessionRegisterSummaryDto> getAccessionRegisterSummaries(@RequestParam final Optional<String> criteria) {
-        LOGGER.debug("get all accessionRegister criteria={}", criteria);
+    public Collection<AccessionRegisterSummaryDto> getAccessionRegisterSummaries(
+        @RequestParam final Optional<String> criteria) {
         RestUtils.checkCriteria(criteria);
+        LOGGER.debug("get all accessionRegister criteria={}", criteria);
         return accessionRegisterSummaryExternalService.getAll(criteria);
     }
 
-    @GetMapping(value = RestApi.DETAILS, params = { "page", "size" })
+    @GetMapping(value = RestApi.DETAILS, params = {"page", "size"})
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAccessionRegisterDetails(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAccessionRegisterDetails(
+        @RequestParam final Integer page,
+        @RequestParam final Integer size,
+        @RequestParam(required = false) final Optional<String> criteria,
+        @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}",
+            page, size, criteria, orderBy, direction);
         return accessionRegisterDetailExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @PostMapping(RestApi.DETAILS_EXPORT_CSV)
     @Secured(ServicesData.ROLE_GET_ACCESSION_REGISTER_DETAIL)
-    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody AccessionRegisterDetailsSearchStatsDto query) {
-        LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
+    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody AccessionRegisterSearchDto query) {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
         return accessionRegisterDetailExternalService.exportCsvArchiveUnitsByCriteria(query);
     }
 

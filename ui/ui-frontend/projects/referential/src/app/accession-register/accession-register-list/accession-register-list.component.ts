@@ -36,6 +36,7 @@ import {
   PageRequest
 } from 'ui-frontend-common';
 import {AccessionRegistersService} from '../accession-register.service';
+import {AccessionRegisterSearchDto} from "../../models/accession-register-export-csv.interface";
 
 @Component({
   selector: 'app-accession-register-list',
@@ -47,7 +48,7 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
 
   @Input('search')
   set searchText(searchText: string) {
-    this.entryToSearch = searchText;
+    this.textToSearch = searchText;
     this.searchChange.next(searchText);
     this.accessionRegistersService.notifySearchChange(searchText);
   }
@@ -58,16 +59,14 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   direction = Direction.DESCENDANT;
   orderBy = 'EndDate';
 
-  private filterChange = new BehaviorSubject<{ [key: string]: any[] }>({});
+  filterMap: Map<string, string[]> = new Map<string, string[]>();
+  statusFilterOptions$: Observable<Array<{ value: string; label: string }>>;
+
+  private filterChange = new BehaviorSubject<Map<string, Array<string>>>(null);
   private searchChange = new BehaviorSubject<string>(null);
   private orderChange = new BehaviorSubject<string>(this.orderBy);
-  private searchKeys = ['OriginatingAgency', 'Opi'];
-  private entryToSearch: string;
+  private textToSearch: string;
 
-  statusFilterOptions$: Observable<Array<{ value: string; label: string }>>;
-  filterMap: { [key: string]: any[] } = {
-    Status: [],
-  };
 
   searchSub: Subscription;
   advancedSearchSub: Subscription;
@@ -103,80 +102,68 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
   }
 
   searchRequest() {
-    const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
-    const avancedSearchData: any = this.accessionRegistersService.getAdvancedSearchData().getValue();
-    const query: any = {};
-    this.addCriteriaFromSearch(query);
-    this.addCriteriaFromFilters(query);
-    this.addCriteriaFromDateFilters(query, dateInterval);
-    this.addAdvancedCriteriaData(query, avancedSearchData);
+    const query: AccessionRegisterSearchDto = this.constructQuery();
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
     super.search(pageRequest);
   }
 
   exportAccessionRegisterCsv() {
-    const avancedSearchData: any = this.accessionRegistersService.getAdvancedSearchData().getValue();
-    const query: any = {};
-    query.searchText = this.entryToSearch;
-    if (this.filterMap.Status.length !== 0) {
-      query.statusFilter = this.filterMap.Status;
-    }
-    const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
-    if (dateInterval !== null && (dateInterval.endDateMin !== null || dateInterval.endDateMax !== null)) {
-      query.dateInterval = dateInterval;
-    }
-    query.advancedSearch = {}
-    this.addAdvancedCriteriaData(query.advancedSearch, avancedSearchData);
+    const query: AccessionRegisterSearchDto = this.constructQuery();
+    query.orderBy = this.orderBy
+    query.direction = this.direction
     this.accessionRegistersService.exportAccessionRegisterCsv(query, this.accessContract);
   }
 
-  addAdvancedCriteriaData(query: any, avancedSearchData: any) {
+  private constructQuery(): AccessionRegisterSearchDto {
+    const query: AccessionRegisterSearchDto = {};
+    this.addCriteriaFromSearch(query);
+    query.filters = this.filterMap;
+    this.addCriteriaFromDateFilters(query);
+    this.addAdvancedCriteriaData(query);
+    return query;
+  }
+
+  addAdvancedCriteriaData(query: any) {
+    const avancedSearchData: any = this.accessionRegistersService.getAdvancedSearchData().getValue();
     if (avancedSearchData === null) {
       return;
     }
-
     if (OjectUtils.arrayNotUndefined(avancedSearchData.originatingAgencies)) {
       query.originatingAgencies = avancedSearchData.originatingAgencies;
     }
-
     if (OjectUtils.arrayNotUndefined(avancedSearchData.archivalAgreements)) {
       query.archivalAgreements = avancedSearchData.archivalAgreements;
     }
-
     if (OjectUtils.arrayNotUndefined(avancedSearchData.archivalProfiles)) {
       query.archivalProfiles = avancedSearchData.archivalProfiles;
     }
-
     if (OjectUtils.arrayNotUndefined(avancedSearchData.acquisitionInformations)) {
       query.acquisitionInformations = avancedSearchData.acquisitionInformations;
     }
-
     if (OjectUtils.valueNotUndefined(avancedSearchData.elimination)) {
       query.elimination = avancedSearchData.elimination;
     }
-
     if (OjectUtils.valueNotUndefined(avancedSearchData.transfer_reply)) {
       query.transfer_reply = avancedSearchData.transfer_reply;
     }
   }
 
-  addCriteriaFromDateFilters(query: any, dateInterval: { endDateMin: string; endDateMax: string }) {
+  addCriteriaFromDateFilters(query: AccessionRegisterSearchDto) {
+    const dateInterval: { endDateMin: string; endDateMax: string } = this.accessionRegistersService.getDateIntervalChanges().getValue();
     if (dateInterval !== null && (dateInterval.endDateMin !== null || dateInterval.endDateMax !== null)) {
-      query.EndDate = dateInterval;
+      query.endDateInterval = dateInterval;
     }
   }
 
-  addCriteriaFromFilters(query: any) {
-    if (this.filterMap.Status.length !== 0) {
-      query.Status = this.filterMap.Status;
-    }
+  addCriteriaFromFilters(query: AccessionRegisterSearchDto) {
+    query.filters = this.filterMap;
   }
 
-  addCriteriaFromSearch(query: any) {
-    if (this.entryToSearch !== undefined && this.entryToSearch !== null && this.entryToSearch.length > 0) {
-      this.searchKeys.forEach((key) => {
-        query[key] = this.entryToSearch;
-      });
+  addCriteriaFromSearch(query: AccessionRegisterSearchDto) {
+    if (this.textToSearch !== undefined && this.textToSearch !== null && this.textToSearch.length > 0) {
+      query.searchText = this.textToSearch;
+      query.originatingAgency = this.textToSearch
+      query.opi = this.textToSearch
     }
   }
 
@@ -185,8 +172,8 @@ export class AccessionRegisterListComponent extends InfiniteScrollTable<Accessio
     this.accessionRegistersService.notifyOrderChange();
   }
 
-  onFilterChange(key: string, values: any[]) {
-    this.filterMap[key] = values;
+  onFilterChange(key: string, values: string[]) {
+    this.filterMap.set(key, values);
     this.filterChange.next(this.filterMap);
     this.accessionRegistersService.notifyFilterChange(this.filterMap);
   }
