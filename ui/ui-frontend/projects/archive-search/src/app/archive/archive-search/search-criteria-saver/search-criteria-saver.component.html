@@ -115,26 +115,30 @@
     </div>
   </div>
 
-  <div class="col-5 width-save-form" *ngIf="ToUpdate !== null && !ToUpdate">
-    <div class="row">
-      <button class="btn link cancel" (click)="closeIt()">
-        <i class="vitamui-icon vitamui-icon-close btn-close-it-input" (click)="closeIt()"></i>
-      </button>
-    </div>
+  <div class="col-6 form-width" *ngIf="ToUpdate !== null && !ToUpdate">
     <div class="row triangle"></div>
     <form [formGroup]="searchCriteriaForm">
       <div class="sauvegarde-text">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_IN_POPUP' | translate }}</div>
-      <div class="input-width">
-        <vitamui-common-input
-          [(ngModel)]="nameControl"
-          class="input-text"
-          formControlName="name"
-          maxlength="150"
-          required
-          placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
-        >
-        </vitamui-common-input>
-        <div *ngIf="nameControl.length > 149" class="warning">
+      <div class="row input-width">
+        <div class="col-11">
+          <vitamui-common-input
+            [(ngModel)]="nameControl"
+            class="input-text"
+            formControlName="name"
+            maxlength="maxlength"
+            required
+            placeholder="{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NAME' | translate }}"
+          >
+          </vitamui-common-input>
+        </div>
+
+        <div class="col-1 btn-ok" *ngIf="ToUpdate !== null && !ToUpdate">
+          <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > maxlength">
+            OK
+          </button>
+        </div>
+
+        <div *ngIf="nameControl.length > maxlength" class="warning">
           <span class="ko-icon">
             <i class="material-icons">report_problem</i>
             {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_NOT_POSSIBLE_ALERT_NAME' | translate }}
@@ -147,16 +151,8 @@
       </div>
     </form>
   </div>
-  <div class="col-1 btn-ok" *ngIf="ToUpdate !== null && !ToUpdate">
-    <button type="submit" class="btn primary" (click)="onSubmit()" [disabled]="nameControl === '' || nameControl.length > 149">OK</button>
-  </div>
 
-  <div class="col-6 criteria-list-width" *ngIf="ToUpdate">
-    <div class="row">
-      <button class="btn link cancel">
-        <i class="vitamui-icon vitamui-icon-close btn-close-it" (click)="closeIt()"></i>
-      </button>
-    </div>
+  <div class="col-6 form-width" *ngIf="ToUpdate">
     <div class="row triangle"></div>
     <div class="sauvegarde-text pad5">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_LABEL' | translate }}</div>
     <strong class="pad35">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NEW_SAVE_REPLACE_LABEL' | translate }}</strong>
@@ -208,12 +204,7 @@
     </div>
   </div>
 
-  <div class="col-6 confirm-width" *ngIf="criteriaToUpdate && updateConfirm">
-    <div class="row">
-      <button class="btn link cancel">
-        <i class="vitamui-icon vitamui-icon-close btn-close-it" (click)="closeIt()"></i>
-      </button>
-    </div>
+  <div class="col-6 form-width" *ngIf="criteriaToUpdate && updateConfirm">
     <div class="row triangle"></div>
     <div class="sauvegarde-text pad5">{{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.SAVE_REPLACE_CONFIRM_MESSAGE' | translate }}</div>
     <div class="div-update no-scroll-results">
@@ -236,7 +227,7 @@
     </div>
 
     <div *ngIf="searchCriteriaHistories.length == 0" class="no-results-center search-criterias" (click)="onCancel()">
-      Pas de critères enregistrées!
+      {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_SAVER.NO_RESULTS' | translate }}
     </div>
     <mat-dialog-actions class="pad-actions">
       <button class="btn primary" (click)="update()">
@@ -247,4 +238,8 @@
       </button>
     </mat-dialog-actions>
   </div>
+
+  <button class="col-1 btn link cancel">
+    <i class="vitamui-icon vitamui-icon-close" (click)="closeSaveCriteriaForm()"></i>
+  </button>
 </div>
