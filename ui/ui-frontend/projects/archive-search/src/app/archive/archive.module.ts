@@ -93,14 +93,14 @@ import { FilingHoldingNodeComponent } from './filing-holding-scheme/tree-node/fi
 import { AddManagementRulesComponent } from './management-rules/archive-unit-rules/add-management-rules/add-management-rules.component';
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
+import { BlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/block-category-inheritance/block-category-inheritance.component';
 import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
+import { UnlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/unlock-category-inheritance/unlock-category-inheritance.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
-import { BlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/block-category-inheritance/block-category-inheritance.component';
-import { UnlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/unlock-category-inheritance/unlock-category-inheritance.component';
 
 @NgModule({
   imports: [
