@@ -67,6 +67,7 @@ import java.util.stream.Collectors;
 
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.FALSE;
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaDataType.STRING;
@@ -167,7 +168,7 @@ public class ArchiveSearchFacetsInternalService {
         JsonProcessingException {
         LOGGER.debug("Start finding facets for computed rules  ");
         try {
-            List<ArchiveSearchConsts.CriteriaCategory> categories = List.of(APPRAISAL_RULE);
+            List<ArchiveSearchConsts.CriteriaCategory> categories = List.of(APPRAISAL_RULE, ACCESS_RULE);
             List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList = new ArrayList<>(
                 initialArchiveUnitsCriteriaList);
             indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(RULES_COMPUTED, FIELDS, EQ.name(),
@@ -397,24 +398,23 @@ public class ArchiveSearchFacetsInternalService {
             List<SearchCriteriaEltDto> rulesCriteriaList = mgtRulesCriteriaList.stream().filter(Objects::nonNull)
                 .filter(searchCriteriaEltDto -> (category.equals(searchCriteriaEltDto.getCategory())))
                 .collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(rulesCriteriaList)) {
-                String computedRulesIdentifierMapping = ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
-                    +
-                    ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-                    ArchivesSearchManagementRulesQueryBuilderService.RULES_RULE_ID_FIELD;
-                if (APPRAISAL_RULE.equals(category)) {
-                    String computedRulesFinalActionMapping =
-                        ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
-                            +
-                            ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
-                            ArchivesSearchManagementRulesQueryBuilderService.FINAL_ACTION_FIELD;
-                    select.addFacets(FacetHelper.terms(FACETS_FINAL_ACTION_COMPUTED + "_" + category.name(),
-                        computedRulesFinalActionMapping, 3, FacetOrder.ASC));
-                }
-                select.addFacets(FacetHelper.terms(FACETS_RULES_COMPUTED_NUMBER,
-                    computedRulesIdentifierMapping, 100, FacetOrder.ASC));
-                addExpirationRulesFacet(rulesCriteriaList, category, select);
+            String computedRulesIdentifierMapping = ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+                +
+                ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
+                ArchivesSearchManagementRulesQueryBuilderService.RULES_RULE_ID_FIELD;
+            if (APPRAISAL_RULE.equals(category)) {
+                String computedRulesFinalActionMapping =
+                    ArchivesSearchManagementRulesQueryBuilderService.COMPUTED_FIELDS
+                        +
+                        ArchiveSearchConsts.CriteriaMgtRulesCategory.valueOf(category.name()).getFieldMapping() +
+                        ArchivesSearchManagementRulesQueryBuilderService.FINAL_ACTION_FIELD;
+                select.addFacets(FacetHelper.terms(FACETS_FINAL_ACTION_COMPUTED + "_" + category.name(),
+                    computedRulesFinalActionMapping, 3, FacetOrder.ASC));
             }
+            select.addFacets(FacetHelper.terms(FACETS_RULES_COMPUTED_NUMBER + "_" + category.name(),
+                computedRulesIdentifierMapping, 100, FacetOrder.ASC));
+            addExpirationRulesFacet(rulesCriteriaList, category, select);
+
         } catch (DateTimeParseException e) {
             throw new InvalidCreateOperationException(e);
         }
