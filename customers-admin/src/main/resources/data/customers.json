@@ -1,5 +1,36 @@
 [
   {
+    "code": "980001",
+    "name": "Ministère de Ben",
+    "companyName": "Ministère de Ben",
+    "enabled": true,
+    "language": "FRENCH",
+    "passwordRevocationDelay": 6,
+    "otp": "DISABLED",
+    "emailDomains": [
+      "benben.fr"
+    ],
+    "defaultEmailDomain": "benben.fr",
+    "address": {
+      "street": "1 rue de ben",
+      "zipCode": "75001",
+      "city": "Ben",
+      "country": "FR"
+    },
+    "readonly": false,
+    "subrogeable": true,
+    "portalTitles": {
+      "FRENCH": "Ministère de ben",
+      "ENGLISH": "Welcome to Ben"
+    },
+    "portalMessages": {
+      "FRENCH": "Bienvenue",
+      "ENGLISH": "Portal of the International council on Archives"
+    },
+    "gdprAlert": true,
+    "gdprAlertDelay": 72
+  },
+  {
     "code": "000001",
     "name": "Ministère de la Culture",
     "companyName": "Ministère de la Culture",

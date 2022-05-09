@@ -75,7 +75,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -354,7 +356,7 @@ public class CustomerMgtSrvc {
         final Document userInfoEntry =
             new Document("_id", generatedId).append("language", "FRENCH")
                 .append("_class", "fr.gouv.vitamui.iam.internal.server.user.domain.UserInfo");
-        getTokensCollection().insertOne(userInfoEntry);
+        getUserInfosCollection().insertOne(userInfoEntry);
         return generatedId;
     }
 
@@ -464,19 +466,23 @@ public class CustomerMgtSrvc {
     private void parseAndCreateCustomers() {
         //read json file
         List<CustomerDto> customersListToCreate;
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        Map<String, String> customerDtoNotCreatedWithErrors = new HashMap<>();
         try {
             LOGGER.info("Start parsing customers file");
             customersListToCreate = readFromCustomersFile();
 
-            List<CustomerDto> customerDtoList = new ArrayList<>();
+
             if (customersListToCreate != null) {
-                try {
-                    LOGGER.info("Start creating customers from file, customers count in file is {} ",
-                        customersListToCreate.size());
-                    LOGGER.info("Start preparing context");
-                    prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
-                    ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
-                    for (CustomerDto customerDtoToCreate : customersListToCreate) {
+
+                LOGGER.info("Start creating customers from file, customers count in file is {} ",
+                    customersListToCreate.size());
+                LOGGER.info("Start preparing context");
+                prepareGenericContext(true, null, new String[] {ServicesData.ROLE_CREATE_CUSTOMERS});
+                ExternalHttpContext externalContext = getSystemTenantUserAdminContext();
+                CustomerDto customerDto = null;
+                for (CustomerDto customerDtoToCreate : customersListToCreate) {
+                    try {
                         LOGGER.debug("Start creating customer with code {} ", customerDtoToCreate.getCode());
 
                         CustomerCreationFormData customerCreationFormData = new CustomerCreationFormData();
@@ -493,19 +499,28 @@ public class CustomerMgtSrvc {
 
                         customerDtoToCreate.setOwners(ownerDtos);
                         //boolean existCode = isExistCode(externalContext, customerCreationFormData);
-                        CustomerDto customerDto = iamWebClientFactory.getCustomerWebClient()
+                        customerDto = iamWebClientFactory.getCustomerWebClient()
                             .create(externalContext, customerCreationFormData);
                         customerDtoList.add(customerDto);
                         LOGGER.info("Customer with name {} and id {} is created with identifier ",
                             customerDto.getName(),
                             customerDto.getIdentifier());
+                    } catch (Exception e) {
+                        LOGGER.error("Error creating customer due to error {} ", e);
+                        customerDtoNotCreatedWithErrors
+                            .put(customerDto.getCode() + "-" + customerDto.getCompanyName(), e.getMessage());
                     }
-                } catch (Exception e) {
-                    LOGGER.error("Error creating customer due to error {} ", e);
                 }
             }
         } catch (IOException e) {
             LOGGER.error("Error parsing customer files {} ", e.getMessage());
+        } finally {
+            LOGGER.info("Customer created count : {} ", customerDtoList.size());
+            LOGGER.info("Customer not created count : {} ", customerDtoNotCreatedWithErrors.keySet().size());
+            for (Map.Entry<String, String> entryError : customerDtoNotCreatedWithErrors.entrySet()) {
+                LOGGER.info("Customer not created {} du to error {} ", entryError.getKey(),
+                    entryError.getValue());
+            }
         }
     }
 
