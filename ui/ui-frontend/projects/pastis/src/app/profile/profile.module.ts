@@ -56,13 +56,12 @@ import {PastisMaterialModule} from '../material.module';
 import {UserActionsModule} from '../user-actions/user-actions.module';
 import {CreateProfileComponent} from './create-profile/create-profile.component';
 import {EditProfileComponent} from './edit-profile/edit-profile.component';
-import {
-  FilterByStringNamePipe,
-  FilterByTypePipe,
-  ListProfileComponent
-} from './list-profile/list-profile.component';
+import {ListProfileComponent} from './list-profile/list-profile.component';
 import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
-import {ProfileComponent} from './profile.component';
+import {FilterByStringNamePipe} from './list-profile/pipes/filterByStringName.pipe';
+import {FilterByTypePipe} from './list-profile/pipes/filterByType.pipe';
+import {ProfileComponent} from "../../../../identity/src/app/profile/profile.component";
+import {CreateNoticeChoiceComponent} from "./create-notice-choice/create-notice-choice.component";
 
 
 @NgModule({
@@ -83,9 +82,9 @@ import {ProfileComponent} from './profile.component';
     NgxUiLoaderModule,
     ProfilePreviewModule
   ],
-  exports: [CreateProfileComponent, EditProfileComponent, ListProfileComponent],
+  exports: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
   providers: [],
-  declarations: [ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByTypePipe, FilterByStringNamePipe],
+  declarations: [CreateNoticeChoiceComponent, ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
 
 })
 export class ProfileModule {

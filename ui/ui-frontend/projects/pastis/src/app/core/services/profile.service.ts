@@ -92,8 +92,6 @@ export class ProfileService implements OnDestroy  {
       this.getAllProfilesStandalone();
     } else {
       this.getAllProfilesVitam();
-      // return this.getAllProfilesPaginated(pageRequest);
-      // return this.apiService.get(this.pastisConfig.getAllProfilesUrl);
     }
   }
 
@@ -140,14 +138,12 @@ export class ProfileService implements OnDestroy  {
     const profiles: ProfileDescription[] = [];
     this.subscription3$ = this.getAllProfilesPUA().subscribe((profileListPUA: ProfileDescription[] ) => {
       if (profileListPUA) {
-        console.log(profileListPUA.length + 'profileListPUA');
         profileListPUA.forEach((p) => {
           p.type = 'PUA';
           profiles.push(p);
         });
         this.subscription4$ = this.getAllProfilesPA().subscribe((profileListPA: ProfileDescription[] ) => {
           if (profileListPA) {
-            console.log(profileListPA.length + 'profileListPA');
             profileListPA.forEach((p) => {
               p.type = 'PA';
               profiles.push(p);
@@ -182,7 +178,6 @@ export class ProfileService implements OnDestroy  {
 
     const endPointUrl = profileType === 'PA' ? this.pastisConfig.savePAasFileUrl : this.pastisConfig.savePUAasFileUrl;
     this.fixCircularReference(profile);
-    console.log('Data to');
 
     if (profileType === 'PUA') {
       profile = {elementProperties: profile, notice};
@@ -202,7 +197,6 @@ export class ProfileService implements OnDestroy  {
     this.page = pageRequest.page;
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
-    console.log(pageRequest.direction + 'direction');
 
     const params = new HttpParams()
       .set('page', this.page.toString())
@@ -225,7 +219,6 @@ export class ProfileService implements OnDestroy  {
     this.page = pageRequest.page;
     this.size = pageRequest.size;
     this.direction = pageRequest.direction;
-    console.log(pageRequest.direction + 'direction');
 
     const params = new HttpParams()
       .set('page', this.page.toString())
@@ -250,28 +243,19 @@ export class ProfileService implements OnDestroy  {
 
     this.subscription2$ = this.getAllProfilesPAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
       if (data) {
-        // console.error(data  + " data PA")
         data.forEach(p => p.type = 'PA');
         data.forEach(p => tabVide.push(p));
         this.retrievedProfiles.next(data);
-        // console.error("Profiles DES PA : ", tabVide);
       }
     });
 
     this.subscription1$ = this.getAllProfilesPUAPaginated(pageRequest).subscribe((data: ProfileDescription[] ) => {
       // @ts-ignore
-      // console.error(data)
       if (data) {
-        console.log(data.length + 'profileList');
         data.forEach(p => p.type = 'PUA');
-        // console.error("Profiles DES PUA: ", data);
         this.retrievedProfiles.next(data);
       }
     });
-
-
-
-    console.log(tabVide[0] + 'tableau');
 
     this.subscriptions.push(this.subscription1$);
     this.subscriptions.push(this.subscription2$);
@@ -283,6 +267,10 @@ export class ProfileService implements OnDestroy  {
 
   getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
     return this.puaService.getOne(id, headers);
+  }
+
+  getPaProfile(id: string, headers?: HttpHeaders): Observable<Profile> {
+    return this.paService.getOne(id, headers);
   }
 
   createProfile(path: string, type: string): Observable<ProfileResponse> {

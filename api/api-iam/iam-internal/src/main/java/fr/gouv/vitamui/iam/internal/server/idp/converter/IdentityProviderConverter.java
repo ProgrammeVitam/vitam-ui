@@ -97,6 +97,8 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
 
     public static final String USE_PKCE_KEY = "Avec PKCE";
 
+    public static final String PROTOCOLE_TYPE = "Protocole Type";
+
     private final SpMetadataGenerator spMetadataGenerator;
 
     public IdentityProviderConverter(final SpMetadataGenerator spMetadataGenerator) {
@@ -134,6 +136,7 @@ public class IdentityProviderConverter implements Converter<IdentityProviderDto,
         convertPatterns(dto, provider);
         provider.setReadonly(dto.isReadonly());
         provider.setCustomerId(dto.getCustomerId());
+        provider.setProtocoleType(dto.getProtocoleType());
         // SAML + OIDC
         provider.setMailAttribute(dto.getMailAttribute());
         provider.setIdentifierAttribute(dto.getIdentifierAttribute());

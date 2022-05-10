@@ -11,8 +11,8 @@
 <body id="cas" th:styleappend="${@environment.getProperty('theme.body.style')}">
 <div layout:fragment="content">
     <div>
-        <h2 th:utext="#{screen.authnblocked.heading}">Authentication attempt is blocked.</h2>
-        <p th:utext="#{screen.authnblocked.message}">Your authentication attempt is untrusted and unauthorized from
+        <h2 th:text="#{screen.authnblocked.heading}">Authentication attempt is blocked.</h2>
+        <p th:text="#{screen.authnblocked.message}">Your authentication attempt is untrusted and unauthorized from
             your current workstation.</p>
     </div>
 </div>

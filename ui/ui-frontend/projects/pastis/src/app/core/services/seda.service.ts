@@ -40,7 +40,7 @@ import { BehaviorSubject } from 'rxjs';
 import sedaRulesFile from '../../../assets/seda.json';
 import { CardinalityConstants, FileNode } from '../../models/file-node';
 import { CardinalityValues } from '../../models/models';
-import { SedaData} from '../../models/seda-data';
+import { SedaData } from '../../models/seda-data';
 
 @Injectable({
   providedIn: 'root'
@@ -56,58 +56,55 @@ export class SedaService {
   constructor() { }
 
   getSedaNode(currentNode: SedaData, nameNode: string): SedaData {
-  if (currentNode && nameNode) {
-    let i: number;
-    let currentChild: SedaData;
-    if (nameNode === currentNode.Name ) {
-     return currentNode;
-    } else {
-      // Use a for loop instead of forEach to avoid nested functions
-      // Otherwise "return" will not work properly
-      if (currentNode.Children) {
-        for (i = 0; i < currentNode.Children.length; i += 1) {
-          currentChild = currentNode.Children[i];
-          // Search in the current child
-          const result = this.getSedaNode(currentChild, nameNode);
-          // Return the result if the node has been found
-          if (result) {
-            return result;
+    if (currentNode && nameNode) {
+      let i: number;
+      let currentChild: SedaData;
+      if (nameNode === currentNode.Name) {
+        return currentNode;
+      } else {
+        // Use a for loop instead of forEach to avoid nested functions
+        // Otherwise "return" will not work properly
+        if (currentNode.Children) {
+          for (i = 0; i < currentNode.Children.length; i += 1) {
+            currentChild = currentNode.Children[i];
+            // Search in the current child
+            const result = this.getSedaNode(currentChild, nameNode);
+            // Return the result if the node has been found
+            if (result) {
+              return result;
+            }
           }
         }
+        // The node has not been found and we have no more options
+        return;
       }
-     // The node has not been found and we have no more options
-      return;
-   }
-  }
+    }
   }
 
   getSedaNodeRecursively(currentNode: SedaData, nameNode: string): SedaData {
-    // console.log("Node to be searched on : %o", currentNode, nameNode, )
     let i: number;
     let currentChild: SedaData;
+    let resultNode: SedaData;
     if (currentNode) {
-    if (nameNode == currentNode.Name ) {
-      return currentNode;
-    } else {
-      // Use a for loop instead of forEach to avoid nested functions
-      // Otherwise "return" will not work properly
-      if (currentNode.Children) {
-        for (i = 0; i < currentNode.Children.length; i += 1) {
-          currentChild = currentNode.Children[i];
-          // Search in the current child
-          const result = this.getSedaNodeRecursively(currentChild, nameNode);
-          // Return the result if the node has been found
-          if (result) {
-            return result;
+      if (nameNode === currentNode.Name) {
+        resultNode = currentNode;
+      } else {
+        // Use a for loop instead of forEach to avoid nested functions
+        // Otherwise "return" will not work properly
+        if (currentNode.Children) {
+          for (i = 0; i < currentNode.Children.length; i += 1) {
+            currentChild = currentNode.Children[i];
+            // Search in the current child
+            const result = this.getSedaNodeRecursively(currentChild, nameNode);
+            // Return the result if the node has been found
+            if (result) {
+              resultNode = result;
+            }
           }
         }
-      } else {
-          // The node has not been found and we have no more options
-          console.log('No SEDA nodes could be found for ', nameNode);
-          return;
       }
     }
-    }
+    return resultNode;
   }
 
   // Get the seda node based on collection name and a node name.
@@ -115,18 +112,19 @@ export class SedaService {
   // the function will search the whole file and return a single metadata based on
   // a node name and a collection name;
   getSedaNodeCollection(sedaNode: SedaData, nodeName: string, collectionName: string): SedaData {
+    let resultNode: SedaData;
     if (sedaNode) {
-    if (sedaNode.Collection === collectionName && sedaNode.Name === nodeName) {
-      return sedaNode;
-    }
-    for (const child of sedaNode.Children) {
-      const nodeFound = this.getSedaNodeCollection(child, nodeName, collectionName);
-      if (nodeFound) {
-        return nodeFound;
+      if (sedaNode.Collection === collectionName && sedaNode.Name === nodeName) {
+        resultNode = sedaNode;
+      }
+      for (const child of sedaNode.Children) {
+        const nodeFound = this.getSedaNodeCollection(child, nodeName, collectionName);
+        if (nodeFound) {
+          resultNode = nodeFound;
+        }
       }
     }
-  }
-
+    return resultNode;
   }
 
   // For all correspondent values beetween seda and tree elements,
@@ -136,19 +134,20 @@ export class SedaService {
   // aways be included in the list
   findSelectableElementList(sedaNode: SedaData, fileNode: FileNode): SedaData[] {
     const fileNodesNames = fileNode.children.map(e => e.name);
-    return sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
-                                                      x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
-                                                      ||
-                                                      (fileNodesNames.includes(x.Name) &&
-                                                      (x.Cardinality === CardinalityConstants['Zero or More'].valueOf())
-                                                      ));
+    const allowedSelectableList = sedaNode.Children.filter(x => (!fileNodesNames.includes(x.Name) &&
+      x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
+      ||
+      (fileNodesNames.includes(x.Name) &&
+        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf())
+      ));
+    return allowedSelectableList;
   }
 
   findCardinalityName(clickedNode: FileNode, cardlinalityValues: CardinalityValues[]): string {
     if (!clickedNode.cardinality) {
       return '1';
     } else {
-        return cardlinalityValues.find(c => c.value === clickedNode.cardinality).value;
+      return cardlinalityValues.find(c => c.value == clickedNode.cardinality).value;
     }
   }
 
@@ -157,8 +156,9 @@ export class SedaService {
    * @param sedaNode the seda node we want to query
    */
   getAttributes(sedaNode: SedaData, collection: string): SedaData[] {
-    return sedaNode.Children.filter(children => children.Element === 'Attribute'
-                                    && sedaNode.Collection === collection);
+    // if (!sedaNode) return;
+    return sedaNode.Children.filter(children => children.Element == 'Attribute'
+      && sedaNode.Collection === collection);
   }
 
   isSedaNodeObligatory(nodeName: string, sedaParent: SedaData): boolean {
@@ -174,13 +174,13 @@ export class SedaService {
     }
   }
 
-  isDuplicated(nomDuChamp: string, sedaParent: SedaData) {
-    if (sedaParent.Name === nomDuChamp) {
+  isDuplicated(fieldName: string, sedaParent: SedaData) {
+    if (sedaParent.Name === fieldName) {
       return sedaParent.Cardinality.includes('N');
     }
     if (sedaParent) {
       for (const child of sedaParent.Children) {
-        if (child.Name === nomDuChamp) {
+        if (child.Name === fieldName) {
           return child.Cardinality.includes('N');
         }
       }
@@ -218,8 +218,8 @@ export class SedaService {
       for (const sedaChild of sedaNode.Children) {
         if (fileChild.name === sedaChild.Name) {
           fileChild.cardinality ?
-          cardinalities.push(fileChild.cardinality) :
-          cardinalities.push(sedaChild.Cardinality);
+            cardinalities.push(fileChild.cardinality) :
+            cardinalities.push(sedaChild.Cardinality);
         }
       }
     }

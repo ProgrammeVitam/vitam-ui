@@ -1,3 +1,41 @@
+/*
+Copyright © CINES - Centre Informatique National pour l'Enseignement Supérieur (2021)
+
+[dad@cines.fr]
+
+This software is a computer program whose purpose is to provide
+a web application to create, edit, import and export archive
+profiles based on the french SEDA standard
+(https://redirect.francearchives.fr/seda/).
+
+
+This software is governed by the CeCILL-C  license under French law and
+abiding by the rules of distribution of free software.  You can  use,
+modify and/ or redistribute the software under the terms of the CeCILL-C
+license as circulated by CEA, CNRS and INRIA at the following URL
+"http://www.cecill.info".
+
+As a counterpart to the access to the source code and  rights to copy,
+modify and redistribute granted by the license, users are provided only
+with a limited warranty  and the software's author,  the holder of the
+economic rights,  and the successive licensors  have only  limited
+liability.
+
+In this respect, the user's attention is drawn to the risks associated
+with loading,  using,  modifying and/or developing or reproducing the
+software by the user in light of its specific status of free software,
+that may mean  that it is complicated to manipulate,  and  that  also
+therefore means  that it is reserved for developers  and  experienced
+professionals having in-depth computer knowledge. Users are therefore
+encouraged to load and test the software's suitability as regards their
+requirements in conditions enabling the security of their systems and/or
+data to be ensured and,  more generally, to use and operate it in the
+same conditions as regards security.
+
+The fact that you are presently reading this means that you have had
+knowledge of the CeCILL-C license and that you accept its terms.
+*/
+
 package fr.gouv.vitamui.referential.common.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -169,76 +207,4 @@ public class VitamProfileService {
         LOGGER.debug("Import profile by file {}", fileName);
         return adminExternalClient.createProfiles(vitamContext, file.getInputStream());
     }
-
-
-
-
-
-
-
-
-
-
-    /*
-
-     *//**
-     * Ignore vitam internal fields (#id, #version, #tenant) and Profile non mutable fields (Identifier, Name)
-     *//*
-    private void patchFields(ProfileModel archivalProfileToPatch, ProfileModel fieldsToApply) {
-        if (fieldsToApply.getVersion() != null) {
-            archivalProfileToPatch.setVersion(fieldsToApply.getVersion());
-        }
-    }
-
-    *//**
-     * check if all conditions are Ok to create an access contract in the tenant
-     *
-     * @param profiles
-     * @return true if the format can be created, false if the ile format already exists
-     *//*
-    public boolean checkAbilityToCreateArchivalProfileInVitam(final List<ProfileModel> profiles, VitamContext vitamContext) {
-
-        if (profiles != null && !profiles.isEmpty()) {
-            try {
-                // check if tenant exist in Vitam
-                final JsonNode select = new Select().getFinalSelect();
-                final RequestResponse<ProfileModel> response = findArchivalProfiles(vitamContext, select);
-                if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
-                    throw new PreconditionFailedException("Can't create archival profile for the tenant : UNAUTHORIZED");
-                } else if (response.getStatus() != HttpStatus.OK.value()) {
-                    throw new UnavailableServiceException("Can't create archival profile for this tenant, Vitam response code : " + response.getStatus());
-                }
-
-                verifyArchivalProfileExistence(profiles, response);
-            } catch (final VitamClientException e) {
-                throw new UnavailableServiceException("Can't create access contracts for this tenant, error while calling Vitam : " + e.getMessage());
-            }
-            return true;
-        }
-        throw new BadRequestException("The body is not found");
-    }
-
-    *//**
-     * Check if access contract is not already created in Vitam.
-     *
-     * @param checkArchivalProfiles
-     * @param vitamArchivalProfiles
-     *//*
-    private void verifyArchivalProfileExistence(final List<ProfileModel> checkArchivalProfiles, final RequestResponse<ProfileModel> vitamArchivalProfiles) {
-        try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            final ProfileResponseDto accessContractResponseDto = objectMapper.treeToValue(vitamArchivalProfiles.toJsonNode(), ProfileResponseDto.class);
-            final List<String> formatsNames = checkArchivalProfiles.stream().map(ac -> ac.getName()).collect(Collectors.toList());
-            if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsNames.contains(ac.getName()))) {
-                throw new ConflictException("Can't create archival profile, a format with the same name already exist in Vitam");
-            }
-            final List<String> formatsPuids = checkArchivalProfiles.stream().map(ac -> ac.getIdentifier()).collect(Collectors.toList());
-            if (accessContractResponseDto.getResults().stream().anyMatch(ac -> formatsPuids.contains(ac.getIdentifier()))) {
-                throw new ConflictException("Can't create archival profile, a format with the same puid already exist in Vitam");
-            }
-        } catch (final JsonProcessingException e) {
-            throw new UnexpectedDataException("Can't create access contracts, Error while parsing Vitam response : " + e.getMessage());
-        }
-    }*/
 }

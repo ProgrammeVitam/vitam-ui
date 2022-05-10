@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.external.client;
 
 import fr.gouv.vitamui.commons.rest.client.accesscontract.AccessContractExternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 
 import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
@@ -124,4 +125,6 @@ public class IamExternalRestClientFactory extends BaseRestClientFactory {
     public AccessContractExternalRestClient getAccessContractExternalRestClient() {
         return new AccessContractExternalRestClient(getRestTemplate(), getBaseUrl());
     }
+
+
 }

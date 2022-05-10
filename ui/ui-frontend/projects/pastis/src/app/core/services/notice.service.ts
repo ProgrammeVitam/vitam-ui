@@ -36,10 +36,10 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import { Injectable } from '@angular/core';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import { ArchivalProfileUnit, ArchivalProfileUnitModel } from '../../models/archival-profile-unit';
 import { Notice } from '../../models/notice.model';
-import { Profile } from '../../models/profile';
-import { ProfileDescription } from '../../models/profile-description.model';
+import { Profile, ProfileModel } from '../../models/profile';
+import { ProfileDescription, ProfileDescriptionModel } from '../../models/profile-description.model';
 import { FileService } from './file.service';
 
 @Injectable({
@@ -64,23 +64,6 @@ export class NoticeService {
   }
 
   puaNotice(retour: any): ArchivalProfileUnit {
-
-    class ArchivalProfileUnitModel implements ArchivalProfileUnit {
-      id: string;
-      tenant: number;
-      version: number;
-      identifier: string;
-      name: string;
-      description: string;
-      status: string;
-      creationDate: string;
-      lastUpdate: string;
-      activationDate: string;
-      deactivationDate: string;
-      controlSchema: string;
-      fields: string[];
-    }
-
     const profileDescription = new ArchivalProfileUnitModel();
     profileDescription.identifier = retour.identifier;
     profileDescription.name = retour.intitule;
@@ -92,22 +75,6 @@ export class NoticeService {
     }
 
   paNotice(retour: any, create: boolean): Profile {
-    class ProfileModel implements Profile {
-      id: string;
-      status: string;
-      tenant: number;
-      version: number;
-      identifier: string;
-      name: string;
-      description: string;
-      creationDate: string;
-      lastUpdate: string;
-      activationDate: string;
-      deactivationDate: string;
-      format: string;
-      path: string;
-    }
-
     const profile = new ProfileModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
@@ -119,25 +86,6 @@ export class NoticeService {
   }
 
   profileFromNotice(retour: any, edit: boolean, pua: boolean): ProfileDescription {
-    class ProfileDescriptionModel implements ProfileDescription {
-      id: string;
-      identifier: string;
-      name: string;
-      description: string;
-      status: string;
-      creationDate: string;
-      lastUpdate: string;
-      type: string;
-      activationDate: string;
-      deactivationDate: string;
-      controlSchema: string;
-      tenant: number;
-      version: number;
-      fields: string[];
-      path: string;
-      format: string;
-    }
-
     const profile = new ProfileDescriptionModel();
     profile.identifier = retour.identifier;
     profile.name = retour.intitule;
@@ -152,42 +100,12 @@ export class NoticeService {
   }
 
   profileDescriptionToPaProfile(profileDescription: ProfileDescription): Profile {
-    class ProfileModel implements Profile {
-      id: string;
-      status: string;
-      tenant: number;
-      version: number;
-      identifier: string;
-      name: string;
-      description: string;
-      creationDate: string;
-      lastUpdate: string;
-      activationDate: string;
-      deactivationDate: string;
-      format: string;
-      path: string;
-    }
     let profile = new ProfileModel();
     profile = Object.assign(profile, profileDescription);
     return profile;
   }
 
   profileDescriptionToPuaProfile(profileDescription: ProfileDescription): ArchivalProfileUnit {
-    class ArchivalProfileUnitModel implements ArchivalProfileUnit {
-      id: string;
-      tenant: number;
-      version: number;
-      identifier: string;
-      name: string;
-      description: string;
-      status: string;
-      creationDate: string;
-      lastUpdate: string;
-      activationDate: string;
-      deactivationDate: string;
-      controlSchema: string;
-      fields: string[];
-    }
     let archivalProfileUnit = new ArchivalProfileUnitModel();
     archivalProfileUnit = Object.assign(archivalProfileUnit, profileDescription);
     return archivalProfileUnit;

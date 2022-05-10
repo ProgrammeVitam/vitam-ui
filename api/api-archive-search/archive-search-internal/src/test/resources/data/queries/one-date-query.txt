@@ -1,1 +1,0 @@
-[{"$or":[{"$and":[{"$gte":{"#management.AppraisalRule.Rules.EndDate":"2021-11-02"}}]},{"$and":[{"$gte":{"#computedInheritedRules.AppraisalRule.Rules.EndDate":"2021-11-02"}}]}]}]

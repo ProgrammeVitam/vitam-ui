@@ -72,6 +72,7 @@ export class VitamuiIntervalDatePickerComponent implements OnInit {
   showIntervalDate(value: boolean) {
     this.showDateMax = value;
     if (!value) {
+      this.clearDate('dateMin');
       this.clearDate('dateMax');
     }
   }

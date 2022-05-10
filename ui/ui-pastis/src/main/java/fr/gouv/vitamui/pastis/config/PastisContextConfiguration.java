@@ -41,6 +41,8 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.pastis.client.PastisRestClientFactory;
 import fr.gouv.vitamui.pastis.client.PastisTransformationRestClient;
+import fr.gouv.vitamui.pastis.client.PastisTransformationWebClient;
+import fr.gouv.vitamui.pastis.client.PastisWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.ArchivalProfileUnitExternalRestClient;
 import fr.gouv.vitamui.referential.external.client.ArchivalProfileUnitExternalWebClient;
 import fr.gouv.vitamui.referential.external.client.ProfileExternalRestClient;
@@ -71,6 +73,13 @@ public class PastisContextConfiguration {
         RestTemplateBuilder restTemplateBuilder) {
         return new PastisRestClientFactory(uiProperties.getPastisExternalClient(),
             restTemplateBuilder);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public PastisWebClientFactory iamWebClientFactory( final PastisApplicationProperties uiProperties) {
+        return new PastisWebClientFactory(uiProperties.getPastisExternalClient());
     }
 
     @Bean
@@ -112,5 +121,12 @@ public class PastisContextConfiguration {
         final PastisRestClientFactory pastisRestClientFactory) {
         return pastisRestClientFactory.getPastisTransformationRestClient();
     }
+
+    @Bean
+    public PastisTransformationWebClient pastisTransformationWebClient(
+        final PastisWebClientFactory pastisWebClientFactory) {
+        return pastisWebClientFactory.getPastisTransformationWebClient();
+    }
+
 
 }

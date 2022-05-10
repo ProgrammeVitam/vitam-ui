@@ -2,15 +2,14 @@ db = db.getSiblingDB('iam')
 
 print("START_33_update_admin_externalParameters_value.js");
 
-const index = 0;
-
-db.externalParameters.update(
-{"_id" : "external_param_default"
-},
-{
-   $set:{
-      [`parameters.${index}.value`] : "ContratTNR"
-   }
-});
+db.externalParameters.updateOne(
+    {
+        "_id": "DEFAULT_EXT_PARAM_{{ vitamui_platform_informations.proof_tenant | default(1) }}",
+        "parameters.key": { "$eq": "PARAM_ACCESS_CONTRACT" }
+    },
+    {
+        "$set": { "parameters.$.value": "ContratTNR" }
+    }
+);
 
 print("START_33_update_admin_externalParameters_value.js");

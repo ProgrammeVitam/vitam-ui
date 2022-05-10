@@ -34,6 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+
 import { DatePipe } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
@@ -50,7 +51,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
 import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
 import { ArchiveService } from '../archive.service';
 import {
@@ -58,7 +59,7 @@ import {
   SearchCriteria,
   SearchCriteriaStatusEnum,
   SearchCriteriaTypeEnum,
-  SearchCriteriaValue
+  SearchCriteriaValue,
 } from '../models/search.criteria';
 import { VitamUISnackBar } from '../shared/vitamui-snack-bar';
 import { ArchiveSearchComponent } from './archive-search.component';
@@ -81,7 +82,7 @@ class FakeLoader implements TranslateLoader {
 describe('ArchiveSearchComponent', () => {
   let component: ArchiveSearchComponent;
   let fixture: ComponentFixture<ArchiveSearchComponent>;
-  let pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
+  const pagedResult: PagedResult = { pageNumbers: 1, facets: [], results: [], totalResults: 1 };
 
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
   matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
@@ -95,7 +96,13 @@ describe('ArchiveSearchComponent', () => {
 
     searchArchiveUnitsByCriteria: () => of(pagedResult),
 
-    hasArchiveSearchRole: () => of(true)
+    hasArchiveSearchRole: () => of(true),
+
+    getAccessContractById: () => of({}),
+
+    hasAccessContractPermissions: () => of(true),
+
+    hasAccessContractManagementPermissions: () => of(true),
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -107,11 +114,11 @@ describe('ArchiveSearchComponent', () => {
         InjectorModule,
         LoggerModule.forRoot(),
         TranslateModule.forRoot({
-          loader: { provide: TranslateLoader, useClass: FakeLoader }
+          loader: { provide: TranslateLoader, useClass: FakeLoader },
         }),
         MatSnackBarModule,
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
       ],
       declarations: [ArchiveSearchComponent, MockTruncatePipe],
       providers: [
@@ -121,15 +128,15 @@ describe('ArchiveSearchComponent', () => {
         { provide: ArchiveService, useValue: archiveServiceStub },
         {
           provide: ActivatedRoute,
-          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) }
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
         },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: VitamUISnackBar, useValue: snackBarSpy },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: environment, useValue: environment }
+        { provide: environment, useValue: environment },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -144,7 +151,7 @@ describe('ArchiveSearchComponent', () => {
   });
 
   describe('Submit-Click', () => {
-    let searchCriteria: SearchCriteria = {
+    const searchCriteria: SearchCriteria = {
       key: 'Title',
       values: [
         {
@@ -153,23 +160,23 @@ describe('ArchiveSearchComponent', () => {
           status: SearchCriteriaStatusEnum.NOT_INCLUDED,
           valueShown: true,
           valueTranslated: false,
-          keyTranslated: false
-        }
+          keyTranslated: false,
+        },
       ],
       category: SearchCriteriaTypeEnum.FIELDS,
-      operator: 'EQ',
-      dataType: 'STRING',
+      operator: CriteriaOperator.EQ,
+      dataType: CriteriaDataType.STRING,
       valueTranslated: false,
-      keyTranslated: false
+      keyTranslated: false,
     };
 
-    let searchCriteriaValues: SearchCriteriaValue[] = [
+    const searchCriteriaValues: SearchCriteriaValue[] = [
       {
         value: { value: 'Titre 1', id: 'Titre 1' },
         label: 'Titre 1',
         status: SearchCriteriaStatusEnum.NOT_INCLUDED,
         valueTranslated: false,
-        keyTranslated: false
+        keyTranslated: false,
       },
       {
         value: { value: 'Titre2', id: 'Titre2' },
@@ -177,22 +184,22 @@ describe('ArchiveSearchComponent', () => {
         status: SearchCriteriaStatusEnum.NOT_INCLUDED,
         valueShown: true,
         valueTranslated: false,
-        keyTranslated: false
-      }
+        keyTranslated: false,
+      },
     ];
 
-    searchCriteriaValues.sort(function(a: any, b: any) {
-      var valueA = a.value;
-      var valueB = b.value;
+    searchCriteriaValues.sort((a: any, b: any) => {
+      const valueA = a.value;
+      const valueB = b.value;
       return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
     });
 
     beforeEach(() => {
       // Given
-      let currentCriteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
+      const currentCriteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
       currentCriteria.set('Title', {
         key: 'Title',
-        dataType: 'STRING',
+        dataType: CriteriaDataType.STRING,
         keyTranslated: true,
         valueTranslated: false,
         values: [
@@ -202,11 +209,11 @@ describe('ArchiveSearchComponent', () => {
             status: SearchCriteriaStatusEnum.NOT_INCLUDED,
             valueShown: true,
             valueTranslated: false,
-            keyTranslated: false
-          }
+            keyTranslated: false,
+          },
         ],
         category: SearchCriteriaTypeEnum.FIELDS,
-        operator: 'EQ'
+        operator: CriteriaOperator.EQ,
       });
 
       component.searchCriterias = currentCriteria;
@@ -220,29 +227,31 @@ describe('ArchiveSearchComponent', () => {
           searchCriteria.values[0].value,
           searchCriteria.values[0].value.value,
           false,
-          'EQ',
+          CriteriaOperator.EQ,
           SearchCriteriaTypeEnum.FIELDS,
           searchCriteria.valueTranslated,
-          'STRING',
+          CriteriaDataType.STRING,
           false
         );
 
         // Then: the new criteria should be added to the criteria list
         expect(component.searchCriterias.size).toEqual(1);
-        let newCriteria = component.searchCriterias.get('Title').values;
-        newCriteria.sort(function(a: any, b: any) {
-          var valueA = a.value;
-          var valueB = b.value;
+        const newCriteria = component.searchCriterias.get('Title').values;
+
+        newCriteria.sort((a: any, b: any) => {
+          const valueA = a.value;
+          const valueB = b.value;
           return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
         });
       });
     });
+
     describe('submit', () => {
       it('should check all criteria as included when submit', () => {
         component.submit();
         component.searchCriterias.forEach((criteria) => {
           criteria.values.forEach((criteriaValue) => {
-            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.INCLUDED);
+            expect(criteriaValue.status).toEqual(SearchCriteriaStatusEnum.IN_PROGRESS);
           });
         });
       });

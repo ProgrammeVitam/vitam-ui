@@ -24,29 +24,4 @@ db.applications.insert({
     "target": "_self"
 });
 
-db.profiles.insert({
-  "_id": "system_access-external-param-profile",
-  "identifier" : NumberInt(88),
-  "name": "External param Profile",
-  "description": "External param Profile",
-  "tenantIdentifier": NumberInt({{ vitamui_platform_informations.proof_tenant }}),
-  "applicationName": "EXTERNAL_PARAM_PROFILE_APP",
-  "level": "",
-  "enabled": true,
-  "readonly": false,
-  "customerId": "system_customer",
-  "roles": [
-  {
-    "name": "ROLE_CREATE_EXTERNAL_PARAM_PROFILE"
-  },
-  {
-    "name": "ROLE_EDIT_EXTERNAL_PARAM_PROFILE"
-  },
-  {
-    "name": "ROLE_SEARCH_EXTERNAL_PARAM_PROFILE"
-  }
-   ]
-});
-
-
 print("END 316_application_ref.js");

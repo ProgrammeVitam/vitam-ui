@@ -60,6 +60,7 @@ import { CoreModule } from '../core/core.module';
 import { MainComponent } from '../main/main.component';
 import { FileTreeModule } from '../profile/edit-profile/file-tree/file-tree.module';
 import { ProfileModule } from '../profile/profile.module';
+import { SedaVisualizerComponent } from '../seda-visualizer/seda-visualizer.component';
 import { SharedModule } from '../shared/shared.module';
 import { UserActionAddMetadataComponent } from '../user-actions/add-metadata/add-metadata.component';
 import { UserActionRemoveMetadataComponent } from '../user-actions/remove-metadata/remove-metadata.component';
@@ -96,7 +97,7 @@ import { PastisRoutingModule } from './pastis-routing.module';
     TableFilterModule,
     VitamUILibraryModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   providers: [
     DatePipe,
@@ -105,7 +106,9 @@ import { PastisRoutingModule } from './pastis-routing.module';
   declarations: [
     MainComponent,
     UserActionRemoveMetadataComponent,
-    UserActionAddMetadataComponent
+    UserActionAddMetadataComponent,
+    SedaVisualizerComponent
+    
   ],
   exports: [
   ],

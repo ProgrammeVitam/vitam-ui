@@ -32,8 +32,10 @@ import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
 import fr.gouv.archive.internal.client.ArchiveSearchInternalWebClient;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
@@ -115,5 +117,21 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
 
     public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto) {
         return archiveInternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, getInternalHttpContext());
+    }
+
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto) {
+        return archiveInternalRestClient.computedInheritedRules(searchCriteriaDto, getInternalHttpContext());
+    }
+
+    public ResultsDto selectUnitWithInheritedRules(final SearchCriteriaDto query) {
+        return getClient().selectUnitWithInheritedRules(getInternalHttpContext(), query);
+    }
+
+    public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto) {
+        return archiveInternalRestClient.reclassification(reclassificationCriteriaDto, getInternalHttpContext());
+    }
+
+    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
+        return archiveInternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, getInternalHttpContext());
     }
 }

@@ -1,18 +1,11 @@
 package fr.gouv.vitamui.archives.search.rest;
 
-import com.google.common.collect.ImmutableMap;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.archives.search.service.SearchCriteriaHistoryService;
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
-import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.ui.commons.config.UICommonsAutoConfiguration;
 import fr.gouv.vitamui.ui.commons.config.UICommonsAutoSpringMockConfiguration;
-import fr.gouv.vitamui.ui.commons.rest.SubrogationController;
-import fr.gouv.vitamui.ui.commons.rest.UIControllerTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -21,7 +14,6 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.ArgumentMatchers.any;

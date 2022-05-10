@@ -1,13 +1,13 @@
-<div class="editable-field-wrapper" *ngIf="!disabled">
+<div class="editable-field-wrapper" *ngIf="!disabled && !writeDisabled">
   <div cdkOverlayOrigin #origin="cdkOverlayOrigin">
     <div class="vitamui-input editable-field" [class.edit-mode]="editMode" (click)="enterEditMode()">
       <div class="editable-field-content">
-        <label>{{label}}</label>
-          <span class="editable-field-text-content">{{control?.value}}</span>
-          <div class="editable-field-control">
-            <input type="number" [formControl]="control" [maxlength]="maxlength" #input *ngIf="type === 'number'">
-            <input [type]="type" [formControl]="control" [maxlength]="maxlength" #input *ngIf="type !== 'number'">
-          </div>
+        <label>{{ label }}</label>
+        <span class="editable-field-text-content">{{ control?.value }}</span>
+        <div class="editable-field-control">
+          <input type="number" [formControl]="control" [maxlength]="maxlength" #input *ngIf="type === 'number'" />
+          <input [type]="type" [formControl]="control" [maxlength]="maxlength" #input *ngIf="type !== 'number'" />
+        </div>
       </div>
       <i *ngIf="!showSpinner && !editMode" class="material-icons edit-icon">edit</i>
       <div *ngIf="showSpinner">
@@ -27,14 +27,20 @@
     [cdkConnectedOverlayPositions]="positions"
   >
     <div class="editable-field-actions">
-      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm"><i class="material-icons">check</i></button>
+      <button type="button" class="editable-field-confirm" (click)="confirm()" [disabled]="!canConfirm">
+        <i class="material-icons">check</i>
+      </button>
       <button type="button" class="editable-field-cancel" (click)="cancel()"><i class="material-icons">clear</i></button>
     </div>
   </ng-template>
-
 </div>
 
 <div *ngIf="disabled" class="read-only-field">
-  <label>{{label}}</label>
-  <div class="value-display">{{control?.value}}</div>
+  <label>{{ label }}</label>
+  <div class="value-display">{{ control?.value }}</div>
+</div>
+
+<div *ngIf="writeDisabled" class="read-only-field-design">
+  <label>{{ label }}</label>
+  <div class="value-display">{{ control?.value }}</div>
 </div>

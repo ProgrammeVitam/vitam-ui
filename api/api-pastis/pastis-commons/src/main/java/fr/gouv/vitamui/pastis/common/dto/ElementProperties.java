@@ -80,11 +80,9 @@ public class ElementProperties {
 
 
     public void setCardinality(String cardinality) {
-        if (null != RNGConstants.getCardinalityMap().get(cardinality)) {
-            this.cardinality = RNGConstants.getCardinalityMap().get(cardinality);
-        } else {
-            this.cardinality = cardinality;
-        }
+        this.cardinality = (null != RNGConstants.getCardinalityMap().get(cardinality) ?
+            RNGConstants.getCardinalityMap().get(cardinality) :
+            cardinality);
     }
 
     public String getGroupOrChoice() {

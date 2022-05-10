@@ -35,9 +35,17 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
+import { environment } from 'projects/archive-search/src/environments/environment';
+import { of } from 'rxjs';
+import { BASE_URL, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import { ArchiveApiService } from '../../../core/api/archive-api.service';
 import { DipRequestCreateComponent } from './dip-request-create.component';
 
 describe('DipRequestCreateComponent', () => {
@@ -47,14 +55,32 @@ describe('DipRequestCreateComponent', () => {
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
 
+  const archiveServiceMock = {
+    archive: () => of('test archive'),
+    search: () => of([]),
+    getAccessContractById: () => of({}),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [DipRequestCreateComponent],
+      imports: [
+        InjectorModule,
+        TranslateModule.forRoot(),
+        MatButtonToggleModule,
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        LoggerModule.forRoot(),
+      ],
       providers: [
         FormBuilder,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: environment, useValue: environment },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: ArchiveApiService, useValue: archiveServiceMock },
       ],
     }).compileComponents();
   });

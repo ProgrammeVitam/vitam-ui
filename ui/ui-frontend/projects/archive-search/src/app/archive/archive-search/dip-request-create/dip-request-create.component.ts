@@ -61,16 +61,24 @@ export class DipRequestCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private logger: Logger,
     @Inject(MAT_DIALOG_DATA)
-    public data: { itemSelected: number; exportDIPSearchCriteria: SearchCriteriaEltDto[]; accessContract: string; tenantIdentifier: string }
+    public data: {
+      itemSelected: number;
+      exportDIPSearchCriteria: SearchCriteriaEltDto[];
+      accessContract: string;
+      tenantIdentifier: string;
+      selectedItemCountKnown?: boolean;
+    }
   ) {}
   exportDIPform: FormGroup;
   exportDIPIncludeform: FormGroup;
   itemSelected: number;
+  selectedItemCountKnown: boolean;
   keyPressSubscription: Subscription;
   dataObjectVersions = ['BinaryMaster', 'Dissemination', 'Thumbnail', 'TextContent', 'PhysicalMaster'];
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
+    this.selectedItemCountKnown = this.data.selectedItemCountKnown;
     this.initExportForm();
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }

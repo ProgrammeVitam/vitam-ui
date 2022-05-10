@@ -44,8 +44,10 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { VitamUICommonModule } from 'ui-frontend-common';
 import { LevelInputModule } from 'ui-frontend-common';
+import { CustomParamsModule } from '../custom-params/custom-params.module';
 import { DomainsInputModule } from '../domains-input';
 import { PatternModule } from '../pattern';
+import { EditableCustomParamsComponent } from './editable-custom-params/editable-custom-params.component';
 import { EditableDomainInputComponent } from './editable-domain-input/editable-domain-input.component';
 import { EditableKeystoreComponent } from './editable-keystore/editable-keystore.component';
 import { EditablePatternsComponent } from './editable-patterns/editable-patterns.component';
@@ -63,16 +65,19 @@ import { EditablePatternsComponent } from './editable-patterns/editable-patterns
     LevelInputModule,
     PatternModule,
     VitamUICommonModule,
+    CustomParamsModule
   ],
   declarations: [
     EditableDomainInputComponent,
     EditablePatternsComponent,
     EditableKeystoreComponent,
+    EditableCustomParamsComponent,
   ],
   exports: [
     EditableDomainInputComponent,
     EditablePatternsComponent,
     EditableKeystoreComponent,
+    EditableCustomParamsComponent,
   ]
 })
 export class EditableFieldModule { }

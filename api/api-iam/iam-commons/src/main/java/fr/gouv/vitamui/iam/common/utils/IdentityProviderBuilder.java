@@ -41,6 +41,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import fr.gouv.vitamui.iam.common.enums.AuthnRequestBindingEnum;
 import org.apache.commons.io.IOUtils;
@@ -85,10 +86,31 @@ public class IdentityProviderBuilder {
 
     private final boolean autoProvisioningEnabled;
 
+    // OIDC provider data
+    private String clientId;
+
+    private String clientSecret;
+
+    private String discoveryUrl;
+
+    private String scope;
+
+    private String preferredJwsAlgorithm;
+
+    private Map<String, String> customParams;
+
+    private Boolean useState;
+
+    private Boolean useNonce;
+
+    private Boolean usePkce;
+
+    private String protocoleType;
     public IdentityProviderBuilder(final String name, final String technicalName, final Boolean enabled,
             final Boolean internal, final List<String> patterns, final Resource keystore, final String keystorePassword,
             final String privateKeyPassword, final Resource idpMetadata, final String customerId,
-            final boolean readonly, final String mailAttribute, final String identifierAttribute, final AuthnRequestBindingEnum authnRequestBinding, final boolean autoProvisioningEnabled) {
+            final boolean readonly, final String mailAttribute, final String identifierAttribute, final AuthnRequestBindingEnum authnRequestBinding, final boolean autoProvisioningEnabled,
+                                   String clientId,String clientSecret,String discoveryUrl,String scope,String preferredJwsAlgorithm, Map<String, String> customParams, Boolean useState,Boolean useNonce, Boolean usePkce, String protocoleType) {
         this.name = name;
         this.technicalName = technicalName;
         this.enabled = enabled;
@@ -104,6 +126,16 @@ public class IdentityProviderBuilder {
         this.identifierAttribute = identifierAttribute;
         this.authnRequestBinding =  authnRequestBinding;
         this.autoProvisioningEnabled = autoProvisioningEnabled;
+        this.clientId=clientId;
+        this.clientSecret=clientSecret;
+        this.discoveryUrl=discoveryUrl;
+        this.scope=scope;
+        this.preferredJwsAlgorithm=preferredJwsAlgorithm;
+        this.customParams=customParams;
+        this.useNonce=useNonce;
+        this.usePkce=usePkce;
+        this.useState=useState;
+        this.protocoleType= protocoleType;
     }
 
     public IdentityProviderDto build() throws Exception {
@@ -117,6 +149,16 @@ public class IdentityProviderBuilder {
         idp.setMailAttribute(mailAttribute);
         idp.setIdentifierAttribute(identifierAttribute);
         idp.setAuthnRequestBinding(authnRequestBinding);
+        idp.setClientId(clientId);
+        idp.setClientSecret(clientSecret);
+        idp.setDiscoveryUrl(discoveryUrl);
+        idp.setScope(scope);
+        idp.setPreferredJwsAlgorithm(preferredJwsAlgorithm);
+        idp.setCustomParams(customParams);
+        idp.setUseState(useState);
+        idp.setUseNonce(useNonce);
+        idp.setUsePkce(usePkce);
+        idp.setProtocoleType(protocoleType);
 
         extractKeystore(idp, keystore);
 

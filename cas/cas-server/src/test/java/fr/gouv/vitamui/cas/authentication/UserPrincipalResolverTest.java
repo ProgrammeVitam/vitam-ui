@@ -93,7 +93,7 @@ public final class UserPrincipalResolverTest extends BaseWebflowActionTest {
         super.setUp();
 
         casExternalRestClient = mock(CasExternalRestClient.class);
-        val utils = new Utils(null, 0, null, null);
+        val utils = new Utils(null, 0, null, null, "");
         principalFactory = new DefaultPrincipalFactory();
         sessionStore = mock(SessionStore.class);
         identityProviderHelper = mock(IdentityProviderHelper.class);

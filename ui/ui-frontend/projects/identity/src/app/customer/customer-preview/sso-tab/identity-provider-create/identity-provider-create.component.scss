@@ -50,3 +50,11 @@ h2 {
 :host ::ng-deep app-pattern .vitamui-mat-select {
     max-width: 300px;
 }
+
+.oidc-row{
+    max-width: 680px;
+}
+
+.custom-label{
+    color: var(--vitamui-primary)
+}

@@ -36,13 +36,33 @@
  */
 
 import { TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
+import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ManagementRulesValidatorService } from './management-rules-validator.service';
 
 describe('ManagementRulesValidatorService', () => {
   let service: ManagementRulesValidatorService;
+  const managementRulesSharedDataServiceMock = {
+    getCriteriaSearchDSLQuery: () => of({}),
+    getManagementRules: () => of({}),
+    getAccessContract: () => of('AccessContract'),
+    getselectedItems: () => of(35),
+    getCriteriaSearchListToSave: () => of({}),
+    getRuleActions: () => of({}),
+  };
+
+  const managementRulesValidatorServiceMock = {
+    filterRuleActions: () => of(Boolean),
+    uniqueRuleId: () => of({}),
+  };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: ManagementRulesSharedDataService, useValue: managementRulesSharedDataServiceMock },
+        { provide: ManagementRulesValidatorService, useValue: managementRulesValidatorServiceMock },
+      ],
+    });
     service = TestBed.inject(ManagementRulesValidatorService);
   });
 

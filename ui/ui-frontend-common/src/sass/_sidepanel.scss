@@ -1,97 +1,103 @@
 .vitamui-sidepanel {
-    background: white;
-    margin-top: 72px; // header height
-    width: 584px;
+  background: white;
+  margin-top: 72px; // header height
+  width: 584px;
+}
+
+.extended-vitamui-sidepanel {
+  background: white;
+  margin-top: 72px; // header height
+  width: 100%;
 }
 
 .vitamui-sidepanel-header {
-    background-color: white;
-    padding: 2px 20px 10px 10px;
-    height: 100%;
+  background-color: white;
+  padding: 2px 20px 10px 10px;
+  height: 100%;
 
-    .cancel {
-        > i {
-            color: var(--vitamui-grey-600)!important;
-        }
+  .cancel {
+    > i {
+      color: var(--vitamui-grey-600) !important;
+    }
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+
+    > i {
+      color: var(--vitamui-grey-600);
+      font-size: 35px;
     }
 
-    .title {
-        display: flex;
-        align-items: center;
-        padding: 0 30px;
-
-        > i {
-            color: var(--vitamui-grey-600);
-            font-size: 35px;
-        }
-
-        // DEPREACTED : REMOVE THIS H2 CSS AT THE END OF THE REDESIGN
-        > h2 {
-            color: var(--vitamui-grey-900);
-            padding-left: 1.5rem;
-            line-height: 24px;
-            margin: 0;
-            width: 71%;
-        }
-
-        > div:first-of-type {
-            width: 100%;
-            padding-left: 2rem;
-            padding-right: 1rem;
-
-            > h5 {
-                display: -webkit-box;
-                overflow: hidden;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                text-overflow: ellipsis;
-            }
-
-            > p {
-                display: -webkit-box;
-                overflow: hidden;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-                text-overflow: ellipsis;
-            }
-        }
-
-        > .actions {
-            width: auto;
-        }
+    // DEPREACTED : REMOVE THIS H2 CSS AT THE END OF THE REDESIGN
+    > h2 {
+      color: var(--vitamui-grey-900);
+      padding-left: 1.5rem;
+      line-height: 24px;
+      margin: 0;
+      width: 71%;
     }
-    .title-actions {
-        display: flex;
-        align-items: center;
-        padding: 0 30px;
-        margin-top: 30px;
+
+    > div:first-of-type {
+      width: 100%;
+      padding-left: 2rem;
+      padding-right: 1rem;
+
+      > h5 {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+
+      > p {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
     }
+
+    > .actions {
+      width: auto;
+    }
+  }
+  .title-actions {
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    margin-top: 30px;
+  }
 }
 
 .vitamui-sidepanel-body {
-    font-size: 16px;
-    background-color: var(--vitamui-background);
-    color: var(--vitamui-grey-900);
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 246px;
-    overflow: auto;
+  font-size: 16px;
+  background-color: var(--vitamui-background);
+  color: var(--vitamui-grey-900);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 246px;
+  overflow: auto;
 
-    .mat-tab-body-wrapper {
-      height: 100%;
-    }
+  .mat-tab-body-wrapper {
+    height: 100%;
+  }
 }
 
 .mat-drawer-content {
-    background-color: var(--vitamui-background);
+  background-color: var(--vitamui-background);
 }
 
 .overflow-none.mat-drawer-content {
-    overflow: visible;
+  overflow: visible;
 }
 
 .mat-drawer-inner-container {
-    overflow: hidden!important;
+  overflow: hidden !important;
 }
