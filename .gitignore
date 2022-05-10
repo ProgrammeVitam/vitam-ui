@@ -12,6 +12,7 @@
 # IntelliJ IDEA
 ######################
 .idea/
+.run/
 **/.idea
 **/*.iws
 **/*.iml
