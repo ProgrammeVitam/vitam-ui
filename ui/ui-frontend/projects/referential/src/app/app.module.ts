@@ -34,7 +34,7 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
@@ -92,6 +92,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: WINDOW_LOCATION, useValue: window.location },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
+    DatePipe
   ],
   bootstrap: [AppComponent],
 })

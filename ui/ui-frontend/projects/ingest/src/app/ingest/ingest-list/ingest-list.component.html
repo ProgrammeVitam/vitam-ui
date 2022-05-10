@@ -42,15 +42,15 @@
           </div>
           <div class="col-5">{{ ingest?.obIdIn }}</div>
           <div class="col-2">
-            <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
+            <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
             <span class="date">
-              {{ ingest?.evDateTime | date: 'HH:mm:ss':'-2000' }}
+              {{ ingest?.evDateTime | dateTime: 'HH:mm:ss' }}
             </span>
           </div>
           <div class="col-2">
-            <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
+            <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
             <span class="date">
-              {{ ingestEndDate(ingest) | date: 'HH:mm:ss':'-2000' }}
+              {{ ingestEndDate(ingest) | dateTime: 'HH:mm:ss' }}
             </span>
           </div>
           <div class="col-2">

@@ -100,7 +100,7 @@
         </td>
         <!-- TODO: Add date pipe -->
         <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
-          {{ ingestContract?.creationDate | date: 'dd/MM/yyyy' }}
+          {{ ingestContract?.creationDate | dateTime: 'dd/MM/yyyy' }}
         </td>
         <td class="clickable" (click)="ingestContractClick.emit(ingestContract)">
           {{ ingestContract?.archiveProfiles?.length }}

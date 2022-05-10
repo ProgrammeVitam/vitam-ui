@@ -86,7 +86,7 @@
                         | translate)
                       : criteria.value.key
                   }}:
-                  {{ criteriaValue.value.value | date: 'dd/MM/yyyy' | truncate: 45 }}
+                  {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' | truncate: 45 }}
                 </ng-container>
                 <ng-container *ngIf="criteria.value.dataType === 'INTERVAL'">
                   {{
@@ -97,14 +97,14 @@
                   }}:
 
                   <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | date: 'dd/MM/yyyy' }}
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | date: 'dd/MM/yyyy' }}
+                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
+                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
                   </ng-container>
                   <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | date: 'dd/MM/yyyy' }}
+                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
                   </ng-container>
                   <ng-container *ngIf="!criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | date: 'dd/MM/yyyy' }}
+                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
                   </ng-container>
                 </ng-container>
               </button>
