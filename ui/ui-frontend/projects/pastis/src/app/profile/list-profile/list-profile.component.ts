@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Input, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -45,19 +45,21 @@ import {Subscription} from 'rxjs';
 import {Direction, GlobalEventService, SidenavPage, StartupService} from 'ui-frontend-common';
 import {environment} from '../../../environments/environment';
 import {PastisConfiguration} from '../../core/classes/pastis-configuration';
-import { NoticeService } from '../../core/services/notice.service';
+import {NoticeService} from '../../core/services/notice.service';
 import {ProfileService} from '../../core/services/profile.service';
-import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import {ToggleSidenavService} from '../../core/services/toggle-sidenav.service';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
 import {BreadcrumbDataTop} from '../../models/breadcrumb';
 import {MetadataHeaders} from '../../models/models';
-import { Profile } from '../../models/profile';
+import {Profile} from '../../models/profile';
 import {ProfileDescription} from '../../models/profile-description.model';
 import {ProfileResponse} from '../../models/profile-response';
 import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
 import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {CreateProfileComponent} from '../create-profile/create-profile.component';
-import {ProfileInformationTabComponent} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import {
+  ProfileInformationTabComponent
+} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -143,7 +145,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   constructor(private profileService: ProfileService, private noticeService: NoticeService,
               private router: Router, private dialog: MatDialog,
               private startupService: StartupService, private pastisConfig: PastisConfiguration,
-              route: ActivatedRoute, globalEventService: GlobalEventService,
+              private route: ActivatedRoute, globalEventService: GlobalEventService,
               private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
               private toggleService: ToggleSidenavService) {
     super(route, globalEventService);
