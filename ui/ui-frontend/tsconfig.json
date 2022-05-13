@@ -33,6 +33,9 @@
       "vitamui-referential": [
         "./projects/referential/src/app/"
       ],
+      "vitamui-collect": [
+        "./projects/collect/src/app/"
+      ],
       "vitamui-library": [
         "dist/vitamui-library"
       ],

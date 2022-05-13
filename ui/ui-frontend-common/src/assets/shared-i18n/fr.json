@@ -307,6 +307,10 @@
     "ACCESSION_REGISTER_APP": {
       "NAME": "Registre des fonds",
       "TOOLTIP": "Visualiser l'ensemble des données du registre des fonds"
+    },
+    "COLLECT_APP": {
+      "NAME": "Collecte et préparation des versements",
+      "TOOLTIP": "Collecte de données, Application de préparation de versements"
     }
   },
   "FOOTER": {

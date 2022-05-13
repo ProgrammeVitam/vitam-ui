@@ -1,0 +1,56 @@
+/** TODO DEPRECATED : REMOVE THIS CSS AT THE END OF THE REWORK **/
+
+.account-tab-group.mat-tab-group {
+    .mat-tab-header {
+        border-bottom: none;
+        margin-left: 0px;
+        margin-top: -70px;
+    }
+
+    .mat-tab-label {
+        opacity: 1;
+        min-width: 200px;
+        height: 45px;
+        background-color: rgba(255, 255, 255, 0.85);
+        margin: 0 1px;
+        padding: 0 14px;
+        font-size: 14px;
+        font-weight: normal;
+        color: rgba(72, 80, 83, 0.3);
+        text-transform: uppercase;
+        transition: background-color 200ms ease-out, color 200ms ease-out;
+
+        &:hover {
+            color: var(--vitamui-primary);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:not(.mat-tab-disabled):focus {
+            background-color: rgba(255, 255, 255, 0.56);
+        }
+
+        &.mat-tab-label-active,
+        &.mat-tab-label-active:not(.mat-tab-disabled):focus {
+            background-color: $white;
+            font-weight: bold;
+            color: #5e5d5d;
+        }
+    }
+
+    .mat-ink-bar {
+        opacity: 0;
+    }
+
+    .mat-tab-body-content {
+        padding: 0px;
+        overflow: none;
+    }
+}

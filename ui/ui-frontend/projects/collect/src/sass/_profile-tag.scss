@@ -1,0 +1,20 @@
+/** TODO DEPRECATED : REMOVE THIS CSS AT THE END OF THE REWORK **/
+
+.profile-tag {
+    font-size: 14px;
+    font-weight: 500;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    text-align: left;
+    color: var(--vitamui-grey-900);
+    background-color: #f8f8f8;
+    padding: 10px 10px 10px 10px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+
+    i {
+        color: var(--vitamui-primary);
+        margin-left: 5px;
+    }
+}

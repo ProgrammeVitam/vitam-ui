@@ -1,0 +1,47 @@
+/** TODO DEPRECATED : REMOVE THIS CSS AT THE END OF THE REWORK **/
+
+@import '~ui-frontend-common/sass/variables/colors';
+
+$arrow-size: 20px;
+
+.vitamui-tooltip.mat-tooltip {
+    background: #E1F3F0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #666666;
+    border-radius: 15px;
+    border: 1px solid #E1F3F0;
+    padding: 5px 20px;
+    position: relative;
+    overflow: visible;
+
+    &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        border-color: transparent transparent #E1F3F0 transparent;
+        border-width: $arrow-size * 0.5;
+        border-style: solid;
+        width: $arrow-size;
+        height: $arrow-size;
+        margin-top: $arrow-size * -1;
+        margin-left: $arrow-size * -0.5;
+    }
+
+    &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        border-color: transparent transparent #E1F3F0 transparent;
+        border-width: ($arrow-size - 2px) * 0.5;
+        border-style: solid;
+        width: $arrow-size - 2px;
+        height: $arrow-size - 2px;
+        margin-top: ($arrow-size - 2px) * -1;
+        margin-left: ($arrow-size - 2px) * -0.5;
+    }
+}
