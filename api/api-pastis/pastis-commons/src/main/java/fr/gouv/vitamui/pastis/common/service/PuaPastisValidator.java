@@ -226,6 +226,9 @@ public class PuaPastisValidator {
         String sedaName = sedaElement.getName();
         String sedaCardinality = sedaElement.getCardinality();
 
+        if(sedaName.equals("algorithm")){
+            return "string";
+        }
 
         if (sedaElementType.equals("Simple") &&
             (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
