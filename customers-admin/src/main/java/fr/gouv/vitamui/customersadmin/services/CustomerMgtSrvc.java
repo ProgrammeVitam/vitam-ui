@@ -540,7 +540,7 @@ public class CustomerMgtSrvc {
         try {
             tokensId.add(TESTS_USER_ADMIN);
             parseAndCreateCustomers();
-            parseAndCreateUsers();
+            //parseAndCreateUsers();
         } finally {
             dropGenericContext();
         }
