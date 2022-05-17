@@ -36,3 +36,4 @@
  */
 export * from './api-event.interface';
 export * from './event.interface';
+export * from './logbook-operation.interface';
