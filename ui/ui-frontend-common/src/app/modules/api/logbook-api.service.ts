@@ -134,6 +134,10 @@ export class LogbookApiService implements PaginatedApi<Event> {
     return this.http.get(this.apiUrl + '/operations/' + id + '/download/' + downloadType, { headers, observe: 'response', responseType: 'blob' });
   }
 
+  getDownloadReportUrl(id: string, downloadType: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/operations/${id}/download/${downloadType}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  }
+
   getAllPaginated(pageRequest: PageRequest, _?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Event>> {
     // The pagination and order are defined in the Vitam DSL query stored in the `criteria` property
     // We don't actually need to use the other properties of the page request

@@ -34,120 +34,145 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService, Event, fadeInOutAnimation, LogbookService } from 'ui-frontend-common';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {ActivatedRoute} from '@angular/router';
+import {
+  AuthService,
+  Event,
+  ExternalParameters,
+  ExternalParametersService,
+  fadeInOutAnimation,
+  LogbookOperationReportState,
+  LogbookService
+} from 'ui-frontend-common';
 import {LogbookDownloadService} from '../logbook-download.service';
-
 
 @Component({
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
   styleUrls: ['./logbook-operation-detail.component.scss'],
-  animations: [
-    fadeInOutAnimation
-  ]
+  animations: [fadeInOutAnimation],
 })
 export class LogbookOperationDetailComponent implements OnInit, OnChanges {
-
   @Input() eventId: string;
-
   @Input() tenantIdentifier: number;
   @Input() isPopup: boolean;
 
   @Output() closePanel = new EventEmitter();
 
   event: Event;
+
   loading: boolean;
   reportFileName: string;
-  hideDownload: boolean;
-  canDownload: boolean;
-  couldDownload: boolean;
+  accessContractId: string;
+  hasAccessContractId = false;
+  accessContractLogbookIdentifier: string;
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private logbookService: LogbookService, private authService: AuthService, private route: ActivatedRoute, private logbookDownloadService: LogbookDownloadService) {
+  downloadButtonTitle: string;
+  showDownloadButton: boolean = false;
+  disableDownloadButton: boolean = true;
+
+
+  constructor(
+    private logbookService: LogbookService,
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private logbookDownloadService: LogbookDownloadService,
+    private externalParameterService: ExternalParametersService,
+    private snackBar: MatSnackBar
+  ) {
   }
 
   ngOnInit() {
+    this.externalParameterService.getUserExternalParameters()
+      .subscribe(parameters => this.setAccessContractId(parameters));
+    this.logbookDownloadService.logbookOperationsReloaded.subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+    this.refreshLogbookOperation();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.eventId || changes.tenantIdentifier) {
-      this.refreshEvents();
+  ngOnChanges() {
+    this.refreshLogbookOperation();
+  }
+
+  setLogbookOperationIfIfHasBeenReloaded(logbookOperations: Event[]) {
+    const logbookOperationUpdated = logbookOperations.find(e => e.id == this.eventId);
+    if (logbookOperationUpdated) {
+      this.event = logbookOperationUpdated;
+      this.updateDownloadButton();
+      this.updateReportFilename();
     }
   }
 
-  openPopup() {
-    window.open('/logbook-operation/tenant/' + this.tenantIdentifier + '/event/' + this.event.id,
-      'detailPopup', 'width=584, height=713, resizable=no, location=no');
-    this.emitClose();
-  }
-
-  closePopup() {
-    window.close();
+  private setAccessContractId(userExternalParameters: Map<string, string>) {
+    const accessContratId: string = userExternalParameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+    if (accessContratId && accessContratId.length > 0) {
+      this.accessContractId = accessContratId;
+      this.hasAccessContractId = true;
+    } else {
+      this.snackBar.open($localize`:contrat d'accès non défini: Aucun contrat d'accès n'est associé à l'utiisateur`, null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+      });
+    }
   }
 
   emitClose() {
     this.closePanel.emit();
   }
 
+  private doesNotHaveTenant(): boolean {
+    return this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId
+  }
 
   downloadReports() {
-    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
+    if (this.doesNotHaveTenant()) {
       return;
     }
-
-    const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
-
-    if (!tenant) {
-      return;
-    }
-    const accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
-    this.logbookDownloadService.downloadReport(this.event, this.tenantIdentifier, accessContractLogbookIdentifier);
+    this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
-  updateCanDownload(event: Event) {
-    const canDownloadReports = this.logbookDownloadService.canDownloadReports(event);
-    this.hideDownload = canDownloadReports.length < 1;
-    if (!this.hideDownload) {
-      this.canDownload = canDownloadReports.includes('download');
-      this.couldDownload = canDownloadReports.includes('in-progress');
+  private updateDownloadButton() {
+    this.downloadButtonTitle = this.event.typeProc === 'EXPORT_DIP' ? 'Télécharger le DIP' : 'Télécharger le rapport';
+    const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
+    this.showDownloadButton = logbookOperationReportState == LogbookOperationReportState.IN_PROGRESS || logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE;
+    this.disableDownloadButton = !(logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);
+  }
+
+  private updateReportFilename() {
+    if (this.event.events.length > 0 && this.event.events[0].data != null) {
+      const data = JSON.parse(this.event.events[0].data);
+      if (data != null && data.FileName != null) {
+        this.reportFileName = data.FileName;
+      } else {
+        this.reportFileName = null;
+      }
     } else {
-      this.canDownload = false;
-      this.couldDownload = false;
+      this.reportFileName = null;
     }
   }
 
-  private refreshEvents() {
-    if (this.tenantIdentifier === null || this.tenantIdentifier === undefined || !this.eventId) {
+  private setAccessContractLogbookIdentifier() {
+    if (this.accessContractLogbookIdentifier || this.doesNotHaveTenant()) {
       return;
     }
-
     const tenant = this.authService.getTenantByAppAndIdentifier(this.route.snapshot.data.appId, this.tenantIdentifier);
-
     if (!tenant) {
       return;
     }
+    this.accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
+  }
 
-    const accessContractLogbookIdentifier = tenant.accessContractLogbookIdentifier || '';
-
+  private refreshLogbookOperation() {
+    if (this.doesNotHaveTenant()) {
+      return;
+    }
+    this.setAccessContractLogbookIdentifier()
     this.loading = true;
-    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, accessContractLogbookIdentifier)
+    this.logbookService.getOperationById(this.eventId, this.tenantIdentifier, this.accessContractLogbookIdentifier)
       .subscribe((event) => {
-        this.event = event;
+        this.logbookDownloadService.logbookOperationsReloaded.next([event]);
         this.loading = false;
-        this.updateCanDownload(event);
-        if (event.events.length > 0 && event.events[0].data != null) {
-          const data = JSON.parse(this.event.events[0].data);
-          if (data != null && data.FileName != null) {
-            this.reportFileName = data.FileName;
-          } else {
-            this.reportFileName = null;
-          }
-        } else {
-          this.reportFileName = null;
-        }
       });
   }
-
 }
