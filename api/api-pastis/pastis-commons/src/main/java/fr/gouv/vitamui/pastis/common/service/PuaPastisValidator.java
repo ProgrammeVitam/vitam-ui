@@ -231,11 +231,11 @@ public class PuaPastisValidator {
         }
 
         if (sedaElementType.equals("Simple") &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1") || sedaName.equals("Title") || sedaName.equals("Description"))) {
             return "string";
         }
         if ((sedaElement.getElement().equals(COMPLEX) &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) || sedaName.equals("Title") ||
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) ||
             sedaName.equals("Description")) {
             return "object";
         }
