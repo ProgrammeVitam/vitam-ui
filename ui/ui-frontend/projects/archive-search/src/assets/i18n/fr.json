@@ -467,7 +467,10 @@
       "TITLE": "Sort final",
       "SELECT_VALUE": "Sélectionner une valeur",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY" :"Copier",
+      "TRANSFER" : "Transférer",
+      "RESTRICT_ACCESS" :"Restreindre"
     },
     "COMMON": {
       "UNDO": "Annuler",
