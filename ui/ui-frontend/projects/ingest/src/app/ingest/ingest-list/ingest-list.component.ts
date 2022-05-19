@@ -34,11 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { merge, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest } from 'ui-frontend-common';
-import { IngestService } from '../ingest.service';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {merge, Subject} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
+import {DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
+import {IngestService} from '../ingest.service';
+import {
+  IngestStatus,
+  ingestStatus,
+  ingestStatusVisualColor,
+  LogbookOperation
+} from "../../models/logbook-event.interface";
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -53,11 +59,14 @@ export class IngestFilters {
   styleUrls: ['./ingest-list.component.scss'],
 })
 export class IngestListComponent extends InfiniteScrollTable<any> implements OnDestroy, OnInit {
+  IngestStatus = IngestStatus;
+
   @Input('search')
   set searchText(searchText: string) {
     this._searchText = searchText;
     this.searchChange.next(searchText);
   }
+
   // tslint:disable-next-line: variable-name
   private _searchText: string;
 
@@ -66,6 +75,13 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this._filters = filters;
     this.filterChange.next(filters);
   }
+
+  @Input('ingestThatHasChanged')
+  set ingestThatHasChanged(ingest: LogbookOperation) {
+    const index = this.dataSource.findIndex(o => o.id === ingest.id);
+    this.dataSource[index] = ingest;
+  }
+
   // tslint:disable-next-line: variable-name
   private _filters: IngestFilters;
 
@@ -90,7 +106,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
         new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, Direction.DESCENDANT, JSON.stringify(this.buildIngestCriteriaFromSearch()))
       )
       .subscribe((data: any[]) => {
-        data.map((element: any) => {
+        data.forEach((element: any) => {
           if (element.evDetData && element.evDetData.length >= 2) {
             element.evDetData = JSON.parse(element.evDetData);
           }
@@ -111,6 +127,11 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
       const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, JSON.stringify(query));
       this.search(pageRequest);
     });
+    this.updatedData.subscribe(() => this.ingestService.logbookOperationsReloaded.next(this.dataSource));
+  }
+
+  ngOnDestroy() {
+    this.updatedData.unsubscribe();
   }
 
   buildIngestCriteriaFromSearch() {
@@ -135,12 +156,7 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
         criteria.evDateTime_End = date;
       }
     }
-
     return criteria;
-  }
-
-  ngOnDestroy() {
-    this.updatedData.unsubscribe();
   }
 
   searchIngestOrdered() {
@@ -152,32 +168,16 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
     this.orderChange.next();
   }
 
-  getOperationStatus(ingest: any): string {
-    const eventsLength = ingest.events.length;
-    if (eventsLength > 0) {
-      if (ingest.evType === ingest.events[eventsLength - 1].evType) {
-        return ingest.events[eventsLength - 1].outcome;
-      } else {
-        if (ingest.events[eventsLength - 1].outcome === 'FATAL') {
-          return 'FATAL';
-        } else {
-          return 'En cours';
-        }
-      }
-    }
+  getIngestStatus(ingest: any): IngestStatus {
+    return ingestStatus(ingest);
   }
 
-  ingestStatus(ingest: any): string {
-    if (this.getOperationStatus(ingest) === 'FATAL') {
-      return 'FATAL';
-    } else if (this.getOperationStatus(ingest) === 'En cours') {
-      return 'En cours';
-    } else {
-      return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
-    }
+  getIngestStatusColor(ingest: LogbookOperation): 'green' | 'grey' | 'orange' | 'red' | 'black' {
+    const status: IngestStatus = ingestStatus(ingest);
+    return ingestStatusVisualColor(status);
   }
 
-  ingestEndDate(ingest: any): string {
+  ingestEndDate(ingest: LogbookOperation): string {
     return ingest.events !== undefined && ingest.events.length !== 0
       ? ingest.events[ingest.events.length - 1].evDateTime
       : ingest.evDateTime;

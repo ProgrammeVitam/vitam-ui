@@ -34,15 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage } from 'ui-frontend-common';
-import { IngestList } from '../core/common/ingest-list';
-import { UploadComponent } from '../core/common/upload.component';
-import { UploadService } from '../core/common/upload.service';
-import { IngestListComponent } from './ingest-list/ingest-list.component';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {AdminUserProfile, Direction, GlobalEventService, SearchBarComponent, SidenavPage} from 'ui-frontend-common';
+import {IngestList} from '../core/common/ingest-list';
+import {UploadComponent} from '../core/common/upload.component';
+import {UploadService} from '../core/common/upload.service';
+import {IngestListComponent} from './ingest-list/ingest-list.component';
+import {LogbookOperation} from "../models/logbook-event.interface";
 
 @Component({
   selector: 'app-ingest',
@@ -51,12 +52,7 @@ import { IngestListComponent } from './ingest-list/ingest-list.component';
 })
 export class IngestComponent extends SidenavPage<any> implements OnInit {
   search: string;
-  progressPercent = 0;
   uploadError = false;
-
-  uploadSucces = false;
-  uploadInProgress = false;
-
   tenantIdentifier: string;
   guard = true;
   connectedUserInfo: AdminUserProfile;
@@ -64,9 +60,10 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   inProgress = false;
   filters: any = {};
   ingestList: IngestList = new IngestList();
+  ingestThatHasChanged: LogbookOperation = null;
 
-  @ViewChild(SearchBarComponent, { static: true }) searchBar: SearchBarComponent;
-  @ViewChild(IngestListComponent, { static: true }) ingestListComponent: IngestListComponent;
+  @ViewChild(SearchBarComponent, {static: true}) searchBar: SearchBarComponent;
+  @ViewChild(IngestListComponent, {static: true}) ingestListComponent: IngestListComponent;
 
   @ViewChild('inputFile') inputFile: ElementRef;
 
@@ -108,10 +105,10 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
 
   clearDate(date: 'startDate' | 'endDate') {
     if (date === 'startDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
       this.filters.startDate = null;
     } else if (date === 'endDate') {
-      this.dateRangeFilterForm.get(date).reset(null, { emitEvent: false });
+      this.dateRangeFilterForm.get(date).reset(null, {emitEvent: false});
       this.filters.endDate = null;
     } else {
       console.error('clearDate() error: unknown date ' + date);
@@ -163,11 +160,15 @@ export class IngestComponent extends SidenavPage<any> implements OnInit {
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
   refresh() {
     this.ingestListComponent.direction = Direction.DESCENDANT;
     this.ingestListComponent.emitOrderChange();
+  }
+
+  ingestChangedStatus(ingest: LogbookOperation): void {
+    this.ingestThatHasChanged = ingest;
   }
 }

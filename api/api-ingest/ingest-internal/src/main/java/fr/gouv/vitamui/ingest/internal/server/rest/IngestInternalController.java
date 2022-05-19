@@ -105,7 +105,7 @@ public class IngestInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) throws PreconditionFailedException , InvalidParseOperationException {
+    public LogbookOperationDto getOne(@PathVariable("id") String id) throws PreconditionFailedException , InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get Ingest Entities for id={} ", id);
