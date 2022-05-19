@@ -68,7 +68,11 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.isButtonCanceled =
-        data.filter((rule) => rule.actionType === RuleActionsEnum.ADD_RULES && rule.ruleType === RuleTypeEnum.APPRAISALRULE).length !== 0;
+        data.filter(
+          (rule) =>
+            rule.actionType === RuleActionsEnum.ADD_RULES &&
+            (rule.ruleType === RuleTypeEnum.APPRAISALRULE || rule.ruleType === RuleTypeEnum.STORAGERULE)
+        ).length !== 0;
     });
   }
 

@@ -468,7 +468,10 @@
       "TITLE": "Final action",
       "SELECT_VALUE": "Select a value",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY" :"Copy",
+      "TRANSFER" : "Transfer",
+      "RESTRICT_ACCESS" :"Rstrict access"
     },
     "COMMON": {
       "UNDO": "Cancel",
