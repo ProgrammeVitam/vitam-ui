@@ -195,6 +195,7 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
         - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_TRANSFER_REQUEST
 
   #- name: profileName
   #  description: desc

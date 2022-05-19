@@ -24,23 +24,24 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
-import { Injectable, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { TranslateService } from '@ngx-translate/core';
-import { filter } from 'rxjs/operators';
-import { ArchiveSearchComponent } from '../archive-search/archive-search.component';
-import { DipRequestCreateComponent } from '../archive-search/dip-request-create/dip-request-create.component';
-import { SearchCriteriaEltDto } from '../models/search.criteria';
+import {Injectable, TemplateRef} from '@angular/core';
+import {MatDialog} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {filter} from 'rxjs/operators';
+import {ArchiveSearchComponent} from '../archive-search/archive-search.component';
+import {DipRequestCreateComponent} from '../archive-search/dip-request-create/dip-request-create.component';
+import {SearchCriteriaEltDto} from '../models/search.criteria';
+import {TransferRequestModalComponent} from "../archive-search/transfer-request-modal/transfer-request-modal.component";
 
 const DEFAULT_RESULT_THRESHOLD = 10000;
 const PAGE_SIZE = 10;
 
 @Injectable()
-export class ArchiveUnitExportService {
-  constructor(private translateService: TranslateService, public dialog: MatDialog) {}
+export class ArchiveUnitDipService {
+  constructor(private translateService: TranslateService, public dialog: MatDialog) {
+  }
 
-  launchExportDipMoadal(
+  launchExportDipModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     selectedItemCountKnown: boolean,
     accessContract: string,
@@ -56,7 +57,7 @@ export class ArchiveUnitExportService {
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen = confirmSecondActionBigNumberOfResultsActionDialog;
       const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
         dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpen,
-        { panelClass: 'vitamui-dialog' }
+        {panelClass: 'vitamui-dialog'}
       );
 
       dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
@@ -67,6 +68,7 @@ export class ArchiveUnitExportService {
         });
     }
   }
+
   private launchExportDIP(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     selectedItemCountKnown: boolean,
@@ -88,6 +90,65 @@ export class ArchiveUnitExportService {
       data: {
         itemSelected,
         exportDIPSearchCriteria,
+        accessContract,
+        tenantIdentifier,
+        selectedItemCountKnown,
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        return;
+      }
+    });
+  }
+
+  launchTransferRequestModal(
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    selectedItemCountKnown: boolean,
+    accessContract: string,
+    tenantIdentifier: number,
+    itemSelected: number,
+    currentPage: number,
+    isAllchecked: boolean,
+    confirmSecondActionBigNumberOfResultsActionDialog: TemplateRef<ArchiveSearchComponent>
+  ) {
+    if (!isAllchecked && itemSelected < DEFAULT_RESULT_THRESHOLD) {
+      this.launchTransferRequest(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
+    } else {
+      const dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef = this.dialog.open(
+        confirmSecondActionBigNumberOfResultsActionDialog,
+        {panelClass: 'vitamui-dialog'}
+      );
+      dialogConfirmSecondActionBigNumberOfResultsActionDialogToOpenRef
+        .afterClosed()
+        .pipe(filter((result) => !!result))
+        .subscribe(() => {
+          this.launchTransferRequest(listOfUACriteriaSearch, selectedItemCountKnown, accessContract, tenantIdentifier, itemSelected, currentPage);
+        });
+    }
+  }
+
+  private launchTransferRequest(
+    listOfUACriteriaSearch: SearchCriteriaEltDto[],
+    selectedItemCountKnown: boolean,
+    accessContract: string,
+    tenantIdentifier: number,
+    itemSelected: number,
+    currentPage: number
+  ) {
+    const searchCriteria = {
+      criteriaList: listOfUACriteriaSearch,
+      pageNumber: currentPage,
+      size: PAGE_SIZE,
+      language: this.translateService.currentLang,
+    };
+
+    const dialogRef = this.dialog.open(TransferRequestModalComponent, {
+      panelClass: 'vitamui-modal',
+      disableClose: false,
+      data: {
+        itemSelected,
+        searchCriteria,
         accessContract,
         tenantIdentifier,
         selectedItemCountKnown,

@@ -24,25 +24,28 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-package fr.gouv.vitamui.archives.search.common.rest;
+package fr.gouv.vitamui.archives.search.common.dto;
 
-public class RestApi {
+import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitam.common.model.export.transfer.TransferRequestParameters;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.experimental.Accessors;
 
-    public static final String ARCHIVE_SEARCH_PATH = "/archives-search";
-    public static final String SEARCH_PATH = "/search";
-    public static final String EXPORT_CSV_SEARCH_PATH = "/export-csv-search";
-    public static final String FILING_HOLDING_SCHEME_PATH = "/filling-holding-schema";
-    public static final String ACCESS_CONTRACT = "/accesscontracts";
-    public static final String DOWNLOAD_ARCHIVE_UNIT = "/downloadobjectfromunit";
-    public static final String ARCHIVE_UNIT_INFO = "/archiveunit";
-    public static final String SEARCH_CRITERIA_HISTORY = "/searchcriteriahistory";
-    public static final String OBJECTGROUP = "/object";
-    public static final String EXPORT_DIP = "/export-dip";
-    public static final String TRANSFER_REQUEST = "/transfer-request";
-    public static final String ELIMINATION_ANALYSIS = "/elimination/analysis";
-    public static final String ELIMINATION_ACTION = "/elimination/action";
-    public static final String MASS_UPDATE_UNITS_RULES = "/units/rules";
-    public static final String COMPUTED_INHERITED_RULES = "/computed-inherited-rules";
-    public static final String RECLASSIFICATION = "/reclassification";
-    public static final String UNIT_WITH_INHERITED_RULES = "/unit-with-inherited-rules";
+import java.io.Serializable;
+import java.util.Set;
+
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@Setter
+@Getter
+@Accessors(chain = true)
+public class TransferRequestDto implements Serializable {
+
+    private TransferRequestParameters transferRequestParameters;
+    private SearchCriteriaDto searchCriteria;
+    private Set<String> dataObjectVersions;
+    private boolean lifeCycleLogs;
+
 }

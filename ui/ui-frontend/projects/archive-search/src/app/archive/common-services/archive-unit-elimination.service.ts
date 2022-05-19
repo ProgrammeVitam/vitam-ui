@@ -50,7 +50,7 @@ export class ArchiveUnitEliminationService {
     public dialog: MatDialog
   ) {}
 
-  launchEliminationAnalysisMoadal(
+  launchEliminationAnalysisModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     eliminationAnalysisResponse: any,
     accessContract: string,
@@ -112,7 +112,7 @@ export class ArchiveUnitEliminationService {
     });
   }
 
-  launchEliminationMoadal(
+  launchEliminationModal(
     listOfUACriteriaSearch: SearchCriteriaEltDto[],
     eliminationActionResponse: any,
     accessContract: string,

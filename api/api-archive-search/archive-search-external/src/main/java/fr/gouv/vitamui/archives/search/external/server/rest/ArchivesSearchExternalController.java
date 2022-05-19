@@ -34,6 +34,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExternalService;
@@ -149,6 +150,16 @@ public class ArchivesSearchExternalController {
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
         LOGGER.debug("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
         return archivesSearchExternalService.exportDIPByCriteria(exportDipCriteriaDto);
+    }
+
+    @PostMapping(RestApi.TRANSFER_REQUEST)
+    @Secured(ServicesData.ROLE_TRANSFER_REQUEST)
+    public String transferRequest(final @RequestBody TransferRequestDto transferRequestDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The query is a mandatory parameter: ", transferRequestDto);
+        SanityChecker.sanitizeCriteria(transferRequestDto);
+        LOGGER.debug("Calling transfer request {} ", transferRequestDto);
+        return archivesSearchExternalService.transferRequest(transferRequestDto);
     }
 
     @PostMapping(RestApi.ELIMINATION_ANALYSIS)
