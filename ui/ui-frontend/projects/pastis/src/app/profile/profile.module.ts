@@ -60,7 +60,6 @@ import {ListProfileComponent} from './list-profile/list-profile.component';
 import {ProfilePreviewModule} from './profile-preview/profile-preview.module';
 import {FilterByStringNamePipe} from './list-profile/pipes/filterByStringName.pipe';
 import {FilterByTypePipe} from './list-profile/pipes/filterByType.pipe';
-import {ProfileComponent} from "../../../../identity/src/app/profile/profile.component";
 import {CreateNoticeChoiceComponent} from "./create-notice-choice/create-notice-choice.component";
 
 
@@ -84,7 +83,7 @@ import {CreateNoticeChoiceComponent} from "./create-notice-choice/create-notice-
   ],
   exports: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
   providers: [],
-  declarations: [CreateNoticeChoiceComponent, ProfileComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
+  declarations: [CreateNoticeChoiceComponent, CreateProfileComponent, EditProfileComponent, ListProfileComponent, FilterByStringNamePipe, FilterByTypePipe],
 
 })
 export class ProfileModule {
