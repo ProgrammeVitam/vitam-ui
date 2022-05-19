@@ -34,50 +34,88 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LogbookService } from 'ui-frontend-common';
-import { IngestService } from '../ingest.service';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {LogbookService} from 'ui-frontend-common';
+import {IngestService} from '../ingest.service';
+import {
+  IngestStatus,
+  ingestStatus,
+  ingestStatusVisualColor,
+  LogbookOperation
+} from "../../models/logbook-event.interface";
+import {first} from "rxjs/operators";
 
 @Component({
   selector: 'app-ingest-preview',
   templateUrl: './ingest-preview.component.html',
-  styleUrls: ['./ingest-preview.component.scss'],
+  styleUrls: ['./ingest-preview.component.scss']
 })
-export class IngestPreviewComponent implements OnInit {
-  @Input() ingest: any; // Make a type ?
+export class IngestPreviewComponent implements OnInit, OnChanges, OnDestroy {
+  IngestStatus = IngestStatus;
+
+  @Input() ingestFromParent: LogbookOperation;
+  ingest: LogbookOperation;
   @Output() previewClose = new EventEmitter();
+  @Output() ingestHasChanged = new EventEmitter<LogbookOperation>();
 
-  constructor(private logbookService: LogbookService, private ingestService: IngestService) {}
+  constructor(private logbookService: LogbookService,
+              private ingestService: IngestService,) {
+  }
 
-  ngOnInit() {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.ingestFromParent) {
+      this.reloadLogbookOperation()
+    }
+  }
+
+  ngOnInit() {
+    this.ingestService.logbookOperationsReloaded.subscribe(logbookOperations => this.setLogbookOperationIfIfHasBeenReloaded(logbookOperations));
+  }
+
+  ngOnDestroy() {
+    this.ingestService.logbookOperationsReloaded.unsubscribe();
+  }
+
+  setLogbookOperationIfIfHasBeenReloaded(logbookOperations: LogbookOperation[]) {
+    const logbookOperationUpdated = logbookOperations.find(e => e.id == this.ingestFromParent.id);
+    if (logbookOperationUpdated) {
+      this.reloadLogbookOperation()
+    }
+  }
+
+  reloadLogbookOperation() {
+    this.ingestService.getIngestOperation(this.ingestFromParent.id)
+      .pipe(first())
+      .subscribe(receivedLogbookOperation => {
+        if (this.ingestFromParent.id == receivedLogbookOperation.id) {
+          this.updateIngest(receivedLogbookOperation)
+        }
+      })
+  }
+
+  private updateIngest(logbookOperation: LogbookOperation) {
+    this.ingest = logbookOperation;
+    this.ingestHasChanged.emit(this.ingest)
+  }
 
   emitClose() {
     this.previewClose.emit();
   }
 
   filterEvents(event: any): boolean {
-    return (
-      event.outDetail && (event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') || event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST'))
+    return event.outDetail && (
+      event.outDetail.includes('EXT_VITAMUI_UPDATE_INGEST') ||
+      event.outDetail.includes('EXT_VITAMUI_CREATE_INGEST')
     );
   }
 
-  getOperationStatus(ingest: any): string {
-    const eventsLength = ingest.events.length;
-    if (eventsLength > 0) {
-      if (ingest.evType === ingest.events[eventsLength - 1].evType) {
-        return ingest.events[eventsLength - 1].outcome;
-      } else {
-        return 'En cours';
-      }
-    }
+  getIngestStatus(ingest: any): IngestStatus {
+    return ingestStatus(ingest);
   }
 
-  ingestStatus(ingest: any): string {
-    if (this.getOperationStatus(ingest) === 'En cours') {
-      return 'En cours';
-    } else {
-      return ingest.events !== undefined && ingest.events.length !== 0 ? ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
-    }
+  getIngestStatusColor(): 'green' | 'grey' | 'orange' | 'red' | 'black' {
+    const status: IngestStatus = ingestStatus(this.ingest);
+    return ingestStatusVisualColor(status);
   }
 
   downloadManifest() {
@@ -88,7 +126,7 @@ export class IngestPreviewComponent implements OnInit {
     this.logbookService.downloadATR(this.ingest.id);
   }
 
-  downloadODTReport() {
+  generateODTreport() {
     this.ingestService.downloadODTReport(this.ingest.id);
   }
 }

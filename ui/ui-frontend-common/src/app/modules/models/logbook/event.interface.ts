@@ -34,9 +34,10 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Id } from '../id.interface';
+import {Id} from '../id.interface';
 
 export interface Event extends Id {
+  obIdIn?: string;
   idRequest: string;
   parentId: string;
   type: string;

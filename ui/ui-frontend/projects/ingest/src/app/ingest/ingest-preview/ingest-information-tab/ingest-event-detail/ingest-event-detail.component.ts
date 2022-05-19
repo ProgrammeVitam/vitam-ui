@@ -34,10 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { EventDisplayHelperService } from '../../event-display-helper.service';
-import { Event } from '../../event';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {EventDisplayHelperService} from '../../event-display-helper.service';
+import {Event} from '../../event';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {LogbookOperation} from "../../../../models/logbook-event.interface";
 
 @Component({
   selector: 'app-ingest-event-detail',
@@ -45,8 +46,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./ingest-event-detail.component.scss'],
   animations: [
     trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
+      state('collapse', style({transform: 'rotate(-180deg)'})),
+      state('expand', style({transform: 'rotate(0deg)'})),
       transition('expand <=> collapse', animate('200ms ease-out')),
     ])
   ]
@@ -54,12 +55,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 export class IngestEventDetailComponent implements OnInit, OnChanges {
 
   @Input()
-  ingest: any;
+  ingest: LogbookOperation;
 
   events: Event[] = [];
   isShown = false;
 
-  constructor(private eventDisplayHelper: EventDisplayHelperService) { }
+  constructor(private eventDisplayHelper: EventDisplayHelperService) {
+  }
 
   ngOnInit() {
     this.events = this.eventDisplayHelper.initEvents(this.ingest);
