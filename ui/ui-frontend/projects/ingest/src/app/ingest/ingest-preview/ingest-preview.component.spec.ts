@@ -1,22 +1,31 @@
-import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatMenuModule } from '@angular/material/menu';
+import {NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {MatMenuModule} from '@angular/material/menu';
 
-import { BASE_URL, LogbookService } from 'ui-frontend-common';
-import { IngestPreviewComponent } from './ingest-preview.component';
-import { IngestService } from '../ingest.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TranslateModule } from '@ngx-translate/core';
-@Pipe({ name: 'truncate' })
+import {BASE_URL, LogbookService} from 'ui-frontend-common';
+import {IngestPreviewComponent} from './ingest-preview.component';
+import {IngestService} from '../ingest.service';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {TranslateModule} from '@ngx-translate/core';
+import {of} from "rxjs";
+import {LogbookOperation} from "../../models/logbook-event.interface";
+
+@Pipe({name: 'truncate'})
 class MockTruncatePipe implements PipeTransform {
   transform(value: number): number {
     return value;
   }
 }
-describe('IngestPreviewComponent', () => {
+
+describe('IngestPreviewComponent test:', () => {
   let component: IngestPreviewComponent;
   let fixture: ComponentFixture<IngestPreviewComponent>;
 
+  const logbookOperation: LogbookOperation = {
+    id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
+    agIdExt: {},
+    events: [{}]
+  }
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [IngestPreviewComponent, MockTruncatePipe],
@@ -25,27 +34,28 @@ describe('IngestPreviewComponent', () => {
         MatMenuModule,
         TranslateModule.forRoot()
       ],
-      providers: [ { provide: LogbookService, useValue: {} },
-         { provide: IngestService, useIngestServiceValue: {} },
-         { provide: BASE_URL, useValue: '/fake-api' } ],
+      providers: [
+        {provide: LogbookService, useValue: {}},
+        {
+          provide: IngestService, useValue: {
+            getIngestOperation: () => of(logbookOperation),
+            logbookOperationsReloaded: of([logbookOperation]),
+          }
+        },
+        {provide: BASE_URL, useValue: '/fake-api'}],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(IngestPreviewComponent);
     component = fixture.componentInstance;
-    component.ingest = {
-      id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
-      data: {},
-      agIdExt: {},
-      events: [ { data: {} } ]
-    };
+    component.ingestFromParent = logbookOperation;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be truthy', () => {
     expect(component).toBeTruthy();
   });
 });

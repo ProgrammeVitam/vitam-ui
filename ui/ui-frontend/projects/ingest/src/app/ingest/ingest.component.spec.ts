@@ -61,7 +61,7 @@ export class IngestListStubComponent {
       emitOrderChange() {}
 }
 
-describe('IngestComponent', () => {
+describe('IngestComponent test:', () => {
   let component: IngestComponent;
   let fixture: ComponentFixture<IngestComponent>;
 
@@ -113,7 +113,7 @@ describe('IngestComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should be truthy', () => {
     expect(component).toBeTruthy();
   });
 
