@@ -39,6 +39,9 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +63,6 @@ import fr.gouv.vitamui.commons.api.exception.NotImplementedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
 import fr.gouv.vitamui.iam.internal.server.user.service.UserInfoInternalService;
 import lombok.Getter;
@@ -95,8 +97,10 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
      */
     @Override
     @PostMapping
-    public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto) {
+    public UserInfoDto create(final @Valid @RequestBody UserInfoDto userInfoDto) throws InvalidParseOperationException,
+        PreconditionFailedException{
         LOGGER.debug("Create {}", userInfoDto);
+        SanityChecker.sanitizeCriteria(userInfoDto);
         return userInfoInternalService.create(userInfoDto);
     }
 
@@ -114,9 +118,11 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public UserInfoDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
+    public UserInfoDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get {} criteria={}", id, criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
+        SanityChecker.checkSecureParameter(id);
         return userInfoInternalService.getOne(id, Optional.empty());
     }
 
@@ -137,8 +143,11 @@ public class UserInfoInternalController implements CrudController<UserInfoDto> {
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {} with {}", id, partialDto);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return userInfoInternalService.patch(partialDto);
     }

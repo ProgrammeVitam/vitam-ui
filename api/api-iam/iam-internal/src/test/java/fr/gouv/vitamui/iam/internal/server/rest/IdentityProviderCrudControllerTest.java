@@ -1,5 +1,7 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -38,7 +40,7 @@ public final class IdentityProviderCrudControllerTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         prepareServices();
         controller.delete("Id");
     }

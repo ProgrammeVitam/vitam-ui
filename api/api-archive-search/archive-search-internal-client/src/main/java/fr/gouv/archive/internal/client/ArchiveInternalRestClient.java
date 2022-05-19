@@ -91,7 +91,7 @@ public class ArchiveInternalRestClient
     }
 
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(InternalHttpContext context, SearchCriteriaDto query) {
-        LOGGER.info("Calling searchArchiveUnitsByCriteria with query {} ", query);
+        LOGGER.debug("Calling searchArchiveUnitsByCriteria with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
@@ -145,7 +145,7 @@ public class ArchiveInternalRestClient
 
     public Resource exportCsvArchiveUnitsByCriteria(final SearchCriteriaDto query,
         final InternalHttpContext context) {
-        LOGGER.info("Calling exportCsvArchiveUnitsByCriteria with query {} ", query);
+        LOGGER.debug("Calling exportCsvArchiveUnitsByCriteria with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<Resource> response =
@@ -158,7 +158,7 @@ public class ArchiveInternalRestClient
 
     public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
         final InternalHttpContext context) {
-        LOGGER.info("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
+        LOGGER.debug("Calling exportDIPByCriteria with query {} ", exportDipCriteriaDto);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
         final ResponseEntity<String> response =
@@ -171,7 +171,7 @@ public class ArchiveInternalRestClient
 
     public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context,
         final SearchCriteriaDto query) {
-        LOGGER.info("Calling elimination analysis with query {} ", query);
+        LOGGER.debug("Calling elimination analysis with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<JsonNode> response =
@@ -184,7 +184,7 @@ public class ArchiveInternalRestClient
 
     public ResponseEntity<JsonNode> startEliminationAction(final InternalHttpContext context,
         final SearchCriteriaDto query) {
-        LOGGER.info("Calling elimination action with query {} ", query);
+        LOGGER.debug("Calling elimination action with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
         final ResponseEntity<JsonNode> response =
@@ -197,7 +197,7 @@ public class ArchiveInternalRestClient
 
     public String updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
         final InternalHttpContext context) {
-        LOGGER.info("Calling Update Archive Units Rules  with query {} ", ruleSearchCriteriaDto);
+        LOGGER.debug("Calling Update Archive Units Rules  with query {} ", ruleSearchCriteriaDto);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
         final ResponseEntity<String> response =
@@ -210,7 +210,7 @@ public class ArchiveInternalRestClient
 
     public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
         final InternalHttpContext context) {
-        LOGGER.info("Calling computedInheritedRules with query {} ", searchCriteriaDto);
+        LOGGER.debug("Calling computedInheritedRules with query {} ", searchCriteriaDto);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
         final ResponseEntity<String> response =

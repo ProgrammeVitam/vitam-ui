@@ -64,7 +64,7 @@ import fr.gouv.vitamui.referential.common.dto.RuleDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 
 public class RuleInternalRestClient extends BasePaginatingAndSortingRestClient<RuleDto, InternalHttpContext> {
-	
+
 	private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(RuleInternalRestClient.class);
 
     public RuleInternalRestClient(final RestTemplate restTemplate, final String baseUrl) {
@@ -102,36 +102,34 @@ public class RuleInternalRestClient extends BasePaginatingAndSortingRestClient<R
         final HttpEntity<RuleDto> request = new HttpEntity<>(null, buildHeaders(context));
         return restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.GET, request, Resource.class);
     }
-    
-    
+
+
     public boolean createRule(final InternalHttpContext context, final RuleDto dto) {
         LOGGER.debug("Create {}", dto);
         final HttpEntity<RuleDto> request = new HttpEntity<>(dto, buildHeaders(context));
         final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl(), HttpMethod.POST, request, Boolean.class);
-        
+
         checkResponse(response, 200, 201, 202, 204);
         return response.getStatusCode() == HttpStatus.OK | response.getStatusCode() == HttpStatus.CREATED;
     }
-    
+
     public boolean patchRule(final InternalHttpContext context, final String id, final Map<String, Object> partialDto) {
         LOGGER.debug("Patch {}", partialDto);
-        SanityChecker.check(id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for patch.");
-        
+
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_ID);
-        
+
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(partialDto, buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request, Boolean.class);  
+        final ResponseEntity<Boolean> response = restTemplate.exchange(uriBuilder.build(id), HttpMethod.PATCH, request, Boolean.class);
         checkResponse(response, 200, 201, 202, 204);
         return response.getStatusCode() == HttpStatus.OK;
     }
 
     public boolean deleteRule(final InternalHttpContext context, final String id) {
         LOGGER.debug("Delete {}", id);
-        SanityChecker.check(id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
-        final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id); 
+        final ResponseEntity<Boolean> response = restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, Boolean.class, id);
         checkResponse(response, 200, 201, 202, 204);
         return response.getStatusCode() == HttpStatus.OK;
     }

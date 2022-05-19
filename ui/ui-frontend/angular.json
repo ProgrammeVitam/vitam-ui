@@ -630,7 +630,7 @@
       "projectType": "application",
       "root": "projects/ingest/",
       "sourceRoot": "projects/ingest/src",
-      "prefix": "app",
+      "prefix": "ingest",
       "architect": {
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",

@@ -397,7 +397,7 @@ public class ArchiveSearchInternalService {
 
     public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
         try {
-            LOGGER.info("Get Object Group");
+            LOGGER.debug("Get Object Group");
             String re = StringUtils
                 .chop(
                     unitService.findObjectMetadataById(id, vitamContext).toJsonNode()
@@ -422,7 +422,7 @@ public class ArchiveSearchInternalService {
      */
     public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
         throws VitamClientException {
-        LOGGER.info("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
+        LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
         return unitService
             .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
@@ -549,7 +549,7 @@ public class ArchiveSearchInternalService {
         Arrays.stream(new String[] {DSL_QUERY_PROJECTION, DSL_QUERY_FILTER, DSL_QUERY_FACETS})
             .forEach(((ObjectNode) dslQuery)::remove);
         array.add(dslQuery);
-        LOGGER.debug("Reclassification query : {}", array.toPrettyString());
+        LOGGER.debug("Reclassification query : {}", array);
         RequestResponse<JsonNode> jsonNodeRequestResponse = unitService.reclassification(vitamContext, array);
         return jsonNodeRequestResponse.toJsonNode().findValue(OPERATION_IDENTIFIER).textValue();
 

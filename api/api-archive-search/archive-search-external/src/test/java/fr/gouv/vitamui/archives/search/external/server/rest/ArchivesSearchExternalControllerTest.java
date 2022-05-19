@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
 import fr.gouv.archive.internal.client.ArchiveInternalRestClient;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
@@ -40,6 +41,7 @@ import fr.gouv.vitamui.archives.search.external.server.service.ArchivesSearchExt
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -133,7 +135,8 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() {
+    void when_searchArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException,
+        PreconditionFailedException {
 
         SearchCriteriaDto query = new SearchCriteriaDto();
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
@@ -180,7 +183,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws IOException {
+    void when_exportCsvArchiveUnitsByCriteria_Srvc_ok_should_return_ok() throws InvalidParseOperationException, PreconditionFailedException, IOException {
         // Given
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
@@ -199,7 +202,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() {
+    void testArchiveUnitsRulesMassUpdateResultsThanReturnVitamOperationId() throws InvalidParseOperationException, PreconditionFailedException {
 
         RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
         String expectedResponse = EXPECTED_RESPONSE;
@@ -213,7 +216,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     }
 
     @Test
-    void testLaunchComputedInheritedRulesThenReturnVitamOperationId() {
+    void testLaunchComputedInheritedRulesThenReturnVitamOperationId() throws InvalidParseOperationException, PreconditionFailedException{
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         String expectedResponse = EXPECTED_RESPONSE;
@@ -230,7 +233,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
 
 
     @Test
-    void testSelectUnitWithInheritedRulesThenReturnVitamOperationId() {
+    void testSelectUnitWithInheritedRulesThenReturnVitamOperationId() throws InvalidParseOperationException, PreconditionFailedException{
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ResultsDto expectedResponse = new ResultsDto();

@@ -6,6 +6,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.*;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -51,7 +53,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test(expected = NullPointerException.class)
-    public void testCreationFailsAsTheRoleIsNull() {
+    public void testCreationFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final ContextDto dto = buildDto();
         List list = Arrays.asList(null) ;
         dto.setRoleNames(list);
@@ -60,7 +62,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
     }
 
     @Test(expected = NullPointerException.class)
-    public void testUpdateFailsAsTheRoleIsNull() {
+    public void testUpdateFailsAsTheRoleIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final ContextDto dto = buildDto();
         List list = Arrays.asList(null) ;
         dto.setRoleNames(list);
@@ -78,8 +80,10 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
             getController().create(dto);
             fail("should fail");
         }
-        catch (final IllegalArgumentException e) {
+        catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
+        } catch (PreconditionFailedException exception) {
+            throw new PreconditionFailedException("The object is not valid " + exception);
         }
     }
 
@@ -97,7 +101,7 @@ public final class ContextControllerTest extends AbstractCrudControllerTest<Cont
             getController().update(ID, dto);
             fail("should fail");
         }
-        catch (final IllegalArgumentException e) {
+        catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Some of the rolenames: [badRole] are not allowed", e.getMessage());
         }
     }

@@ -26,7 +26,9 @@
 
 package fr.gouv.vitamui.ui.commons.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.AccessContractsDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -68,14 +70,14 @@ public class AccessContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<AccessContractsDto> getAll() {
+    public List<AccessContractsDto> getAll() throws InvalidParseOperationException, PreconditionFailedException {
         return accessContractService.getAll(buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get access contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public AccessContractsDto getById(final @PathVariable("identifier") String identifier) throws
-        UnsupportedEncodingException {
+        UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get access contract by id {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return accessContractService.getAccessContractById(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }

@@ -265,7 +265,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final VitamContext vitamContext =
             internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
         if (vitamContext != null) {
-            LOGGER.info("Patching Customer EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patching Customer EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
         for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
@@ -436,7 +436,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         try {
             final VitamContext vitamContext =
                 internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-            LOGGER.info("Graphic identity EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.debug("Graphic identity EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
             final String base64 = VitamUIUtils.getBase64(file);
             switch (attachmentType) {

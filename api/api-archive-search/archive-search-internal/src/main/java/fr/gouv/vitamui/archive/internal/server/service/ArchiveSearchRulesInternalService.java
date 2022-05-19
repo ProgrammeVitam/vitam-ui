@@ -186,7 +186,7 @@ public class ArchiveSearchRulesInternalService {
         List<String> rulesIdentifiers, String ruleType) throws VitamClientException {
         List<FileRulesModel> rules = new ArrayList<>();
         if (rulesIdentifiers != null && !rulesIdentifiers.isEmpty()) {
-            LOGGER.info("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
+            LOGGER.debug("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
             Map<String, Object> searchCriteriaMap = new HashMap<>();
             searchCriteriaMap.put(field, rulesIdentifiers.get(0));
             if (ruleType != null) {

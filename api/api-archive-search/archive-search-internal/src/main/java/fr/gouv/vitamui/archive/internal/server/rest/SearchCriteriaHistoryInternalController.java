@@ -36,12 +36,14 @@
  */
 package fr.gouv.vitamui.archive.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.service.SearchCriteriaHistoryInternalService;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -89,24 +91,27 @@ public class SearchCriteriaHistoryInternalController {
     }
 
     @PostMapping
-    public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto) {
+    public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
         return searchCriteriaHistoryInternalService.create(dto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable("id") String id) {
-        LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
+    public void delete(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryInternalService.delete(id);
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto) {
-        LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
+    public SearchCriteriaHistoryDto update(final @RequestBody SearchCriteriaHistoryDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("Identifier is mandatory : " , dto.getId());
-        SanityChecker.check(dto.getId());
+        SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update SearchCriteriaHistory with id :{}", dto.getId());
         return searchCriteriaHistoryInternalService.update(dto);
     }
 }

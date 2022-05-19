@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -44,6 +45,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -92,9 +94,15 @@ public class UserInternalController implements CrudController<UserDto> {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<? extends UserDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
 
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
         return internalUserService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
@@ -105,9 +113,11 @@ public class UserInternalController implements CrudController<UserDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public UserDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
+    public UserDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get {} criteria={}", id, criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
+        SanityChecker.checkSecureParameter(id);
         return internalUserService.getOne(id, criteria);
     }
 
@@ -128,7 +138,7 @@ public class UserInternalController implements CrudController<UserDto> {
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         LOGGER.debug("check exist criteria={}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         final boolean exist = internalUserService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -138,8 +148,9 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @Override
     @PostMapping
-    public UserDto create(final @Valid @RequestBody UserDto dto) {
+    public UserDto create(final @Valid @RequestBody UserDto dto) throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
+        SanityChecker.sanitizeCriteria(dto);
         return internalUserService.create(dto);
     }
 
@@ -148,9 +159,12 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @Override
     @PutMapping(CommonConstants.PATH_ID)
-    public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto) {
+    public UserDto update(final @PathVariable("id") String id, final @Valid @RequestBody UserDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Update {} with {}", id, dto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalUserService.update(dto);
     }
@@ -160,17 +174,22 @@ public class UserInternalController implements CrudController<UserDto> {
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public UserDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalUserService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get logbook for users with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         return internalUserService.findHistoryById(id);
     }
 
@@ -182,7 +201,7 @@ public class UserInternalController implements CrudController<UserDto> {
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
         LOGGER.debug("Get levels with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return internalUserService.getLevels(criteria);
     }
 
