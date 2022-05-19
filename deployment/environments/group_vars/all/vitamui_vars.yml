@@ -397,6 +397,63 @@ vitamui:
       root_log_level: "ERROR"
       vitamui_level: "DEBUG"
 
+  collect:
+    host: "collect.service.{{ consul_domain }}"
+    vitamui_component: "ui-collect"
+    vitamui_component_type: "ui"
+    package_name: "vitamui-ui-collect"
+    service_name: "vitamui-ui-collect"
+    store_name: "ui-collect"
+    port_service: 8010
+    port_admin: 7010
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
+  collect_external:
+    host: "collect-external.service.{{ consul_domain }}"
+    vitamui_component: "collect-external"
+    vitamui_component_type: "external"
+    package_name: "vitamui-collect-external"
+    service_name: "vitamui-collect-external"
+    store_name: "collect-external"
+    port_service: 8110
+    port_admin: 7110
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
+  collect_internal:
+    host: "collect-internal.service.{{ consul_domain }}"
+    vitamui_component: "collect-internal"
+    vitamui_component_type: "internal"
+    package_name: "vitamui-collect-internal"
+    service_name: "vitamui-collect-internal"
+    store_name: "collect-internal"
+    port_service: 8210
+    port_admin: 7210
+    secure: true
+    jvm_log: false
+    logging_level: "INFO"
+    log:
+      logback_max_file_size: "10MB"
+      logback_max_history: 30
+      logback_total_size_cap: "5GB"
+      root_log_level: "ERROR"
+      vitamui_level: "DEBUG"
+
 ################################################################################
 
 vitamui_platform_informations:

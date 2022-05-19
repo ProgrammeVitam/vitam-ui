@@ -1,0 +1,15 @@
+db = db.getSiblingDB('security')
+
+print("START security_ref.js");
+
+db.contexts.insert({
+    "_id" : "ui_collect_context",
+    "name": "Contexte UI Collect",
+    "fullAccess" : true,
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "roleNames" : [
+        "ROLE_GET_PROJECTS"
+    ]
+});
+
+print("END security_ref.js");
