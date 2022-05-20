@@ -38,13 +38,42 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { ManagementRules, RuleAction, RuleCategoryAction } from '../models/ruleAction.interface';
 import { ManagementRulesValidatorService } from './management-rules-validator.service';
+
+const rules: RuleAction[] = [
+  {
+    rule: 'ruleId1',
+    name: 'ruleName_1',
+  },
+  {
+    rule: 'ruleId3',
+    name: 'ruleName_3',
+  },
+  {
+    rule: 'ruleId2',
+    name: 'ruleName_2',
+  },
+];
+
+const ruleCategoryAction: RuleCategoryAction = {
+  finalAction: 'keep',
+  preventInheritance: false,
+  rules,
+};
+const managementRules: ManagementRules[] = [
+  {
+    category: 'category',
+    ruleCategoryAction,
+    actionType: 'actionType',
+  },
+];
 
 describe('ManagementRulesValidatorService', () => {
   let service: ManagementRulesValidatorService;
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of({}),
-    getManagementRules: () => of({}),
+    getManagementRules: () => of(managementRules),
     getAccessContract: () => of('AccessContract'),
     getselectedItems: () => of(35),
     getCriteriaSearchListToSave: () => of({}),
@@ -66,7 +95,35 @@ describe('ManagementRulesValidatorService', () => {
     service = TestBed.inject(ManagementRulesValidatorService);
   });
 
-  it('should be created', () => {
+  it('should the service be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it(' uniqueRuleId should return false when ruleId does not exists in the list', () => {
+    // When
+    service.ruleCategorySelected = 'category';
+    // Then
+    expect(of(service.uniqueRuleId('ruleId150'))._isScalar).toBeFalsy();
+  });
+
+  it('filterRuleActions should return true when ruleId exists in the list', () => {
+    // When
+    service.ruleCategorySelected = 'category';
+    // Then
+    expect(service.filterRuleActions('ruleId1')).toBeTruthy();
+  });
+
+  it('filterRuleActions should return false when ruleId does not exists in the list', () => {
+    // When
+    service.ruleCategorySelected = 'category';
+    // Then
+    expect(of(service.filterRuleActions('ruleId150'))._isScalar).toBeFalsy();
+  });
+
+  it(' uniqueRuleId should return true when ruleId exists in the list', () => {
+    // When
+    service.ruleCategorySelected = 'category';
+    // Then
+    expect(service.uniqueRuleId('ruleId1')).toBeTruthy();
   });
 });

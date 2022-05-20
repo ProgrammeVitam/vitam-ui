@@ -68,7 +68,7 @@ export class ManagementRulesValidatorService {
     return false;
   }
 
-  uniqueRuleId = (codeToIgnore?: string): AsyncValidatorFn => {
+  uniqueRuleId(codeToIgnore?: string): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
         switchMap(() => (control.value !== codeToIgnore ? of(this.filterRuleActions(control.value)) : of(false))),
@@ -76,23 +76,27 @@ export class ManagementRulesValidatorService {
         map((exists: boolean) => (exists ? { uniqueRuleId: true } : null))
       );
     };
-  };
+  }
 
-  ruleIdPattern = (): ValidatorFn => {
+  ruleIdPattern(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const regexp = /[À-ÖØ-öø-ÿ ]/;
       return regexp.test(control.value) ? { ruleIdPattern: true } : null;
     };
-  };
+  }
 
-  checkRuleIdExistence = (ruleIdToIgnore?: string): AsyncValidatorFn => {
+  checkRuleIdExistence(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.existesRuleProperties('ruleId', 'ruleIdExists', ruleIdToIgnore);
-  };
+  }
 
   private existesRuleProperties(field: string, existTag: string, valueToIgnore?: string) {
+    this.managementRulesSharedDataService.getRuleCategory().subscribe((data) => {
+      this.ruleCategorySelected = data;
+    });
     return (control: AbstractControl) => {
       const properties: any = {};
       properties[field] = control.value;
+      properties.ruleType = this.ruleCategorySelected;
       const existField: any = {};
       existField[existTag] = true;
 

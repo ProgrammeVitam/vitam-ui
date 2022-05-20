@@ -42,17 +42,14 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 import { SearchCriteriaDto } from '../models/search.criteria';
 
 @Injectable()
 export class ArchiveUnitValidatorService {
-  constructor(private archiveService: ArchiveService, private shared: ArchiveSharedDataService) {}
+  constructor(private archiveService: ArchiveService, private archiveSharedDataService: ArchiveSharedDataService) {}
   debounceTime = 400;
-  ruleActions: RuleCategoryAction;
-  managementRules: ManagementRules[];
 
-  alreadyExistParents = (codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn => {
+  alreadyExistParents(codeToIgnore?: string, archiveUnitAllunitup?: string[]): AsyncValidatorFn {
     return (control: AbstractControl) => {
       return timer(this.debounceTime).pipe(
         switchMap(() =>
@@ -62,15 +59,15 @@ export class ArchiveUnitValidatorService {
         map((exists: boolean) => (exists ? { alreadyExistParents: true } : null))
       );
     };
-  };
+  }
 
   isAlreadyExistingParentValue(parentId: string, archiveUnitAllunitup: string[]): boolean {
     return true ? archiveUnitAllunitup.filter((p) => p === parentId).length > 0 : false;
   }
 
-  existArchiveUnit = (criteriaDto: SearchCriteriaDto, accessContract: string): AsyncValidatorFn => {
+  existArchiveUnit(criteriaDto: SearchCriteriaDto, accessContract: string): AsyncValidatorFn {
     return this.unitExists('targetGuid', criteriaDto, accessContract);
-  };
+  }
 
   private unitExists(existTag: string, criteriaDto: SearchCriteriaDto, accessContract: string) {
     return (control: AbstractControl) => {
@@ -78,8 +75,8 @@ export class ArchiveUnitValidatorService {
       auditExists[existTag] = true;
       const criteria = cloneDeep(criteriaDto);
       criteria.pageNumber = 0;
-      criteria.criteriaList.forEach((v) =>
-        v.values.forEach((v) => {
+      criteria.criteriaList.forEach((criteriaElement) =>
+        criteriaElement.values.forEach((v) => {
           v.id = control.value;
           v.value = control.value;
         })
@@ -92,10 +89,10 @@ export class ArchiveUnitValidatorService {
                 .toPromise()
                 .then((data) => {
                   if (data.totalResults === 1) {
-                    this.shared.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
+                    this.archiveSharedDataService.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
                     return false;
                   } else {
-                    this.shared.emitArchiveUnitTitle(null);
+                    this.archiveSharedDataService.emitArchiveUnitTitle(null);
                     return true;
                   }
                 })
