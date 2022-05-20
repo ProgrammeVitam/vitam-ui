@@ -15,23 +15,23 @@ jks-password: FOlyWYMRTIsTqdZiAFKcj9vHbDEw5nn88ZDBNEqUaIPDsg9d
 
 # Iam client configuration
 iam-client:
-  host: localhost
-  port: 8083
+  host: 172.18.96.75
+  port: 8101
   ssl:
     keystore:
       path: ${certs-folder}/keystore_ui-identity.jks
       password: ${jks-password}
     truststore:
       path: ${certs-folder}/truststore_server.jks
-      password: changeme
+      password: changeme-Tc3jx3HqFCvJyq5C
 
 
 # Mongo
 mongo:
-  host: localhost
-  port: 27018
-  iam.uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@localhost:27018/iam?connectTimeoutMS=2000
-  security.uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@localhost:27018/security?connectTimeoutMS=2000
+  host: 172.18.96.75
+  port: 27017
+  iam.uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@172.18.96.75:27018/iam?connectTimeoutMS=2000
+  security.uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@172.18.96.75:27018/security?connectTimeoutMS=2000
 
 # Workspace configuration
 workspace:
