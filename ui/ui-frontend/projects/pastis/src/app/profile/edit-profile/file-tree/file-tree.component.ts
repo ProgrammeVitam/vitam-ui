@@ -53,6 +53,7 @@ import {DuplicateMetadataComponent} from '../../../user-actions/duplicate-metada
 import {UserActionRemoveMetadataComponent} from '../../../user-actions/remove-metadata/remove-metadata.component';
 import {FileTreeMetadataService} from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
+import {PUA} from "../../../models/pua.model";
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -306,6 +307,10 @@ export class FileTreeComponent implements OnDestroy {
       newNode.parent = parent;
       newNode.children = [];
       newNode.sedaData = sedaChild;
+      if (this.isElementComplex(newNode)) {
+        newNode.puaData = new PUA()
+        newNode.puaData.additionalProperties = false;
+      }
       console.log('Parent node name: ' + parent.name);
       console.log('New node  : ', newNode);
 
