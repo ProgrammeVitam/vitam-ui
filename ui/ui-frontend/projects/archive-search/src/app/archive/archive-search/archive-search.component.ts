@@ -296,6 +296,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   addCriteriaCategory(categoryName: string) {
+    this.archiveExchangeDataService.emitRuleCategory(categoryName);
     const indexOfCategory = this.additionalSearchCriteriaCategories.findIndex((element) => element.name === categoryName);
     if (indexOfCategory === -1) {
       this.additionalSearchCriteriaCategories.push({ name: categoryName, index: this.additionalSearchCriteriaCategories.length + 1 });
@@ -304,6 +305,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       });
       this.additionalSearchCriteriaCategoryIndex = this.additionalSearchCriteriaCategories.length;
     }
+  }
+
+  sendRuleCategorySelected(categoryName: string) {
+    this.archiveExchangeDataService.emitRuleCategory(categoryName);
   }
 
   isCategoryAdded(categoryName: string): boolean {

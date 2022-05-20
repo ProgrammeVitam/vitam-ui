@@ -281,10 +281,10 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     this.loadCriteriaSearchDSLQuery();
     this.loadHasExactCount();
 
-    // if (this.criteriaSearchListToSave.length === 0) {
-    //   this.initializeParameters();
-    //   this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
-    // }
+    if (this.criteriaSearchListToSave.length === 0) {
+      this.initializeParameters();
+      this.router.navigate(['/archive-search/tenant/', this.tenantIdentifier]);
+    }
     this.messageNotUpdate = this.translateService.instant('RULES.ACTIONS.NOT_TO_UPDATE');
     this.messageNotAdd = this.translateService.instant('RULES.ACTIONS.NOT_TO_ADD');
     this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
@@ -369,7 +369,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     let idToAdd = 0;
     this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
-      console.log('hello', data);
     });
     if (this.ruleActions && this.ruleActions.length > 0) {
       idToAdd = this.ruleActions[this.ruleActions.length - 1]?.id;
@@ -491,8 +490,6 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           searchCriteriaDto: this.criteriaSearchDSLQuery,
           ruleActions: allRuleActions,
         };
-
-        console.log('pour la partie back', ruleSearchCriteriaDto);
 
         this.archiveService.updateUnitsRules(ruleSearchCriteriaDto, this.accessContract).subscribe(
           (response) => {
