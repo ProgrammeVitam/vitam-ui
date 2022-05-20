@@ -2,14 +2,14 @@ debug: false
 # Pastis Rest APi
 rng:
   base:
-    file: rng/Profil_seda_pastis_mvp.rng
+    file: profiles_new/Profil_seda_pastis_mvp.rng
     directory: rng/
 json:
   base:
-    file: rng/ProfileJson.json
+    file: profiles_new/ProfileJson.json
   template:
-    fileStandalone: rng/AUP_default_PASTIS.json
-    fileVitam: rng/AUP_default_VITAM.json
+    fileStandalone: profiles_new/AUP_default_PASTIS.json
+    fileVitam: profiles_new/AUP_default_VITAM.json
 pua:
   definitions:
     file: pua_validation/ProfileJson.json

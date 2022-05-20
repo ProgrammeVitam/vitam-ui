@@ -1,0 +1,19 @@
+{
+  "id": "aegaaaaabafbmai5aa2d2alwatqvahqttaaq",
+  "identifier": "PUA_exemple",
+  "name": "PUA_exemple",
+  "description": "PUA exemple pour PASTIS",
+  "status": "ACTIVE",
+  "controlSchema": "{\"$schema\":\"http://json-schema.org/draft-04/schema\",\"type\":\"object\",\"additionalProperties\":false,\"required\":[\"DescriptionLevel\",\"Title\"],\"definitions\":{\"pattern-simple-date\":{\"pattern\":\"[0-9]{4}-[0-9]{2}-[0-9]{2}\",\"type\":\"string\"},\"pattern-date\":{\"pattern\":\"^([0-8][0-9]{3}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$\",\"type\":\"string\"}},\"properties\":{\"ArchiveUnitProfile\":{\"description\":\"Identifiant du PUA : cardinalité 1\",\"type\":\"string\"},\"#management\":{\"properties\":{\"AppraisalRule\":{\"additionalProperties\":true,\"type\":\"object\",\"properties\":{\"Rules\":{\"items\":{\"properties\":{\"StartDate\":{\"type\":\"string\"},\"Rule\":{\"type\":\"string\"}},\"required\":[\"Rule\",\"StartDate\"]}},\"FinalAction\":{\"enums\":[\"RestrictAccess\",\"Transfer\",\"Copy\"],\"type\":\"string\"}},\"required\":[\"FinalAction\"]}}},\"DescriptionLevel\":{\"description\":\"Niveau de description : cardinalité 1\",\"type\":\"string\",\"enum\":[\"Fonds\",\"Collection\"]},\"Title\":{\"pattern\":\"[0-9]{4}\",\"type\":\"object\"},\"Writer\":{\"additionalProperties\":true,\"type\":\"array\",\"required\":[\"FullName\",\"Function\"],\"properties\":{\"Function\":{\"type\":\"array\"},\"FullName\":{\"type\":\"string\"}}},\"CreatedDate\":{\"pattern\":\"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\",\"type\":\"string\"},\"Gps\":{\"additionalProperties\":false,\"type\":\"object\"}}}",
+  "lastUpdate": "10/10/1988",
+  "CreationDate": "01/09/2000",
+  "activationDate": "10/12/2016",
+  "deactivationDate": "10/12/2016",
+  "tenant": 8,
+  "version": 1,
+  "fields": [
+    "ArchiveUnitProfile",
+    "DescriptionLevel",
+    "Title"
+  ]
+}
