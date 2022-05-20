@@ -25,6 +25,7 @@
         <webpack.test.skip>false</webpack.test.skip>
         <skipTests>false</skipTests>
         <skipAllFrontend>false</skipAllFrontend>
+        <jib.skip>false</jib.skip>
     </properties>
 
     <dependencies>
@@ -169,6 +170,16 @@
             </testResource>
         </testResources>
         <plugins>
+            <plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+				 <to>
+				 <image>172.18.96.221:80/vitamui/ui-archive-search</image>
+                 <tags>${project.version}</tags>
+				</to>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -1,0 +1,60 @@
+
+import groovy.transform.Field
+
+timestamps{
+
+  ansiColor('xterm'){
+    node('docker'){
+
+    stage ("Docker stage") {
+
+        docker.withRegistry('http://172.18.96.221:80', 'harbor_account') {
+                
+        //docker.image('vitam-deps:1.0').inside("--network host --entrypoint='' ") {
+        docker.image('tools/base-tools:1.0').inside("--network host --entrypoint='' ") {
+
+            stage('Checkout vitam-ui'){
+
+                dir('vitam-ui.git') {
+                    deleteDir()
+                }
+
+                checkout([$class: 'GitSCM',
+                            branches: [[name: 'vas_jib_maven_plugin']], //
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'vitam-ui.git']],
+                            submoduleCfg: [],
+                            userRemoteConfigs: [[credentialsId: 'github-account', url: 'https://github.com/ProgrammeVitam/vitam-ui.git']]
+                    ])
+
+            }
+
+            stage('Build and create docker images'){
+
+                dir('vitam-ui.git') {
+
+                    withCredentials([
+                    [$class: 'UsernamePasswordMultiBinding', credentialsId: 'app-jenkins',usernameVariable: 'CI_USR', passwordVariable: 'CI_PSW'],
+                    string(credentialsId: "service-nexus-url", variable: 'SERVICE_NEXUS_URL')
+                    ]) {
+
+                    sh '''
+                    unset https_proxy
+                    unset http_proxy
+                    '''
+                          
+                    sh "mvn  --settings .ci/settings.xml --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true package -Pvitam -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' -Denv.SERVICE_NEXUS_URL=${env.SERVICE_NEXUS_URL} -DsendCredentialsOverHttp=true"
+
+                    //sh "mvn --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true --settings .ci/settings.xml -f sources/pom.xml install package jib:build -Dmaven.test.skip=true -DskipTests=true -Djacoco.skip=true -Dlicense.skip -Denv.SERVICE_NEXUS_URL=${env.SERVICE_NEXUS_URL} -DsendCredentialsOverHttp=true"
+
+                    }
+
+                }
+            }
+        }
+        }
+    }
+
+}
+}
+}

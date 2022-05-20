@@ -27,6 +27,8 @@
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
+
+        <jib.skip>false</jib.skip>
     </properties>
 
     <dependencies>
@@ -502,6 +504,16 @@
 
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+				 <to>
+				 <image>172.18.96.221:80/vitamui/cas-server</image>
+                 <tags>${project.version}</tags>
+				</to>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
