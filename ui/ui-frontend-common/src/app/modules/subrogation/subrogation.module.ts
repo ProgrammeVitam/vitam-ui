@@ -49,6 +49,7 @@ import { ConfirmDialogModule } from '../components/confirm-dialog/confirm-dialog
 import { StepperModule } from '../components/stepper/stepper.module';
 import { VitamUIInputModule } from '../components/vitamui-input/vitamui-input.module';
 import { WINDOW_LOCATION } from '../injection-tokens';
+import { PipesModule } from '../pipes/pipes.module';
 import {
   NotificationSnackBarComponent
 } from './notification-snack-bar/notification-snack-bar.component';
@@ -71,7 +72,8 @@ import {
     VitamUIInputModule,
     ConfirmDialogModule,
     CommonProgressBarModule,
-    TranslateModule
+    TranslateModule,
+    PipesModule
   ],
   declarations: [
     NotificationSnackBarComponent,
