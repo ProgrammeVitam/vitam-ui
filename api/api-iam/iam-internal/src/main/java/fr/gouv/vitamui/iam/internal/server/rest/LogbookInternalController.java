@@ -104,10 +104,7 @@ public class LogbookInternalController {
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
-        @RequestBody final JsonNode select) throws VitamClientException, InvalidParseOperationException,
-        PreconditionFailedException {
-        SanityChecker.sanitizeJson(select);
-        SanityChecker.checkSecureParameter(String.valueOf(tenantId));
+        @RequestBody final JsonNode select) throws VitamClientException {
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId);
         return VitamRestUtils.responseMapping(logbookService.selectOperations(select, vitamContext).toJsonNode(),
             LogbookOperationsResponseDto.class);
