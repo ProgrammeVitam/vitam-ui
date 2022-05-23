@@ -51,6 +51,7 @@ import { BASE_URL, ENVIRONMENT } from './modules';
 import { AppGuard, LoggerModule, WINDOW_LOCATION } from './modules';
 import { VitamUICommonModule } from './modules';
 import { AccountComponent } from './modules/account';
+import { PipesModule } from './modules/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { AccountComponent } from './modules/account';
     ], {
       preloadingStrategy: QuicklinkStrategy
     }),
+    PipesModule
   ],
   providers: [
     { provide: BASE_URL, useValue: '/portal-api' },

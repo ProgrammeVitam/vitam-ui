@@ -40,6 +40,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CollapseModule } from '../../components/collapse/collapse.module';
+import { PipesModule } from '../../pipes/pipes.module';
 import { EventTypeLabelModule } from '../event-type-label/event-type-label.module';
 import { HistoryEventsComponent } from './history-events/history-events.component';
 import {
@@ -52,7 +53,8 @@ import {
     CollapseModule,
     MatProgressSpinnerModule,
     EventTypeLabelModule,
-    TranslateModule
+    TranslateModule,
+    PipesModule
   ],
   declarations: [HistoryEventsComponent, OperationHistoryTabComponent],
   exports: [HistoryEventsComponent, OperationHistoryTabComponent]

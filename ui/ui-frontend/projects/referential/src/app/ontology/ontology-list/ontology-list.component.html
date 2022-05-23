@@ -49,7 +49,7 @@
         <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.identifier }}</td>
         <td class="clickable" (click)="ontologyClick.emit(ontology)">{{ ontology?.description }}</td>
         <td class="clickable" (click)="ontologyClick.emit(ontology)">
-          {{ ontology?.creationDate | date: 'dd/MM/yyyy' }}
+          {{ ontology?.creationDate | dateTime: 'dd/MM/yyyy' }}
         </td>
         <td>
           <div class="actions" *ngIf="ontology.origin == 'EXTERNAL'">

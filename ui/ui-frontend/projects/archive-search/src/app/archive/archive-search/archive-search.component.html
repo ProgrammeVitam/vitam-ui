@@ -347,10 +347,10 @@
             </ng-template>
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             <p
