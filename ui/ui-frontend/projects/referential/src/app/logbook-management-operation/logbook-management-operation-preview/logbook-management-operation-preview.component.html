@@ -82,9 +82,9 @@
         </div>
       </div>
       <div class="col-3">
-        <div>{{ operation?.processDate | date: 'dd/MM/yyyy' }}</div>
+        <div>{{ operation?.processDate | dateTime: 'dd/MM/yyyy' }}</div>
         <span class="date">
-          {{ operation?.processDate | date: 'hh:mm:ss':'+0000' }}
+          {{ operation?.processDate | dateTime: 'hh:mm:ss' }}
         </span>
       </div>
       <div class="col-6">

@@ -42,6 +42,7 @@ import {of} from 'rxjs';
 import {SecurisationService} from '../../securisation.service';
 import {SecurisationInformationTabComponent} from './securisation-information-tab.component';
 import {Event} from "../../../../../../vitamui-library/src/lib/models/event";
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 describe('SecurisationInformationTabComponent', () => {
   let component: SecurisationInformationTabComponent;
@@ -101,7 +102,7 @@ describe('SecurisationInformationTabComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
-        NgxFilesizeModule
+        NgxFilesizeModule, VitamUICommonTestModule
       ],
       declarations: [SecurisationInformationTabComponent],
       providers: [

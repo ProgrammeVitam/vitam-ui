@@ -72,14 +72,14 @@
         <div class="col-10 form-control">
             <vitamui-library-input placeholder="Date de création"
                 i18n-placeholder="creationDate@@accessContractPreviewLabelCreationDate"
-                [value]="accessContract?.creationDate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract?.creationDate | dateTime: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
         </div>
 
         <div class="col-10 form-control">
             <vitamui-library-input placeholder="Date de derniere modification"
                 i18n-placeholder="lastUpdate@@accessContractPreviewLabelLastUpdate" 
-                [value]="accessContract?.lastUpdate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract?.lastUpdate | dateTime: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
         </div>
 
@@ -87,7 +87,7 @@
             <vitamui-library-input placeholder="Date d'activation" 
                 *ngIf="accessContract?.status === 'ACTIVE' && accessContract?.activationDate"
                 i18n-placeholder="activationDate@@accessContractPreviewLabelActivationDate"
-                [value]="accessContract.activationDate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract.activationDate | dateTime: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
             <vitamui-library-input placeholder="Date d'activation" 
                 *ngIf="accessContract?.status !== 'ACTIVE' || !accessContract?.activationDate"
@@ -99,7 +99,7 @@
         <div class="col-10 form-control">
             <vitamui-library-input placeholder="Date de désactivation" *ngIf="accessContract?.deactivationDate"
                 i18n-placeholder="deactivationDate@@accessContractPreviewLabelDeactivationDate"
-                [value]="accessContract.deactivationDate | date: 'dd/MM/yyyy'" disabled>
+                [value]="accessContract.deactivationDate | dateTime: 'dd/MM/yyyy'" disabled>
             </vitamui-library-input>
             <vitamui-library-input placeholder="Date de désactivation" *ngIf="!accessContract?.deactivationDate"
                 i18n-placeholder="deactivationDate@@accessContractPreviewLabelDeactivationDate"

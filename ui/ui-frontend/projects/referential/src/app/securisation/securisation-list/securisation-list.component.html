@@ -35,7 +35,7 @@
                     </td>
                     <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.id }}</td>
                     <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.type }}</td>
-                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.dateTime | date: 'dd/MM/yyyy'  }}
+                    <td class="clickable" (click)="securisationClick.emit(securisation)">{{ securisation?.dateTime | dateTime: 'dd/MM/yyyy'  }}
                     </td>
                     <td class="clickable" (click)="securisationClick.emit(securisation)"
                         [ngClass]="{'text-green': securisationStatus(securisation) == 'OK', 'text-grey':securisationStatus(securisation) == 'STARTED',
