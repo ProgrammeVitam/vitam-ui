@@ -40,6 +40,7 @@ import { NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { OperationsResults } from '../../models/operation-response.interface';
 import { LogbookManagementOperationService } from '../logbook-management-operation.service';
 import { LogbookManagementOperationListComponent } from './logbook-management-operation-list.component';
@@ -105,7 +106,7 @@ describe('LogbookManagementOperationListComponent', () => {
     };
     await TestBed.configureTestingModule({
       declarations: [LogbookManagementOperationListComponent, MockTruncatePipe],
-      imports: [TranslateModule.forRoot(), HttpClientTestingModule],
+      imports: [TranslateModule.forRoot(), HttpClientTestingModule, VitamUICommonTestModule],
       providers: [{ provide: LogbookManagementOperationService, useValue: logbookManagementOperationServiceMock }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

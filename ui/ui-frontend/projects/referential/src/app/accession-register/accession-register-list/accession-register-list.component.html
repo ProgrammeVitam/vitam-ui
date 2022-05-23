@@ -83,7 +83,7 @@
           (click)="onSelectRow(accessionRegisterDetail)"
         >
           <div class="vitamui-row d-flex align-items-center clickable">
-            <div class="col-1">{{ accessionRegisterDetail.endDate | date: 'dd/MM/yyyy' }}</div>
+            <div class="col-1">{{ accessionRegisterDetail.endDate | dateTime: 'dd/MM/yyyy' }}</div>
             <div class="col-3">{{ accessionRegisterDetail.opi }}</div>
             <div class="col-1">
               <p

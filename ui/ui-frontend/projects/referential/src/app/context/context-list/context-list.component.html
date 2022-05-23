@@ -87,7 +87,7 @@
         <td class="clickable" (click)="contextClick.emit(context)">{{ context?.name }}</td>
         <td class="clickable" (click)="contextClick.emit(context)">{{ context?.identifier }}</td>
         <!-- TODO: Add date pipe -->
-        <td class="clickable" (click)="contextClick.emit(context)">{{ context?.creationDate | date: 'dd/MM/yyyy' }}</td>
+        <td class="clickable" (click)="contextClick.emit(context)">{{ context?.creationDate | dateTime: 'dd/MM/yyyy' }}</td>
       </tr>
     </ng-container>
   </tbody>
