@@ -460,9 +460,9 @@
       "SOURCE_RULE": "Source management rule*",
       "UPDATED": "Updated",
       "TARGET_START_DATE": "Target startDate",
-      "UA_TO_UPDATE": "UA selected will be taken into account during the update",
-      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
-      "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored"
+      "UA_TO_UPDATE": "UA selected will be taken into account during the update.",
+      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored.",
+      "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored."
     },
     "FINAL_ACTION": {
       "TITLE": "Final action",

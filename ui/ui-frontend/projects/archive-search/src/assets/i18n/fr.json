@@ -459,8 +459,8 @@
       "SOURCE_RULE": "Règle de gestion source *",
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
-      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
-      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
+      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées.",
       "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
@@ -477,7 +477,7 @@
     "UA_CONTROL": {
       "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
       "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
-      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
       "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
     },
     "DIALOG_MESSAGE": {
