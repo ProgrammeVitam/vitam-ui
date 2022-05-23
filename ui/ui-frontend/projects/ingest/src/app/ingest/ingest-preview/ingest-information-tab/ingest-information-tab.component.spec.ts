@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
-import {IngestInformationTabComponent} from './ingest-information-tab.component';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {TranslateModule} from '@ngx-translate/core';
+import { IngestInformationTabComponent } from './ingest-information-tab.component';
 
 describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
@@ -48,7 +49,8 @@ describe('IngestInformationTabComponent', () => {
     TestBed.configureTestingModule({
       declarations: [IngestInformationTabComponent],
       imports: [
-        TranslateModule.forRoot()
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

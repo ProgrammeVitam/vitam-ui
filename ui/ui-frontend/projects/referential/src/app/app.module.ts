@@ -34,26 +34,26 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { registerLocaleData } from '@angular/common';
-import { default as localeFr } from '@angular/common/locales/fr';
+import { DatePipe, registerLocaleData } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import localeFr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { BytesPipe, VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 
-import { HttpClient } from '@angular/common/http';
-import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
   return new MultiTranslateHttpLoader(httpClient, [
@@ -93,6 +93,7 @@ registerLocaleData(localeFr, 'fr');
     { provide: WINDOW_LOCATION, useValue: window.location },
     { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } },
     BytesPipe,
+    DatePipe
   ],
   bootstrap: [AppComponent],
 })
