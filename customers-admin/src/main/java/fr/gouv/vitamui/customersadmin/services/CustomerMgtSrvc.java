@@ -41,6 +41,8 @@ import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
@@ -160,8 +162,8 @@ public class CustomerMgtSrvc {
     @Value("${mongo.iam.uri}")
     private String mongoIamUri;
 
-    @Autowired
-    private IamExternalWebClientFactory iamWebClientFactory;
+    //  @Autowired
+    //  private IamExternalWebClientFactory iamWebClientFactory;
 
 
     //  @Autowired
@@ -460,7 +462,50 @@ public class CustomerMgtSrvc {
         }
     }*/
 
+    protected RestClientConfiguration getRestClientConfiguration(final String host, final int port,
+        final boolean secure, final SSLConfiguration sslConfig) {
+        final RestClientConfiguration restClientConfiguration = new RestClientConfiguration();
+        restClientConfiguration.setServerHost(host);
+        restClientConfiguration.setServerPort(port);
+        restClientConfiguration.setSecure(secure);
+        if (sslConfig != null) {
+            restClientConfiguration.setSslConfiguration(sslConfig);
+        }
+
+        return restClientConfiguration;
+    }
+
+    public SSLConfiguration sSLConfiguration() {
+
+        final String keystorePath =
+            getClass().getClassLoader().getResource(certsFolder + GENERIC_CERTIFICATE + ".jks").getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(iamTrustStoreFilePath).getPath();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        keyStore.setKeyPath(keystorePath);
+        keyStore.setKeyPassword(iamKeystorePassword);
+        keyStore.setType("JKS");
+        final SSLConfiguration.CertificateStoreConfiguration trustStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        trustStore.setKeyPath(trustStorePath);
+        trustStore.setKeyPassword(iamTruststorePassword);
+        trustStore.setType("JKS");
+
+        final SSLConfiguration sslConfig = new SSLConfiguration();
+        sslConfig.setKeystore(keyStore);
+        sslConfig.setTruststore(trustStore);
+
+        return sslConfig;
+    }
+
     private void parseAndCreateCustomers() {
+        RestClientConfiguration restClientConfiguration =
+            getRestClientConfiguration(iamServerHost, iamServerPort, true, sSLConfiguration());
+
+        IamExternalWebClientFactory iamExternalWebClientFactory =
+            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
+
+
         //read json file
         List<CustomerDto> customersListToCreate;
         List<CustomerDto> customerDtoList = new ArrayList<>();
@@ -496,7 +541,7 @@ public class CustomerMgtSrvc {
 
                         customerDtoToCreate.setOwners(ownerDtos);
                         //boolean existCode = isExistCode(externalContext, customerCreationFormData);
-                        customerDto = iamWebClientFactory.getCustomerWebClient()
+                        customerDto = iamExternalWebClientFactory.getCustomerWebClient()
                             .create(externalContext, customerCreationFormData);
                         customerDtoList.add(customerDto);
                         LOGGER.info("Customer with name {} and id {} is created with identifier ",
@@ -572,5 +617,7 @@ public class CustomerMgtSrvc {
             });
         return usersList;
     }
+
+
 
 }

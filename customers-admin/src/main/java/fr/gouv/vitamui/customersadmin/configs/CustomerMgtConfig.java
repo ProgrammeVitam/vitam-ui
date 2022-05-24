@@ -27,13 +27,8 @@
 
 package fr.gouv.vitamui.customersadmin.configs;
 
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
-import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -72,20 +67,19 @@ public class CustomerMgtConfig {
     @Autowired
     protected WebClient.Builder webClientBuilder;
 
+/*
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
     @Autowired
     SSLConfiguration sSLConfiguration;
 
-
     @Bean
-    // @DependsOn("restClientConfiguration")
-    public IamExternalWebClientFactory getIamWebClientFactory(/*
-        @Autowired RestClientConfiguration restClientConfiguration*/) {
+    @DependsOn("restClientConfiguration")
+    public IamExternalWebClientFactory getIamWebClientFactory(
+        @Autowired RestClientConfiguration restClientConfiguration) {
         final IamExternalWebClientFactory restClientFactory =
-            new IamExternalWebClientFactory(
-                getRestClientConfiguration(iamServerHost, iamServerPort, true, sSLConfiguration()), webClientBuilder);
+            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
         return restClientFactory;
     }
 
@@ -107,6 +101,8 @@ public class CustomerMgtConfig {
         return restClientConfiguration;
     }
 
+ */
+/*
     @Bean
     public SSLConfiguration sSLConfiguration() {
 
@@ -129,7 +125,7 @@ public class CustomerMgtConfig {
         sslConfig.setTruststore(trustStore);
 
         return sslConfig;
-    }
+    }*/
 
 /*
     @Bean
