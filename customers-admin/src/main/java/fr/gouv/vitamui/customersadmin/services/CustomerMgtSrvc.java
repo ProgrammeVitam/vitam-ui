@@ -46,6 +46,7 @@ import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
 import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
+import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
@@ -162,6 +163,14 @@ public class CustomerMgtSrvc {
 
     @Value("${mongo.iam.uri}")
     private String mongoIamUri;
+
+
+
+    private IamExternalRestClientFactory restClientFactory;
+
+    private IamExternalWebClientFactory iamExternalWebClientFactory;
+
+    private CustomerExternalWebClient customerWebClient;
 
     //  @Autowired
     //  private IamExternalWebClientFactory iamWebClientFactory;
@@ -499,6 +508,59 @@ public class CustomerMgtSrvc {
         return sslConfig;
     }
 
+    private IamExternalWebClientFactory getIamExternalWebClientFactory() {
+        if (iamExternalWebClientFactory == null) {
+            LOGGER.debug("Instantiating IAM webclient [host={}, port:{}, iamKeystoreFilePath:{}]", iamServerHost,
+                iamServerPort, iamKeystoreFilePath);
+            iamExternalWebClientFactory =
+                new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
+                    getSSLConfiguration(iamKeystoreFilePath, iamKeystorePassword, iamTrustStoreFilePath,
+                        iamTruststorePassword)), webClientBuilder);
+        }
+        return iamExternalWebClientFactory;
+    }
+
+
+    protected CustomerExternalWebClient getCustomerWebClient() {
+        if (customerWebClient == null) {
+            customerWebClient = getIamExternalWebClientFactory().getCustomerWebClient();
+        }
+        return customerWebClient;
+    }
+
+
+    protected IamExternalWebClientFactory getIamWebClientFactory(final String keystorePrefix) {
+        final IamExternalWebClientFactory webClientFactory =
+            new IamExternalWebClientFactory(getRestClientConfiguration(iamServerHost, iamServerPort, true,
+                getSSLConfiguration(certsFolder + keystorePrefix + ".jks", iamKeystorePassword, iamTrustStoreFilePath,
+                    iamTruststorePassword)), webClientBuilder);
+        return webClientFactory;
+    }
+
+    protected SSLConfiguration getSSLConfiguration(final String keystorePathname, final String iamKeystorePassword,
+        final String trustStorePathname,
+        final String iamTruststorePassword) {
+        final String keystorePath = getClass().getClassLoader().getResource(keystorePathname).getPath();
+        final String trustStorePath = getClass().getClassLoader().getResource(trustStorePathname).getPath();
+        final SSLConfiguration.CertificateStoreConfiguration keyStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        keyStore.setKeyPath(keystorePath);
+        keyStore.setKeyPassword(iamKeystorePassword);
+        keyStore.setType("JKS");
+        final SSLConfiguration.CertificateStoreConfiguration trustStore =
+            new SSLConfiguration.CertificateStoreConfiguration();
+        trustStore.setKeyPath(trustStorePath);
+        trustStore.setKeyPassword(iamTruststorePassword);
+        trustStore.setType("JKS");
+
+        final SSLConfiguration sslConfig = new SSLConfiguration();
+        sslConfig.setKeystore(keyStore);
+        sslConfig.setTruststore(trustStore);
+
+        return sslConfig;
+    }
+
+
     private void parseAndCreateCustomers() {
         LOGGER.info("Start init customers ");
         RestClientConfiguration restClientConfiguration =
@@ -506,13 +568,9 @@ public class CustomerMgtSrvc {
 
         LOGGER.info("restClientConfiguration {}  ", restClientConfiguration);
 
-        LOGGER.info("webClientBuilder {}  ", webClientBuilder);
 
-        IamExternalWebClientFactory iamExternalWebClientFactory =
-            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
-
-        LOGGER.info("iamExternalWebClientFactory {}  ", iamExternalWebClientFactory);
-        CustomerExternalWebClient customerExternalWebClient = iamExternalWebClientFactory.getCustomerWebClient();
+        CustomerExternalWebClient customerExternalWebClient =
+            getIamWebClientFactory(GENERIC_CERTIFICATE).getCustomerWebClient();
         LOGGER.info("customerExternalWebClient {}  ", customerExternalWebClient);
         LOGGER.info("End init settings -------------- ");
 
