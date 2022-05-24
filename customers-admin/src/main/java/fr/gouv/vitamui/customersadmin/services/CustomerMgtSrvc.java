@@ -45,6 +45,7 @@ import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
+import fr.gouv.vitamui.iam.external.client.CustomerExternalWebClient;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
@@ -129,7 +130,6 @@ public class CustomerMgtSrvc {
     @Value("${vitamui_platform_informations.proof_tenant}")
     protected int proofTenantIdentifier;
 
-
     @Value("${generic-cert}")
     private String genericCert;
 
@@ -156,6 +156,7 @@ public class CustomerMgtSrvc {
 
     @Value("${iam-client.ssl.keystore.password}")
     protected String iamKeystorePassword;
+
     @Autowired
     protected WebClient.Builder webClientBuilder;
 
@@ -499,11 +500,21 @@ public class CustomerMgtSrvc {
     }
 
     private void parseAndCreateCustomers() {
+        LOGGER.info("Start init customers ");
         RestClientConfiguration restClientConfiguration =
             getRestClientConfiguration(iamServerHost, iamServerPort, true, sSLConfiguration());
 
+        LOGGER.info("restClientConfiguration {}  ", restClientConfiguration);
+
+        LOGGER.info("webClientBuilder {}  ", webClientBuilder);
+
         IamExternalWebClientFactory iamExternalWebClientFactory =
             new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
+
+        LOGGER.info("iamExternalWebClientFactory {}  ", iamExternalWebClientFactory);
+        CustomerExternalWebClient customerExternalWebClient = iamExternalWebClientFactory.getCustomerWebClient();
+        LOGGER.info("customerExternalWebClient {}  ", customerExternalWebClient);
+        LOGGER.info("End init settings -------------- ");
 
 
         //read json file
@@ -541,8 +552,7 @@ public class CustomerMgtSrvc {
 
                         customerDtoToCreate.setOwners(ownerDtos);
                         //boolean existCode = isExistCode(externalContext, customerCreationFormData);
-                        customerDto = iamExternalWebClientFactory.getCustomerWebClient()
-                            .create(externalContext, customerCreationFormData);
+                        customerDto = customerExternalWebClient.create(externalContext, customerCreationFormData);
                         customerDtoList.add(customerDto);
                         LOGGER.info("Customer with name {} and id {} is created with identifier ",
                             customerDto.getName(),

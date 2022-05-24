@@ -27,47 +27,19 @@
 
 package fr.gouv.vitamui.customersadmin.configs;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class CustomerMgtConfig {
 
     protected static final String GENERIC_CERTIFICATE = "generic-it";
 
-    @Value("${generic-cert}")
-    private String genericCert;
 
-    @Value("${mongo.security.uri}")
-    private String mongoSecurityUri;
-
-    @Value("${iam-client.ssl.truststore.password}")
-    protected String iamTruststorePassword;
-
-    @Value("${certs-folder}")
-    protected String certsFolder;
-
-    @Value("${iam-client.host}")
-    protected String iamServerHost;
-
-    @Value("${iam-client.port}")
-    protected Integer iamServerPort;
-
-    @Value("${iam-client.ssl.keystore.path}")
-    private String iamKeystoreFilePath;
-
-    @Value("${iam-client.ssl.truststore.path}")
-    protected String iamTrustStoreFilePath;
-
-    @Value("${iam-client.ssl.keystore.password}")
-    protected String iamKeystorePassword;
-
+/*
     @Autowired
     protected WebClient.Builder webClientBuilder;
 
-/*
+
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
