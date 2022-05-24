@@ -67,7 +67,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -127,7 +126,6 @@ public class LogbookExternalController {
     @Secured({ServicesData.ROLE_LOGBOOKS})
     @PostMapping(value = CommonConstants.LOGBOOK_OPERATIONS_PATH)
     public LogbookOperationsResponseDto findOperations(@RequestBody final JsonNode select) throws VitamClientException {
-        SanityChecker.sanitizeJson(select);
         return logbookExternalService.findOperations(select);
     }
 
