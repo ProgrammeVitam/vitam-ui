@@ -94,7 +94,9 @@
       </mat-tab>
       <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
         <ng-template mat-tab-label>
-          <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.' + category.name | translate }} </span>
+          <span (click)="sendRuleCategorySelected(category.name)">
+            {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.' + category.name | translate }}
+          </span>
           <button class="mat-boutton clickable" (click)="removeCriteriaCategory(category.name)">
             <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
           </button>
@@ -160,32 +162,47 @@
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC') || true">
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('STORAGE_RULE')"
+          [disabled]="isCategoryAdded('STORAGE_RULE') || true"
+        >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
         </button>
         <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')" [disabled]="isCategoryAdded('ACCESS_RULE')">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('REUSE_RULE')"
+          [disabled]="isCategoryAdded('REUSE_RULE') || true"
+        >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
         </button>
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('DIFFUSION')"
-          [disabled]="isCategoryAdded('DIFFUSION') || true"
+          (click)="addCriteriaCategory('DISSEMINATION_RULE')"
+          [disabled]="isCategoryAdded('DISSEMINATION_RULE') || true"
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
         </button>
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('CLASSIFICATION')"
-          [disabled]="isCategoryAdded('CLASSIFICATION') || true"
+          (click)="addCriteriaCategory('CLASSIFICATION_RULE')"
+          [disabled]="isCategoryAdded('CLASSIFICATION_RULE') || true"
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+        <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('HOLD_RULE')"
+          [disabled]="isCategoryAdded('HOLD_RULE') || true"
+        >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
         </button>
       </mat-menu>

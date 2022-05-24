@@ -220,7 +220,6 @@
         "END_DATE_ACCESS_EQUAL": "Max end date",
         "END_DATE_ACCESS_BEGIN": "Between ",
         "END_DATE_ACCESS_END": " and ",
-        "GUID_OPI": "Ingest guid",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
@@ -411,7 +410,7 @@
       "GEL": "Freezing"
     },
     "RULE": {
-      "CODE_NOT_EXIST": "Rule not found",
+      "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
       "WRONG_FORMAT": "Wrong rule format"
     }
   },
@@ -455,7 +454,7 @@
       "END_DATE": "End date",
       "RULE_ID": "Code",
       "SAME_RULE_ID": "Code identical to the previous action",
-      "RULE_NOT_EXIST": "The rule code entered does not exist",
+      "RULE_NOT_EXIST": "The rule code entered does not exist in this category",
       "TARGET_RULE": "Target management rule",
       "SOURCE_RULE": "Source management rule*",
       "UPDATED": "Updated",
@@ -468,7 +467,10 @@
       "TITLE": "Final action",
       "SELECT_VALUE": "Select a value",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY" :"Copy",
+      "TRANSFER" : "Transfer",
+      "RESTRICT_ACCESS" :"Rstrict access"
     },
     "COMMON": {
       "UNDO": "Cancel",

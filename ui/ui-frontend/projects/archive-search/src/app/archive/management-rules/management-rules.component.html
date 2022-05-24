@@ -16,7 +16,6 @@
                 (change)="selectRule(ruleCategory)"
                 [disabled]="ruleCategory.isDisabled"
                 [value]="ruleCategory.id"
-                [checked]="ruleCategory.checked"
               >
                 {{ ruleCategory.name }}
               </mat-radio-button>
@@ -87,21 +86,21 @@
               >
 
               <mat-option
-                value="DELETE_PROPERTY"
-                [disabled]="isDeletePropertyDisabled"
+                [disabled]="isDeletePropertyDisabled || isStorageRuleActionDisabled"
                 matTooltip="{{ isDeletePropertyDisabled ? messageNotToDeleteProperty : '' }}"
                 matTooltipClass="vitamui-tooltip-rules "
+                (click)="onSelectAction('DELETE_PROPERTY')"
               >
                 {{ 'RULES.MORE_ACTIONS.DELETE_PROPERTY' | translate }}</mat-option
               >
               <mat-option
-                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled"
+                [disabled]="isBlockInheritanceCategoryDisabled || isUnlockInheritanceCategoryDisabled || isStorageRuleActionDisabled"
                 (click)="onSelectAction('BLOCK_CATEGORY_INHERITANCE')"
               >
                 {{ 'RULES.MORE_ACTIONS.BLOCK_PROPERTY_INHERITANCE' | translate }}</mat-option
               >
               <mat-option
-                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled"
+                [disabled]="isUnlockInheritanceCategoryDisabled || isBlockInheritanceCategoryDisabled || isStorageRuleActionDisabled"
                 (click)="onSelectAction('UNLOCK_CATEGORY_INHERITANCE')"
                 matTooltip="{{ 'RULES.MORE_ACTIONS.DELETE_BLOCK_PROPERTY_INHERITANCE' | translate }}"
                 matTooltipClass="vitamui-tooltip-rules "

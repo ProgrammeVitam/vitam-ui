@@ -94,7 +94,6 @@ export class ComputeInheritedRulesService {
           .afterClosed()
           .pipe(filter((result) => !!result))
           .subscribe(() => {
-            console.log('salam chabaab confirmer 1');
             const computedInheritedRulesDSLQuery = {
               criteriaList: computedInheritedRulesSearchCriteria.criteriaList.filter(
                 (criteriaSearch) => criteriaSearch.criteria !== ARCHIVE_UNIT_HOLDING_UNIT

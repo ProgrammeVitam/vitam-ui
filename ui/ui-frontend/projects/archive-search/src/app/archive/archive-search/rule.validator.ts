@@ -39,29 +39,56 @@ import { AbstractControl, AsyncValidatorFn, ValidationErrors, ValidatorFn } from
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 
 @Injectable()
 export class RuleValidator {
   private debounceTime = 400;
+  ruleCategorySelected: string;
 
-  constructor(private ruleService: RuleService) {}
+  constructor(private ruleService: RuleService, private archiveSharedDataService: ArchiveSharedDataService) {}
 
-  uniqueRuleId = (ruleIdToIgnore?: string): AsyncValidatorFn => {
+  uniqueRuleId(ruleIdToIgnore?: string): AsyncValidatorFn {
     return this.uniqueFields('ruleId', 'ruleIdExists', ruleIdToIgnore);
-  };
+  }
 
-  ruleIdPattern = (): ValidatorFn => {
+  ruleIdPattern(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const regexp = /[À-ÖØ-öø-ÿ ]/;
       return regexp.test(control.value) ? { ruleIdPattern: true } : null;
     };
-  };
+  }
+
+  private getRuleType(ruleSelected: string) {
+    switch (ruleSelected) {
+      case 'APPRAISAL_RULE':
+        return 'AppraisalRule';
+      case 'STORAGE_RULE':
+        return 'StorageRule';
+      case 'ACCESS_RULE':
+        return 'AccessRule';
+      case 'REUSE_RULE':
+        return 'ReuseRule';
+      case 'CLASSIFICATION_RULE':
+        return 'ClassificationRule';
+      case 'HOLD_RULE':
+        return 'HoldRule';
+      case 'DISSEMINATION_RULE':
+        return 'DisseminationRule';
+      default:
+        return null;
+    }
+  }
 
   private uniqueFields(field: string, existTag: string, valueToIgnore?: string) {
+    this.archiveSharedDataService.getRuleCategory().subscribe((data) => {
+      this.ruleCategorySelected = data;
+    });
     return (control: AbstractControl) => {
       const properties: any = {};
       if (control.value) {
         properties[field] = control.value;
+        properties.ruleType = this.getRuleType(this.ruleCategorySelected);
         const existField: any = {};
         existField[existTag] = true;
 

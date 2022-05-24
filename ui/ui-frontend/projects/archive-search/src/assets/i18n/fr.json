@@ -410,7 +410,7 @@
       "GEL": "Gel"
     },
     "RULE": {
-      "CODE_NOT_EXIST": "La Règle n'existe pas",
+      "CODE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
       "WRONG_FORMAT": "Mauvais format de règle"
     }
   },
@@ -454,7 +454,7 @@
       "END_DATE": "Date de fin",
       "RULE_ID": "Code",
       "SAME_RULE_ID": "Code identique à l'action précédente",
-      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas",
+      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
       "TARGET_RULE": "Règle de gestion cible",
       "SOURCE_RULE": "Règle de gestion source *",
       "UPDATED": "Modifié",
@@ -467,7 +467,10 @@
       "TITLE": "Sort final",
       "SELECT_VALUE": "Sélectionner une valeur",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY" :"Copier",
+      "TRANSFER" : "Transférer",
+      "RESTRICT_ACCESS" :"Restreindre"
     },
     "COMMON": {
       "UNDO": "Annuler",

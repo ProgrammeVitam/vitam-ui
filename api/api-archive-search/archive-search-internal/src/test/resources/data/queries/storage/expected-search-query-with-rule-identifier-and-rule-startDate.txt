@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.AccessRule.Rules.StartDate":"2022-05-25"}}]}, {"$or":[{"$eq":{"#management.StorageRule.Rules.Rule":"StorageRuleIdentifier"}}]}]

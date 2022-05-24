@@ -73,6 +73,8 @@ export class ArchiveSharedDataService {
 
   private actionSubject = new BehaviorSubject<string>('');
 
+  private ruleCategory = new BehaviorSubject<string>('');
+
   currentNode = this.sourceNode.asObservable();
   currentNodeTarget = this.targetNode.asObservable();
   facetsObservable = this.facetsSubject.asObservable();
@@ -96,6 +98,14 @@ export class ArchiveSharedDataService {
   entireNodesObservable = this.entireNodes.asObservable();
 
   constructor() {}
+
+  emitRuleCategory(ruleCategory: string) {
+    this.ruleCategory.next(ruleCategory);
+  }
+
+  getRuleCategory(): Observable<string> {
+    return this.ruleCategory.asObservable();
+  }
 
   emitEntireNodes(nodes: string[]) {
     this.entireNodes.next(nodes);
