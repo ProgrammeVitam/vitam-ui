@@ -20,10 +20,10 @@ iam-client:
   ssl:
     keystore:
       path: ${certs-folder}/keystore_ui-identity.jks
-      password: ${jks-password}
+      password: vcogGlobOTd6hdsBzzT9ya0DYOBO6kHCYgVgg8ZaoeY0iQbe
     truststore:
       path: ${certs-folder}/truststore_server.jks
-      password: changeme-Tc3jx3HqFCvJyq5C
+      password: wcS9Xye1GXSYLvtlDAVAZ3GRZbm1uFu3IFsLKLIx0QAPLaK5
 
 
 # Mongo
