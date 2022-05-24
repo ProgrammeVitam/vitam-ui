@@ -35,7 +35,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
@@ -81,11 +80,12 @@ public class CustomerMgtConfig {
 
 
     @Bean
-    @DependsOn("restClientConfiguration")
-    public IamExternalWebClientFactory getIamWebClientFactory(
-        @Autowired RestClientConfiguration restClientConfiguration) {
+    // @DependsOn("restClientConfiguration")
+    public IamExternalWebClientFactory getIamWebClientFactory(/*
+        @Autowired RestClientConfiguration restClientConfiguration*/) {
         final IamExternalWebClientFactory restClientFactory =
-            new IamExternalWebClientFactory(restClientConfiguration, webClientBuilder);
+            new IamExternalWebClientFactory(
+                getRestClientConfiguration(iamServerHost, iamServerPort, true, sSLConfiguration()), webClientBuilder);
         return restClientFactory;
     }
 
