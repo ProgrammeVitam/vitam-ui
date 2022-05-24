@@ -29,7 +29,6 @@ package fr.gouv.vitamui.customersadmin.configs;
 
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.SSLConfiguration;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,11 +36,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 public class CustomerMgtConfig {
@@ -136,7 +131,7 @@ public class CustomerMgtConfig {
         return sslConfig;
     }
 
-
+/*
     @Bean
     @DependsOn("restClientConfiguration")
     public IamExternalRestClientFactory iamRestClientFactory(
@@ -148,6 +143,8 @@ public class CustomerMgtConfig {
         //restClientFactory.setRestClientInterceptor(interceptors);
         return restClientFactory;
     }
+
+    */
 
 
 

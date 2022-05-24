@@ -38,13 +38,11 @@ import com.mongodb.client.MongoDatabase;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
-import fr.gouv.vitamui.commons.api.exception.NotFoundException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.iam.common.dto.CustomerCreationFormData;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
-import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import org.apache.commons.lang3.time.DateUtils;
 import org.bson.BsonDocument;
@@ -78,7 +76,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -167,8 +164,8 @@ public class CustomerMgtSrvc {
     private IamExternalWebClientFactory iamWebClientFactory;
 
 
-    @Autowired
-    private IamExternalRestClientFactory iamRestClientFactory;
+    //  @Autowired
+    //  private IamExternalRestClientFactory iamRestClientFactory;
 
     List<String> tokensId = new ArrayList<>();
 
@@ -412,7 +409,7 @@ public class CustomerMgtSrvc {
 
         return result;
     }
-
+/*
     private void parseAndCreateUsers() {
 
         LOGGER.info("Start parsing users file");
@@ -461,7 +458,7 @@ public class CustomerMgtSrvc {
         } catch (IOException e) {
             LOGGER.error("Error parsing users files {} ", e.getMessage());
         }
-    }
+    }*/
 
     private void parseAndCreateCustomers() {
         //read json file
@@ -526,6 +523,7 @@ public class CustomerMgtSrvc {
 
     /*@TODO add check code after
      */
+    /*
     private boolean isExistCode(ExternalHttpContext externalContext,
         CustomerCreationFormData customerCreationFormData) {
         boolean existCode =
@@ -535,7 +533,7 @@ public class CustomerMgtSrvc {
                     "\",\"operator\":\"EQUALS\"}]}]}");
         return existCode;
     }
-
+*/
     public void createCustomersWithUsers() {
         try {
             tokensId.add(TESTS_USER_ADMIN);
