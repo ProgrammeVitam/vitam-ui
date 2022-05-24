@@ -15,7 +15,7 @@ jks-password: FOlyWYMRTIsTqdZiAFKcj9vHbDEw5nn88ZDBNEqUaIPDsg9d
 
 # Iam client configuration
 iam-client:
-  host: 172.18.96.75
+  host: 172.18.96.50
   port: 8101
   ssl:
     keystore:
@@ -28,10 +28,10 @@ iam-client:
 
 # Mongo
 mongo:
-  host: 172.18.96.75
+  host: 172.18.96.50
   port: 27017
-  iam.uri: mongodb://mongod_dbuser_iam:mongod_dbpwd_iam@172.18.96.75:27018/iam?connectTimeoutMS=2000
-  security.uri: mongodb://mongod_dbuser_security:mongod_dbpwd_security@172.18.96.75:27018/security?connectTimeoutMS=2000
+  iam.uri: mongodb://api-iam:iam1234@172.18.96.50:27017/iam?connectTimeoutMS=2000
+  security.uri: mongodb://api-security:security1234@172.18.96.50:27017/security?connectTimeoutMS=2000
 
 # Workspace configuration
 workspace:
