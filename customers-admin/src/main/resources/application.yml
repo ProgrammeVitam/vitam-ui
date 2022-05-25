@@ -28,8 +28,6 @@ iam-client:
 
 # Mongo
 mongo:
-  host: 172.18.96.50
-  port: 27017
   iam.uri: mongodb://api-iam:iam1234@172.18.96.50:27017/iam?connectTimeoutMS=2000
   security.uri: mongodb://api-security:security1234@172.18.96.50:27017/security?connectTimeoutMS=2000
 
