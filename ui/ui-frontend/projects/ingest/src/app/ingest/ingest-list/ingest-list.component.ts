@@ -78,6 +78,9 @@ export class IngestListComponent extends InfiniteScrollTable<any> implements OnD
 
   @Input('ingestThatHasChanged')
   set ingestThatHasChanged(ingest: LogbookOperation) {
+    if (!this.dataSource) {
+      return;
+    }
     const index = this.dataSource.findIndex(o => o.id === ingest.id);
     this.dataSource[index] = ingest;
   }
