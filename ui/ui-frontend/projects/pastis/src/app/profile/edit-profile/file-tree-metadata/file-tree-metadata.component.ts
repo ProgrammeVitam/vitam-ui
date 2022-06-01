@@ -787,9 +787,12 @@ export class FileTreeMetadataComponent {
   }
 
 
-  isSedaObligatory(name: string): boolean {
-    return this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode);
+  isDeltable(name: string): boolean {
+    const node = this.fileService.getFileNodeByName(this.clickedNode, name);
+    return ((node.parent.children.filter(child => child.name === name).length > 1 && this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode))
+      || !this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode));
   }
+
 
   getSedaDefinition(elementName: string) {
     const node = this.getSedaNode(elementName);

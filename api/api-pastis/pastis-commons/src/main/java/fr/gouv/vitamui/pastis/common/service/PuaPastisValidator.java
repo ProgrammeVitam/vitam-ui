@@ -489,7 +489,7 @@ public class PuaPastisValidator {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JSONObject childProperties =
-            new JSONObject(mapper.writeValueAsString(childOfRuleDetails.serialiseString()));
+            new JSONObject(mapper.writeValueAsString(childOfRuleDetails));
         grandChildrenOfRule.put(grandChild.getName(), childProperties);
         ruleTypeMetadataDetails.setProperties(grandChildrenOfRule);
     }

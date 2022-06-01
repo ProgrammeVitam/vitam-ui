@@ -41,18 +41,30 @@ package fr.gouv.vitamui.pastis.standalone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.event.EventListener;
+
+import java.awt.*;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @SpringBootApplication
 public class ApiPastisStandaloneApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(ApiPastisStandaloneApplication.class, args);
+        new SpringApplicationBuilder(ApiPastisStandaloneApplication.class).headless(false).run(args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(ApiPastisStandaloneApplication.class);
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void openBrowserAfterStartup() throws IOException, URISyntaxException {
+        Desktop.getDesktop().browse(new URI(("http://localhost:8096")));
     }
 
 }

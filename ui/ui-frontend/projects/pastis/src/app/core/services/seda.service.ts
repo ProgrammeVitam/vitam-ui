@@ -138,7 +138,7 @@ export class SedaService {
       x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
       ||
       (fileNodesNames.includes(x.Name) &&
-        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf())
+        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() || x.Cardinality === CardinalityConstants["One Or More"].valueOf())
       ));
     return allowedSelectableList;
   }

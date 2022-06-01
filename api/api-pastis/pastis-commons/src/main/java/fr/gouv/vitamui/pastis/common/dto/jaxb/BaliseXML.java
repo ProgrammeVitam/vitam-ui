@@ -132,11 +132,11 @@ public class BaliseXML {
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
         // to assure that the generated profile is successfully imported by VITAM
         if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) &&
-             node.getValueOrData().equals("data") && !node.getName().equals("CodeListVersions")) {
+             node.getValueOrData().equals("data") && !node.getName().equals("CodeListVersions") && null == node.getValue()) {
             dataRNG = new DataXML();
         }
 
-        if ((node.getName() != null && ((node.getName().equals("CodeListVersions")&& presenceChildrenNode) || presenceChildrenNode))
+        if ((node.getName() != null && ((node.getName().equals("CodeListVersions")&& presenceChildrenNode) || presenceChildrenNode) && null == node.getValue())
             && (valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName()))) {
             dataRNG = new DataXML();
             dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());

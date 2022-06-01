@@ -42,11 +42,11 @@ import { FileService } from '../../core/services/file.service';
 import { PopupService } from '../../core/services/popup.service';
 import { ProfileService } from '../../core/services/profile.service';
 import { SedaService } from '../../core/services/seda.service';
-import { FileNode } from '../../models/file-node';
 import { SedaCardinalityConstants, SedaData, SedaElementConstants } from '../../models/seda-data';
 import { PastisDialogData } from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import { PastisDialogConfirmComponent } from '../../shared/pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
 import { PastisPopupMetadataLanguageService } from '../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import {FileNode} from "../../models/file-node";
 
 @Component({
   selector: 'pastis-user-action-add-metadata',
@@ -150,7 +150,7 @@ export class UserActionAddMetadataComponent implements OnInit {
   onAddSelectedElement(element: SedaData) {
     this.addedItems.push(element);
 
-    if (element.Cardinality !== (SedaCardinalityConstants.zeroOrMore || SedaCardinalityConstants.oreOrMore)) {
+    if (element.Cardinality.endsWith("1")) {
       this.allowedChildren = this.allowedChildren.filter(e => e != element);
     }
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;

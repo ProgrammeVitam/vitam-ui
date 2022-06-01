@@ -167,10 +167,10 @@ export class FileTreeMetadataService {
     if (sedaNode.Name === fileNode.name) {
       allowedCardinalityListResult = this.allowedCardinality.get(sedaNode.Cardinality);
     }
-    if (sedaNode.Children.length > 0) {
+    if (sedaNode.Children.length > 0 ) {
       // Search the sedaNode children to find the correnpondent cardinality list
       for (const child of sedaNode.Children) {
-        if ((child.Name === fileNode.name) || (sedaNode.Name === fileNode.name)) {
+        if ((child.Name === fileNode.name)  ) {
           // Used in the case we wish to "correct" the node's cardinality, since
           // the seda cardinality wont include the cardinality retrieved by node's rng file.
           // In this case, the condition will return the rng file cardinality list
