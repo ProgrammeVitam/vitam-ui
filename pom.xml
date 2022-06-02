@@ -343,6 +343,32 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-internal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-internal-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-external</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-external-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -679,6 +705,33 @@
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
                 <artifactId>access-external-client</artifactId>
+                <version>${vitam.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>de.flapdoodle.embed</groupId>
+                        <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mongodb</groupId>
+                        <artifactId>mongo-java-driver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-to-slf4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mailapi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.netty</groupId>
+                        <artifactId>netty-all</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>collect-client</artifactId>
                 <version>${vitam.version}</version>
                 <exclusions>
                     <exclusion>

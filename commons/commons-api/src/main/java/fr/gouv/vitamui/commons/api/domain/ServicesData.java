@@ -421,6 +421,9 @@ public class ServicesData {
 
     public static final String ROLE_GET_ACCESSION_REGISTER_DETAIL = GET_ROLE_PREFIX + ACCESSION_REGISTER_DETAIL;
 
+    public static final String PROJECTS = "PROJECTS";
+    public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
+
     //@formatter:off
 
     /**
@@ -539,8 +542,9 @@ public class ServicesData {
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
             ROLE_RECLASSIFICATION,
-            ROLE_UPDATE_UNIT_DESC_METADATA
+            ROLE_UPDATE_UNIT_DESC_METADATA,
 
+            ROLE_GET_PROJECTS
             );
 
     /**
@@ -686,7 +690,9 @@ public class ServicesData {
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
             ROLE_RECLASSIFICATION,
-            ROLE_UPDATE_UNIT_DESC_METADATA
+            ROLE_UPDATE_UNIT_DESC_METADATA,
+
+            ROLE_GET_PROJECTS
             );
     //@formatter:on
 
