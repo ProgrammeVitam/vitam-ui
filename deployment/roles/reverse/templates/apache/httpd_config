@@ -103,6 +103,14 @@
        ProxyPassReverse /archive-search {% if vitamui.archive_search.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search
 {% endfor %}
 
+
+    # UI COLLECT
+{% for host in groups['hosts_ui_collect'] %}
+       ProxyPassMatch ^/collect(/.*)$ {% if vitamui.collect.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.collect.port_service }}/collect$1
+       ProxyPassReverse /collect {% if vitamui.collect.secure | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.collect.port_service }}/collect
+{% endfor %}
+
+
     # CAS SERVER
 {% for host in groups['hosts_cas_server'] %}
     ProxyPass /cas/login {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{hostvars[host]['ip_service']}}:{{ vitamui.cas_server.port_service }}/cas/login {{reverse_connection_params}}
