@@ -34,41 +34,37 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
-import { UploadService } from '../../core/common/upload.service';
-import { IngestList } from '../../core/common/ingest-list';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxFilesizeModule } from 'ngx-filesize';
 
-@Component({
-  selector: 'app-upload-tracking',
-  templateUrl: './upload-tracking.component.html',
-  styleUrls: ['./upload-tracking.component.scss'],
-  animations: [
-    trigger('rotateAnimation', [
-      state('collapse', style({ transform: 'rotate(-180deg)' })),
-      state('expand', style({ transform: 'rotate(0deg)' })),
-      transition('expand <=> collapse', animate('200ms ease-out')),
-    ])
-  ]
+import { VitamUICommonModule } from 'ui-frontend-common';
+import { SharedModule } from '../../shared/shared.module';
+import { UploadTrackingComponent } from './upload-tracking.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatProgressBarModule,
+    MatSelectModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    VitamUICommonModule,
+    MatProgressBarModule,
+    NgxFilesizeModule,
+  ],
+  declarations: [UploadTrackingComponent],
+  exports: [UploadTrackingComponent],
 })
-export class UploadTrackingComponent implements OnInit {
-
-  ingestList: IngestList;
-  displayTracking = false;
-
-  constructor(private uploadSipService: UploadService) {
-    this.uploadSipService.filesStatus().subscribe( (ingestList) => {
-      this.ingestList = ingestList;
-      if (this.ingestList.wipNumber > 0) {
-        this.displayTracking = true;
-      }
-    });
-  }
-
-  ngOnInit() { }
-
-  toogleTracking() {
-    this.displayTracking = !this.displayTracking;
-  }
-
-}
+export class UploadTrackingModule {}

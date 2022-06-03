@@ -34,52 +34,39 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-
-import { LoggerModule } from 'ui-frontend-common';
-import { UploadTrackingComponent } from './upload-tracking.component';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
 import { UploadService } from '../../core/common/upload.service';
 import { IngestList } from '../../core/common/ingest-list';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { of } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
 
-describe('UploadTrackingComponent', () => {
-  let component: UploadTrackingComponent;
-  let fixture: ComponentFixture<UploadTrackingComponent>;
+@Component({
+  selector: 'app-upload-tracking',
+  templateUrl: './upload-tracking.component.html',
+  styleUrls: ['./upload-tracking.component.scss'],
+  animations: [
+    trigger('rotateAnimation', [
+      state('collapse', style({ transform: 'rotate(-180deg)' })),
+      state('expand', style({ transform: 'rotate(0deg)' })),
+      transition('expand <=> collapse', animate('200ms ease-out')),
+    ]),
+  ],
+})
+export class UploadTrackingComponent implements OnInit {
+  ingestList: IngestList;
+  displayTracking = false;
 
-  const UploadServiceSpy = jasmine.createSpyObj('UploadService', { filesStatus: of(new IngestList()) });
+  constructor(private uploadSipService: UploadService) {
+    this.uploadSipService.filesStatus().subscribe((ingestList) => {
+      this.ingestList = ingestList;
+      if (this.ingestList.wipNumber > 0) {
+        this.displayTracking = true;
+      }
+    });
+  }
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatProgressBarModule,
-        NgxFilesizeModule,
-        NoopAnimationsModule,
-        LoggerModule.forRoot(),
-        TranslateModule.forRoot()
-      ],
-      declarations: [ UploadTrackingComponent ],
-      providers: [
-        FormBuilder,
-        { provide: UploadService, useValue: UploadServiceSpy }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  }));
+  ngOnInit() {}
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UploadTrackingComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  toogleTracking() {
+    this.displayTracking = !this.displayTracking;
+  }
+}

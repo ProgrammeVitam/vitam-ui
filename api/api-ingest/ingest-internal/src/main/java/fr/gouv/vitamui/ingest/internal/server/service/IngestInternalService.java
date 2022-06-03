@@ -30,6 +30,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.common.GlobalDataRest;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -69,7 +70,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 /**
@@ -313,21 +317,18 @@ public class IngestInternalService {
 
     }
 
-    public void streamingUpload(InputStream inputStream, String contextId, String action)
+    public String streamingUpload(InputStream inputStream, String contextId, String action)
         throws IngestExternalException {
-        RequestResponse<Void> ingestResponse;
         try {
             final VitamContext vitamContext =
                 internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-            ingestResponse =
+            RequestResponse<Void> ingestResponse =
                 ingestExternalClient.ingest(vitamContext, inputStream, contextId, action);
 
-            if (ingestResponse.isOk()) {
-                LOGGER.debug("Ingest passed successfully : " + ingestResponse.toString());
-            } else {
-                LOGGER.debug("Ingest failed with status : " + ingestResponse.getHttpCode());
-
-            }
+            // Response is always OK
+            final String operationId = ingestResponse.getVitamHeaders().get(GlobalDataRest.X_REQUEST_ID);
+            LOGGER.debug("Ingest passed successfully : " + ingestResponse + " with operationId = " + operationId);
+            return operationId;
         } catch (Exception e) {
             LOGGER.debug("Error sending upload to vitam ", e);
             throw new IngestExternalException(e);

@@ -34,41 +34,42 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { NgxFilesizeModule } from 'ngx-filesize';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { VitamUICommonModule } from 'ui-frontend-common';
-import { SharedModule } from '../../shared/shared.module';
+import { LoggerModule } from 'ui-frontend-common';
 import { UploadTrackingComponent } from './upload-tracking.component';
+import { UploadService } from '../../core/common/upload.service';
+import { IngestList } from '../../core/common/ingest-list';
+import { NgxFilesizeModule } from 'ngx-filesize';
+import { of } from 'rxjs';
+import { TranslateModule } from '@ngx-translate/core';
 
-@NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    MatProgressBarModule,
-    NgxFilesizeModule
-  ],
-  declarations: [
-    UploadTrackingComponent,
-  ],
-  exports: [
-    UploadTrackingComponent
-  ]
-})
-export class UploadTrackingModule { }
+describe('UploadTrackingComponent', () => {
+  let component: UploadTrackingComponent;
+  let fixture: ComponentFixture<UploadTrackingComponent>;
+
+  const UploadServiceSpy = jasmine.createSpyObj('UploadService', { filesStatus: of(new IngestList()) });
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [MatProgressBarModule, NgxFilesizeModule, NoopAnimationsModule, LoggerModule.forRoot(), TranslateModule.forRoot()],
+      declarations: [UploadTrackingComponent],
+      providers: [FormBuilder, { provide: UploadService, useValue: UploadServiceSpy }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(UploadTrackingComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
