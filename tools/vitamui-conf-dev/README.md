@@ -59,6 +59,12 @@ To do so, download the keystore from this link [localhost:8000/nodes/vitam-env-v
 or execute the command below: 
 >`bash$ wget localhost:8000/nodes/vitam-env-vm-demo.vitam-env/browse/conf/ihm-demo/keystore_ihm-demo.p12` 
 
+or copy the file using SCP command as below:
+
+>`bash$ scp -p 10022 root@localhost:/vitam/conf/ihm-demo/keystore_ihm-demo.p12 .`
+ 
+the password to use is the 'root' password on the virtual machine.
+
 store it in a working directory, after that, we should extract private kay and certificate from that keystore.
 
 To do so execute the two commands:
