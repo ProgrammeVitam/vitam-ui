@@ -145,7 +145,8 @@
         <antisamy.version>1.6.4</antisamy.version>
         <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
-        <mongo.driver.sync.version>4.2.3</mongo.driver.sync.version>
+        <mongo.driver.sync.version>4.3.1</mongo.driver.sync.version>
+        <!--4.2.3  works well-->
 
 
         <!-- Web Pack -->
