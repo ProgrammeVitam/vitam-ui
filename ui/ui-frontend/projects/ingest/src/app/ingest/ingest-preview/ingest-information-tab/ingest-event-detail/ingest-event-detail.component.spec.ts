@@ -34,16 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatMenuModule } from '@angular/material/menu';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {MatMenuModule} from '@angular/material/menu';
 
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IngestService } from '../../../ingest.service';
-import { IngestEventDetailComponent } from './ingest-event-detail.component';
-import { EventDisplayHelperService } from '../../event-display-helper.service';
-import { Event } from '../../event';
-import { of } from 'rxjs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {IngestService} from '../../../ingest.service';
+import {IngestEventDetailComponent} from './ingest-event-detail.component';
+import {EventDisplayHelperService} from '../../event-display-helper.service';
+import {Event} from '../../event';
+import {of} from 'rxjs';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('IngestEventDetailComponent', () => {
   let component: IngestEventDetailComponent;
@@ -60,7 +60,10 @@ describe('IngestEventDetailComponent', () => {
         MatMenuModule,
         BrowserAnimationsModule
       ],
-      providers: [{ provide: IngestService, useValue: {} }, { provide: EventDisplayHelperService, useValue: eventDisplayHelperServiceSpy }],
+      providers: [{provide: IngestService, useValue: {}}, {
+        provide: EventDisplayHelperService,
+        useValue: eventDisplayHelperServiceSpy
+      }],
       schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
@@ -71,13 +74,12 @@ describe('IngestEventDetailComponent', () => {
     component = fixture.componentInstance;
     component.ingest = {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
-      data: {},
       agIdExt: {},
-      events: [{ data: {} }]
+      events: [{}]
     };
     component.events = [
-      new Event({ eventData: '{"some": "data1"}' }, []),
-      new Event({ eventData: '{"some": "data2"}' }, [ new Event({ eventData: '{"some": "data2"}' }, []) ])
+      new Event({eventData: '{"some": "data1"}'}, []),
+      new Event({eventData: '{"some": "data2"}'}, [new Event({eventData: '{"some": "data2"}'}, [])])
     ];
 
 

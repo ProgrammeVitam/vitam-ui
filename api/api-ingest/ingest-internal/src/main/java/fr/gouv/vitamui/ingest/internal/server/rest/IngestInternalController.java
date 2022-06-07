@@ -95,7 +95,7 @@ public class IngestInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
+    public LogbookOperationDto getOne(@PathVariable("id") String id) {
         LOGGER.debug("get Ingest Entities for id={} ", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
