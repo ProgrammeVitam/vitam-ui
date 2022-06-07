@@ -34,7 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-export interface ApiEvent {
+import {Id} from "../id.interface";
+
+// rename to ApiLogbookOperation
+export interface ApiEvent extends Id {
+  obIdIn?: string;
   evId: string;
   evIdReq: string;
   evParentId: string;
