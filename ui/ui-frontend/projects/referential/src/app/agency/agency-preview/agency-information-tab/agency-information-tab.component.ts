@@ -34,15 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Agency} from 'projects/vitamui-library/src/public-api';
-import {Observable, of} from 'rxjs';
-import {catchError, filter, map, switchMap} from 'rxjs/operators';
-import {diff} from 'ui-frontend-common';
-import {extend, isEmpty} from 'underscore';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Agency } from 'projects/vitamui-library/src/public-api';
+import { Observable, of } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { diff, SecurityService } from 'ui-frontend-common';
+import { extend, isEmpty } from 'underscore';
 
-import {AgencyService} from '../../agency.service';
+import { AgencyService } from '../../agency.service';
 
 @Component({
   selector: 'app-agency-information-tab',
@@ -53,7 +54,10 @@ export class AgencyInformationTabComponent {
 
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  tenantIdentifier: number;
+  appName = "AGENCIES_APP";
   submited = false;
+  hasUpdateAgencyRole = false;
 
   // tslint:disable-next-line:variable-name
   private _agency: Agency;
@@ -80,22 +84,33 @@ export class AgencyInformationTabComponent {
   @Input()
   set readOnly(readOnly: boolean) {
     if (readOnly && this.form.enabled) {
-      this.form.disable({emitEvent: false});
+      this.form.disable({ emitEvent: false });
     } else if (this.form.disabled) {
-      this.form.enable({emitEvent: false});
-      this.form.get('identifier').disable({emitEvent: false});
+      this.form.enable({ emitEvent: false });
+      this.form.get('identifier').disable({ emitEvent: false });
     }
   }
 
   constructor(
+    private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private agencyService: AgencyService
-  ) {
+    private agencyService: AgencyService,
+    private securityService: SecurityService) {
+
     this.form = this.formBuilder.group({
       identifier: [null, Validators.required],
       name: [null, Validators.required],
       description: [null]
     });
+
+    this.route.params.subscribe((params) => {
+      this.tenantIdentifier = +params.tenantIdentifier;
+    });
+
+    this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_AGENCIES')
+      .subscribe((result) => {
+        this.hasUpdateAgencyRole = result;
+      });
   }
 
   unchanged(): boolean {
@@ -111,7 +126,7 @@ export class AgencyInformationTabComponent {
   prepareSubmit(): Observable<Agency> {
     return of(diff(this.form.getRawValue(), this.previousValue())).pipe(
       filter((formData) => !isEmpty(formData)),
-      map((formData) => extend({id: this.previousValue().id, identifier: this.previousValue().identifier}, formData)),
+      map((formData) => extend({ id: this.previousValue().id, identifier: this.previousValue().identifier }, formData)),
       switchMap((formData: { id: string, [key: string]: any }) => this.agencyService.patch(formData).pipe(catchError(() => of(null)))));
   }
 
@@ -134,6 +149,6 @@ export class AgencyInformationTabComponent {
 
   // tslint:disable-next-line:no-shadowed-variable
   resetForm(Agency: Agency) {
-    this.form.reset(Agency, {emitEvent: false});
+    this.form.reset(Agency, { emitEvent: false });
   }
 }
