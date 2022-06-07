@@ -79,14 +79,12 @@ pipeline {
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                JAVA_TOOL_OPTIONS=""
+                JAVA_TOOL_OPTIONS = "-Dhttp.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttp.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttps.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttps.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttp.nonProxyHosts=${env.NOPROXY_HOST}"
                 NODE_OPTIONS="--max_old_space_size=12288"
             }
             steps {
                 sh 'node -v'
                 sh 'npmrc default'
-                //sh 'export NODE_OPTIONS="--max-old-space-size=12288"'
-
 //                sh '''
 //                    $MVN_COMMAND clean verify org.owasp:dependency-check-maven:aggregate -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
 //                '''

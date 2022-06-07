@@ -42,7 +42,7 @@ import com.mongodb.connection.ClusterSettings;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.ImmutableMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -82,7 +82,7 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(ImmutableMongodConfig.builder()
+        _mongodExe = starter.prepare(MongodConfig.builder()
             .version(Version.Main.PRODUCTION)
             .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
             .build());
