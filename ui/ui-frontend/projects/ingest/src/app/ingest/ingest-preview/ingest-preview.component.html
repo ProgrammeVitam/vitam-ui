@@ -1,13 +1,5 @@
 <vitamui-common-sidenav-header
-  [badge]="
-    ingestStatus(ingest) === 'OK'
-      ? 'green'
-      : ingestStatus(ingest) === 'WARNING'
-      ? 'orange'
-      : ingestStatus(ingest) === 'STARTED'
-      ? 'grey'
-      : 'red'
-  "
+  [badge]="getIngestStatusColor()"
   [title]="(ingest?.obIdIn ? ingest?.obIdIn : ingest?.id) | truncate: 30"
   [icon]="'vitamui-icon-box vitamui-row-icon'"
   [hasToolTipOnTitle]="true"
@@ -20,21 +12,21 @@
       mat-menu-item
       i18n="@@ingestPreviewDownloadManifest"
       (click)="downloadManifest()"
-      [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'FATAL' || ingestStatus(ingest) === 'En cours'"
-    >
+      [disabled]="getIngestStatus(ingest) === IngestStatus.KO || getIngestStatus(ingest) === IngestStatus.FATAL || getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
       {{ 'INGEST_DETAIL.DOWNLOAD_MANIFEST' | translate }}
     </button>
-    <button mat-menu-item i18n="@@ingestPreviewDownloadATR" (click)="downloadATR()" [disabled]="ingestStatus(ingest) === 'En cours'">
+    <button mat-menu-item i18n="@@ingestPreviewDownloadATR"
+            (click)="downloadATR()"
+            [disabled]="getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
       {{ 'INGEST_DETAIL.DOWNLOAD_ATR' | translate }}
     </button>
     <button
       mat-menu-item
       i18n="@@ingestPreviewGenerateDocX"
-      (click)="downloadODTReport()"
+      (click)="generateODTreport()"
       matTooltip="{{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}"
       matTooltipClass="vitamui-tooltip"
-      [disabled]="ingestStatus(ingest) === 'KO' || ingestStatus(ingest) === 'FATAL' || ingestStatus(ingest) === 'En cours'"
-    >
+      [disabled]="getIngestStatus(ingest) === IngestStatus.KO || getIngestStatus(ingest) === IngestStatus.FATAL || getIngestStatus(ingest) === IngestStatus.IN_PROGRESS">
       {{ 'INGEST_DETAIL.DOWNLOAD_DOCX' | translate }}
     </button>
   </vitamui-common-menu-button>
