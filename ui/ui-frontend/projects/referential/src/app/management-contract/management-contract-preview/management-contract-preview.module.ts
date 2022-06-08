@@ -51,6 +51,9 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 
 import {ManagementContractInformationTabComponent} from './management-contract-information-tab/management-contract-information-tab.component';
 import {ManagementContractPreviewComponent} from './management-contract-preview.component';
+import {
+  ManagementContractStorageTabComponent
+} from "./management-contract-storage-tab/management-contract-storage-tab.component";
 
 @NgModule({
   imports: [
@@ -71,7 +74,8 @@ import {ManagementContractPreviewComponent} from './management-contract-preview.
   ],
   declarations: [
     ManagementContractPreviewComponent,
-    ManagementContractInformationTabComponent
+    ManagementContractInformationTabComponent,
+    ManagementContractStorageTabComponent
   ],
   exports: [
     ManagementContractPreviewComponent

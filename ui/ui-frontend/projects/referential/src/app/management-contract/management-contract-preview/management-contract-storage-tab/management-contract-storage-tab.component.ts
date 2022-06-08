@@ -8,11 +8,11 @@ import {extend,isEmpty} from 'underscore';
 import {ManagementContractService} from '../../management-contract.service';
 
 @Component({
-  selector: 'app-management-contract-information-tab',
-  templateUrl: './management-contract-information-tab.component.html',
-  styleUrls: ['./management-contract-information-tab.component.scss']
+  selector: 'app-management-contract-storage-tab',
+  templateUrl: './management-contract-storage-tab.component.html',
+  styleUrls: ['./management-contract-storage-tab.component.scss']
 })
-export class ManagementContractInformationTabComponent implements OnInit {
+export class ManagementContractStorageTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean>=new EventEmitter<boolean>();
   form: FormGroup;
   submited=false;
@@ -21,7 +21,15 @@ export class ManagementContractInformationTabComponent implements OnInit {
 
   @Input()
   set inputManagementContract(managementContract: ManagementContract) {
-
+    if (!managementContract.storage.unitStrategy) {
+      managementContract.storage.unitStrategy = "";
+    }
+    if (!managementContract.storage.objectGroupStrategy) {
+      managementContract.storage.objectGroupStrategy = "";
+    }
+    if (managementContract.storage.objectStrategy) {
+      managementContract.storage.objectStrategy = "";
+    }
     this._inputManagementContract=managementContract;
 
     if(!managementContract.description) {

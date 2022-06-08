@@ -42,6 +42,7 @@ import { ConfirmDialogService } from 'ui-frontend-common';
 import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
+import {StorageStrategy} from "vitamui-library";
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -70,7 +71,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     private confirmDialogService: ConfirmDialogService,
     private managementContractService: ManagementContractService,
     private managementContractCreateValidators: ManagementContractCreateValidators,
-    
+
   ) {}
 
   statusControl = new FormControl(false);
@@ -84,7 +85,7 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required], this.managementContractCreateValidators.uniqueName()],
       description: [null, Validators.required],
       // Step 2
-      storage: this.formBuilder.group({ 
+      storage: this.formBuilder.group({
         unitStrategy: ['default', Validators.required],
         objectGroupStrategy: ['default', Validators.required],
         objectStrategy: ['default', Validators.required],
@@ -125,6 +126,14 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
     managementContract.status === 'ACTIVE'
       ? (managementContract.activationDate = new Date().toISOString())
       : (managementContract.deactivationDate = new Date().toISOString());
+    if (!managementContract.storage) {
+      let storage = {
+        unitStrategy: null,
+        objectGroupStrategy: null,
+        objectStrategy: null
+      } as StorageStrategy;
+      managementContract.storage = storage;
+    }
     this.managementContractService.create(managementContract).subscribe(
       () => {
         this.isDisabledButton = false;

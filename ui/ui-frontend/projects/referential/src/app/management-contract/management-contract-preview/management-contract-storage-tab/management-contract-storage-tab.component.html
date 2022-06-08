@@ -1,0 +1,26 @@
+<form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <h5 class="m-0 text-primary">Stratégies de stockage</h5>
+        <div formGroupName="storage">
+            <div class="col-10 form-control">
+                <vitamui-common-input formControlName="unitStrategy" placeholder="Unité d’archives"
+                    i18n-placeholder="Identifiant@@managementContractPreviewTabStorage">
+                </vitamui-common-input>
+            </div>
+            <div class="col-10 form-control">
+                <vitamui-common-input formControlName="objectGroupStrategy" placeholder="Groupes d’objets techniques"
+                    i18n-placeholder="Identifiant@@managementContractPreviewTabStorage">
+                </vitamui-common-input>
+            </div>
+            <div class="col-10 form-control">
+                <vitamui-common-input formControlName="objectStrategy" placeholder="Fichiers numériques"
+                    i18n-placeholder="Identifiant@@managementContractPreviewTabStorage">
+                </vitamui-common-input>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group bottom">
+        <button type="submit" class="btn secondary" [disabled]="unchanged() || submited">Enregistrer</button>
+    </div>
+</form>

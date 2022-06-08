@@ -96,7 +96,7 @@
           </div>
           <div class="actions">
             <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
-            <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="submit" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
             <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
           </div>
         </div>
