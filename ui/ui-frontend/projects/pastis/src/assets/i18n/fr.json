@@ -207,7 +207,7 @@
       }
     },
     "LIST_PROFILE": {
-      "SEARCH_PLACEHOLDER": "Recherche un profil par son intitulé",
+      "SEARCH_PLACEHOLDER": "Recherche un profil par son intitulé et son identifiant",
       "CREER_NOUVEAU_PROFIL": "créer un nouveau profil",
       "IMPORTER_PROFIL": "importer un profil",
       "LISTE_DES_PROFILS": "Liste des profils",
@@ -219,7 +219,11 @@
         "INTITULE": "Intitulé",
         "DERNIERES_MODIFICATIONS": "Dernières modifications"
       },
-      "MODIFIER_PROFIL_TOOLTIP": "Modifier le profil"
+      "MODIFIER_PROFIL_TOOLTIP": "Modifier le profil",
+      "PROFILE_PREVIEW": {
+        "MODIFICATION_SUCCESS": "La modification du profil a bien été effectué",
+        "MODIFICATION_ERROR": "Echec de la modification du profil"
+      }
     },
     "CREATE_PROFILE": {
       "INFORMATION": {

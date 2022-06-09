@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import fr.gouv.vitamui.commons.api.exception.UnexpectedSettingsException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.InvalidMediaTypeException;
@@ -211,8 +212,7 @@ public class VitamRestUtils {
                 }
             }
             final String errorMessage = String.format("status: %d, message: %s", responseStatus, vitamMessage);
-
-            throw getException(responseStatus, errorMessage);
+            throw getException(responseStatus, errorMessage, null);
         }
     }
 
@@ -232,19 +232,24 @@ public class VitamRestUtils {
             final JsonNode jsonResponse = response.toJsonNode();
             LOGGER.debug("Vitam error: body:\n{}", jsonResponse);
             final String message = String.format("status: %d, message: %s", responseStatus, jsonResponse.get("message"));
-            throw getException(responseStatus, message);
+            final String description =  String.format("description: %s ",jsonResponse.get("description"));
+            throw getException(responseStatus, message, description);
         }
     }
 
-    private static VitamUIException getException(final int responseStatus, final String message) {
+    private static VitamUIException getException(final int responseStatus, final String message, final String description) {
         if (responseStatus == HttpStatus.NOT_FOUND.value()) {
             return new NotFoundException("Vitam not found error: " + message);
         }
         else if (responseStatus == HttpStatus.BAD_REQUEST.value()) {
-            return new BadRequestException("Vitam Bad request error: " + message);
+            if(hasDescriptionContainingTotalTrackHitsError(description)){
+                return new UnexpectedSettingsException("Vitam forbidden settings error: \"");
+            }else return new BadRequestException("Vitam Bad request error: " + message);
         }
         else if (responseStatus == HttpStatus.UNAUTHORIZED.value()) {
-            return new ForbiddenException("Vitam unauthorized error: " + message);
+            if(hasDescriptionContainingTotalTrackHitsError(description)) {
+                return new UnexpectedSettingsException("Vitam forbidden settings error: \"");
+            }else return new ForbiddenException("Vitam unauthorized error: " + message);
         } else if (responseStatus == HttpStatus.FORBIDDEN.value()) {
             return new ForbiddenException("Vitam forbidden error: " + message);
         } else if (responseStatus == HttpStatus.PRECONDITION_FAILED.value()) {
@@ -252,6 +257,11 @@ public class VitamRestUtils {
         }
 
         return new InternalServerException("Vitam error:" + message);
+    }
+
+    private static boolean hasDescriptionContainingTotalTrackHitsError(String description) {
+        return description != null && (description.contains("INVALID_JSON_FIELD: $track_total_hits") ||
+            description.contains("track_total_hits is not authorize"));
     }
 
     public static <T> T responseMapping(final JsonNode json, final Class<T> clazz) {

@@ -21,6 +21,8 @@ public class ArchiveUnitCsv implements Serializable {
 
     private String originatingAgencyName;
 
+    private String archiveUnitType;
+
     private String descriptionLevel;
 
     private String title;

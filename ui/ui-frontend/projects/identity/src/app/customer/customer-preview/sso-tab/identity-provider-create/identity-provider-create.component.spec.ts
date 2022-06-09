@@ -141,7 +141,8 @@ describe('IdentityProviderCreateComponent', () => {
         mailAttribute: '',
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true
+        autoProvisioningEnabled: true,
+        protocoleType: "SAML"
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -181,7 +182,8 @@ describe('IdentityProviderCreateComponent', () => {
         mailAttribute: '',
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true
+        autoProvisioningEnabled: true,
+        protocoleType:'SAML'
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;
@@ -234,7 +236,8 @@ describe('IdentityProviderCreateComponent', () => {
         mailAttribute: '',
         identifierAttribute: '',
         authnRequestBinding: AuthnRequestBindingEnum.POST,
-        autoProvisioningEnabled: true
+        autoProvisioningEnabled: true,
+        protocoleType: "SAML",
       });
       component.keystore = keystore;
       component.idpMetadata = idpMetadata;

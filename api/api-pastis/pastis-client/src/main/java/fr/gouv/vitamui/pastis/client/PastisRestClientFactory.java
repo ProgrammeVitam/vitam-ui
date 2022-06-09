@@ -47,9 +47,9 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 public class PastisRestClientFactory extends BaseRestClientFactory {
 
     public PastisRestClientFactory(
-        RestClientConfiguration restClientConfiguration,
+        RestClientConfiguration pastisExternalClientConfiguration,
         RestTemplateBuilder restTemplateBuilder) {
-        super(restClientConfiguration, restTemplateBuilder);
+        super(pastisExternalClientConfiguration, restTemplateBuilder);
     }
 
     public PastisRestClientFactory(

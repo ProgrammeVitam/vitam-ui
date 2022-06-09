@@ -29,8 +29,10 @@ package fr.gouv.archive.internal.client;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -204,5 +206,51 @@ public class ArchiveInternalRestClient
         checkResponse(response);
         return response.getBody();
 
+    }
+
+    public String computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.info("Calling computedInheritedRules with query {} ", searchCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
+
+    }
+
+
+    public ResultsDto selectUnitWithInheritedRules(InternalHttpContext context, SearchCriteriaDto query) {
+        LOGGER.debug("Calling select Unit With Inherited Rules with query {} ", query);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<ResultsDto> response =
+            restTemplate.exchange(getUrl() + RestApi.UNIT_WITH_INHERITED_RULES, HttpMethod.POST,
+                request, ResultsDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public String reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        final InternalHttpContext context) {
+        LOGGER.debug("Calling reclassification with query {} ", reclassificationCriteriaDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<ReclassificationCriteriaDto> request = new HttpEntity<>(reclassificationCriteriaDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.RECLASSIFICATION, HttpMethod.POST,
+                request, String.class);
+        checkResponse(response);
+        return response.getBody();
+    }
+
+    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, InternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(unitDescriptiveMetadataDto, buildHeaders(context));
+        ResponseEntity<String> response =
+            restTemplate.exchange(uriBuilder.build(id), HttpMethod.PUT, request, String.class);
+        return response.getBody();
     }
 }

@@ -1,0 +1,57 @@
+.download-btn {
+  border-radius: 100px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 20px 20px 20px 120px;
+}
+
+.btn-show-full-path {
+  border: 1px solid var(--vitamui-grey);
+  border-radius: 10px;
+  font-size: 10px;
+}
+
+.btn-show-full-path:hover {
+  background-color: var(--vitamui-grey-400);
+  cursor: pointer;
+}
+
+.padding-style {
+  padding-top: 20px;
+}
+
+.text-title {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+
+  display: flex;
+  align-items: center;
+
+  color: #757575;
+}
+
+.cancel-popup {
+  padding-left: 40px;
+}
+
+.margin_right {
+  margin-right: 0px;
+}
+
+.btn-size {
+  background-color: #e24242;
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
+.close-color {
+  color: white;
+}

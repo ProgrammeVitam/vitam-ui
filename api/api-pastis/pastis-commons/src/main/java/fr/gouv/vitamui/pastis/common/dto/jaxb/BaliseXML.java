@@ -101,7 +101,7 @@ public class BaliseXML {
             annotationCommentXML = null;
             documentationCommentXML = null;
 
-            setValueAndDataRNG(node);
+            setValueAndDataRNG(node, (long) node.getChildren().size() == 0);
             // Set annotation and documentation tags (if exists)
             setDocumentationAnnotationElementAttribute(node);
 
@@ -115,7 +115,7 @@ public class BaliseXML {
         }
     }
 
-    private static void setValueAndDataRNG(ElementProperties node){
+    private static void setValueAndDataRNG(ElementProperties node, boolean presenceChildrenNode){
         // If the node has a value
         if (null != node.getValue() && !node.getValue().equals(UNDEFINED)) {
             valueRNG = new ValueXML();
@@ -132,11 +132,11 @@ public class BaliseXML {
         // When a value is declared in a profile element, the <rng:data> tag must be suppressed
         // to assure that the generated profile is successfully imported by VITAM
         if (null != node.getValueOrData() && !node.getValueOrData().equals(UNDEFINED) &&
-             node.getValueOrData().equals("data")) {
+             node.getValueOrData().equals("data") && !node.getName().equals("CodeListVersions") && null == node.getValue()) {
             dataRNG = new DataXML();
         }
 
-        if ((node.getName() != null && (node.getName().equals("CodeListVersions") || (long) node.getChildren().size() == 0))
+        if ((node.getName() != null && ((node.getName().equals("CodeListVersions")&& presenceChildrenNode) || presenceChildrenNode) && null == node.getValue())
             && (valueRNG == null && RNGConstants.getTypesMap().containsKey(node.getName()))) {
             dataRNG = new DataXML();
             dataRNG.setDataType(RNGConstants.getTypesMap().get(node.getName()).getLabel());
@@ -147,7 +147,7 @@ public class BaliseXML {
             if (null != valueRNG) {
                 valueRNG.setDataType(node.getDataType());
             }
-            if (null != dataRNG) {
+            if (null != dataRNG && !node.getName().equals("CodeListVersions")) {
                 dataRNG.setDataType(node.getDataType());
             }
         }

@@ -61,7 +61,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -83,11 +82,17 @@ public class PuaPastisValidator {
     private static final String CONTENT = "Content";
     private static final String COMPLEX = "Complex";
     private static final String REQUIRED = "required";
+    private static final String SCHEMA = "$schema";
 
-    private JSONObject getProfileJsonExpected() {
+    private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
+            InputStream inputStream;
+            if(standalone)
+                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
 
+            else{
+                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua_vitam.json");
+            }
             assert inputStream != null;
             JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
             setProfileJsonExpected(new JSONObject(tokener));
@@ -126,30 +131,31 @@ public class PuaPastisValidator {
      * @throws AssertionError
      */
     public void validatePUA(JSONObject pua, boolean standalone) throws AssertionError {
-        JSONObject profileJson = getProfileJsonExpected();
+        JSONObject profileJson = getProfileJsonExpected(standalone);
 
         // Compare list of field at the root level
         if (!standalone) {
             Set<String> actualFieldList = pua.keySet().stream().collect(toSet());
-            Set<String> expectedFieldList = profileJson.keySet().stream().collect(Collectors.toSet());
-            if (!actualFieldList.equals(expectedFieldList)) {
-                throw new AssertionError("PUA field list does not contains the expected values");
+            if(!actualFieldList.contains("name") && !actualFieldList.contains("controlSchema")){
+                throw new AssertionError("Notice not contains the expected keys 'name' and 'controlSchema'");
             }
         }
 
 
-        // Next tests are controlling the ControlSchema
-        String controlSchemaString = pua.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
-        controlSchemaString = profileJson.getString(CONTROLSCHEMA);
-        JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
+    // Next tests are controlling the ControlSchema
+    String controlSchemaString = pua.getString(CONTROLSCHEMA);
+    JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
+    controlSchemaString = profileJson.getString(CONTROLSCHEMA);
+    JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
+    LOGGER.error(controlSchemaActual.toString() + " control shema actuelle");
+        LOGGER.error(controlSchemaExpected.toString() + " control shema Expected");
+        if(standalone) {
+            // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
+            JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
 
-        // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
-        JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
-
-        // Checking that the definitions list is exactly the same as expected
-        JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
-            controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
+            // Checking that the definitions list is exactly the same as expected
+            JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
+                controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
 
         // Checking that additionalProperties is present and is boolean
         if (controlSchemaActual.has("additionalProperties") &&
@@ -176,12 +182,19 @@ public class PuaPastisValidator {
             }
             // #HAVEFUN
         }
+        }
+        else{
+                if (!controlSchemaActual.has(SCHEMA)) {
+                    throw new AssertionError("Missing '$schema' key in controlSchema' object");
+                }
+            }
     }
 
     public JSONObject getDefinitionsFromExpectedProfile() {
 
-        JSONObject baseProfile = getProfileJsonExpected();
+        JSONObject baseProfile = getProfileJsonExpected(true);
         String controlSchema = baseProfile.get(CONTROLSCHEMA).toString();
+        LOGGER.error(controlSchema + " control shema");
         JSONObject controlSchemaAsJSON = new JSONObject(controlSchema);
 
         return controlSchemaAsJSON.getJSONObject(DEFINITIONS);
@@ -213,13 +226,16 @@ public class PuaPastisValidator {
         String sedaName = sedaElement.getName();
         String sedaCardinality = sedaElement.getCardinality();
 
+        if(sedaName.equals("algorithm")){
+            return "string";
+        }
 
         if (sedaElementType.equals("Simple") &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1") || sedaName.equals("Title") || sedaName.equals("Description"))) {
             return "string";
         }
         if ((sedaElement.getElement().equals(COMPLEX) &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) || sedaName.equals("Title") ||
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) ||
             sedaName.equals("Description")) {
             return "object";
         }
@@ -473,7 +489,7 @@ public class PuaPastisValidator {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         JSONObject childProperties =
-            new JSONObject(mapper.writeValueAsString(childOfRuleDetails.serialiseString()));
+            new JSONObject(mapper.writeValueAsString(childOfRuleDetails));
         grandChildrenOfRule.put(grandChild.getName(), childProperties);
         ruleTypeMetadataDetails.setProperties(grandChildrenOfRule);
     }

@@ -1,0 +1,20 @@
+{
+  "httpCode": 200,
+  "$hits": {
+    "total": 1,
+    "offset": 0,
+    "limit": 0,
+    "size": 1
+  },
+  "$results": [
+    {
+      "#id": "aeaqaaaaaehmay6yaaqhual6ysiaariaaaba",
+      "#status": "OK",
+      "#key": "UNIT_METADATA_UPDATE",
+      "#message": "Update unit OK.",
+      "#diff": "-  \"_ops\" : [ \"aeeaaaaaaghmay6yaaiteal6ysh7raiaaaaq\", \"aeeaaaaaaghrj2obabgokal7f4iu6hqaaaaq\", \"aeeaaaaaaghrj2obabgokal7ggr7tyiaaaaq\" ]\n+  \"_ops\" : [ \"aeeaaaaaaghmay6yaaiteal6ysh7raiaaaaq\", \"aeeaaaaaaghrj2obabgokal7f4iu6hqaaaaq\", \"aeeaaaaaaghrj2obabgokal7ggr7tyiaaaaq\", \"aeeaaaaaaghrj2obabgokal7ggsfz4qaaaaq\" ]\n-  \"_fuzzyUD\" : \"2022-02-25T16:08:24.575\"\n-  \"_v\" : 2\n-  \"_av\" : 2\n+  \"_fuzzyUD\" : \"2022-02-25T16:08:49.790\"\n+  \"_v\" : 3\n+  \"_av\" : 3\n-  \"StartDate\" : \"2020-01-01\"\n-  \"EndDate\" : \"2021-10-20T21:59:59.999\"\n+  \"StartDate\" : \"2022-01-01\"\n+  \"EndDate\" : \"2023-01-01\""
+    }
+  ],
+  "$facetResults": [],
+  "$context": {}
+}

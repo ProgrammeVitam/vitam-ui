@@ -27,7 +27,9 @@
 package fr.gouv.vitamui.archives.search.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -35,11 +37,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Setter
 @Getter
+@NoArgsConstructor
 public class SearchCriteriaDto implements Serializable {
     /**
      * Criteria list for searching archive units
@@ -48,7 +53,41 @@ public class SearchCriteriaDto implements Serializable {
     private List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
     private List<String> fieldsList = new ArrayList<>();
     private SearchCriteriaSort sortingCriteria;
-    private Integer pageNumber;
-    private Integer size;
+    private Integer pageNumber = 0;
+    private Integer size = 1;
     private String language = Locale.FRENCH.getLanguage();
+    private boolean trackTotalHits;
+
+
+    public int computeNodesCriteria() {
+        List<String> nodesCriteriaList = this.extractNodesCriteria();
+        return nodesCriteriaList.size();
+    }
+
+    public List<String> extractNodesCriteria() {
+        return this.getCriteriaList().stream().filter(
+            Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
+            .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
+            .map(CriteriaValue::getValue).collect(Collectors.toList());
+    }
+
+    public List<SearchCriteriaEltDto> extractCriteriaListByCategory(ArchiveSearchConsts.CriteriaCategory category) {
+        return this.getCriteriaList().stream().filter(
+            Objects::nonNull).filter(searchCriteriaEltDto -> category
+            .equals(searchCriteriaEltDto.getCategory())).collect(Collectors.toList());
+    }
+
+    public List<SearchCriteriaEltDto> extractMgtRuleCriteriaList() {
+        return this.getCriteriaList().stream().filter(
+            Objects::nonNull).filter(searchCriteriaEltDto -> (ArchiveSearchConsts.CriteriaMgtRulesCategory
+            .contains(searchCriteriaEltDto.getCategory().name()))).collect(Collectors.toList());
+    }
+
+    public List<SearchCriteriaEltDto> extractCriteriaListByCategoryAndFieldNames(
+        ArchiveSearchConsts.CriteriaCategory category, List<String> fieldNames) {
+        return this.getCriteriaList().stream().filter(
+            Objects::nonNull).filter(searchCriteriaEltDto -> category
+            .equals(searchCriteriaEltDto.getCategory()) && fieldNames.contains(searchCriteriaEltDto.getCriteria()))
+            .collect(Collectors.toList());
+    }
 }

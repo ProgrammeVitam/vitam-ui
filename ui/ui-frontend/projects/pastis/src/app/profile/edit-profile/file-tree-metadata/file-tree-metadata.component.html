@@ -222,9 +222,9 @@
                 </mat-checkbox>
 
                 <!-- @Supprimer-->
-                <mat-divider *ngIf="!isSedaObligatory(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
+                <mat-divider *ngIf="isDeltable(element.nomDuChamp)" style="border-top-color:#E0E0E0;">
                 </mat-divider>
-                <button (click)="onDeleteNode(element.id)" *ngIf="!isSedaObligatory(element.nomDuChamp)" mat-menu-item>
+                <button (click)="onDeleteNode(element.id)" *ngIf="isDeltable(element.nomDuChamp)" mat-menu-item>
                   <mat-icon style="color:#757575">delete</mat-icon>
                   <span class="text normal">{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.SUPPRIMER' | translate}}</span>
                 </button>

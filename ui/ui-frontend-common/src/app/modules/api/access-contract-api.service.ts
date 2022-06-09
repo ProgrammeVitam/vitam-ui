@@ -34,18 +34,16 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Observable} from 'rxjs';
-
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-
-import {BASE_URL} from '../injection-tokens';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BASE_URL } from '../injection-tokens';
+import { AccessContract } from '../models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccessContractApiService {
-
   private readonly apiUrl: string;
   private readonly baseUrl: string;
 
@@ -58,4 +56,8 @@ export class AccessContractApiService {
     return this.http.get<any>(`${this.apiUrl}`, { params, headers });
   }
 
+  getAccessContractById(accessContractId: string, headers?: HttpHeaders): Observable<AccessContract> {
+    const params = new HttpParams();
+    return this.http.get<AccessContract>(this.apiUrl + '/' + accessContractId, { params, headers });
+  }
 }

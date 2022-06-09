@@ -38,14 +38,11 @@ package fr.gouv.vitamui.identity.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -212,8 +209,9 @@ public class ProviderService extends AbstractCrudService<IdentityProviderDto> {
             throws Exception {
         IdentityProviderDto dto = new ObjectMapper().readValue(provider, IdentityProviderDto.class);
         final IdentityProviderBuilder builder = new IdentityProviderBuilder(dto.getName(), dto.getTechnicalName(), dto.getEnabled(), dto.getInternal(),
-                dto.getPatterns(), new ByteArrayResource(keystore.getBytes()), dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
-                new ByteArrayResource(idpMetadata.getBytes()), dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getAuthnRequestBinding(), dto.isAutoProvisioningEnabled());
+                dto.getPatterns(), Objects.nonNull(keystore)?new ByteArrayResource(keystore.getBytes()):null, dto.getKeystorePassword(), dto.getPrivateKeyPassword(),
+            Objects.nonNull(idpMetadata)?new ByteArrayResource(idpMetadata.getBytes()):null, dto.getCustomerId(), dto.isReadonly(), dto.getMailAttribute(), dto.getIdentifierAttribute(), dto.getAuthnRequestBinding(), dto.isAutoProvisioningEnabled(),dto.getClientId(),
+            dto.getClientSecret(),dto.getDiscoveryUrl(), dto.getScope(),dto.getPreferredJwsAlgorithm(),dto.getCustomParams(),dto.getUseState(),dto.getUseNonce(),dto.getUsePkce(), dto.getProtocoleType());
         dto = builder.build();
         return getClient().create(c, dto);
     }

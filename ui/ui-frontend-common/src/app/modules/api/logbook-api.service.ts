@@ -34,18 +34,18 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { BASE_URL } from '../injection-tokens';
 import { ApiEvent, Event } from '../models';
 import { VitamResponse } from '../models/vitam/vitam-response.interface';
 import { VitamSelectQuery } from '../models/vitam/vitam-select-query.interface';
 import { PaginatedApi } from '../paginated-api.interface';
 import { PageRequest, PaginatedResponse } from '../vitamui-table';
+
+
 
 const CAS_CONTEXT = 'Contexte CAS';
 const UNKNOWN_VALUE = '-';
@@ -168,6 +168,11 @@ export class LogbookApiService implements PaginatedApi<Event> {
   downloadReport(id: string, downloadType: string, headers?: HttpHeaders): Observable<HttpResponse<Blob>> {
     return this.http.get(this.apiUrl + '/operations/' + id + '/download/' + downloadType, { headers, observe: 'response', responseType: 'blob' });
   }
+
+  getDownloadReportUrl(id: string, downloadType: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/operations/${id}/download/${downloadType}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  }
+
 
   getAllPaginated(pageRequest: PageRequest, _?: string, headers?: HttpHeaders): Observable<PaginatedResponse<Event>> {
     const criteria = JSON.parse(pageRequest.criteria);

@@ -35,7 +35,7 @@ same conditions as regards security.
 The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
-import {Component, Input, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -45,19 +45,21 @@ import {Subscription} from 'rxjs';
 import {Direction, GlobalEventService, SidenavPage, StartupService} from 'ui-frontend-common';
 import {environment} from '../../../environments/environment';
 import {PastisConfiguration} from '../../core/classes/pastis-configuration';
-import { NoticeService } from '../../core/services/notice.service';
+import {NoticeService} from '../../core/services/notice.service';
 import {ProfileService} from '../../core/services/profile.service';
-import { ToggleSidenavService } from '../../core/services/toggle-sidenav.service';
-import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
+import {ToggleSidenavService} from '../../core/services/toggle-sidenav.service';
+import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
 import {BreadcrumbDataTop} from '../../models/breadcrumb';
 import {MetadataHeaders} from '../../models/models';
-import { Profile } from '../../models/profile';
+import {Profile} from '../../models/profile';
 import {ProfileDescription} from '../../models/profile-description.model';
 import {ProfileResponse} from '../../models/profile-response';
 import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
 import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
 import {CreateProfileComponent} from '../create-profile/create-profile.component';
-import {ProfileInformationTabComponent} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
+import {
+  ProfileInformationTabComponent
+} from '../profile-preview/profile-information-tab/profile-information-tab/profile-information-tab.component';
 
 const POPUP_CREATION_PATH = 'PROFILE.POP_UP_CREATION';
 
@@ -113,7 +115,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
 
   sedaUrl: string = this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.sedaUrl;
 
-  newProfileUrl: string = this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile;
+  newProfileUrl: string = this.pastisConfig.pastisNewProfile;
 
   docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
 
@@ -143,7 +145,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   constructor(private profileService: ProfileService, private noticeService: NoticeService,
               private router: Router, private dialog: MatDialog,
               private startupService: StartupService, private pastisConfig: PastisConfiguration,
-              route: ActivatedRoute, globalEventService: GlobalEventService,
+              private route: ActivatedRoute, globalEventService: GlobalEventService,
               private dataGeneriquePopupService: DataGeneriquePopupService, private translateService: TranslateService,
               private toggleService: ToggleSidenavService) {
     super(route, globalEventService);
@@ -215,7 +217,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   editProfile(element: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.pastisEditPage, element.id], {state: element, skipLocationChange: false});
+    this.router.navigate([this.pastisConfig.pastisEditPage, element.id], {state: element, relativeTo: this.route, skipLocationChange: false});
   }
 
   uploadProfile(files: File[]): void {
@@ -226,9 +228,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
       formData.append('file', fileToUpload, fileToUpload.name);
       this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe( (response: any) => {
         if (response) {
-          console.log('File submited! Reponse is : ', response);
-
-          this.router.navigateByUrl(this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile, { state: response });
+          this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response, relativeTo: this.route});
         }
       });
       this.subscriptions.push(this._uploadProfileSub);
@@ -255,8 +255,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
         if (result.action === 'PA' || result.action === 'PUA') {
           this.profileService.createProfile(this.pastisConfig.createProfileByTypeUrl, result.action).subscribe((response: ProfileResponse) => {
             if (response) {
-              console.log('File submited! Reponse is : ', response);
-              this.router.navigateByUrl(this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier() ) + this.pastisConfig.pastisNewProfile, {state: response});
+              this.router.navigate([this.pastisConfig.pastisNewProfile], { state: response,relativeTo: this.route});
             }
           });
         }
@@ -331,7 +330,7 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
           });
         };
         fileReader.onerror = (error) => {
-        console.log(error);
+        console.error(error);
         };
       }
     }
@@ -339,34 +338,13 @@ export class ListProfileComponent extends SidenavPage<ProfileDescription> implem
   }
 
   changeExpand(element: ProfileDescription) {
-    if (element.type == 'PA' && !element.path && element.status === 'ACTIVE') {
+    if (element.type === 'PA' && !element.path && element.status === 'ACTIVE') {
       this.expanded = !this.expanded;
     }
-    if (element.type == 'PUA' && element.status == 'ACTIVE'
-    && (element.controlSchema == '{}' || !element.controlSchema)) {
+    if (element.type === 'PUA' && element.status === 'ACTIVE'
+    && (element.controlSchema === '{}' || !element.controlSchema)) {
       this.expanded = !this.expanded;
     }
   }
 }
 
-@Pipe({name: 'filterByType'})
-export class FilterByTypePipe implements PipeTransform {
-  transform(listOfProfiles: ProfileDescription[], typeToFilter: string): ProfileDescription[] {
-    if (!listOfProfiles) { return null; }
-    if (!typeToFilter) { return listOfProfiles; }
-    if (typeToFilter == 'ALL') { return listOfProfiles; }
-    return listOfProfiles.filter(profile => profile.type == typeToFilter);
-  }
-}
-
-@Pipe({name: 'filterByStringName'})
-export class FilterByStringNamePipe implements PipeTransform {
-  constructor() {}
-  private listOfProfiles: ProfileDescription[];
-  transform(listOfProfiles: ProfileDescription[], nameToFilter: string): ProfileDescription[] {
-    if (!listOfProfiles) { return null; }
-    if (!nameToFilter) { return listOfProfiles; }
-    this.listOfProfiles = listOfProfiles.filter(profile => profile.identifier.toLowerCase().indexOf(nameToFilter.toLowerCase()) >= 0);
-    return this.listOfProfiles;
-  }
-}

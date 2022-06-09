@@ -105,6 +105,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   donnees: string[];
 
   subscription2$: Subscription;
+  subscription3$: Subscription;
   subscriptions: Subscription[] = [];
 
   archivalProfileUnit: ArchivalProfileUnit;
@@ -336,7 +337,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         });
       }
       if (local && this.profileService.profileMode === 'PA' && this.editProfile) {
-        this.fileService.notice.subscribe((value: ProfileDescription) => {
+        this.subscription3$=this.fileService.notice.subscribe((value: ProfileDescription) => {
           this.downloadFile(JSON.stringify(value), true);
         });
       }
@@ -346,6 +347,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         this.downloadFile(retrievedData, false);
       });
       this.subscriptions.push(this.subscription2$);
+      this.subscriptions.push(this.subscription3$);
     }
 
   }

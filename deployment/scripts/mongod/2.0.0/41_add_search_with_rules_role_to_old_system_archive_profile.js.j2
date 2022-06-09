@@ -1,0 +1,48 @@
+db = db.getSiblingDB('iam')
+
+print("START_41_add_search_with_rules_role_to_old_system_archive_profile.js");
+
+// -------- ADD SEARCH WITH RULES TO OLD ARCHIVE PROFILE-----
+
+db.profiles.updateOne({
+   "applicationName":"ARCHIVE_SEARCH_MANAGEMENT_APP"
+},
+{
+   $addToSet:{
+      "roles":{
+         $each:[
+            {
+               "name":"ROLE_SEARCH_WITH_RULES"
+            }
+         ]
+      }
+   }
+});
+
+// ---- DELETE EXISTING ROLES ROLE_EXPORT_DIP AND ROLE_ELIMINATION TO BE CONFORM WITH CONSULTATION PROFILE FOR EXISTING USERS
+db.profiles.update({
+    "_id": "system_archive_search_profile"
+  }, {
+    $pull: {
+      "roles":{
+               "name":"ROLE_EXPORT_DIP"
+              }
+    }
+  });
+
+db.profiles.update({
+    "_id": "system_archive_search_profile"
+  }, {
+    $pull: {
+      "roles":{
+               "name":"ROLE_ELIMINATION"
+              }
+    }
+  });
+
+// ---- DELETE UNUSED PROFILE
+db.profiles.deleteOne( { "_id": "system_archive_search_profile_without_rules" } )
+db.profiles.deleteOne( { "_id": "system_archive_search_profile_without_rules_with_export_and_with_elimination" } )
+db.profiles.deleteOne( { "_id": "system_archive_search_profile_with_rules_without_export" } )
+db.profiles.deleteOne( { "_id": "system_archive_search_profile_without_rules_with_export" } )
+print("END_41_add_search_with_rules_role_to_old_system_archive_profile.js");

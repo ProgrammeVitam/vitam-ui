@@ -49,11 +49,9 @@ export class ToggleSidenavService {
 
     show() {
         this.isOpened.next(true);
-        console.log('SideNav is opened');
     }
     hide() {
         this.isOpened.next(false);
-        console.log('SideNav is closed');
     }
 
     showPending(){

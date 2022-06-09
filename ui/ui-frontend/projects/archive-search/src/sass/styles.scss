@@ -10,6 +10,7 @@
 @import 'profile-tag';
 @import 'vitamui-tab-group';
 @import 'tooltip';
+@import 'tooltip-rules';
 @import 'common-archive';
 
 .mat-drawer-container {
@@ -84,10 +85,13 @@
   border: 1px solid #bdbdbd;
   box-sizing: border-box;
   border-radius: 5px;
-  margin-bottom: 50px;
-  padding-top: 20px;
-  margin-top: 20px;
-  margin-right: 20px;
+  margin-bottom: 5px;
+  padding-top: 15px;
+  margin-top: 10px;
+  margin-right: 9px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
 }
 .after-search-launched-button {
   color: #fff;
@@ -324,9 +328,7 @@
   font-weight: 500;
   padding-top: 6px;
 }
-.sub-choice {
-  padding-left: 20px;
-}
+
 .criteria-choice-input {
   background-color: black;
   height: 18px;
@@ -344,4 +346,71 @@
 
 .text-on-right-side {
   padding-right: 20px;
+}
+
+.criteria-checkbox-choice {
+  display: inline-flex;
+  position: relative;
+}
+
+.criteria-checkbox-choice > span {
+  font-family: Mulish;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0.5rem 0.25rem;
+  padding-top: 4px;
+}
+
+.criteria-checkbox-choice > input {
+  height: 20px;
+  width: 20px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+  border: 1px solid #34495e;
+  border-radius: 4px;
+  outline: none;
+  transition-duration: 0.3s;
+  background-color: white;
+  cursor: pointer;
+}
+
+.criteria-checkbox-choice > input:checked {
+  border: 1px solid var(--vitamui-primary);
+  background-color: var(--vitamui-primary);
+}
+
+.criteria-checkbox-choice > input:checked + span::before {
+  content: '\2713';
+  font-size: 20px;
+  color: white;
+  position: absolute;
+  left: 0.4rem;
+  bottom: 0.15rem;
+  cursor: pointer;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  font-weight: bolder;
+
+  transform-origin: center center;
+}
+
+.extended-lateral-panel {
+  width: 60%;
+}
+
+.normal-lateral-panel {
+  width: 574px;
+}
+
+.validate-date-small-button {
+  background-color: 'green';
+  width: 30px;
+  height: 30px;
+}
+
+.padding-btm-style {
+  padding-bottom: 15px;
 }

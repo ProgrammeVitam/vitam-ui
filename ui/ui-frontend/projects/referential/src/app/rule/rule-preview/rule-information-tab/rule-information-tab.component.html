@@ -1,10 +1,14 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-
   <div class="form-group">
     <div class="col-12 form-control">
       <mat-form-field class="vitamui-mat-select">
-        <mat-select formControlName="ruleType" placeholder="{{ getRuleTypeLabel() }}" panelclass="vitamui-mat-select"
-          required="required" [disabled]="true">
+        <mat-select
+          formControlName="ruleType"
+          placeholder="{{ getRuleTypeLabel() }}"
+          panelclass="vitamui-mat-select"
+          required="required"
+          [disabled]="true"
+        >
         </mat-select>
         <div class="select-arrow">
           <i class="material-icons">keyboard_arrow_up</i>
@@ -14,28 +18,52 @@
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-input formControlName="ruleValue" minlength="2"
-      required placeholder="Intitulé de la règle" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
-      <ng-container *ngIf="form.get('ruleValue')?.touched">
-        <vitamui-common-input-error *ngIf="!!form.get('ruleValue')?.errors?.required"
-          i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
-      </ng-container>
-    </vitamui-common-input>
+      <vitamui-common-input
+        formControlName="ruleValue"
+        minlength="2"
+        required
+        placeholder="Intitulé de la règle"
+        i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
+      >
+        <ng-container *ngIf="form.get('ruleValue')?.touched">
+          <vitamui-common-input-error
+            *ngIf="!!form.get('ruleValue')?.errors?.required"
+            i18n="Required field error hint@@formErrorRequiredField"
+            >Champ requis</vitamui-common-input-error
+          >
+        </ng-container>
+      </vitamui-common-input>
     </div>
 
     <div class="col-12 form-control">
-      <vitamui-common-input class="field-ruleDuration" formControlName="ruleDuration" pattern="[0-9]*" 
-        maxlenght="3" required placeholder="Durée" i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder">
+      <vitamui-common-input
+        class="field-ruleDuration"
+        formControlName="ruleDuration"
+        pattern="[0-9]*"
+        maxlenght="3"
+        required
+        placeholder="Durée"
+        i18n-placeholder="Identifier@@rulePreviewRuleValuePlaceholder"
+      >
         <ng-container *ngIf="form.get('ruleDuration')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleDuration')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          <vitamui-common-input-error
+            *ngIf="!!form.get('ruleDuration')?.errors?.required"
+            i18n="Required field error hint@@formErrorRequiredField"
+            >Champ requis</vitamui-common-input-error
+          >
         </ng-container>
       </vitamui-common-input>
       <mat-form-field class="vitamui-mat-select">
-        <mat-select formControlName="ruleMeasurement" placeholder="Unité de mesure" panelclass="vitamui-mat-select"
-          required="required" i18n-placeholder="Identifier@@rulePreviewRuleMeasurementPlaceholder">
-          <mat-option *ngFor='let ruleMeasurement of ruleMeasurements' [value]="ruleMeasurement.key">
-            {{ruleMeasurement.label}}</mat-option>
+        <mat-select
+          formControlName="ruleMeasurement"
+          placeholder="{{ getRuleMeasurementLabel() }}"
+          panelclass="vitamui-mat-select"
+          required="required"
+          i18n-placeholder="Identifier@@rulePreviewRuleMeasurementPlaceholder"
+        >
+          <mat-option *ngFor="let ruleMeasurement of ruleMeasurements" [value]="ruleMeasurement.key">
+            {{ ruleMeasurement.label }}</mat-option
+          >
         </mat-select>
         <div class="select-arrow">
           <i class="material-icons">keyboard_arrow_up</i>
@@ -47,14 +75,15 @@
     <div class="col-12 form-control">
       <vitamui-common-textarea formControlName="ruleDescription" required="required" placeholder="Description" [rows]="2">
         <ng-container *ngIf="form.get('ruleDescription')?.touched">
-          <vitamui-common-input-error *ngIf="!!form.get('ruleDescription')?.errors?.required"
-            i18n="Required field error hint@@formErrorRequiredField">Champ requis</vitamui-common-input-error>
+          <vitamui-common-input-error
+            *ngIf="!!form.get('ruleDescription')?.errors?.required"
+            i18n="Required field error hint@@formErrorRequiredField"
+            >Champ requis</vitamui-common-input-error
+          >
         </ng-container>
       </vitamui-common-textarea>
     </div>
   </div>
-
-
 
   <div class="form-group bottom">
     <button type="submit" class="btn secondary" [disabled]="isInvalid() || unchanged() || submited">Enregistrer</button>

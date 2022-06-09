@@ -94,7 +94,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
     this.popUpService.btnYesShoudBeDisabled.subscribe(status => {
       this.btnIsDisabled = status;
     });
-    
+
   }
 
   onRemoveSelectedElement(element: string) {
@@ -144,7 +144,7 @@ export class UserActionAddPuaControlComponent implements OnInit {
     if (element) {
       this.addedItems = [element];
       this.allowedChildren = [];
-    } else if (this.dialogData.fileNode.sedaData.Enumeration.length > 0) {
+    } else if (this.dialogData.fileNode.sedaData.Enumeration) {
       this.allowedChildren = [
         this.enumerationsLabel
       ];

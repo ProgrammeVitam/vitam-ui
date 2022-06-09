@@ -17,11 +17,11 @@ export class AccessionRegisterFacetsComponent implements OnInit {
   constructor(public accessionRegistersService: AccessionRegistersService) {}
 
   ngOnInit(): void {
-    this.stateFacetDetails$ = this.accessionRegistersService.getFacetDetailsStats();
     this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();
+    this.stateFacetDetails$ = this.accessionRegistersService.getStats();
   }
 
   onDateCriteriaChange(dateCriteria: { dateMin: string; dateMax: string }) {
-    this.accessionRegistersService.notifyDateIntervalChange({endDateMin: dateCriteria.dateMin, endDateMax: dateCriteria.dateMax});
+    this.accessionRegistersService.notifyDateIntervalChange({ endDateMin: dateCriteria.dateMin, endDateMax: dateCriteria.dateMax });
   }
 }

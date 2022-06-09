@@ -1,0 +1,17 @@
+{
+  "$action": [
+    {
+      "$set": {
+        "Title": "Title",
+        "DescriptionLevel": "Item"
+      }
+    },
+    {
+      "$unset": [
+        "StartDate",
+        "EndDate",
+        "Description"
+      ]
+    }
+  ]
+}

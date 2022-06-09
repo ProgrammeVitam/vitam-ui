@@ -186,24 +186,6 @@ public class LogbookInternalRestClient<C extends AbstractHttpContext> extends Ba
         return response;
     }
 
-    /**
-     * Download an operation report
-     *
-     * @param context
-     * @param id
-     * @return
-     */
-    public ResponseEntity<Resource> downloadReport(final C context, final String id, final String downloadType) {
-        final HttpEntity<Map<String, String>> request = new HttpEntity<>(buildHeaders(context));
-
-        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
-        uriBuilder.path(CommonConstants.LOGBOOK_DOWNLOAD_REPORT_PATH);
-
-        final ResponseEntity<Resource> response = restTemplate.exchange(uriBuilder.build(id, downloadType), HttpMethod.GET, request, Resource.class);
-        checkResponse(response, 200);
-        return response;
-    }
-
     private MultiValueMap<String, String> buildRequestHeaders(final AbstractHttpContext context) {
         final MultiValueMap<String, String> headers = buildHeaders(context);
         String accessContract = null;

@@ -1,25 +1,34 @@
 <form [formGroup]="form">
-
   <div class="row align-items-center">
-      <div class="col-6">
-        <vitamui-common-slide-toggle formControlName="enabled">{{'CUSTOMER.SSO.ACTIVE_SWITCH' | translate}}</vitamui-common-slide-toggle>
+    <div class="col-6">
+      <vitamui-common-slide-toggle formControlName="enabled">{{ 'CUSTOMER.SSO.ACTIVE_SWITCH' | translate }}</vitamui-common-slide-toggle>
+    </div>
+    <div class="col-6">
+      <div class="read-only-field">
+        <label>Identifiant SSO</label>
+        <div>{{ identityProvider.technicalName }}</div>
       </div>
-      <div class="col-6">
-        <div class="read-only-field">
-          <label>Identifiant SSO</label>
-          <div>{{identityProvider.technicalName}}</div>
-        </div>
     </div>
   </div>
-
+  <div class="row" *ngIf="!form.get('internal').value">
+    <div class="col-12">
+      <vitamui-common-editable-toggle-group formControlName="protocoleType" [label]="'CUSTOMER.SSO.PROTOCOL_TYPE' | translate">
+        <vitamui-common-editable-button-toggle value="SAML" content="SAML"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="OIDC" content="OIDC"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle value="CERTIFICAT" content="CERTIFICAT"></vitamui-common-editable-button-toggle>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+      </vitamui-common-editable-toggle-group>
+    </div>
+  </div>
   <div class="row">
     <div class="col-6">
       <vitamui-common-editable-input
-      formControlName="identifier"
-      maxlength="12"
-      [label]="'COMMON.ID' |translate"
-      [validator]="form?.get('identifier')?.validator"
-      [asyncValidator]="form?.get('identifier')?.asyncValidator"
+        formControlName="identifier"
+        maxlength="12"
+        disabled
+        [label]="'COMMON.ID' | translate"
+        [validator]="form?.get('identifier')?.validator"
+        [asyncValidator]="form?.get('identifier')?.asyncValidator"
       >
       </vitamui-common-editable-input>
     </div>
@@ -30,12 +39,17 @@
         [validator]="form?.get('internal')?.validator"
         [asyncValidator]="form?.get('internal')?.asyncValidator"
       >
-        <vitamui-common-editable-button-toggle [value]="true" [content]="'CUSTOMER.SSO.TYPE_INTERNAL' | translate"></vitamui-common-editable-button-toggle>
-        <vitamui-common-editable-button-toggle [value]="false" [content]="'CUSTOMER.SSO.TYPE_EXTERNAL' | translate"></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle
+          [value]="true"
+          [content]="'CUSTOMER.SSO.TYPE_INTERNAL' | translate"
+        ></vitamui-common-editable-button-toggle>
+        <vitamui-common-editable-button-toggle
+          [value]="false"
+          [content]="'CUSTOMER.SSO.TYPE_EXTERNAL' | translate"
+        ></vitamui-common-editable-button-toggle>
       </vitamui-common-editable-toggle-group>
     </div>
   </div>
-
   <div class="row">
     <div class="col-6">
       <vitamui-common-editable-input
@@ -45,48 +59,14 @@
         [validator]="form?.get('name')?.validator"
         [asyncValidator]="form?.get('name')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
       </vitamui-common-editable-input>
     </div>
-    <div class="col-6">
-      <vitamui-common-editable-toggle-group
-      formControlName="authnRequestBinding"
-      label="Request Binding"
-      [validator]="form?.get('authnRequestBinding')?.validator"
-      [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
-    >
-      <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
-      <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
-      
-      <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-    </vitamui-common-editable-toggle-group>
-    </div>
   </div>
 
   <div class="row">
     <div class="col-6">
-      <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
-    </div>
-    <div class="col-6">
-      <vitamui-common-editable-file
-        [formControl]="idpMetadata"
-        accept=".xml"
-        [label]="'CUSTOMER.SSO.IDP_METADATA' | translate"
-        [validator]="idpMetadata?.validator"
-        [asyncValidator]="idpMetadata?.asyncValidator"
-      >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
-      </vitamui-common-editable-file>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-6">
-      <vitamui-common-editable-input
-        formControlName="mailAttribute"
-        maxlength="100"
-        [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate"
-      >
+      <vitamui-common-editable-input formControlName="mailAttribute" maxlength="100" [label]="'CUSTOMER.SSO.MAIL_ATTRIBUTE' | translate">
       </vitamui-common-editable-input>
     </div>
     <div class="col-6">
@@ -108,17 +88,109 @@
         [validator]="form?.get('patterns')?.validator"
         [asyncValidator]="form?.get('patterns')?.asyncValidator"
       >
-        <vitamui-common-field-error errorKey="required" >{{'COMMON.REQUIRED' | translate}}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
       </app-editable-patterns>
     </div>
   </div>
 
-  <div class="row mt-2" *ngIf="!identityProvider.internal">
-    <vitamui-common-slide-toggle
-      class="col-4"
-      formControlName="autoProvisioningEnabled"
-      >{{'CUSTOMER.SSO.AUTO_PROVISIONING' | translate}}</vitamui-common-slide-toggle
-    >
+  <div class="row mt-2">
+    <vitamui-common-slide-toggle class="col-4" formControlName="autoProvisioningEnabled">{{
+      'CUSTOMER.SSO.AUTO_PROVISIONING' | translate
+    }}</vitamui-common-slide-toggle>
   </div>
+  <div *ngIf="form.value.protocoleType===('SAML') && displayOIDCSAMLBLOCKS">
+    <div class="row">
+      <div class="col-6">
+        <vitamui-common-editable-toggle-group
+          formControlName="authnRequestBinding"
+          label="Request Binding"
+          [validator]="form?.get('authnRequestBinding')?.validator"
+          [asyncValidator]="form?.get('authnRequestBinding')?.asyncValidator"
+        >
+          <vitamui-common-editable-button-toggle value="GET" content="GET"></vitamui-common-editable-button-toggle>
+          <vitamui-common-editable-button-toggle value="POST" content="POST"></vitamui-common-editable-button-toggle>
 
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-toggle-group>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-editable-keystore [identityProvider]="identityProvider" [disabled]="readOnly"></app-editable-keystore>
+      </div>
+      <div class="col-6">
+        <vitamui-common-editable-file
+          [formControl]="idpMetadata"
+          accept=".xml"
+          [label]="'CUSTOMER.SSO.IDP_METADATA' | translate"
+          [validator]="idpMetadata?.validator"
+          [asyncValidator]="idpMetadata?.asyncValidator"
+        >
+          <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-file>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="form.value.protocoleType==='OIDC' && displayOIDCSAMLBLOCKS">
+    <div class="row">
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="clientId"
+          [validator]="form?.get('clientId')?.validator"
+          [label]="'CUSTOMER.SSO.CLIENT_IDENTIFIER' | translate"
+        >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+      <div class="col-6">
+        <vitamui-common-editable-input
+          formControlName="clientSecret"
+          [validator]="form?.get('clientSecret')?.validator"
+          [label]="'CUSTOMER.SSO.CLIENT_SECRET' | translate"
+        >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <vitamui-common-editable-input
+          formControlName="discoveryUrl"
+          [validator]="form?.get('discoveryUrl')?.validator"
+          [label]="'CUSTOMER.SSO.URL_DISCOVERY' | translate"
+        >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        </vitamui-common-editable-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <vitamui-common-editable-input formControlName="scope" [label]="'CUSTOMER.SSO.PERIMETER' | translate"> </vitamui-common-editable-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <editable-custom-params formControlName="customParams"></editable-custom-params>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 form-control">
+        <vitamui-common-editable-select formControlName="preferredJwsAlgorithm" [label]="'CUSTOMER.SSO.JWS_ALGORITHME' | translate">
+          <vitamui-common-editable-option *ngFor="let jwsAlgorithm of jwsAlgorithms" [value]="jwsAlgorithm" [content]="jwsAlgorithm">
+          </vitamui-common-editable-option>
+        </vitamui-common-editable-select>
+      </div>
+    </div>
+    <div class="row align-items-center">
+      <div class="col-4">
+        <vitamui-common-slide-toggle formControlName="useState">{{'CUSTOMER.SSO.STATEFUL' | translate}}</vitamui-common-slide-toggle>
+      </div>
+      <div class="col-4">
+        <vitamui-common-slide-toggle formControlName="usePkce">{{'CUSTOMER.SSO.USE_NONCE' | translate}} </vitamui-common-slide-toggle>
+      </div>
+      <div class="col-4">
+        <vitamui-common-slide-toggle formControlName="useNonce">{{'CUSTOMER.SSO.USE_PKCE' | translate}}</vitamui-common-slide-toggle>
+      </div>
+    </div>
+  </div>
 </form>

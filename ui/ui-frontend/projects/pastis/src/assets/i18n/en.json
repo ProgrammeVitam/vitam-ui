@@ -207,7 +207,7 @@
       }
     },
     "LIST_PROFILE": {
-      "SEARCH_PLACEHOLDER": "Search for a profile by its title",
+      "SEARCH_PLACEHOLDER": "Search for a profile by its username and its entitled",
       "CREER_NOUVEAU_PROFIL": "create a new profile",
       "IMPORTER_PROFIL": "import a profile",
       "LISTE_DES_PROFILS": "List of profiles",
@@ -219,7 +219,11 @@
         "INTITULE": "Entitled",
         "DERNIERES_MODIFICATIONS": "Latest changes"
       },
-      "MODIFIER_PROFIL_TOOLTIP": "Modify the profile"
+      "MODIFIER_PROFIL_TOOLTIP": "Modify the profile",
+      "PROFILE_PREVIEW": {
+        "MODIFICATION_SUCCESS": "The modification of the profile has been carried out successfully ",
+        "MODIFICATION_ERROR": "Failed to edit profile"
+      }
     },
     "CREATE_PROFILE": {
       "INFORMATION": {

@@ -45,7 +45,7 @@ import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 @Component({
   selector: 'app-rule-information-tab',
   templateUrl: './rule-information-tab.component.html',
-  styleUrls: ['./rule-information-tab.component.scss']
+  styleUrls: ['./rule-information-tab.component.scss'],
 })
 export class RuleInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -59,22 +59,21 @@ export class RuleInformationTabComponent {
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
 
-  // tslint:disable-next-line:variable-name
-  private _rule: Rule;
+  private oldRule: Rule;
 
-  previousValue = (): Rule => {
-    return this._rule;
-  };
+  previousValue(): Rule {
+    return this.oldRule;
+  }
 
   @Input()
   set rule(rule: Rule) {
-    this._rule = rule;
+    this.oldRule = rule;
     this.resetForm(this.rule);
     this.updated.emit(false);
   }
 
   get rule(): Rule {
-    return this._rule;
+    return this.oldRule;
   }
 
   @Input()
@@ -93,7 +92,7 @@ export class RuleInformationTabComponent {
       ruleValue: [null, Validators.required],
       ruleDescription: [null, Validators.required],
       ruleDuration: [null, Validators.required],
-      ruleMeasurement: [null, Validators.required]
+      ruleMeasurement: [null, Validators.required],
     });
   }
 
@@ -137,7 +136,7 @@ export class RuleInformationTabComponent {
 
     this.prepareSubmit().subscribe(
       () => {
-        this.ruleService.get(this._rule.ruleId).subscribe((response) => {
+        this.ruleService.get(this.oldRule.ruleId).subscribe((response) => {
           this.submited = false;
           this.rule = response;
         });
@@ -158,6 +157,17 @@ export class RuleInformationTabComponent {
       const ruleType = this.ruleTypes.find((item) => item.key === formControl.value);
       if (ruleType) {
         return ruleType.label;
+      }
+    }
+    return '';
+  }
+
+  getRuleMeasurementLabel(): string {
+    const formControl = this.form.get('ruleMeasurement');
+    if (formControl) {
+      const ruleMeasurement = this.ruleMeasurements.find((item) => item.key === formControl.value);
+      if (ruleMeasurement) {
+        return ruleMeasurement.label;
       }
     }
     return '';

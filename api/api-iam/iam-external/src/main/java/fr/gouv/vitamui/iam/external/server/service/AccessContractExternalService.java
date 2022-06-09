@@ -67,6 +67,10 @@ public class AccessContractExternalService extends AbstractInternalClientService
         return accessContractInternalRestClient.getAll(getInternalHttpContext());
     }
 
+    public AccessContractsDto getAccessContractById(String identifier) {
+        return accessContractInternalRestClient.getAccessContractById(getInternalHttpContext(), identifier);
+    }
+
     @Override
     protected BaseRestClient<InternalHttpContext> getClient() {
         return accessContractInternalRestClient;
