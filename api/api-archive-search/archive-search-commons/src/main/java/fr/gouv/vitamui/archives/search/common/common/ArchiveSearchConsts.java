@@ -108,13 +108,43 @@ public class ArchiveSearchConsts {
     public final static String RULE_FINAL_ACTION_TYPE = "FINAL_ACTION_TYPE";
 
     public final static String RULE_IDENTIFIER = "RULE_IDENTIFIER";
+    public final static String MANAGEMENT_RULE_IDENTIFIER_CRITERIA = "MANAGEMENT_RULE_IDENTIFIER";
+    public final static String MANAGEMENT_RULE_INHERITED_CRITERIA = "MANAGEMENT_RULE_INHERITED_CRITERIA";
     public final static String RULE_TITLE = "RULE_TITLE";
     public final static String RULE_END_DATE = "RULE_END_DATE";
-    public final static String RULE_START_DATE = "RULE_START_DATE";
+    public final static String MANAGEMENT_RULE_START_DATE = "MANAGEMENT_RULE_START_DATE";
     public final static String WAITING_RECALCULATE = "WAITING_RECALCULATE";
+    public final static String RULES_COMPUTED = "RULES_COMPUTED";
 
 
     public final static String APPRAISAL_RULE_START_DATE_FIELD = "#management.AppraisalRule.Rules.StartDate";
+
+    public final static String ACCESS_RULE_START_DATE_FIELD = "#management.AccessRule.Rules.StartDate";
+
+    public final static String REUSE_RULE_START_DATE_FIELD = "#management.ReuseRule.Rules.StartDate";
+
+    public final static String DISSEMINATION_RULE_START_DATE_FIELD = "#management.DisseminationRule.Rules.StartDate";
+
+    public final static String STORAGE_RULE_START_DATE_FIELD = "#management.StorageRule.Rules.StartDate";
+
+    public final static String HOLD_RULE_START_DATE_FIELD = "#management.HoldRule.Rules.StartDate";
+
+    public final static String CLASSIFICATION_RULE_START_DATE_FIELD = "#management.ClassificationRule.Rules.StartDate";
+
+    public final static String APPRAISAL_RULE_IDENTIFIER = "#management.AppraisalRule.Rules.Rule";
+
+    public final static String ACCESS_RULE_IDENTIFIER = "#management.AccessRule.Rules.Rule";
+
+    public final static String REUSE_RULE_IDENTIFIER = "#management.ReuseRule.Rules.Rule";
+
+    public final static String CLASSIFICATION_RULE_IDENTIFIER = "#management.ClassificationRule.Rules.Rule";
+
+    public final static String HOLD_RULE_IDENTIFIER = "#management.HoldRule.Rules.Rule";
+
+    public final static String STORAGE_RULE_IDENTIFIER = "#management.StorageRule.Rules.Rule";
+
+    public final static String DISSEMINATION_RULE_IDENTIFIER = "#management.Disseminationule.Rules.Rule";
+    public final static String APPRAISAL_RULE_INHERITED = "#management.AppraisalRule.Inheritance.PreventInheritance";
 
     public static final String ISO_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
     public static final String ONLY_DATE_FORMAT = "yyyy-MM-dd";
@@ -122,6 +152,9 @@ public class ArchiveSearchConsts {
 
     public static final String TRUE_CRITERIA_VALUE = "true";
     public static final String FALSE_CRITERIA_VALUE = "false";
+    public static final String FINAL_ACTION_KEEP_FIELD_VALUE = "Keep";
+    public static final String FINAL_ACTION_DESTROY_FIELD_VALUE = "Destroy";
+    public static final String FINAL_ACTION_CONFLICT_FIELD_VALUE = "Conflict";
 
     public static final DateTimeFormatter ISO_FRENCH_FORMATER =
         DateTimeFormatter.ofPattern(ArchiveSearchConsts.ISO_DATE_FORMAT, Locale.FRENCH);
@@ -140,8 +173,8 @@ public class ArchiveSearchConsts {
 
 
     public static Map<String, String> APPRAISAL_MGT_RULES_FINAL_ACTION_TYPE_VALUES_MAPPING =
-        Map.of(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION, "Destroy",
-            ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP, "Keep"
+        Map.of(ArchiveSearchConsts.FINAL_ACTION_TYPE_ELIMINATION, FINAL_ACTION_DESTROY_FIELD_VALUE,
+            ArchiveSearchConsts.FINAL_ACTION_TYPE_KEEP, FINAL_ACTION_KEEP_FIELD_VALUE
         );
 
     public static final String ORIGINATING_AGENCY_LABEL_FIELD = "SP_LABEL";
@@ -154,7 +187,7 @@ public class ArchiveSearchConsts {
             "END_DATE", "EndDate",
             "SP_LABEL", "originating_agency_label",
             "ARCHIVE_UNIT_HOLDING_UNIT", "#unitType",
-            WAITING_RECALCULATE, "#validComputedInheritedRules"
+            RULES_COMPUTED, "#validComputedInheritedRules"
         );
 
     public static final int DEFAULT_DEPTH = 10;
@@ -169,7 +202,7 @@ public class ArchiveSearchConsts {
     public static final String GUID = "#id";
     public static final String UNITS_UPS = "#allunitups";
     public static final String TITLE_OR_DESCRIPTION = "TITLE_OR_DESCRIPTION";
-    public static final String ELIMINATION_TECHNICAL_ID = "ELIMINATION_TECHNICAL_ID";
+    public static final String ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE = "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE";
     public static final String ELIMINATION_GUID = "#elimination.OperationId";
     public static final String ALL_ARCHIVE_UNIT_TYPES = "#unitType";
     public static final String ALL_ARCHIVE_UNIT_TYPES_CRITERIA = "ALL_ARCHIVE_UNIT_TYPES";

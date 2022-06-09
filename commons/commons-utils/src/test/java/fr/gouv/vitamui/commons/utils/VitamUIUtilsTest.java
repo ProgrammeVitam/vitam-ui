@@ -130,8 +130,30 @@ public class VitamUIUtilsTest {
         headers.add("x-application-id", "INGEST_APP");
         headers.add("x-forwarded-server", "env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr");
         String result = VitamUIUtils.secureFormatHeadersLogging(headers);
-        String expected = "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
+        String expected =
+            "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
         assertEquals(expected, result);
 
     }
+
+    @Test
+    public void humanReadableByteCountSI() throws IOException {
+        assertEquals("654.32 Mo", VitamUIUtils.humanReadableByteCountSI(654_324_564L));
+        assertEquals("0 octet", VitamUIUtils.humanReadableByteCountSI(0L));
+        assertEquals("1 ko", VitamUIUtils.humanReadableByteCountSI(1_000L));
+        assertEquals("1.02 ko", VitamUIUtils.humanReadableByteCountSI(1_024L));
+        assertEquals("1.2 ko", VitamUIUtils.humanReadableByteCountSI(1_200L));
+        assertEquals("231.25 ko", VitamUIUtils.humanReadableByteCountSI(231_246L));
+    }
+
+    @Test
+    public void humanReadableByteCountBin() throws IOException {
+        assertEquals("638.99 Mo", VitamUIUtils.humanReadableByteCountBin(654_324_564L));
+        assertEquals("0 octet", VitamUIUtils.humanReadableByteCountBin(0L));
+        assertEquals("0.98 ko", VitamUIUtils.humanReadableByteCountBin(1_000L));
+        assertEquals("1 ko", VitamUIUtils.humanReadableByteCountBin(1_024L));
+        assertEquals("1.17 ko", VitamUIUtils.humanReadableByteCountBin(1_200L));
+        assertEquals("225.83 ko", VitamUIUtils.humanReadableByteCountBin(231_246L));
+    }
+
 }

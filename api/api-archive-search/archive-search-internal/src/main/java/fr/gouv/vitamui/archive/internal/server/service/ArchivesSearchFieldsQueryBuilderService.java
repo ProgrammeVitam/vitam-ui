@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,6 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+
 package fr.gouv.vitamui.archive.internal.server.service;
 
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -70,7 +72,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID:
+                    case ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE:
                         queryToFill.add(buildEliminationAnalysisSearchQuery(
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
                                 Collectors.toList()),
@@ -90,13 +92,6 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
 
-                    case ArchiveSearchConsts.RULE_START_DATE:
-                        queryToFill.add(buildRuleStartDateQuery(
-                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                                Collectors.toList()),
-                            ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
-                        break;
-
                     case ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA:
                         queryToFill.add(buildArchiveUnitTypeQuery(
                             searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
@@ -110,35 +105,15 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                         break;
                     case ArchiveSearchConsts.WAITING_RECALCULATE:
-                        Optional<String> validInheritedRulesValueOpt =
-                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).findAny();
-                        if (validInheritedRulesValueOpt.isPresent()) {
-                            if (validInheritedRulesValueOpt.get().equals(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)) {
-                                VitamQueryHelper.addParameterCriteria(queryToFill,
-                                    ArchiveSearchConsts.CriteriaOperators.NOT_EQ,
-                                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
-                                        .get(ArchiveSearchConsts.WAITING_RECALCULATE),
-                                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
-                            } else {
-                                VitamQueryHelper.addParameterCriteria(queryToFill,
-                                    ArchiveSearchConsts.CriteriaOperators.EQ,
-                                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
-                                        .get(ArchiveSearchConsts.WAITING_RECALCULATE),
-                                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
-                            }
-                        }
+                        handleWaitingToRecalculateFlag(queryToFill, searchCriteria,
+                            ArchiveSearchConsts.CriteriaOperators.NOT_EQ, ArchiveSearchConsts.CriteriaOperators.EQ);
+                        break;
+                    case ArchiveSearchConsts.RULES_COMPUTED:
+                        handleWaitingToRecalculateFlag(queryToFill, searchCriteria,
+                            ArchiveSearchConsts.CriteriaOperators.EQ, ArchiveSearchConsts.CriteriaOperators.NOT_EQ);
                         break;
                     default:
-                        mappedCriteriaName =
-                            ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
-                                ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
-                                searchCriteria.getCriteria();
-
-                        VitamQueryHelper.addParameterCriteria(queryToFill,
-                            ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
-                            mappedCriteriaName,
-                            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                                Collectors.toList()));
+                        mappedCriteriaName = handleSimpleFieldCriteria(queryToFill, searchCriteria);
                         break;
                 }
                 if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
@@ -147,6 +122,44 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             Collectors.toList()),
                         ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator())));
                 }
+            }
+        }
+    }
+
+    private String handleSimpleFieldCriteria(BooleanQuery queryToFill, SearchCriteriaEltDto searchCriteria)
+        throws InvalidCreateOperationException {
+        String mappedCriteriaName;
+        mappedCriteriaName =
+            ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.containsKey(searchCriteria.getCriteria()) ?
+                ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING.get(searchCriteria.getCriteria()) :
+                searchCriteria.getCriteria();
+
+        VitamQueryHelper.addParameterCriteria(queryToFill,
+            ArchiveSearchConsts.CriteriaOperators.valueOf(searchCriteria.getOperator()),
+            mappedCriteriaName,
+            searchCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                Collectors.toList()));
+        return mappedCriteriaName;
+    }
+
+    private void handleWaitingToRecalculateFlag(BooleanQuery queryToFill, SearchCriteriaEltDto searchCriteria,
+        ArchiveSearchConsts.CriteriaOperators notEq, ArchiveSearchConsts.CriteriaOperators eq)
+        throws InvalidCreateOperationException {
+        Optional<String> validInheritedRulesValueOpt =
+            searchCriteria.getValues().stream().map(CriteriaValue::getValue).findAny();
+        if (validInheritedRulesValueOpt.isPresent()) {
+            if (validInheritedRulesValueOpt.get().equals(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)) {
+                VitamQueryHelper.addParameterCriteria(queryToFill,
+                    notEq,
+                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                        .get(ArchiveSearchConsts.RULES_COMPUTED),
+                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
+            } else {
+                VitamQueryHelper.addParameterCriteria(queryToFill,
+                    eq,
+                    ArchiveSearchConsts.SIMPLE_FIELDS_VALUES_MAPPING
+                        .get(ArchiveSearchConsts.RULES_COMPUTED),
+                    List.of(ArchiveSearchConsts.TRUE_CRITERIA_VALUE));
             }
         }
     }
@@ -209,28 +222,6 @@ public class ArchivesSearchFieldsQueryBuilderService {
                 subQueryOr
                     .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.DESCRIPTION_FR, value, operator));
             }
-            subQueryAnd.add(subQueryOr);
-        }
-        return subQueryAnd;
-    }
-
-    private Query buildRuleStartDateQuery(final List<String> searchValues,
-        ArchiveSearchConsts.CriteriaOperators operator)
-        throws InvalidCreateOperationException {
-        BooleanQuery subQueryAnd = and();
-        BooleanQuery subQueryOr = or();
-        if (!CollectionUtils.isEmpty(searchValues)) {
-            for (String value : searchValues) {
-
-                LocalDateTime startDate =
-                    LocalDateTime.parse(value, ArchiveSearchConsts.ISO_FRENCH_FORMATER).withHour(0)
-                        .withMinute(0).withSecond(0).withNano(0);
-                subQueryOr
-                    .add(VitamQueryHelper.buildSubQueryByOperator(
-                        ArchiveSearchConsts.APPRAISAL_RULE_START_DATE_FIELD,
-                        ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
-            }
-
             subQueryAnd.add(subQueryOr);
         }
         return subQueryAnd;

@@ -25,6 +25,7 @@ vitamui_defaults:
     api_long_call_timeout: 300
     status_retries_number: 60
     status_retries_delay: 5
+    at_boot: false
   # Filter for the vitam package version to install
   # FIXME : commented as has to be removed becuase doesn't work under Debain
   #package_version: "*"
@@ -501,7 +502,7 @@ vitamui_password_configurations:
             - Mindestens eine Zahl und ein Sonderzeichen (!"#$%&£'()*+,-./:;<=>?@[]^_`{|}~)
 
 ssl_setting:
-  enabled_protocols: TLSv1.1,TLSv1.2,TLSv1.3
+  enabled_protocols: TLSv1.2,TLSv1.3
   ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
 # Jaeger

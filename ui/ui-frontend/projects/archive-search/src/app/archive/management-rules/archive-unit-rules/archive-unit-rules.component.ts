@@ -61,6 +61,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: string;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
   ruleCategoryDuaActions: RuleCategoryAction;
 
   managementRules: ManagementRules[] = [];
@@ -74,6 +76,8 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
   updatePropertyCollapsed = false;
   deletePropertyCollapsed = false;
   deleteRuleCollapsed = false;
+  blockCategoryInheritanceCollapsed = false;
+  unlockCategoryInheritanceCollapsed = false;
 
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService) {}
 
@@ -148,6 +152,11 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
         actionType === RuleActionsEnum.ADD_RULES &&
         this.ruleCategoryDuaActions.rules.filter((rule) => rule.rule !== ruleId).length === 0
       ) {
+        if (this.ruleCategory === 'AccessRule') {
+          this.managementRules = this.managementRules.filter(
+            (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
+          );
+        }
         this.ruleCategoryDuaActions = {
           rules: [],
           finalAction: this.ruleCategoryDuaActions.finalAction,
@@ -169,10 +178,11 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
           finalAction: this.ruleCategoryDuaActions.finalAction,
         };
       }
-
-      this.managementRules.find(
-        (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
-      ).ruleCategoryAction = this.ruleCategoryDuaActions;
+      if (this.managementRules.length !== 0) {
+        this.managementRules.find(
+          (managementRule) => managementRule.category === this.ruleCategory && managementRule.actionType === actionType
+        ).ruleCategoryAction = this.ruleCategoryDuaActions;
+      }
     }
 
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
@@ -193,5 +203,13 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
 
   showDeletePropertyBloc() {
     this.deletePropertyCollapsed = !this.deletePropertyCollapsed;
+  }
+
+  showBlockCategoryInheritanceloc() {
+    this.blockCategoryInheritanceCollapsed = !this.blockCategoryInheritanceCollapsed;
+  }
+
+  showUnlockCategoryInheritanceloc() {
+    this.unlockCategoryInheritanceCollapsed = !this.unlockCategoryInheritanceCollapsed;
   }
 }

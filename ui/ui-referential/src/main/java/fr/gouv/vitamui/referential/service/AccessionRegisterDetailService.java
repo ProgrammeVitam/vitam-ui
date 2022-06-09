@@ -36,19 +36,24 @@
  */
 package fr.gouv.vitamui.referential.service;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.external.client.AccessionRegisterDetailExternalRestClient;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AccessionRegisterDetailService extends AbstractPaginateService<AccessionRegisterDetailDto> {
+
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AccessionRegisterDetailService.class);
 
     private final AccessionRegisterDetailExternalRestClient client;
 
@@ -60,8 +65,10 @@ public class AccessionRegisterDetailService extends AbstractPaginateService<Acce
         this.client = client;
     }
 
-    public AccessionRegisterStatsDto getAccessionRegisterDetailStats(ExternalHttpContext externalHttpContext, AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
-        return client.getAccessionRegisterDetailStats(externalHttpContext, detailsSearchDto);
+    public ResponseEntity<Resource> exportAccessionRegisterCsv(final AccessionRegisterSearchDto searchQuery,
+                                                               ExternalHttpContext context) {
+        LOGGER.info("Accession register details csv export: {}", searchQuery);
+        return client.exportAccessionRegisterCsv(searchQuery, context);
     }
 
     @Override

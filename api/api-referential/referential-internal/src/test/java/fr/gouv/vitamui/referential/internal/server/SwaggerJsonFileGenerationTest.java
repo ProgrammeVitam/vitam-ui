@@ -45,28 +45,25 @@ import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.test.rest.AbstractSwaggerJsonFileGenerationTest;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.internal.server.accesscontract.AccessContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.accessionregister.summary.AccessionRegisterSummaryInternalService;
 import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
-import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
-import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
-import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalService;
 import fr.gouv.vitamui.referential.internal.server.context.ContextInternalService;
 import fr.gouv.vitamui.referential.internal.server.fileformat.FileFormatInternalService;
 import fr.gouv.vitamui.referential.internal.server.ingestcontract.IngestContractInternalService;
+import fr.gouv.vitamui.referential.internal.server.logbookmanagement.LogbookManagementOperationInternalService;
+import fr.gouv.vitamui.referential.internal.server.managementcontract.ManagementContractInternalService;
 import fr.gouv.vitamui.referential.internal.server.ontology.OntologyInternalService;
+import fr.gouv.vitamui.referential.internal.server.operation.OperationInternalService;
 import fr.gouv.vitamui.referential.internal.server.probativevalue.ProbativeValueInternalService;
 import fr.gouv.vitamui.referential.internal.server.profile.ProfileInternalService;
 import fr.gouv.vitamui.referential.internal.server.rule.RuleInternalService;
 import fr.gouv.vitamui.referential.internal.server.securityprofile.SecurityProfileInternalService;
 import fr.gouv.vitamui.referential.internal.server.unit.UnitInternalService;
-
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -114,9 +111,6 @@ public class SwaggerJsonFileGenerationTest extends AbstractSwaggerJsonFileGenera
 
     @MockBean
     private OperationInternalService operationInternalService;
-
-    @MockBean
-    private AccessionRegisterSummaryInternalService accessionRegisterSummaryInternalService;
 
     @MockBean
     private AuthenticationProvider authenticationProvider;

@@ -41,12 +41,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { ActionOnCriteria, CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../archive.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
-const UPDATE_DEBOUNCE_TIME = 200;
 const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const ARCHIVE_UNIT_FILING_UNIT = 'ARCHIVE_UNIT_FILING_UNIT';
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
@@ -103,14 +103,14 @@ export class SimpleCriteriaSearchComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private archiveService: ArchiveService,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
     public dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private translateService: TranslateService
   ) {
     this.archiveService.getOntologiesFromJson().subscribe((data: any) => {
       this.ontologies = data;
-      this.ontologies.sort(function (a: any, b: any) {
+      this.ontologies.sort((a: any, b: any) => {
         const shortNameA = a.Label;
         const shortNameB = b.Label;
         return shortNameA < shortNameB ? -1 : shortNameA > shortNameB ? 1 : 0;
@@ -145,7 +145,7 @@ export class SimpleCriteriaSearchComponent implements OnInit {
     });
     merge(this.simpleCriteriaForm.statusChanges, this.simpleCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         filter(() => this.simpleCriteriaForm.valid),
         map(() => this.simpleCriteriaForm.value),
         map(() => diff(this.simpleCriteriaForm.value, this.previousSimpleCriteriaValue)),

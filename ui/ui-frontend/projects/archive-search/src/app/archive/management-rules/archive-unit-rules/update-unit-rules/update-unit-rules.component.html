@@ -156,12 +156,12 @@
 </ng-template>
 
 <ng-template #okTotalFound>
-  <div *ngIf="showText && itemsWithSameRule > 0" class="row message-text-ok">
+  <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ok">
     <div class="col-1"><i class="material-icons">check_circle</i></div>
     <div class="col-11">{{ itemsWithSameRule }} {{ 'RULES.APRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
   </div>
 
-  <div *ngIf="showText && itemsToUpdate > 0" class="row message-text-ko">
+  <div *ngIf="showText && itemsToUpdate !== '0'" class="row message-text-ko">
     <div class="col-1"><i class="material-icons">error</i></div>
     <div class="col-11">{{ itemsToUpdate }} {{ 'RULES.APRAISAL_RULES.UA_TO_IGNORE' | translate }}</div>
   </div>

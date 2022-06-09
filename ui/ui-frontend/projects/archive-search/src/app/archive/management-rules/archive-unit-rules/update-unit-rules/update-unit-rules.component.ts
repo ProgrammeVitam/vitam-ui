@@ -38,18 +38,20 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
 import { cloneDeep } from 'lodash';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff, Rule, RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../../../archive.service';
+import { UpdateUnitManagementRuleService } from '../../../common-services/update-unit-management-rule.service';
+import { ArchiveSearchConstsEnum } from '../../../models/archive-search-consts-enum';
 import { ManagementRules, RuleAction, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
-import { SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../../models/search.criteria';
+import { SearchCriteriaDto, SearchCriteriaEltDto } from '../../../models/search.criteria';
 import { ManagementRulesValidatorService } from '../../../validators/management-rules-validator.service';
 
-const UPDATE_DEBOUNCE_TIME = 200;
-const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
+const MANAGEMENT_RULE_IDENTIFIER = 'MANAGEMENT_RULE_IDENTIFIER';
 const ORIGIN_HAS_AT_LEAST_ONE = 'ORIGIN_HAS_AT_LEAST_ONE';
 
 @Component({
@@ -67,6 +69,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   selectedItem: number;
   @Input()
   ruleCategory: string;
+  @Input()
+  hasExactCount: boolean;
   ruleDetailsForm: FormGroup;
   isShowCheckButton = true;
   isStartDateDisabled = true;
@@ -99,8 +103,8 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   selectedStartDate: any;
   isDateValidated = true;
 
-  itemsWithSameRule: number;
-  itemsToUpdate: number;
+  itemsWithSameRule: string;
+  itemsToUpdate: string;
   showMessages = false;
   lastRuleId: string;
 
@@ -109,6 +113,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
   disabledControl = true;
   isValidRule = false;
   isValidForm = false;
+  resultNumberToShow: string;
 
   @ViewChild('confirmDeleteUpdateRuleDialog', { static: true }) confirmDeleteUpdateRuleDialog: TemplateRef<UpdateUnitRulesComponent>;
 
@@ -118,8 +123,11 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private managementRulesSharedDataService: ManagementRulesSharedDataService,
     private formBuilder: FormBuilder,
-    private managementRulesValidatorService: ManagementRulesValidatorService
+    private managementRulesValidatorService: ManagementRulesValidatorService,
+    private translateService: TranslateService,
+    private updateUnitManagementRuleService: UpdateUnitManagementRuleService
   ) {
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
     this.previousRuleDetails = {
       oldRule: '',
       oldRuleName: '',
@@ -174,7 +182,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
 
     merge(this.ruleDetailsForm.statusChanges, this.ruleDetailsForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => diff(this.ruleDetailsForm.value, this.previousRuleDetails)),
         filter((formData) => this.isEmpty(formData)),
         filter((formData) => this.patchForm(formData))
@@ -251,7 +259,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.searchArchiveUnitsByCriteriaSubscription?.unsubscribe();
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
   submit() {
     this.disabledControl = true;
     this.showText = true;
@@ -373,7 +381,7 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.initDSLQuery();
 
     const onlyManagementRules: SearchCriteriaEltDto = {
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       criteria: ORIGIN_HAS_AT_LEAST_ONE,
       dataType: CriteriaDataType.STRING,
       operator: CriteriaOperator.EQ,
@@ -381,9 +389,9 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     };
 
     const criteriaWithId: SearchCriteriaEltDto = {
-      criteria: RULE_IDENTIFIER,
+      criteria: MANAGEMENT_RULE_IDENTIFIER,
       values: [{ id: this.ruleDetailsForm.get('oldRule').value, value: this.ruleDetailsForm.get('oldRule').value }],
-      category: SearchCriteriaTypeEnum.APPRAISAL_RULE,
+      category: this.updateUnitManagementRuleService.getRuleManagementCategory(this.ruleCategory),
       operator: CriteriaOperator.EQ,
       dataType: CriteriaDataType.STRING,
     };
@@ -391,13 +399,29 @@ export class UpdateUnitRulesComponent implements OnInit, OnDestroy {
     this.criteriaSearchDSLQuery.criteriaList.push(criteriaWithId);
     this.criteriaSearchDSLQuery.criteriaList.push(onlyManagementRules);
 
-    this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
-      .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
-      .subscribe((data) => {
-        this.itemsWithSameRule = data.totalResults;
-        this.itemsToUpdate = this.selectedItem - data.totalResults;
-        this.isLoading = false;
-      });
+    if (this.hasExactCount) {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .getTotalTrackHitsByCriteria(this.criteriaSearchDSLQuery.criteriaList, this.accessContract)
+        .subscribe((resultsNumber) => {
+          this.itemsWithSameRule = resultsNumber.toString();
+          this.itemsToUpdate = (this.selectedItem - resultsNumber).toString();
+          this.isLoading = false;
+        });
+    } else {
+      this.searchArchiveUnitsByCriteriaSubscription = this.archiveService
+        .searchArchiveUnitsByCriteria(this.criteriaSearchDSLQuery, this.accessContract)
+        .subscribe((data) => {
+          this.itemsWithSameRule = data.totalResults.toString();
+          this.itemsToUpdate =
+            data.totalResults === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              ? this.resultNumberToShow
+              : this.selectedItem === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER
+              ? this.resultNumberToShow
+              : (this.selectedItem - data.totalResults).toString();
+
+          this.isLoading = false;
+        });
+    }
   }
 
   private getMonth(num: number): string {

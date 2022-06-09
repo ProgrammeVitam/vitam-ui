@@ -58,16 +58,31 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="!pending && submited && hasAppraisalRules">
+  <div class="row" *ngIf="pendingComputeFacets">
+    <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+  </div>
+  <div class="card-criteria" *ngIf="!pendingComputeFacets && submited && rulesFacetsComputed && showingFacets">
+    <i
+      id="show-hide-facet-button"
+      *ngIf="!pendingComputeFacets && showingFacets && submited"
+      (click)="showHideFacets(false)"
+      class="vitamui-icon vitamui-icon-chevron-down vitamui-row-icon clickable"
+      [ngClass]="'vitamui-icon vitamui-icon-cross vitamui-row-icon'"
+    ></i>
     <app-archive-search-rules-facets
       class="facet-div"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+      [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"
+      [defaultFacetTabIndex]="defaultFacetTabIndex"
     ></app-archive-search-rules-facets>
   </div>
-  <div class="row" *ngIf="!showCriteriaPanel">
-    <a class="hide-ink" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
+  <div class="row" *ngIf="!pending">
+    <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a
+    ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+      'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate
+    }}</a>
   </div>
 
   <div [hidden]="!showCriteriaPanel">
@@ -230,12 +245,12 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="prepareToLaunchExportDIP()" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="prepareToLaunchVitamAction('EXPORT_DIP')" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="updateManagementRule()"
+            (click)="prepareToLaunchVitamAction('UPDATE_MANAGEMENT_RULES')"
             matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
@@ -245,19 +260,23 @@
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchEliminationAnalysis()"
+            (click)="prepareToLaunchVitamAction('ELIMINATION_ANALYSIS')"
             [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchElimination()"
+            (click)="prepareToLaunchVitamAction('ELIMINATION_ACTION')"
             [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
-          <button mat-menu-item (click)="launchComputedInheritedRules()" [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0">
+          <button
+            mat-menu-item
+            (click)="prepareToLaunchVitamAction('COMPUTED_INHERITED_RULES')"
+            [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0"
+          >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
           </button>
 

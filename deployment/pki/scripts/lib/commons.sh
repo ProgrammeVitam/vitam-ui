@@ -4,7 +4,7 @@ set -e
 REPERTOIRE_ROOT="$( cd "$( readlink -f $(dirname ${BASH_SOURCE[0]}) )/../../.." ; pwd )"
 
 function init () {
-    
+
     REPERTOIRE_CERTIFICAT="${REPERTOIRE_ROOT}/environments/certs"
     REPERTOIRE_CA="${REPERTOIRE_ROOT}/pki/ca"
     CA_ROOT_TYPE="all"
@@ -74,7 +74,9 @@ function initVault {
 
     if [ ! -f "${VAULT_FILE}" ]; then
         pki_logger "Création du fichier ${VAULT_FILE}"
-        ansible-vault create ${VAULT_FILE} ${VAULT_PASS}
+        mkdir -p "${VAULT_FILE%/*}"
+        echo '---' > ${VAULT_FILE}
+        ansible-vault encrypt ${VAULT_FILE} ${VAULT_PASS}
         echo '---' > "${VAULT_FILE}.example"
     elif [ "$ERASE_VAULT" == "true" ]; then
         pki_logger "Réinitialisation du fichier ${VAULT_FILE}"
@@ -98,7 +100,7 @@ function getVaultFile() {
         "keystores")
             echo -n "${ENVIRONMENT_VARIABLES}/vault-${TYPE}.yml"
             ;;
-        *) 
+        *)
             pki_logger "ERROR" "Unable to determinate vault file for the type: ${TYPE}"
             return 1;
             ;;
@@ -118,7 +120,7 @@ function getVaultPass() {
         "keystores")
             echo -n "${ANSIBLE_VAULT_PASSWD}"
             ;;
-        *) 
+        *)
             pki_logger "ERROR" "Unable to determinate vault password for the type: ${TYPE}"
             return 1;
             ;;
@@ -138,7 +140,7 @@ function getKeyPrefix() {
         "keystores")
             echo -n "stores_"
             ;;
-        *) 
+        *)
             pki_logger "ERROR" "Unable to determinate the template of the key for the type: ${TYPE}"
             return 1;
             ;;

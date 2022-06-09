@@ -1,8 +1,9 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Colors } from 'ui-frontend-common';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
-import { AppraisalRuleFacets } from '../../../models/search.criteria';
+import { RuleFacets } from '../../../models/search.criteria';
 
 @Component({
   selector: 'app-search-appraisal-rules-facets',
@@ -10,10 +11,10 @@ import { AppraisalRuleFacets } from '../../../models/search.criteria';
   styleUrls: ['./search-appraisal-rules-facets.component.scss'],
 })
 export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
-  constructor(private translateService: TranslateService) {}
+  constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
-  appraisalRuleFacets: AppraisalRuleFacets;
+  appraisalRuleFacets: RuleFacets;
 
   @Input()
   totalResults: number;
@@ -41,17 +42,18 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
   }
 
   private handleRulesExpirationFacets() {
-    let unexpiredRulesNb = this.totalResults;
+    let unexpiredRulesNb = 0;
     let expiredRulesNb = 0;
+    this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
     if (this.appraisalRuleFacets.expiredRulesListFacets && this.appraisalRuleFacets.expiredRulesListFacets.length > 0) {
       this.appraisalRuleFacets.expiredRulesListFacets.forEach((elt) => {
-        if (elt && elt.node && elt.node.length > 10) {
+        if (elt.node === 'UNEXPIRED') {
+          unexpiredRulesNb = elt.count ? elt.count : 0;
+        } else if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
+          expiredRulesNb = elt.count ? elt.count : 0;
         }
-
-        expiredRulesNb = elt.count ? elt.count : 0;
-        unexpiredRulesNb -= expiredRulesNb;
       });
     }
 
@@ -175,8 +177,8 @@ export class SearchAppraisalRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.appraisalRuleFacets.noAppraisalRulesFacets && this.appraisalRuleFacets.noAppraisalRulesFacets.length > 0) {
-      this.appraisalRuleFacets.noAppraisalRulesFacets.forEach((elt) => {
+    if (this.appraisalRuleFacets.noRulesFacets && this.appraisalRuleFacets.noRulesFacets.length > 0) {
+      this.appraisalRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
           title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.APPRAISAL_RULE.WITHOUT_RULES'),
           totalResults: elt.count ? elt.count : 0,

@@ -7,12 +7,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { intersection } from 'lodash';
 import { Subscription } from 'rxjs';
 import { ConfirmDialogService, CriteriaDataType, CriteriaOperator, Logger, Option, StartupService } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveService } from '../../archive.service';
 import {
   ReclassificationAction,
   ReclassificationCriteriaDto,
-  ReclassificationQueryActionType
+  ReclassificationQueryActionType,
 } from '../../models/reclassification-request.interface';
 import { PagedResult, SearchCriteriaDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { ArchiveUnitValidatorService } from '../../validators/archive-unit-validator.service';
@@ -23,7 +23,7 @@ const REPLACE = 'REPLACE';
 @Component({
   selector: 'reclassification',
   templateUrl: './reclassification.component.html',
-  styleUrls: ['./reclassification.component.css']
+  styleUrls: ['./reclassification.component.css'],
 })
 export class ReclassificationComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -52,7 +52,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   actions: Option[] = [
     { key: 'REPLACE', label: this.translateService.instant('RECLASSIFICATION.REPLACE_STEP.TITLE') },
     { key: 'PULL', label: this.translateService.instant('RECLASSIFICATION.DELETE_STEP.TITLE') },
-    { key: 'ADD', label: this.translateService.instant('RECLASSIFICATION.ADD_STEP.TITLE') }
+    { key: 'ADD', label: this.translateService.instant('RECLASSIFICATION.ADD_STEP.TITLE') },
   ];
 
   constructor(
@@ -63,7 +63,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
     private archiveUnitValidator: ArchiveUnitValidatorService,
     private startupService: StartupService,
     private confirmDialogService: ConfirmDialogService,
-    private shared: ArchiveSharedDataServiceService,
+    private shared: ArchiveSharedDataService,
     private logger: Logger,
     @Inject(MAT_DIALOG_DATA)
     public data: {
@@ -94,11 +94,11 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         null,
         [
           this.archiveUnitValidator.alreadyExistParents(null, this.archiveUnitAllunitup),
-          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria, this.accessContract)
-        ]
+          this.archiveUnitValidator.existArchiveUnit(this.data.reclassificationCriteria, this.accessContract),
+        ],
       ],
       targetAuTitle: [{ value: null, disabled: true }],
-      allunitupsGuidsFormAttribute: new FormArray([], [Validators.required])
+      allunitupsGuidsFormAttribute: new FormArray([], [Validators.required]),
     });
 
     if (this.archiveUnitAllunitup.length > 0) {
@@ -128,14 +128,14 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         values: [this.data.archiveUnitGuidSelected],
         operator: 'IN',
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria: any = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: 1
+      size: 1,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
@@ -157,14 +157,14 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
       this.waitingForLoadExactTotalTrackHits = true;
       this.pendingGetFixedCount = true;
 
-      let criteriaSearchList: any[] = [
+      const criteriaSearchList: any[] = [
         {
           criteria: '#allunitups',
           values: [this.data.archiveUnitGuidSelected],
           operator: 'IN',
           category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-          dataType: CriteriaDataType.STRING
-        }
+          dataType: CriteriaDataType.STRING,
+        },
       ];
 
       this.archiveService.getTotalTrackHitsByCriteria(criteriaSearchList, this.accessContract).subscribe(
@@ -189,7 +189,7 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   }
 
   get unitupsFormArraySelectedIds(): string[] {
-    let unitups: string[] = this.archiveUnitFetchedParents
+    const unitups: string[] = this.archiveUnitFetchedParents
       .filter((_cat, catIdx) => this.allunitupsControl.some((control, controlIdx) => catIdx === controlIdx && control.value))
       .map((cat) => cat.id);
 
@@ -232,20 +232,20 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
         values: allunitups,
         operator: CriteriaOperator.EQ,
         category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
-        dataType: CriteriaDataType.STRING
-      }
+        dataType: CriteriaDataType.STRING,
+      },
     ];
 
     const searchCriteria = {
       criteriaList: criteriaSearchList,
       pageNumber: 0,
-      size: allunitupsIds.length
+      size: allunitupsIds.length,
     };
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, accessContract).subscribe((pagedResult: PagedResult) => {
       if (pagedResult.results) {
         pagedResult.results.map((ua) => {
           const title = ArchiveService.fetchTitle(ua.Title, ua.Title_);
-          this.archiveUnitFetchedParents.push({ title: title, id: ua['#id'] });
+          this.archiveUnitFetchedParents.push({ title, id: ua['#id'] });
           this.addAllUnitUpsDynamically();
         });
       }
@@ -254,16 +254,16 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
   addAllUnitUpsDynamically(): any {
     const control = new FormControl(true, [Validators.required]);
-    (<FormArray>this.form.get('allunitupsGuidsFormAttribute')).push(control);
+    (this.form.get('allunitupsGuidsFormAttribute') as FormArray).push(control);
     this.parentGuidArray.updateValueAndValidity();
   }
 
   get allunitupsControl() {
-    return (<FormArray>this.form.get('allunitupsGuidsFormAttribute')).controls;
+    return (this.form.get('allunitupsGuidsFormAttribute') as FormArray).controls;
   }
 
   onSubmit() {
-    let reclassificationQuery = this.getReclassificationQuery();
+    const reclassificationQuery = this.getReclassificationQuery();
     console.log('reclassificationQuery = ', reclassificationQuery);
     this.archiveService.reclassification(reclassificationQuery, this.data.accessContract).subscribe(
       (response) => {
@@ -284,37 +284,37 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
 
   getReclassificationQuery(): ReclassificationCriteriaDto {
     if (this.actionChosen === REPLACE) {
-      let parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
-      let reclassificationQueryPull = this.getReclassificationQueryActionType(parentToPull);
-      let reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
+      const parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
+      const reclassificationQueryPull = this.getReclassificationQueryActionType(parentToPull);
+      const reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
 
-      let reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, reclassificationQueryPull);
+      const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, reclassificationQueryPull);
 
-      let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
+      const reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     } else if (this.actionChosen === PULL) {
-      let parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
+      const parentToPull: string[] = this.getTargetedParentToPull(this.unitupsFormArraySelectedIds, this.archiveUnitAllunitup);
 
-      let reclassificationQueryPull = this.getReclassificationQueryActionType(parentToPull);
+      const reclassificationQueryPull = this.getReclassificationQueryActionType(parentToPull);
 
-      let reclassificationAction = this.getReclassificationAction(null, reclassificationQueryPull);
+      const reclassificationAction = this.getReclassificationAction(null, reclassificationQueryPull);
 
-      let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
+      const reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     } else {
-      let reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
+      const reclassificationQueryAdd = this.getReclassificationQueryActionType([this.form.get('targetGuid').value]);
 
-      let reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, null);
+      const reclassificationAction = this.getReclassificationAction(reclassificationQueryAdd, null);
 
-      let reclassificationCriteriaDto: ReclassificationCriteriaDto = {
+      const reclassificationCriteriaDto: ReclassificationCriteriaDto = {
         searchCriteriaDto: this.data.reclassificationCriteria,
-        $action: [reclassificationAction]
+        $action: [reclassificationAction],
       };
       return reclassificationCriteriaDto;
     }
@@ -323,13 +323,13 @@ export class ReclassificationComponent implements OnInit, OnDestroy {
   getReclassificationAction(add: ReclassificationQueryActionType, pull: ReclassificationQueryActionType): ReclassificationAction {
     return {
       $pull: pull,
-      $add: add
+      $add: add,
     };
   }
 
   getReclassificationQueryActionType(parentToPull: string[]): ReclassificationQueryActionType {
     return {
-      '#unitups': parentToPull
+      '#unitups': parentToPull,
     };
   }
 

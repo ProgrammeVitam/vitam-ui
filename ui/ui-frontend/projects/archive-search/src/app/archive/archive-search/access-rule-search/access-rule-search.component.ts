@@ -4,13 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { RuleValidator } from './../rule.validator';
 
 const RULE_TYPE_SUFFIX = '_ACCESS_RULE';
-
-const UPDATE_DEBOUNCE_TIME = 200;
 
 const ORIGIN_WAITING_RECALCULATE = 'ORIGIN_WAITING_RECALCULATE';
 const ORIGIN_INHERITE_AT_LEAST_ONE = 'ORIGIN_INHERITE_AT_LEAST_ONE';
@@ -65,7 +64,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
     private ruleValidator: RuleValidator
   ) {
     this.accessRuleCriteriaForm = this.formBuilder.group({
@@ -78,7 +77,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
     });
     merge(this.accessRuleCriteriaForm.statusChanges, this.accessRuleCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.accessRuleCriteriaForm.value),
         map(() => diff(this.accessRuleCriteriaForm.value, this.previousAccessCriteriaValue)),
         filter((formData) => this.isEmpty(formData))
@@ -94,7 +93,7 @@ export class AccessRuleSearchComponent implements OnInit, OnDestroy {
       ) {
         this.addCriteria(
           RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value: value },
+          { id: value, value },
           value,
           true,
           'EQ',

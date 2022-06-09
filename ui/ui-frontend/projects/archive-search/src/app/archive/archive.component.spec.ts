@@ -50,7 +50,14 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
-import { BASE_URL, InjectorModule, LoggerModule, SearchBarModule, WINDOW_LOCATION } from 'ui-frontend-common';
+import {
+  BASE_URL,
+  InjectorModule,
+  LoggerModule,
+  SearchBarModule,
+  SecurityService,
+  WINDOW_LOCATION
+} from 'ui-frontend-common';
 import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 import { environment } from '../../environments/environment';
 import { ArchiveApiService } from '../core/api/archive-api.service';
@@ -63,6 +70,9 @@ describe('ArchiveComponent', () => {
   const archiveServiceMock = {
     archive: () => of('test archive'),
     search: () => of([]),
+  };
+  const securityServiceMock = {
+    hasRole: () => of(true),
   };
 
   beforeEach(async(() => {
@@ -91,6 +101,7 @@ describe('ArchiveComponent', () => {
         FormBuilder,
         { provide: MatDialog, useValue: matDialogSpy },
         { provide: ArchiveApiService, useValue: archiveServiceMock },
+        { provide: SecurityService, useValue: securityServiceMock },
         { provide: WINDOW_LOCATION, useValue: window.location },
         {
           provide: ActivatedRoute,

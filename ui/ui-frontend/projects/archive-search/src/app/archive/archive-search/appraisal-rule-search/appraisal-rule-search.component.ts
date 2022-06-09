@@ -4,13 +4,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge, Subscription } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 import { RuleValidator } from '../rule.validator';
 
 const RULE_TYPE_SUFFIX = '_APPRAISAL_RULE';
-
-const UPDATE_DEBOUNCE_TIME = 200;
 
 const FINAL_ACTION_TYPE_ELIMINATION = 'FINAL_ACTION_TYPE_ELIMINATION';
 const FINAL_ACTION_TYPE_KEEP = 'FINAL_ACTION_TYPE_KEEP';
@@ -28,7 +27,7 @@ const FINAL_ACTION_TYPE = 'FINAL_ACTION_TYPE';
 const RULE_ORIGIN = 'RULE_ORIGIN';
 
 const RULE_IDENTIFIER = 'RULE_IDENTIFIER';
-const APPRAISAL_RULE_TITLE = 'APPRAISAL_RULE_TITLE';
+const RULE_TITLE = 'RULE_TITLE';
 const RULE_END_DATE = 'RULE_END_DATE';
 const ELIMINATION_TECHNICAL_ID = 'ELIMINATION_TECHNICAL_ID';
 
@@ -85,7 +84,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
+    private archiveExchangeDataService: ArchiveSharedDataService,
     private ruleValidator: RuleValidator
   ) {
     this.appraisalRuleCriteriaForm = this.formBuilder.group({
@@ -98,7 +97,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
     });
     merge(this.appraisalRuleCriteriaForm.statusChanges, this.appraisalRuleCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         map(() => this.appraisalRuleCriteriaForm.value),
         map(() => diff(this.appraisalRuleCriteriaForm.value, this.previousAppraisalCriteriaValue)),
         filter((formData) => this.isEmpty(formData))
@@ -113,8 +112,8 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         this.appraisalRuleCriteriaForm.get('appraisalRuleTitle').value !== ''
       ) {
         this.addCriteria(
-          APPRAISAL_RULE_TITLE + RULE_TYPE_SUFFIX,
-          { id: value, value: value },
+          RULE_TITLE + RULE_TYPE_SUFFIX,
+          { id: value, value },
           value,
           true,
           'EQ',
@@ -390,7 +389,7 @@ export class AppraisalRuleSearchComponent implements OnInit, OnDestroy {
         return true;
       } else if (formData.appraisalRuleTitle) {
         this.addCriteria(
-          APPRAISAL_RULE_TITLE + RULE_TYPE_SUFFIX,
+          RULE_TITLE + RULE_TYPE_SUFFIX,
           { id: formData.appraisalRuleTitle.trim(), value: formData.appraisalRuleTitle.trim() },
           formData.appraisalRuleTitle.trim(),
           true,

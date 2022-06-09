@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2021)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
  *
@@ -8,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -55,6 +55,7 @@ import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
@@ -67,10 +68,18 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         "data/queries/appraisal/search_query_with_object_parameter.json";
     public static String SEARCH_QUERY_WITH_OBJECT_PARAMETER_AND_UNIT_TYPE =
         "data/queries/appraisal/search_query_with_object_and_unit_type.json";
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER =
+        "appraisal/expected-search-query-with-rule-identifier.txt";
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE =
+        "appraisal/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
     public static String ARCHIVE_UNIT_WITH_OBJECTS = "ARCHIVE_UNIT_WITH_OBJECTS";
     public static String ARCHIVE_UNIT_WITHOUT_OBJECTS = "ARCHIVE_UNIT_WITHOUT_OBJECTS";
     public static String ARCHIVE_UNIT_HOLDING_UNIT = "ARCHIVE_UNIT_HOLDING_UNIT";
     public static String ARCHIVE_UNIT_FILING_UNIT = "ARCHIVE_UNIT_FILING_UNIT";
+
+    public static String SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE =
+        "appraisal/expected-search-query-with-appraisal-inheritance.txt";
+
 
 
     @InjectMocks
@@ -446,7 +455,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE);
         searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("guid")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
@@ -475,16 +484,16 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_START_DATE);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
         searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-08T23:00:00.000Z")));
         searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         criteriaList.add(searchCriteriaEltDto);
 
         //When
         BooleanQuery query = and();
-        archivesSearchFieldsQueryBuilderService
-            .fillQueryFromCriteriaList(query, criteriaList);
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
 
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
@@ -574,6 +583,96 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
         JSONAssert
             .assertEquals(expectedQuery.toPrettyString(), JsonHandler.getFromString(query.toString()).toPrettyString(),
                 true);
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("Rule1")));
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(1);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
+    }
+
+
+    @Test
+    public void testFillQueryFromCriteriaListRuleIdentifierAndRuleStartDateArePresentThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("Rule1")));
+        criteriaList.add(searchCriteriaEltDto);
+
+        SearchCriteriaEltDto searchCriteriaWithDateEltDto = new SearchCriteriaEltDto();
+        searchCriteriaWithDateEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE);
+        searchCriteriaWithDateEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+        searchCriteriaWithDateEltDto.setValues(List.of(new CriteriaValue("2080-05-08T23:00:00.000Z")));
+        searchCriteriaWithDateEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+
+        criteriaList.add(searchCriteriaWithDateEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(2);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
+    }
+
+    @Test
+    public void testFillQueryFromCriteriaListRulesWithInheritedParameterThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_INHERITED_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("true")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(1);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_CATEGORY_INHERITANCE);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
 

@@ -49,7 +49,7 @@
 - name: Enable logstash
   service:
     name: "{{ logstash.service_name }}"
-    enabled: yes
+    enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
   notify:
     - restart logstash
 

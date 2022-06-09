@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>5.0-SNAPSHOT</version>
+    <version>6.rc.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
@@ -73,7 +73,7 @@
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
         <bouncycastle.version>1.68</bouncycastle.version>
-        <cas.version>6.4.5</cas.version>
+        <cas.version>6.4.6.3</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
@@ -111,7 +111,7 @@
         <junit.vintage.engine.version>5.7.0</junit.vintage.engine.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
         <lombok.version>1.18.20</lombok.version>
         <micrometer.version>1.7.3</micrometer.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
@@ -129,13 +129,13 @@
         <serenity.spring.version>2.2.2</serenity.spring.version>
         <serenity.version>2.2.2</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.boot.version>2.5.6</spring.boot.version>
-        <spring.version>5.3.12</spring.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
+        <spring.version>5.3.18</spring.version>
         <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
         <spring.security.version>5.5.3</spring.security.version>
         <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
-        <vitam.version>5.0-SNAPSHOT</vitam.version>
+        <vitam.version>6.rc.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.4</xom.version>
@@ -523,6 +523,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -745,6 +751,12 @@
                 <groupId>org.apache.odftoolkit</groupId>
                 <artifactId>simple-odf</artifactId>
                 <version>${org.apache.odftoolkit.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>tools</artifactId>
+                        <groupId>com.sun</groupId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- APACHE ODFtoolKit-->
 
@@ -758,6 +770,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -887,6 +905,12 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>xml-apis</groupId>
@@ -1934,9 +1958,12 @@
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
                 <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
                 <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
-                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
-                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
-                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml</sonar.dependencyCheck.xmlReportPath>
+                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html
+                </sonar.dependencyCheck.htmlReportPath>
+                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json
+                </sonar.dependencyCheck.jsonReportPath>
+                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml
+                </sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.host.url/>

@@ -1,0 +1,25 @@
+:host {
+
+  display: flex;
+  flex-direction: column;
+
+  .result-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background: white;
+    padding: 0 15px;
+    border: 1px solid var(--vitamui-grey-400);
+    border-radius: 5px;
+    margin-bottom: 8px;
+  }
+
+  .vitamui-table-head {
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}

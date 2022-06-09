@@ -77,6 +77,7 @@ export interface RuleAction {
 export interface RuleCategoryAction {
   rules: RuleAction[];
   finalAction?: string;
+  preventInheritance?: boolean;
 }
 
 export interface RuleCat {
@@ -122,4 +123,6 @@ export enum RuleActionsEnum {
   UPDATE_RULES = 'UPDATE_RULES',
   DELETE_RULES = 'DELETE_RULES',
   DELETE_PROPERTY = 'DELETE_PROPERTY',
+  BLOCK_CATEGORY_INHERITANCE = 'BLOCK_CATEGORY_INHERITANCE',
+  UNLOCK_CATEGORY_INHERITANCE = 'UNLOCK_CATEGORY_INHERITANCE',
 }

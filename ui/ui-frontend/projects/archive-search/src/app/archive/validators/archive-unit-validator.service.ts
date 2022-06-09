@@ -40,14 +40,14 @@ import { AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
 import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 import { SearchCriteriaDto } from '../models/search.criteria';
 
 @Injectable()
 export class ArchiveUnitValidatorService {
-  constructor(private archiveService: ArchiveService, private shared: ArchiveSharedDataServiceService) {}
+  constructor(private archiveService: ArchiveService, private shared: ArchiveSharedDataService) {}
   debounceTime = 400;
   ruleActions: RuleCategoryAction;
   managementRules: ManagementRules[];
@@ -76,8 +76,8 @@ export class ArchiveUnitValidatorService {
     return (control: AbstractControl) => {
       const auditExists: any = {};
       auditExists[existTag] = true;
-      let criteria = cloneDeep(criteriaDto);
-
+      const criteria = cloneDeep(criteriaDto);
+      criteria.pageNumber = 0;
       criteria.criteriaList.forEach((v) =>
         v.values.forEach((v) => {
           v.id = control.value;
@@ -91,7 +91,6 @@ export class ArchiveUnitValidatorService {
                 .searchArchiveUnitsByCriteria(criteria, accessContract)
                 .toPromise()
                 .then((data) => {
-                  console.log('AU EXISTENCE = ', data);
                   if (data.totalResults === 1) {
                     this.shared.emitArchiveUnitTitle(ArchiveService.fetchAuTitle(data.results[0]));
                     return false;

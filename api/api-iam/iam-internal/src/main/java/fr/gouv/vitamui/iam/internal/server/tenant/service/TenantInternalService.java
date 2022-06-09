@@ -228,7 +228,10 @@ public class TenantInternalService extends VitamUICrudService<TenantDto, Tenant>
         tenantDto.setIdentifier(generateTenantIdentifier());
         ExternalParametersDto fullAccessContract =
             initFullAccessContractExternalParameter(customer.getIdentifier(), tenantDto.getName());
+        LOGGER.debug("Initializing VITAM Tenant with customer identifier {} and tenant name {}", customer.getIdentifier(), tenantDto.getName());
         initVitamTenantService.init(tenantDto, fullAccessContract);
+        fullAccessContract.setName(ExternalParametersInternalService.EXTERNAL_PARAMETER_IDENTIFIER_PREFIX
+            + tenantDto.getIdentifier());
         externalParametersInternalService.create(fullAccessContract);
         final String name = tenantDto.getName() != null ? tenantDto.getName().trim() : tenantDto.getName();
         final List<Tenant> tenants =

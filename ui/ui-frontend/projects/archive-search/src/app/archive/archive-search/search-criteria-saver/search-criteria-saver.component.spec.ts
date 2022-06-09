@@ -48,7 +48,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 import { InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment.prod';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
 import { VitamUISnackBar } from '../../shared/vitamui-snack-bar';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver.component';
@@ -85,6 +85,8 @@ describe('SearchCriteriaSaverComponent', () => {
     getSearchCriteriaHistory: () => of([]),
 
     deleteSearchCriteriaHistory: () => of(),
+
+    updateSearchCriteriaHistory: () => of(),
   };
 
   beforeEach(async () => {
@@ -102,7 +104,7 @@ describe('SearchCriteriaSaverComponent', () => {
       providers: [
         FormBuilder,
         HttpClientTestingModule,
-        ArchiveSharedDataServiceService,
+        ArchiveSharedDataService,
         DatePipe,
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogRefSpy },
@@ -211,6 +213,48 @@ describe('SearchCriteriaSaverComponent', () => {
       it('should get filters size searchCriteria', () => {
         const filterSize = component.getNbFilters(searchCriteriaHistory$[0]);
         expect(filterSize).toEqual(8);
+      });
+    });
+
+    describe('the scroll component should be present', () => {
+      it('should showScroll be true', () => {
+        component.over('scroll-results');
+        expect(component.showScroll).toBeTruthy();
+        expect(component.noScroll).toBeFalsy();
+      });
+    });
+
+    describe('the scroll filter component should not be present', () => {
+      it('should showScrollFilter be false', () => {
+        component.out('scroll-filters');
+        expect(component.showScrollFilter).toBeFalsy();
+        expect(component.noScroll).toBeFalsy();
+      });
+    });
+
+    describe('the saving date must be added and calculated', () => {
+      it('savingDate of each criteria save should not be null', () => {
+        // Given
+        let searchCriteriaHistory: SearchCriteriaHistory;
+        const criteriaList: SearchCriteriaEltements[] = [];
+        searchCriteriaHistory = {
+          id: 'id ',
+          name: 'save name',
+          savingDate: 'saving date',
+          searchCriteriaList: criteriaList,
+        };
+
+        // When
+        component.searchCriteriaHistory = searchCriteriaHistory;
+        component.criteriaToUpdate = searchCriteriaHistory;
+
+        component.update();
+        const excpectedDate = new Date().toISOString();
+
+        // Then
+        expect(component.criteriaToUpdate.savingDate).toBeDefined();
+        expect(component.criteriaToUpdate.savingDate).not.toBeNull();
+        expect(component.criteriaToUpdate.savingDate).toEqual(excpectedDate);
       });
     });
   });

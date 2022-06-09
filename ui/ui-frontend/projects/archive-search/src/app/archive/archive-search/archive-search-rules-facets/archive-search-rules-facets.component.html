@@ -1,28 +1,28 @@
-<div class="card-criteria">
-  <i
-    id="show-hide-facet-button"
-    (click)="showHideFacets(!facetsVisibles)"
-    class="vitamui-icon vitamui-icon-chevron-down vitamui-row-icon clickable"
-    [ngClass]="{ 'vitamui-icon-chevron-down': !facetsVisibles, 'vitamui-icon-chevron-up': facetsVisibles }"
-  ></i>
+<mat-tab-group [selectedIndex]="defaultFacetTabIndex">
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
+    </ng-template>
 
-  <mat-tab-group>
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
-      </ng-template>
+    <div *ngIf="facetsVisibles" id="facet-content">
+      <app-search-appraisal-rules-facets
+        [totalResults]="totalResults"
+        [appraisalRuleFacets]="appraisalRuleFacets"
+      ></app-search-appraisal-rules-facets>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }} </span>
+    </ng-template>
 
-      <div *ngIf="facetsVisibles" id="facet-content">
-        <app-search-appraisal-rules-facets
-          [totalResults]="totalResults"
-          [appraisalRuleFacets]="appraisalRuleFacets"
-        ></app-search-appraisal-rules-facets>
-      </div>
-    </mat-tab>
-    <mat-tab [disabled]="true">
-      <ng-template mat-tab-label>
-        <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }} </span>
-      </ng-template>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    <div *ngIf="facetsVisibles" id="facet-content">
+      <app-search-access-rules-facets [totalResults]="totalResults" [accessRuleFacets]="accessRuleFacets"></app-search-access-rules-facets>
+    </div>
+  </mat-tab>
+  <mat-tab [disabled]="true">
+    <ng-template mat-tab-label>
+      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }} </span>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

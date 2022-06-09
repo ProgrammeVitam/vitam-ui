@@ -249,8 +249,8 @@
       "TOOLTIP": "Paramétrer des profils de supervision pour l’APP de supervision des bordereaux"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
-      "NAME": "Recherche et consultation des archives",
-      "TOOLTIP": "Rechercher et consulter les archives"
+      "NAME": "Recherche, consultation et gestion des archives",
+      "TOOLTIP": "Rechercher, Gérer et consulter les archives"
     },
     "INGEST_MANAGEMENT_APP": {
       "NAME": "Dépôt et suivi des versements",

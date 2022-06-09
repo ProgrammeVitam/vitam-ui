@@ -39,15 +39,14 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   AccessionRegisterDetail,
-  AccessionRegisterStats,
-  BASE_URL,
   BaseHttpClient,
+  BASE_URL,
   PageRequest,
-  PaginatedResponse,
+  PaginatedResponse
 } from 'ui-frontend-common';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionRegisterDetail> {
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -62,7 +61,10 @@ export class AccessionRegisterDetailApiService extends BaseHttpClient<AccessionR
     return super.getAllPaginated(pageRequest, embedded, headers);
   }
 
-  getAccessionRegisterDetailStats(headers: HttpHeaders, search: any): Observable<AccessionRegisterStats> {
-    return this.http.post<AccessionRegisterStats>(`${this.apiUrl}` + '/stats', search, { headers });
+  exportAccessionRegisterCsv(criteria: any, headers?: HttpHeaders): Observable<Blob> {
+    return this.http.post(`${this.apiUrl}/export-csv`, criteria, {
+      responseType: 'blob',
+      headers: headers
+    });
   }
 }

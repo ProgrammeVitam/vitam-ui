@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.service;
 
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,9 @@ import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 import lombok.Getter;
 import lombok.Setter;
+import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 /**
  *  UI logbook service.
@@ -63,10 +68,12 @@ import lombok.Setter;
 public class LogbookService {
 
     private final LogbookExternalRestClient logbookRestClient;
+    private final LogbookExternalWebClient logbookExternalWebClient;
 
     @Autowired
-    public LogbookService(final LogbookExternalRestClient logbookRestClient) {
+    public LogbookService(final LogbookExternalRestClient logbookRestClient, final LogbookExternalWebClient logbookExternalWebClient) {
         this.logbookRestClient = logbookRestClient;
+        this.logbookExternalWebClient = logbookExternalWebClient;
     }
 
     public static <T> T responseMapping(final JsonNode json, final Class<T> clazz) {
@@ -152,8 +159,10 @@ public class LogbookService {
      * @param id
      * @return
      */
-    public ResponseEntity<Resource> downloadReport(final ExternalHttpContext context, final String id, final String downloadType) {
-        return getLogbookRestClient().downloadReport(context, id, downloadType);
+    public Mono<ResponseEntity<Resource>>  downloadReport(final ExternalHttpContext context, final String id, final String downloadType) {
+        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
+            logbookExternalWebClient.downloadReport(context, id, downloadType);
+        return resourceResponseEntityResponse;
     }
 
 }

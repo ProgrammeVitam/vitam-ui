@@ -1,0 +1,6 @@
+---
+
+package_name: "{{ mongo_express.package_name | default('vitamui-mongo-express') }}"
+service_name: "{{ mongo_express.service_name | default('vitamui-mongo-express') }}"
+
+service_at_boot: "{{ vitamui_defaults.services.at_boot | default(false) }}"

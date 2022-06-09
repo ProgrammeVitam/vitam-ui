@@ -43,7 +43,7 @@ import { Unit } from '../models/unit.interface';
 @Component({
   selector: 'app-archive-preview',
   templateUrl: './archive-preview.component.html',
-  styleUrls: ['./archive-preview.component.scss']
+  styleUrls: ['./archive-preview.component.scss'],
 })
 export class ArchivePreviewComponent implements OnInit, OnChanges {
   @Input()
@@ -66,6 +66,8 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   updateStarted = false;
   @Input()
   hasAccessContractManagementPermissions: boolean;
+  @Input()
+  hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = '';
   constructor(private route: ActivatedRoute, private translateService: TranslateService) {
     this.route.params.subscribe((params) => {
@@ -84,9 +86,9 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
     this.selectedIndex = 0;
   }
   showNormalPanel() {
+    this.selectedIndex--;
     this.isPanelextended = false;
     this.backToNormalLateralPanel.emit();
-    this.selectedIndex = 0;
     this.updateStarted = false;
   }
 

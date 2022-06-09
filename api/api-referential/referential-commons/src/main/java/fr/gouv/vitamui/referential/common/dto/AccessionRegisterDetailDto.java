@@ -52,6 +52,8 @@ public class AccessionRegisterDetailDto extends AccessionRegisterDto {
 
     private String submissionAgency;
 
+    private String submissionAgencyLabel;
+
     private String originatingAgencyLabel;
 
     private String archivalAgreement;

@@ -3,6 +3,7 @@ package fr.gouv.vitamui.ui.commons.service;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import fr.gouv.vitamui.commons.rest.client.logbook.LogbookExternalWebClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,10 +27,12 @@ public class LogbookServiceTest {
 
     @Mock
     private LogbookExternalRestClient baseLogbookRestClient;
+    @Mock
+    private LogbookExternalWebClient logbookExternalWebClient;
 
     @Before
     public void init() {
-        logbookService = new LogbookService(baseLogbookRestClient);
+        logbookService = new LogbookService(baseLogbookRestClient,logbookExternalWebClient);
     }
 
     /**

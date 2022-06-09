@@ -37,7 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.service;
 
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -45,9 +45,9 @@ import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
 import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
-import fr.gouv.vitamui.referential.common.dto.AccessionRegisterStatsDto;
 import fr.gouv.vitamui.referential.internal.client.AccessionRegisterDetailInternalRestClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -78,9 +78,8 @@ public class AccessionRegisterDetailExternalService extends
         return accessionRegisterDetailInternalRestClient;
     }
 
-    public AccessionRegisterStatsDto getAccessionRegisterDetailStats(
-        AccessionRegisterDetailsSearchStatsDto detailsSearchDto) {
-        return accessionRegisterDetailInternalRestClient.getAccessionRegisterDetailStats(getInternalHttpContext(), detailsSearchDto);
+    public Resource exportCsvArchiveUnitsByCriteria(final AccessionRegisterSearchDto query) {
+        return accessionRegisterDetailInternalRestClient.exportAccessionRegisterCsv(query, getInternalHttpContext());
     }
 
 }

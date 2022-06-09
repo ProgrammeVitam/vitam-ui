@@ -1,0 +1,9 @@
+{
+  "$query" : { },
+  "$filter" : {
+    "$orderby" : {
+      "messageIdentifierOrder" : -1
+    }
+  },
+  "$projection" : { }
+}

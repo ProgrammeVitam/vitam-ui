@@ -6,7 +6,7 @@ import { AccessionRegistersService } from '../accession-register.service';
 @Component({
   selector: 'app-accession-register-facets',
   templateUrl: './accession-register-facets.component.html',
-  styleUrls: ['./accession-register-facets.component.scss'],
+  styleUrls: ['./accession-register-facets.component.scss']
 })
 export class AccessionRegisterFacetsComponent implements OnInit {
   @Output() showAdvancedSearchPanel = new EventEmitter<boolean>();
@@ -17,11 +17,11 @@ export class AccessionRegisterFacetsComponent implements OnInit {
   constructor(public accessionRegistersService: AccessionRegistersService) {}
 
   ngOnInit(): void {
-    this.stateFacetDetails$ = this.accessionRegistersService.getFacetDetailsStats();
     this.advancedSearchPanelOpenState$ = this.accessionRegistersService.isOpenAdvancedSearchPanel();
+    this.stateFacetDetails$ = this.accessionRegistersService.getStats();
   }
 
   onDateCriteriaChange(dateCriteria: { dateMin: string; dateMax: string }) {
-    this.accessionRegistersService.notifyDateIntervalChange({endDateMin: dateCriteria.dateMin, endDateMax: dateCriteria.dateMax});
+    this.accessionRegistersService.notifyDateIntervalChange({ endDateMin: dateCriteria.dateMin, endDateMax: dateCriteria.dateMax });
   }
 }

@@ -30,7 +30,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchEliminationInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchMgtRulesInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchUnitExportCsvInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.ExportDipInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -83,18 +87,27 @@ public class ArchiveSearchInternalController {
         VitamUILoggerFactory.getInstance(ArchiveSearchInternalController.class);
 
     private final ArchiveSearchInternalService archiveInternalService;
-
-
+    private final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService;
+    private final ExportDipInternalService exportDipInternalService;
+    private final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService;
+    private final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
     private final InternalSecurityService securityService;
-
     private final ObjectMapper objectMapper;
 
     @Autowired
     public ArchiveSearchInternalController(final ArchiveSearchInternalService archiveInternalService,
-        final InternalSecurityService securityService, final ObjectMapper objectMapper) {
+        final InternalSecurityService securityService, final ObjectMapper objectMapper,
+        final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService,
+        final ExportDipInternalService exportDipInternalService,
+        final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
+        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
         this.objectMapper = objectMapper;
+        this.archiveSearchUnitExportCsvInternalService = archiveSearchUnitExportCsvInternalService;
+        this.exportDipInternalService = exportDipInternalService;
+        this.archiveSearchEliminationInternalService = archiveSearchEliminationInternalService;
+        this.archiveSearchMgtRulesInternalService = archiveSearchMgtRulesInternalService;
     }
 
     @PostMapping(RestApi.SEARCH_PATH)
@@ -181,7 +194,8 @@ public class ArchiveSearchInternalController {
         LOGGER.info("Export to CSV file Archive Units by criteria {}", searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         Resource exportedResult =
-            archiveInternalService.exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
+            archiveSearchUnitExportCsvInternalService
+                .exportToCsvSearchArchiveUnitsByCriteria(searchQuery, vitamContext);
         return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 
@@ -198,7 +212,7 @@ public class ArchiveSearchInternalController {
                 "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, exportDipCriteriaDto);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = archiveInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
+        String result = exportDipInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -215,7 +229,7 @@ public class ArchiveSearchInternalController {
                 "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        JsonNode jsonNode = archiveInternalService.startEliminationAnalysis(searchQuery, vitamContext);
+        JsonNode jsonNode = archiveSearchEliminationInternalService.startEliminationAnalysis(searchQuery, vitamContext);
         return jsonNode;
     }
 
@@ -232,7 +246,7 @@ public class ArchiveSearchInternalController {
                 "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        JsonNode jsonNode = archiveInternalService.startEliminationAction(searchQuery, vitamContext);
+        JsonNode jsonNode = archiveSearchEliminationInternalService.startEliminationAction(searchQuery, vitamContext);
         return jsonNode;
     }
 
@@ -247,7 +261,8 @@ public class ArchiveSearchInternalController {
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, ruleSearchCriteriaDto);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        String result = archiveInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
+        String result =
+            archiveSearchMgtRulesInternalService.updateArchiveUnitsRules(vitamContext, ruleSearchCriteriaDto);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -274,7 +289,9 @@ public class ArchiveSearchInternalController {
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws VitamClientException, IOException {
-        LOGGER.debug("Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
+        LOGGER.debug(
+            "Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId,
             accessContractId, searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
         ParameterChecker
