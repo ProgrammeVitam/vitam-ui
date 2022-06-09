@@ -27,7 +27,7 @@
       <trans-unit id="notificationSubrogationActivated" datatype="html">
         <source>
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu&apos;à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: &apos;H&apos;}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: &apos;mm&apos;}}"/>. Veuillez ne pas changer d&apos;application.
+      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | dateTime: &apos;H&apos;}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | dateTime: &apos;mm&apos;}}"/>. Veuillez ne pas changer d&apos;application.
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/vitamui-snack-bar/vitamui-snack-bar.component.html</context>
@@ -912,7 +912,7 @@
       </trans-unit>
       <trans-unit id="subrogationBannerAdmin" datatype="html">
         <source>Subrogation de l&apos;utilisateur
-    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu&apos;à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:&apos;HH:mm:ss&apos;}}"/></source>
+    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu&apos;à <x id="INTERPOLATION_1" equiv-text="{{endDate | dateTime:&apos;HH:mm:ss&apos;}}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/subrogation/subrogation-banner/subrogation-banner.component.html</context>
           <context context-type="linenumber">3</context>
@@ -3411,7 +3411,7 @@
       </trans-unit>
       <trans-unit id="userInfoTabBlocked" datatype="html">
         <source>
-        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container&gt;"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | date: &apos;medium&apos; }}"/>)
+        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container&gt;"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | dateTime: &apos;medium&apos; }}"/>)
         <x id="CLOSE_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;/ng-container&gt;"/>
       </source>
         <context-group purpose="location">

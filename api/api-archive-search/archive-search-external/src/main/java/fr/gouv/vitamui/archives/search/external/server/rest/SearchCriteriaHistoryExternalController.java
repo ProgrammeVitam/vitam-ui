@@ -36,11 +36,13 @@
  */
 package fr.gouv.vitamui.archives.search.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.archives.search.external.server.service.SearchCriteriaHistoryExternalService;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
@@ -94,27 +96,29 @@ public class SearchCriteriaHistoryExternalController {
 
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
-    public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto) {
+    public SearchCriteriaHistoryDto create(final @Valid @RequestBody SearchCriteriaHistoryDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create SearchCriteriaHistory {}", dto);
         return searchCriteriaHistoryExternalService.create(dto);
     }
 
     @DeleteMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public void delete(final @PathVariable("id") String id) {
+    public void delete(final @PathVariable("id") String id) throws PreconditionFailedException, InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
-        ParameterChecker.checkParameter("Identifier is mandatory : " , id);
-        SanityChecker.check(id);
         searchCriteriaHistoryExternalService.delete(id);
     }
 
     @ApiOperation(value = "Update Search criteria history")
     @PutMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_CREATE_ARCHIVE)
-    public void update(@RequestBody final SearchCriteriaHistoryDto entity) {
-        LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
+    public void update(@RequestBody final SearchCriteriaHistoryDto entity) throws PreconditionFailedException, InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(entity);
         ParameterChecker.checkParameter("Identifier is mandatory : " , entity.getId());
-        SanityChecker.check(entity.getId());
+        LOGGER.debug("Update SearchCriteriaHistory with id :{}", entity.getId());
         searchCriteriaHistoryExternalService.update(entity);
     }
 }

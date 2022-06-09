@@ -12,7 +12,7 @@ export class EventData {
   evId: string;
   evParentId?: string;
   evType: string;
-  evDateTime?: Date;
+  evDateTime?: string;
   evDetData?: string;
   outcome: string;
   outMessg: string;

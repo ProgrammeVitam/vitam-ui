@@ -41,6 +41,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -79,7 +80,7 @@ public class ManagementContractExternalController {
     @Secured(ServicesData.ROLE_GET_MANAGEMENT_CONTRACT)
     public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all management contracts criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return managementContractExternalService.getAll(criteria);
     }
 

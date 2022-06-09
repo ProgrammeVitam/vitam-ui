@@ -36,25 +36,27 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import java.util.Collection;
+import java.util.Optional;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.ManagementContractDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.service.ManagementContractService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -68,7 +70,7 @@ import java.util.Optional;
 
 @Api(tags = "management-contract")
 @RestController
-@RequestMapping("${ui-referential.prefix}/management-contract")
+@RequestMapping("${ui-referential.prefix}/managementcontract")
 @Consumes("application/json")
 @Produces("application/json")
 public class ManagementContractController extends AbstractUiRestController {
@@ -85,7 +87,10 @@ public class ManagementContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ManagementContractDto> getAll(final Optional<String> criteria) {
+    public Collection<ManagementContractDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
         RestUtils.checkCriteria(criteria);
         Collection<ManagementContractDto> managementContractDtoList =  service.getAll(buildUiHttpContext(), criteria);

@@ -38,7 +38,6 @@ package fr.gouv.vitamui.ui.commons.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.exception.NotFoundException;
@@ -91,7 +90,6 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T patch(final ExternalHttpContext c, final Map<String, Object> partialDto, final String id) {
-        SanityChecker.check(id);
         beforePatch(partialDto, id);
         return getClient().patch(c, partialDto);
     }
@@ -105,7 +103,6 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T getOne(final ExternalHttpContext context, final String id) {
-        SanityChecker.check(id);
         Assert.isTrue(!id.contains(","), "No comma must be contains");
         final T entity = getClient().getOne(context, id);
         if (entity == null) {
@@ -116,7 +113,6 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public T getOne(final ExternalHttpContext context, final String id, final Optional<String> embedded) {
-        SanityChecker.check(id);
         Assert.isTrue(!id.contains(","), "No comma must be contains");
         final T entity = getClient().getOne(context, id, Optional.empty(), embedded);
         if (entity == null) {
@@ -131,7 +127,6 @@ public abstract class AbstractCrudService<T extends IdDto> {
     }
 
     public void delete(final ExternalHttpContext context, final String id) {
-        SanityChecker.check(id);
         getClient().delete(context, id);
     }
 
@@ -145,7 +140,6 @@ public abstract class AbstractCrudService<T extends IdDto> {
      * @return
      */
     public LogbookOperationsResponseDto findHistoryById(final ExternalHttpContext context, final String id) {
-        SanityChecker.check(id);
         final JsonNode body = getClient().findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);

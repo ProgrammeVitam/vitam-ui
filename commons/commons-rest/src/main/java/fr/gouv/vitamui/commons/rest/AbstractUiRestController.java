@@ -38,6 +38,8 @@ package fr.gouv.vitamui.commons.rest;
 
 import javax.servlet.http.HttpServletRequest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,19 +85,22 @@ public abstract class AbstractUiRestController {
         throw new UnAuthorizedException("User is not connected");
     }
 
-    protected ExternalHttpContext buildUiHttpContext() {
+    protected ExternalHttpContext buildUiHttpContext() throws InvalidParseOperationException,
+        PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
         return ExternalHttpContext.buildFromUiRequest(request, principal);
     }
 
-    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier) {
+    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier)
+        throws InvalidParseOperationException, PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
         return ExternalHttpContext.buildFromUiRequest(request, principal, tenantIdentifier, null);
     }
 
-    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier, final String accessContractId) {
+    protected ExternalHttpContext buildUiHttpContext(final Integer tenantIdentifier, final String accessContractId)
+        throws InvalidParseOperationException, PreconditionFailedException {
         final AuthUserDto principal = getAuthenticatedUser();
         final HttpServletRequest request = getCurrentHttpRequest();
         return ExternalHttpContext.buildFromUiRequest(request, principal, tenantIdentifier, accessContractId);

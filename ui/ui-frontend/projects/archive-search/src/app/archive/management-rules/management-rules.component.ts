@@ -82,23 +82,21 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   };
   actionSelected: string;
 
-  rulesCatygories: { id: string; name: string; isDisabled: boolean; checked: boolean }[] = [
-    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true, checked: false },
-    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false, checked: false },
-    { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true, checked: false },
-    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false, checked: false },
+  rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
+    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: false },
+    { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
+    { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
+    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false },
     {
       id: 'DisseminationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'),
       isDisabled: true,
-      checked: false,
     },
-    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true, checked: false },
+    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true },
     {
       id: 'ClassificationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'),
       isDisabled: true,
-      checked: false,
     },
   ];
 
@@ -118,6 +116,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   isAccessRuleActionDisabled = false;
   isBlockInheritanceCategoryDisabled = false;
   isUnlockInheritanceCategoryDisabled = false;
+  isStorageRuleActionDisabled = false;
 
   messageNotUpdate: string;
   messageNotAdd: string;
@@ -314,6 +313,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   selectRule(rule: any) {
     this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
     this.isAccessRuleActionDisabled = rule.id === RuleTypeEnum.ACCESSRULE;
+    this.isStorageRuleActionDisabled = rule.id === RuleTypeEnum.STORAGERULE;
 
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
@@ -375,8 +375,10 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (
       rule === RuleActionsEnum.ADD_RULES &&
-      this.ruleCategorySelected === 'AppraisalRule' &&
-      this.ruleActions.filter((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).length === 0
+      (this.ruleCategorySelected === RuleTypeEnum.APPRAISALRULE || this.ruleCategorySelected === RuleTypeEnum.STORAGERULE) &&
+      this.ruleActions.filter(
+        (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategorySelected
+      ).length === 0
     ) {
       this.ruleActions.push({
         ruleType: this.ruleCategorySelected,
@@ -385,6 +387,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         ruleId: '',
         stepValid: false,
       });
+
       this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 2, ruleId: '', stepValid: false });
     } else {
       this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 1, ruleId: '', stepValid: false });
@@ -427,23 +430,23 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         }
         break;
       case 'DELETE_PROPERTY':
-        if (!this.isDeletePropertyDisabled) {
+        if (!this.isDeletePropertyDisabled && !this.isStorageRuleActionDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
 
       case 'BLOCK_CATEGORY_INHERITANCE':
-        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled) {
+        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
       case 'UNLOCK_CATEGORY_INHERITANCE':
-        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled) {
+        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
           this.prepareActionToAdd(rule);
         }
         break;
       default:
-        this.logger.info('The action could not be created or added');
+        this.logger.info('', 'The action could not be created or added');
         break;
     }
   }
@@ -470,6 +473,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
 
     this.prepareAppraisalRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
     this.prepareAccessRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareStorageRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
@@ -579,6 +583,70 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       ) {
         actionAddOnRules.AppraisalRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
+  prepareStorageRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.STORAGERULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.StorageRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.StorageRule = {
           preventInheritance,
         };
       }

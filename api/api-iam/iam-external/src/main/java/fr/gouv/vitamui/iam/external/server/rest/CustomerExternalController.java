@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.iam.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -44,6 +45,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -122,8 +124,9 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @GetMapping
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
     public Collection<CustomerDto> getAll(final Optional<String> criteria) {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all customer criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return customerExternalService.getAll(criteria);
     }
 
@@ -131,7 +134,7 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @Secured(ServicesData.ROLE_GET_CUSTOMERS)
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exist by criteria={}", criteria);
         final boolean exist = customerExternalService.checkExists(criteria);
         return RestUtils.buildBooleanResponse(exist);
@@ -140,9 +143,11 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @Override
     @Secured({ ServicesData.ROLE_GET_CUSTOMERS })
     @GetMapping(CommonConstants.PATH_ID)
-    public CustomerDto getOne(final @PathVariable("id") String id) {
-        LOGGER.debug("Get {}", id);
+    public CustomerDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
+        LOGGER.debug("Get {}", id);
         return customerExternalService.getOne(id);
     }
 
@@ -160,16 +165,27 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()){
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
-        RestUtils.checkCriteria(criteria);
         return customerExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_CREATE_CUSTOMERS)
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto create(@ModelAttribute final CustomerCreationFormData customerData) {
+    public CustomerDto create(@ModelAttribute final CustomerCreationFormData customerData)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(customerData);
         LOGGER.debug("Create {}", customerData);
         return customerExternalService.create(customerData);
     }
@@ -177,10 +193,13 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @Override
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     @PutMapping(CommonConstants.PATH_ID)
-    public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto) {
-        LOGGER.debug("Update {} with {}", id, dto);
+    public CustomerDto update(final @PathVariable("id") String id, final @Valid @RequestBody CustomerDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : " , id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
+        LOGGER.debug("Update {} with {}", id, dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return customerExternalService.update(dto);
     }
@@ -189,17 +208,23 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_CUSTOMERS)
     public CustomerDto patch(final @PathVariable("id") String id,
-                             @ModelAttribute final CustomerPatchFormData customerData) {
-        LOGGER.debug("Patch customer with {}", customerData.getPartialCustomerDto().get("id"));
+                             @ModelAttribute final CustomerPatchFormData customerData)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(customerData);
+        LOGGER.debug("Patch customer with {}", customerData.getPartialCustomerDto().get("id"));
         return customerExternalService.patch(customerData);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for customer with id :{}", id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for customer with id :{}", id);
         return customerExternalService.findHistoryById(id);
     }
 
@@ -216,10 +241,12 @@ public class CustomerExternalController implements CrudController<CustomerDto> {
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
-        LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
-        SanityChecker.check(id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logo for customer with id :{}, type : {}", id, type);
         final ResponseEntity<Resource> response = customerExternalService.getLogo(id, type);
         return RestUtils.buildFileResponse(response, Optional.empty(), Optional.empty());
     }

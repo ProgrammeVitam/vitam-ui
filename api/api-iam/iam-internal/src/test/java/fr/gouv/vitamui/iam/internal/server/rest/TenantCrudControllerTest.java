@@ -1,11 +1,13 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
 import fr.gouv.vitamui.commons.api.domain.TenantDto;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.common.dto.CustomerDto;
@@ -267,7 +269,8 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     }
 
     @Test
-    public void testUpdateFailsAsIdentifierIsDifferent() {
+    public void testUpdateFailsAsIdentifierIsDifferent() throws InvalidParseOperationException,
+        PreconditionFailedException  {
         final TenantDto dto = buildTenantDto();
         dto.setIdentifier(8435455);
 
@@ -289,7 +292,7 @@ public final class TenantCrudControllerTest implements InternalCrudControllerTes
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         prepareServices();
         controller.delete(TENANT_ID);
     }

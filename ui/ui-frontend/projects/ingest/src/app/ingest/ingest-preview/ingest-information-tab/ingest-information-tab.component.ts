@@ -34,93 +34,72 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { IngestService } from '../../ingest.service';
+import {Component, Input, OnInit} from '@angular/core';
+import {
+  AgIdExtDeflateJson,
+  EvDetDataDeflateJson,
+  ingestHasEvents,
+  ingestLastEvent,
+  ingestStatus,
+  LogbookOperation
+} from "../../../models/logbook-event.interface";
 
 @Component({
   selector: 'app-ingest-information-tab',
   templateUrl: './ingest-information-tab.component.html',
   styleUrls: ['./ingest-information-tab.component.scss']
 })
-export class IngestInformationTabComponent implements OnInit, OnChanges {
-  @Input()
-  ingest: any;
+export class IngestInformationTabComponent implements OnInit {
+  @Input() ingest: LogbookOperation;
+  evDetDataDeflated: EvDetDataDeflateJson;
+  agIdExtDeflated: AgIdExtDeflateJson;
 
-  ingestDetails: any;
-  constructor(private ingestService: IngestService) { }
+  constructor() {
+  }
 
   ngOnInit() {
-    this.getIngestDetails(this.ingest);
+    this.evDetDataDeflated = this.deflateJsonEvDetData(this.ingest)
+    this.agIdExtDeflated = this.deflateJsonAgIdExt(this.ingest)
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.ingest) {
-      this.getIngestDetails(changes.ingest.currentValue);
+  hasEvent(): boolean {
+    return ingestHasEvents(this.ingest);
+  }
+
+  ingestMessage(ingest: LogbookOperation): string {
+    return ingestHasEvents(ingest) ? ingestLastEvent(ingest).outMessg : ingest.outMessg;
+  }
+
+  ingestEndDate(ingest: LogbookOperation): string {
+    return ingestHasEvents(ingest) ? ingestLastEvent(ingest).evDateTime : ingest.evDateTime;
+  }
+
+  getIngestStatus(ingest: LogbookOperation): string {
+    return ingestStatus(ingest)
+  }
+
+  private deflateJsonEvDetData(element: LogbookOperation): EvDetDataDeflateJson {
+    if (!element || !element.evDetData || typeof element.evDetData !== 'string' || element.evDetData.length <= 2) {
+      return {};
     }
+    return JSON.parse(element.evDetData);
   }
 
-  getIngestDetails(ingest: any) {
-    if (ingest.events[ingest.events.length - 1].outcome !== 'OK' && ingest.events[ingest.events.length - 1].outcome !== 'FATAL') {
-      this.ingestService.getIngestOperation(ingest.id).subscribe(data => {
-        this.ingestDetails = data;
-      });
-    } else {
-      this.ingestDetails = null;
+  private deflateJsonAgIdExt(element: LogbookOperation): AgIdExtDeflateJson {
+    if (!element || !element.agIdExt || typeof element.agIdExt !== 'string' || element.agIdExt.length <= 2) {
+      return {};
     }
+    return JSON.parse(element.agIdExt);
   }
 
-  getOperationStatus(ingest: any): string {
-    const eventsLength = ingest.events.length;
-    if (eventsLength > 0) {
-      if (ingest.evType === ingest.events[eventsLength - 1].evType) {
-        return ingest.events[eventsLength - 1].outcome;
-      } else {
-        return 'En cours';
-      }
+  getAgIdExt(element: LogbookOperation): any {
+    if (!element) {
+      return element;
     }
-  }
-
-  ingestMessage(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].outMessg :
-      ingest.outMessg;
-  }
-
-  ingestEndDate(ingest: any): string {
-    return (ingest.events !== undefined && ingest.events.length !== 0) ?
-      ingest.events[ingest.events.length - 1].evDateTime :
-      ingest.evDateTime;
-  }
-
-  ingestStatus(ingest: any): string {
-    if (this.getOperationStatus(ingest) === 'En cours') {
-      return 'En cours';
-    } else {
-      return (ingest.events !== undefined && ingest.events.length !== 0) ?
-        ingest.events[ingest.events.length - 1].outcome : ingest.outcome;
+    if (element.agIdExt && typeof element.agIdExt === 'string' && element.agIdExt.length >= 2) {
+      element.agIdExt = JSON.parse(element.agIdExt);
     }
+    return element.agIdExt;
   }
-
-  getEvDetData(element: any) {
-      if (!element) {
-        return element;
-      }
-
-      if (element.evDetData && typeof element.evDetData === 'string' && element.evDetData.length >= 2) {
-        element.evDetData = JSON.parse(element.evDetData);
-      }
-      return element.evDetData;
-    }
-
-    getAgIdExt(element: any) {
-      if (!element) {
-        return element;
-      }
-
-      if (element.agIdExt && typeof element.agIdExt === 'string' && element.agIdExt.length >= 2) {
-        element.agIdExt = JSON.parse(element.agIdExt);
-      }
-      return element.agIdExt;
-    }
 
 }

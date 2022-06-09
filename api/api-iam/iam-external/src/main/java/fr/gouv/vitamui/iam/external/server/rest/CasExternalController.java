@@ -36,10 +36,12 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.common.dto.SubrogationDto;
@@ -95,10 +97,11 @@ public class CasExternalController {
     @PostMapping(RestApi.CAS_CHANGE_PASSWORD_PATH)
     @Secured(ServicesData.ROLE_CAS_CHANGE_PASSWORD)
     @ResponseBody
-    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password) {
+    public String changePassword(@RequestHeader(defaultValue = "") final String username, @RequestHeader(defaultValue = "") final String password)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("changePassword for username: {} / password_exists? {}", username, StringUtils.isNotBlank(password));
         ParameterChecker.checkParameter("The user and password are mandatory : ", username, password);
-        SanityChecker.check(username);
+        SanityChecker.checkSecureParameter(username);
         casService.changePassword(username, password);
         return "true";
     }
@@ -121,9 +124,11 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_USERS_PATH, params = "id")
     @Secured(ServicesData.ROLE_CAS_USERS)
-    public UserDto getUserById(@RequestParam final String id) {
+    public UserDto getUserById(@RequestParam final String id) throws InvalidParseOperationException,
+        PreconditionFailedException  {
         LOGGER.debug("getUserById: {}", id);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
         return casService.getUserById(id);
     }
 
@@ -137,9 +142,11 @@ public class CasExternalController {
 
     @GetMapping(value = RestApi.CAS_SUBROGATIONS_PATH, params = "superUserId")
     @Secured(ServicesData.ROLE_CAS_SUBROGATIONS)
-    public List<SubrogationDto> getSubrogationsBySuperUserId(@RequestParam final String superUserId) {
+    public List<SubrogationDto> getSubrogationsBySuperUserId(@RequestParam final String superUserId)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("getSubrogationsBySuperUserId: {}", superUserId);
         ParameterChecker.checkParameter("The superUserId is mandatory : ", superUserId);
+        SanityChecker.checkSecureParameter(superUserId);
         return casService.getSubrogationsBySuperUserId(superUserId);
     }
 

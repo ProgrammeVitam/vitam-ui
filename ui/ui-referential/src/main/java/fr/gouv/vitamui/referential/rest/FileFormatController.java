@@ -36,22 +36,22 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
+import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
+import fr.gouv.vitamui.referential.service.FileFormatService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -72,20 +72,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
-import fr.gouv.vitamui.referential.common.dto.FileFormatDto;
-import fr.gouv.vitamui.referential.service.FileFormatService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @Api(tags = "fileformat")
 @RestController
@@ -106,9 +103,11 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<FileFormatDto> getAll(final Optional<String> criteria) {
+    public Collection<FileFormatDto> getAll(final Optional<String> criteria) throws
+        PreconditionFailedException, InvalidParseOperationException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -116,7 +115,12 @@ public class FileFormatController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<FileFormatDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -135,7 +139,8 @@ public class FileFormatController extends AbstractUiRestController {
         }
     }
 
-    private FileFormatDto getById(final String identifier) throws UnsupportedEncodingException {
+    private FileFormatDto getById(final String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), identifier);
     }
@@ -148,7 +153,9 @@ public class FileFormatController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create file format")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileformatDto) {
+    public ResponseEntity<Void> check(@RequestBody FileFormatDto fileformatDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(fileformatDto);
         LOGGER.debug("check ability to create file format={}", fileformatDto);
         final boolean exist = service.check(buildUiHttpContext(), fileformatDto);
         LOGGER.debug("response value={}" + exist);
@@ -158,28 +165,40 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "Create file format")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public FileFormatDto create(@Valid @RequestBody  FileFormatDto fileformatDto) {
+    public FileFormatDto create(@Valid @RequestBody  FileFormatDto fileformatDto)
+        throws PreconditionFailedException, InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(fileformatDto);
         LOGGER.debug("create file format={}", fileformatDto);
+        SanityChecker.sanitizeCriteria(fileformatDto);
         return service.create(buildUiHttpContext(), fileformatDto);
     }
 
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public FileFormatDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch fileformat : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
-    private LogbookOperationsResponseDto findHistoryById(String id) {
+    private LogbookOperationsResponseDto findHistoryById(String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for file format with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "delete file format")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
+    public void delete(final @PathVariable String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("delete file format with id :{}", id);
         service.delete(buildUiHttpContext(), id);
     }
@@ -187,7 +206,8 @@ public class FileFormatController extends AbstractUiRestController {
     @ApiOperation(value = "get exported csv for file formats")
     @GetMapping("/export")
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> export() {
+    public ResponseEntity<Resource> export() throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("export file formats");
         return service.export(buildUiHttpContext());
     }
@@ -200,7 +220,8 @@ public class FileFormatController extends AbstractUiRestController {
      */
     @ApiOperation(value = "import a file format xml file")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importFileFormats(@Context HttpServletRequest request, MultipartFile file) {
+    public JsonNode importFileFormats(@Context HttpServletRequest request, MultipartFile file)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Import file format file {}", file != null ? file.getOriginalFilename() : null);
         return service.importFileFormats(buildUiHttpContext(), file);
     }

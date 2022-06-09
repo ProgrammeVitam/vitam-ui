@@ -36,6 +36,8 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -75,7 +77,8 @@ public class ExternalParametersController extends AbstractUiRestController {
     @GetMapping
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, String> getMyExternalParameters() {
+    public Map<String, String> getMyExternalParameters() throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("Get external parameters for the authenticated user");
 
         Map<String, String> parameters = service.getMyExternalParameters(buildUiHttpContext());

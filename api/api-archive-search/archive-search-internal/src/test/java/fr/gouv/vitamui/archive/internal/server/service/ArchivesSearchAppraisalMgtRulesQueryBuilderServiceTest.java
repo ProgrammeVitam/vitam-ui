@@ -167,7 +167,7 @@ public class ArchivesSearchAppraisalMgtRulesQueryBuilderServiceTest {
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
+        LOGGER.debug(queryStr);
         String queryFileStr = loadFileContent("appraisal/interval-date-query.txt");
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 

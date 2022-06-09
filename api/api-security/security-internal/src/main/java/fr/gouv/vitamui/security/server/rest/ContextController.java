@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.security.server.rest;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -91,7 +92,7 @@ public class ContextController implements CrudController<ContextDto> {
     @GetMapping
     public List<ContextDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("Get ALL");
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return contextService.getAll(criteria).stream().collect(Collectors.toList());
     }
 
@@ -108,7 +109,7 @@ public class ContextController implements CrudController<ContextDto> {
     public ContextDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return contextService.getOne(id, criteria);
     }
 

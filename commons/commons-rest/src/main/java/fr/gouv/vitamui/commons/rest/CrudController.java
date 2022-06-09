@@ -40,17 +40,11 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import org.springframework.http.ResponseEntity;
 
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 
-/**
- * To check existence, read, create, update and delete an object with identifier.
- * <br>
- * Method : {@link #getOne(String, Optional)} must be use only by an external endpoints
- *
- *
- */
 public interface CrudController<D extends IdDto> {
 
     /**
@@ -71,10 +65,10 @@ public interface CrudController<D extends IdDto> {
 
     /**
      * GetOne.
-     * @param ids
+     * @param id
      * @return
      */
-    default D getOne(final String id) {
+    default D getOne(final String id) throws InvalidParseOperationException {
         throw new UnsupportedOperationException("getOne not implemented");
     }
 
@@ -83,7 +77,7 @@ public interface CrudController<D extends IdDto> {
      * @param dto
      * @return
      */
-    D create(D dto);
+    D create(D dto) throws InvalidParseOperationException;
 
     /**
      * Update an item with its id.
@@ -91,13 +85,13 @@ public interface CrudController<D extends IdDto> {
      * @param dto
      * @return
      */
-    D update(String id, D dto);
+    D update(String id, D dto) throws InvalidParseOperationException;
 
     /**
      * Delete an item.
      * @param id
      */
-    default void delete(final String id) {
+    default void delete(final String id) throws InvalidParseOperationException {
         throw new UnsupportedOperationException("delete not implemented");
     }
 
@@ -107,7 +101,7 @@ public interface CrudController<D extends IdDto> {
      * @param updates
      * @return
      */
-    default D patch(final String id, final Map<String, Object> updates) {
+    default D patch(final String id, final Map<String, Object> updates) throws InvalidParseOperationException {
         throw new UnsupportedOperationException("patch not implemented");
     }
 }

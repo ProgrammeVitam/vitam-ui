@@ -36,29 +36,33 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
-import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.referential.common.dto.AgencyDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.service.UnitService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("${ui-referential.prefix}" + RestApi.SEARCH_PATH)
@@ -66,7 +70,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Produces("application/json")
 public class UnitController extends AbstractUiRestController {
 
-    private static final VitamUILogger LOG = VitamUILoggerFactory.getInstance(UnitController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(UnitController.class);
 
     private final UnitService searchService;
 
@@ -74,13 +78,16 @@ public class UnitController extends AbstractUiRestController {
     public UnitController(final UnitService searchService) {
         this.searchService = searchService;
     }
-    
+
     @ApiOperation(value = "search unit by id")
     @GetMapping(RestApi.UNITS_PATH + "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto searchUnitById(@PathVariable final String id) {
-        LOG.debug("searchUnits by id = {}", id);
+    public VitamUISearchResponseDto searchUnitById(@PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("searchUnits by id = {}", id);
         return searchService.searchById(id, buildUiHttpContext());
     }
 
@@ -88,28 +95,39 @@ public class UnitController extends AbstractUiRestController {
     @PostMapping({RestApi.UNITS_PATH + RestApi.DSL_PATH, RestApi.UNITS_PATH + RestApi.DSL_PATH + CommonConstants.PATH_ID})
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public JsonNode findByDsl(final @PathVariable Optional<String> id, @RequestBody final JsonNode dsl) {
-        LOG.debug("searchUnits by dsl = {}", dsl);
-        LOG.debug("id = {}", id);
+    public JsonNode findByDsl(final @PathVariable Optional<String> id, @RequestBody final JsonNode dsl)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        if(id.isPresent()) {
+            SanityChecker.checkSecureParameter(id.get());
+        }
+        SanityChecker.sanitizeJson(dsl);
         ParameterChecker.checkParameter("The Custom DSL is a mandatory parameter: ", dsl);
+        LOGGER.debug("searchUnits by dsl = {}", dsl);
+        LOGGER.debug("id = {}", id);
         return searchService.findByDsl(id, dsl, buildUiHttpContext());
     }
-    
+
     @ApiOperation(value = "find unit objects by custom dsl")
     @PostMapping(RestApi.UNITS_PATH + CommonConstants.PATH_ID + RestApi.OBJECTS_PATH)
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public JsonNode findObjectMetadataById(final @PathVariable String id, @RequestBody final JsonNode dsl) {
-        LOG.debug("searchUnitObjects by id {} and dsl = {}", id, dsl);
+    public JsonNode findObjectMetadataById(final @PathVariable String id, @RequestBody final JsonNode dsl)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeJson(dsl);
+        LOGGER.debug("searchUnitObjects by id {} and dsl = {}", id, dsl);
         return searchService.findObjectMetadataById(id, dsl, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get filing plan")
     @GetMapping(RestApi.FILING_PLAN_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUISearchResponseDto findFilingPlan() {
-        LOG.debug("find filing plan");
+    public VitamUISearchResponseDto findFilingPlan() throws InvalidParseOperationException,
+        PreconditionFailedException {
+        LOGGER.debug("find filing plan");
         return searchService.findFilingPlan(buildUiHttpContext());
     }
 }

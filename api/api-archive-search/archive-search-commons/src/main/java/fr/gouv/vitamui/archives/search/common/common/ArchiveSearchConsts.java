@@ -55,12 +55,13 @@ public class ArchiveSearchConsts {
 
 
     public enum CriteriaCategory {
-        FIELDS, APPRAISAL_RULE, ACCESS_RULE, NODES
+        FIELDS, APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE, HOLD_RULE, REUSE_RULE, DISSEMINATION_RULE, CLASSIFICATION_RULE, NODES
     }
 
-
     public enum CriteriaMgtRulesCategory {
-        APPRAISAL_RULE("AppraisalRule"), ACCESS_RULE("AccessRule");
+        APPRAISAL_RULE("AppraisalRule"), ACCESS_RULE("AccessRule"), STORAGE_RULE("StorageRule"),
+        DISSEMINATION_RULE("DisseminationRule"), CLASSIFICATION_RULE("ClassificationRule"),
+        HOLD_RULE("HoldRule"), REUSE_RULE("ReuseRule");
 
         private final String fieldMapping;
 

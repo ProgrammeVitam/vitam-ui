@@ -28,6 +28,7 @@ package fr.gouv.vitamui.archives.search.external.server.rest;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
@@ -40,6 +41,7 @@ import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
@@ -83,10 +85,11 @@ public class ArchivesSearchExternalController {
 
     @PostMapping(RestApi.SEARCH_PATH)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.info("Calling search archive Units By Criteria {} ", query);
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling search archive Units By Criteria {} ", query);
         return archivesSearchExternalService.searchArchiveUnitsByCriteria(query);
     }
 
@@ -100,108 +103,125 @@ public class ArchivesSearchExternalController {
         CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
-        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version) {
-        LOGGER.info("Download the Archive Unit Object with id {} ", id);
+        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Download the Archive Unit Object with id {} ", id);
         return archivesSearchExternalService.downloadObjectFromUnit(id, usage, version);
     }
 
     @GetMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id) {
-        LOGGER.info("the UA by id {} ", id);
+    public ResponseEntity<ResultsDto> findUnitById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("the UA by id {} ", id);
         return archivesSearchExternalService.findUnitById(id);
     }
 
     @GetMapping(RestApi.OBJECTGROUP + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id) {
-        LOGGER.info("Find a ObjectGroup by id {} ", id);
+    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find a ObjectGroup by id {} ", id);
         return archivesSearchExternalService.findObjectById(id);
     }
 
     @PostMapping(RestApi.EXPORT_CSV_SEARCH_PATH)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.info("Calling export to csv search archive Units By Criteria {} ", query);
+    public Resource exportCsvArchiveUnitsByCriteria(final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling export to csv search archive Units By Criteria {} ", query);
         return archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query);
     }
 
     @PostMapping(RestApi.EXPORT_DIP)
     @Secured(ServicesData.ROLE_EXPORT_DIP)
-    public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto) {
-        LOGGER.info("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
+    public String exportDIPByCriteria(final @RequestBody ExportDipCriteriaDto exportDipCriteriaDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", exportDipCriteriaDto);
         SanityChecker.sanitizeCriteria(exportDipCriteriaDto);
+        LOGGER.debug("Calling export DIP By Criteria {} ", exportDipCriteriaDto);
         return archivesSearchExternalService.exportDIPByCriteria(exportDipCriteriaDto);
     }
 
     @PostMapping(RestApi.ELIMINATION_ANALYSIS)
     @Secured(ServicesData.ROLE_ELIMINATION)
-    public ResponseEntity<JsonNode> startEliminationAnalysis(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.info("Calling elimination analysis by criteria {} ", query);
+    public ResponseEntity<JsonNode> startEliminationAnalysis(final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling elimination analysis by criteria {} ", query);
         return archivesSearchExternalService.startEliminationAnalysis(query);
     }
 
     @PostMapping(RestApi.ELIMINATION_ACTION)
     @Secured(ServicesData.ROLE_ELIMINATION)
-    public ResponseEntity<JsonNode> startEliminationAction(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.info("Calling elimination action by criteria {} ", query);
+    public ResponseEntity<JsonNode> startEliminationAction(final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling elimination action by criteria {} ", query);
         return archivesSearchExternalService.startEliminationAction(query);
     }
 
     @PostMapping(RestApi.MASS_UPDATE_UNITS_RULES)
     @Secured(ServicesData.ROLE_UPDATE_MANAGEMENT_RULES)
-    public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto) {
-        LOGGER.info("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
+    public String updateArchiveUnitsRules(final @RequestBody RuleSearchCriteriaDto ruleSearchCriteriaDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", ruleSearchCriteriaDto);
         SanityChecker.sanitizeCriteria(ruleSearchCriteriaDto);
+        LOGGER.debug("Calling Update Archive Units Rules By Criteria {} ", ruleSearchCriteriaDto);
         return archivesSearchExternalService.updateArchiveUnitsRules(ruleSearchCriteriaDto);
     }
 
     @PostMapping(RestApi.COMPUTED_INHERITED_RULES)
     @Secured(ServicesData.ROLE_COMPUTED_INHERITED_RULES)
-    public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto) {
-        LOGGER.info("Calling computed inherited rules By Criteria {} ", searchCriteriaDto);
+    public String computedInheritedRules(final @RequestBody SearchCriteriaDto searchCriteriaDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", searchCriteriaDto);
         SanityChecker.sanitizeCriteria(searchCriteriaDto);
+        LOGGER.debug("Calling computed inherited rules By Criteria {} ", searchCriteriaDto);
         return archivesSearchExternalService.computedInheritedRules(searchCriteriaDto);
     }
 
 
     @PostMapping(RestApi.UNIT_WITH_INHERITED_RULES)
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
-    public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query) {
-        LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
+    public ResultsDto selectUnitWithInheritedRules(final @RequestBody SearchCriteriaDto query)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", query);
         SanityChecker.sanitizeCriteria(query);
+        LOGGER.debug("Calling select Unit With Inherited Rules By Criteria {} ", query);
         return archivesSearchExternalService.selectUnitWithInheritedRules(query);
     }
 
 
     @PostMapping(RestApi.RECLASSIFICATION)
     @Secured(ServicesData.ROLE_RECLASSIFICATION)
-    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto) {
-        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
+    public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The query is a mandatory parameter: ", reclassificationCriteriaDto);
         SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
+        LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
         return archivesSearchExternalService.reclassification(reclassificationCriteriaDto);
     }
 
 
     @PutMapping(RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_UNIT_DESC_METADATA)
-    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto) {
-        LOGGER.debug("update unit by id {} ", id);
+    public String updateUnitById(final @PathVariable("id") String id, @RequestBody final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(unitDescriptiveMetadataDto);
+        LOGGER.debug("update unit by id {} ", id);
         return archivesSearchExternalService.updateUnitById(id, unitDescriptiveMetadataDto);
     }
 }

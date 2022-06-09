@@ -63,6 +63,7 @@ import fr.gouv.vitamui.commons.api.exception.UnavailableServiceException;
 import fr.gouv.vitamui.commons.api.exception.UnexpectedDataException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.dto.RuleDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.RuleNodeResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
@@ -210,9 +211,7 @@ public class VitamRuleService {
         throws InvalidParseOperationException, AccessExternalClientException, IOException, JAXBException {
         try (ByteArrayInputStream byteArrayInputStream = serializeRules(rulesModels);
             ByteArrayInputStream debugStream = serializeRules(rulesModels)) {
-            final RequestResponse response =
-                adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
-            return response;
+            return adminExternalClient.createRules(vitamContext, byteArrayInputStream, "Rules.csv");
         }
     }
 
@@ -254,29 +253,37 @@ public class VitamRuleService {
     }
 
     /**
-     * check if all conditions are Ok to create a new rule in the tenant
+     * check if all conditions to check if a rule exists or not in VITAM
      *
-     * @param rules
-     * @return true if the rule can be created, false if the rule already exists
+     * @param ruleDto
+     * @return true if the rule exists in VITAM
+     * @throws BadRequestException when the requested rule is null
+     * @throws ConflictException when the requested rule does not exist in VITAM
+     * @throws JsonProcessingException
+     * @throws UnavailableServiceException
+     * @throws PreconditionFailedException when we are not authorized to make the check
      */
-    public boolean checkAbilityToCreateRuleInVitam(final List<FileRulesModel> rules, VitamContext vitamContext) {
+    public boolean checkExistenceOfRuleInVitam(final RuleDto ruleDto, VitamContext vitamContext) {
 
-        if (rules != null && !rules.isEmpty()) {
+        if (ruleDto != null && ruleDto.getRuleId() != null) {
             try {
                 // check if tenant exist in Vitam
                 final JsonNode select = new Select().getFinalSelect();
                 final RequestResponse<FileRulesModel> response = findRules(vitamContext, select);
                 if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()) {
+                    LOGGER.error("Can't create rule for the tenant : UNAUTHORIZED");
                     throw new PreconditionFailedException("Can't create rule for the tenant : UNAUTHORIZED");
                 } else if (response.getStatus() != HttpStatus.OK.value()) {
+                    LOGGER.error("Can't create rule for this tenant, Vitam response code : " + response.getStatus());
                     throw new UnavailableServiceException(
                         "Can't create rule for this tenant, Vitam response code : " + response.getStatus());
                 }
 
-                verifyRuleExistence(rules, response);
-            } catch (final VitamClientException e) {
+                verifyRuleExistence(ruleDto, response);
+            } catch (final VitamClientException exception) {
+                LOGGER.error("Can't create rules for this tenant, error while calling Vitam : " + exception);
                 throw new UnavailableServiceException(
-                    "Can't create rules for this tenant, error while calling Vitam : " + e.getMessage());
+                    "Can't create rules for this tenant, error while calling Vitam : " + exception);
             }
             return true;
         }
@@ -284,30 +291,41 @@ public class VitamRuleService {
     }
 
     /**
-     * Check if rule is not already created in Vitam.
+     * Check the existence of a rule in Vitam.
      *
-     * @param checkRules the list of rules being tested
+     * @param checkRule the ruleDto to be tested
      * @param existingRules the list of existing rules in Vitam
+     * @throws JsonProcessingException
+     * @throws ConflictException when the rule does not exists in VITAM
      */
-    private void verifyRuleExistence(final List<FileRulesModel> checkRules,
+    private void verifyRuleExistence(final RuleDto checkRule,
         final RequestResponse<FileRulesModel> existingRules) {
         try {
-            final ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             final RuleNodeResponseDto existingRulesDto =
                 objectMapper.treeToValue(existingRules.toJsonNode(), RuleNodeResponseDto.class);
-            final List<String> checkRulesIds =
-                checkRules.stream().map(checkRule -> checkRule.getRuleId()).collect(Collectors.toList());
+            if(checkRule.getRuleType() == null) {
+                if(existingRulesDto.getResults().stream()
+                    .noneMatch(existingRule -> existingRule.getRuleId().equals(checkRule.getRuleId()))) {
+                    LOGGER.error("Can't find the requested rule with id {} and category {}, this rule does not exist in VITAM",
+                        checkRule.getRuleId(), checkRule.getRuleType());
+                    throw new ConflictException(
+                        "Can't find the requested rule  with id and category, this rule does not exist in VITAM");
+                }
 
-            // For each existing rule, test if its id matches any of the checked rules ids.
-            if (existingRulesDto.getResults().stream()
-                .anyMatch(existingRule -> checkRulesIds.contains(existingRule.getRuleId()))) {
-                throw new ConflictException(
-                    "Can't create rule, a rule with the same identifier already exist in Vitam");
+            } else {
+                if(existingRulesDto.getResults().stream()
+                    .noneMatch(existingRule -> existingRule.getRuleId().equals(checkRule.getRuleId()) &&
+                        existingRule.getRuleType().name().equals(checkRule.getRuleType()))) {
+                    LOGGER.error("Can't find the requested rule with identifier, this rule does not exist in VITAM");
+                    throw new ConflictException(
+                        "Can't find the requested rule with identifier {}, this rule does not exist in VITAM", checkRule.getRuleId());
+                }
             }
-        } catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException exception) {
+            LOGGER.error("Can't find the requested rule, Error while parsing Vitam response : " , exception);
             throw new UnexpectedDataException(
-                "Can't create rule, Error while parsing Vitam response : " + e.getMessage());
+                "Can't create rule, Error while parsing Vitam response : " + exception);
         }
     }
 

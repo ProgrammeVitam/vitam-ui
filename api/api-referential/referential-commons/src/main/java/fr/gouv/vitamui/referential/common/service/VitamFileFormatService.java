@@ -157,7 +157,7 @@ public class VitamFileFormatService {
     public RequestResponse<?> deleteFileFormat(final VitamContext vitamContext, final String id)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
-        LOGGER.info("Delete File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Delete File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
 
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
@@ -171,7 +171,7 @@ public class VitamFileFormatService {
     public RequestResponse<?> create(final VitamContext vitamContext, FileFormatModel newFileFormat)
             throws InvalidParseOperationException, AccessExternalClientException, VitamClientException, IOException, JAXBException {
 
-        LOGGER.info("Create File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Create File Format EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         RequestResponse<FileFormatModel> requestResponse = findFileFormats(vitamContext, new Select().getFinalSelect());
         final List<FileFormatModel> actualFileFormats = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), FileFormatResponseDto.class).getResults();

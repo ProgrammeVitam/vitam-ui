@@ -82,7 +82,7 @@
       <vitamui-library-input
         placeholder="Date de création"
         i18n-placeholder="creationDate@@ingestContractPreviewLabelCreationDate"
-        [value]="ingestContract?.creationDate | date: 'dd/MM/yyyy'"
+        [value]="ingestContract?.creationDate | dateTime: 'dd/MM/yyyy'"
         disabled
       >
       </vitamui-library-input>
@@ -92,7 +92,7 @@
       <vitamui-library-input
         placeholder="Date de derniere modification"
         i18n-placeholder="lastUpdate@@ingestContractPreviewLabelLastUpdate"
-        [value]="ingestContract?.lastUpdate | date: 'dd/MM/yyyy'"
+        [value]="ingestContract?.lastUpdate | dateTime: 'dd/MM/yyyy'"
         disabled
       >
       </vitamui-library-input>
@@ -103,7 +103,7 @@
         placeholder="Date d'activation"
         *ngIf="ingestContract?.status === 'ACTIVE' && ingestContract?.activationDate"
         i18n-placeholder="activationDate@@ingestContractPreviewLabelActivationDate"
-        [value]="ingestContract?.activationDate | date: 'dd/MM/yyyy'"
+        [value]="ingestContract?.activationDate | dateTime: 'dd/MM/yyyy'"
         disabled
       >
       </vitamui-library-input>
@@ -122,7 +122,7 @@
         placeholder="Date de désactivation"
         *ngIf="ingestContract?.deactivationDate"
         i18n-placeholder="deactivationDate@@ingestContractPreviewLabelDeactivationDate"
-        [value]="ingestContract?.deactivationDate | date: 'dd/MM/yyyy'"
+        [value]="ingestContract?.deactivationDate | dateTime: 'dd/MM/yyyy'"
         disabled
       >
       </vitamui-library-input>

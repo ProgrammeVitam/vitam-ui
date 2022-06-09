@@ -306,6 +306,11 @@ export class TranslateStubPipe implements PipeTransform {
   transform(value: string = ''): any { return value; }
 }
 
+@Pipe({ name: 'dateTime' })
+export class DateTimeStubPipe implements PipeTransform {
+  transform(value: string = ''): any { return value; }
+}
+
 @Directive({ selector: '[vitamuiCommonInfiniteScroll]' })
 export class InfiniteScrollStubDirective {
   @Input() vitamuiCommonInfiniteScrollThreshold: any;
@@ -358,7 +363,8 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
-    TranslateStubPipe
+    TranslateStubPipe,
+    DateTimeStubPipe
   ],
   exports: [
     ApplicationSelectContentStubComponent,
@@ -388,7 +394,8 @@ export class RowCollapseTriggerForStubDirective {
     StepperStubComponent,
     StrongifyStubPipe,
     TruncateStubPipe,
-    TranslateStubPipe
+    TranslateStubPipe,
+    DateTimeStubPipe
   ]
 })
 export class VitamUICommonTestModule {}

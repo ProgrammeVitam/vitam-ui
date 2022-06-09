@@ -68,7 +68,7 @@ public class ArchiveSearchExternalWebClient extends BaseWebClient<ExternalHttpCo
      **/
     public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, final String usage, Integer version,
         final ExternalHttpContext context) {
-        LOGGER.info("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
+        LOGGER.debug("Start downloading Object from unit id : {} usage : {} version : {}", id, usage, version);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + "/" + id + "?usage=" + usage +
                 "&version=" +

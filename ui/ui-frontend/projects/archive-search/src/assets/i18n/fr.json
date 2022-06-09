@@ -410,7 +410,7 @@
       "GEL": "Gel"
     },
     "RULE": {
-      "CODE_NOT_EXIST": "La Règle n'existe pas",
+      "CODE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
       "WRONG_FORMAT": "Mauvais format de règle"
     }
   },
@@ -454,20 +454,23 @@
       "END_DATE": "Date de fin",
       "RULE_ID": "Code",
       "SAME_RULE_ID": "Code identique à l'action précédente",
-      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas",
+      "RULE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
       "TARGET_RULE": "Règle de gestion cible",
       "SOURCE_RULE": "Règle de gestion source *",
       "UPDATED": "Modifié",
       "TARGET_START_DATE": "Date de début cible",
-      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour",
-      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées",
+      "UA_TO_UPDATE": "UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
+      "UA_TO_IGNORE": "des UA sélectionnée(s) ne portent pas cette règle de durée d’utilité administrative et seront ignorées.",
       "UA_INHERITANCE_TO_IGNORE": "Cette catégorie n’est pas bloquée sur {{ itemsToNotUpdate }} des UA sélectionnées qui seront ignorées."
     },
     "FINAL_ACTION": {
       "TITLE": "Sort final",
       "SELECT_VALUE": "Sélectionner une valeur",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY" :"Copier",
+      "TRANSFER" : "Transférer",
+      "RESTRICT_ACCESS" :"Restreindre"
     },
     "COMMON": {
       "UNDO": "Annuler",
@@ -477,7 +480,7 @@
     "UA_CONTROL": {
       "UA_FINAL_ACTION_MESSAGE": "L'ensemble des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
       "UA_WITH_SAME_RULE": "{{ itemsWithSameRule }} des UA sélectionnée(s) portent déjà cette règle et seront ignorées.",
-      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour",
+      "UA_WITH_RULES_TO_UPDATE": "{{ itemsToUpdate }}  des UA sélectionnée(s) seront prises en compte lors de la mise à jour.",
       "UA_WITH_SAME_RULE_AND_DATE": "{{ itemsWithSameRuleAndDate }} des UA sélectionnée(s) portent déjà cette règle et cette date de début et seront ignorées."
     },
     "DIALOG_MESSAGE": {
