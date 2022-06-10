@@ -97,8 +97,9 @@
                   }}:
 
                   <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
-                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
+                    {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }}
+                    {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }} {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }}
+                    {{ criteriaValue.value.endInterval | dateTime: 'dd/MM/yyyy' }}
                   </ng-container>
                   <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
                     {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | dateTime: 'dd/MM/yyyy' }}
