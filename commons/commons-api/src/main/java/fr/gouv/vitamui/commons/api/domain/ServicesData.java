@@ -431,6 +431,8 @@ public class ServicesData {
 
     public static final String PROJECTS = "PROJECTS";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;
+    public static final String ROLE_UPDATE_PROJECTS = UPDATE_ROLE_PREFIX + PROJECTS;
 
     //@formatter:off
 
@@ -553,7 +555,9 @@ public class ServicesData {
         ROLE_RECLASSIFICATION,
         ROLE_UPDATE_UNIT_DESC_METADATA,
 
-        ROLE_GET_PROJECTS
+            ROLE_GET_PROJECTS,
+            ROLE_CREATE_PROJECTS,
+            ROLE_UPDATE_PROJECTS
     );
 
     /**

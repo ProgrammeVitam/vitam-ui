@@ -24,26 +24,16 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+export interface CollectUploadFile {
+  name: string;
+  size: number;
+  dragged: boolean;
+}
 
-package fr.gouv.vitamui.collect.external.client;
-
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
-import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import org.springframework.web.reactive.function.client.WebClient;
-
-public class CollectExternalWebClientFactory extends BaseWebClientFactory {
-
-    public CollectExternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
-        final WebClient.Builder webClientBuilder) {
-        super(restClientConfiguration, webClientBuilder);
-    }
-
-    @Override
-    public String getBaseUrl() {
-        return super.getBaseUrl();
-    }
-
-    public CollectExternalWebClient getCollectExternalWebClient() {
-        return new CollectExternalWebClient(getWebClient(), getBaseUrl());
-    }
+export interface CollectZippedUploadFile {
+  name: string;
+  size: number;
+  uploadedSize: number;
+  currentFile?: string;
+  currentFileUploadedSize?: number;
 }

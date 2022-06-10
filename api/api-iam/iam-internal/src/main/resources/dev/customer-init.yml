@@ -204,6 +204,16 @@ customer-init:
         - ROLE_UPDATE_UNIT_DESC_METADATA
         - ROLE_TRANSFER_REQUEST
 
+    - name: Collecte
+      description: Collecte de données, Application de préparation de versements
+      app-name: COLLECT_APP
+      level:
+      roles:
+        - ROLE_GET_PROJECTS
+        - ROLE_CREATE_PROJECTS
+        - ROLE_UPDATE_PROJECTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+
   #- name: profileName
   #  description: desc
   #  level: 1

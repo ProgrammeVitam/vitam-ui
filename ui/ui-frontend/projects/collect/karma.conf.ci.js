@@ -1,6 +1,6 @@
 var baseConfig = require('../../karma.conf.ci.js');
 
-module.exports = function(config){
+module.exports = function (config) {
   // Load base config
   baseConfig(config);
 

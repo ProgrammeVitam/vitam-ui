@@ -29,8 +29,8 @@ package fr.gouv.vitamui.collect.external.server.config;
 
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClientFactory;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClientFactory;
+import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -61,7 +61,6 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
 
     @Bean
     public ContextRestClient contextCrudRestClient(final SecurityRestClientFactory securityRestClientFactory) {
-
         return securityRestClientFactory.getContextRestClient();
     }
 
@@ -88,7 +87,6 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
         final RestTemplateBuilder restTemplateBuilder) {
         return new IamInternalRestClientFactory(apiCollectExternalApplicationProperties.getIamInternalClient(),
             restTemplateBuilder);
-
     }
 
     @Bean
@@ -111,16 +109,16 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public CollectInternalWebClientFactory archiveInternalWebClientFactory(
-        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
-        final RestTemplateBuilder restTemplateBuilder) {
-        return new CollectInternalWebClientFactory(apiCollectExternalApplicationProperties.getCollectInternalClient());
+    public CollectStreamingInternalRestClientFactory collectStreamingInternalRestClientFactory(
+        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties) {
+        return new CollectStreamingInternalRestClientFactory(
+            apiCollectExternalApplicationProperties.getCollectInternalClient());
     }
 
-
     @Bean
-    public CollectInternalWebClient archiveInternalWebClient(final CollectInternalWebClientFactory factory) {
-        return factory.getCollectInternalWebClient();
+    public CollectStreamingInternalRestClient collectStreamingInternalRestClient(
+        final CollectStreamingInternalRestClientFactory factory) {
+        return factory.getCollectStreamingInternalRestClient();
     }
 
 }

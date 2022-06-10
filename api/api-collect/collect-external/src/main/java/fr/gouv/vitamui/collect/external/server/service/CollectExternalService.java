@@ -24,13 +24,11 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.vitamui.collect.external.server.service;
 
-
-import fr.gouv.vitamui.collect.common.dto.ProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -39,10 +37,11 @@ import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.Optional;
-
 
 /**
  * The service to create project.
@@ -50,18 +49,18 @@ import java.util.Optional;
 @Getter
 @Setter
 @Service
-public class CollectExternalService extends AbstractResourceClientService<ProjectDto, ProjectDto> {
+public class CollectExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
 
-    private final CollectInternalWebClient projectInternalWebClient;
+    private final CollectStreamingInternalRestClient collectStreamingInternalRestClient;
 
     @Autowired
     public CollectExternalService(CollectInternalRestClient collectInternalRestClient,
-        CollectInternalWebClient projectInternalWebClient, final ExternalSecurityService externalSecurityService) {
+        CollectStreamingInternalRestClient collectStreamingInternalRestClient, ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
-        this.projectInternalWebClient = projectInternalWebClient;
+        this.collectStreamingInternalRestClient = collectStreamingInternalRestClient;
     }
 
     @Override
@@ -70,9 +69,22 @@ public class CollectExternalService extends AbstractResourceClientService<Projec
     }
 
     @Override
-    public PaginatedValuesDto<ProjectDto> getAllPaginated(final Integer page, final Integer size,
+    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(final Integer page, final Integer size,
         final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
         ParameterChecker.checkPagination(size, page);
         return getClient().getAllPaginated(getInternalHttpContext(), page, size, criteria, orderBy, direction);
+    }
+
+    public CollectProjectDto createProject(CollectProjectDto collectProjectDto) {
+        return collectInternalRestClient.create(getInternalHttpContext(), collectProjectDto);
+    }
+
+    public ResponseEntity<Void> streamingUpload(InputStream inputStream, String projectId, String originalFileName) {
+        return collectStreamingInternalRestClient
+            .streamingUpload(getInternalHttpContext(), inputStream, projectId, originalFileName);
+    }
+
+    public CollectProjectDto updateProject(CollectProjectDto collectProjectDto) {
+        return collectInternalRestClient.update(getInternalHttpContext(), collectProjectDto);
     }
 }

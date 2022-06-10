@@ -27,7 +27,7 @@
 
 package fr.gouv.vitamui.collect.external.client;
 
-import fr.gouv.vitamui.collect.common.dto.ProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
@@ -38,24 +38,24 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 
-public class CollectExternalRestClient extends BasePaginatingAndSortingRestClient<ProjectDto, ExternalHttpContext> {
+public class CollectExternalRestClient extends BasePaginatingAndSortingRestClient<CollectProjectDto, ExternalHttpContext> {
 
     public CollectExternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
     }
 
     @Override
-    protected Class<ProjectDto> getDtoClass() {
-        return ProjectDto.class;
+    protected Class<CollectProjectDto> getDtoClass() {
+        return CollectProjectDto.class;
     }
 
     @Override
-    protected ParameterizedTypeReference<List<ProjectDto>> getDtoListClass() {
+    protected ParameterizedTypeReference<List<CollectProjectDto>> getDtoListClass() {
         return new ParameterizedTypeReference<>() {};
     }
 
     @Override
-    protected ParameterizedTypeReference<PaginatedValuesDto<ProjectDto>> getDtoPaginatedClass() {
+    protected ParameterizedTypeReference<PaginatedValuesDto<CollectProjectDto>> getDtoPaginatedClass() {
         return new ParameterizedTypeReference<>() {};
     }
 

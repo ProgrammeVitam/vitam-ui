@@ -1,6 +1,6 @@
 db = db.getSiblingDB('cas')
 
-print("START cas_services_ref.js");
+print("START 03_cas_services_ref.js.j2");
 
 var nbInsert = db.services.insert({
    "_id" : NumberInt(7),
@@ -24,4 +24,4 @@ var nbInsert = db.services.insert({
 
 print("inserted: " + nbInsert);
 
-print("END cas_services_ref.js");
+print("END 03_cas_services_ref.js.j2");

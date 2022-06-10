@@ -28,9 +28,12 @@
 package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.collect.common.dto.ProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.service.CollectService;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -40,9 +43,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,8 +58,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
+import java.io.InputStream;
 import java.util.Optional;
-
 
 @Api(tags = "Collect")
 @RestController
@@ -72,7 +80,7 @@ public class ProjectController extends AbstractUiRestController {
     @ApiOperation(value = "Get projects paginated")
     @GetMapping(params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<ProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
@@ -84,9 +92,41 @@ public class ProjectController extends AbstractUiRestController {
 
     @ApiOperation(value = "Create new collect project")
     @PostMapping
-    public ProjectDto createProject(@RequestBody ProjectDto projectDto) throws InvalidParseOperationException {
-        SanityChecker.sanitizeCriteria(projectDto);
-        return collectService.createProject(buildUiHttpContext(), projectDto);
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(collectProjectDto);
+        return collectService.createProject(buildUiHttpContext(), collectProjectDto);
+    }
+
+    @ApiOperation(value = "Upload collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping("/upload")
+    public ResponseEntity<Void> upload(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final String tenantId,
+        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String filename,
+        final InputStream inputStream) throws InvalidParseOperationException {
+        ParameterChecker
+            .checkParameter("The tenantId and projectId are mandatory parameters : ",
+                tenantId, projectId);
+        SanityChecker.checkSecureParameter(tenantId);
+        SanityChecker.checkSecureParameter(projectId);
+        SafeFileChecker.checkSafeFilePath(filename);
+        LOGGER.debug("Start uploading file ...{} ", filename);
+        ResponseEntity<Void> response =
+            collectService.streamingUpload(buildUiHttpContext(), filename, projectId, inputStream);
+
+        LOGGER.debug("The response in ui Ingest is {} ", response.toString());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(collectProjectDto);
+        LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
+        return collectService.update(buildUiHttpContext(), collectProjectDto);
     }
 
 }
