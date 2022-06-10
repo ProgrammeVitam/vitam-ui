@@ -1,6 +1,18 @@
 <mat-tab-group [selectedIndex]="defaultFacetTabIndex">
   <mat-tab>
     <ng-template mat-tab-label>
+      <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.STORAGE_RULE' | translate }} </span>
+    </ng-template>
+
+    <div *ngIf="facetsVisibles" id="facet-content">
+      <app-search-storage-rules-facets
+        [totalResults]="totalResults"
+        [storageRuleFacets]="storageRuleFacets"
+      ></app-search-storage-rules-facets>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
       <span (click)="showHideFacets(true)"> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }} </span>
     </ng-template>
 
@@ -19,10 +31,5 @@
     <div *ngIf="facetsVisibles" id="facet-content">
       <app-search-access-rules-facets [totalResults]="totalResults" [accessRuleFacets]="accessRuleFacets"></app-search-access-rules-facets>
     </div>
-  </mat-tab>
-  <mat-tab [disabled]="true">
-    <ng-template mat-tab-label>
-      <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }} </span>
-    </ng-template>
   </mat-tab>
 </mat-tab-group>

@@ -67,6 +67,8 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
     public static final String INHERITED_RULE_IDS_FIELD = ".InheritedRuleIds";
     public static final String FINAL_ACTION_FIELD = ".FinalAction";
     public static final String INHERITED_ORIGIN_TYPE = "Inherited";
+    public static final String LOCAL_OR_INHERITED_ORIGIN_TYPE = "LocalAndInherited";
+    public static final String LOCAL_ORIGIN_TYPE = "Local";
     public static final String WAITING_TO_COMPUTE_RULES_STATUS = "#validComputedInheritedRules";
 
 
@@ -91,41 +93,50 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         List<SearchCriteriaEltDto> criteriaList) throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(criteriaList)) {
 
-            SearchCriteriaEltDto appraisalRuleIdentifiersCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+            SearchCriteriaEltDto ruleIdentifiersCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                -> ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA.equals(searchCriteriaEltDto.getCriteria()))
+                .findFirst()
                 .orElse(null);
 
-            if(appraisalRuleIdentifiersCriteria != null) {
-                List<String> searchValues = appraisalRuleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                    Collectors.toList());
-                buildRuleIdentifierQuery(appraisalRuleIdentifiersCriteria.getCategory().name(), searchValues,
-                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleIdentifiersCriteria.getOperator()), query);
-            }
-
-            SearchCriteriaEltDto appraisalRuleStarDateCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria())).findFirst()
-                .orElse(null);
-
-            if(appraisalRuleStarDateCriteria != null) {
-                List<String> searchValues = appraisalRuleStarDateCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                    Collectors.toList());
-                buildRuleStartDateQuery(appraisalRuleStarDateCriteria.getCategory().name() ,
-                    searchValues, ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleStarDateCriteria.getOperator()),
+            if (ruleIdentifiersCriteria != null) {
+                List<String> searchValues =
+                    ruleIdentifiersCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                        Collectors.toList());
+                buildRuleIdentifierQuery(ruleIdentifiersCriteria.getCategory().name(), searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(ruleIdentifiersCriteria.getOperator()),
                     query);
             }
 
-            SearchCriteriaEltDto appraisalRuleInheritanceCriteria = criteriaList.stream().filter(searchCriteriaEltDto
-                    ->ArchiveSearchConsts.MANAGEMENT_RULE_INHERITED_CRITERIA.equals(searchCriteriaEltDto.getCriteria())).findFirst()
+            SearchCriteriaEltDto ruleStarDateCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                -> ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE.equals(searchCriteriaEltDto.getCriteria()))
+                .findFirst()
                 .orElse(null);
 
-            if(appraisalRuleInheritanceCriteria != null) {
-                List<String> searchValues = appraisalRuleInheritanceCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
-                    Collectors.toList());
-                buildInheritedCategoryQuery(searchValues,
-                    ArchiveSearchConsts.CriteriaOperators.valueOf(appraisalRuleInheritanceCriteria.getOperator()), query);
+            if (ruleStarDateCriteria != null) {
+                List<String> searchValues =
+                    ruleStarDateCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                        Collectors.toList());
+                buildRuleStartDateQuery(ruleStarDateCriteria.getCategory().name(),
+                    searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(ruleStarDateCriteria.getOperator()),
+                    query);
             }
 
-                List<SearchCriteriaEltDto> identifiersCriteria =
+            SearchCriteriaEltDto ruleInheritanceCriteria = criteriaList.stream().filter(searchCriteriaEltDto
+                -> ArchiveSearchConsts.MANAGEMENT_RULE_INHERITED_CRITERIA.equals(searchCriteriaEltDto.getCriteria()))
+                .findFirst()
+                .orElse(null);
+
+            if (ruleInheritanceCriteria != null) {
+                List<String> searchValues =
+                    ruleInheritanceCriteria.getValues().stream().map(CriteriaValue::getValue).collect(
+                        Collectors.toList());
+                buildInheritedCategoryQuery(searchValues,
+                    ArchiveSearchConsts.CriteriaOperators.valueOf(ruleInheritanceCriteria.getOperator()),
+                    query);
+            }
+
+            List<SearchCriteriaEltDto> identifiersCriteria =
                 criteriaList.stream()
                     .filter(searchCriteriaEltDto -> ArchiveSearchConsts.RULE_IDENTIFIER
                         .equals(searchCriteriaEltDto.getCriteria()))
@@ -142,12 +153,9 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                         .equals(ArchiveSearchConsts.RULE_ORIGIN_CRITERIA))
                     .collect(Collectors.toList());
             if (!CollectionUtils.isEmpty(mgtRuleOriginCriteria)) {
-
-
                 if (mgtRuleOriginCriteria.size() > 1) {
                     BooleanQuery multipleQueryOriginRuleQuery = and();
                     for (SearchCriteriaEltDto ruleOriginCriteria : mgtRuleOriginCriteria) {
-
                         handleSingleOriginCriteria(ruleCategory, identifiersCriteria, endDatesCriteria,
                             ruleOriginCriteria, multipleQueryOriginRuleQuery);
                     }
@@ -198,10 +206,11 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
             searchValues.forEach(value -> {
                 try {
                     subQueryOr
-                        .add(VitamQueryHelper.buildSubQueryByOperator(finalSearchKey , value, operator));
+                        .add(VitamQueryHelper.buildSubQueryByOperator(finalSearchKey, value, operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error("Invalid creation operation exception {}", exception);
-                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ", exception);
+                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ",
+                        exception);
                 }
             });
             subQueryAnd.add(subQueryOr);
@@ -213,17 +222,19 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         throws InvalidCreateOperationException {
         BooleanQuery subQueryOr = or();
         if (!CollectionUtils.isEmpty(searchValues)) {
-                searchValues.forEach(searchValue ->
-                {
-                    try {
-                        subQueryOr
-                            .add(VitamQueryHelper.buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED, searchValue, operator));
-                    } catch (InvalidCreateOperationException exception) {
-                        LOGGER.error("Invalid creation operation exception {}", exception);
-                    }
-                });
-            }
-            subQueryAnd.add(subQueryOr);
+            searchValues.forEach(searchValue ->
+            {
+                try {
+                    subQueryOr
+                        .add(VitamQueryHelper
+                            .buildSubQueryByOperator(ArchiveSearchConsts.APPRAISAL_RULE_INHERITED, searchValue,
+                                operator));
+                } catch (InvalidCreateOperationException exception) {
+                    LOGGER.error("Invalid creation operation exception {}", exception);
+                }
+            });
+        }
+        subQueryAnd.add(subQueryOr);
     }
 
     private void buildRuleStartDateQuery(String ruleCategory, final List<String> searchValues,
@@ -270,17 +281,28 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                             ArchiveSearchConsts.ONLY_DATE_FRENCH_FORMATER.format(startDate.plusDays(1)), operator));
                 } catch (InvalidCreateOperationException exception) {
                     LOGGER.error("Invalid create operation {}", exception);
-                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ", exception);
+                    throw new InvalidCreateOperationVitamUIException("Invalid creation operation exception ",
+                        exception);
                 }
             });
             subQueryAnd.add(subQueryOr);
         }
     }
 
-    private void handleSingleOriginCriteria(String ruleCategory, List<SearchCriteriaEltDto> identifiersCriteria,
+    public void handleSingleOriginCriteria(String ruleCategory, List<SearchCriteriaEltDto> identifiersCriteria,
         List<SearchCriteriaEltDto> endDatesCriteria, SearchCriteriaEltDto mgtRuleOriginCriteria,
         BooleanQuery mainQuery) throws InvalidCreateOperationException {
         BooleanQuery originRuleQuery = or();
+
+        Optional<CriteriaValue> inheritOrLocale =
+            mgtRuleOriginCriteria.getValues().stream().filter(
+                value -> ArchiveSearchConsts.RuleOriginValues.ORIGIN_LOCAL_OR_INHERIT_RULES.name()
+                    .equals(value.getValue())).findAny();
+
+        if (inheritOrLocale.isPresent()) {
+            buildQueryForInheritOrLocalRulesCriteria(ruleCategory, originRuleQuery);
+        }
+
         Optional<CriteriaValue> waitingToRecalculate =
             mgtRuleOriginCriteria.getValues().stream().filter(
                 value -> ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name()
@@ -365,6 +387,22 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         }
     }
 
+    private void buildQueryForInheritOrLocalRulesCriteria(String ruleCategory, BooleanQuery mainQuery)
+        throws InvalidCreateOperationException {
+        LOGGER.debug("Start handling query for inherit or hold at least {} rules", ruleCategory);
+        //manage just criteria on category
+        BooleanQuery orQuery = or();
+        VitamQueryHelper.addParameterCriteria(orQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
+            COMPUTED_FIELDS + ruleCategory + INHERITANCE_ORIGIN_FIELD, List.of(INHERITED_ORIGIN_TYPE));
+
+        VitamQueryHelper.addParameterCriteria(orQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
+            COMPUTED_FIELDS + ruleCategory + INHERITANCE_ORIGIN_FIELD, List.of(LOCAL_OR_INHERITED_ORIGIN_TYPE));
+
+        VitamQueryHelper.addParameterCriteria(mainQuery, ArchiveSearchConsts.CriteriaOperators.EQ,
+            COMPUTED_FIELDS + ruleCategory + INHERITANCE_ORIGIN_FIELD, List.of(LOCAL_ORIGIN_TYPE));
+        mainQuery.add(orQuery);
+    }
+
     public void buildQueryForNoRulesCriteria(String ruleCategory, BooleanQuery mainQuery,
         List<SearchCriteriaEltDto> rulesIdentifiersCriteria) throws InvalidCreateOperationException {
         LOGGER.debug("Start handling query for none {} rules", ruleCategory);
@@ -408,12 +446,22 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
         MgtRuleOriginRuleCriteria mgtRuleOriginRuleCriteria = new MgtRuleOriginRuleCriteria();
 
         for (SearchCriteriaEltDto searchCriteria : mgtRulesCriteriaList) {
+
+            if (searchCriteria.getCriteria()
+                .equals(ArchiveSearchConsts.RuleOriginValues.ORIGIN_LOCAL_OR_INHERIT_RULES.name()) &&
+                !CollectionUtils.isEmpty(searchCriteria.getValues())) {
+                mgtRuleOriginRuleCriteria.setHasLocalOrInheritedRule(
+                    ArchiveSearchConsts.TRUE_CRITERIA_VALUE.equals(searchCriteria.getValues().get(0).getValue()));
+            }
+
+
             if (searchCriteria.getCriteria()
                 .equals(ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name()) &&
                 !CollectionUtils.isEmpty(searchCriteria.getValues())) {
                 mgtRuleOriginRuleCriteria.setHasAtLeastOneRule(
                     ArchiveSearchConsts.TRUE_CRITERIA_VALUE.equals(searchCriteria.getValues().get(0).getValue()));
             }
+
             if (searchCriteria.getCriteria().equals(
                 ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name()) &&
                 !CollectionUtils.isEmpty(searchCriteria.getValues())) {

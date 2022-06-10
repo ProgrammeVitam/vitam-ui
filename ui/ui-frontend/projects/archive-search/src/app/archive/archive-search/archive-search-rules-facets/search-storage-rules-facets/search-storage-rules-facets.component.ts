@@ -43,15 +43,15 @@ import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/fa
 import { RuleFacets } from '../../../models/search.criteria';
 
 @Component({
-  selector: 'app-search-access-rules-facets',
-  templateUrl: './search-access-rules-facets.component.html',
-  styleUrls: ['./search-access-rules-facets.component.scss'],
+  selector: 'app-search-storage-rules-facets',
+  templateUrl: './search-storage-rules-facets.component.html',
+  styleUrls: ['./search-storage-rules-facets.component.scss'],
 })
-export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
+export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
   constructor(private translateService: TranslateService, private datePipe: DatePipe) {}
 
   @Input()
-  accessRuleFacets: RuleFacets;
+  storageRuleFacets: RuleFacets;
 
   @Input()
   totalResults: number;
@@ -70,8 +70,9 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
     this.expiredRulesFacetDetails = [];
     this.finalActionFacetDetails = [];
     this.archiveUnitsCountFacetDetails = [];
-    if (this.accessRuleFacets) {
+    if (this.storageRuleFacets) {
       this.handleWaitingToRecalculateRulesFacets();
+      this.handleFinalActionsRulesFacets();
       this.handleRulesDisctinctsFacets();
       this.handleRulesExpirationFacets();
     }
@@ -82,8 +83,8 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
     let expiredRulesNb = 0;
     this.dateFilterValue = this.datePipe.transform(new Date(), 'dd-MM-yyyy');
 
-    if (this.accessRuleFacets.expiredRulesListFacets && this.accessRuleFacets.expiredRulesListFacets.length > 0) {
-      this.accessRuleFacets.expiredRulesListFacets.forEach((elt) => {
+    if (this.storageRuleFacets.expiredRulesListFacets && this.storageRuleFacets.expiredRulesListFacets.length > 0) {
+      this.storageRuleFacets.expiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           this.dateFilterValue = ' ' + elt.node.substring(elt.node.length - 10, elt.node.length);
           expiredRulesNb = elt.count ? elt.count : 0;
@@ -91,8 +92,8 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.accessRuleFacets.unexpiredRulesListFacets && this.accessRuleFacets.unexpiredRulesListFacets.length > 0) {
-      this.accessRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
+    if (this.storageRuleFacets.unexpiredRulesListFacets && this.storageRuleFacets.unexpiredRulesListFacets.length > 0) {
+      this.storageRuleFacets.unexpiredRulesListFacets.forEach((elt) => {
         if (elt && elt.node && elt.node.length > 10) {
           unexpiredRulesNb = elt.count ? elt.count : 0;
         }
@@ -119,17 +120,17 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
   }
 
   private handleRulesDisctinctsFacets() {
-    if (this.accessRuleFacets.rulesListFacets && this.accessRuleFacets.rulesListFacets.length > 0) {
+    if (this.storageRuleFacets.rulesListFacets && this.storageRuleFacets.rulesListFacets.length > 0) {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.DISTINCT_RULES'),
-        totalResults: this.accessRuleFacets.rulesListFacets.length,
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.DISTINCT_RULES'),
+        totalResults: this.storageRuleFacets.rulesListFacets.length,
         clickable: false,
         color: Colors.GRAY,
         backgroundColor: Colors.DISABLED,
       });
     } else {
       this.rulesFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.DISTINCT_RULES'),
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.DISTINCT_RULES'),
         totalResults: 0,
         clickable: false,
         color: Colors.GRAY,
@@ -138,22 +139,61 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
     }
   }
 
+  private handleFinalActionsRulesFacets() {
+    this.finalActionsFacetsValues.set('COPY', 0);
+    this.finalActionsFacetsValues.set('TRANSFER', 0);
+    this.finalActionsFacetsValues.set('RESTRICTACCESS', 0);
+
+    if (this.storageRuleFacets.finalActionsFacets) {
+      this.storageRuleFacets.finalActionsFacets.forEach((elt) => {
+        this.finalActionsFacetsValues.set(elt.node.toUpperCase(), elt.count ? elt.count : 0);
+      });
+    }
+
+    this.finalActionFacetDetails.push({
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.COPY'),
+      totalResults: this.finalActionsFacetsValues.get('COPY'),
+      clickable: false,
+      color: Colors.GRAY,
+      backgroundColor: Colors.DISABLED,
+    });
+
+    this.finalActionFacetDetails.push({
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.TRANSFER'),
+      totalResults: this.finalActionsFacetsValues.get('TRANSFER'),
+      clickable: false,
+      color: Colors.GRAY,
+      backgroundColor: Colors.DISABLED,
+    });
+
+    this.finalActionFacetDetails.push({
+      title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.RESTRICT_ACCESS'),
+      totalResults: this.finalActionsFacetsValues.get('RESTRICTACCESS'),
+      clickable: false,
+      color: Colors.GRAY,
+      backgroundColor: Colors.DISABLED,
+    });
+  }
+
   private handleWaitingToRecalculateRulesFacets() {
-    if (this.accessRuleFacets.waitingToRecalculateRulesListFacets && this.accessRuleFacets.waitingToRecalculateRulesListFacets.length > 0) {
-      this.accessRuleFacets.waitingToRecalculateRulesListFacets
+    if (
+      this.storageRuleFacets.waitingToRecalculateRulesListFacets &&
+      this.storageRuleFacets.waitingToRecalculateRulesListFacets.length > 0
+    ) {
+      this.storageRuleFacets.waitingToRecalculateRulesListFacets
         .filter((elt) => elt.node === 'true')
         .forEach((elt) => {
           let calculatedCount = elt.count ? elt.count : 0;
           let notCalculatedCount = this.totalResults - calculatedCount;
           this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WAITING_TO_RECALCULATE'),
+            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
             totalResults: notCalculatedCount,
             clickable: false,
-            color: notCalculatedCount === 0 ? Colors.GRAY : Colors.ORANGE,
+            color: notCalculatedCount === 0 ? Colors.GRAY : 'orange',
             backgroundColor: Colors.DISABLED,
           });
           this.archiveUnitsCountFacetDetails.push({
-            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.CALCULATED'),
+            title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.CALCULATED'),
             totalResults: calculatedCount,
             clickable: false,
             color: Colors.GRAY,
@@ -162,14 +202,14 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
         });
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WAITING_TO_RECALCULATE'),
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
         totalResults: this.totalResults,
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : 'orange',
+        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.CALCULATED'),
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.CALCULATED'),
         totalResults: 0,
         clickable: false,
         color: Colors.GRAY,
@@ -177,10 +217,10 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
       });
     }
 
-    if (this.accessRuleFacets.noRulesFacets && this.accessRuleFacets.noRulesFacets.length > 0) {
-      this.accessRuleFacets.noRulesFacets.forEach((elt) => {
+    if (this.storageRuleFacets.noRulesFacets && this.storageRuleFacets.noRulesFacets.length > 0) {
+      this.storageRuleFacets.noRulesFacets.forEach((elt) => {
         this.archiveUnitsCountFacetDetails.push({
-          title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WITHOUT_RULES'),
+          title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WITHOUT_RULES'),
           totalResults: elt.count ? elt.count : 0,
           clickable: false,
           color: Colors.GRAY,
@@ -189,7 +229,7 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
       });
     } else {
       this.archiveUnitsCountFacetDetails.push({
-        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WITHOUT_RULES'),
+        title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WITHOUT_RULES'),
         totalResults: 0,
         clickable: false,
         color: Colors.GRAY,

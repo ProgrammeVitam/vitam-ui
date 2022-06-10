@@ -427,8 +427,6 @@ public class ArchiveSearchInternalService {
             .getObjectStreamByUnitId(id, usage, version, vitamContext);
     }
 
-
-
     public SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
         throws InvalidParseOperationException, InvalidCreateOperationException {
         final BooleanQuery query = and();
@@ -456,6 +454,7 @@ public class ArchiveSearchInternalService {
         if (query.isReady()) {
             select.setQuery(query);
         }
+
         LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
 
         return select;

@@ -71,6 +71,7 @@ import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-se
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
 import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
@@ -79,6 +80,7 @@ import { SearchCriteriaListComponent } from './archive-search/search-criteria-li
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
+import { StorageRuleSearchComponent } from './archive-search/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
 import { ArchiveComponent } from './archive.component';
 import { ArchiveFacetsService } from './common-services/archive-facets.service';
@@ -158,11 +160,13 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     SearchCriteriaListComponent,
     CriteriaSearchComponent,
     AppraisalRuleSearchComponent,
+    StorageRuleSearchComponent,
     AccessRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
     SearchAppraisalRulesFacetsComponent,
+    SearchStorageRulesFacetsComponent,
     SearchAccessRulesFacetsComponent,
     ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,

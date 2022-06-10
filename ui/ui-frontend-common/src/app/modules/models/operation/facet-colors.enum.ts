@@ -34,5 +34,7 @@ export enum Colors {
   OK_COLOR = '#27740a',
   BLACK = '#000000',
   GRAY= 'gray',
-  ORANGE= 'orange'
+  ORANGE= 'orange',
+  RED= 'red',
+  GREEN= 'green'
 }

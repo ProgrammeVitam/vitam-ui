@@ -44,6 +44,7 @@ export class ArchiveFacetsService {
   RULES_COMPUTED_NUMBER_PREFIX: string = 'RULES_COMPUTED_NUMBER_';
   FINAL_ACTION_COMPUTED_PREFIX: string = 'FINAL_ACTION_COMPUTED_';
   EXPIRED_RULES_COMPUTED_PREFIX: string = 'EXPIRED_RULES_COMPUTED_';
+  UNEXPIRED_RULES_COMPUTED_PREFIX: string = 'UNEXPIRED_RULES_COMPUTED_';
   COUNT_WITHOUT_RULES_PREFIX: string = 'COUNT_WITHOUT_RULES_';
   COMPUTE_RULES_AU_NUMBER: string = 'COMPUTE_RULES_AU_NUMBER';
   COUNT_BY_NODE: string = 'COUNT_BY_NODE';
@@ -64,7 +65,7 @@ export class ArchiveFacetsService {
   }
 
   extractRulesFacetsResultsByCategory(facetResults: ResultFacetList[], category: SearchCriteriaTypeEnum): RuleFacets {
-    const appraisalRulesFacets = new RuleFacets();
+    const rulesFacets = new RuleFacets();
     if (facetResults && facetResults.length > 0) {
       for (const facet of facetResults) {
         if (facet.name === this.FINAL_ACTION_COMPUTED_PREFIX + category) {
@@ -73,7 +74,7 @@ export class ArchiveFacetsService {
           for (const bucket of buckets) {
             finalActionsFacets.push({ node: bucket.value, count: bucket.count });
           }
-          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
+          rulesFacets.finalActionsFacets = finalActionsFacets;
         }
         if (facet.name === this.RULES_COMPUTED_NUMBER_PREFIX + category) {
           const rulesListFacets = [];
@@ -81,7 +82,7 @@ export class ArchiveFacetsService {
           for (const bucket of buckets) {
             rulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
-          appraisalRulesFacets.rulesListFacets = rulesListFacets;
+          rulesFacets.rulesListFacets = rulesListFacets;
         }
         if (facet.name === this.EXPIRED_RULES_COMPUTED_PREFIX + category) {
           const expiredRulesListFacets = [];
@@ -89,7 +90,15 @@ export class ArchiveFacetsService {
           for (const bucket of buckets) {
             expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
-          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
+          rulesFacets.expiredRulesListFacets = expiredRulesListFacets;
+        }
+        if (facet.name === this.UNEXPIRED_RULES_COMPUTED_PREFIX + category) {
+          const unexpiredRulesListFacets = [];
+          const buckets = facet.buckets;
+          for (const bucket of buckets) {
+            unexpiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
+          }
+          rulesFacets.unexpiredRulesListFacets = unexpiredRulesListFacets;
         }
         if (facet.name === this.COMPUTE_RULES_AU_NUMBER) {
           const buckets = facet.buckets;
@@ -97,7 +106,7 @@ export class ArchiveFacetsService {
           for (const bucket of buckets) {
             waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
           }
-          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
+          rulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
         }
 
         if (facet.name === this.COUNT_WITHOUT_RULES_PREFIX + category) {
@@ -106,10 +115,10 @@ export class ArchiveFacetsService {
           for (const bucket of buckets) {
             noRulesFacets.push({ node: bucket.value, count: bucket.count });
           }
-          appraisalRulesFacets.noRulesFacets = noRulesFacets;
+          rulesFacets.noRulesFacets = noRulesFacets;
         }
       }
     }
-    return appraisalRulesFacets;
+    return rulesFacets;
   }
 }
