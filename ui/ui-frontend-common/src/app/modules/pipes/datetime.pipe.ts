@@ -24,31 +24,30 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Pipe, PipeTransform } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'dateTime'
+  name: 'dateTime',
 })
 export class DateTimePipe implements PipeTransform {
-
-
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe) {}
 
   transform(value: any, format?: string, local?: string): any {
-    if(!value.endsWith('+0000')) {
-      value = value + 'Z';
-    }
-    let hours = new Date().getTimezoneOffset() / 60 * -1;
-    let timezone = 'UTC';
+    if (value) {
+      if (!value.endsWith('Z')) {
+        value = value + 'Z';
+      }
+      const hours = (new Date().getTimezoneOffset() / 60) * -1;
+      let timezone = 'UTC';
 
-    if(hours < 0) {
-      timezone = 'UTC' + hours;
-    } else if(hours > 0) {
-      timezone = 'UTC+'+ hours;
-    }
+      if (hours < 0) {
+        timezone = 'UTC' + hours;
+      } else if (hours > 0) {
+        timezone = 'UTC+' + hours;
+      }
 
-    return this.datePipe.transform(value, format, timezone, local);
+      return this.datePipe.transform(value, format, timezone, local);
+    }
   }
 }

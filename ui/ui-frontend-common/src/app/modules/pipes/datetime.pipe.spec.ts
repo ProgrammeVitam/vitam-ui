@@ -25,13 +25,14 @@
  * accept its terms.
  */
 import { DatePipe } from '@angular/common';
-
 import { DateTimePipe } from './datetime.pipe';
 
 describe('DatePipe', () => {
-  const fake = { transform: (value, format, timezone, local) => {
-    return timezone;
-  } };
+  const fake = {
+    transform: (value, format, timezone, local) => {
+      return timezone;
+    },
+  };
 
   beforeEach(() => {
     jasmine.clock().install();
@@ -39,23 +40,21 @@ describe('DatePipe', () => {
 
   it('convert date to a correct Date', () => {
     // Given
-    let fixedDate = new Date(Date.UTC(2020,6,1));
+    const fixedDate = new Date(Date.UTC(2020, 6, 1));
     jasmine.clock().mockDate(fixedDate);
-    let pipe = new DateTimePipe(fake as DatePipe);
+    const pipe = new DateTimePipe(fake as DatePipe);
 
-    const UtcDate = '2018-02-20T11:15:14.00';
+    const utcDate = '2018-02-20T11:15:14.00';
 
     // When
-    let timezone = pipe.transform(UtcDate);
+    const timezone = pipe.transform(utcDate);
 
     // Then
     expect(pipe).toBeTruthy();
     expect(timezone).toContain('UTC');
-    });
+  });
 
   afterEach(() => {
     jasmine.clock().uninstall();
   });
-
-
 });
