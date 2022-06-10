@@ -60,9 +60,11 @@ export class ArchiveSharedDataService {
 
   private simpleSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
   private appraisalSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
+  private storageSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
   private accessSearchCriteriaAddSubject = new BehaviorSubject<SearchCriteriaAddAction>(null);
 
   private searchAppraisalCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
+  private searchStorageCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
   private searchAccessCriteriaActionFromMainSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
 
   private searchCriteriaRemoveFromChildSubject = new BehaviorSubject<SearchCriteriaRemoveAction>(null);
@@ -90,6 +92,8 @@ export class ArchiveSharedDataService {
   simpleSearchCriteriaAddObservable = this.simpleSearchCriteriaAddSubject.asObservable();
 
   appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
+  storageFromMainSearchCriteriaObservable = this.searchStorageCriteriaActionFromMainSubject.asObservable();
+
   accessFromMainSearchCriteriaObservable = this.searchAccessCriteriaActionFromMainSubject.asObservable();
   removeFromApraisalSearchCriteriaObservable = this.searchCriteriaRemoveFromChildSubject.asObservable();
 
@@ -233,6 +237,13 @@ export class ArchiveSharedDataService {
   receiveAppraisalSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
     return this.appraisalSearchCriteriaAddSubject.asObservable();
   }
+  addStorageSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
+    this.storageSearchCriteriaAddSubject.next(searchCriteria);
+  }
+
+  receiveStorageSearchCriteriaSubject(): Observable<SearchCriteriaAddAction> {
+    return this.storageSearchCriteriaAddSubject.asObservable();
+  }
 
   addAccessSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
     this.accessSearchCriteriaAddSubject.next(searchCriteria);
@@ -247,6 +258,14 @@ export class ArchiveSharedDataService {
 
   receiveAppraisalFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
     return this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
+  }
+
+  sendStorageFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {
+    this.searchStorageCriteriaActionFromMainSubject.next(searchCriteriaAction);
+  }
+
+  receiveStorageFromMainSearchCriteriaSubject(): Observable<SearchCriteriaRemoveAction> {
+    return this.searchStorageCriteriaActionFromMainSubject.asObservable();
   }
 
   sendAccessFromMainSearchCriteriaAction(searchCriteriaAction: SearchCriteriaRemoveAction) {

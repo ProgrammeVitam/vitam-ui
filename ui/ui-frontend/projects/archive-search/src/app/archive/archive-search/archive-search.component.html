@@ -73,6 +73,7 @@
       class="facet-div"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
+      [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"
       [defaultFacetTabIndex]="defaultFacetTabIndex"
@@ -101,6 +102,25 @@
             <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
           </button>
         </ng-template>
+
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'STORAGE_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-storage-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-storage-rule-search>
+          </div>
+        </ng-container>
         <ng-container
           *vitamuiCommonHasRole="{
             appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
@@ -150,6 +170,14 @@
 
       <mat-menu #menuTabs="matMenu" class="my-menu">
         <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('STORAGE_RULE')"
+          [disabled]="isCategoryAdded('STORAGE_RULE')"
+        >
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.STORAGE_RULE' | translate }}
+        </button>
+        <button
           *vitamuiCommonHasRole="{
             appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
             tenantIdentifier: +this.tenantIdentifier,
@@ -162,48 +190,31 @@
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }}
         </button>
-        <button
-          mat-menu-item
-          class="btn-new-save"
-          (click)="addCriteriaCategory('STORAGE_RULE')"
-          [disabled]="isCategoryAdded('STORAGE_RULE') || true"
-        >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
         </button>
         <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')" [disabled]="isCategoryAdded('ACCESS_RULE')">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }}
         </button>
+
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('REUSE_RULE')"
-          [disabled]="isCategoryAdded('REUSE_RULE') || true"
+          (click)="addCriteriaCategory('DIFFUSION')"
+          [disabled]="isCategoryAdded('DIFFUSION') || true"
         >
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
         </button>
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('DISSEMINATION_RULE')"
-          [disabled]="isCategoryAdded('DISSEMINATION_RULE') || true"
-        >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
-        </button>
-        <button
-          mat-menu-item
-          class="btn-new-save"
-          (click)="addCriteriaCategory('CLASSIFICATION_RULE')"
-          [disabled]="isCategoryAdded('CLASSIFICATION_RULE') || true"
+          (click)="addCriteriaCategory('CLASSIFICATION')"
+          [disabled]="isCategoryAdded('CLASSIFICATION') || true"
         >
           {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }}
-        </button>
-        <button
-          mat-menu-item
-          class="btn-new-save"
-          (click)="addCriteriaCategory('HOLD_RULE')"
-          [disabled]="isCategoryAdded('HOLD_RULE') || true"
-        >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
         </button>
       </mat-menu>
     </mat-tab-group>

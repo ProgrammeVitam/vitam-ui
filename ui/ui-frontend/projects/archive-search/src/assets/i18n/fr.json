@@ -32,8 +32,8 @@
       "INHERITANCE_BLOCKED": "Héritage de la catégorie bloqué",
       "CATEGORY_NAME": {
         "APPRAISALRULE": "DUA",
-        "STORAGERULE": "DUC",
-        "HOLDRULE": "Gel",
+        "DUC": "DUC",
+        "HOLDRULE": "GGel / Dégel",
         "ACCESSRULE": "Communicabilité",
         "DISSEMINATIONRULE": "Diffusion",
         "REUSERULE": "Réutilisation",
@@ -184,6 +184,29 @@
         "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées"
       },
+      "STORAGE_RULE": {
+        "RULE_END_DATE_END": "DUC: Date de fin max",
+        "RULE_END_DATE_BEGIN": "DUC: Date de fin min",
+        "CREATE_INTERVAL": "Créer un intervale",
+        "DELETE_INTERVAL": "Supprimer l'intervale",
+        "FINAL_ACTION_STORAGE_RULE": "Sort final DUC",
+        "RULE_TITLE_STORAGE_RULE": "Intitulé règle DUC",
+        "RULE_IDENTIFIER_STORAGE_RULE": "Identifiant règle DUC",
+        "STORAGE_RULE_START_DATE": "Date de début règle DUC",
+        "RULE_END_DATE_STORAGE_RULE": "Date de fin DUC",
+        "FINAL_ACTION_TYPE_STORAGE_RULE": "Sort final",
+        "RULE_ORIGIN_STORAGE_RULE": "Règle DUC",
+        "FINAL_ACTION_TYPE_COPY": "Copie",
+        "FINAL_ACTION_TYPE_TRANSFER": "Transfert",
+        "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Accès réservé",
+        "FINAL_ACTION_HAS_FINAL_ACTION": "Porté",
+        "FINAL_ACTION_INHERITE_FINAL_ACTION": "Hérité",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Portées",
+        "ORIGIN_HAS_NO_ONE": "Non définies",
+        "ORIGIN_WAITING_RECALCULATE": "En attente de recalcul",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Héritées",
+        "ELIMINATION_TECHNICAL_ID": "Identifiant technique de l'analyse d'élimination"
+      },
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Intitulé ou Description",
@@ -242,20 +265,33 @@
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Porte au moins une règle Communicabilité",
           "HAS_NO_ACCESS_RULE": "N'a pas de règle Communicabilité définie ",
           "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Est en attente de recalcul de règle",
-          "SELECT_ALL_ACCESS_RULE": "Sélectionne tout"
+          "SELECT_ALL_ACCESS_RULE": "Sélectionne tout",
+          "INHERITE_AT_LEAST_ONE_STORAGE_RULE": "Hérite d'au moins une règle DUC",
+          "HAS_AT_LEAST_ONE_STORAGE_RULE": "Porte au moins une règle DUC",
+          "HAS_NO_STORAGE_RULE": "N'a pas de règle DUC définie ",
+          "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Est en attente de recalcul de règle",
+          "SELECT_ALL_STORAGE_RULE": "Sélectionne tout"
         },
         "FINAL_ACTION_TYPE": {
           "TITLE": "L'unité archivistique",
           "SELECT_ALL_APPRAISAL_RULE": "Tout sélectionner",
           "HAS_APPRAISAL_RULE": "Porte le sort final DUA ",
-          "INHERITE_APPRAISAL_RULE": "Hérite du sort final DUA"
+          "INHERITE_APPRAISAL_RULE": "Hérite du sort final DUA",
+          "SELECT_ALL_STORAGE_RULE": "Tout sélectionner",
+          "HAS_STORAGE_RULE": "Porte le sort final DUC ",
+          "INHERITE_STORAGE_RULE": "Hérite du sort final DUC"
         },
         "FINAL_ACTION": {
-          "TITLE": "Sort final DUA",
+          "TITLE": "Sort final",
           "SELECT_ALL_APPRAISAL_RULE": "Tout sélectionner",
           "ELIMINATION_APPRAISAL_RULE": "Elimination",
           "KEEP_APPRAISAL_RULE": "Conservation",
-          "NC_APPRAISAL_RULE": "Non déclaré"
+          "NC_APPRAISAL_RULE": "Non déclaré",
+          "SELECT_ALL_STORAGE_RULE": "Tout sélectionner",
+          "COPY_STORAGE_RULE": "Copie",
+          "RESTRICT_ACCESS_STORAGE_RULE": "Accès réservé",
+          "TRANSFER_STORAGE_RULE": "Transfert",
+          "NC_STORAGE_RULE": "Non déclaré"
         },
         "HOLD": {
           "TITLE": "Archives gélées",
@@ -297,6 +333,23 @@
         "FINAL_ACTIONS": "Sort final",
         "WITHOUT_RULES": "Dont sans règle définie",
         "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "NOT_EXPIRED": "Non-Echue",
+        "EXPIRED": "Echue",
+        "DISTINCT_RULES": "Règles distinctes",
+        "FROM_DATE": "A partir du",
+        "SHOW_RULES_LIST": "AFFICHER LISTE",
+        "WAITING_TO_RECALCULATE": "Non indexées",
+        "CALCULATED": "Indexées"
+      },
+      "STORAGE_RULE": {
+        "RULES_COUNT": "Nombre de règles",
+        "EXPIRED_RULES": "Date d'échéance",
+        "FINAL_ACTIONS": "Sort final",
+        "WITHOUT_RULES": "Dont sans règle définie",
+        "ARCHIVE_UNITS_COUNT": "Nombre d'unités archivistiques",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICT_ACCESS": "Accès réservé",
         "NOT_EXPIRED": "Non-Echue",
         "EXPIRED": "Echue",
         "DISTINCT_RULES": "Règles distinctes",
@@ -402,12 +455,12 @@
     "CRITERIA_CATEGORY": {
       "ADD": "Ajouter des filtres",
       "APPRAISAL_RULE": "Durée d’utilité administrative",
-      "DUC": "Durée d'utilité courante",
+      "STORAGE_RULE": "Durée d’utilité courante",
       "ACCESS_RULE": "Communicabilité",
       "REUSING": "Réutilisation",
       "DIFFUSION": "Diffusion",
       "CLASSIFICATION": "Classification",
-      "GEL": "Gel"
+      "GEL": "Gel / Dégel"
     },
     "RULE": {
       "CODE_NOT_EXIST": "Le code de la règle renseigné n'existe pas dans cette catégorie",
@@ -468,9 +521,9 @@
       "SELECT_VALUE": "Sélectionner une valeur",
       "KEEP": "Conservation",
       "ELIMINATION": "Elimination",
-      "COPY" :"Copier",
-      "TRANSFER" : "Transférer",
-      "RESTRICT_ACCESS" :"Restreindre"
+      "COPY": "Copie",
+      "TRANSFER": "Transfert",
+      "RESTRICT_ACCESS": "Accès réservé"
     },
     "COMMON": {
       "UNDO": "Annuler",

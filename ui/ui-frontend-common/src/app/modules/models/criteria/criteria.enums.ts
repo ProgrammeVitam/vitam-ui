@@ -42,12 +42,15 @@ export enum CriteriaOperator {
   MISSING = 'MISSING',
   GTE = 'GTE',
   LTE = 'LTE',
-  IN = 'IN'
+  IN = 'IN',
+  BETWEEN = 'BETWEEN',
 }
 
 export enum CriteriaDataType {
   STRING = 'STRING',
-  DATE = 'DATE'
+  DATE = 'DATE',
+  INTERVAL = 'INTERVAL',
+
 }
 
 export enum ActionOnCriteria {

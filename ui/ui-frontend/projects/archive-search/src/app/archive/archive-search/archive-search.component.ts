@@ -450,6 +450,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildManagementRulesCriteriaListForQuery('APPRAISAL_RULE', this.searchCriterias, this.criteriaSearchList);
+    this.archiveHelperService.buildManagementRulesCriteriaListForQuery('STORAGE_RULE', this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildManagementRulesCriteriaListForQuery('ACCESS_RULE', this.searchCriterias, this.criteriaSearchList);
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
       this.rulesFacetsComputed = false;
@@ -520,6 +521,11 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           pagedResult.facets,
           SearchCriteriaTypeEnum.ACCESS_RULE
         );
+        this.archiveSearchResultFacets.storageRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+          pagedResult.facets,
+          SearchCriteriaTypeEnum.STORAGE_RULE
+        );
+
         this.pendingComputeFacets = false;
         this.rulesFacetsComputed = true;
         this.showingFacets = true;
@@ -558,6 +564,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
           this.archiveSearchResultFacets.accessRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
             pagedResult.facets,
             SearchCriteriaTypeEnum.ACCESS_RULE
+          );
+          this.archiveSearchResultFacets.storageRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
+            pagedResult.facets,
+            SearchCriteriaTypeEnum.STORAGE_RULE
           );
           this.defaultFacetTabIndex = this.archiveHelperService.findDefaultFacetTabIndex(this.searchCriterias);
           this.pendingComputeFacets = false;
@@ -675,7 +685,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
         if (
           criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.APPRAISAL_RULE] ||
           criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.NODES] ||
-          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE]
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.ACCESS_RULE] ||
+          criteria.category === SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.STORAGE_RULE]
         ) {
           this.addCriteriaCategory(criteria.category);
           this.archiveHelperService.addCriteria(
@@ -739,6 +750,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery('APPRAISAL_RULE', this.searchCriterias, this.criteriaSearchList);
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery('ACCESS_RULE', this.searchCriterias, this.criteriaSearchList);
+      this.archiveHelperService.buildManagementRulesCriteriaListForQuery('STORAGE_RULE', this.searchCriterias, this.criteriaSearchList);
       this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
         this.callVitamApiService(false);

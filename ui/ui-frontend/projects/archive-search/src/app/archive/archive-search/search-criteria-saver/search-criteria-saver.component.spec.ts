@@ -46,7 +46,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule } from 'ui-frontend-common';
 import { environment } from '../../../../environments/environment.prod';
 import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../../models/search-criteria-history.interface';
@@ -153,8 +153,8 @@ describe('SearchCriteriaSaverComponent', () => {
             { value: 'dfbdfd', id: 'dfbdfd' },
           ],
           category: 'FIELDS',
-          dataType: 'STRING',
-          operator: 'EQ',
+          dataType: CriteriaDataType.STRING,
+          operator: CriteriaOperator.EQ,
           keyTranslated: false,
           valueTranslated: false,
         },
@@ -162,8 +162,8 @@ describe('SearchCriteriaSaverComponent', () => {
           criteria: 'Description',
           values: [{ value: 'dfddfgdfdgg', id: 'dfddfgdfdgg' }],
           category: 'FIELDS',
-          dataType: 'STRING',
-          operator: 'EQ',
+          dataType: CriteriaDataType.STRING,
+          operator: CriteriaOperator.EQ,
           keyTranslated: false,
           valueTranslated: false,
         },
@@ -174,8 +174,8 @@ describe('SearchCriteriaSaverComponent', () => {
             { value: 'gggggggggg', id: 'gggggggggg' },
           ],
           category: 'FIELDS',
-          dataType: 'STRING',
-          operator: 'EQ',
+          dataType: CriteriaDataType.STRING,
+          operator: CriteriaOperator.EQ,
           keyTranslated: false,
           valueTranslated: false,
         },
@@ -187,8 +187,8 @@ describe('SearchCriteriaSaverComponent', () => {
             { value: 'node3', id: 'node3' },
           ],
           category: 'NODES',
-          dataType: 'STRING',
-          operator: 'EQ',
+          dataType: CriteriaDataType.STRING,
+          operator: CriteriaOperator.EQ,
           keyTranslated: false,
           valueTranslated: false,
         },
