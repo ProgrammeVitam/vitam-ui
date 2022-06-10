@@ -8,16 +8,13 @@ var nbInsert = db.services.insert({
    "_class": "org.apereo.cas.services.RegexRegisteredService",
 {% if vitamui.pastis.base_url is defined %}
 	"serviceId": "^{{ vitamui.pastis.base_url }}/.*",
+	"logoutUrl": "{{ vitamui.pastis.base_url }}/logout",
 {% else %}
 	"serviceId": "^{{ url_prefix }}/pastis/.*",
+	"logoutUrl": "{{ vitamui.pastis.base_url }}/pastis/logout",
 {% endif %}
    "name": "Pastis Application",
    "logoutType" : "FRONT_CHANNEL",
-{% if vitamui.pastis.base_url is defined %}
-	"logoutUrl": "{{ vitamui.pastis.base_url }}/logout",
-{% else %}
-	"logoutUrl": "{{ url_prefix }}/pastis/logout",
-{% endif %}
    "attributeReleasePolicy": {
       "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
    }
