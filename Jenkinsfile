@@ -92,17 +92,17 @@ pipeline {
                     $MVN_COMMAND clean verify -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express'  $JAVA_TOOL_OPTIONS
                 '''
             }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-                success {
-                    archiveArtifacts (
-                        artifacts: '**/dependency-check-report.html',
-                        fingerprint: true
-                    )
-                }
-            }
+//            post {
+//                always {
+//                    junit '**/target/surefire-reports/*.xml'
+//                }
+//                success {
+//                    archiveArtifacts (
+ //                       artifacts: '**/dependency-check-report.html',
+ //                       fingerprint: true
+  //                  )
+   //             }
+  //          }
         }
 
         stage('Build sources') {
