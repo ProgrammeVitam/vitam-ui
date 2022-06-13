@@ -89,7 +89,7 @@
     - consul_conf
     - update_mongodb_configuration
   notify:
-   - reload consul configuration for mongo
+    - reload consul configuration for mongo
 
 # Ensure that the installation is complete and consul up before contnuing...
 - meta: flush_handlers
@@ -116,6 +116,30 @@
     owner: "{{ vitamui_defaults.users.vitamuidb }}"
     group: "{{ vitamui_defaults.users.group }}"
     mode: 0600
+  tags:
+    - update_mongodb_configuration
+
+# Activate security on mongo instances (For mongo 5, the init replica needs passphrase)
+- name: Activate security on mongod instances
+  blockinfile:
+    dest: "{{ mongod_config_path }}/mongod.conf"
+    insertafter: "# ansible managed security conf"
+    block: |
+      security:
+        authorization: enabled
+        clusterAuthMode: keyFile
+        keyFile: "{{ mongod_config_path }}/keyfile"
+  tags:
+    - update_mongodb_configuration
+
+# Restart the mongo instances (to enable auth)
+- name: "restart {{ mongodb.service_name }} service"
+  service:
+    name: "{{ mongodb.service_name }}"
+    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
+    state: restarted
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['hosts_vitamui_mongod'] }}"
   tags:
     - update_mongodb_configuration
 

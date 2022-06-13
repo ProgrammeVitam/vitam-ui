@@ -24,7 +24,7 @@
   tags:
     - update_mongodb_configuration
 
-# When authentication is required, we set mongodb admin credentials
+# When authentication is required, we set mongodb admin credentials , to remove after
 - name: Set mongodb authentication credentials
   set_fact:
     mongo_credentials: " -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet"
@@ -33,25 +33,25 @@
   tags:
     - update_mongodb_configuration
 
-# Activate security on mongo instances
-- name: Activate security on mongod instances
-  blockinfile:
-    dest: "{{ mongod_config_path }}/mongod.conf"
-    insertafter: "# ansible managed security conf"
-    block: |
-      security:
-        authorization: enabled
-        clusterAuthMode: keyFile
-        keyFile: "{{ mongod_config_path }}/keyfile"
-  tags:
-    - update_mongodb_configuration
+      # Activate security on mongo instances
+      #- name: Activate security on mongod instances
+      # blockinfile:
+      # dest: "{{ mongod_config_path }}/mongod.conf"
+      # insertafter: "# ansible managed security conf"
+      # block: |
+      # security:
+    # authorization: enabled
+    # clusterAuthMode: keyFile
+    #  keyFile: "{{ mongod_config_path }}/keyfile"
+    #tags:
+    #- update_mongodb_configuration
 
 # Restart the mongo instances (to enable auth)
 - name: "restart {{ mongodb.service_name }} service"
   service:
-      name: "{{ mongodb.service_name }}"
-      enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
-      state: restarted
+    name: "{{ mongodb.service_name }}"
+    enabled: "{{ mongodb.at_boot | default(service_at_boot) }}"
+    state: restarted
   delegate_to: "{{ item }}"
   with_items: "{{ groups['hosts_vitamui_mongod'] }}"
   tags:
