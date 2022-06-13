@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,7 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.vitamui.archive.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -36,11 +36,13 @@ import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalServ
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchMgtRulesInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchUnitExportCsvInternalService;
 import fr.gouv.vitamui.archive.internal.server.service.ExportDipInternalService;
+import fr.gouv.vitamui.archive.internal.server.service.TransferRequestInternalService;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -91,6 +93,7 @@ public class ArchiveSearchInternalController {
     private final ArchiveSearchInternalService archiveInternalService;
     private final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService;
     private final ExportDipInternalService exportDipInternalService;
+    private final TransferRequestInternalService transferRequestInternalService;
     private final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService;
     private final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService;
     private final InternalSecurityService securityService;
@@ -98,16 +101,20 @@ public class ArchiveSearchInternalController {
 
     @Autowired
     public ArchiveSearchInternalController(final ArchiveSearchInternalService archiveInternalService,
-        final InternalSecurityService securityService, final ObjectMapper objectMapper,
+        final InternalSecurityService securityService,
+        final ObjectMapper objectMapper,
         final ArchiveSearchUnitExportCsvInternalService archiveSearchUnitExportCsvInternalService,
         final ExportDipInternalService exportDipInternalService,
+        final TransferRequestInternalService transferRequestInternalService,
         final ArchiveSearchMgtRulesInternalService archiveSearchMgtRulesInternalService,
-        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService) {
+        final ArchiveSearchEliminationInternalService archiveSearchEliminationInternalService
+    ) {
         this.archiveInternalService = archiveInternalService;
         this.securityService = securityService;
         this.objectMapper = objectMapper;
         this.archiveSearchUnitExportCsvInternalService = archiveSearchUnitExportCsvInternalService;
         this.exportDipInternalService = exportDipInternalService;
+        this.transferRequestInternalService = transferRequestInternalService;
         this.archiveSearchEliminationInternalService = archiveSearchEliminationInternalService;
         this.archiveSearchMgtRulesInternalService = archiveSearchMgtRulesInternalService;
     }
@@ -123,7 +130,8 @@ public class ArchiveSearchInternalController {
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
-        LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
+        LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return archiveInternalService.searchArchiveUnitsByCriteria(searchQuery, vitamContext);
@@ -163,7 +171,7 @@ public class ArchiveSearchInternalController {
         throws VitamClientException, InvalidParseOperationException {
         ParameterChecker
             .checkParameter("The identifier, the accessContract Id  are mandatory parameters: ", id, accessContractId);
-        SanityChecker.checkSecureParameter(id,accessContractId);
+        SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Get ObjectGroup By id : {}", id);
         VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
@@ -185,9 +193,9 @@ public class ArchiveSearchInternalController {
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return Mono.<Resource>fromCallable(() -> {
-            Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
-            return new InputStreamResource((InputStream) response.getEntity());
-        }).subscribeOn(Schedulers.boundedElastic())
+                Response response = archiveInternalService.downloadObjectFromUnit(id, usage, version, vitamContext);
+                return new InputStreamResource((InputStream) response.getEntity());
+            }).subscribeOn(Schedulers.boundedElastic())
             .flatMap(resource -> Mono.just(ResponseEntity
                 .ok().cacheControl(CacheControl.noCache())
                 .body(resource)));
@@ -226,6 +234,24 @@ public class ArchiveSearchInternalController {
         LOGGER.debug("Export DIP  by criteria {}", exportDipCriteriaDto);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         String result = exportDipInternalService.requestToExportDIP(exportDipCriteriaDto, vitamContext);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping(RestApi.TRANSFER_REQUEST)
+    public ResponseEntity<String> transferRequest(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final TransferRequestDto transferRequestDto)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(transferRequestDto);
+        ParameterChecker.checkParameter(
+            "The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+            tenantId, accessContractId, transferRequestDto);
+        SanityChecker.checkSecureParameter(accessContractId);
+        SanityChecker.sanitizeCriteria(transferRequestDto);
+        LOGGER.debug("Transfer request {}", transferRequestDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        String result = transferRequestInternalService.transferRequest(transferRequestDto, vitamContext);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
@@ -313,7 +339,9 @@ public class ArchiveSearchInternalController {
             .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
                 tenantId, accessContractId, searchQuery);
         SanityChecker.checkSecureParameter(accessContractId);
-        LOGGER.debug("Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ", tenantId,
+        LOGGER.debug(
+            "Calling service select Unit With Inherited Rules for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return archiveInternalService.selectUnitWithInheritedRules(searchQuery, vitamContext);

@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,7 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.archive.internal.client;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -32,6 +32,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -162,11 +163,20 @@ public class ArchiveInternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
         final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
-                request, String.class);
+            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST, request, String.class);
         checkResponse(response);
         return response.getBody();
+    }
 
+    public String transferRequest(final TransferRequestDto transferRequestDto,
+        final InternalHttpContext context) {
+        LOGGER.debug("Calling transfer request with query {} ", transferRequestDto);
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto, headers);
+        final ResponseEntity<String> response =
+            restTemplate.exchange(getUrl() + RestApi.TRANSFER_REQUEST, HttpMethod.POST, request, String.class);
+        checkResponse(response);
+        return response.getBody();
     }
 
     public ResponseEntity<JsonNode> startEliminationAnalysis(final InternalHttpContext context,
@@ -245,7 +255,8 @@ public class ArchiveInternalRestClient
         return response.getBody();
     }
 
-    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, InternalHttpContext context) {
+    public String updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
+        InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(unitDescriptiveMetadataDto, buildHeaders(context));

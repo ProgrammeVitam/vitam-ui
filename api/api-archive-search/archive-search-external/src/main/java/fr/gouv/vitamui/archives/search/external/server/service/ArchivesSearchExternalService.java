@@ -35,6 +35,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
@@ -105,6 +106,10 @@ public class ArchivesSearchExternalService extends AbstractResourceClientService
 
     public String exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto) {
         return archiveInternalRestClient.exportDIPByCriteria(exportDipCriteriaDto, getInternalHttpContext());
+    }
+
+    public String transferRequest(final TransferRequestDto transferRequestDto) {
+        return archiveInternalRestClient.transferRequest(transferRequestDto, getInternalHttpContext());
     }
 
     public ResponseEntity<JsonNode> startEliminationAnalysis(final SearchCriteriaDto query) {

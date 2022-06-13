@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -29,10 +30,11 @@ package fr.gouv.vitamui.archives.search.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.ObjectData;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalRestClient;
 import fr.gouv.vitamui.archives.search.external.client.ArchiveSearchExternalWebClient;
@@ -158,8 +160,10 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     @NotNull
-    private String updateObjectDataFilename(ObjectData objectData, QualifiersDto qualifier, ObjectQualifierTypeEnum objectQualifierTypeEnum) {
-        if(qualifier.getVersions().get(0).getFileInfoModel() != null && StringUtils.isEmpty(objectData.getFilename())) {
+    private String updateObjectDataFilename(ObjectData objectData, QualifiersDto qualifier,
+        ObjectQualifierTypeEnum objectQualifierTypeEnum) {
+        if (qualifier.getVersions().get(0).getFileInfoModel() != null &&
+            StringUtils.isEmpty(objectData.getFilename())) {
             String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
             objectData.setFilename(filename);
         }
@@ -173,27 +177,38 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
     }
 
-    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,ExternalHttpContext context) {
+    public ResponseEntity<String> exportDIPByCriteria(final ExportDipCriteriaDto exportDipCriteriaDto,
+        ExternalHttpContext context) {
         LOGGER.info("export DIP with criteria {}", exportDipCriteriaDto);
         return archiveSearchExternalRestClient.exportDIPCriteria(exportDipCriteriaDto, context);
     }
 
-    public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
+    public ResponseEntity<String> transferRequest(final TransferRequestDto transferRequestDto,
+        ExternalHttpContext context) {
+        LOGGER.debug("Transfer request: {}", transferRequestDto);
+        return archiveSearchExternalRestClient.transferRequest(transferRequestDto, context);
+    }
+
+    public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context,
+        final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination analysis with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAnalysis(context, searchQuery);
     }
 
-    public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context, final SearchCriteriaDto searchQuery) {
+    public ResponseEntity<JsonNode> startEliminationAction(ExternalHttpContext context,
+        final SearchCriteriaDto searchQuery) {
         LOGGER.info("elimination action with query : {}", searchQuery);
         return archiveSearchExternalRestClient.startEliminationAction(context, searchQuery);
     }
 
-    public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,ExternalHttpContext context) {
+    public ResponseEntity<String> updateArchiveUnitsRules(final RuleSearchCriteriaDto ruleSearchCriteriaDto,
+        ExternalHttpContext context) {
         LOGGER.info("Update Archive Units Rules  with criteria {}", ruleSearchCriteriaDto);
         return archiveSearchExternalRestClient.updateArchiveUnitsRules(ruleSearchCriteriaDto, context);
     }
 
-    public ResponseEntity<String> computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,ExternalHttpContext context) {
+    public ResponseEntity<String> computedInheritedRules(final SearchCriteriaDto searchCriteriaDto,
+        ExternalHttpContext context) {
         LOGGER.info("computed Inherited Rules with criteria {}", searchCriteriaDto);
         return archiveSearchExternalRestClient.computedInheritedRules(searchCriteriaDto, context);
     }
@@ -204,12 +219,14 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
         return archiveSearchExternalRestClient.selectUnitWithInheritedRules(context, searchQuery);
     }
 
-    public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,ExternalHttpContext context) {
+    public ResponseEntity<String> reclassification(final ReclassificationCriteriaDto reclassificationCriteriaDto,
+        ExternalHttpContext context) {
         LOGGER.info("Reclassification with criteria {}", reclassificationCriteriaDto);
         return archiveSearchExternalRestClient.reclassification(reclassificationCriteriaDto, context);
     }
 
-    public ResponseEntity<String> updateUnitById(String id, final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, ExternalHttpContext context) {
+    public ResponseEntity<String> updateUnitById(String id, final UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
+        ExternalHttpContext context) {
         LOGGER.debug("Update the Archive Unit with id {}", id);
         return archiveSearchExternalRestClient.updateUnitById(id, unitDescriptiveMetadataDto, context);
     }
