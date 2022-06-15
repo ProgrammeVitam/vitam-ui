@@ -55,6 +55,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.RoundingMode;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -93,6 +94,7 @@ public final class VitamUIUtils {
     public static final DecimalFormat UI_DECIMAL_FORMAT_2_DIGITS = decimalFormat2digits();
     public static final String BYTE_SIZES_LETTERS = "kMGTPE";
     public static final String OCTET = " octet";
+    public static final String OCTETS = " octets";
 
     private VitamUIUtils() {
         // empty
@@ -325,15 +327,19 @@ public final class VitamUIUtils {
         symbols.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(symbols);
         df.setMaximumFractionDigits(2);
+        df.setRoundingMode(RoundingMode.HALF_UP);
         return df;
     }
 
     /**
-     * 1 k = 1,000
+     * SI (1 k = 1,000)
      */
     public static String humanReadableByteCountSI(long bytes) {
-        if (-1000 < bytes && bytes < 1000) {
+        if (-2 < bytes && bytes < 2) {
             return bytes + OCTET;
+        }
+        if (-1000 < bytes && bytes < 1000) {
+            return bytes + OCTETS;
         }
         CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
         while (bytes <= -999_950 || bytes >= 999_950) {
@@ -343,16 +349,26 @@ public final class VitamUIUtils {
         return UI_DECIMAL_FORMAT_2_DIGITS.format(bytes / 1000.0) + ' ' + ci.current() + 'o';
     }
 
+    /**
+     * Binary (1 Ki = 1,024)
+     */
     public static String humanReadableByteCountBin(long bytes) {
-        if (-1000 < bytes && bytes < 1000) {
+        long absB = bytes == Long.MIN_VALUE ? Long.MAX_VALUE : Math.abs(bytes);
+        if (absB < 2) {
             return bytes + OCTET;
         }
+        if (absB < 1024) {
+            return bytes + OCTETS;
+        }
+        long value = absB;
         CharacterIterator ci = new StringCharacterIterator(BYTE_SIZES_LETTERS);
-        while (bytes <= -999_950 || bytes >= 999_950) {
-            bytes /= 1000;
+        for (int i = 40; i >= 0 && absB > 0xfffccccccccccccL >> i; i -= 10) {
+            value >>= 10;
             ci.next();
         }
-        return UI_DECIMAL_FORMAT_2_DIGITS.format(bytes / 1024.0) + ' ' + ci.current() + 'o';
+        value *= Long.signum(bytes);
+        System.out.println(value / 1024.0);
+        return UI_DECIMAL_FORMAT_2_DIGITS.format(value / 1024.0) + ' ' + ci.current() + 'o';
     }
 
 }
