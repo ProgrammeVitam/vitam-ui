@@ -41,6 +41,7 @@ import { of, timer } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { RuleService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
+import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ManagementRules, RuleCategoryAction } from '../models/ruleAction.interface';
 
 @Injectable()
@@ -63,9 +64,40 @@ export class ManagementRulesValidatorService {
       this.ruleActions = this.managementRules.find(
         (managementRule) => managementRule.category === this.ruleCategorySelected
       ).ruleCategoryAction;
-      return this.ruleActions.rules?.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length !== 0 ? true : false;
+      if (this.ruleActions.rules) {
+        return this.ruleActions.rules?.filter((action) => action.rule === ruleId || action.oldRule === ruleId).length !== 0 ? true : false;
+      }
     }
     return false;
+  }
+
+  filterPreventRulesId(ruleId: string): boolean {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      this.managementRules = data;
+    });
+
+    if (this.managementRules.findIndex((managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE) !== -1) {
+      this.ruleActions = this.managementRules.find(
+        (managementRule) => managementRule.category === RuleTypeEnum.APPRAISALRULE
+      ).ruleCategoryAction;
+      if (this.ruleActions.preventRulesIdToAdd) {
+        return this.ruleActions.preventRulesIdToAdd?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
+      }
+      if (this.ruleActions.preventRulesIdToRemove) {
+        return this.ruleActions.preventRulesIdToRemove?.filter((rule) => rule === ruleId).length !== 0 ? true : false;
+      }
+    }
+    return false;
+  }
+
+  uniquePreventRuleId(codeToIgnore?: string): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      return timer(this.debounceTime).pipe(
+        switchMap(() => (control.value !== codeToIgnore ? of(this.filterPreventRulesId(control.value)) : of(false))),
+        take(1),
+        map((exists: boolean) => (exists ? { uniquePreventRuleId: true } : null))
+      );
+    };
   }
 
   uniqueRuleId(codeToIgnore?: string): AsyncValidatorFn {

@@ -72,9 +72,8 @@ public class RuleOperationsConverter {
     public ManagementMetadataAction convertToVitamManagementMetadataAction(
         VitamUiManagementMetadataAction vitamUiManagementMetadataAction) {
 
-        final ManagementMetadataAction managementMetadataAction = VitamUIUtils
+        return VitamUIUtils
             .copyProperties(vitamUiManagementMetadataAction, new ManagementMetadataAction());
-        return managementMetadataAction;
     }
 
     public RuleAction convertToVitamRuleAction(VitamUiRuleAction vitamUiRuleAction) {
@@ -109,9 +108,9 @@ public class RuleOperationsConverter {
         if(vitamUiRuleActions != null && !vitamUiRuleActions.getAdd().isEmpty()){
             vitamUiRuleActions.getAdd().forEach(rule -> {
                 Map<String, RuleCategoryAction> map = new HashMap<>();
-                rule.keySet().forEach(ruleCategoryActionKey -> {
-                    map.put(ruleCategoryActionKey, convertToRuleCategoryAction(rule.get(ruleCategoryActionKey)));
-                });
+                rule.keySet().forEach(ruleCategoryActionKey ->
+                    map.put(ruleCategoryActionKey, convertToRuleCategoryAction(rule.get(ruleCategoryActionKey)))
+                );
                 vitamAdd.add(map);
             });
             ruleActions.setAdd(vitamAdd);
@@ -120,9 +119,9 @@ public class RuleOperationsConverter {
         if(vitamUiRuleActions != null && !vitamUiRuleActions.getUpdate().isEmpty()){
             vitamUiRuleActions.getUpdate().forEach(rule -> {
                 Map<String, RuleCategoryAction> map = new HashMap<>();
-                rule.keySet().forEach(ruleCategoryActionKey -> {
-                    map.put(ruleCategoryActionKey, convertToRuleCategoryAction(rule.get(ruleCategoryActionKey)));
-                });
+                rule.keySet().forEach(ruleCategoryActionKey ->
+                    map.put(ruleCategoryActionKey, convertToRuleCategoryAction(rule.get(ruleCategoryActionKey)))
+                );
                 vitamUpdate.add(map);
             });
             ruleActions.setUpdate(vitamUpdate);
@@ -131,9 +130,9 @@ public class RuleOperationsConverter {
         if(vitamUiRuleActions != null && !vitamUiRuleActions.getDelete().isEmpty()){
             vitamUiRuleActions.getDelete().forEach(rule -> {
                 Map<String, RuleCategoryActionDeletion> map = new HashMap<>();
-                rule.keySet().forEach(ruleCategoryActionKey -> {
-                    map.put(ruleCategoryActionKey, convertToRuleCategoryActionDeletion(rule.get(ruleCategoryActionKey)));
-                });
+                rule.keySet().forEach(ruleCategoryActionKey ->
+                    map.put(ruleCategoryActionKey, convertToRuleCategoryActionDeletion(rule.get(ruleCategoryActionKey)))
+                );
                 vitamDelete.add(map);
             });
             ruleActions.setDelete(vitamDelete);
@@ -162,13 +161,12 @@ public class RuleOperationsConverter {
             copyProperties(vitamUiRuleCategoryActionDeletion,new RuleCategoryActionDeletion());
 
         List<RuleAction> ruleActionList = new ArrayList<>();
-        if(vitamUiRuleCategoryActionDeletion != null && !vitamUiRuleCategoryActionDeletion.getRules().isEmpty()
-            && !vitamUiRuleCategoryActionDeletion.getRules().get().isEmpty()) {
-            vitamUiRuleCategoryActionDeletion.getRules().get()
-                .forEach(rule -> {
-                    ruleActionList.add(convertToVitamRuleAction(rule));
-                });
-            ruleCategoryActionDeletion.setRules(ruleActionList);
+        if(vitamUiRuleCategoryActionDeletion != null && vitamUiRuleCategoryActionDeletion.getRules().isPresent()) {
+            vitamUiRuleCategoryActionDeletion.getRules().ifPresent(ruleCategoryAction -> {
+                ruleCategoryAction.forEach(rule ->
+                    ruleActionList.add(convertToVitamRuleAction(rule)));
+                ruleCategoryActionDeletion.setRules(ruleActionList);
+            });
         }
         return ruleCategoryActionDeletion;
     }
