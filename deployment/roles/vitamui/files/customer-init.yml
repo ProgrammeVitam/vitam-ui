@@ -65,6 +65,13 @@ customer-init:
         - ROLE_EXPORT_AGENCIES
         - ROLE_IMPORT_AGENCIES
 
+    - name: Profil consultation des services agents
+      description: Profil de consultation du référentiel des services agent sans possibilité de mise à jour
+      app-name: AGENCIES_APP
+      level:
+      roles:
+        - ROLE_GET_AGENCIES
+
     - name: Profil pour la gestion des Audits
       description: Gestion des audits dans Vitam
       app-name: AUDIT_APP
