@@ -597,10 +597,10 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <configuration>
                     <from>
-                        <image>tomcat:9.0.52-jre11-temurin</image>
+                        <image>172.18.96.221:80/library/tomcat:9.0.52-jre11-temurin</image>
                     </from>
                     <to>
-                        <image>172.18.96.221:80/vitam-ui/cas-server</image>
+                        <image>172.18.96.221:80/vitamui/cas-server</image>
                         <tags>${project.version}</tags>
                     </to>
                     <container>
