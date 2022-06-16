@@ -421,6 +421,18 @@ public class ServicesData {
 
     public static final String ROLE_GET_ACCESSION_REGISTER_DETAIL = GET_ROLE_PREFIX + ACCESSION_REGISTER_DETAIL;
 
+    //------------------------------------ MANAGEMENT CONTRACT -------------------------------------------
+    public static final String SERVICE_MANAGEMENT_CONTRACT = "MANAGEMENT_CONTRACT";
+
+    public static final String ROLE_GET_MANAGEMENT_CONTRACT = CREATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_CREATE_MANAGEMENT_CONTRACT = GET_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_DELETE_MANAGEMENT_CONTRACT = DELETE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+    public static final String ROLE_UPDATE_MANAGEMENT_CONTRACT = UPDATE_ROLE_PREFIX + SERVICE_MANAGEMENT_CONTRACT;
+
+
     //@formatter:off
 
     /**
@@ -539,7 +551,11 @@ public class ServicesData {
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
             ROLE_RECLASSIFICATION,
-            ROLE_UPDATE_UNIT_DESC_METADATA
+            ROLE_UPDATE_UNIT_DESC_METADATA,
+            ROLE_GET_MANAGEMENT_CONTRACT,
+            ROLE_CREATE_MANAGEMENT_CONTRACT,
+            ROLE_DELETE_MANAGEMENT_CONTRACT,
+            ROLE_UPDATE_MANAGEMENT_CONTRACT
 
             );
 
@@ -686,7 +702,11 @@ public class ServicesData {
 
             ROLE_GET_ACCESSION_REGISTER_DETAIL,
             ROLE_RECLASSIFICATION,
-            ROLE_UPDATE_UNIT_DESC_METADATA
+            ROLE_UPDATE_UNIT_DESC_METADATA,
+            ROLE_GET_MANAGEMENT_CONTRACT,
+            ROLE_CREATE_MANAGEMENT_CONTRACT,
+            ROLE_DELETE_MANAGEMENT_CONTRACT,
+            ROLE_UPDATE_MANAGEMENT_CONTRACT
             );
     //@formatter:on
 
