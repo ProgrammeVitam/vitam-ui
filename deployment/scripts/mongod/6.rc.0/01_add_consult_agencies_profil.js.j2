@@ -23,11 +23,11 @@ db.profiles.insert({
 });
 
 
-// Manage updating existant customers with the new profile
+// Manage updating existant OTHER tenants customers with the new profile
 
 var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
 
-db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+db.tenants.find({$and:[{ "identifier": { $gte: 0 } },{ "tenantIdentifier": { $ne: NumberInt({{ vitamui_platform_informations.proof_tenant }}) } }]}).forEach(function (tenant) {
 
     db.profiles.insert({
         "_id": "PROFIL_" + tenant.identifier + "-AGENCIES_APP-CONSULTATION",
