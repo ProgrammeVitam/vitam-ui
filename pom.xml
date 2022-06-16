@@ -142,7 +142,7 @@
         <xdocreport.version>2.0.2</xdocreport.version>
         <xerces.version>2.12.1</xerces.version>
         <esapi.version>2.2.3.1</esapi.version>
-        <antisamy.version>1.6.4</antisamy.version>
+        <antisamy.version>1.6.7</antisamy.version>
         <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
         <mongo.driver.sync.version>4.1.2</mongo.driver.sync.version>
