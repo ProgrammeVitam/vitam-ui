@@ -8,9 +8,6 @@ spring:
     name: API IAM (Identity Access Management)
     description: This API is used to manage customers, tenants, identity providers, users with their profiles and their profiles groups. This is for an internal use only.
     version: v1
-  mvc:
-    favicon:
-      enabled: false
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -19,7 +16,6 @@ management:
   endpoints:
     jmx:
       domain: ${server-identity.identityRole}
-      unique-names: true
     web.exposure.include: '*'
   endpoint:
     health:

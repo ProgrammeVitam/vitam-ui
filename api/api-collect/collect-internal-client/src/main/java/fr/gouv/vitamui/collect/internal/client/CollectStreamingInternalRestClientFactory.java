@@ -24,30 +24,27 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.vitamui.collect.internal.client;
 
-import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 
-public class CollectInternalWebClientFactory extends BaseWebClientFactory {
+/**
+ * REST client internal factory to stream file to Collect API.
+ */
 
-    public CollectInternalWebClientFactory(final RestClientConfiguration restClientConfiguration) {
+public class CollectStreamingInternalRestClientFactory extends BaseStreamingRestClientFactory {
+
+    public CollectStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration) {
         super(restClientConfiguration);
-    }
+       }
 
-    public CollectInternalWebClientFactory(final RestClientConfiguration restClientConfig,
-        final HttpPoolConfiguration httpPoolConfig) {
-        super(restClientConfig, httpPoolConfig);
-    }
+    public CollectStreamingInternalRestClientFactory(final RestClientConfiguration restClientConfiguration, final HttpPoolConfiguration httpHostConfiguration) {
+        super(restClientConfiguration, httpHostConfiguration);
+       }
 
-    public CollectInternalWebClient getCollectInternalWebClient() {
-        return new CollectInternalWebClient(getWebClient(), getBaseUrl());
-    }
-
-    @Override
-    public String getBaseUrl() {
-        return super.getBaseUrl();
+    public CollectStreamingInternalRestClient getCollectStreamingInternalRestClient() {
+        return new CollectStreamingInternalRestClient(getRestTemplate(), getBaseUrl());
     }
 }

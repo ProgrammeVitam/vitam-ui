@@ -24,27 +24,11 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
-package fr.gouv.vitamui.collect.external.client;
-
-import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import org.springframework.web.reactive.function.client.WebClient;
-
-public class CollectExternalWebClient extends BaseWebClient<ExternalHttpContext> {
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectExternalWebClient.class);
-
-    public CollectExternalWebClient(final WebClient webClient, final String baseUrl) {
-        super(webClient, baseUrl);
-    }
-
-    @Override
-    public String getPathUrl() {
-        return RestApi.COLLECT_PROJECT_PATH;
-    }
-
+export enum ProjectStatus {
+  OPEN = 'OPEN',
+  CLOSE = 'CLOSE',
+  SENT = 'SENT',
+  WAITING_ACK = 'WAITING_ACK',
+  ACK_OK = 'ACK_OK',
+  ACK_ERROR = 'ACK_ERROR'
 }

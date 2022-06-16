@@ -1,6 +1,6 @@
 db = db.getSiblingDB('iam')
 
-print("START application_ref.js");
+print("START 02_application_ref.js.j2");
 
 // -------- VITAM ADMINISTRATION -----
 
@@ -39,9 +39,10 @@ db.profiles.insert({
   "readonly": false,
   "customerId": "system_customer",
   "roles": [
-  {
-    "name": "ROLE_GET_PROJECTS"
-  }
+    {"name": "ROLE_GET_FILLING_PLAN_ACCESS"},
+    {"name": "ROLE_GET_PROJECTS"},
+    {"name": "ROLE_CREATE_PROJECTS"},
+    {"name": "ROLE_UPDATE_PROJECTS"}
   ]
 });
 
@@ -71,4 +72,4 @@ db.groups.updateOne(
 	}
 );
 
-print("END application_ref.js");
+print("END 02_application_ref.js.j2");

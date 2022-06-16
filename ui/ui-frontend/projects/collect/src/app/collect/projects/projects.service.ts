@@ -24,27 +24,29 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { Injectable } from '@angular/core';
+import { Project, SearchService } from 'ui-frontend-common';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
+import { ProjectsApiService } from '../../core/api/project-api.service';
 
-package fr.gouv.vitamui.collect.internal.client;
+@Injectable({
+  providedIn: 'root',
+})
+export class ProjectsService extends SearchService<Project> {
+  pageEvent = new Subject<string>();
+  tenantEvent = new Subject<string>();
+  customerEvent = new Subject<string>();
 
-import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import org.springframework.web.reactive.function.client.WebClient;
+  constructor(http: HttpClient, private projectsApiService: ProjectsApiService) {
+    super(http, projectsApiService, 'ALL');
+  }
 
-public class CollectInternalWebClient  extends BaseWebClient<ExternalHttpContext> {
+  public create(project: Project): Observable<any> {
+    return this.projectsApiService.create(project);
+  }
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectInternalWebClient.class);
-
-    public CollectInternalWebClient(final WebClient webClient, final String baseUrl) {
-        super(webClient, baseUrl);
-    }
-
-    @Override
-    public String getPathUrl() {
-        return RestApi.COLLECT_PROJECT_PATH;
-    }
-
+  public updateProject(project: Project) {
+    return this.projectsApiService.update(project);
+  }
 }

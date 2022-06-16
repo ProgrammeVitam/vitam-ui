@@ -1,6 +1,6 @@
 db = db.getSiblingDB('{{ mongodb.security.db }}')
 
-print("START security.populate_certificates_ref.js");
+print("START 05_security.populate_certificates_ref.js.j2");
 
 {% macro insertCertificate(pemFile, contextId) -%}
 db.certificates.remove(
@@ -26,4 +26,4 @@ db.certificates.insert({
 
 {{ process('{{ pki_dir }}/server/hosts/%host%/ui-collect.pem', 'ui_collect_context', 'hosts_ui_collect') }}
 
-print("END security.populate_certificates_ref.js");
+print("END 05_security.populate_certificates_ref.js.j2");

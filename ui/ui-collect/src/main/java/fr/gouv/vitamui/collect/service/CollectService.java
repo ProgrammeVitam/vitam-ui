@@ -27,10 +27,9 @@
 
 package fr.gouv.vitamui.collect.service;
 
-
-import fr.gouv.vitamui.collect.common.dto.ProjectDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
-import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
+import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -39,31 +38,31 @@ import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.InputStream;
 import java.util.Optional;
 
-
 /**
- * UI
- * Collect Service
+ * UI Collect Service
  */
 @Service
-public class CollectService extends AbstractPaginateService<ProjectDto> {
+public class CollectService extends AbstractPaginateService<CollectProjectDto> {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectService.class);
 
     private final CollectExternalRestClient collectExternalRestClient;
-    private final CollectExternalWebClient collectExternalWebClient;
-    private CommonService commonService;
+    private final CollectStreamingExternalRestClient collectStreamingExternalRestClient;
+    private final CommonService commonService;
 
     @Autowired
-    public CollectService(final CommonService commonService,
-        final CollectExternalRestClient collectExternalRestClient,
-        final CollectExternalWebClient collectExternalWebClient) {
+    public CollectService(CommonService commonService,
+        CollectExternalRestClient collectExternalRestClient,
+        CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
         this.commonService = commonService;
         this.collectExternalRestClient = collectExternalRestClient;
-        this.collectExternalWebClient = collectExternalWebClient;
+        this.collectStreamingExternalRestClient = collectStreamingExternalRestClient;
     }
 
     @Override
@@ -75,13 +74,18 @@ public class CollectService extends AbstractPaginateService<ProjectDto> {
         return collectExternalRestClient;
     }
 
-    public ProjectDto createProject(ExternalHttpContext context, ProjectDto projectDto) {
-        return collectExternalRestClient.create(context, projectDto);
+
+    public CollectProjectDto createProject(ExternalHttpContext context, CollectProjectDto collectProjectDto) {
+        return collectExternalRestClient.create(context, collectProjectDto);
     }
 
-    public PaginatedValuesDto<ProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
-        final Optional<DirectionDto> direction) {
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
         return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
+    }
+
+    public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
+        String projectId, InputStream inputStream) {
+        return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
     }
 }
