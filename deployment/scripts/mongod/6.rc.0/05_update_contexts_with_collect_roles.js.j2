@@ -1,12 +1,12 @@
 db = db.getSiblingDB('security')
 
-print("START 06_security_ref.js.j2");
+print("START 6.rc.0/05_update_contexts_with_collect_roles.js");
 
 db.contexts.insert({
     "_id" : "ui_collect_context",
     "name": "Contexte UI Collect",
     "fullAccess" : true,
-    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant }}), NumberInt({{ vitamui_platform_informations.cas_tenant }})],
+    "tenants" : [NumberInt({{ vitamui_platform_informations.proof_tenant | default(1) }}), NumberInt({{ vitamui_platform_informations.cas_tenant | default(-1) }})],
     "roleNames" : [
         "ROLE_GET_PROJECTS",
         "ROLE_GET_EXTERNAL_PARAMS",
@@ -16,4 +16,4 @@ db.contexts.insert({
     ]
 });
 
-print("END 06_security_ref.js.j2");
+print("END 6.rc.0/05_update_contexts_with_collect_roles.js");
