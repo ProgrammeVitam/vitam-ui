@@ -7,7 +7,7 @@ import com.mongodb.connection.ClusterSettings;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -45,7 +45,7 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(new MongodConfigBuilder()
+        _mongodExe = starter.prepare(MongodConfig.builder()
             .version(Version.Main.PRODUCTION)
             .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
             .build());
@@ -78,7 +78,8 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @Override
-    protected void configureConverters(MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+    protected void configureConverters(
+        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
         converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }
