@@ -150,7 +150,7 @@ public class IngestController extends AbstractUiRestController {
             ingestService.streamingUpload(buildUiHttpContext(), fileName, inputStream, contextId, xAction);
 
         LOGGER.debug("The response in ui Ingest is {} ", response.toString());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return response;
     }
 
 }

@@ -34,11 +34,13 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {IngestApiService} from '../api/ingest-api.service';
-import {IngestInfo, IngestList, IngestUploadStatus} from './ingest-list';
+import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { IngestApiService } from '../api/ingest-api.service';
+import { IngestInfo, IngestList, IngestUploadStatus } from './ingest-list';
+import { IngestType } from './ingest-type.enum';
 
 const tenantKey = 'X-Tenant-Id';
 const contextIdKey = 'X-Context-Id';
@@ -48,8 +50,7 @@ const actionKey = 'X-Action';
 export class UploadService {
   uploadStatus = new BehaviorSubject<IngestList>(new IngestList());
 
-  constructor(private ingestApiService: IngestApiService, private httpClient: HttpClient) {
-  }
+  constructor(private ingestApiService: IngestApiService, private httpClient: HttpClient) {}
 
   filesStatus(): BehaviorSubject<IngestList> {
     return this.uploadStatus;
@@ -72,14 +73,14 @@ export class UploadService {
 
   private uploadStreaming(
     tenantIdentifier: string,
-    contextId: string,
+    contextId: IngestType,
     action: string,
     file: Blob,
     fileName: string
   ): Observable<HttpEvent<void>> {
     let headers = new HttpHeaders();
     headers = headers.set(tenantKey, tenantIdentifier.toString());
-    headers = headers.set(contextIdKey, contextId);
+    headers = headers.set(contextIdKey, contextId.toString());
     headers = headers.set(actionKey, action);
     headers = headers.set('Content-Type', 'application/octet-stream');
     headers = headers.set('reportProgress', 'true');
@@ -90,11 +91,18 @@ export class UploadService {
       headers: headers,
       responseType: 'text' as 'text',
       reportProgress: true,
+      observe: 'response',
     };
     return this.httpClient.request(new HttpRequest('POST', this.ingestApiService.getBaseUrl() + '/ingest/upload-v2', file, options));
   }
 
-  public uploadIngestV2(tenantIdentifier: string, file: Blob, fileName: string, type: string): Observable<IngestList> {
+  public uploadIngestV2(
+    tenantIdentifier: string,
+    file: Blob,
+    fileName: string,
+    type: IngestType,
+    callback?: (operationId: String) => any
+  ): Observable<IngestList> {
     let progressPercent = 0;
     this.addNewUploadFile(fileName, new IngestInfo(fileName, file.size, 0, IngestUploadStatus.WIP));
     this.uploadStreaming(tenantIdentifier, type, 'RESUME', file, fileName).subscribe(
@@ -107,6 +115,7 @@ export class UploadService {
               break;
             case HttpEventType.Response:
               this.updateFileStatus(fileName, 100, IngestUploadStatus.FINISHED);
+              callback(data.headers.get('X-Operation-Id'));
               break;
           }
         }

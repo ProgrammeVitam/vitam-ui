@@ -134,7 +134,7 @@ public class IngestInternalController {
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void streamingUpload(
+    public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
@@ -146,6 +146,11 @@ public class IngestInternalController {
         SanityChecker.isValidFileName(originalFileName);
         SanityChecker.checkSecureParameter(action, contextId, originalFileName);
         LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
-        ingestInternalService.streamingUpload(inputStream, contextId, action);
+        final String operationId = ingestInternalService.streamingUpload(inputStream, contextId, action);
+        if (operationId != null) {
+            return ResponseEntity.ok().header(CommonConstants.X_OPERATION_ID_HEADER, operationId).build();
+        } else {
+            throw new IngestExternalException("Cannot retrieve operation id");
+        }
     }
 }
