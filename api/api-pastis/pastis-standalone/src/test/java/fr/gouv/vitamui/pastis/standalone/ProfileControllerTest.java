@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -68,6 +69,9 @@ public class ProfileControllerTest {
 
     private MockHttpServletResponse mockHttpServletResponse;
 
+    @MockBean
+    private ApiPastisStandaloneApplication apiPastisStandaloneApplication;
+
     @Test
     public void getProfiles() throws Exception {
         Map<String, String> headers = new HashMap<>();
@@ -83,7 +87,7 @@ public class ProfileControllerTest {
     @Test
     public void getFile() throws Exception {
         RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get(RestApi.PASTIS_GET_PROFILE_FILE).param("name", "PA_UPPA_versio")
+            MockMvcRequestBuilders.get(RestApi.PASTIS_GET_PROFILE_FILE).param("name", "PA_Exemple")
                 .header("X-Tenant-Id", "1");
         mockHttpServletResponse = mockMvc.perform(requestBuilder).andReturn().getResponse();
         String resBody = mockHttpServletResponse.getContentAsString();
