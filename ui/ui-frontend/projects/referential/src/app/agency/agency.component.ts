@@ -39,13 +39,14 @@ import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vi
 
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
+import { ApplicationId, GlobalEventService, Role, SidenavPage } from 'ui-frontend-common';
 import { Agency } from '../../../../vitamui-library/src/lib/models/agency';
 import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
 import { SecurityService } from 'ui-frontend-common';
 import { AgencyCreateComponent } from './agency-create/agency-create.component';
 import { AgencyListComponent } from './agency-list/agency-list.component';
 import { AgencyService } from './agency.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-agency',
@@ -56,10 +57,10 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
 
   search = '';
   tenantIdentifier: number;
-  appName = "AGENCIES_APP";
-  hasCreationAgencyRole = false;
-  hasExportAgencyRole = false;
-  hasImportAgencyRole = false;
+
+  checkCreateRole = new Observable<boolean>();
+  checkImportRole = new Observable<boolean>();
+  checkExportRole = new Observable<boolean>();
 
   @ViewChild(AgencyListComponent, { static: true }) agencyListComponent: AgencyListComponent;
 
@@ -78,20 +79,9 @@ export class AgencyComponent extends SidenavPage<Agency> implements OnInit {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
 
-    this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_CREATE_AGENCIES')
-      .subscribe((result) => {
-        this.hasCreationAgencyRole = result;
-      });
-
-    this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_IMPORT_AGENCIES')
-      .subscribe((result) => {
-        this.hasImportAgencyRole = result;
-      });
-
-    this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_EXPORT_AGENCIES')
-      .subscribe((result) => {
-        this.hasExportAgencyRole = result;
-      });
+    this.checkCreateRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_CREATE_AGENCIES);
+    this.checkImportRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_IMPORT_AGENCIES);
+    this.checkExportRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_EXPORT_AGENCIES);
   }
 
   openCreateAgencyDialog() {
