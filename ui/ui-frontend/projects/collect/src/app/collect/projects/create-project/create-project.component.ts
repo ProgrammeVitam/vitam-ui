@@ -247,7 +247,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.dateErrorMessage = '';
 
     return (
-      this.projectForm.controls['originatingAgencyIdentifier'].invalid || this.projectForm.controls['submissionAgencyIdentifier'].invalid
+      this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
+      this.projectForm.controls['messageIdentifier'].invalid ||
+      this.projectForm.controls['submissionAgencyIdentifier'].invalid
     );
   }
 
