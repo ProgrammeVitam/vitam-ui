@@ -8,10 +8,10 @@ db.applications.insert({
     "identifier" : "COLLECT_APP",
 {% if vitamui.collect.base_url is defined %}
     "url": "{{ vitamui.collect.base_url }}/collect",
-    "serviceId": "^{{ vitamui.collect.base_url }}/.*"
+    "serviceId": "^{{ vitamui.collect.base_url }}/.*",
 {% else %}
     "url": "{{ url_prefix }}/collect/collect",
-    "serviceId": "^{{ url_prefix }}/collect/.*"
+    "serviceId": "^{{ url_prefix }}/collect/.*",
 {% endif %}
     "icon": "vitamui-icon vitamui-icon-archive-ingest",
     "name": "Collecte et préparation des versements",
@@ -21,7 +21,7 @@ db.applications.insert({
     "hasTenantList": false,
     "hasHighlight": false,
     "tooltip": "Collecte de données, Application de préparation de versements",
-    "target": "_self",
+    "target": "_self"
 });
 
 //=================== CREATE PROFILES FOR EXISTING CUSTOMERS ===================
