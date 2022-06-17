@@ -59,6 +59,7 @@ public class JsonFromPUA {
 	private Long idCounter = 0L;
 	private static final String CONTENT = "Content";
 	private static final String PROPERTIES = "properties";
+    private static final String ITEMS = "items";
 
 	/**
 	 * Generates a Profile from a PUA file
@@ -161,6 +162,13 @@ public class JsonFromPUA {
 	 */
 	private void buildProfile(JSONObject jsonPUA, SedaNode sedaNode, ElementProperties parent) {
 		List<String> requiredFields = getRequiredFields(jsonPUA);
+        if (jsonPUA.has(ITEMS)) {
+            JSONObject jsonPuaTemp = jsonPUA.getJSONObject(ITEMS);
+            jsonPUA.remove(ITEMS);
+            jsonPuaTemp.keySet().forEach(key -> {
+                jsonPUA.put(key, jsonPuaTemp.get(key));
+            });
+        }
 		if (jsonPUA.has(PROPERTIES)) {
 			JSONObject properties = jsonPUA.getJSONObject(PROPERTIES);
 			if (properties.length() != 0) {
@@ -172,11 +180,17 @@ public class JsonFromPUA {
 					// Then we have to retrieve all the the sub-childrens in the Rules->items property
 					if (propertyName.equals("Rules")) {
 						requiredFieldsActual =
-								getRequiredFields(properties.getJSONObject(propertyName).getJSONObject("items"));
+								getRequiredFields(properties.getJSONObject(propertyName).getJSONObject(ITEMS));
 						propertiesNew =
-								properties.getJSONObject(propertyName).getJSONObject("items").getJSONObject(PROPERTIES);
+								properties.getJSONObject(propertyName).getJSONObject(ITEMS).getJSONObject(PROPERTIES);
 						childrensNames = propertiesNew.keySet();
-					} else {
+//					} else if (properties.getJSONObject(propertyName).has(ITEMS)) {
+//                        requiredFieldsActual =
+//                            Collections.singletonList(propertyName);
+//                        propertiesNew =
+//                            properties.getJSONObject(propertyName).getJSONObject(ITEMS).getJSONObject(PROPERTIES);
+//                        childrensNames = propertiesNew.keySet();
+                    }else {
 						requiredFieldsActual = requiredFields;
 						propertiesNew = properties;
 						childrensNames = Collections.singleton(propertyName);
@@ -244,7 +258,14 @@ public class JsonFromPUA {
 
 		Integer minItems = null;
 		Integer maxItems = null;
-
+        JSONObject childPuaNew;
+        if (childPua.has(ITEMS)) {
+            JSONObject jsonPuaTemp = childPua.getJSONObject(ITEMS);
+            childPua.remove(ITEMS);
+            jsonPuaTemp.keySet().forEach(k -> {
+                childPua.put(k, jsonPuaTemp.get(k));
+            });
+        }
 		for (String k : childPua.keySet()) {
 			PuaAttributes e = PuaAttributes.fromString(k);
 			if (e != null) {
@@ -256,7 +277,7 @@ public class JsonFromPUA {
 				case ENUM:
 					addPuaDataToElementIfNotPresent(childProfile);
 					List<String> enume =
-							childPua.getJSONArray(k).toList().stream().map(String.class::cast).collect(Collectors.toList());
+                        childPua.getJSONArray(k).toList().stream().map(String.class::cast).collect(Collectors.toList());
 					childProfile.getPuaData().setEnum(enume);
 					break;
 				case PATTERN:
@@ -315,7 +336,11 @@ public class JsonFromPUA {
 			switch (sedaNode.getCardinality()) {
 			case "1-N":
 			case "0-N":
-				return "1-N";
+                if(null != maxItems) {
+                    return "1";
+                } else {
+                    return "1-N";
+                }
 			case "1":
 			case "0-1":
 				return "1";
@@ -324,7 +349,11 @@ public class JsonFromPUA {
 			return "1";
 		} else if (minItems != null && maxItems != null) {
 			return minItems + "-" + maxItems;
-		} else {
+		} else if(null != minItems) {
+            return minItems + "-N";
+        } else if(null != maxItems) {
+            return "0-" + maxItems;
+        } else {
 			return sedaNode.getCardinality();
 		}
 	}

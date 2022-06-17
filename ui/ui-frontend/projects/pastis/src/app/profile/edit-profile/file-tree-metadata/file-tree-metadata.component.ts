@@ -102,6 +102,7 @@ function constantToTranslate() {
 
 export class FileTreeMetadataComponent {
 
+  rootAdditionalProperties: boolean;
   valueOrData = Object.values(ValueOrDataConstants);
   dataType = Object.values(DataTypeConstants);
   cardinalityList: string[];
@@ -344,6 +345,8 @@ export class FileTreeMetadataComponent {
     this._fileMetadataServiceSubscriptionDataSource = this.fileMetadataService.dataSource.subscribe(data => {
       this.matDataSource = new MatTableDataSource<MetadataHeaders>(data);
     });
+
+    this.rootAdditionalProperties = FileTreeComponent.archiveUnits.additionalProperties
   }
 
   navigate(d: BreadcrumbDataTop) {
@@ -1000,6 +1003,7 @@ export class FileTreeMetadataComponent {
 
   changeStatusAditionalProperties($event: boolean) {
     FileTreeComponent.archiveUnits.additionalProperties = $event;
+    this.rootAdditionalProperties = FileTreeComponent.archiveUnits.additionalProperties;
   }
 
 
