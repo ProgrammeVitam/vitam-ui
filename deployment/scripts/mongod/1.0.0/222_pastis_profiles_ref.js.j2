@@ -16,23 +16,38 @@ db.profiles.insert({
   "enabled": true,
   "readonly": false,
   "customerId": "system_customer",
-  "roles": [
-  {
-                 "name": "ROLE_GET_ARCHIVE_PROFILES_UNIT"
-             },
-             {
-                 "name": "ROLE_UPDATE_ARCHIVE_PROFILES_UNIT"
-             },
-             {
-                 "name": "ROLE_CREATE_ARCHIVE_PROFILES_UNIT"
-             },
+  "roles" : [
+              {
+                  "name": "ROLE_GET_ARCHIVE_PROFILES_UNIT"
+              },
+              {
+                  "name": "ROLE_UPDATE_ARCHIVE_PROFILES_UNIT"
+              },
+              {
+                  "name": "ROLE_CREATE_ARCHIVE_PROFILES_UNIT"
+              },
               {
                   "name": "ROLE_IMPORT_ARCHIVE_PROFILES_UNIT"
               },
-            {
-                "name": "ROLE_DELETE_ARCHIVE_PROFILES_UNIT"
-            }
-   ]
+              {
+                  "name": "ROLE_DELETE_ARCHIVE_PROFILES_UNIT"
+              },
+              {
+                  "name": "ROLE_GET_ARCHIVE_PROFILES"
+              },
+              {
+                  "name": "ROLE_UPDATE_ARCHIVE_PROFILES"
+              },
+              {
+                  "name": "ROLE_CREATE_ARCHIVE_PROFILES"
+              },
+              {
+                  "name": "ROLE_IMPORT_ARCHIVE_PROFILES"
+              },
+              {
+                  "name": "ROLE_DELETE_ARCHIVE_PROFILES"
+              }
+      	 ]
 });
 
 
