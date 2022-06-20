@@ -625,12 +625,39 @@ public class PuaPastisValidator {
                 if (puaMetadataDetails.getType().equals("array")) {
                     getMinAndMAxItems(el, puaMetadataDetails);
                 }
-                json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
+                setChildName(elementProperties, json, el, puaMetadataDetails);
                 if (!el.getChildren().isEmpty()) {
                     json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
                     getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
                 }
             }
+        }
+    }
+
+    private void setChildName(ElementProperties elementProperties, JSONObject json, ElementProperties el, PuaMetadataDetails puaMetadataDetails) throws JsonProcessingException {
+        if (elementProperties.getName().equals("Event")) {
+            switch (el.getName()) {
+                case "EventIdentifier":
+                    json.put("evId", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "EventTypeCode":
+                    json.put("evTypeProc", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "EventType":
+                    json.put("evType", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "EventDateTime":
+                    json.put("evDateTime", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "EventDetail":
+                    json.put("evTypeDetail", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "Outcome":
+                    json.put("outcome", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "OutcomeDetail":
+                    json.put("outDetail", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "OutcomeDetailMessage":
+                    json.put("outMessg", new JSONObject(puaMetadataDetails.serialiseString()));
+                case "EventDetailData":
+                    json.put("evDetData", new JSONObject(puaMetadataDetails.serialiseString()));
+            }
+        } else {
+            json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
         }
     }
 

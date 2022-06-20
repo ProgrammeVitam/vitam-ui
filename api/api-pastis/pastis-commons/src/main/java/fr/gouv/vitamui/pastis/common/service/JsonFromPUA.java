@@ -146,9 +146,38 @@ public class JsonFromPUA {
 
 	private String sanitizeNodeName(String name) {
 		String realName = name.replace("_", "");
-		if (realName.equals("#management")) {
-			realName = "Management";
-		}
+        switch (realName) {
+            case "#management":
+                realName = "Management";
+                break;
+            case "evId":
+                realName = "EventIdentifier";
+                break;
+            case "evTypeProc":
+                realName = "evTypeProc";
+                break;
+            case "evType":
+                realName = "EventType";
+                break;
+            case "evDateTime":
+                realName = "EventDateTime";
+                break;
+            case "evTypeDetail":
+                realName = "EventDetail";
+                break;
+            case "outcome":
+                realName = "Outcome";
+                break;
+            case "outDetail":
+                realName = "OutcomeDetail";
+                break;
+            case "outMessg":
+                realName = "OutcomeDetailMessage";
+                break;
+            case "evDetData":
+                realName = "EventDetailData";
+        }
+
 		return realName;
 	}
 
@@ -184,12 +213,6 @@ public class JsonFromPUA {
 						propertiesNew =
 								properties.getJSONObject(propertyName).getJSONObject(ITEMS).getJSONObject(PROPERTIES);
 						childrensNames = propertiesNew.keySet();
-//					} else if (properties.getJSONObject(propertyName).has(ITEMS)) {
-//                        requiredFieldsActual =
-//                            Collections.singletonList(propertyName);
-//                        propertiesNew =
-//                            properties.getJSONObject(propertyName).getJSONObject(ITEMS).getJSONObject(PROPERTIES);
-//                        childrensNames = propertiesNew.keySet();
                     }else {
 						requiredFieldsActual = requiredFields;
 						propertiesNew = properties;
@@ -203,7 +226,8 @@ public class JsonFromPUA {
 
 	private void buildChildrenDefinition(SedaNode childrenSedaNode, JSONObject childPua, ElementProperties childrenParent,
 			String childName, List<String> requiredFieldsActual){
-		if (childrenSedaNode != null) {
+        childName = sanitizeNodeName(childName);
+        if (childrenSedaNode != null) {
 			ElementProperties childProfile =
 					getElementProperties(childrenSedaNode, childrenParent, childName, childPua,
 							requiredFieldsActual.contains(childName));
