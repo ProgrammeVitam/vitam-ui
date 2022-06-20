@@ -6,7 +6,7 @@ import com.mongodb.connection.ClusterSettings;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -26,27 +26,27 @@ import java.util.Collections;
 
 @Configuration
 @EnableMongoRepositories(
-        basePackageClasses = {CommonsMongoRepository.class},
-        repositoryBaseClass = VitamUIRepositoryImpl.class)
-@TestPropertySource(properties = { "spring.config.name=common-logbook" })
+    basePackageClasses = {CommonsMongoRepository.class},
+    repositoryBaseClass = VitamUIRepositoryImpl.class)
+@TestPropertySource(properties = {"spring.config.name=common-logbook"})
 public class TestMongoConfig extends AbstractMongoClientConfiguration {
 
 
     private static final MongodStarter starter = MongodStarter.getDefaultInstance();
 
-    private final String MONGO_HOST= "localhost";
+    private final String MONGO_HOST = "localhost";
 
     private MongodExecutable _mongodExe;
 
     private MongodProcess _mongod;
 
-    private int port ;
+    private int port;
 
     @PostConstruct
     public void initIt() throws Exception {
         port = Network.getFreeServerPort();
 
-        _mongodExe = starter.prepare(new MongodConfigBuilder()
+        _mongodExe = starter.prepare(MongodConfig.builder()
             .version(Version.Main.PRODUCTION)
             .net(new Net(MONGO_HOST, port, Network.localhostIsIPv6()))
             .build());
@@ -55,7 +55,7 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @PreDestroy
-    public void close(){
+    public void close() {
         if (_mongod != null) {
             _mongod.stop();
         }
@@ -79,7 +79,8 @@ public class TestMongoConfig extends AbstractMongoClientConfiguration {
     }
 
     @Override
-    protected void configureConverters(MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+    protected void configureConverters(
+        MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
         converterConfigurationAdapter.registerConverter(new OffsetDateTimeToStringConverter());
         converterConfigurationAdapter.registerConverter(new StringToOffsetDateTimeConverter());
     }

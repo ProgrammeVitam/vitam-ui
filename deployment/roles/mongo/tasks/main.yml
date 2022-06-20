@@ -89,7 +89,7 @@
     - consul_conf
     - update_mongodb_configuration
   notify:
-   - reload consul configuration for mongo
+    - reload consul configuration for mongo
 
 # Ensure that the installation is complete and consul up before contnuing...
 - meta: flush_handlers
