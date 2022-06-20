@@ -1008,7 +1008,7 @@ export class FileTreeMetadataComponent {
 
 
   isElementNameNotContentManagement(nomDuChamp: string) {
-    return !(nomDuChamp === 'Content' || nomDuChamp === 'Management');
+    return !(nomDuChamp === 'Content' );
   }
 
   changeAutorisation($event: MatCheckboxChange, element: any) {

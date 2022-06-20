@@ -242,12 +242,17 @@ public class JsonFromPUA {
 			JSONObject childPua = propertiesNew.getJSONObject(childName);
 			SedaNode childrenSedaNode = getChildrenSedaNode(sedaNode, childName);
 
+
 			ElementProperties childrenParent;
 			// In a PUA the Content node in ArchiveUnit node is omitted.
 			// So if we are in the ArchiveUnit Node, then we must check for the children in Content Node as well
 			if (childrenSedaNode == null && parent.getName().equals("ArchiveUnit")) {
 				childrenSedaNode = getChildrenSedaNode(getChildrenSedaNode(sedaNode, CONTENT), childName);
+                if (childPua.optString("type").equals("string") && null !=childrenSedaNode && childrenSedaNode.getCardinality().equals("0-N")) {
+                    childPua.put("minItems", 1);
+                    childPua.put("maxItems", 1);
 
+                }
 				ElementProperties content =
 						parent.getChildren().stream().filter(c -> c.getName().equals(CONTENT)).findAny()
 						.orElse(null);

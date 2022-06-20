@@ -307,7 +307,7 @@ export class FileTreeComponent implements OnDestroy {
       newNode.parent = parent;
       newNode.children = [];
       newNode.sedaData = sedaChild;
-      if (this.isElementComplex(newNode)) {
+      if (this.isElementComplex(newNode) || newNode.name === "Management") {
         newNode.puaData = new PUA()
         newNode.puaData.additionalProperties = false;
       }
