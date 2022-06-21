@@ -241,12 +241,11 @@ public class PuaPastisValidator {
         }
 
         if (sedaElementType.equals("Simple") && !sedaElement.getType().equals("boolean") && !sedaElement.getType().equals("integer") &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1") || sedaName.equals("Title") || sedaName.equals("Description"))) {
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
             return "string";
         }
         if ((sedaElement.getElement().equals(COMPLEX) &&
-            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) ||
-            sedaName.equals("Description")) {
+            (sedaCardinality.equals("0-1") || sedaCardinality.equals("1")))) {
             return "object";
         }
         if (sedaType.equals("boolean") && (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
@@ -256,11 +255,7 @@ public class PuaPastisValidator {
             return "integer";
         }
         if (sedaCardinality.equals("1-N") || sedaCardinality.equals("0-N")) {
-            if (element.getCardinality().equals("1")) {
-                return "string";
-            } else {
-                return "array";
-            }
+            return "array";
         }
         return "undefined";
     }
@@ -308,6 +303,7 @@ public class PuaPastisValidator {
             "ReuseRule", "ClassificationRule");
 
         for (ElementProperties el : elementsFromTree) {
+                setMetadataName(el);
             try {
                 if (el.getName().equals(MANAGEMENT)) {
                     JSONObject management = getJSONFromManagement(el);
@@ -477,7 +473,8 @@ public class PuaPastisValidator {
     private void putChildrenIntoRules(JSONObject childrenOfRule, JSONObject grandChildrenOfRule,
         JSONObject propertiesRules, List<String> requiredChildren) {
         if (!grandChildrenOfRule.isEmpty()) {
-            JSONObject propretyOfItems = new JSONObject().put(PROPERTIES, grandChildrenOfRule);
+            JSONObject propretyOfItems = new JSONObject().put(ADDITIONAL_PROPERTIES, false);
+            propretyOfItems.put(PROPERTIES, grandChildrenOfRule);
             propretyOfItems.put(REQUIRED, requiredChildren);
             childrenOfRule.put("type", "array");
             childrenOfRule.put(ITEMS, propretyOfItems);
@@ -629,6 +626,7 @@ public class PuaPastisValidator {
         throws IOException {
         if (!elementProperties.getChildren().isEmpty()) {
             for (ElementProperties el : elementProperties.getChildren()) {
+                setMetadataName(el);
                 PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
                 puaMetadataDetails.setType(getPUAMetadataType(el.getName(), elementProperties.getName(), el));
                 puaMetadataDetails.setDescription(el.getDocumentation());
@@ -647,40 +645,40 @@ public class PuaPastisValidator {
         }
     }
 
-    private void setChildName(ElementProperties elementProperties, JSONObject json, ElementProperties el, PuaMetadataDetails puaMetadataDetails) throws JsonProcessingException {
-        if (elementProperties.getName().equals("Event")) {
-            switch (el.getName()) {
-                case "EventIdentifier":
-                    json.put("evId", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "EventTypeCode":
-                    json.put("evTypeProc", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "EventType":
-                    json.put("evType", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "EventDateTime":
-                    json.put("evDateTime", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "EventDetail":
-                    json.put("evTypeDetail", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "Outcome":
-                    json.put("outcome", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "OutcomeDetail":
-                    json.put("outDetail", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "OutcomeDetailMessage":
-                    json.put("outMessg", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-                case "EventDetailData":
-                    json.put("evDetData", new JSONObject(puaMetadataDetails.serialiseString()));
-                    break;
-            }
-        } else {
-            json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
+    private void setMetadataName(ElementProperties child) {
+        switch (child.getName()) {
+            case "EventIdentifier":
+                child.setName("evId");
+                break;
+            case "EventTypeCode":
+                child.setName("evTypeProc");
+                break;
+            case "EventType":
+                child.setName("evType");
+                break;
+            case "EventDateTime":
+                child.setName("evDateTime");
+                break;
+            case "EventDetail":
+                child.setName("evTypeDetail");
+                break;
+            case "Outcome":
+                child.setName("outcome");
+                break;
+            case "OutcomeDetail":
+                child.setName("outDetail");
+                break;
+            case "OutcomeDetailMessage":
+                child.setName("outMessg");
+                break;
+            case "EventDetailData":
+                child.setName("evDetData");
+                break;
         }
+    }
+
+    private void setChildName(ElementProperties elementProperties, JSONObject json, ElementProperties el, PuaMetadataDetails puaMetadataDetails) throws JsonProcessingException {
+        json.put(el.getName(), new JSONObject(puaMetadataDetails.serialiseString()));
     }
 
     public List<String> getRequiredProperties(ElementProperties elementProperties) {
@@ -690,8 +688,11 @@ public class PuaPastisValidator {
                 SedaNode sedaElement = getSedaMetadata(child.getName(), null);
                 if ((child.getCardinality().equals("1-N") && sedaElement.getCardinality().equals("0-N"))
                     || (child.getCardinality().equals("1") && !sedaElement.getCardinality().equals("1"))
-                    || sedaElement.getCardinality().equals("1"))
+                    || sedaElement.getCardinality().equals("1")) {
+                    setMetadataName(child);
                     listRequired.add(child.getName());
+                    child.setName(sedaElement.getName());
+                }
             } catch (IOException e) {
                 LOGGER.debug(e.getMessage());
             }
@@ -742,7 +743,7 @@ public class PuaPastisValidator {
         ) {
             puaMetadataDetails.setAdditionalProperties(el.getPuaData().getAdditionalProperties());
         }
-        if (el.getCardinality() != null && !sedaElement.getCardinality().equals("1") && !puaMetadataDetails.getType().equals("string")) {
+        if (el.getCardinality() != null && puaMetadataDetails.getType().equals("array")) {
             getMinAndMAxItems(el, puaMetadataDetails);
 
         }
