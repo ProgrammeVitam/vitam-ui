@@ -71,7 +71,7 @@ import java.util.Optional;
 
 @Api(tags = "management-contract")
 @RestController
-@RequestMapping("${ui-referential.prefix}/managementcontract")
+@RequestMapping("${ui-referential.prefix}/management-contract")
 @Consumes("application/json")
 @Produces("application/json")
 public class ManagementContractController extends AbstractUiRestController {
