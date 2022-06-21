@@ -44,6 +44,23 @@ management:
     ssl:
       enabled: false
 
+clients:
+  iam-internal:
+    server-host: {{ vitamui.iam_internal.host }}
+    server-port: {{ vitamui.iam_internal.port_service }}
+{% if vitamui.iam_internal.secure | lower == "true" %}
+    secure: {{ vitamui.iam_internal.secure | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
+
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
   identityRole: {{ vitamui_struct.vitamui_component }}

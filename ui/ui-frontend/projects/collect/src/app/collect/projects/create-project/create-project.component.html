@@ -158,9 +158,9 @@
           </vitamui-common-input>
         </div>
         <div class="actions">
-          <button (click)="back()" class="btn secondary back" type="button">
-            <i class="material-icons mr-2">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <button type="button" class="btn link back" (click)="back()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
           </button>
           <button (click)="move()" [disabled]="validateThirdStep()" class="btn primary"
                   type="button">{{ 'COMMON.NEXT' | translate }}</button>
@@ -257,9 +257,9 @@
           </mat-form-field>
         </div>
         <div class="actions">
-          <button (click)="back()" class="btn secondary back" type="button">
-            <i class="material-icons mr-2">arrow_back</i>
-            <ng-container>{{ 'COMMON.BACK' | translate }}</ng-container>
+          <button type="button" class="btn link back" (click)="back()">
+            <i class="vitamui-icon vitamui-icon-chevron-left"></i>
+            <ng-container><span class="underline">{{'COMMON.BACK' | translate}}</span></ng-container>
           </button>
           <button (click)="updateProject()" [disabled]="validateFourStep()" class="btn primary"
                   type="button">{{ 'COMMON.SUBMIT' | translate }}</button>
