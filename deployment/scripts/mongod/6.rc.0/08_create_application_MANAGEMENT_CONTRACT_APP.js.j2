@@ -8,6 +8,10 @@ db.applications.insert({
     "identifier" : "MANAGEMENT_CONTRACT_APP",
 {% if vitamui.referential.base_url is defined %}
  "url": "{{ vitamui.referential.base_url }}/management-contract",
+ "serviceId": "^{{ vitamui.referential.base_url }}/.*",
+ {% else %}
+     "url": "{{ url_prefix }}/referential/management-contract",
+     "serviceId": "^{{ url_prefix }}/referential/.*"
 {% endif %}
     "icon" : "vitamui-icon vitamui-icon-ontologie",
     "name" : "Contrats de Gestion",
@@ -17,8 +21,7 @@ db.applications.insert({
     "hasTenantList" : false,
     "hasHighlight" : false,
     "tooltip" : "Accéder à l'application des Contrats de gestion",
-    "target" : "_self",
-    "serviceId": "^https://dev.vitamui.com:4202/.*"
+    "target" : "_self"
 });
 
 
