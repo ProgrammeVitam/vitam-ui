@@ -145,11 +145,13 @@ export class ArchiveSearchResultFacets {
   nodesFacets?: ResultFacet[];
   appraisalRuleFacets?: RuleFacets;
   accessRuleFacets?: RuleFacets;
+  storageRuleFacets?: RuleFacets;
 }
 
 export class RuleFacets {
   waitingToRecalculateRulesListFacets: ResultFacet[];
   expiredRulesListFacets: ResultFacet[];
+  unexpiredRulesListFacets: ResultFacet[];
   rulesListFacets: ResultFacet[];
   finalActionsFacets?: ResultFacet[];
   noRulesFacets: ResultFacet[];

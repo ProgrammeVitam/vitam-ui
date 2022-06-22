@@ -150,6 +150,7 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
           this.managementRules = data.filter(
             (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
           );
+          this.managementRules.forEach((managementRule) => delete managementRule.ruleCategoryAction.finalAction);
         });
 
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);

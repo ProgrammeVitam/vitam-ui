@@ -108,4 +108,49 @@
       ></app-unlock-category-inheritance>
     </div>
   </div>
+
+  <!-- // BLOCK_RULE_INHERITANCE -->
+
+  <div class="margin-style" *ngIf="action === 'BLOCK_RULE_INHERITANCE'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.BLOCK_RULES_INHERITANCE' | translate }}
+
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showBlockRulesInheritanceloc()">
+        {{ blockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="blockRuleInheritanceCollapsed" *ngFor="let actionName of getActions()">
+      <app-block-rules-inheritance
+        *ngIf="actionName.actionType === action && action === 'BLOCK_RULE_INHERITANCE'"
+        [ruleCategory]="ruleCategory"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+      ></app-block-rules-inheritance>
+    </div>
+  </div>
+
+  <div class="margin-style" *ngIf="action === 'UNLOCK_RULE_INHERITANCE'">
+    <div class="action-style vitamui-table-head">
+      {{ 'RULES.UNLOCK_RULES_INHERITANCE' | translate }}
+
+      <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUnlockRulesInheritanceloc()">
+        {{ unlockRuleInheritanceCollapsed ? 'expand_more' : 'expand_less' }}
+      </i>
+    </div>
+
+    <div class="collapsible" [@collapse]="unlockRuleInheritanceCollapsed" *ngFor="let actionName of getActions()">
+      <app-unlock-rules-inheritance
+        *ngIf="actionName.actionType === action && action === 'UNLOCK_RULE_INHERITANCE'"
+        [accessContract]="accessContract"
+        (delete)="deleteForm(actionName.id, $event, action)"
+        (confirmStep)="confirmStep(actionName.id)"
+        (cancelStep)="cancelStep(actionName.id)"
+        [selectedItem]="selectedItem"
+        [ruleCategory]="ruleCategory"
+        [hasExactCount]="hasExactCount"
+      ></app-unlock-rules-inheritance>
+    </div>
+  </div>
 </div>

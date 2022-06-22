@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.gouv.vitamui.commons</groupId>
@@ -13,7 +14,7 @@
         <version>6.rc.0-SNAPSHOT</version>
     </parent>
     <properties>
-        <spring.data.mongo.version>3.1.7</spring.data.mongo.version>
+        <spring.data.mongo.version>3.2.10</spring.data.mongo.version>
     </properties>
 
     <dependencies>
@@ -22,7 +23,7 @@
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-api</artifactId>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>fr.gouv.vitamui.commons</groupId>
             <artifactId>commons-utils</artifactId>
         </dependency>
@@ -44,7 +45,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
-    		<scope>provided</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -94,14 +95,14 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>javax.el</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>javax.el</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+        </dependency>
 
         <!-- Log -->
         <dependency>
@@ -166,10 +167,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-		    <groupId>javax.el</groupId>
-		    <artifactId>javax.el-api</artifactId>
-		    <scope>test</scope>
-		</dependency>
+            <groupId>javax.el</groupId>
+            <artifactId>javax.el-api</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

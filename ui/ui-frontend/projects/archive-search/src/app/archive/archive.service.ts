@@ -57,6 +57,7 @@ import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, S
 import { Unit } from './models/unit.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
+import {TransferRequestDto} from "./models/transfer-request-detail.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -216,6 +217,12 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
+  }
+
+  transferRequestService(transferDipCriteriaDto: TransferRequestDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.transferDipApiService(transferDipCriteriaDto, headers);
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {

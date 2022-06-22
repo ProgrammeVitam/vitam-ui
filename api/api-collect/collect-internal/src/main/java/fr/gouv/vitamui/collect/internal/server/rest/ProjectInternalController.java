@@ -28,22 +28,33 @@
 package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitamui.collect.common.dto.ProjectDto;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.internal.server.service.CollectInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.InputStream;
 import java.util.Optional;
 
 @RestController
@@ -53,17 +64,17 @@ public class ProjectInternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectInternalController.class);
     private final InternalSecurityService securityService;
-    private final CollectInternalService collectInternalService;
+    private final ProjectInternalService projectInternalService;
 
     @Autowired
-    public ProjectInternalController(final CollectInternalService collectInternalService,
+    public ProjectInternalController(final ProjectInternalService projectInternalService,
         final InternalSecurityService securityService) {
         this.securityService = securityService;
-        this.collectInternalService = collectInternalService;
+        this.projectInternalService = projectInternalService;
     }
 
     @GetMapping(params = {"page", "size"})
-    public PaginatedValuesDto<ProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
@@ -71,7 +82,41 @@ public class ProjectInternalController {
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
             criteria, orderBy, direction);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return collectInternalService.getAllProjectsPaginated(vitamContext, page, size, orderBy, direction, criteria);
+        return projectInternalService.getAllProjectsPaginated(vitamContext, page, size, orderBy, direction, criteria);
+    }
+
+    @PostMapping()
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(collectProjectDto);
+        LOGGER.debug("Project to create {}", collectProjectDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.createProject(vitamContext, collectProjectDto);
+    }
+
+    @ApiOperation(value = "Upload and stream collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void streamingUpload(
+        InputStream inputStream,
+        @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
+        @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
+    ) throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
+        SanityChecker.isValidFileName(originalFileName);
+        SanityChecker.checkSecureParameter(projectId);
+        LOGGER.debug("[Internal] upload collect zip file : {}", originalFileName);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        projectInternalService.streamingUpload(vitamContext, inputStream, projectId, originalFileName);
+    }
+
+    @PutMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.sanitizeCriteria(collectProjectDto);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.update(vitamContext, id, collectProjectDto);
     }
 
 }

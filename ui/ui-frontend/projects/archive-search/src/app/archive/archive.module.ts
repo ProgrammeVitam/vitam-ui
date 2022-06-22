@@ -71,6 +71,7 @@ import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-se
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
 import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
 import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
@@ -79,12 +80,14 @@ import { SearchCriteriaListComponent } from './archive-search/search-criteria-li
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
 import { SearchCriteriaSaverService } from './archive-search/search-criteria-saver/search-criteria-saver.service';
 import { SimpleCriteriaSearchComponent } from './archive-search/simple-criteria-search/simple-criteria-search.component';
+import { StorageRuleSearchComponent } from './archive-search/storage-rule-search/storage-rule-search.component';
 import { TitleAndDescriptionCriteriaSearchComponent } from './archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
+import { TransferRequestModalComponent } from './archive-search/transfer-request-modal/transfer-request-modal.component';
 import { ArchiveComponent } from './archive.component';
 import { ArchiveFacetsService } from './common-services/archive-facets.service';
 import { ArchiveSearchHelperService } from './common-services/archive-search-helper.service';
+import { ArchiveUnitDipService } from './common-services/archive-unit-dip.service';
 import { ArchiveUnitEliminationService } from './common-services/archive-unit-elimination.service';
-import { ArchiveUnitExportService } from './common-services/archive-unit-export.service';
 import { ComputeInheritedRulesService } from './common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from './common-services/update-unit-management-rule.service';
 import { CriteriaSearchComponent } from './criteria-search/criteria-search.component';
@@ -101,6 +104,10 @@ import { ManagementRulesComponent } from './management-rules/management-rules.co
 import { SharedModule } from './shared/shared.module';
 import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
+// tslint:disable-next-line: max-line-length
+import { BlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/block-rules-inheritance/block-rules-inheritance.component';
+// tslint:disable-next-line: max-line-length
+import { UnlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 
 @NgModule({
   imports: [
@@ -144,7 +151,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     ArchiveSearchHelperService,
     UpdateUnitManagementRuleService,
     ComputeInheritedRulesService,
-    ArchiveUnitExportService,
+    ArchiveUnitDipService,
     ArchiveUnitEliminationService,
     ArchiveFacetsService,
   ],
@@ -158,11 +165,14 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     SearchCriteriaListComponent,
     CriteriaSearchComponent,
     AppraisalRuleSearchComponent,
+    StorageRuleSearchComponent,
     AccessRuleSearchComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
+    TransferRequestModalComponent,
     SearchAppraisalRulesFacetsComponent,
+    SearchStorageRulesFacetsComponent,
     SearchAccessRulesFacetsComponent,
     ArchiveSearchRulesFacetsComponent,
     ManagementRulesComponent,
@@ -178,6 +188,8 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     DeleteUnitRulesComponent,
     BlockCategoryInheritanceComponent,
     UnlockCategoryInheritanceComponent,
+    BlockRulesInheritanceComponent,
+    UnlockRulesInheritanceComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

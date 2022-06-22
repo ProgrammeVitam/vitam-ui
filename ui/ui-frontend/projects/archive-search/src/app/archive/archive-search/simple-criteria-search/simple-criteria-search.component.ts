@@ -238,12 +238,28 @@ export class SimpleCriteriaSearchComponent implements OnInit {
         const splittedGuids = formData.guid.split(',');
         splittedGuids.forEach((guidElt: string) => {
           if (guidElt && guidElt.trim() !== '') {
-            this.addCriteria('GUID', { value: guidElt.trim(), id: guidElt.trim() }, guidElt.trim(), true, 'EQ', false, 'STRING');
+            this.addCriteria(
+              'GUID',
+              { value: guidElt.trim(), id: guidElt.trim() },
+              guidElt.trim(),
+              true,
+              CriteriaOperator.EQ,
+              false,
+              CriteriaDataType.STRING
+            );
           }
         });
         return true;
       } else if (formData.guidopi) {
-        this.addCriteria('GUID_OPI', { value: formData.guidopi, id: formData.guidopi }, formData.guidopi, true, 'IN', false, 'STRING');
+        this.addCriteria(
+          'GUID_OPI',
+          { value: formData.guidopi, id: formData.guidopi },
+          formData.guidopi,
+          true,
+          'IN',
+          false,
+          CriteriaDataType.STRING
+        );
         return true;
       } else if (formData.otherCriteriaValue) {
         const ontologyElt = this.ontologies.find((ontoElt: any) => ontoElt.Value === formData.otherCriteria);

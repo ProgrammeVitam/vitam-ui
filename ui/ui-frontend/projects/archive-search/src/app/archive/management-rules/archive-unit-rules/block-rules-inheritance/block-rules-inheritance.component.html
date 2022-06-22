@@ -1,0 +1,68 @@
+<div class="container">
+  <form [formGroup]="ruleDetailsForm">
+    <label class="title-text"> {{ 'RULES.APRAISAL_RULES.SOURCE_RULE' | translate }}</label>
+    <div class="row content vitamui-form" style="margin-right: 0px">
+      <vitamui-common-editable-input
+        class="col-6"
+        formControlName="rule"
+        [validator]="ruleDetailsForm?.get('rule')?.validator"
+        [asyncValidator]="ruleDetailsForm?.get('rule')?.asyncValidator"
+        label="{{ 'RULES.APRAISAL_RULES.RULE_ID' | translate }}"
+      >
+        <vitamui-common-field-error errorKey="required">{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-field-error>
+        <vitamui-common-field-error errorKey="uniquePreventRuleId">
+          {{ 'RULES.APRAISAL_RULES.SAME_RULE_ID' | translate }}</vitamui-common-field-error
+        >
+        <vitamui-common-field-error errorKey="ruleIdPattern"
+          >{{ 'ARCHIVE_SEARCH.RULE.WRONG_FORMAT' | translate }}
+        </vitamui-common-field-error>
+
+        <vitamui-common-field-error errorKey="ruleIdExists"
+          >{{ 'RULES.APRAISAL_RULES.RULE_NOT_EXIST' | translate }}
+        </vitamui-common-field-error>
+      </vitamui-common-editable-input>
+
+      <vitamui-common-input
+        class="col-6 px-0"
+        formControlName="ruleName"
+        minlength="2"
+        maxlength="100"
+        required
+        placeholder="{{ 'RULES.APRAISAL_RULES.RULE_NAME' | translate }}"
+      >
+        <vitamui-common-input-error
+          *ngIf="ruleDetailsForm?.get('ruleName')?.touched && ruleDetailsForm?.get('ruleName')?.hasError('required')"
+          >{{ 'COMMON.REQUIRED' | translate }}</vitamui-common-input-error
+        >
+      </vitamui-common-input>
+    </div>
+
+    <div *ngIf="showText" class="row message-text-ok">
+      <div class="col-1"><i class="material-icons">check_circle</i></div>
+      <div class="col-11">
+        {{ 'RULES.UA_CONTROL.UA_FINAL_ACTION_MESSAGE' | translate }}
+      </div>
+    </div>
+
+    <div class="d-flex mt-4 padding-btm-style">
+      <button type="submit" class="btn primary mr-4" [disabled]="disabledControl" (click)="blockRuleInheritance()">
+        {{ 'RULES.COMMON.CONTROL' | translate }}
+      </button>
+      <button type="button" class="btn link cancel" (click)="onDelete()">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #confirmDeleteBlockBlocRuleDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text large bold">{{ 'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
+
+    <button matDialogClose class="btn cancel">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

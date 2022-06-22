@@ -33,6 +33,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class RestApi {
 
-    public static final String COLLECT_PROJECT_PATH = "/projects";
+    public static final String COLLECT_PATH = "/collect-api/v1";
+    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + "/projects";
 
 }

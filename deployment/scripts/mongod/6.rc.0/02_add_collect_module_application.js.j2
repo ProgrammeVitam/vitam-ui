@@ -1,0 +1,109 @@
+db = db.getSiblingDB('iam')
+
+print("START 6.rc.0/02_add_collect_module_application.js");
+
+//============================ CREATE COLLECT APP ==============================
+
+db.applications.insert({
+    "identifier" : "COLLECT_APP",
+{% if vitamui.collect.base_url is defined %}
+    "url": "{{ vitamui.collect.base_url }}/collect",
+    "serviceId": "^{{ vitamui.collect.base_url }}/.*",
+{% else %}
+    "url": "{{ url_prefix }}/collect/collect",
+    "serviceId": "^{{ url_prefix }}/collect/.*",
+{% endif %}
+    "icon": "vitamui-icon vitamui-icon-archive-ingest",
+    "name": "Collecte et préparation des versements",
+    "category": "ingest_and_consultation",
+    "position": NumberInt(10),
+    "hasCustomerList": false,
+    "hasTenantList": false,
+    "hasHighlight": false,
+    "tooltip": "Collecte de données, Application de préparation de versements",
+    "target": "_self"
+});
+
+//=================== CREATE PROFILES FOR EXISTING CUSTOMERS ===================
+
+var lastIdProfile = db.getCollection('sequences').findOne({ '_id': 'profile_identifier' }).sequence;
+
+db.tenants.find({ "identifier": { $gte: 0 } }).forEach(function (tenant) {
+
+    db.profiles.insert({
+        "_id": "PROFIL_" + tenant.identifier + "-COLLECT_APP-ARCHIVISTE",
+        "identifier": NumberInt(lastIdProfile++),
+        "name": "Collect Profile",
+        "description": "Collecte de données, Application de préparation de versements",
+        "tenantIdentifier": NumberInt(tenant.identifier),
+        "applicationName": "COLLECT_APP",
+        "level": "",
+        "enabled": true,
+        "readonly": false,
+        "customerId": tenant.customerId,
+        "roles": [
+            {"name": "ROLE_GET_FILLING_PLAN_ACCESS"},
+            {"name": "ROLE_GET_PROJECTS"},
+            {"name": "ROLE_CREATE_PROJECTS"},
+            {"name": "ROLE_UPDATE_PROJECTS"}
+        ]
+    });
+
+});
+
+// Update sequence
+db.sequences.updateOne({
+    "_id": "profile_identifier"
+}, {
+    $set: {
+        "sequence": NumberInt(lastIdProfile)
+    }
+});
+
+//============================ UPDATE ADMIN GROUPS =============================
+
+var profileCollectAppAdminId = "PROFIL_{{ vitamui_platform_informations.proof_tenant | default(1) }}-COLLECT_APP-ARCHIVISTE";
+
+// Update admin & super_admin group
+
+db.groups.updateOne(
+    {
+        "_id": "admin_group",
+        "profileIds": { $nin: [ profileCollectAppAdminId ] }
+    },
+    {
+        $addToSet: { "profileIds": profileCollectAppAdminId }
+    },
+    {
+        "upsert": false
+    }
+);
+
+db.groups.updateOne(
+    {
+        "_id": "super_admin_group",
+        "profileIds": { $nin: [ profileCollectAppAdminId ] }
+    },
+    {
+        $addToSet: { "profileIds": profileCollectAppAdminId }
+    },
+    {
+        "upsert": false
+    }
+);
+
+// Update demo group
+db.groups.updateOne(
+    {
+        "_id": "5c79022e7884583d1ebb6e5d0bc0121822684250a3fd2996fd93c04634363363",
+        "profileIds": { $nin: [ profileCollectAppAdminId ] }
+    },
+    {
+        $addToSet: { "profileIds": profileCollectAppAdminId }
+    },
+    {
+        "upsert": false
+    }
+);
+
+print("END 6.rc.0/02_add_collect_module_application.js");

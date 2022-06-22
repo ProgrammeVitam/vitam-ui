@@ -55,7 +55,7 @@ import fr.gouv.vitamui.referential.service.ProfileService;
 import fr.gouv.vitamui.referential.service.RuleService;
 import fr.gouv.vitamui.referential.service.SecurityProfileService;
 import fr.gouv.vitamui.referential.service.TenantService;
-import fr.gouv.vitamui.referential.service.UnitService;
+import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.security.SecurityConfig;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

@@ -42,6 +42,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -95,6 +96,13 @@ public class UICommonsAutoConfiguration {
     @DependsOn("uiProperties")
     public ReferentialExternalWebClientFactory referentialWebClientFactory(final UIProperties uiProperties) {
         return new ReferentialExternalWebClientFactory(uiProperties.getReferentialExternalClient());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public UnitExternalRestClient unitExternalRestClient(final ReferentialExternalRestClientFactory referentialRestClientFactory) {
+        return referentialRestClientFactory.getUnitExternalRestClient();
     }
 
 }

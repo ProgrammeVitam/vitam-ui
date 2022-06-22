@@ -29,8 +29,8 @@ package fr.gouv.vitamui.collect.config;
 
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClientFactory;
-import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
-import fr.gouv.vitamui.collect.external.client.CollectExternalWebClientFactory;
+import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
+import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
@@ -44,7 +44,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
@@ -66,16 +65,6 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
         return new CollectExternalRestClientFactory(uiProperties.getCollectExternalClient(), restTemplateBuilder);
     }
 
-
-    @Bean
-    @ConditionalOnMissingBean
-    @DependsOn("uiProperties")
-    public CollectExternalWebClientFactory collectExternalWebClientFactory(
-        final CollectApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
-        return new CollectExternalWebClientFactory(uiProperties.getCollectExternalClient(), webClientBuilder);
-    }
-
-
     @Bean
     public CollectExternalRestClient collectExternalRestClient(
         final CollectExternalRestClientFactory collectExternalRestClientFactory) {
@@ -83,9 +72,17 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     }
 
     @Bean
-    public CollectExternalWebClient collectExternalWebClient(
-        final CollectExternalWebClientFactory collectExternalWebClientFactory) {
-        return collectExternalWebClientFactory.getCollectExternalWebClient();
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory(
+        final CollectApplicationProperties uiProperties) {
+        return new CollectStreamingExternalRestClientFactory(uiProperties.getCollectExternalClient());
+    }
+
+    @Bean
+    public CollectStreamingExternalRestClient collectStreamingExternalRestClient(
+        final CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory) {
+        return collectStreamingExternalRestClientFactory.getCollectStreamingExternalRestClient();
     }
 
 }

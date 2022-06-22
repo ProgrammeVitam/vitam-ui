@@ -75,10 +75,10 @@ export class ArchiveUnitValidatorService {
       auditExists[existTag] = true;
       const criteria = cloneDeep(criteriaDto);
       criteria.pageNumber = 0;
-      criteria.criteriaList.forEach((criteriaElement) =>
-        criteriaElement.values.forEach((v) => {
-          v.id = control.value;
-          v.value = control.value;
+      criteria.criteriaList.forEach((v) =>
+        v.values.forEach((criteriaValue) => {
+          criteriaValue.id = control.value;
+          criteriaValue.value = control.value;
         })
       );
       const result = timer(this.debounceTime).pipe(

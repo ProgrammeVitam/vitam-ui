@@ -36,10 +36,12 @@
  */
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { BytesPipe, Logger } from 'ui-frontend-common';
+import { BytesPipe, Logger, StartupService } from 'ui-frontend-common';
+
 import { VitamUISnackBarComponent } from '../../shared/vitamui-snack-bar';
+import { IngestType } from './ingest-type.enum';
 import { UploadService } from './upload.service';
 
 const LAST_STEP_INDEX = 1;
@@ -60,7 +62,7 @@ export class UploadComponent implements OnInit {
   fileSize = 0;
   fileSizeString: string;
   extensions: string[];
-  contextId: string;
+  contextId: IngestType;
   messageImportType: string;
   messageLabelImportType: string;
   tenantIdentifier: string;
@@ -77,6 +79,7 @@ export class UploadComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
+    private startupService: StartupService,
     public logger: Logger
   ) {
     this.sipForm = this.formBuilder.group({
@@ -139,23 +142,41 @@ export class UploadComponent implements OnInit {
       return;
     }
 
-    this.uploadService.uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId).subscribe(
-      () => {
-        this.dialogRef.close();
-        this.displaySnackBar(true);
-      },
-      (error: any) => {
-        console.error(error);
-        this.message = error.message;
-      }
-    );
+    this.uploadService
+      .uploadIngestV2(this.tenantIdentifier, this.fileToUpload, this.fileToUpload.name, this.contextId, (operationId) => {
+        this.snackBar.dismiss();
+        if (this.contextId == IngestType.HOLDING_SCHEME || this.contextId == IngestType.FILING_SCHEME) {
+          this.displaySnackBar({
+            type: 'fileUploaded',
+            messageKey: 'INGEST_UPLOAD.UPLOAD_COMPLETE_MESSAGE',
+            buttonAction: () => this.goToOperation(operationId),
+            buttonMessageKey: 'INGEST_UPLOAD.TO_OPERATION_APP',
+          });
+        }
+      })
+      .subscribe(
+        () => {
+          this.dialogRef.close();
+          this.displaySnackBar({
+            type: 'fileUploaded',
+            messageKey: 'INGEST_UPLOAD.ALERTE_MESSAGE',
+          });
+        },
+        (error: any) => {
+          this.message = error.message;
+        }
+      );
   }
 
-  displaySnackBar(uploadComplete: boolean) {
+  goToOperation(operationId: String) {
+    window.location.href =
+      this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + operationId;
+  }
+
+  displaySnackBar(data: any) {
     this.snackBar.openFromComponent(VitamUISnackBarComponent, {
       panelClass: 'vitamui-snack-bar',
-      data: { type: 'fileUploaded', name: uploadComplete },
-      duration: 10000,
+      data: data,
     });
   }
 

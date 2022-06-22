@@ -147,13 +147,18 @@ public class VitamUIUtilsTest {
     }
 
     @Test
-    public void humanReadableByteCountBin() throws IOException {
-        assertEquals("638.99 Mo", VitamUIUtils.humanReadableByteCountBin(654_324_564L));
+    public void humanReadableByteCountBin() {
+        assertEquals("76.95 ko", VitamUIUtils.humanReadableByteCountBin(78_800));
+        assertEquals("54.83 Mo", VitamUIUtils.humanReadableByteCountBin(57_489_487L));
+        assertEquals("42.49 Go", VitamUIUtils.humanReadableByteCountBin(45_628_658_811L));
+
+        assertEquals("624.01 Mo", VitamUIUtils.humanReadableByteCountBin(654_324_564L));
         assertEquals("0 octet", VitamUIUtils.humanReadableByteCountBin(0L));
-        assertEquals("0.98 ko", VitamUIUtils.humanReadableByteCountBin(1_000L));
+        assertEquals("1000 octets", VitamUIUtils.humanReadableByteCountBin(1_000L));
         assertEquals("1 ko", VitamUIUtils.humanReadableByteCountBin(1_024L));
         assertEquals("1.17 ko", VitamUIUtils.humanReadableByteCountBin(1_200L));
         assertEquals("225.83 ko", VitamUIUtils.humanReadableByteCountBin(231_246L));
+
     }
 
 }
