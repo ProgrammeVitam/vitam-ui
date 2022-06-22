@@ -11996,7 +11996,7 @@
                             "NameFr": "Altitude",
                             "Element": "Simple",
                             "Cardinality": "0-1",
-                            "Type": "string",
+                            "Type": "integer",
                             "Choice": "no",
                             "Extensible": "no",
                             "Enumeration": [],
