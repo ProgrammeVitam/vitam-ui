@@ -24,15 +24,15 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {ConfirmDialogService, Logger, StartupService} from 'ui-frontend-common';
-import {ArchiveService} from '../../archive.service';
-import {SearchCriteriaEltDto} from '../../models/search.criteria';
-import {TransferRequestDto, TransferRequestParameters} from "../../models/transfer-request-detail.interface";
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { ConfirmDialogService, Logger, StartupService } from 'ui-frontend-common';
+import { ArchiveService } from '../../archive.service';
+import { SearchCriteriaEltDto } from '../../models/search.criteria';
+import { TransferRequestDto, TransferRequestParameters } from '../../models/transfer-request-detail.interface';
 
 @Component({
   selector: 'app-transfer-request-modal',
@@ -62,8 +62,7 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
       tenantIdentifier: string;
       selectedItemCountKnown?: boolean;
     }
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.itemSelected = this.data.itemSelected;
@@ -100,8 +99,8 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
     this.archiveService.transferRequestService(transferRequestDto, this.data.accessContract).subscribe(
       (response) => {
         this.dialogRef.close(true);
-        const serviceUrl = this.startupService.getReferentialUrl()
-          + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
+        const serviceUrl =
+          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.data.tenantIdentifier + '?guid=' + response;
         this.archiveService.openSnackBarForWorkflow(this.translate.instant('ARCHIVE_SEARCH.DIP.REQUEST_MESSAGE'), serviceUrl);
       },
       (error: any) => {
@@ -112,15 +111,15 @@ export class TransferRequestModalComponent implements OnInit, OnDestroy {
 
   private initTransferForm() {
     this.transferRequestFormGroup = this.formBuilder.group({
-      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.EXCLUDE')],
-      archivalAgreement: [this.data.accessContract, Validators.required],
+      lifeCycleLogs: [this.translate.instant('ARCHIVE_SEARCH.DIP.INCLUDE')],
+      archivalAgreement: [null, Validators.required],
       originatingAgencyIdentifier: [null, Validators.required],
       comment: [null],
       submissionAgencyIdentifier: [null],
       relatedTransferReference: [null],
-      transferRequestReplyIdentifier: [null, Validators.required],
+      transferRequestReplyIdentifier: [null],
       archivalAgencyIdentifier: [null, Validators.required],
-      transferringAgency: [null, Validators.required],
+      transferringAgency: [null],
     });
   }
 }
