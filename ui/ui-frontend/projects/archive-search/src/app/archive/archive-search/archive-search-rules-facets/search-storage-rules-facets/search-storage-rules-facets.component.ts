@@ -189,7 +189,7 @@ export class SearchStorageRulesFacetsComponent implements OnInit, OnChanges {
             title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.STORAGE_RULE.WAITING_TO_RECALCULATE'),
             totalResults: notCalculatedCount,
             clickable: false,
-            color: notCalculatedCount === 0 ? Colors.GRAY : 'orange',
+            color: notCalculatedCount === 0 ? Colors.GRAY : Colors.ORANGE,
             backgroundColor: Colors.DISABLED,
           });
           this.archiveUnitsCountFacetDetails.push({

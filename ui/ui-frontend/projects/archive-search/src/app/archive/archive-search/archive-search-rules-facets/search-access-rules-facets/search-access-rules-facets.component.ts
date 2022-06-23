@@ -165,7 +165,7 @@ export class SearchAccessRulesFacetsComponent implements OnInit, OnChanges {
         title: this.translateService.instant('ARCHIVE_SEARCH.FACETS.ACCESS_RULE.WAITING_TO_RECALCULATE'),
         totalResults: this.totalResults,
         clickable: false,
-        color: this.totalResults === 0 ? Colors.GRAY : 'orange',
+        color: this.totalResults === 0 ? Colors.GRAY : Colors.ORANGE,
         backgroundColor: Colors.DISABLED,
       });
       this.archiveUnitsCountFacetDetails.push({
