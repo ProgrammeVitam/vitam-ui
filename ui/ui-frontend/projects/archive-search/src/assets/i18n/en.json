@@ -150,6 +150,7 @@
       "OTHER_FILED_SELECTION": "Other criteria selection",
       "DUA_TITLE": "Administrative useful life",
       "ACCESS_TITLE": "Access",
+      "STORAGE_TITLE": "Storage",
       "NODES": {
         "NODE": "Position"
       },
@@ -205,7 +206,8 @@
         "ORIGIN_HAS_NO_ONE": "Not specified",
         "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
-        "FINAL_ACTION": "FInal Action",
+        "FINAL_ACTION": "Final Action",
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
         "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
         "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
         "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
@@ -277,20 +279,34 @@
           "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
           "HAS_NO_ACCESS_RULE": "Does not define a Access rule defined",
           "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Is waiting for rule recalculation",
-          "SELECT_ALL_ACCESS_RULE": "Select all"
+          "SELECT_ALL_ACCESS_RULE": "Select all",
+
+          "INHERITE_AT_LEAST_ONE_STORAGE_RULE": "Inherits at least one storage rule",
+          "HAS_AT_LEAST_ONE_STORAGE_RULE": "Define at least one storage rule",
+          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
+          "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_STORAGE_RULE": "Select all"
         },
         "FINAL_ACTION_TYPE": {
           "TITLE": "Archive unit",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
-          "HAS_APPRAISAL_RULE": "Define DUA final action ",
-          "INHERITE_APPRAISAL_RULE": "Inherite DUA final action"
+          "HAS_APPRAISAL_RULE": "Define appraisal final action ",
+          "INHERITE_APPRAISAL_RULE": "Inherite appraisal final action",
+          "SELECT_ALL_STORAGE_RULE": "Select all",
+          "HAS_STORAGE_RULE": "Define storage final action ",
+          "INHERITE_STORAGE_RULE": "Inherite storage final action"
         },
         "FINAL_ACTION": {
-          "TITLE": "DUA final action ",
+          "TITLE": "Appraisal final action ",
           "SELECT_ALL_APPRAISAL_RULE": "Select all",
           "ELIMINATION_APPRAISAL_RULE": "Destroy",
           "KEEP_APPRAISAL_RULE": "Keep",
-          "NC_APPRAISAL_RULE": "Not defined"
+          "NC_APPRAISAL_RULE": "Not defined",
+          "SELECT_ALL_STORAGE_RULE": "Select all",
+          "COPY_STORAGE_RULE": "Copy",
+          "RESTRICT_ACCESS_STORAGE_RULE": "Restrict Access",
+          "TRANSFER_STORAGE_RULE": "Transfer",
+          "NC_STORAGE_RULE": "Not defined"
         },
         "HOLD": {
           "TITLE": "Archives holded",
@@ -444,6 +460,15 @@
       "CLASSIFICATION": "Classification",
       "GEL": "Freezing"
     },
+    "CRITERIA_CATEGORY_SHORT_NAME": {
+      "APPRAISAL_RULE": "Appraisal",
+      "STORAGE_RULE": "Storage",
+      "ACCESS_RULE": "Access",
+      "REUSING": "Reusing",
+      "DIFFUSION": "Diffusion",
+      "CLASSIFICATION": "Classification",
+      "GEL": "Gel"
+    },
     "RULE": {
       "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
       "WRONG_FORMAT": "Wrong rule format"
@@ -464,8 +489,8 @@
     "RULES_TO_DELETE": "Rule(s) to delete",
     "CATEGORY_TO_BLOCK": "Category to block",
     "CATEGORY_TO_UNLOCK": "Category to unlock",
-    "BLOCK_RULES_INHERITANCE" : "Inheritance of rule(s) to block",
-    "UNLOCK_RULES_INHERITANCE" : "Inheritance of rule(s) to unlock",
+    "BLOCK_RULES_INHERITANCE": "Inheritance of rule(s) to block",
+    "UNLOCK_RULES_INHERITANCE": "Inheritance of rule(s) to unlock",
     "ACTIONS": {
       "ADD_RULE": "Add a rule",
       "DELETE_RULE": "Delete a rule",
@@ -499,7 +524,7 @@
       "UA_TO_UPDATE": "UA selected will be taken into account during the update",
       "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
       "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored",
-      "UA_WITH_NO_PREVENT_RULES" :"This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored."
+      "UA_WITH_NO_PREVENT_RULES": "This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored."
     },
     "FINAL_ACTION": {
       "TITLE": "Final action",
