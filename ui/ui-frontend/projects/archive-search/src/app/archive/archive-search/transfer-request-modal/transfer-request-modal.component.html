@@ -1,8 +1,7 @@
-<br/>
+<br />
 
 <form [formGroup]="transferRequestFormGroup" (ngSubmit)="onSubmit()">
   <div class="content vitamui-form">
-
     <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_TITLE' | translate }}</div>
     <div class="text large bold">{{ 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate }}</div>
     <div class="text-title" *ngIf="selectedItemCountKnown && itemSelected > 1">
@@ -14,7 +13,7 @@
     <div class="text-title" *ngIf="!selectedItemCountKnown">
       {{ 'ARCHIVE_SEARCH.MORE_THAN_THRESHOLD' | translate }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}
     </div>
-    <br/>
+    <br />
 
     <!-- 1 Contrat d'entrée *    ------------------------->
     <vitamui-common-input
@@ -23,9 +22,14 @@
       minlength="2"
       maxlength="100"
       required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGREEMENT' | translate }}">
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGREEMENT' | translate }}"
+    >
       <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('archivalAgreement')?.touched && transferRequestFormGroup?.get('archivalAgreement')?.hasError('required')">
+        *ngIf="
+          transferRequestFormGroup?.get('archivalAgreement')?.touched &&
+          transferRequestFormGroup?.get('archivalAgreement')?.hasError('required')
+        "
+      >
         {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
       </vitamui-common-input-error>
     </vitamui-common-input>
@@ -37,9 +41,14 @@
       minlength="2"
       maxlength="100"
       required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ORIGINATING_AGENCY_IDENTIFIER' | translate }}">
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ORIGINATING_AGENCY_IDENTIFIER' | translate }}"
+    >
       <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('originatingAgencyIdentifier')?.touched && transferRequestFormGroup?.get('originatingAgencyIdentifier')?.hasError('required')">
+        *ngIf="
+          transferRequestFormGroup?.get('originatingAgencyIdentifier')?.touched &&
+          transferRequestFormGroup?.get('originatingAgencyIdentifier')?.hasError('required')
+        "
+      >
         {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
       </vitamui-common-input-error>
     </vitamui-common-input>
@@ -51,9 +60,14 @@
       minlength="2"
       maxlength="100"
       required
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}">
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.ARCHIVAL_AGENCY' | translate }}"
+    >
       <vitamui-common-input-error
-        *ngIf=" transferRequestFormGroup?.get('archivalAgencyIdentifier')?.touched && transferRequestFormGroup?.get('archivalAgencyIdentifier')?.hasError('required')">
+        *ngIf="
+          transferRequestFormGroup?.get('archivalAgencyIdentifier')?.touched &&
+          transferRequestFormGroup?.get('archivalAgencyIdentifier')?.hasError('required')
+        "
+      >
         {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
       </vitamui-common-input-error>
     </vitamui-common-input>
@@ -64,11 +78,8 @@
       [required]="false"
       formControlName="transferringAgency"
       maxlength="100"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFERRING_AGENCY' | translate }}">
-      <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('transferringAgency')?.touched && transferRequestFormGroup?.get('transferringAgency')?.hasError('required')">
-        {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-      </vitamui-common-input-error>
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFERRING_AGENCY' | translate }}"
+    >
     </vitamui-common-input>
 
     <!-- 5 Identifiant du service versant    ------------------------->
@@ -77,24 +88,18 @@
       [required]="false"
       formControlName="submissionAgencyIdentifier"
       maxlength="100"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}">
-      <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('submissionAgencyIdentifier')?.touched && transferRequestFormGroup?.get('submissionAgencyIdentifier')?.hasError('required')">
-        {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-      </vitamui-common-input-error>
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.SUBMISSION_AGENCY_ID' | translate }}"
+    >
     </vitamui-common-input>
 
     <!-- 6 Référence d'un transfert associé    ------------------------->
     <vitamui-common-input
       class="col-10 px-0"
       [required]="false"
-      formControlName="submissionAgencyIdentifier"
+      formControlName="relatedTransferReference"
       maxlength="100"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.RELATED_TRANSFER_REFERENCE' | translate }}">
-      <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('relatedTransferReference')?.touched && transferRequestFormGroup?.get('relatedTransferReference')?.hasError('required')">
-        {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-      </vitamui-common-input-error>
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.RELATED_TRANSFER_REFERENCE' | translate }}"
+    >
     </vitamui-common-input>
 
     <!-- 7 Identifiant de la réponse à une demande de transfert    ------------------------->
@@ -103,11 +108,8 @@
       [required]="false"
       formControlName="transferRequestReplyIdentifier"
       maxlength="100"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_REPLY_IDENTIFIER' | translate }}">
-      <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('transferRequestReplyIdentifier')?.touched && transferRequestFormGroup?.get('transferRequestReplyIdentifier')?.hasError('required')">
-        {{ 'ARCHIVE_SEARCH.DIP.REQUIRED' | translate }}
-      </vitamui-common-input-error>
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST_REPLY_IDENTIFIER' | translate }}"
+    >
     </vitamui-common-input>
 
     <!-- 8 Commentaire(s)    ------------------------->
@@ -116,11 +118,8 @@
       [required]="false"
       formControlName="comment"
       maxlength="300"
-      placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}">
-      <vitamui-common-input-error
-        *ngIf="transferRequestFormGroup?.get('comment')?.touched && transferRequestFormGroup?.get('comment')?.hasError('required')">
-        {{'ARCHIVE_SEARCH.DIP.REQUIRED' | translate}}
-      </vitamui-common-input-error>
+      placeholder="{{ 'ARCHIVE_SEARCH.DIP.COMMENT' | translate }}"
+    >
     </vitamui-common-input>
 
     <div class="row">
@@ -129,21 +128,21 @@
         formControlName="lifeCycleLogs"
         class="col-8"
         #group="matButtonToggleGroup"
-        class="vitamui-button-toggle-group">
+        class="vitamui-button-toggle-group"
+      >
         <mat-button-toggle value="Inclure"> {{ 'ARCHIVE_SEARCH.DIP.INCLUDE' | translate }}</mat-button-toggle>
         <mat-button-toggle value="Exclure">{{ 'ARCHIVE_SEARCH.DIP.EXCLUDE' | translate }} </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <br/>
+    <br />
 
     <div class="d-flex mt-4">
       <button type="submit" class="btn primary mr-4" [disabled]="transferRequestFormGroup.invalid">
-        {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
+        {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP_TRANSFER_REQUEST' | translate }}
       </button>
       <button type="button" class="btn link cancel" (click)="onCancel()">
         {{ 'ARCHIVE_SEARCH.DIP.CANCEL' | translate }}
       </button>
     </div>
-
   </div>
 </form>

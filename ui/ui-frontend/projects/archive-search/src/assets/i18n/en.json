@@ -58,6 +58,7 @@
     },
     "DIP": {
       "EXPORT_DIP": "Export a DIP",
+      "EXPORT_DIP_TRANSFER_REQUEST": "Export a transfer DIP",
       "TRANSFER_REQUEST": "Transfer a DIP",
       "ARCHIVAL_AGREEMENT": "Archival agreement",
       "ORIGINATING_AGENCY_IDENTIFIER": "Producing service identifier ",

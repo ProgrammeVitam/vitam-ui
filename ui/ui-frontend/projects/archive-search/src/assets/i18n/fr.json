@@ -58,7 +58,8 @@
     },
     "DIP": {
       "EXPORT_DIP": "Exporter un DIP",
-      "TRANSFER_REQUEST": "Transférer un DIP",
+      "EXPORT_DIP_TRANSFER_REQUEST": "Exporter un DIP de transfert",
+      "TRANSFER_REQUEST": "Demander un transfert d’archives",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
       "ORIGINATING_AGENCY_IDENTIFIER": "Identifiant du service producteur",
       "ARCHIVAL_AGENCY": "Identifiant du service d’archives",
