@@ -97,17 +97,15 @@ import { AddManagementRulesComponent } from './management-rules/archive-unit-rul
 import { AddUpdatePropertyComponent } from './management-rules/archive-unit-rules/add-update-property/add-update-property.component';
 import { ArchiveUnitRulesComponent } from './management-rules/archive-unit-rules/archive-unit-rules.component';
 import { BlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/block-category-inheritance/block-category-inheritance.component';
+import { BlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/block-rules-inheritance/block-rules-inheritance.component';
 import { DeleteUnitRulesComponent } from './management-rules/archive-unit-rules/delete-unit-rules/delete-unit-rules.component';
 import { UnlockCategoryInheritanceComponent } from './management-rules/archive-unit-rules/unlock-category-inheritance/unlock-category-inheritance.component';
+import { UnlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 import { UpdateUnitRulesComponent } from './management-rules/archive-unit-rules/update-unit-rules/update-unit-rules.component';
 import { ManagementRulesComponent } from './management-rules/management-rules.component';
 import { SharedModule } from './shared/shared.module';
 import { ArchiveUnitValidatorService } from './validators/archive-unit-validator.service';
 import { ManagementRulesValidatorService } from './validators/management-rules-validator.service';
-// tslint:disable-next-line: max-line-length
-import { BlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/block-rules-inheritance/block-rules-inheritance.component';
-// tslint:disable-next-line: max-line-length
-import { UnlockRulesInheritanceComponent } from './management-rules/archive-unit-rules/unlock-rules-inheritance/unlock-rules-inheritance.component';
 
 @NgModule({
   imports: [
