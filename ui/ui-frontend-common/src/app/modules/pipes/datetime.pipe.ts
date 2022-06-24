@@ -35,7 +35,7 @@ export class DateTimePipe implements PipeTransform {
 
   transform(value: any, format?: string, local?: string): any {
     if (value) {
-      if (!value.endsWith('Z')) {
+      if (!String(value).endsWith('Z')) {
         value = value + 'Z';
       }
       const hours = (new Date().getTimezoneOffset() / 60) * -1;
