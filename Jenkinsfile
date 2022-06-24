@@ -73,66 +73,33 @@ pipeline {
             }
         }
 
-        stage('Check vulnerabilities and tests.') {
-            when {
-                environment(name: 'DO_TEST', value: 'true')
-            }
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-		JAVA_TOOL_OPTIONS = "-Dhttp.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttp.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttps.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttps.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttp.nonProxyHosts=${env.NOPROXY_HOST}"
-                NODE_OPTIONS="--max_old_space_size=12288"
-            }
-            steps {
-                sh 'node -v'
-                sh 'npmrc default'
 
-                sh '''
-                    $MVN_COMMAND clean verify -U -Pvitam -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
-                '''
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                }
-//                success {
-//                    archiveArtifacts (
-//                        artifacts: '**/dependency-check-report.html',
-//                        fingerprint: true
-//                    )
-//                }
-            }
-        }
+        stage('Build and tests.') {
+                    environment {
+                        PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
+                        JAVA_TOOL_OPTIONS = "-Dhttp.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttp.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttps.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttps.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttp.nonProxyHosts=${env.NOPROXY_HOST}"
+                    }
+                    when {
+                        environment(name: 'DO_BUILD', value: 'true')
+                    }
 
-        stage('Build sources') {
-            environment {
-                PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-            }
-            when {
-                environment(name: 'DO_BUILD', value: 'true')
-            }
             steps {
-                sh 'npmrc default'
-                sh '''
-                    $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -DskipAllFrontend=true -DskipAllFrontendTests=true -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
-                '''
-            }
-        }
-
-        stage('Build COTS') {
-            environment {
-                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-            }
-            when {
-                environment(name: 'DO_BUILD', value: 'true')
-            }
-            steps {
-                sh 'npmrc internet'
-                dir('cots/') {
-                    sh '''
-                        $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
-                    '''
-                }
+                parallel(
+                    'Build and deploy sources': {
+                        sh 'npmrc default'
+                        sh '''
+                            $MVN_COMMAND deploy -Pvitam,deb,rpm -Dlicense.skip=true -pl '!cots/vitamui-nginx,!cots/vitamui-mongod,!cots/vitamui-logstash,!cots/vitamui-mongo-express' $JAVA_TOOL_OPTIONS
+                        '''
+                    },
+                    'Build COTS': {
+                        sh 'npmrc internet'
+                        dir('cots/') {
+                            sh '''
+                                $MVN_COMMAND deploy -Pvitam,deb,rpm -DskipTests -Dlicense.skip=true $JAVA_TOOL_OPTIONS
+                            '''
+                        }
+                    }
+                )
             }
         }
 
