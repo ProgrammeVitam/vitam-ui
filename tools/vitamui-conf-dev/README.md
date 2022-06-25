@@ -1,5 +1,58 @@
 # VitamUI
-## Install Vitam locally
+
+## I - Connect Vitamui with remote Vitam environment
+
+To connect Vitamui with a deployed Vitam environment, we follow these steps :
+
+### 1. Prepare SSL configurations:
+
+In the case of SSL mutual authentication, we need to prepare the trust-store of the remote environment and the keystore of our environment trusted by the remote environment, to do that, we follow these steps :
+
+1.1. Get the Root CA of the remote environment from your browser :
+a- Go to the HTTPS service endpoint in your browser
+b- Click on the lock button on the address bar
+c- Go to Certificate
+d- Select the Root Certificate Authority(top-level parent)
+e- Download the cert key file and save if on your computer (with the name trusted-key.pem for example). This example is from the screenshot below:
+![Screenshot](images/extract-cert.png "Download cert")
+f- Export the file downloaded before to a keystore by executing the following command: 
+ ```shell script
+    keytool -import -file trusted-key.pem -alias firstCA -keystore our-trust-store.jks
+```
+g- generate the keystore, for Vitam context, we have an external public certificate provided in this path: https://webdav.dev.programmevitam.fr/webdav/Certificats_vitam/ , we need to download the certificate and export it to a keystore (for our example in P12 format) by executing this command :
+
+ ```shell script
+    openssl pkcs12 -export -in externe.crt -inkey externe_key.pem -out our-keystore-env.p12
+
+```
+
+### 2. Update settings files:
+Update settings files to call Vitam external services: we need to update the settings file for calling external webservices on Vitam: access-external, ingest-external, and collect-external, by default the settings file are named : access-external-client.conf, ingest-external-client.conf, collect-external-client.conf
+
+Example :
+
+ingest-external-client.conf : 
+
+```
+serverHost: int.env.programmevitam.fr                   ## the url of remote Vitam environment
+serverPort: 443                                         ## HTTPS default port 
+secure: true
+sslConfiguration :
+ keystore :
+  - keyPath: /vitam/conf/keystore-env-ga-new.p12        ## the path of generated keystore before
+    keyPassword: customer-password-ks                   ## the password provided on keystore generation
+ truststore :
+  - keyPath: /vitam/conf/our-trust-store.jks            ##  the path of  generated trust store before
+    keyPassword: customer-password-ts                   ## the password provided on trust store generation
+hostnameVerification: true
+```
+ 
+   
+### 3. Add the certificate to Vitam allowed certificated (in Certificate collection):
+
+TODO
+
+## II - Install Vitam locally
 
 There is two ways (for now) for starting [VITAM](https://github.com/ProgrammeVitam/vitam) in an development mode in order to make 
 requests to external APIs from VitamUI:
