@@ -66,7 +66,7 @@ public abstract class AbstractRestControllerMockMvcTest extends AbstractServerId
      * @param Object
      * @return
      */
-    protected static String asJsonString(final Object Object) {
+    public static String asJsonString(final Object Object) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());

@@ -89,11 +89,11 @@ public class PuaPastisValidator {
     private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
             InputStream inputStream;
-            if(standalone)
-                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
+            if (standalone)
+                inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua.json");
 
-            else{
-                 inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua_vitam.json");
+            else {
+                inputStream = getClass().getClassLoader().getResourceAsStream("pua_validation/valid_pua_vitam.json");
             }
             assert inputStream != null;
             JSONTokener tokener = new JSONTokener(new InputStreamReader(inputStream));
@@ -138,20 +138,20 @@ public class PuaPastisValidator {
         // Compare list of field at the root level
         if (!standalone) {
             Set<String> actualFieldList = pua.keySet().stream().collect(toSet());
-            if(!actualFieldList.contains("name") && !actualFieldList.contains("controlSchema")){
+            if (!actualFieldList.contains("name") && !actualFieldList.contains("controlSchema")) {
                 throw new AssertionError("Notice not contains the expected keys 'name' and 'controlSchema'");
             }
         }
 
 
-    // Next tests are controlling the ControlSchema
-    String controlSchemaString = pua.getString(CONTROLSCHEMA);
-    JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
-    controlSchemaString = profileJson.getString(CONTROLSCHEMA);
-    JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
-    LOGGER.error(controlSchemaActual.toString() + " control schema actuelle");
+        // Next tests are controlling the ControlSchema
+        String controlSchemaString = pua.getString(CONTROLSCHEMA);
+        JSONObject controlSchemaActual = new JSONObject(controlSchemaString);
+        controlSchemaString = profileJson.getString(CONTROLSCHEMA);
+        JSONObject controlSchemaExpected = new JSONObject(controlSchemaString);
+        LOGGER.error(controlSchemaActual.toString() + " control schema actuelle");
         LOGGER.error(controlSchemaExpected.toString() + " control schema Expected");
-        if(standalone) {
+        if (standalone) {
             // Checking that the whole structure is respected. Doesn't care that the pua contains extended fields.
             //JSONAssert.assertEquals(controlSchemaExpected, controlSchemaActual, JSONCompareMode.LENIENT);
 
@@ -159,37 +159,41 @@ public class PuaPastisValidator {
 //            JSONAssert.assertEquals(controlSchemaExpected.getJSONObject(DEFINITIONS),
 //                controlSchemaActual.getJSONObject(DEFINITIONS), JSONCompareMode.STRICT);
 
-        // Checking that additionalProperties is present and is boolean
-        if (controlSchemaActual.has("additionalProperties") &&
-            !(controlSchemaActual.get("additionalProperties") instanceof Boolean)) {
-            throw new AssertionError("PUA additionalProperties field does not contains a boolean value");
-        }
-        // Checking that #management object is present and at the correct position
-        if (controlSchemaActual.has("patternProperties")) {
-            JSONObject patternProperties = controlSchemaActual.getJSONObject("patternProperties");
-            if (patternProperties.has(MANAGEMENTCONTROL)) {
-                JSONAssert.assertEquals(new JSONObject(), patternProperties.getJSONObject(MANAGEMENTCONTROL),
-                    JSONCompareMode.STRICT);
+            // Checking that additionalProperties is present and is boolean
+            if (controlSchemaActual.has("additionalProperties") &&
+                !(controlSchemaActual.get("additionalProperties") instanceof Boolean)) {
+                throw new AssertionError("PUA additionalProperties field does not contains a boolean value");
+            }
+            // Checking that #management object is present and at the correct position
+            if (controlSchemaActual.has("patternProperties")) {
+                JSONObject patternProperties = controlSchemaActual.getJSONObject("patternProperties");
+                if (patternProperties.has(MANAGEMENTCONTROL)) {
+                    JSONAssert.assertEquals(new JSONObject(), patternProperties.getJSONObject(MANAGEMENTCONTROL),
+                        JSONCompareMode.STRICT);
 
-                // Check that #management is not in both header and 'properties' object
-                JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
-                if (properties.has(MANAGEMENTCONTROL)) {
-                    throw new AssertionError("Can't have both '#management' key in header and in 'properties' object");
+                    // Check that #management is not in both header and 'properties' object
+                    JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
+                    if (properties.has(MANAGEMENTCONTROL)) {
+                        throw new AssertionError("Can't have both '#management' key in header and in 'properties' object");
+                    }
                 }
+            } else {
+                if (controlSchemaActual.has(PROPERTIES)) {
+                    JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
+                    if (!properties.has(MANAGEMENTCONTROL)) {
+                        throw new AssertionError("Missing '#management' key in 'properties' object");
+                    }
+                } else {
+                    throw new AssertionError("Missing 'properties' key in controlShema");
+                }
+
+                // #HAVEFUN
             }
         } else {
-            JSONObject properties = controlSchemaActual.getJSONObject(PROPERTIES);
-            if (!properties.has(MANAGEMENTCONTROL)) {
-                throw new AssertionError("Missing '#management' key in 'properties' object");
+            if (!controlSchemaActual.has(SCHEMA)) {
+                throw new AssertionError("Missing '$schema' key in controlSchema' object");
             }
-            // #HAVEFUN
         }
-        }
-        else{
-                if (!controlSchemaActual.has(SCHEMA)) {
-                    throw new AssertionError("Missing '$schema' key in controlSchema' object");
-                }
-            }
     }
 
     public JSONObject getDefinitionsFromExpectedProfile() {
@@ -228,11 +232,11 @@ public class PuaPastisValidator {
         String sedaName = sedaElement.getName();
         String sedaCardinality = sedaElement.getCardinality();
 
-        if(sedaName.equals("algorithm")){
+        if (sedaName.equals("algorithm")) {
             return "string";
         }
 
-        if(sedaName.equals("Title") || sedaName.equals("Description")) {
+        if (sedaName.equals("Title") || sedaName.equals("Description")) {
             if (element.getCardinality().equals("1")) {
                 return "string";
             } else {
@@ -251,7 +255,7 @@ public class PuaPastisValidator {
         if (sedaType.equals("boolean") && (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
             return "boolean";
         }
-        if (sedaType.equals("integer")&& (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
+        if (sedaType.equals("integer") && (sedaCardinality.equals("0-1") || sedaCardinality.equals("1"))) {
             return "integer";
         }
         if (sedaCardinality.equals("1-N") || sedaCardinality.equals("0-N")) {
@@ -303,7 +307,7 @@ public class PuaPastisValidator {
             "ReuseRule", "ClassificationRule");
 
         for (ElementProperties el : elementsFromTree) {
-                setMetadataName(el);
+            setMetadataName(el);
             try {
                 if (el.getName().equals(MANAGEMENT)) {
                     JSONObject management = getJSONFromManagement(el);
@@ -368,7 +372,7 @@ public class PuaPastisValidator {
      * @throws IOException
      */
     private void retrieveAccumalatedJsonManagaementProperties(ElementProperties element, List<String> rulesMetadata,
-        List<String> childrenToEncapsulate, List<String> rulesFound, JSONObject pua) throws IOException {
+                                                              List<String> childrenToEncapsulate, List<String> rulesFound, JSONObject pua) throws IOException {
         for (ElementProperties childElement : element.getChildren()) {
             JSONObject childrenOfRule = sortedJSON();
             JSONObject grandChildrenOfRule = sortedJSON();
@@ -437,7 +441,7 @@ public class PuaPastisValidator {
      * @return
      */
     private boolean checkSpecialCases(List<String> rulesMetadata, List<String> rulesFound,
-        ElementProperties childElement, SedaNode sedaElement) {
+                                      ElementProperties childElement, SedaNode sedaElement) {
         if (!rulesMetadata.contains(childElement.getName()) || sedaElement == null) {
             return true;
         }
@@ -455,7 +459,7 @@ public class PuaPastisValidator {
      * @param ruleTypeMetadata
      */
     private void putRequiredNonSpecialChildren(ElementProperties childElement, List<String> requiredNonSpecialChildren,
-        JSONObject ruleTypeMetadata) {
+                                               JSONObject ruleTypeMetadata) {
         if (!requiredNonSpecialChildren.isEmpty()) {
             ruleTypeMetadata.getJSONObject(childElement.getName())
                 .put(REQUIRED, requiredNonSpecialChildren);
@@ -471,7 +475,7 @@ public class PuaPastisValidator {
      * @param requiredChildren
      */
     private void putChildrenIntoRules(JSONObject childrenOfRule, JSONObject grandChildrenOfRule,
-        JSONObject propertiesRules, List<String> requiredChildren) {
+                                      JSONObject propertiesRules, List<String> requiredChildren) {
         if (!grandChildrenOfRule.isEmpty()) {
             JSONObject propretyOfItems = new JSONObject().put(ADDITIONAL_PROPERTIES, false);
             propretyOfItems.put(PROPERTIES, grandChildrenOfRule);
@@ -493,8 +497,8 @@ public class PuaPastisValidator {
      * @throws JsonProcessingException
      */
     private void childrenContainsGrandChildName(JSONObject grandChildrenOfRule,
-        PuaMetadataDetails ruleTypeMetadataDetails, List<String> requiredChildren, ElementProperties grandChild,
-        SedaNode node) throws JsonProcessingException {
+                                                PuaMetadataDetails ruleTypeMetadataDetails, List<String> requiredChildren, ElementProperties grandChild,
+                                                SedaNode node) throws JsonProcessingException {
         PuaMetadataDetails childOfRuleDetails = new PuaMetadataDetails();
         getMetaDataFromSeda(grandChild, childOfRuleDetails, node);
         if (grandChild.getCardinality().equals("1"))
@@ -511,7 +515,7 @@ public class PuaPastisValidator {
      * Retrieve the accumulated JSONArray properties from pua
      *
      * @param pua is JSONObjet that contains Management section of PUA
-     * Convert it into a JSONObject and put it into a #mangagement key
+     *            Convert it into a JSONObject and put it into a #mangagement key
      */
     public JSONObject retrieveAccumulatedJsonManagementProperties(JSONObject pua) {
 
@@ -555,7 +559,7 @@ public class PuaPastisValidator {
                 .getChildren().stream().filter(childName -> childName.getName().equals(elementName)).findAny().orElse(null);
         } else {
             result = sedaTree.flattened()
-                .filter(e -> e.getName().equals(elementName) ).findAny().orElse(null);
+                .filter(e -> e.getName().equals(elementName)).findAny().orElse(null);
         }
         return result;
     }

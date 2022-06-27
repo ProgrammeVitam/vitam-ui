@@ -165,7 +165,7 @@ public class PastisService {
         try {
             return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(notice);
         } catch (JsonProcessingException e) {
-            throw new TechnicalException("Problems durint conversion objectMapper to string", e);
+            throw new TechnicalException("Problems during conversion objectMapper to string", e);
         }
     }
 
