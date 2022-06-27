@@ -40,8 +40,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Agency } from 'projects/vitamui-library/src/public-api';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, SecurityService } from 'ui-frontend-common';
+import { diff, SecurityService, ApplicationId, Role } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
+
 
 import { AgencyService } from '../../agency.service';
 
@@ -55,9 +56,8 @@ export class AgencyInformationTabComponent {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   tenantIdentifier: number;
-  appName = "AGENCIES_APP";
   submited = false;
-  hasUpdateAgencyRole = false;
+  checkUpdateRole = new Observable<boolean>();
 
   // tslint:disable-next-line:variable-name
   private _agency: Agency;
@@ -107,10 +107,7 @@ export class AgencyInformationTabComponent {
       this.tenantIdentifier = +params.tenantIdentifier;
     });
 
-    this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_AGENCIES')
-      .subscribe((result) => {
-        this.hasUpdateAgencyRole = result;
-      });
+    this.checkUpdateRole = this.securityService.hasRole(ApplicationId.AGENCIES_APP, this.tenantIdentifier, Role.ROLE_UPDATE_AGENCIES);
   }
 
   unchanged(): boolean {

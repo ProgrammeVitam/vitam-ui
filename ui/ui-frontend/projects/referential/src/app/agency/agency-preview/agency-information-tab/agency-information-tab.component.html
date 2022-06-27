@@ -3,7 +3,7 @@
   <div class="form-group">
     <div class="col-10 form-control">
       <vitamui-common-input formControlName="name" placeholder="Nom"
-        i18n-placeholder="Name@@profileGroupCreateNamePlaceholder">
+        i18n-placeholder="Name@@profileGroupCreateNamePlaceholder" [disabled]="!(checkUpdateRole | async)">
       </vitamui-common-input>
       <ng-container *ngIf="form.get('name')?.touched">
         <vitamui-common-input-error *ngIf="!!form.get('name')?.errors?.required">{{'COMMON.REQUIRED' | translate}}
@@ -15,13 +15,13 @@
   <div class="form-group">
     <div class="col-10 form-control">
       <vitamui-common-input formControlName="description" placeholder="Description"
-        i18n-placeholder="description@@agencyPreviewLabelName">
+        i18n-placeholder="description@@agencyPreviewLabelName" [disabled]="!(checkUpdateRole | async)">
       </vitamui-common-input>
     </div>
   </div>
 
   <div class="form-group bottom">
     <button type="submit" class="btn secondary"
-      [disabled]="isInvalid() || unchanged() || submited || !hasUpdateAgencyRole">Enregistrer</button>
+      [disabled]="isInvalid() || unchanged() || submited || !(checkUpdateRole | async)">Enregistrer</button>
   </div>
 </form>
