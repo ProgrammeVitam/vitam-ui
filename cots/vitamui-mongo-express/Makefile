@@ -4,7 +4,7 @@
 
 # Args parsing with default values
 NAME                := mongo-express
-VERSION             := 3.4.9
+VERSION             := 5.0.9
 DEPENDENCIES        := nodejs,npm
 
 # Src configuration:
@@ -66,7 +66,7 @@ $(SRC_DIR):
 
 # Extract DEB to get pre  staged install files from logstash
 $(BIN): $(SRC_DIR)
-	@cp ../package.json $(SRC_DIR);  cd $(SRC_DIR) ; npm install mongo-express
+	@cp ../package.json $(SRC_DIR);  cd $(SRC_DIR) ; npm install mongo-express --ignore-scripts && npm install
 
 source: $(BIN)
 
