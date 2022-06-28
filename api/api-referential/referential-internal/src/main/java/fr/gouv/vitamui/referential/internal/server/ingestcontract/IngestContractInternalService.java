@@ -287,11 +287,9 @@ public class IngestContractInternalService {
             LOGGER.debug("Send IngestContract update request: {}", query);
 
             RequestResponse<?> requestResponse = ingestContractService.patchIngestContract(vitamContext, id, query);
-
             if(Response.Status.OK.getStatusCode() != requestResponse.getHttpCode()) {
                 throw new AccessExternalClientException("Can't patch ingest contract");
             }
-
             return getOne(vitamContext, id);
 
         } catch (InvalidParseOperationException | AccessExternalClientException  e) {
