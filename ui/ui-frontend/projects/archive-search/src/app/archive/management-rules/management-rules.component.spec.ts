@@ -142,6 +142,7 @@ describe('ManagementRulesComponent', () => {
       getCriteriaSearchListToSave: () => of({}),
       getRuleActions: () => of(ruleActions),
       getHasExactCount: () => of(true),
+      emitRuleCategory: () => of(),
     };
 
     await TestBed.configureTestingModule({
@@ -176,7 +177,7 @@ describe('ManagementRulesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it(' component should be created', () => {
     expect(component).toBeTruthy();
   });
 
