@@ -2,12 +2,12 @@ package fr.gouv.vitamui.commons.test.utils;
 
 import java.lang.reflect.Field;
 import java.math.BigInteger;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.UUID;
 
 public class RandomObjectFiller {
 
-    private static Random random = new Random();
+    private static SecureRandom secureRandom = new SecureRandom();
 
     private RandomObjectFiller() {
         // do nothing
@@ -39,21 +39,21 @@ public class RandomObjectFiller {
         // example, so this list is not complete! Adapt this to your needs!
         if (type.isEnum()) {
             final Object[] enumValues = type.getEnumConstants();
-            return enumValues[random.nextInt(enumValues.length)];
+            return enumValues[secureRandom.nextInt(enumValues.length)];
         } else if (type.equals(Integer.TYPE) || type.equals(Integer.class)) {
-            return random.nextInt();
+            return secureRandom.nextInt();
         } else if (type.equals(Long.TYPE) || type.equals(Long.class)) {
-            return random.nextLong();
+            return secureRandom.nextLong();
         } else if (type.equals(Boolean.TYPE) || type.equals(Boolean.class)) {
-            return random.nextBoolean();
+            return secureRandom.nextBoolean();
         } else if (type.equals(Double.TYPE) || type.equals(Double.class)) {
-            return random.nextDouble();
+            return secureRandom.nextDouble();
         } else if (type.equals(Float.TYPE) || type.equals(Float.class)) {
-            return random.nextFloat();
+            return secureRandom.nextFloat();
         } else if (type.equals(String.class)) {
             return UUID.randomUUID().toString();
         } else if (type.equals(BigInteger.class)) {
-            return BigInteger.valueOf(random.nextInt());
+            return BigInteger.valueOf(secureRandom.nextInt());
         }
         return createAndFill(type);
     }

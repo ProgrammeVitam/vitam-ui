@@ -39,13 +39,17 @@ package fr.gouv.vitamui.referential.internal.server.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -91,6 +95,8 @@ public class OperationInternalController {
     @Autowired
     private InternalSecurityService securityService;
 
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
     @GetMapping(params = {"page", "size"})
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
@@ -113,7 +119,7 @@ public class OperationInternalController {
     public ResponseEntity<Resource> exportEventById(
             final @PathVariable("id") String id, final @PathVariable("type") ReportType type,
             @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         LOGGER.debug("export logbook for operation with id :{}", id);
         Response response = operationInternalService.export(vitamContext, id, type);
@@ -126,24 +132,32 @@ public class OperationInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException , PreconditionFailedException{
+
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for operation with id :{}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return operationInternalService.findHistoryByIdentifier(vitamContext, id);
     }
 
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public JsonNode checkTraceabilityOperation(final @PathVariable String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id, @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, accessContractId);
         LOGGER.debug("Launch check traceability operation with id = {}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return operationInternalService.checkTraceabilityOperation(vitamContext, id);
     }
 
     @PostMapping("/probativeValue")
     public void runProbativeValue(@Valid @RequestBody ProbativeValueRequest probativeValueRequest, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(accessContractId);
         LOGGER.debug("run probative value ={}", probativeValueRequest);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         operationInternalService.runProbativeValue(vitamContext, probativeValueRequest);
@@ -151,9 +165,14 @@ public class OperationInternalController {
 
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
     public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId,
-            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
-        LOGGER.debug("Export probative value: ", operationId);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", operationId);
+            @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, operationId);
+        SanityChecker.checkSecureParameter(operationId, accessContractId);
+        SafeFileChecker.checkSafeFilePath(operationId);
+        LOGGER.debug("Export probative with operationId : ", operationId);
+        LOGGER.debug("Export probative accessContractId : ", accessContractId);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         String tempFolder = "/tmp/" + operationId + ".zip";
         File zip = new File(tempFolder);

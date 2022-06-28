@@ -175,9 +175,13 @@ public class AgencyExternalController {
     @Secured(ServicesData.ROLE_IMPORT_AGENCIES)
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        LOGGER.debug("Import agency file {}", fileName);
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        }
+        SanityChecker.isValidFileName(fileName);
         ParameterChecker.checkParameter("The fileName is mandatory parameter : ", fileName);
-        SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        LOGGER.debug("Import agency file {}", fileName);
+
         return agencyExternalService.importAgencies(fileName, file);
     }
 }

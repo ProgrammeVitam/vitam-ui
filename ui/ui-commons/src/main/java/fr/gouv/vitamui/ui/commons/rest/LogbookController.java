@@ -79,10 +79,11 @@ import java.util.Optional;
 @ResponseBody
 public class LogbookController extends AbstractUiRestController {
 
-    private final String DOWNLOAD_TYPE_DIP = "dip";
-    private final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
-    private final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
-    private final String DOWNLOAD_TYPE_OBJECT = "object";
+    private static String DOWNLOAD_TYPE_DIP = "dip";
+    private static final String DOWNLOAD_TYPE_TRANSFER_SIP = "transfersip";
+    private static final String DOWNLOAD_TYPE_BATCH_REPORT = "batchreport";
+    private static final String DOWNLOAD_TYPE_OBJECT = "object";
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(LogbookController.class);
 
@@ -99,7 +100,7 @@ public class LogbookController extends AbstractUiRestController {
     public LogbookOperationsResponseDto findOperationByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get Logbook operation by id : {}", id);
         return logbookService.findOperationById(buildUiHttpContext(), id);
@@ -111,7 +112,7 @@ public class LogbookController extends AbstractUiRestController {
     public LogbookLifeCycleResponseDto findUnitLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get logbook unit lifecycle by archive unit id : {}", id);
         return logbookService.findUnitLifeCyclesByUnitId(buildUiHttpContext(), id);
@@ -123,7 +124,7 @@ public class LogbookController extends AbstractUiRestController {
     public LogbookLifeCycleResponseDto findObjectGroupLifeCyclesByUnitId(@PathVariable final String id)
         throws InvalidParseOperationException, PreconditionFailedException {
 
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get logbook object lifecycle by archive unit id : {}", id);
         return logbookService.findObjectLifeCyclesByUnitId(buildUiHttpContext(), id);
@@ -146,7 +147,7 @@ public class LogbookController extends AbstractUiRestController {
         if(disposition.isPresent()){
             SanityChecker.sanitizeCriteria(disposition.get());
         }
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("downloadManifest: id={}, disposition={}", id, disposition);
         final ResponseEntity<Resource> response = logbookService.downloadManifest(buildUiHttpContext(), id);

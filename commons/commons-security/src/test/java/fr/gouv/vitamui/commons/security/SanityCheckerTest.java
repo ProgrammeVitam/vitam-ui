@@ -206,4 +206,32 @@ public class SanityCheckerTest {
         boolean expectedResponse = SanityChecker.isIssueOnParameter(badString);
         Assertions.assertThat(expectedResponse).isTrue();
     }
+
+    @Test
+    public void testIsValidFileNameWithBadName() {
+        final String badString = "aa<script>bb";
+        boolean expectedResponse = SanityChecker.isValidFileName(badString);
+        Assertions.assertThat(expectedResponse).isFalse();
+    }
+
+    @Test
+    public void testIsValidFileNameWithGoodName() {
+        final String badString = "fileName";
+        boolean expectedResponse = SanityChecker.isValidFileName(badString);
+        Assertions.assertThat(expectedResponse).isTrue();
+    }
+
+    @Test
+    public void testIsValidFileNameWithXmlString() {
+        final String badString = "text<strong>text</strong>bb";
+        boolean expectedResponse = SanityChecker.isValidFileName(badString);
+        Assertions.assertThat(expectedResponse).isFalse();
+    }
+
+    @Test
+    public void testIsValidFileNameWhenGivenStringIsBad() {
+        final String badText = "aa<![CDATA[bb";
+        boolean expectedResponse = SanityChecker.isValidFileName(badText);
+        Assertions.assertThat(expectedResponse).isFalse();
+    }
 }

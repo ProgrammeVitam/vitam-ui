@@ -36,6 +36,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
@@ -82,7 +83,21 @@ public class ProjectExternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
+        PreconditionFailedException{
+        direction.ifPresent(directionDto ->
+            {
+                try {
+                    SanityChecker.sanitizeCriteria(directionDto);
+                } catch (InvalidParseOperationException exception) {
+                    LOGGER.error("Exception error : {}", exception.getMessage());
+                    throw new PreconditionFailedException("Exception error",exception);
+                }
+            }
+        );
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
             direction);
@@ -91,7 +106,8 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping()
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
         return collectExternalService.createProject(collectProjectDto);
@@ -103,7 +119,7 @@ public class ProjectExternalController {
     public ResponseEntity<Void> streamingUpload(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) throws InvalidParseOperationException {
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.isValidFileName(originalFileName);
@@ -114,7 +130,7 @@ public class ProjectExternalController {
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
     @PutMapping(CommonConstants.PATH_ID)
     public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException {
+        throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
