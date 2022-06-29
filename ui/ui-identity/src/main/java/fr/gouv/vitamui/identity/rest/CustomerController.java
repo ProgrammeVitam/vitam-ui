@@ -36,11 +36,14 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.enums.AttachmentType;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -108,7 +111,9 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CustomerDto create(@ModelAttribute final CustomerCreationFormData customerCreationFormData) {
+    public CustomerDto create(@ModelAttribute final CustomerCreationFormData customerCreationFormData)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(customerCreationFormData);
         LOGGER.debug("create customer={}", customerCreationFormData);
         return service.create(buildUiHttpContext(), customerCreationFormData);
     }
@@ -116,9 +121,11 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto getOne(final @PathVariable String id) {
-        LOGGER.debug("Get customer={}", id);
+    public CustomerDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get customer={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 
@@ -126,26 +133,35 @@ public class CustomerController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<CustomerDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()){
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        SanityChecker.checkSecureParameter(String.valueOf(page), String.valueOf(size));
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy, direction);
-        RestUtils.checkCriteria(criteria);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<CustomerDto> getAll(final Optional<String> criteria) {
+    public Collection<CustomerDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Check entity exist by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("check exist criteria={}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -153,9 +169,11 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto update(final @PathVariable("id") String id, @RequestBody final CustomerDto entityDto) {
+    public CustomerDto update(final @PathVariable("id") String id, @RequestBody final CustomerDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("update class={}", entityDto.getClass().getName());
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.sanitizeCriteria(entityDto);
         Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);
     }
@@ -165,7 +183,7 @@ public class CustomerController extends AbstractUiRestController {
      * @return
      */
     @GetMapping(path = CommonConstants.PATH_ME)
-    public CustomerDto getMyCustomer() {
+    public CustomerDto getMyCustomer() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get MyCustomer");
         return service.getMyCustomer(buildUiHttpContext());
     }
@@ -173,28 +191,38 @@ public class CustomerController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public CustomerDto patch(final @PathVariable("id") String id, @ModelAttribute final CustomerPatchFormData customerPatchFormData) {
-        LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
+    public CustomerDto patch(final @PathVariable("id") String id, @ModelAttribute final CustomerPatchFormData customerPatchFormData)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) customerPatchFormData.getPartialCustomerDto().get("id")),
                 "Unable to patch customer : the DTO id must match the path id");
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(customerPatchFormData);
+        LOGGER.debug("Patch Customer {} with {}", id, customerPatchFormData);
         return service.patch(buildUiHttpContext(), id, customerPatchFormData);
     }
 
     @ApiOperation(value = "get history by customer's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
-        LOGGER.debug("get logbook for customer with id :{}", id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for customer with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Get entity logo")
     @GetMapping(CommonConstants.PATH_ID + "/logo")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type) {
-        LOGGER.debug("Get customer logos={}", id);
+    public ResponseEntity<Resource> getLogo(final @PathVariable String id, final @RequestParam(value = "type") AttachmentType type)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get customer logos={}", id);
         final ResponseEntity<Resource> response = service.getLogo(buildUiHttpContext(), id, type);
         if(HttpStatus.NO_CONTENT.equals(response.getStatusCode())) {
             return response;
@@ -209,7 +237,7 @@ public class CustomerController extends AbstractUiRestController {
      * @return
      */
     @GetMapping(path = CommonConstants.GDPR_STATUS)
-    public boolean getGdprSettingStatus() {
+    public boolean getGdprSettingStatus() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get Gdpr Setting Status");
         return service.getGdprSettingStatus(buildUiHttpContext());
     }

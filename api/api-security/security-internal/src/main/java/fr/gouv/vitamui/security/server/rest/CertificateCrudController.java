@@ -36,6 +36,7 @@
  */
 package fr.gouv.vitamui.security.server.rest;
 
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -52,7 +53,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -94,7 +104,7 @@ public class CertificateCrudController implements CrudController<CertificateDto>
     @GetMapping(CommonConstants.PATH_ID)
     public CertificateDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
         LOGGER.debug("Get {} criteria={}", id, criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return certificateCrudService.getOne(id, criteria);
     }

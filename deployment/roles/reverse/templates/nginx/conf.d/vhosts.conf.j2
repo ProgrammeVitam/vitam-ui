@@ -71,6 +71,14 @@ server {
 {% endif %}
 
 
+{% if groups['hosts_ui_collect']|length > 0 %}
+  # UI COLLECT
+  location /collect {
+    proxy_pass https://COLLECT/collect;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+{% endif %}
+
   # CAS SERVER
   location = /cas {
     return 302 $scheme://$host/cas/login;

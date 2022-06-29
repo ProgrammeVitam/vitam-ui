@@ -89,6 +89,7 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
                 orderBy, direction, embedded);
 
         final URIBuilder builder = getUriBuilderFromUrl();
+
         builder.addParameter("page", page.toString());
         builder.addParameter("size", size.toString());
         criteria.ifPresent(o -> builder.addParameter("criteria", o));

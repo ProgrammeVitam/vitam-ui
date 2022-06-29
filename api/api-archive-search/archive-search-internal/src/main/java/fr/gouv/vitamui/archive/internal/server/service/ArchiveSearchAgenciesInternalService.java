@@ -166,7 +166,7 @@ public class ArchiveSearchAgenciesInternalService {
         List<String> originAgenciesCodes) throws VitamClientException {
         List<AgencyModelDto> agencies = new ArrayList<>();
         if (originAgenciesCodes != null && !originAgenciesCodes.isEmpty()) {
-            LOGGER.info("Finding originating agencies by field {}  values {} ", field, originAgenciesCodes);
+            LOGGER.debug("Finding originating agencies by field {}  values {} ", field, originAgenciesCodes);
             Map<String, Object> searchCriteriaMap = new HashMap<>();
             searchCriteriaMap.put(field, originAgenciesCodes);
             try {
@@ -183,7 +183,7 @@ public class ArchiveSearchAgenciesInternalService {
                 throw new BadRequestException("Error parsing query ", e1);
             }
         }
-        LOGGER.info("origin agencies  found {} ", agencies);
+        LOGGER.debug("origin agencies  found {} ", agencies);
         return agencies;
     }
 

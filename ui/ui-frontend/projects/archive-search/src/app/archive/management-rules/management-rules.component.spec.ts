@@ -38,7 +38,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -70,14 +70,14 @@ const ruleActions: ActionsRules[] = [
   {
     ruleType: 'ruleType2',
     actionType: 'actionType2',
-    id: 1,
+    id: 2,
     ruleId: 'ruleId2',
     stepValid: true,
   },
   {
     ruleType: 'ruleType3',
     actionType: 'actionType3',
-    id: 1,
+    id: 3,
     ruleId: 'ruleId3',
     stepValid: false,
   },
@@ -141,6 +141,7 @@ describe('ManagementRulesComponent', () => {
       getselectedItems: () => of(35),
       getCriteriaSearchListToSave: () => of({}),
       getRuleActions: () => of(ruleActions),
+      getHasExactCount: () => of(true),
     };
 
     await TestBed.configureTestingModule({
@@ -161,7 +162,6 @@ describe('ManagementRulesComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -200,5 +200,46 @@ describe('ManagementRulesComponent', () => {
   it('Should return false, the actions are not all valid ', () => {
     component.ruleActions = ruleActions;
     expect(component.isAllActionsValid()).not.toBeTruthy();
+  });
+
+  it('Should return the hasExactCount parameter have a value ', () => {
+    // when
+    component.loadHasExactCount();
+    // then
+    expect(component.hasExactCount).not.toBeNull();
+    expect(component.hasExactCount).not.toBeUndefined();
+  });
+
+  it('Should return the criteriaSearchDSLQuery parameter have a value ', () => {
+    // when
+    component.loadCriteriaSearchDSLQuery();
+    // then
+    expect(component.criteriaSearchDSLQuery).not.toBeNull();
+    expect(component.criteriaSearchDSLQuery).not.toBeUndefined();
+  });
+
+  it('Should return the a value of the DSL query to save ', () => {
+    // when
+    component.loadCriteriaSearchListToSave();
+    // then
+    expect(component.criteriaSearchListToSave).not.toBeNull();
+    expect(component.criteriaSearchListToSave).not.toBeNaN();
+    expect(component.criteriaSearchListToSave).not.toBeUndefined();
+  });
+
+  it('Should the property to disabled delete property button be true when the category selected is DUA  ', () => {
+    // when
+    component.selectRule(rulesCatygories[1]);
+    // then
+    expect(component.isDeletePropertyDisabled).not.toBeNull();
+    expect(component.isDeletePropertyDisabled).toBeTruthy();
+  });
+
+  it('Should the property to disabled delete property button be false when the category selected is not DUA  ', () => {
+    // when
+    component.selectRule(rulesCatygories[3]);
+    // then
+    expect(component.isDeletePropertyDisabled).not.toBeNull();
+    expect(component.isDeletePropertyDisabled).toBeFalsy();
   });
 });

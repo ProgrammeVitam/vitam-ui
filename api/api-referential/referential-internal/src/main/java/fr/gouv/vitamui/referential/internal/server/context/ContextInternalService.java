@@ -105,7 +105,7 @@ public class ContextInternalService {
 
     public ContextDto getOne(VitamContext vitamContext, String identifier) {
         try {
-            LOGGER.info("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse<ContextModel> requestResponse = vitamContextService.findContextById(vitamContext, identifier);
             final ContextResponseDto contextResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), ContextResponseDto.class);
@@ -122,7 +122,7 @@ public class ContextInternalService {
     public List<ContextDto> getAll(VitamContext vitamContext) {
         final RequestResponse<ContextModel> requestResponse;
         try {
-            LOGGER.info("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = vitamContextService
                     .findContexts(vitamContext, new Select().getFinalSelect());
             final ContextResponseDto contextResponseDto = objectMapper
@@ -138,7 +138,7 @@ public class ContextInternalService {
             final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
             Optional<String> criteria) {
 
-        LOGGER.info("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
         try {
@@ -171,7 +171,7 @@ public class ContextInternalService {
     public ContextResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<ContextModel> requestResponse;
         try {
-            LOGGER.info("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("All Contexts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = vitamContextService.findContexts(vitamContext, query);
             LOGGER.debug("Response: {}", requestResponse);
             LOGGER.debug("Response DTO: {}", objectMapper.treeToValue(requestResponse.toJsonNode(), ContextResponseDto.class));
@@ -186,7 +186,7 @@ public class ContextInternalService {
     public Boolean check(VitamContext vitamContext, ContextDto contextDto) {
         List<ContextDto> contextDtoList = new ArrayList<>();
         contextDtoList.add(contextDto);
-        LOGGER.info("Context Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Context Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             return !vitamContextService
                     .checkAbilityToCreateContextInVitam(
@@ -201,7 +201,7 @@ public class ContextInternalService {
 
     public ContextDto create(VitamContext vitamContext, ContextDto contextDto) {
         try {
-            LOGGER.info("Create Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Create Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             vitamContextService.createContext(vitamContext, contextDto);
             return contextDto;
         } catch (InvalidParseOperationException | AccessExternalClientException | IOException e) {
@@ -258,7 +258,7 @@ public class ContextInternalService {
         }
 
         try {
-            LOGGER.info("Patch Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patch Context EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             JsonNode fieldsUpdated = convertPartialDtoToUpperCaseVitamFields(partialDto);
             ObjectNode action = JsonHandler.createObjectNode();
             action.set("$set", fieldsUpdated);
@@ -277,7 +277,7 @@ public class ContextInternalService {
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, final String identifier) throws VitamClientException {
         LOGGER.debug("findHistoryById for identifier" + identifier);
-        LOGGER.info("Find Context History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Find Context History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return logbookService.findEventsByIdentifierAndCollectionNames(
                 identifier, AdminCollections.ACCESS_CONTRACTS.getName(), vitamContext).toJsonNode();
     }

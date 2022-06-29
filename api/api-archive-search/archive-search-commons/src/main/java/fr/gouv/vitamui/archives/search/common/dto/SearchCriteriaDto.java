@@ -57,12 +57,8 @@ public class SearchCriteriaDto implements Serializable {
     private Integer size = 1;
     private String language = Locale.FRENCH.getLanguage();
     private boolean trackTotalHits;
+    private boolean computeFacets;
 
-
-    public int computeNodesCriteria() {
-        List<String> nodesCriteriaList = this.extractNodesCriteria();
-        return nodesCriteriaList.size();
-    }
 
     public List<String> extractNodesCriteria() {
         return this.getCriteriaList().stream().filter(

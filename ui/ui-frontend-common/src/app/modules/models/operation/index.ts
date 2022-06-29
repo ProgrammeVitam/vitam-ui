@@ -37,3 +37,4 @@
 export * from './facet-colors.enum';
 export * from './operation-status.enum';
 export * from './operation-type.enum';
+export * from './facet-details.interface';

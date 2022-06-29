@@ -38,6 +38,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -83,7 +84,7 @@ public class ArchivalProfileUnitExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES_UNIT)
     public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all archival unit profiles criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return archivalProfileUnitExternalService.getAll(criteria);
     }
 
@@ -106,9 +107,9 @@ public class ArchivalProfileUnitExternalController {
 
     @Secured(ServicesData.ROLE_UPDATE_ARCHIVE_PROFILES_UNIT)
     @PutMapping(CommonConstants.PATH_ID)
-    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @Valid @RequestBody ArchivalProfileUnitDto dto) {
+    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @Valid @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException {
         LOGGER.debug("Update archival unit profile with identifier metadata {} to {}", id, dto);
-        SanityChecker.check(id);
+        SanityChecker.sanitizeCriteria(id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "Unable to update archival unit profile : the DTO id must match the path id");
         return archivalProfileUnitExternalService.update(dto);
     }

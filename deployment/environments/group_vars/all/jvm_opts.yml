@@ -86,3 +86,18 @@ vitamui:
       # memory: "-Xms512m -Xmx512m"
       # gc: ""
       # java: ""
+  collect:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  collect_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  collect_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""

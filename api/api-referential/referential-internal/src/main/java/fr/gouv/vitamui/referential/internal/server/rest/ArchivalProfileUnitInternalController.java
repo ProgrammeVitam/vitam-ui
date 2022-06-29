@@ -38,10 +38,10 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -85,7 +85,7 @@ public class ArchivalProfileUnitInternalController {
     @GetMapping()
     public Collection<ArchivalProfileUnitDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all archival unit profiles criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         LOGGER.debug("context={}", vitamContext);
         return archivalProfileUnitInternalService.getAll(vitamContext);
@@ -109,7 +109,7 @@ public class ArchivalProfileUnitInternalController {
 
 
     @PutMapping(CommonConstants.PATH_ID)
-    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @RequestBody ArchivalProfileUnitDto dto) throws AccessExternalClientException, InvalidParseOperationException {
+    public ArchivalProfileUnitDto update(final @PathVariable("id") String id, final @RequestBody ArchivalProfileUnitDto dto) throws InvalidParseOperationException  {
         LOGGER.debug("Update {} with {}", id, dto);
          ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");

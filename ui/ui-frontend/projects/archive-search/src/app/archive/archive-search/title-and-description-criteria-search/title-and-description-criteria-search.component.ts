@@ -40,10 +40,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
+import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
-const UPDATE_DEBOUNCE_TIME = 200;
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 
 @Component({
@@ -60,11 +60,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
     archiveCriteria: '',
   };
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataServiceService,
-    public dialog: MatDialog
-  ) {
+  constructor(private formBuilder: FormBuilder, private archiveExchangeDataService: ArchiveSharedDataService, public dialog: MatDialog) {
     this.previousTitleDescriptionCriteriaValue = {
       archiveCriteria: '',
     };
@@ -74,7 +70,7 @@ export class TitleAndDescriptionCriteriaSearchComponent implements OnInit {
     });
     merge(this.quickSearchCriteriaForm.statusChanges, this.quickSearchCriteriaForm.valueChanges)
       .pipe(
-        debounceTime(UPDATE_DEBOUNCE_TIME),
+        debounceTime(ArchiveSearchConstsEnum.UPDATE_DEBOUNCE_TIME),
         filter(() => this.quickSearchCriteriaForm.valid),
         map(() => this.quickSearchCriteriaForm.value),
         map(() => diff(this.quickSearchCriteriaForm.value, this.previousTitleDescriptionCriteriaValue)),

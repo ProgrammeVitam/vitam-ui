@@ -27,7 +27,6 @@
         formControlName="name"
         minlength="2"
         maxlength="100"
-        required
         placeholder="{{ 'RULES.APRAISAL_RULES.RULE_NAME' | translate }}"
       >
         <vitamui-common-input-error *ngIf="ruleDetailsForm?.get('name')?.touched && ruleDetailsForm?.get('name')?.hasError('required')">{{
@@ -48,7 +47,7 @@
           >
 
           <ng-template #showStartDate
-            ><span (click)="pickerSatrDate.open()">{{ ruleDetailsForm.get('startDate').value | date: 'dd/MM/yyyy' }} </span>
+            ><span (click)="pickerSatrDate.open()">{{ ruleDetailsForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }} </span>
           </ng-template>
           <input class="hidden" size="0" [matDatepicker]="pickerSatrDate" formControlName="startDate" />
           <mat-datepicker #pickerSatrDate></mat-datepicker>
@@ -76,7 +75,6 @@
         formControlName="endDate"
         minlength="2"
         maxlength="100"
-        required
         placeholder=" {{ 'RULES.APRAISAL_RULES.END_DATE' | translate }}"
       >
         <vitamui-common-input-error
@@ -118,11 +116,13 @@
 </ng-template>
 
 <ng-template #resultsFound>
-  <div *ngIf="showText && itemsToUpdate > 0" class="row message-text-ok">
+  <div *ngIf="showText && itemsToUpdate !== '0'" class="row message-text-ok">
     <div class="col-1"><i class="material-icons">check_circle</i></div>
-    <div class="col-11">{{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}</div>
+    <div class="col-11">
+      {{ 'RULES.UA_CONTROL.UA_WITH_RULES_TO_UPDATE' | translate: { itemsToUpdate: itemsToUpdate } }}
+    </div>
   </div>
-  <div *ngIf="showText && itemsWithSameRule > 0" class="row message-text-ko">
+  <div *ngIf="showText && itemsWithSameRule !== '0'" class="row message-text-ko">
     <div class="col-1"><i class="material-icons">error</i></div>
     <div class="col-11">
       {{ 'RULES.UA_CONTROL.UA_WITH_SAME_RULE' | translate: { itemsWithSameRule: itemsWithSameRule } }}

@@ -1,0 +1,5 @@
+export enum IngestType {
+  INGEST = 'INGEST',
+  HOLDING_SCHEME = 'HOLDING_SCHEME',
+  FILING_SCHEME = 'FILING_SCHEME',
+}

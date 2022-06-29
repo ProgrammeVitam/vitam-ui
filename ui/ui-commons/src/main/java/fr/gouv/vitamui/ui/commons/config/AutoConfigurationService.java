@@ -41,6 +41,7 @@ import fr.gouv.vitamui.iam.external.client.IamExternalRestClientFactory;
 import fr.gouv.vitamui.iam.external.client.IamExternalWebClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalRestClientFactory;
 import fr.gouv.vitamui.referential.external.client.ReferentialExternalWebClientFactory;
+import fr.gouv.vitamui.referential.external.client.UnitExternalRestClient;
 import fr.gouv.vitamui.ui.commons.property.UIProperties;
 import fr.gouv.vitamui.ui.commons.service.AccessContractService;
 import fr.gouv.vitamui.ui.commons.service.AccountService;
@@ -51,6 +52,7 @@ import fr.gouv.vitamui.ui.commons.service.ExternalParametersService;
 import fr.gouv.vitamui.ui.commons.service.LogbookService;
 import fr.gouv.vitamui.ui.commons.service.RuleService;
 import fr.gouv.vitamui.ui.commons.service.SubrogationService;
+import fr.gouv.vitamui.ui.commons.service.UnitService;
 import fr.gouv.vitamui.ui.commons.service.UserInfoService;
 import fr.gouv.vitamui.ui.commons.service.UserService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -142,5 +144,12 @@ public class AutoConfigurationService {
     public RuleService ruleService(final CommonService commonService, final ReferentialExternalRestClientFactory factoryRest, final
         ReferentialExternalWebClientFactory dactoryWeb) {
         return new RuleService(commonService ,factoryRest.getRuleExternalRestClient(), dactoryWeb.getRuleExternalWebClient());
+    }
+
+    @Bean("unitService")
+    @DependsOn("unitExternalRestClient")
+    @ConditionalOnMissingBean
+    public UnitService unitService(final UnitExternalRestClient unitRestClient) {
+        return new UnitService(unitRestClient);
     }
 }

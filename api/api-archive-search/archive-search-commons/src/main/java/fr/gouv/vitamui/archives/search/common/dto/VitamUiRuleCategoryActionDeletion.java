@@ -69,4 +69,6 @@ public class VitamUiRuleCategoryActionDeletion implements Serializable {
     private Optional<Boolean> preventInheritance;
 
     private Optional<Set<String>> preventRulesId;
+
+    private Optional<Set<String>> preventRulesIdToRemove;
 }

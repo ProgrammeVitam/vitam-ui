@@ -340,10 +340,10 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
             final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
             if(vitamContext != null) {
-                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+                LOGGER.debug("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             }
 
-            LOGGER.info("Update {} {}", getObjectName(), dto);
+            LOGGER.debug("Update {} {}", getObjectName(), dto);
             beforeUpdate(dto);
             final User entity = convertFromDtoToEntity(dto);
             final String entityId = entity.getId();
@@ -424,7 +424,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
+            LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
 
             String email = CastUtils.toString(partialDto.get("email"));
             if (email != null) {

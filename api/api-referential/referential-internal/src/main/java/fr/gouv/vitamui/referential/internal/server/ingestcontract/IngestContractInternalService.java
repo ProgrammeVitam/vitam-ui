@@ -113,7 +113,7 @@ public class IngestContractInternalService {
     public List<IngestContractDto> getAll(VitamContext vitamContext) {
         final RequestResponse<IngestContractModel> requestResponse;
         try {
-            LOGGER.info("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = ingestContractService
                 .findIngestContracts(vitamContext, new Select().getFinalSelect());
             final IngestContractResponseDto ingestContractResponseDto = objectMapper
@@ -130,7 +130,7 @@ public class IngestContractInternalService {
                                                                  Optional<String> criteria) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
-        LOGGER.info("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("All Ingest Contracts EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
@@ -171,7 +171,7 @@ public class IngestContractInternalService {
 
     public Boolean check(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
-            LOGGER.info("Ingest Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Ingest Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             Integer ingestContractCheckedTenant = ingestContractService.checkAbilityToCreateIngestContractInVitam(converter.convertDtosToVitams(Arrays.asList(ingestContractDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(ingestContractCheckedTenant);
         } catch (ConflictException e) {
@@ -181,7 +181,7 @@ public class IngestContractInternalService {
 
     public IngestContractDto create(VitamContext vitamContext, IngestContractDto ingestContractDto) {
         try {
-            LOGGER.info("Create Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Create Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse requestResponse = ingestContractService.createIngestContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(ingestContractDto)));
             final IngestContractModel ingestContractVitamDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), IngestContractModel.class);
@@ -282,7 +282,7 @@ public class IngestContractInternalService {
         partialDto.remove("identifier");
 
         try {
-            LOGGER.info("Patch Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patch Ingest Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);

@@ -52,8 +52,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { environment } from 'projects/archive-search/src/environments/environment';
 import { Observable, of } from 'rxjs';
 import { BASE_URL, CriteriaDataType, CriteriaOperator, InjectorModule, LoggerModule, WINDOW_LOCATION } from 'ui-frontend-common';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
+import { ArchiveSearchHelperService } from '../common-services/archive-search-helper.service';
 import {
   PagedResult,
   SearchCriteria,
@@ -104,6 +105,9 @@ describe('ArchiveSearchComponent', () => {
 
     hasAccessContractManagementPermissions: () => of(true),
   };
+  const archiveSearchCommonService = {
+    addCriteria: () => of(),
+  };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -123,9 +127,10 @@ describe('ArchiveSearchComponent', () => {
       declarations: [ArchiveSearchComponent, MockTruncatePipe],
       providers: [
         FormBuilder,
-        ArchiveSharedDataServiceService,
+        ArchiveSharedDataService,
         DatePipe,
         { provide: ArchiveService, useValue: archiveServiceStub },
+        { provide: ArchiveSearchHelperService, useValue: archiveSearchCommonService },
         {
           provide: ActivatedRoute,
           useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }) },
@@ -151,24 +156,24 @@ describe('ArchiveSearchComponent', () => {
   });
 
   describe('Submit-Click', () => {
-    const searchCriteria: SearchCriteria = {
-      key: 'Title',
-      values: [
-        {
-          value: { value: 'Titre 1', id: 'Titre 1' },
-          label: 'Titre 1',
-          status: SearchCriteriaStatusEnum.NOT_INCLUDED,
-          valueShown: true,
-          valueTranslated: false,
-          keyTranslated: false,
-        },
-      ],
-      category: SearchCriteriaTypeEnum.FIELDS,
-      operator: CriteriaOperator.EQ,
-      dataType: CriteriaDataType.STRING,
-      valueTranslated: false,
-      keyTranslated: false,
-    };
+    // const searchCriteria: SearchCriteria = {
+    //   key: 'Title',
+    //   values: [
+    //     {
+    //       value: { value: 'Titre 1', id: 'Titre 1' },
+    //       label: 'Titre 1',
+    //       status: SearchCriteriaStatusEnum.NOT_INCLUDED,
+    //       valueShown: true,
+    //       valueTranslated: false,
+    //       keyTranslated: false,
+    //     },
+    //   ],
+    //   category: SearchCriteriaTypeEnum.FIELDS,
+    //   operator: CriteriaOperator.EQ,
+    //   dataType: CriteriaDataType.STRING,
+    //   valueTranslated: false,
+    //   keyTranslated: false,
+    // };
 
     const searchCriteriaValues: SearchCriteriaValue[] = [
       {
@@ -217,33 +222,6 @@ describe('ArchiveSearchComponent', () => {
       });
 
       component.searchCriterias = currentCriteria;
-    });
-
-    describe('addCriteria', () => {
-      it('should add the new criteria to the criteria list having same key', () => {
-        // When: add a new criteria value
-        component.addCriteria(
-          searchCriteria.key,
-          searchCriteria.values[0].value,
-          searchCriteria.values[0].value.value,
-          false,
-          CriteriaOperator.EQ,
-          SearchCriteriaTypeEnum.FIELDS,
-          searchCriteria.valueTranslated,
-          CriteriaDataType.STRING,
-          false
-        );
-
-        // Then: the new criteria should be added to the criteria list
-        expect(component.searchCriterias.size).toEqual(1);
-        const newCriteria = component.searchCriterias.get('Title').values;
-
-        newCriteria.sort((a: any, b: any) => {
-          const valueA = a.value;
-          const valueB = b.value;
-          return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
-        });
-      });
     });
 
     describe('submit', () => {

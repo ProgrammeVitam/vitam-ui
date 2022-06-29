@@ -46,7 +46,6 @@
         "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
         "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
       },
-
       "HOLD_RULE_PROPERTIES": {
         "HOLDREASON": "Motif de la règle de gel",
         "HOLDOWNER": "Propriétaire",
@@ -59,18 +58,26 @@
     },
     "DIP": {
       "EXPORT_DIP": "Export a DIP",
-      "SELECTED": "Selected",
-      "ONE_SELECTED": "Selected",
+      "EXPORT_DIP_TRANSFER_REQUEST": "Export a transfer DIP",
+      "TRANSFER_REQUEST": "Transfer a DIP",
+      "ARCHIVAL_AGREEMENT": "Archival agreement",
+      "ORIGINATING_AGENCY_IDENTIFIER": "Producing service identifier ",
+      "ARCHIVAL_AGENCY": "Archive service identifier",
+      "TRANSFERRING_AGENCY": "Identifier of the service responsible for the transfer",
+      "RELATED_TRANSFER_REFERENCE": "Related transfer reference",
+      "TRANSFER_REQUEST_REPLY_IDENTIFIER": "Transfer request reply identifier",
+      "SELECTED": "selected",
+      "ONE_SELECTED": "selected",
       "CANCEL": "Cancel",
       "REQUEST_ID": "Request identifier",
       "REQUESTER_ID": "Requester identifier",
       "COMMENT": "Comment(s)",
-      "ARCHIVAL_AGENCY": "Archive service identifier",
       "AUTHORISATION_REQUEST_REPLY": "Identifier of the response to an authorization request",
       "SUBMISSION_AGENCY_ID": "Submission agency identifier ",
       "REQUIRED": "Required field",
-      "REQUEST_DIP": "Request to export a DIP",
-      "DIP_PARAMS": "Define the DIP parameters",
+      "REQUEST_DIP_EXPORT": "Request to export a DIP",
+      "TRANSFER_REQUEST_TITLE": "Archive Transfer Request",
+      "DIP_PARAMS": "Set Transfer DIP Settings",
       "ITEMS_SELECTED": "Items selected",
       "ONE_ITEM_SELECTED": "Item selected",
       "LOGS": "Life cycle logs :",
@@ -92,6 +99,9 @@
       "EXECUTE": "Delete the archives",
       "EXECUTE_ONE": "Delete the archive"
     },
+    "RULES_ACTION": {
+      "UPDATE_RULE": "Update rules"
+    },
     "OTHER_ACTIONS": {
       "DIALOG_MESSAGE": {
         "ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT": "Action on {{elementsSize}} archive units",
@@ -105,9 +115,6 @@
         "CONFIRM": "Confirmer",
         "CANCEL": "Annuler"
       }
-    },
-    "RULES_ACTION": {
-      "UPDATE_RULE": "Update rules"
     },
     "COMPUTED_INHERITED_RULES": {
       "EXECUTION_ACTION": "Launch the inheritance calculation",
@@ -126,8 +133,11 @@
     "SEARCH_CRITERIA_OR": "OR",
     "SEARCH_CRITERIA_BETWEEN": "BETWEEN",
     "SEARCH_CRITERIA_AND": "AND",
+    "SEARCH_CRITERIA_GTE": "After than ",
+    "SEARCH_CRITERIA_LTE": "Before than ",
     "SHOW_SEARCH_CRITERIA": "Show the search filters",
     "HIDE_SEARCH_CRITERIA": "hide the search filters",
+    "COMPUTE_RULES_FACETS": "Show management rules facets",
     "RETRIVE_EXACT_COUNT": "Load exact count",
     "MORE_THAN": "+ than ",
     "MORE_THAN_THRESHOLD": "+ than 10 000",
@@ -138,14 +148,19 @@
       "DATES": "Dates",
       "UA_TYPE": "Type of archival units",
       "TITLE": "Search filters",
+      "OTHER_FILED_SELECTION": "Other criteria selection",
       "DUA_TITLE": "Administrative useful life",
-      "OTHER_FILED_SELECTION": "Select another criteria",
+      "ACCESS_TITLE": "Access",
+      "STORAGE_TITLE": "Storage",
+      "NODES": {
+        "NODE": "Position"
+      },
       "APPRAISAL_RULE": {
         "RULE_END_DATE_END": "DUA: max End date",
         "RULE_END_DATE_BEGIN": "DUA: min End date",
         "CREATE_INTERVAL": "Create an interval",
         "DELETE_INTERVAL": "delete interval",
-        "FINAL_ACTION": "FInal Action",
+        "FINAL_ACTION": "Final Action",
         "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "DUA Rule title",
         "RULE_IDENTIFIER_APPRAISAL_RULE": "DUA Rule identifier",
         "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "DUA Start Date",
@@ -160,7 +175,52 @@
         "ORIGIN_HAS_AT_LEAST_ONE": "Holden rule",
         "ORIGIN_HAS_NO_ONE": "Not defined",
         "ORIGIN_WAITING_RECALCULATE": "Waiting for recalculate",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
+        "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier"
+      },
+      "ACCESS_RULE": {
+        "RULE_END_DATE_END": "Access: Max end date",
+        "RULE_END_DATE_BEGIN": "Access: Min end date",
+        "CREATE_INTERVAL": "Create interval",
+        "DELETE_INTERVAL": "remove interval",
+        "RULE_TITLE_ACCESS_RULE": "Access rule title",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Access rule identifier ",
+        "RULE_START_DATE_ACCESS_RULE": "Access rule start date",
+        "RULE_END_DATE_ACCESS_RULE": "Access rule end date",
+        "RULE_ORIGIN_ACCESS_RULE": "Access rule",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Hold",
+        "ORIGIN_HAS_NO_ONE": "Not specified",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
         "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
+      },
+      "STORAGE_RULE": {
+        "RULE_END_DATE_END": "Storage: Max end date",
+        "RULE_END_DATE_BEGIN": "Storage: Min end date",
+        "CREATE_INTERVAL": "Create interval",
+        "DELETE_INTERVAL": "remove interval",
+        "RULE_TITLE_ACCESS_RULE": "Storage rule title",
+        "RULE_IDENTIFIER_ACCESS_RULE": "Storage rule identifier ",
+        "RULE_START_DATE_ACCESS_RULE": "Storage rule start date",
+        "RULE_END_DATE_ACCESS_RULE": "Storage rule end date",
+        "RULE_ORIGIN_ACCESS_RULE": "Storage rule",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Hold",
+        "ORIGIN_HAS_NO_ONE": "Not specified",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited",
+        "FINAL_ACTION": "Final Action",
+        "RULE_ORIGIN_STORAGE_RULE": "Storage rule",
+        "APPRAISAL_RULE_TITLE_APPRAISAL_RULE": "Storage Rule title",
+        "RULE_IDENTIFIER_APPRAISAL_RULE": "Storage Rule identifier",
+        "APPRAISAL_RULE_START_DATE_APPRAISAL_RULE": "Storage Start Date",
+        "RULE_END_DATE_APPRAISAL_RULE": "Storage End Date",
+        "FINAL_ACTION_TYPE_APPRAISAL_RULE": "Final Action",
+        "RULE_ORIGIN_APPRAISAL_RULE": "Storage Rule",
+        "FINAL_ACTION_TYPE_COPY": "Copy",
+        "FINAL_ACTION_TYPE_TRANSFER": "Transfer",
+        "FINAL_ACTION_TYPE_RESTRICT_ACCESS": "Restrict access",
+        "FINAL_ACTION_HAS_FINAL_ACTION": "Holden rule",
+        "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
+        "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier"
       },
       "FIELDS": {
         "ID": "ID",
@@ -186,9 +246,18 @@
         "OTHER_FIELD": "Another criteria",
         "SELECT_OTHER_FIELD": "Select another criteria",
         "TITLE_DUA": "Title",
+        "TITLE_ACCESS": "Title",
         "ID_DUA": "Id",
+        "ID_ACCESS": "Identifier",
         "START_DATE_DUA": "End Date",
         "END_DATE_DUA": "Start Date",
+        "END_DATE_DUA_EQUAL": "Max end date",
+        "END_DATE_DUA_BEGIN": "Between  ",
+        "END_DATE_DUA_END": "and  ",
+        "END_DATE_ACCESS": "Rule end date",
+        "END_DATE_ACCESS_EQUAL": "Max end date",
+        "END_DATE_ACCESS_BEGIN": "Between ",
+        "END_DATE_ACCESS_END": " and ",
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
@@ -197,14 +266,53 @@
         "FILING_UNIT": "Filing plan",
         "DESCRIPTION_LEVEL": "Archive unit type",
         "ALL_ARCHIVE_UNIT_TYPES": "Type",
+        "WAITING_RECALCULATE": "Waiting to compute",
+        "ORIGIN_WAITING_RECALCULATE": "Yes",
         "ELIMINATION_TECHNICAL_ID_APPRAISAL_RULE": "Elimination analysis operation Identifier",
-
         "ORIGIN": {
+          "TITLE": "Archive unit",
           "INHERITE_AT_LEAST_ONE_APPRAISAL_RULE": "Inherits at least one DUA rule",
-          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Has at least one DUA ruler",
+          "HAS_AT_LEAST_ONE_APPRAISAL_RULE": "Define at least one DUA rule",
           "HAS_NO_APPRAISAL_RULE": "Does not have a DUA rule defined",
           "WAITING_TO_RE_CALCULATE_APPRAISAL_RULE": "Is waiting for rule recalculation",
-          "SELECT_ALL_APPRAISAL_RULE": "Select all"
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "INHERITE_AT_LEAST_ONE_ACCESS_RULE": "Inherits at least one Access rule",
+          "HAS_AT_LEAST_ONE_ACCESS_RULE": "Define at least one Access rule",
+          "HAS_NO_ACCESS_RULE": "Does not define a Access rule defined",
+          "WAITING_TO_RE_CALCULATE_ACCESS_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_ACCESS_RULE": "Select all",
+
+          "INHERITE_AT_LEAST_ONE_STORAGE_RULE": "Inherits at least one storage rule",
+          "HAS_AT_LEAST_ONE_STORAGE_RULE": "Define at least one storage rule",
+          "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
+          "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_STORAGE_RULE": "Select all"
+        },
+        "FINAL_ACTION_TYPE": {
+          "TITLE": "Archive unit",
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "HAS_APPRAISAL_RULE": "Define appraisal final action ",
+          "INHERITE_APPRAISAL_RULE": "Inherite appraisal final action",
+          "SELECT_ALL_STORAGE_RULE": "Select all",
+          "HAS_STORAGE_RULE": "Define storage final action ",
+          "INHERITE_STORAGE_RULE": "Inherite storage final action"
+        },
+        "FINAL_ACTION": {
+          "TITLE": "Appraisal final action ",
+          "SELECT_ALL_APPRAISAL_RULE": "Select all",
+          "ELIMINATION_APPRAISAL_RULE": "Destroy",
+          "KEEP_APPRAISAL_RULE": "Keep",
+          "NC_APPRAISAL_RULE": "Not defined",
+          "SELECT_ALL_STORAGE_RULE": "Select all",
+          "COPY_STORAGE_RULE": "Copy",
+          "RESTRICT_ACCESS_STORAGE_RULE": "Restrict Access",
+          "TRANSFER_STORAGE_RULE": "Transfer",
+          "NC_STORAGE_RULE": "Not defined"
+        },
+        "HOLD": {
+          "TITLE": "Archives holded",
+          "INCLUDE": "Include",
+          "EXCLUDE": "Exclude"
         },
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis operation Identifier",
         "UNIT_TYPE": {
@@ -215,6 +323,39 @@
           "ARCHIVE_UNIT_PLAN": "Plan",
           "ARCHIVE_UNIT_HOLDING": "Tree"
         }
+      }
+    },
+    "FACETS": {
+      "APPRAISAL_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "KEEP": "Keep",
+        "DESTROY": "Destroy",
+        "CONFLICT": "Conflict",
+        "NOT_EXPIRED": "Not-Expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With computed rule"
+      },
+      "ACCESS_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With computed rule"
       }
     },
     "ARCHIVE_UNIT": {
@@ -233,7 +374,7 @@
         "SELECT_OTHER_FIELD": "Select another criteria",
         "SP_COMM": "Originating agency Comm",
         "SP_COMM_DT": "Originating agency Comm DT",
-        "TYPE" : "Type"
+        "TYPE": "Type"
       }
     },
     "ARCHIVE_UNIT_PREVIEW": {
@@ -320,8 +461,17 @@
       "CLASSIFICATION": "Classification",
       "GEL": "Freezing"
     },
+    "CRITERIA_CATEGORY_SHORT_NAME": {
+      "APPRAISAL_RULE": "Appraisal",
+      "STORAGE_RULE": "Storage",
+      "ACCESS_RULE": "Access",
+      "REUSING": "Reusing",
+      "DIFFUSION": "Diffusion",
+      "CLASSIFICATION": "Classification",
+      "GEL": "Gel"
+    },
     "RULE": {
-      "CODE_NOT_EXIST": "Rule not found",
+      "CODE_NOT_EXIST": "The rule code entered does not exist in this category",
       "WRONG_FORMAT": "Wrong rule format"
     }
   },
@@ -338,6 +488,10 @@
     "RULES_TO_ADD": "Rule(s) to add",
     "RULES_TO_UPDATE": "Rule(s) to update",
     "RULES_TO_DELETE": "Rule(s) to delete",
+    "CATEGORY_TO_BLOCK": "Category to block",
+    "CATEGORY_TO_UNLOCK": "Category to unlock",
+    "BLOCK_RULES_INHERITANCE": "Inheritance of rule(s) to block",
+    "UNLOCK_RULES_INHERITANCE": "Inheritance of rule(s) to unlock",
     "ACTIONS": {
       "ADD_RULE": "Add a rule",
       "DELETE_RULE": "Delete a rule",
@@ -363,19 +517,24 @@
       "END_DATE": "End date",
       "RULE_ID": "Code",
       "SAME_RULE_ID": "Code identical to the previous action",
-      "RULE_NOT_EXIST": "The rule code entered does not exist",
+      "RULE_NOT_EXIST": "The rule code entered does not exist in this category",
       "TARGET_RULE": "Target management rule",
       "SOURCE_RULE": "Source management rule*",
       "UPDATED": "Updated",
       "TARGET_START_DATE": "Target startDate",
       "UA_TO_UPDATE": "UA selected will be taken into account during the update",
-      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored"
+      "UA_TO_IGNORE": "of the UAs selected do not carry this administrative useful life rule and will be ignored",
+      "UA_INHERITANCE_TO_IGNORE": "This category is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored",
+      "UA_WITH_NO_PREVENT_RULES": "This rule is not blocked on {{ itemsToNotUpdate }} of the selected UAs which will be ignored."
     },
     "FINAL_ACTION": {
       "TITLE": "Final action",
       "SELECT_VALUE": "Select a value",
       "KEEP": "Conservation",
-      "ELIMINATION": "Elimination"
+      "ELIMINATION": "Elimination",
+      "COPY": "Copy",
+      "TRANSFER": "Transfer",
+      "RESTRICT_ACCESS": "Rstrict access"
     },
     "COMMON": {
       "UNDO": "Cancel",
@@ -391,10 +550,9 @@
     "DIALOG_MESSAGE": {
       "UPDATE_CONFIRM_TITLE_MESSAGE": "Validate rule change(s)",
       "DELETE_COMPONENT": "Are you sure you want to delete this rule update block?",
-      "UPDATE_CONFIRM_MESSAGE": "Warning, you are about to validate the rule changes on {{ua_selected}} archival units. Do you confirm this update? ",
+      "UPDATE_CONFIRM_MESSAGE": "Attention, you are about to validate the changes of rule(s) on all the archival units taken into account in the requested update. Do you confirm this update? ",
       "EXIT_CONFIRM_MESSAGE": "Are you sure you want to quit updating business rules on {{ua_selected}} selected archival units?"
     },
-
     "CATEGORIES_NAME": {
       "STORAGE_RULE": "Current useful life (CUL)",
       "APPRAISAL_RULE": "Administrative useful life (AUL)",
@@ -404,7 +562,6 @@
       "REUSE_RULE": "Reuse",
       "CLASSIFICATION_RULE": "Classification"
     },
-
     "ALERTE_MESSAGES": {
       "BACK_TO_SELECTION": "Return to selection",
       "ACTION_ALERTE_TITLE": "The requested action is not possible for this selection",

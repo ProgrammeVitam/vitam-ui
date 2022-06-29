@@ -53,19 +53,11 @@ import { FilingHoldingSchemeNode } from './models/node.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
-import {
-  AppraisalRuleFacets,
-  PagedResult,
-  ResultFacet,
-  ResultFacetList,
-  SearchCriteria,
-  SearchCriteriaDto,
-  SearchCriteriaEltDto,
-  SearchCriteriaTypeEnum,
-} from './models/search.criteria';
+import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
 import { Unit } from './models/unit.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
+import {TransferRequestDto} from "./models/transfer-request-detail.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -86,6 +78,10 @@ export class ArchiveService extends SearchService<any> {
 
   public static fetchTitle(title: string, titleInLanguages: any) {
     return title ? title : titleInLanguages ? (titleInLanguages.fr ? titleInLanguages.fr : titleInLanguages.en) : titleInLanguages.en;
+  }
+
+  public static fetchAuTitle(unit: any) {
+    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
   public getOntologiesFromJson(): Observable<any> {
@@ -132,10 +128,6 @@ export class ArchiveService extends SearchService<any> {
     });
 
     return this.sortByTitle(out);
-  }
-
-  public static fetchAuTitle(unit: any) {
-    return unit.Title ? unit.Title : unit.Title_ ? (unit.Title_.fr ? unit.Title_.fr : unit.Title_.en) : unit.Title_.en;
   }
 
   sortByTitle(data: FilingHoldingSchemeNode[]): FilingHoldingSchemeNode[] {
@@ -191,7 +183,7 @@ export class ArchiveService extends SearchService<any> {
     this.downloadFile(this.archiveApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
   }
   private buildPagedResults(response: SearchResponse): PagedResult {
-    let pagedResult: PagedResult = {
+    const pagedResult: PagedResult = {
       results: response.$results,
       totalResults: response.$hits.total,
       pageNumbers:
@@ -201,71 +193,6 @@ export class ArchiveService extends SearchService<any> {
     };
     pagedResult.facets = response.$facetResults;
     return pagedResult;
-  }
-
-  extractNodesFacetsResults(facetResults: ResultFacetList[]): ResultFacet[] {
-    let nodesFacets: ResultFacet[] = [];
-
-    if (facetResults && facetResults.length > 0) {
-      for (let facet of facetResults) {
-        if (facet.name === 'COUNT_BY_NODE') {
-          for (let bucket of facet.buckets) {
-            nodesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-        }
-      }
-    }
-    return nodesFacets;
-  }
-
-  extractAppraisalRulesFacetsResults(facetResults: ResultFacetList[]): AppraisalRuleFacets {
-    let appraisalRulesFacets = new AppraisalRuleFacets();
-    if (facetResults && facetResults.length > 0) {
-      for (let facet of facetResults) {
-        if (facet.name === 'FINAL_ACTION_COMPUTED') {
-          let buckets = facet.buckets;
-          let finalActionsFacets = [];
-          for (let bucket of buckets) {
-            finalActionsFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.finalActionsFacets = finalActionsFacets;
-        }
-        if (facet.name === 'RULES_COMPUTED_NUMBER') {
-          let rulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
-            rulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.rulesListFacets = rulesListFacets;
-        }
-        if (facet.name === 'EXPIRED_RULES_COMPUTED') {
-          let expiredRulesListFacets = [];
-          let buckets = facet.buckets;
-          for (let bucket of buckets) {
-            expiredRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.expiredRulesListFacets = expiredRulesListFacets;
-        }
-        if (facet.name === 'COMPUTE_RULES_AU_NUMBER') {
-          let buckets = facet.buckets;
-          let waitingToRecalculateRulesListFacets = [];
-          for (let bucket of buckets) {
-            waitingToRecalculateRulesListFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.waitingToRecalculateRulesListFacets = waitingToRecalculateRulesListFacets;
-        }
-
-        if (facet.name === 'COUNT_WITHOUT_RULES') {
-          let buckets = facet.buckets;
-          let noAppraisalRulesFacets = [];
-          for (let bucket of buckets) {
-            noAppraisalRulesFacets.push({ node: bucket.value, count: bucket.count });
-          }
-          appraisalRulesFacets.noAppraisalRulesFacets = noAppraisalRulesFacets;
-        }
-      }
-    }
-    return appraisalRulesFacets;
   }
 
   normalizeTitle(title: string): string {
@@ -290,6 +217,12 @@ export class ArchiveService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
     return this.archiveApiService.exportDipApiService(exportDIPCriteriaList, headers);
+  }
+
+  transferRequestService(transferDipCriteriaDto: TransferRequestDto, accessContract: string): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveApiService.transferDipApiService(transferDipCriteriaDto, headers);
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
@@ -318,6 +251,12 @@ export class ArchiveService extends SearchService<any> {
 
   hasAccessContractManagementPermissions(accessContract: AccessContract): boolean {
     return accessContract.writingPermission && !accessContract.writingRestrictedDesc;
+  }
+
+  prepareHeaders(accessContract: string): HttpHeaders {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return headers;
   }
 
   openSnackBarForWorkflow(message: string, serviceUrl?: string) {
@@ -447,6 +386,19 @@ export class ArchiveService extends SearchService<any> {
 
   isAppraisalRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.APPRAISAL_RULE;
+  }
+  isAccessRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.ACCESS_RULE;
+  }
+  isStorageRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.STORAGE_RULE;
+  }
+
+  isClassificationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.CLASSIFICATION_RULE;
+  }
+  isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
   }
 }
 

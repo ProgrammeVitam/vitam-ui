@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,7 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.vitamui.archive.internal.server.config;
 
 import fr.gouv.vitam.access.external.client.AccessExternalClient;
@@ -39,6 +39,7 @@ import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
 import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
+import fr.gouv.vitamui.commons.vitam.api.access.TransferRequestService;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
@@ -61,15 +62,15 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
 
     @Bean
     @ConfigurationProperties(prefix = "clients.iam-internal")
-    public RestClientConfiguration IamInternalRestClientConfiguration() {
+    public RestClientConfiguration iamInternalRestClientConfiguration() {
         return new RestClientConfiguration();
     }
 
     @Bean
     public IamInternalRestClientFactory iamInternalRestClientFactory(
-        final RestClientConfiguration IamInternalRestClientConfiguration,
+        final RestClientConfiguration iamInternalRestClientConfiguration,
         final RestTemplateBuilder restTemplateBuilder) {
-        return new IamInternalRestClientFactory(IamInternalRestClientConfiguration, restTemplateBuilder);
+        return new IamInternalRestClientFactory(iamInternalRestClientConfiguration, restTemplateBuilder);
     }
 
     @Bean
@@ -103,6 +104,11 @@ public class ArchiveSearchInternalServerConfig extends AbstractContextConfigurat
     @Bean
     public ExportDipV2Service exportDipV2Service(final AccessExternalClientV2 accessExternalClientV2) {
         return new ExportDipV2Service(accessExternalClientV2);
+    }
+
+    @Bean
+    public TransferRequestService transferRequestService(final AccessExternalClient accessExternalClient) {
+        return new TransferRequestService(accessExternalClient);
     }
 
     @Bean

@@ -332,10 +332,10 @@
       </trans-unit><trans-unit id="notificationSubrogationActivated" datatype="html">
         <source>
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activé pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: 'mm'}}"/>. Veuillez ne pas changer d'application.
+      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | dateTime: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | dateTime: 'mm'}}"/>. Veuillez ne pas changer d'application.
     </source><target state="final">
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activé pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: 'mm'}}"/>. Veuillez ne pas changer d'application.
+      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | dateTime: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | dateTime: 'mm'}}"/>. Veuillez ne pas changer d'application.
     </target>
         <context-group purpose="location">
           <context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/components/vitamui-snack-bar/vitamui-snack-bar.component.d.ts</context>
@@ -385,8 +385,8 @@
         </context-group>
       </trans-unit><trans-unit id="subrogationBannerAdmin" datatype="html">
         <source>Subrogation de l'utilisateur
-      <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:'HH:mm:ss'}}"/></source><target state="final">Subrogation de l'utilisateur
-      <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:'HH:mm:ss'}}"/></target>
+      <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | dateTime:'HH:mm:ss'}}"/></source><target state="final">Subrogation de l'utilisateur
+      <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | dateTime:'HH:mm:ss'}}"/></target>
 
         <note priority="1" from="description">subrogationBannerAdmin</note>
       <context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-banner/subrogation-banner.component.d.ts</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">../../node_modules/ui-frontend-common/app/modules/subrogation/subrogation-snack-bar/subrogation-snack-bar.component.d.ts</context><context context-type="linenumber">4</context></context-group></trans-unit><trans-unit id="StopSubrogation" datatype="html">

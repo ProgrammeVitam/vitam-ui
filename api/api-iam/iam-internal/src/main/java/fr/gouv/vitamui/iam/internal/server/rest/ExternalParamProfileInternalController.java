@@ -37,12 +37,15 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.util.RestUtils;
@@ -91,47 +94,61 @@ public class ExternalParamProfileInternalController {
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction,
-        @RequestParam(required = false) final Optional<String> embedded) {
+        @RequestParam(required = false) final Optional<String> embedded) throws InvalidParseOperationException,
+        PreconditionFailedException {
         String orderByValue = orderBy.orElse(null);
         DirectionDto directionValue = direction.orElse(null);
         String criteriaValue = criteria.orElse(null);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, criteriaValue, orderByValue, directionValue);
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
         return externalParamProfileInternalService.getAllPaginated(page, size, criteriaValue, orderByValue, directionValue);
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public ExternalParamProfileDto getOne(final @PathVariable("id") String id) {
+    public ExternalParamProfileDto getOne(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("GetMyExternalParameters");
+        SanityChecker.checkSecureParameter(id);
         return externalParamProfileInternalService.getOne(id);
     }
 
     @ApiOperation(value = "Create external parameter profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto) {
+    public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("create class={}", entityDto.getClass().getName());
+        SanityChecker.sanitizeCriteria(entityDto);
         return externalParamProfileInternalService.create(entityDto);
     }
 
     @ApiOperation(value = "get history by external parameter profile profile's id")
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get logbook for external parameter profile with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         return externalParamProfileInternalService.findHistoryById(id);
     }
 
     @PatchMapping(CommonConstants.PATH_ID)
-    public ExternalParamProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public ExternalParamProfileDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         return externalParamProfileInternalService.patch(partialDto);
     }
 
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("checkExist criteria={}", criteria);
         ParameterChecker.checkParameter("criteria is mandatory : ", criteria);
         final boolean exist = externalParamProfileInternalService.checkExist(criteria);

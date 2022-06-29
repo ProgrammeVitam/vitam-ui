@@ -47,4 +47,6 @@ export enum RuleTypeEnum {
   CLASSIFICATIONRULE = 'ClassificationRule',
 
   REUSERULE = 'ReuseRule',
+
+  HOLD_RULE = 'HoldRule',
 }

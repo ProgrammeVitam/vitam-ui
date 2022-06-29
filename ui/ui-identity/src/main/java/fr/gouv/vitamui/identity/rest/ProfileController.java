@@ -36,11 +36,14 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ProfileDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -92,7 +95,9 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProfileDto create(@RequestBody final ProfileDto entityDto) {
+    public ProfileDto create(@RequestBody final ProfileDto entityDto) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
@@ -100,38 +105,48 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto getOne(final @PathVariable String id, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get profile={}", id);
+    public ProfileDto getOne(final @PathVariable String id, @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get profile={}", id);
         return service.getOne(buildUiHttpContext(), id, embedded);
     }
 
     @ApiOperation(value = "Check entity exists by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        RestUtils.checkCriteria(Optional.of(criteria));
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
-        LOGGER.debug("reponse value={}", exist);
+        LOGGER.debug("response value={}", exist);
         return RestUtils.buildBooleanResponse(exist);
     }
 
     @PatchMapping(value = CommonConstants.PATH_ID)
     @ApiOperation(value = "Update partially entity")
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto patch(@RequestBody final Map<String, Object> profile, @PathVariable final String id) {
-        LOGGER.debug("Update partially provider id={} with partialDto={}", id, profile);
+    public ProfileDto patch(@RequestBody final Map<String, Object> profile, @PathVariable final String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(profile);
+        LOGGER.debug("Update partially provider id={} with partialDto={}", id, profile);
         return service.patch(buildUiHttpContext(), profile, id);
     }
 
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ProfileDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
-        RestUtils.checkCriteria(criteria);
+    public Collection<ProfileDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
         return service.getAll(buildUiHttpContext(), criteria, embedded);
     }
 
@@ -140,19 +155,26 @@ public class ProfileController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction,
-            @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, criteria, orderBy, direction,
-                embedded);
-        RestUtils.checkCriteria(criteria);
+            @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, criteria, orderBy, direction,
+            embedded);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded, buildUiHttpContext());
     }
 
     @ApiOperation(value = "get history by profile's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
-        LOGGER.debug("get logbook for profile with id :{}", id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for profile with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
@@ -162,9 +184,11 @@ public class ProfileController extends AbstractUiRestController {
      * @return List of matching levels
      */
     @GetMapping(CommonConstants.PATH_LEVELS)
-    public List<String> getLevels(final Optional<String> criteria) {
+    public List<String> getLevels(final Optional<String> criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get levels with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getLevels(buildUiHttpContext(), criteria);
     }
 }

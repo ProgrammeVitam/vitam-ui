@@ -130,8 +130,35 @@ public class VitamUIUtilsTest {
         headers.add("x-application-id", "INGEST_APP");
         headers.add("x-forwarded-server", "env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr");
         String result = VitamUIUtils.secureFormatHeadersLogging(headers);
-        String expected = "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
+        String expected =
+            "[host:\"172.18.102.247:8008\", authorization:\"Basic **********\", proxy-authorization:\"Bearer **********\", proxy-authenticate:\"Digest **********\", x-application-id:\"INGEST_APP\", x-forwarded-server:\"env1.vitamui.fr, env2.vitamui.fr, env3.vitamui.fr\"]";
         assertEquals(expected, result);
 
     }
+
+    @Test
+    public void humanReadableByteCountSI() throws IOException {
+        assertEquals("654.32 Mo", VitamUIUtils.humanReadableByteCountSI(654_324_564L));
+        assertEquals("0 octet", VitamUIUtils.humanReadableByteCountSI(0L));
+        assertEquals("1 ko", VitamUIUtils.humanReadableByteCountSI(1_000L));
+        assertEquals("1.02 ko", VitamUIUtils.humanReadableByteCountSI(1_024L));
+        assertEquals("1.2 ko", VitamUIUtils.humanReadableByteCountSI(1_200L));
+        assertEquals("231.25 ko", VitamUIUtils.humanReadableByteCountSI(231_246L));
+    }
+
+    @Test
+    public void humanReadableByteCountBin() {
+        assertEquals("76.95 ko", VitamUIUtils.humanReadableByteCountBin(78_800));
+        assertEquals("54.83 Mo", VitamUIUtils.humanReadableByteCountBin(57_489_487L));
+        assertEquals("42.49 Go", VitamUIUtils.humanReadableByteCountBin(45_628_658_811L));
+
+        assertEquals("624.01 Mo", VitamUIUtils.humanReadableByteCountBin(654_324_564L));
+        assertEquals("0 octet", VitamUIUtils.humanReadableByteCountBin(0L));
+        assertEquals("1000 octets", VitamUIUtils.humanReadableByteCountBin(1_000L));
+        assertEquals("1 ko", VitamUIUtils.humanReadableByteCountBin(1_024L));
+        assertEquals("1.17 ko", VitamUIUtils.humanReadableByteCountBin(1_200L));
+        assertEquals("225.83 ko", VitamUIUtils.humanReadableByteCountBin(231_246L));
+
+    }
+
 }

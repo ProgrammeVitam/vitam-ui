@@ -48,12 +48,10 @@ import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OperationExternalService;
-import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +80,7 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     public Collection<LogbookOperationDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all audits criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return operationExternalService.getAll(criteria);
     }
 

@@ -36,8 +36,10 @@
  */
 package fr.gouv.vitamui.commons.rest.client;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.security.client.dto.AuthUserDto;
@@ -83,7 +85,8 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * Build an ExternalContext from request header in the UI layer.
      * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
      */
-    public static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final AuthUserDto principal) {
+    public static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final AuthUserDto principal)
+        throws InvalidParseOperationException, PreconditionFailedException {
         return buildFromUiRequest(request, principal.getAuthToken(), null, null);
     }
 
@@ -92,7 +95,7 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * Note. Usually called by the ExternalRequestHeadersAuthenticationFilter.
      */
     public static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final AuthUserDto principal, final Integer tenantIdentifier,
-            final String accessContract) {
+            final String accessContract) throws InvalidParseOperationException, PreconditionFailedException {
         return buildFromUiRequest(request, principal.getAuthToken(), tenantIdentifier, accessContract);
     }
 
@@ -106,11 +109,12 @@ public class ExternalHttpContext extends AbstractHttpContext {
      * @return
      */
     private static ExternalHttpContext buildFromUiRequest(final HttpServletRequest request, final String userToken, final Integer tenantIdentifier,
-            final String accessContract) {
+            final String accessContract) throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Request Headers : {}", VitamUIUtils.secureFormatHeadersLogging(new ServletServerHttpRequest(request).getHeaders()));
         String applicationId = request.getHeader(CommonConstants.X_APPLICATION_ID_HEADER);
         final String identity = request.getHeader(CommonConstants.X_IDENTITY_HEADER);
         String requestId = request.getHeader(CommonConstants.X_REQUEST_ID_HEADER);
+        SanityChecker.checkSecureParameter(applicationId, identity, requestId);
         if (StringUtils.isBlank(requestId)) {
             requestId = VitamUIUtils.generateRequestId();
         }
@@ -121,6 +125,7 @@ public class ExternalHttpContext extends AbstractHttpContext {
         String accessContractToUse = accessContract;
         if (StringUtils.isBlank(accessContractToUse)) {
             accessContractToUse = request.getHeader(CommonConstants.X_ACCESS_CONTRACT_ID_HEADER);
+            SanityChecker.checkSecureParameter(accessContractToUse);
         }
         Integer tenantIdentifierToUse = tenantIdentifier;
         if (tenantIdentifierToUse == null) {

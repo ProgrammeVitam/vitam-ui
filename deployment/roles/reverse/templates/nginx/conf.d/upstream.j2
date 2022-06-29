@@ -59,6 +59,14 @@ upstream ARCHIVE_SEARCH {
 }
 {% endif %}
 
+{% if groups['hosts_ui_collect']|length > 0 %}
+upstream COLLECT {
+  ip_hash;
+{% for h in groups['hosts_ui_collect'] %}
+  server {{ hostvars[h].ip_service }}:{{ vitamui.collect.port_service }};
+{% endfor %}
+}
+{% endif %}
 
 {% if groups['hosts_ui_pastis']|length > 0 %}
 upstream PASTIS {

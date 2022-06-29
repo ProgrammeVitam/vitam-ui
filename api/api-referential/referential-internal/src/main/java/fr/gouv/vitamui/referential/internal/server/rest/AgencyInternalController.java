@@ -36,28 +36,29 @@
  */
 package fr.gouv.vitamui.referential.internal.server.rest;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Response;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
+import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.util.RestUtils;
+import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
+import fr.gouv.vitamui.referential.common.dto.AgencyDto;
+import fr.gouv.vitamui.referential.common.rest.RestApi;
+import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,24 +72,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitamui.commons.api.CommonConstants;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
-import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
-import fr.gouv.vitamui.referential.common.dto.AgencyDto;
-import fr.gouv.vitamui.referential.common.rest.RestApi;
-import fr.gouv.vitamui.referential.internal.server.agency.AgencyInternalService;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.Valid;
+import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(RestApi.AGENCIES_URL)
@@ -107,7 +99,7 @@ public class AgencyInternalController {
     @GetMapping()
     public Collection<AgencyDto> getAll(@RequestParam final Optional<String> criteria) {
         LOGGER.debug("get all customer criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return agencyInternalService.getAll(vitamContext);
     }
@@ -180,12 +172,12 @@ public class AgencyInternalController {
         LOGGER.debug("get logbook for agency with id :{}", id);
         return agencyInternalService.findHistoryByIdentifier(vitamContext, id);
     }
-    
+
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importAgencies(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
         LOGGER.debug("import agency file {}", fileName);
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
-        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());	
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return agencyInternalService.importAgencies(vitamContext, fileName, file);
     }
 }

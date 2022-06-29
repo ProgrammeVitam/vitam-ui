@@ -19,10 +19,9 @@
         <spring.boot.version>2.5.4</spring.boot.version>
         <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
         <spring.security.version>5.5.2</spring.security.version>
-        <spring.test.version>5.3.9</spring.test.version>
-        <spring.version>5.3.9</spring.version>
+        <spring.test.version>5.3.18</spring.test.version>
         <swagger.version>2.1.10</swagger.version>
-        <mongo.version>4.3.1</mongo.version>
+        <mongo.version>4.6.1</mongo.version>
         <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
 
@@ -60,22 +59,22 @@
         </dependency>
 
         <!-- Consul -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <version>${spring.cloud.consul.version}</version>
             <scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
             <version>${spring.cloud.consul.version}</version>
-		</dependency>
-         <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
             <version>${spring.cloud.consul.version}</version>
-		</dependency>
+        </dependency>
 
         <!-- CAS server -->
         <dependency>
@@ -576,9 +575,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>org.apereo.cas.web.CasWebApplication</mainClass>
-					<arguments>
-						<argument>--spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml</argument>
-					</arguments>
+                    <arguments>
+                        <argument>
+                            --spring.config.additional-location=file:${basedir}/src/main/config/cas-server-application-dev.yml
+                        </argument>
+                    </arguments>
                 </configuration>
                 <executions>
                     <execution>
