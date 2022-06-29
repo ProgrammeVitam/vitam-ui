@@ -494,7 +494,7 @@
     "EXECUTE_RULE_UPDATE": "Lancer la mise à jour",
     "EXECUTE_RULE_UPDATE_MESSAGE": "L’opération de mise à jour des règles de gestion a bien été lancée",
     "ACTION_ON_RULES": "Action sur les règles",
-    "UA_SELECTED": "{{ua_selected}} unités archivistiques séléctionnées",
+    "UA_SELECTED": "{{ua_selected}} unités archivistiques sélectionnées",
     "RULES_TO_ADD": "Règle(s) à ajouter",
     "RULES_TO_UPDATE": "Règle(s) à modifier",
     "RULES_TO_DELETE": "Règle(s) à supprimer",

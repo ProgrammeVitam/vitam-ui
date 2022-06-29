@@ -534,7 +534,7 @@
       "ELIMINATION": "Elimination",
       "COPY": "Copy",
       "TRANSFER": "Transfer",
-      "RESTRICT_ACCESS": "Rstrict access"
+      "RESTRICT_ACCESS": "Restrict access"
     },
     "COMMON": {
       "UNDO": "Cancel",
