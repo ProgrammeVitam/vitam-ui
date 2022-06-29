@@ -54,10 +54,8 @@ export class FilingPlanService {
       catchError(() => {
         return of({$hits: null, $results: []});
       }),
-      map((response) => response.$results),
-      tap(() => {
-        this._pending--;
-      }),
+      map(response => response.$results),
+      tap(() => this._pending--),
       map(results => this.getNestedChildren(results, idPrefix))
     );
   }
@@ -81,10 +79,10 @@ export class FilingPlanService {
 
   private getNestedChildren(arr: Unit[], idPrefix: string, parentNode?: Node): Node[] {
     const out: Node[] = [];
-
     arr.forEach((unit) => {
       if (
-        (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId) ||
+        (parentNode && parentNode.vitamId && unit['#unitups'] && unit['#unitups'][0] === parentNode.vitamId)
+        ||
         (!parentNode && (!unit['#unitups'] || !unit['#unitups'].length || !idExists(arr, unit['#unitups'][0])))
       ) {
         const outNode: Node = {
@@ -98,14 +96,11 @@ export class FilingPlanService {
           checked: false
           // OriginatingAgencyArchiveUnitIdentifier: [unit.OriginatingAgencyArchiveUnitIdentifier]
         };
-
-        outNode.children = this.getNestedChildren(arr, idPrefix, outNode).sort(byTitle(this.locale));
-
+        outNode.children = this.getNestedChildren(arr, idPrefix, outNode);
         out.push(outNode);
       }
     });
-
-    return out;
+    return out.sort(byTitle(this.locale));
   }
 
 }
@@ -119,7 +114,6 @@ function byTitle(locale: string): (a: Node, b: Node) => number {
     if (!a || !b || !a.label || !b.label) {
       return 0;
     }
-
     return a.label.localeCompare(b.label, locale);
   };
 }
