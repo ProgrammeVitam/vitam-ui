@@ -56,7 +56,7 @@ pipeline {
 
         stage('Checkmarx SCA step debug') {
            when {
-                environment(name: 'DO_MAJ_CONTEXT', value: 'true')
+//                environment(name: 'DO_MAJ_CONTEXT', value: 'true')
                 environment(name: 'GIT_BRANCH', value: 'develop')
            }
            environment {
