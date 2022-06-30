@@ -44,6 +44,7 @@ import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.ingest.internal.server.service.IngestInternalService;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,6 +86,10 @@ public class IngestInternalControllerTest  {
 
     @Test
     public void testBasicIngest() {
+        Assert.assertNotNull(ingestInternalService);
+        Assert.assertNotNull(internalSecurityService);
+        Assert.assertNotNull(internalApiAuthenticationProvider);
+        Assert.assertNotNull(restExceptionHandler);
     }
 
 }

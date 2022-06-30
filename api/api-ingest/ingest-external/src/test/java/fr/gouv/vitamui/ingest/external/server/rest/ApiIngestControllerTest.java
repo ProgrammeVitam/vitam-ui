@@ -50,8 +50,7 @@ public abstract class ApiIngestControllerTest<T extends IdDto>  extends Abstract
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        final Authentication authentication = new ExternalAuthentication(buildPrincipal(), buildCredentials(),null,buildUserRoles());
-        return authentication;
+        return new ExternalAuthentication(buildPrincipal(), buildCredentials(),null,buildUserRoles());
     }
 
     protected AuthUserDto buildPrincipal() {

@@ -71,7 +71,6 @@ public class IngestExternalWebClient extends BaseWebClient<ExternalHttpContext> 
         super(webClient, baseUrl);
     }
 
-
     public ClientResponse upload(final ExternalHttpContext context, InputStream in, String contextId, String action,
         final String originalFilename) {
         LOGGER.debug("[IngestExternalWebClient] upload file :  {}", originalFilename);
