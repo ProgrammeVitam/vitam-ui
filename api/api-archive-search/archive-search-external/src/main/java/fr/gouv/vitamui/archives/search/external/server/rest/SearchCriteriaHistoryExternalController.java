@@ -107,7 +107,6 @@ public class SearchCriteriaHistoryExternalController {
     @Secured(ServicesData.ROLE_GET_ARCHIVE)
     public void delete(final @PathVariable("id") String id) throws PreconditionFailedException, InvalidParseOperationException {
         SanityChecker.checkSecureParameter(id);
-        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Delete SearchCriteriaHistory with id :{}", id);
         searchCriteriaHistoryExternalService.delete(id);
     }

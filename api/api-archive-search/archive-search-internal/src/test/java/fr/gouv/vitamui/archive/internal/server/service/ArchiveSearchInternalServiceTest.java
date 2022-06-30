@@ -163,7 +163,7 @@ public class ArchiveSearchInternalServiceTest {
 
         // Then
         Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
-        Assertions.assertThat(vitamUISearchResponseDto.getResults().size()).isEqualTo(20);
+        Assertions.assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
     }
 
     private RequestResponse<JsonNode> buildUnitMetadataResponse(String filename)
@@ -172,6 +172,7 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
+        Assertions.assertThat(inputStream).isNotNull();
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
@@ -189,7 +190,7 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
-        Assertions.assertThat(expectedQuery.toString()).isEqualTo(String.valueOf(givenQuery));
+        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
             givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
                 .has("Title")).isTrue();

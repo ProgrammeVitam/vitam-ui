@@ -51,7 +51,7 @@ public class SearchCriteriaHistoryConverterTest {
     private final SearchCriteriaHistoryConverter searchCriteriaHistoryConverter = new SearchCriteriaHistoryConverter();
 
     @Test
-    public void testConvertEntityToDto() {
+    void testConvertEntityToDto() {
         SearchCriteriaHistory searchCriteriaHistory = Utils.buildSearchCriteriaHistory();
         SearchCriteriaHistoryDto result = searchCriteriaHistoryConverter.convertEntityToDto(searchCriteriaHistory);
         assertThat(result)

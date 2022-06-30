@@ -26,10 +26,8 @@
  */
 package fr.gouv.vitamui.archive.internal.server.service;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -85,10 +83,9 @@ public class ArchiveSearchAgenciesInternalServiceTest {
     }
 
     @Test
-    public void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesIncluded()
+    void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesIncluded()
         throws VitamClientException, JsonProcessingException {
         // Given
-
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -117,19 +114,17 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();
-        Assertions.assertThat(searchQuery.getCriteriaList().size()).isEqualTo(1);
-        List<SearchCriteriaEltDto> agencyIds = searchQuery.getCriteriaList().stream().collect(Collectors.toList());
-        Assertions.assertThat(agencyIds).isNotNull();
-        Assertions.assertThat(agencyIds.size()).isEqualTo(1);
-        Assertions.assertThat(agencyIds.get(0).getValues().size()).isEqualTo(4);
+        Assertions.assertThat(searchQuery.getCriteriaList()).hasSize(1);
+        List<SearchCriteriaEltDto> agencyIds = new ArrayList<>(searchQuery.getCriteriaList());
+        Assertions.assertThat(agencyIds).isNotNull().hasSize(1);
+        Assertions.assertThat(agencyIds.get(0).getValues()).hasSize(4);
 
     }
 
     @Test
-    public void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesNotIncluded()
+    void testMapArgenciesCodesWhenSearchByAgenciesNamesWhenCodesNotIncluded()
         throws VitamClientException, JsonProcessingException {
         // Given
-
 
         SearchCriteriaDto searchQuery = new SearchCriteriaDto();
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
@@ -153,27 +148,25 @@ public class ArchiveSearchAgenciesInternalServiceTest {
 
         // Then
         Assertions.assertThat(searchQuery).isNotNull();
-        Assertions.assertThat(searchQuery.getCriteriaList().size()).isEqualTo(1);
+        Assertions.assertThat(searchQuery.getCriteriaList()).hasSize(1);
         List<SearchCriteriaEltDto> agencyIds = searchQuery.getCriteriaList().stream().filter(
             criteria -> criteria.getCriteria().equals(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD))
             .collect(Collectors.toList());
-        Assertions.assertThat(agencyIds).isNotNull();
-        Assertions.assertThat(agencyIds.size()).isEqualTo(1);
-        Assertions.assertThat(agencyIds.get(0).getValues().size()).isEqualTo(3);
+        Assertions.assertThat(agencyIds).isNotNull().hasSize(1);
+        Assertions.assertThat(agencyIds.get(0).getValues()).hasSize(3);
     }
 
     private AgencyResponseDto getResponseAgencies()
         throws JsonProcessingException {
         // Configure the mapper
-        JsonNode query = null;
         ObjectMapper objectMapper1 = new ObjectMapper();
         objectMapper1.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("producteur1", "Service producteur1", 0),
             createAgencyModel("producteur3", "Service producteur2", 0),
             createAgencyModel("ANY_CODE", "Service producteur3", 0));
-        RequestResponseOK response =
-            new RequestResponseOK<AgenciesModel>(query, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
+        RequestResponseOK<AgenciesModel> response =
+            new RequestResponseOK<>(null, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
 
 
         return objectMapper1
@@ -181,13 +174,10 @@ public class ArchiveSearchAgenciesInternalServiceTest {
     }
 
     private RequestResponse<AgenciesModel> buildAgenciesResponse() {
-        JsonNode query = null;
         List<AgenciesModel> agenciesModelList = List.of(createAgencyModel("producteur1", "Service producteur1", 0),
             createAgencyModel("producteur3", "Service producteur2", 0));
-        RequestResponseOK response =
-            new RequestResponseOK<AgenciesModel>(query, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
 
-        return response;
+        return new RequestResponseOK<>(null, agenciesModelList, agenciesModelList.size()).setHttpCode(400);
     }
 
     AgenciesModel createAgencyModel(String identifier, String name, Integer tenant) {
