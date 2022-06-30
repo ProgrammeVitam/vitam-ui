@@ -28,7 +28,6 @@
 package fr.gouv.vitamui.collect.internal.server.service.project;
 
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
-import fr.gouv.vitamui.collect.common.dto.CollectListProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import lombok.experimental.UtilityClass;
 
@@ -53,24 +52,8 @@ public class CollectProjectConverter {
             .build();
     }
 
-    public static List<CollectProjectDto> toVitamuiDtos(List<CollectListProjectDto> collectListProjectDtos) {
-
-        return collectListProjectDtos.stream().map(collectListProjectDto -> {
-
-            CollectListProjectDto.Context context = collectListProjectDto.getContext();
-
-            return CollectProjectDto.builder()
-                .archivalAgencyIdentifier(context.getArchivalAgencyIdentifier())
-                .archivalAgreement(context.getArchivalAgreement())
-                .archivalProfile(context.getArchivalProfile())
-                .comment(context.getComment())
-                .id(collectListProjectDto.getId())
-                .messageIdentifier(context.getMessageIdentifier())
-                .originatingAgencyIdentifier(context.getOriginatingAgencyIdentifier())
-                .submissionAgencyIdentifier(context.getSubmissionAgencyIdentifier())
-                .transferringAgencyIdentifier(context.getTransferingAgencyIdentifier())
-                .build();
-        }).collect(Collectors.toList());
+    public static List<CollectProjectDto> toVitamuiDtos(List<ProjectDto> projectDtos) {
+        return projectDtos.stream().map(CollectProjectConverter::toVitamuiDto).collect(Collectors.toList());
     }
 
     public static ProjectDto toVitamDto(CollectProjectDto collectProjectDto) {

@@ -38,7 +38,7 @@ export class CollectUploadService {
   private static X_TENANT_KEY = 'X-Tenant-Id';
   private static X_PROJECT_ID_KEY = 'X-Project-Id';
   private static X_ORIGINAL_FILENAME_HEADER = 'X-Original-Filename';
-  private static COLLECT_UPLOAD_URL = '/collect-api/project/upload';
+  private static COLLECT_UPLOAD_URL = './collect-api/project/upload';
   zipFile: JSZip;
   private uploadingFiles$: BehaviorSubject<CollectUploadFile[]> = new BehaviorSubject<CollectUploadFile[]>([]);
   private filesToUpload: CollectUploadFile[] = [];

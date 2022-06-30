@@ -46,7 +46,7 @@ import { environment } from '../../environments/environment';
 
   exports: [VitamUICommonModule],
   providers: [
-    { provide: BASE_URL, useValue: '/collect-api' },
+    { provide: BASE_URL, useValue: './collect-api' },
     { provide: ENVIRONMENT, useValue: environment },
   ],
 })

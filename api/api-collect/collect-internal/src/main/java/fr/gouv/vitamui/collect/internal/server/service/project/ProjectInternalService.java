@@ -37,7 +37,6 @@ import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.collect.common.dto.CollectListProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
@@ -97,8 +96,8 @@ public class ProjectInternalService {
             if(!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            List<CollectListProjectDto> collectListProjectDtos = objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(), new TypeReference<>(){});
-            List<CollectProjectDto> collectProjectDtos = CollectProjectConverter.toVitamuiDtos(collectListProjectDtos);
+            List<ProjectDto> projectDtos = objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(), new TypeReference<>(){});
+            List<CollectProjectDto> collectProjectDtos = CollectProjectConverter.toVitamuiDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT + ": {}", e);
