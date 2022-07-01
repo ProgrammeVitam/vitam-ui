@@ -37,7 +37,7 @@
 
 import { Component, Directive, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule, } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { of, Subject } from 'rxjs';
 import { CountryService } from 'ui-frontend-common';
 import { AuthService, BASE_URL, Profile } from 'ui-frontend-common';
@@ -54,16 +54,14 @@ class MatTooltipStubDirective {
 }
 
 @Component({
-  template: `
-    <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab>
-  `
+  template: ` <app-information-tab [profile]="profile" [readOnly]="readOnly"></app-information-tab> `,
 })
 class TestHostComponent {
   profile: Profile = {
     id: '1',
     name: 'ProfileName',
     description: 'Profile description...',
-    level : '',
+    level: '',
     customerId: 'customerId',
     enabled: true,
     groupsCount: 1,
@@ -73,17 +71,17 @@ class TestHostComponent {
     applicationName: 'CUSTOMERS_APP',
     roles: [
       {
-        name: 'ROLE_MFA_USERS'
+        name: 'ROLE_MFA_USERS',
       },
       {
-        name: 'ROLE_UPDATE_STANDARD_USERS'
+        name: 'ROLE_UPDATE_STANDARD_USERS',
       },
       {
-        name: 'ROLE_GENERIC_USERS'
+        name: 'ROLE_GENERIC_USERS',
       },
     ],
-    readonly : false,
-    externalParamId: null
+    readonly: false,
+    externalParamId: null,
   };
   readOnly = false;
 
@@ -95,32 +93,25 @@ describe('Profile InformationTabComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const profileServiceMock = {
-      patch: of({}), updated: new Subject(),
+      patch: of({}),
+      updated: new Subject(),
       convertToAdminUserProfile: () => {},
-      convertToRoles: () => Array<{}>()
+      convertToRoles: () => Array<{}>(),
     };
     const profileValidatorsSpy = jasmine.createSpyObj('ProfileValidators', { nameExists: () => of(null) });
-    const authServiceMock = { user : { level: '', customerId: 'customerId'}};
+    const authServiceMock = { user: { level: '', customerId: 'customerId' } };
 
     TestBed.configureTestingModule({
-      imports: [
-        ReactiveFormsModule,
-        VitamUICommonTestModule,
-      ],
-      declarations: [
-        InformationTabComponent,
-        TestHostComponent,
-        MatTooltipStubDirective,
-      ],
+      imports: [ReactiveFormsModule, VitamUICommonTestModule],
+      declarations: [InformationTabComponent, TestHostComponent, MatTooltipStubDirective],
       providers: [
         { provide: ProfileService, useValue: profileServiceMock },
         { provide: ProfileValidators, useValue: profileValidatorsSpy },
-        { provide: AuthService, useValue: authServiceMock},
+        { provide: AuthService, useValue: authServiceMock },
         { provide: BASE_URL, useValue: '/fake-api' },
         { provide: CountryService, useValue: {} },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -128,15 +119,11 @@ describe('Profile InformationTabComponent', () => {
     fixture.detectChanges();
   });
 
-
-   describe('DOM', () => {
-   // TO DO
-
-   });
-
-  describe('Component', () => {
-  // TO DO
-
+  describe('DOM', () => {
+    // TO DO
   });
 
+  describe('Component', () => {
+    // TO DO
+  });
 });
