@@ -109,6 +109,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   isAddValidActions = false;
   isUpdateValidActions = false;
   isAddPropertyValidActions = false;
+  isUpdateValidActionsWithFinalAction = false;
   isUpdateValidActionsWithProperty = false;
   isDeleteValidActions = false;
   isDeleteValidActionsWithProperty = false;
@@ -158,9 +159,19 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
+            rule.actionType === RuleActionsEnum.ADD_RULES &&
             rule.ruleCategoryAction.rules?.length === 0 &&
+            rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0
+        ).length !== 0;
+
+      this.isUpdateValidActionsWithFinalAction =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.finalAction &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
+
       this.isAddValidActions =
         data.filter(
           (rule) =>
@@ -431,6 +442,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           this.isRuleCategorySelected &&
           !this.isAddPropertyValidActions &&
           !this.isAddValidActions &&
+          !this.isUpdateValidActionsWithFinalAction &&
           !this.isUpdateValidActionsWithProperty
         ) {
           this.prepareActionToAdd(rule);
@@ -465,6 +477,7 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       case 'UNLOCK_RULE_INHERITANCE':
         if (
           this.isRuleCategorySelected &&
+          !this.isDeleteValidActions &&
           !this.isUnlockRulesInheritanceDisabled &&
           !this.isAccessRuleActionDisabled &&
           !this.isStorageRuleActionDisabled
@@ -576,14 +589,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           actionAddOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToAdd?.rules,
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
             preventRulesIdToAdd,
           };
         }
         if (this.ruleCategoryDuaActionsToAdd?.rules?.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
           actionAddOnRules.AppraisalRule = {
             finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
             preventRulesIdToAdd,
           };
         }
@@ -612,13 +625,13 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
         if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
           actionDeleteOnRules.AppraisalRule = {
             rules: this.ruleCategoryDuaActionsToDelete?.rules,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
             preventRulesIdToRemove,
           };
         } else {
           actionDeleteOnRules.AppraisalRule = {
             rules: undefined,
-            preventInheritance,
+            preventInheritance: preventInheritance ? preventInheritance : false,
             preventRulesIdToRemove,
           };
         }

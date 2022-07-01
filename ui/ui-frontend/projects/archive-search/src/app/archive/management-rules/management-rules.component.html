@@ -55,20 +55,18 @@
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
                 >
                 <mat-option
-                  [disabled]="
-                    !isRuleCategorySelected ||
-                    isAddValidActions ||
-                    isAccessRuleActionDisabled ||
-                    isStorageRuleActionDisabled ||
-                    isAccessRuleActionDisabled
-                  "
+                  [disabled]="!isRuleCategorySelected || isAddValidActions || isStorageRuleActionDisabled || isAccessRuleActionDisabled"
                   (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
                 >
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
                 >
                 <mat-option
                   [disabled]="
-                    !isRuleCategorySelected || isUnlockRulesInheritanceDisabled || isStorageRuleActionDisabled || isAccessRuleActionDisabled
+                    isUnlockRulesInheritanceDisabled ||
+                    isDeleteValidActions ||
+                    !isRuleCategorySelected ||
+                    isStorageRuleActionDisabled ||
+                    isAccessRuleActionDisabled
                   "
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >
@@ -91,7 +89,13 @@
               [disabled]="!isRuleCategorySelected || !isAllActionsValid() || isAccessRuleActionDisabled"
             >
               <mat-option
-                [disabled]="!isRuleCategorySelected || isAddPropertyValidActions || isAddValidActions || isUpdateValidActionsWithProperty"
+                [disabled]="
+                  !isRuleCategorySelected ||
+                  isAddPropertyValidActions ||
+                  isAddValidActions ||
+                  isUpdateValidActionsWithFinalAction ||
+                  isUpdateValidActionsWithProperty
+                "
                 (click)="onSelectAction('UPDATE_PROPERTY')"
                 matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
                 matTooltipClass="vitamui-tooltip-rules "
