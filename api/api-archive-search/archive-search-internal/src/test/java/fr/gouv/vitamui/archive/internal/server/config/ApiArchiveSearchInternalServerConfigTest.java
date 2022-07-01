@@ -75,7 +75,7 @@ public class ApiArchiveSearchInternalServerConfigTest {
 
 
     @Test
-    public void testArchiveInternalConf() {
+    void testArchiveInternalConf() {
         Assertions.assertNotNull(archiveSearchInternalService);
     }
 }

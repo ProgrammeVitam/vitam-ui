@@ -181,7 +181,6 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
     private String loadFileContent(String filename) throws IOException {
         InputStream inputStream = ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class.getClassLoader()
             .getResourceAsStream("data/queries/" + filename);
-        String fileContent = readFromInputStream(inputStream);
-        return fileContent;
+        return readFromInputStream(inputStream);
     }
 }

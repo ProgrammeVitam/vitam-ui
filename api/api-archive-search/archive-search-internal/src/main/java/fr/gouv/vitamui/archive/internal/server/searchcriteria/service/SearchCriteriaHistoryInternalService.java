@@ -39,11 +39,11 @@ package fr.gouv.vitamui.archive.internal.server.searchcriteria.service;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.converter.SearchCriteriaHistoryConverter;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.dao.SearchCriteriaHistoryRepository;
 import fr.gouv.vitamui.archive.internal.server.searchcriteria.domain.SearchCriteriaHistory;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.converter.Converter;
 import fr.gouv.vitamui.commons.api.domain.Criterion;
 import fr.gouv.vitamui.commons.api.domain.CriterionOperator;
 import fr.gouv.vitamui.commons.api.domain.QueryDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaHistoryDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
@@ -53,8 +53,8 @@ import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+
 import java.util.List;
 
 @Getter
@@ -92,8 +92,7 @@ public class SearchCriteriaHistoryInternalService extends VitamUICrudService<Sea
         LOGGER.debug("Get the search history for user : {}", authUserDto.getIdentifier());
         QueryDto criteria = new QueryDto();
         criteria.addCriterion(new Criterion("userId", authUserDto.getIdentifier() , CriterionOperator.EQUALS));
-        List<SearchCriteriaHistoryDto> searchCriteriaHistoryDtoList = this.getAll(criteria);
-        return searchCriteriaHistoryDtoList;
+        return this.getAll(criteria);
     }
 
     @Override
