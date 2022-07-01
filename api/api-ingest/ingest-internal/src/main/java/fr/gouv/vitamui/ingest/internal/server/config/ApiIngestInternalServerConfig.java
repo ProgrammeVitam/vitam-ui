@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.ingest.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitam.ingest.external.client.IngestExternalClient;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.mongo.config.MongoConfig;

@@ -36,8 +36,6 @@
  */
 package fr.gouv.vitamui.ingest.internal.client;
 
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseWebClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import fr.gouv.vitamui.ingest.common.rest.RestApi;
@@ -47,8 +45,6 @@ import org.springframework.web.reactive.function.client.WebClient;
  * External WebClient for Ingest operations.
  */
 public class IngestInternalWebClient extends BaseWebClient<InternalHttpContext> {
-
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalWebClient.class);
 
     public IngestInternalWebClient(final WebClient webClient, final String baseUrl) {
         super(webClient, baseUrl);

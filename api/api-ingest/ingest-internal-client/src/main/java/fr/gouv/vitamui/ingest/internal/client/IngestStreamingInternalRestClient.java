@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.ingest.internal.client;
 
 
-import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;

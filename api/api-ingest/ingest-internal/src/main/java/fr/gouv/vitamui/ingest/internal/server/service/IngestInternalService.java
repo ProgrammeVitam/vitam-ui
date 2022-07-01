@@ -82,7 +82,7 @@ import java.util.Optional;
 public class IngestInternalService {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestInternalController.class);
 
-    private final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
+    private static final String ILLEGAL_CHARACTERS = "[\uFEFF-\uFFFF]";
 
     private final InternalSecurityService internalSecurityService;
 
