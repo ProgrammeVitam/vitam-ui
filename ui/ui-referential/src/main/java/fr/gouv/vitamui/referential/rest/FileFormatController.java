@@ -38,6 +38,7 @@ package fr.gouv.vitamui.referential.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -222,6 +223,9 @@ public class FileFormatController extends AbstractUiRestController {
     @PostMapping(CommonConstants.PATH_IMPORT)
     public JsonNode importFileFormats(@Context HttpServletRequest request, MultipartFile file)
         throws InvalidParseOperationException, PreconditionFailedException {
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        }
         LOGGER.debug("Import file format file {}", file != null ? file.getOriginalFilename() : null);
         return service.importFileFormats(buildUiHttpContext(), file);
     }

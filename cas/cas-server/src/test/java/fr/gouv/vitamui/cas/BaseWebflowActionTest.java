@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cas;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import lombok.val;
 import org.apereo.cas.authentication.principal.WebApplicationService;
@@ -22,6 +23,8 @@ import org.springframework.webflow.test.MockParameterMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.io.FileNotFoundException;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -49,7 +52,7 @@ public abstract class BaseWebflowActionTest {
     protected HttpServletResponse response;
 
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         context = mock(RequestContext.class);
 
         requestParameters = new MockParameterMap();

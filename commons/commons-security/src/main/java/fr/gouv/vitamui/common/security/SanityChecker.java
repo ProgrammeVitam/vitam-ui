@@ -104,12 +104,7 @@ public class SanityChecker {
         return new DefaultValidator();
     }
 
-
-    public static boolean isValidFileName(String value) {
-        return !isStringInfected(value, HTTP_PARAMETER_VALUE);
-    }
-
-    public static boolean isValidParamater(String value) {
+    public static boolean isValidParameter(String value) {
         return !isStringInfected(value, HTTP_PARAMETER_VALUE);
     }
 
@@ -132,6 +127,16 @@ public class SanityChecker {
         }
     }
 
+    /**
+     * Sanitize the fileName
+     *
+     * @param fileName
+     * @return true/false
+     */
+    public static boolean isValidFileName(String fileName) {
+        return !StringUtils.HTML_PATTERN.matcher(fileName).find() &&
+            !isStringInfected(fileName, HTTP_PARAMETER_VALUE);
+    }
 
     /**
      * checkJsonAll : Check sanity of json : size, invalid tag
@@ -252,7 +257,7 @@ public class SanityChecker {
 
     private static void checkSecureParam(String param)
         throws PreconditionFailedException, InvalidParseOperationException {
-        if(isValidParamater(param)) {
+        if(isValidParameter(param)) {
             try {
                 checkSanityTags(param, getLimitParamSize());
                 checkHtmlPattern(param);
@@ -394,7 +399,7 @@ public class SanityChecker {
             while (fields.hasNext()) {
                 final Map.Entry<String, JsonNode> entry = fields.next();
                 final String key = entry.getKey();
-                if(isValidParamater(key)) {
+                if(isValidParameter(key)) {
                     checkSanityTags(key, getLimitFieldSize());
                 } else {
                     throw new PreconditionFailedException("The json key is not valid");
