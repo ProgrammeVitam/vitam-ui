@@ -180,7 +180,7 @@ export class FileTreeMetadataService {
           this.allowedSedaCardinalities.next(resultList);
         }
       }
-    } else {
+    } /*else {
       for (const [card, cardlist] of this.allowedCardinality) {
         if (card === fileNode.cardinality) {
           !fileNode.cardinality ? allowedCardinalityListResult.push('1') : allowedCardinalityListResult = cardlist;
@@ -188,7 +188,7 @@ export class FileTreeMetadataService {
           this.allowedSedaCardinalities.next(resultList);
         }
       }
-    }
+    }*/
     this.allowedSedaCardinalities.next(resultList);
     if (allowedCardinalityListResult.length < 1) {
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);

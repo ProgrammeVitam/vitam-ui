@@ -153,7 +153,6 @@ export class FileTreeMetadataComponent {
   enumsControlSeleted: string[] = [];
   editedEnumControl: string[];
   openControls: boolean;
-  originalEnumMap: Map<string, string[]> = new Map<string, string[]>();
 
   radioExpressionReguliere: string;
   regex: string;
@@ -245,7 +244,6 @@ export class FileTreeMetadataComponent {
   }
 
   ngOnInit() {
-
     if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
@@ -610,12 +608,12 @@ export class FileTreeMetadataComponent {
     const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
     this.clickedControl = fileNode;
     if (fileNode.puaData && fileNode.puaData.enum) {
-      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(fileNode.name, this.selectedSedaNode).Enumeration;
+      this.enumerationsSedaControl = this.selectedSedaNode.Enumeration;
       this.enumerationControl = true;
       this.editedEnumControl = [];
       this.enumsControlSeleted = [];
       this.openControls = true;
-      const type: string = this.sedaService.findSedaChildByName(fileNode.name, this.selectedSedaNode).Type;
+      const type: string = this.selectedSedaNode.Type;
       this.setAvailableRegex(type);
       fileNode.puaData.enum.forEach(e => {
         this.editedEnumControl.push(e);
@@ -627,8 +625,7 @@ export class FileTreeMetadataComponent {
       this.openControls = true;
       this.expressionControl = true;
       if (this.formatagePredefini.map(e => e.value).includes(actualPattern)) {
-        const sedaName = this.fileService.findChildById(fileNodeId, this.clickedNode);
-        const type: string = this.sedaService.findSedaChildByName(sedaName.name, this.selectedSedaNode).Type;
+        const type: string = this.selectedSedaNode.Type;
         this.setAvailableRegex(type);
         this.regex = this.availableRegex.filter(e => e.value === actualPattern).map(e => e.value)[0];
         this.radioExpressionReguliere = 'select';
@@ -686,7 +683,7 @@ export class FileTreeMetadataComponent {
   }
 
   isDataType(): boolean {
-    const type: string = this.sedaService.findSedaChildByName(this.clickedControl.name, this.selectedSedaNode).Type;
+    const type: string = this.selectedSedaNode.Type;
     return (type === DateFormatType.date || type === DateFormatType.dateTime || type === DateFormatType.dateType);
   }
 
@@ -696,10 +693,6 @@ export class FileTreeMetadataComponent {
       this.enumerationControl = true;
 
       this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
-      if (!this.originalEnumMap.get(sedaName)){
-        this.originalEnumMap.set(sedaName, this.enumerationsSedaControl);
-      }
-
       this.editedEnumControl = this.enumerationsSedaControl;
       this.enumsControlSeleted = this.enumerationsSedaControl;
       const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
@@ -726,7 +719,7 @@ export class FileTreeMetadataComponent {
   }
 
   isNotRegexCustomisable(): boolean {
-    const type: string = this.sedaService.findSedaChildByName(this.clickedControl.name, this.selectedSedaNode).Type;
+    const type: string = this.selectedSedaNode.Type;
     return (type === DateFormatType.date || type === DateFormatType.dateTime);
   }
 
@@ -938,14 +931,12 @@ export class FileTreeMetadataComponent {
 
   onDeleteControls() {
     if (this.enumerationControl) {
-      this.sedaService.selectedSedaNode.getValue().Enumeration
-      this.sedaService.getSedaNode(this.sedaService.selectedSedaNode.getValue(), this.clickedControl.name)
       this.clickedNode.puaData.enum = null;
+      this.clickedNode.sedaData.Enumeration = [];
     }
     if (this.expressionControl) {
       this.clickedNode.puaData.pattern = null;
     }
-    this.clickedNode.sedaData.Enumeration = this.originalEnumMap.get(this.clickedControl.name);
     this.resetContols();
   }
 
@@ -959,8 +950,6 @@ export class FileTreeMetadataComponent {
           enum: this.enumsControlSeleted
         };
       }
-
-      //this.clickedNode.sedaData.Enumeration = [];
 
     }
     if (this.expressionControl) {

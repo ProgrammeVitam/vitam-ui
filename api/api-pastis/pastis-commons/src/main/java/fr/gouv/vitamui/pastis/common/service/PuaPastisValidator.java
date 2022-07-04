@@ -347,7 +347,7 @@ public class PuaPastisValidator {
         List<String> rulesFound = new ArrayList<>();
 
         JSONObject pua = sortedJSON();
-        pua.put(ADDITIONAL_PROPERTIES, element.isAdditionalProperties());
+        pua.put(ADDITIONAL_PROPERTIES, element.getPuaData().getAdditionalProperties());
         if (element.getChildren().isEmpty()) {
             return retrieveAccumulatedJsonManagementProperties(pua);
         }
@@ -479,7 +479,9 @@ public class PuaPastisValidator {
         if (!grandChildrenOfRule.isEmpty()) {
             JSONObject propretyOfItems = new JSONObject().put(ADDITIONAL_PROPERTIES, false);
             propretyOfItems.put(PROPERTIES, grandChildrenOfRule);
-            propretyOfItems.put(REQUIRED, requiredChildren);
+            if(!requiredChildren.isEmpty()) {
+                propretyOfItems.put(REQUIRED, requiredChildren);
+            }
             childrenOfRule.put("type", "array");
             childrenOfRule.put(ITEMS, propretyOfItems);
             propertiesRules.put("Rules", childrenOfRule);
@@ -538,7 +540,7 @@ public class PuaPastisValidator {
                 managementAsJSONObject.put(MANAGEMENTCONTROL, pua);
             }
         } else {
-            managementAsJSONObject.put(MANAGEMENTCONTROL, new JSONObject());
+            managementAsJSONObject.put(MANAGEMENTCONTROL, pua);
         }
         return managementAsJSONObject;
     }
@@ -786,9 +788,7 @@ public class PuaPastisValidator {
                 puaMetadataDetails.setMinItems(1);
                 break;
             }
-            case "0-N": {
-                puaMetadataDetails.setMinItems(0);
-            }
+
         }
     }
 
