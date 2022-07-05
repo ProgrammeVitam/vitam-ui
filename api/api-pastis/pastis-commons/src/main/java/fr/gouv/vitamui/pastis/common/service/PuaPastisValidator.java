@@ -85,6 +85,8 @@ public class PuaPastisValidator {
     private static final String SCHEMA = "$schema";
     private static final String ITEMS = "items";
     private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
+    private static final String TYPE = "type";
+    private static final String OBJECT = "object";
 
     private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
@@ -237,10 +239,10 @@ public class PuaPastisValidator {
         }
 
         if (sedaName.equals("Title") || sedaName.equals("Description")) {
-            if (element.getCardinality().equals("1")) {
-                return "string";
-            } else {
+            if (element.getCardinality().equals("0-1")) {
                 return "array";
+            } else {
+                return "string";
             }
         }
 
@@ -418,11 +420,11 @@ public class PuaPastisValidator {
             JSONObject ruleTypeMetadata = new JSONObject(ruleTypeMetadataMap);
             ruleTypeMetadata.getJSONObject(childElement.getName()).put(PROPERTIES, propertiesRules);
             putRequiredNonSpecialChildren(childElement, requiredNonSpecialChildren, ruleTypeMetadata);
-            nonSpecialChildOfRule.keySet().forEach(e -> {
-                Object details = nonSpecialChildOfRule.get(e);
-                ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject("properties")
-                    .put(e.toString(), new JSONObject(details));
-            });
+            for(Map.Entry<String, PuaMetadataDetails> entry: nonSpecialChildOfRule.entrySet()) {
+                PuaMetadataDetails details = entry.getValue();
+                ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
+                    .put(entry.getKey(), new JSONObject(details.serialiseString()));
+            }
 
             // 5. We retrieve parent properties and add more elements to root element properties
             pua.accumulate(PROPERTIES, ruleTypeMetadata);
@@ -477,7 +479,8 @@ public class PuaPastisValidator {
     private void putChildrenIntoRules(JSONObject childrenOfRule, JSONObject grandChildrenOfRule,
                                       JSONObject propertiesRules, List<String> requiredChildren) {
         if (!grandChildrenOfRule.isEmpty()) {
-            JSONObject propretyOfItems = new JSONObject().put(ADDITIONAL_PROPERTIES, false);
+            JSONObject propretyOfItems = new JSONObject().put(TYPE, OBJECT);
+            propretyOfItems.put(ADDITIONAL_PROPERTIES, false);
             propretyOfItems.put(PROPERTIES, grandChildrenOfRule);
             if(!requiredChildren.isEmpty()) {
                 propretyOfItems.put(REQUIRED, requiredChildren);
