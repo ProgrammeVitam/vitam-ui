@@ -422,8 +422,17 @@ public class PuaPastisValidator {
             putRequiredNonSpecialChildren(childElement, requiredNonSpecialChildren, ruleTypeMetadata);
             for(Map.Entry<String, PuaMetadataDetails> entry: nonSpecialChildOfRule.entrySet()) {
                 PuaMetadataDetails details = entry.getValue();
-                ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
-                    .put(entry.getKey(), new JSONObject(details.serialiseString()));
+                if(entry.getKey().equals("PreventInheritance") || entry.getKey().equals("PreventRulesId")) {
+                    JSONObject inheritance = new JSONObject();
+                    inheritance.put(TYPE, OBJECT)
+                        .put(ADDITIONAL_PROPERTIES, false)
+                        .put(PROPERTIES, new JSONObject().put(entry.getKey(), new JSONObject(details.serialiseString())));
+                    ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
+                        .put("Inheritance", inheritance);
+                } else {
+                    ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
+                        .put(entry.getKey(), new JSONObject(details.serialiseString()));
+                }
             }
 
             // 5. We retrieve parent properties and add more elements to root element properties
