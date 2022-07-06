@@ -87,6 +87,7 @@ public class PuaPastisValidator {
     private static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     private static final String TYPE = "type";
     private static final String OBJECT = "object";
+    private static final String ID = "ID";
 
     private JSONObject getProfileJsonExpected(boolean standalone) {
         if (profileJsonExpected == null) {
@@ -263,6 +264,9 @@ public class PuaPastisValidator {
         if (sedaCardinality.equals("1-N") || sedaCardinality.equals("0-N")) {
             return "array";
         }
+        if (sedaType.equals(ID)) {
+            return "string";
+        }
         return "undefined";
     }
 
@@ -308,6 +312,7 @@ public class PuaPastisValidator {
         List<String> rulesToIgnore = Arrays.asList("StorageRule", "AppraisalRule", "AccessRule", "DisseminationRule",
             "ReuseRule", "ClassificationRule");
 
+        List<String> managementMetadata = Arrays.asList("LogBook", "NeedAuthorization");
         for (ElementProperties el : elementsFromTree) {
             setMetadataName(el);
             try {
@@ -323,7 +328,7 @@ public class PuaPastisValidator {
                         jsonArray.put(notManagementMapElement);
                     }
                 } else if (!rulesToIgnore.contains(el.getName()) && !el.getName().equals(CONTENT) &&
-                    !el.getName().equals(MANAGEMENT)) {
+                    !el.getName().equals(MANAGEMENT) && !managementMetadata.contains(el.getName())) {
                     JSONObject notManagementMapElement = getJSONObjectFromElement(el);
                     jsonArray.put(notManagementMapElement);
                 }
@@ -385,8 +390,12 @@ public class PuaPastisValidator {
             SedaNode sedaElement = getSedaMetadata(childElement.getName(), null);
 
             // 1. Check special cases
-            if (checkSpecialCases(rulesMetadata, rulesFound, childElement, sedaElement))
+            if (checkSpecialCases(rulesMetadata, rulesFound, childElement, sedaElement)) {
+                JSONObject jsonObjectFromElement = getJSONObjectFromElement(childElement);
+                pua.accumulate(PROPERTIES, jsonObjectFromElement);
                 continue;
+            }
+
             getMetaDataFromSeda(childElement, ruleTypeMetadataDetails, sedaElement);
             Map<String, PuaMetadataDetails> ruleTypeMetadataMap = new HashMap<>();
             Map<String, PuaMetadataDetails> nonSpecialChildOfRule = new HashMap<>();
