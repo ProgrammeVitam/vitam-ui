@@ -662,7 +662,9 @@ public class PuaPastisValidator {
                 }
                 setChildName(elementProperties, json, el, puaMetadataDetails);
                 if (!el.getChildren().isEmpty()) {
-                    json.getJSONObject(el.getName()).put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
+                    if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
+                        json.getJSONObject(el.getName()).put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
+                    }
                     json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
                     getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
                 }
