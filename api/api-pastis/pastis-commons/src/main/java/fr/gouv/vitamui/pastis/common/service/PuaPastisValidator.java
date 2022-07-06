@@ -644,18 +644,25 @@ public class PuaPastisValidator {
         throws IOException {
         if (!elementProperties.getChildren().isEmpty()) {
             for (ElementProperties el : elementProperties.getChildren()) {
-                setMetadataName(el);
                 PuaMetadataDetails puaMetadataDetails = new PuaMetadataDetails();
                 puaMetadataDetails.setType(getPUAMetadataType(el.getName(), elementProperties.getName(), el));
                 puaMetadataDetails.setDescription(el.getDocumentation());
                 if (null != el.getPuaData() && null != el.getPuaData().getEnum()) {
                     puaMetadataDetails.setEnums(el.getPuaData().getEnum());
                 }
+                if (null != el.getPuaData() && null != el.getPuaData().getPattern()) {
+                    puaMetadataDetails.setPattern(el.getPuaData().getPattern());
+                }
                 if (puaMetadataDetails.getType().equals("array")) {
                     getMinAndMAxItems(el, puaMetadataDetails);
                 }
+                setMetadataName(el);
+                if (!el.getChildren().isEmpty()) {
+                    puaMetadataDetails.setRequired(getRequiredProperties(el));
+                }
                 setChildName(elementProperties, json, el, puaMetadataDetails);
                 if (!el.getChildren().isEmpty()) {
+                    json.getJSONObject(el.getName()).put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                     json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
                     getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
                 }
@@ -767,6 +774,9 @@ public class PuaPastisValidator {
         }
         if (!sedaElement.getElement().equals(COMPLEX) && el.getPuaData() != null &&
             el.getPuaData().getPattern() != null) {
+            puaMetadataDetails.setPattern(el.getPuaData().getPattern());
+        }
+        if (el.getPuaData() != null && el.getPuaData().getPattern() != null) {
             puaMetadataDetails.setPattern(el.getPuaData().getPattern());
         }
         if (el.getPuaData() != null && el.getPuaData().getEnum() != null) {
