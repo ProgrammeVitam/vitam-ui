@@ -61,6 +61,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -433,9 +434,19 @@ public class PuaPastisValidator {
                 PuaMetadataDetails details = entry.getValue();
                 if(entry.getKey().equals("PreventInheritance") || entry.getKey().equals("PreventRulesId")) {
                     JSONObject inheritance = new JSONObject();
+                    PuaMetadataDetails preventRulesId = new PuaMetadataDetails();
+                    preventRulesId.setType("array");
+
                     inheritance.put(TYPE, OBJECT)
                         .put(ADDITIONAL_PROPERTIES, false)
-                        .put(PROPERTIES, new JSONObject().put(entry.getKey(), new JSONObject(details.serialiseString())));
+                        .put(PROPERTIES, new JSONObject().put(entry.getKey(), new JSONObject(details.serialiseString()))
+                            .put("PreventRulesId", new JSONObject(preventRulesId.serialiseString())));
+                    if (!childElement.getChildren().isEmpty()) {
+                        String cardinality = childElement.getChildren().stream().filter(e -> e.getName().equals("PreventInheritance")).map(e -> e.getCardinality()).collect(Collectors.joining());
+                        if (cardinality.equals("1")) {
+                            inheritance.accumulate(REQUIRED, Arrays.asList("PreventInheritance")) ;
+                        }
+                    }
                     ruleTypeMetadata.getJSONObject(childElement.getName()).getJSONObject(PROPERTIES)
                         .put("Inheritance", inheritance);
                 } else {
@@ -481,8 +492,11 @@ public class PuaPastisValidator {
     private void putRequiredNonSpecialChildren(ElementProperties childElement, List<String> requiredNonSpecialChildren,
                                                JSONObject ruleTypeMetadata) {
         if (!requiredNonSpecialChildren.isEmpty()) {
-            ruleTypeMetadata.getJSONObject(childElement.getName())
-                .put(REQUIRED, requiredNonSpecialChildren);
+            requiredNonSpecialChildren.removeIf(e -> e.equals("PreventInheritance"));
+            if (!requiredNonSpecialChildren.isEmpty()) {
+                ruleTypeMetadata.getJSONObject(childElement.getName())
+                    .put(REQUIRED, requiredNonSpecialChildren);
+            }
         }
     }
 
@@ -674,8 +688,41 @@ public class PuaPastisValidator {
                     if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
                         json.getJSONObject(el.getName()).put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
                     }
-                    json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
-                    getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
+
+                    if (puaMetadataDetails.getType().equals("array")) {
+                        JSONObject items = new JSONObject();
+                        items.put("type", new String("object"));
+                        items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
+                        json.getJSONObject(el.getName()).put(ITEMS, items);
+                        json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
+                        json.getJSONObject(el.getName()).getJSONObject(ITEMS).put(PROPERTIES, new JSONObject(puaMetadataDetails.serialiseString()));
+                        getJSONObjectFromElement(el,
+                            json.getJSONObject(el.getName()).getJSONObject(ITEMS).getJSONObject(PROPERTIES));
+                    } else {
+                        json.getJSONObject(el.getName()).put(PROPERTIES, new JSONObject());
+                        getJSONObjectFromElement(el, json.getJSONObject(el.getName()).getJSONObject(PROPERTIES));
+                    }
+
+                } else {
+                    if (puaMetadataDetails.getType().equals("array")) {
+                        JSONObject items = new JSONObject();
+                        items.put("type", new String("object"));
+                        if (null != el.getPuaData() && null != el.getPuaData().getAdditionalProperties()) {
+                            items.put(ADDITIONAL_PROPERTIES, el.getPuaData().getAdditionalProperties());
+                        }
+                        List<String> keyToDelete = new ArrayList<>();
+                        json.getJSONObject(el.getName()).keySet().forEach(key -> {
+                            if (!key.equals(TYPE)) {
+                                keyToDelete.add(key);
+                            }
+                        });
+                        keyToDelete.forEach(e -> {
+                            json.getJSONObject(el.getName()).remove(e);
+                        });
+                        puaMetadataDetails.setType("string");
+                        json.getJSONObject(el.getName()).put(ITEMS, new JSONObject(puaMetadataDetails.serialiseString()));
+                        json.getJSONObject(el.getName()).remove(ADDITIONAL_PROPERTIES);
+                    }
                 }
             }
         }
