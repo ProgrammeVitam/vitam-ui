@@ -35,7 +35,6 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { registerLocaleData } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
@@ -57,9 +56,10 @@ import { LoggerModule } from 'ui-frontend-common';
 import { BASE_URL } from 'ui-frontend-common';
 import { ENVIRONMENT } from 'ui-frontend-common';
 import { PastisConfiguration } from './core/classes/pastis-configuration';
+import {HttpBackend} from "@angular/common/http";
 
-export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient, [
+export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(httpBackend, [
     { prefix: './assets/shared-i18n/', suffix: '.json' },
     { prefix: './assets/i18n/', suffix: '.json' },
   ]);
@@ -86,7 +86,7 @@ registerLocaleData(localeFr, 'fr');
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient],
+        deps: [HttpBackend],
       },
     }),
     ToastrModule.forRoot({
