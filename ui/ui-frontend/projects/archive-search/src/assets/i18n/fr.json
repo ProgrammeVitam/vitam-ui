@@ -37,7 +37,8 @@
         "ACCESSRULE": "Communicabilité",
         "DISSEMINATIONRULE": "Diffusion",
         "REUSERULE": "Réutilisation",
-        "CLASSIFICATIONRULE": "Classification"
+        "CLASSIFICATIONRULE": "Classification",
+        "STORAGERULE" : "DUC"
       },
       "CLASSIFICATION_RULE_PROPERTIES": {
         "CLASSIFICATIONLEVEL": "Niveau de classification",
