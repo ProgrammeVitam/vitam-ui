@@ -176,6 +176,10 @@ public class JsonFromPUA {
                 break;
             case "evDetData":
                 realName = "EventDetailData";
+                break;
+            case "Algorithm":
+                realName = "algorithm";
+                break;
         }
 
 		return realName;

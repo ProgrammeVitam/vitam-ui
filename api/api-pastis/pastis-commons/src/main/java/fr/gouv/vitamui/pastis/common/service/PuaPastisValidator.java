@@ -757,6 +757,9 @@ public class PuaPastisValidator {
             case "EventDetailData":
                 child.setName("evDetData");
                 break;
+            case "algorithm":
+                child.setName("Algorithm");
+                break;
         }
     }
 
