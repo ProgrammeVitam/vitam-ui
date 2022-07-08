@@ -4,27 +4,28 @@
 
 To connect Vitamui with a deployed Vitam environment, we follow these steps :
 
-### 1. Prepare SSL configurations:
+### 1. Prepare TSL/SSL configurations:
 
-In the case of SSL mutual authentication, we need to prepare the trust-store of the remote environment and the keystore
+In the case of TSL/SSL mutual authentication, we need to prepare the trust-store of the remote environment and the keystore
 of our environment trusted by the remote environment, to do that, we follow these steps :
 
-#### 1.1. Get the Root CA of the remote environment from your browser :
+#### 1.1. Prepare trust-store & key-store for server API access
 
-1. Go to the HTTPS service endpoint in your browser (example https://ga.env.programmevitam.fr/)
-2. Click on the lock button on the address bar and go to the Certificate
-3. Select the End Entity Certificate and download the cert key file and save if on your computer (with the name
-   trusted-key.pem for example). This example is from the screenshot below:
-   ![Screenshot](images/extract-cert.png "Download cert")
-4. Generate a keystore with previous downloaded cert (example password: customer-password-ts , trust: yes):
+1. Execute the following command to retrieve server certificate :
 
- ```shell script
-    keytool -import -file trusted-key.pem -alias firstCA -keystore our-trust-store.jks
+```shell script
+    openssl s_client -servername ga.env-api.programmevitam.fr -connect ga.env-api.programmevitam.fr:443 </dev/null 2>/dev/null | openssl x509 -text > /tmp/server_cert.crt
 ```
 
-5. Download an external public certificate (external_pub.pem && external_key.pem) provided in this
+2. Generate a trust-store with previous extracted cert (example password: customer-password-ts , trust: yes):
+
+```shell script
+    keytool -import -file /tmp/server_cert.crt -alias server_cert -keystore our-trust-store.jks
+```
+
+3. Download an external public certificate (external_pub.pem && external_key.pem) provided in this
    path: https://webdav.dev.programmevitam.fr/webdav/Certificats_vitam/
-6. Generate a keystore, for Vitam context, with this certificate. (example password: customer-password-ks , example in P12 format):
+4. Generate a keystore, for Vitam context, with this certificate. (example password: customer-password-ks , example in P12 format):
 
  ```shell script
     openssl pkcs12 -export -in external_pub.pem -inkey external_key.pem -out our-keystore-env-ga.p12
@@ -35,13 +36,13 @@ of our environment trusted by the remote environment, to do that, we follow thes
 Update settings files to call Vitam external services: we need to update the settings file for calling external
 webservices on Vitam: access-external, ingest-external, and collect-external.
 
-By default the settings file are named :
+By default, the settings file are named :
 access-external-client.conf, ingest-external-client.conf, collect-external-client.conf
 
 Example ingest-external-client.conf :
 
 ```
-serverHost: ga.env.programmevitam.fr                    ## the url of remote Vitam environment
+serverHost: ga.env-api.programmevitam.fr                ## the API url of remote Vitam environment
 serverPort: 443                                         ## HTTPS default port 
 secure: true
 sslConfiguration :
