@@ -96,7 +96,83 @@
           </div>
           <div class="actions">
             <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
-            <button type="submit" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn primary" cdkStepperNext [disabled]="secondStepInvalid()">{{ 'COMMON.NEXT' | translate }}</button>
+            <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
+          </div>
+        </div>
+      </cdk-step>
+
+      <cdk-step>
+        <div class="content">
+          <h5>Création d'un contrat de gestion</h5>
+          <h4>Paramétrage de la politique de conservation des fichiers</h4>
+          <i class="vitamui-icon vitamui-icon-info" vitamuicommontooltip="RIGHT" type="RIGHT" outline="true" ng-reflect-text="Il est recommandé, dans un contrat de gestion, de déclarer les même stratégies pour les métadonnées des unités archivistiques et des métadonnées des groupes d’objets techniques." ng-reflect-type="RIGHT" ng-reflect-outline="true"></i>
+
+          <div class="form-group">
+            <table mat-table [dataSource]="matDataSource">
+              <ng-container matColumnDef="usage">
+              <th mat-header-cell *matHeaderCellDef>Usage</th>
+              <td mat-cell *matCellDef="let element;index as i">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select [(value)]="usages[0].key"
+                    placeholder="Usage"
+                    panelclass="vitamui-mat-select"
+                    required="required"
+                    i18n-placeholder="Identifier@@usageCreateUsagelaceholder"
+                  >
+                    <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </td>
+              </ng-container>
+              <ng-container matColumnDef="initialVersionConservation">
+              <th mat-header-cell *matHeaderCellDef>Conservation de la version initiale</th>
+              <td mat-cell *matCellDef="let element;index as i">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select [(value)]="initialVersionConservations[0].key"
+                    placeholder="initialVersionConservation"
+                    panelclass="vitamui-mat-select"
+                    required="required"
+                    i18n-placeholder="Identifier@@initialVersionConservationPlaceholder"
+                  >
+                    <mat-option *ngFor="let initialVersionConservation of initialVersionConservations" [value]="initialVersionConservation.key">{{ initialVersionConservation.label }}</mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </td>
+              </ng-container>
+
+              <ng-container matColumnDef="versionsToPreserve">
+              <th mat-header-cell *matHeaderCellDef>Versions à conserver</th>
+              <td mat-cell *matCellDef="let element;index as i">
+                <mat-form-field class="vitamui-mat-select">
+                  <mat-select [(value)]="versionsToPreserves[0].key"
+                    placeholder="versionsToPreserve"
+                    panelclass="vitamui-mat-select"
+                    required="required"
+                    i18n-placeholder="Identifier@@versionsToPreservePlaceholder"
+                  >
+                    <mat-option *ngFor="let versionsToPreserve of versionsToPreserves" [value]="versionsToPreserve.key">{{ versionsToPreserve.label }}</mat-option>
+                  </mat-select>
+                  <div class="select-arrow">
+                    <i class="material-icons">keyboard_arrow_down</i>
+                  </div>
+                </mat-form-field>
+              </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn primary" cdkStepperPrevious>{{ 'COMMON.BACK' | translate }}</button>
+            <button type="submit" class="btn primary" cdkStepperNext [disabled]="thirdStepInvalid()">{{ 'COMMON.SUBMIT' | translate }}</button>
             <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.UNDO' | translate }}</button>
           </div>
         </div>

@@ -40,23 +40,25 @@ import {VitamUICommonModule} from 'ui-frontend-common';
 
 import {SharedModule} from 'projects/identity/src/app/shared/shared.module';
 import { ManagementContractCreateComponent } from './management-contract-create.component';
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [ManagementContractCreateComponent],
   entryComponents: [ManagementContractCreateComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MatButtonToggleModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSnackBarModule,
-    MatTooltipModule,
-    ReactiveFormsModule,
-    VitamUICommonModule,
-    VitamUILibraryModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        MatButtonToggleModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressBarModule,
+        MatSelectModule,
+        MatSnackBarModule,
+        MatTooltipModule,
+        ReactiveFormsModule,
+        VitamUICommonModule,
+        VitamUILibraryModule,
+        MatTableModule
+    ]
 })
 export class ManagementContractCreateModule { }
