@@ -38,11 +38,13 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { ConfirmDialogService } from 'ui-frontend-common';
+import {ConfirmDialogService, Option} from 'ui-frontend-common';
 import { ManagementContract } from 'projects/vitamui-library/src/public-api';
 import { ManagementContractService } from '../management-contract.service';
 import { ManagementContractCreateValidators } from './management-contract-create.validators';
 import {StorageStrategy} from "vitamui-library";
+import {PreservationPolicyMetadata, RETENTION_POLICY_DEFAULT, USAGES} from "../management-contract.constants";
+import {MatTableDataSource} from "@angular/material/table";
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -77,6 +79,19 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   statusControl = new FormControl(false);
   statusControlValueChangesSubscribe: Subscription;
 
+  usages = USAGES;
+  initialVersionConservations : Option[] = [
+    { key: 'yes', label: 'Oui', info: '' },
+    { key: 'no', label: 'Non', info: '' }
+  ];
+
+  versionsToPreserves : Option[] = [
+    { key: 'all', label: 'Toutes', info: '' }
+  ];
+
+  matDataSource: MatTableDataSource<PreservationPolicyMetadata>;
+
+  displayedColumns: string[] = ['usage', 'initialVersionConservation', 'versionsToPreserve'];
   ngOnInit() {
     this.form = this.formBuilder.group({
       // Step 1
@@ -91,11 +106,22 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
         objectStrategy: ['default', Validators.required],
       }),
       // Step 3
+      versionRetentionPolicy: this.formBuilder.group({
+        initialVersion: ['True', Validators.required],
+        intermediaryVersion: ['ALL', Validators.required],
+        usage: this.formBuilder.group(({
+          usageName: ['BinaryMaster', Validators.required],
+          initialVersion: ['true', Validators.required],
+          intermediaryVersion: ['ALL', Validators.required]
+        }))
+      })
     });
 
     this.statusControlValueChangesSubscribe = this.statusControl.valueChanges.subscribe((value:boolean) => {
       this.form.controls.status.setValue(value === false ? 'INACTIVE' : 'ACTIVE');
     });
+
+    this.matDataSource = new MatTableDataSource<PreservationPolicyMetadata>(RETENTION_POLICY_DEFAULT);
 
     this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
   }
@@ -164,6 +190,17 @@ export class ManagementContractCreateComponent implements OnInit, OnDestroy {
   }
 
   secondStepInvalid(): boolean {
+    return (
+      this.form.controls.storage.get('unitStrategy').invalid ||
+      this.form.controls.storage.get('unitStrategy').pending ||
+      this.form.controls.storage.get('objectGroupStrategy').invalid ||
+      this.form.controls.storage.get('objectGroupStrategy').pending ||
+      this.form.controls.storage.get('objectStrategy').invalid ||
+      this.form.controls.storage.get('objectStrategy').pending
+    );
+  }
+
+  thirdStepInvalid(): boolean {
     return (
       this.form.controls.storage.get('unitStrategy').invalid ||
       this.form.controls.storage.get('unitStrategy').pending ||
