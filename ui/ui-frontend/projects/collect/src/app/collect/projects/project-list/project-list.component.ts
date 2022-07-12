@@ -30,6 +30,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-list',
@@ -78,7 +79,9 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     },
   ];
 
-  constructor(public projectsService: ProjectsService, private translationService: TranslateService) {
+  constructor(public projectsService: ProjectsService,
+     private translationService: TranslateService,
+     private router: Router) {
     super(projectsService);
   }
 
@@ -99,5 +102,9 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
 
   emitOrderChange(event: string) {
     this.orderChange.next(event);
+  }
+
+  showProject(project : Project){
+    this.router.navigate(['collect/archive-search-collect', project.id]);
   }
 }

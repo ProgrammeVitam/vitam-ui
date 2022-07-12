@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { QuicklinkStrategy } from 'ngx-quicklink';
 import { AccountComponent, ActiveTenantGuard, AnalyticsResolver, AppGuard, AuthGuard } from 'ui-frontend-common';
 import { AppComponent } from './app.component';
+import { ArchiveSearchCollectComponent } from './collect/archive-search-collect/archive-search-collect.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
     canActivate: [AuthGuard, AppGuard],
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'COLLECT_APP' },
+  },
+  {
+    path: 'archive-search-collect/:id',
+    component: ArchiveSearchCollectComponent,
+    data: { appId: 'COLLECT_APP' }
   },
 
   { path: '**', redirectTo: '' },

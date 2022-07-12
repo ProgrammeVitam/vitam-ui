@@ -27,6 +27,8 @@
 
 package fr.gouv.vitamui.collect.service;
 
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
@@ -87,5 +89,9 @@ public class CollectService extends AbstractPaginateService<CollectProjectDto> {
     public ResponseEntity<Void> streamingUpload(final ExternalHttpContext context, String fileName,
         String projectId, InputStream inputStream) {
         return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
+    }
+
+    public ArchiveUnitsDto getAllArchiveUnitsForCollect(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
+    return collectExternalRestClient.getAllArchiveUnitsForCollect(context, projectId, searchQuery);
     }
 }

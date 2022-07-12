@@ -68,7 +68,7 @@ import java.util.Optional;
 @Produces("application/json")
 public class ProjectController extends AbstractUiRestController {
 
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(AbstractUiRestController.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectController.class);
 
     private final CollectService collectService;
 

@@ -25,20 +25,7 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.common.rest;
-
-
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public class RestApi {
-
-    public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + "/projects";
-    public static final String STREAM_UPLOAD_PATH = "/upload";
-
-    public static final String SEARCH = "/search";
-    public static final String ARCHIVE_UNIT_PATH = "/archives-search";
-    public static final String COLLECT_ARCHIVE_UNIT_PATH = COLLECT_PATH + ARCHIVE_UNIT_PATH;
-
+export enum ArchiveSearchConstsEnum {
+  RESULTS_MAX_NUMBER = 10000,
+  UPDATE_DEBOUNCE_TIME = 200,
 }

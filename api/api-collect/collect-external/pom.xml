@@ -167,6 +167,10 @@
             <scope>test</scope>
             <type>test-jar</type>
         </dependency>
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-commons</artifactId>
+        </dependency>
 
     </dependencies>
 

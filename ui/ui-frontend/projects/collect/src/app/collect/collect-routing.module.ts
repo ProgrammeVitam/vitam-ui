@@ -37,7 +37,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
-import { ActiveTenantGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { ActiveTenantGuard, AppGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
+import { ArchiveSearchCollectComponent } from './archive-search-collect/archive-search-collect.component';
 
 import { ProjectsComponent } from './projects/projects.component';
 
@@ -57,6 +58,11 @@ const routes: Route[] = [
     component: ProjectsComponent,
     canActivate: [ActiveTenantGuard],
   },
+  {
+    path: 'archive-search-collect/:id',
+    component: ArchiveSearchCollectComponent,
+    canActivate: [AppGuard]
+  },
 ];
 
 @NgModule({
@@ -64,4 +70,4 @@ const routes: Route[] = [
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CollectRoutingModule {}
+export class CollectRoutingModule { }

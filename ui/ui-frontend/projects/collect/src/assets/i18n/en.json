@@ -63,7 +63,12 @@
       "WAITING_ACK": "Waiting Ack",
       "ACK_OK": "Finish",
       "ACK_ERROR": "Refused"
-    }
+    },
+    "TITLE_SEARCH": "Search : ",
+    "TITLE_SEARCH_AREA": "Searching an archive unit in project ",
+    "LAUNCH_SEARCH_ACTION": "Launch the search",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user"
   },
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Payment",

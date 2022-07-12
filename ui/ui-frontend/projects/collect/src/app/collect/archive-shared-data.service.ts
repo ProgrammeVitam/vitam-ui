@@ -37,11 +37,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Direction } from 'ui-frontend-common';
-import { FilingHoldingSchemeNode } from '../archive/models/node.interface';
-import { NodeData } from '../archive/models/nodedata.interface';
-import { SearchCriteriaHistory } from '../archive/models/search-criteria-history.interface';
-import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from '../archive/models/search.criteria';
-import { Unit } from '../archive/models/unit.interface';
+import { NodeData } from './models/nodedata.interface';
+import { ResultFacet, SearchCriteriaAddAction, SearchCriteriaRemoveAction } from './models/search.criteria';
+import { SearchCriteriaHistory } from './models/search-criteria-history.interface';
+import { Unit } from './models/unit.interface';
+import { FilingHoldingSchemeNode } from './models/node.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -102,7 +102,7 @@ export class ArchiveSharedDataService {
 
   entireNodesObservable = this.entireNodes.asObservable();
 
-  constructor() {}
+  constructor() { }
 
   emitRuleCategory(ruleCategory: string) {
     this.ruleCategory.next(ruleCategory);
@@ -224,7 +224,7 @@ export class ArchiveSharedDataService {
   }
 
   addSimpleSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-  debugger;
+    debugger;
     this.simpleSearchCriteriaAddSubject.next(searchCriteria);
   }
 

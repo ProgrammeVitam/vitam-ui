@@ -27,17 +27,27 @@
 
 package fr.gouv.vitamui.collect.internal.client;
 
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.InternalHttpContext;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class CollectInternalRestClient extends BasePaginatingAndSortingRestClient<CollectProjectDto, InternalHttpContext> {
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
+
+public class CollectInternalRestClient
+    extends BasePaginatingAndSortingRestClient<CollectProjectDto, InternalHttpContext> {
 
     public CollectInternalRestClient(RestTemplate restTemplate, String baseUrl) {
         super(restTemplate, baseUrl);
@@ -50,12 +60,14 @@ public class CollectInternalRestClient extends BasePaginatingAndSortingRestClien
 
     @Override
     protected ParameterizedTypeReference<List<CollectProjectDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {};
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
     protected ParameterizedTypeReference<PaginatedValuesDto<CollectProjectDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() {};
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
@@ -63,4 +75,14 @@ public class CollectInternalRestClient extends BasePaginatingAndSortingRestClien
         return RestApi.COLLECT_PROJECT_PATH;
     }
 
+    public ArchiveUnitsDto getAllArchiveUnitsForCollect(InternalHttpContext context, String projectId,
+        SearchCriteriaDto searchQuery) {
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
+        final ResponseEntity<ArchiveUnitsDto> response =
+            restTemplate.exchange(getUrl() + ARCHIVE_UNIT_PATH + SEARCH + "/" + projectId, HttpMethod.POST,
+                request, ArchiveUnitsDto.class);
+        checkResponse(response);
+        return response.getBody();
+    }
 }

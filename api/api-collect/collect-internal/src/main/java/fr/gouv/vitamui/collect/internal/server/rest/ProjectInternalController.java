@@ -29,6 +29,9 @@ package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
@@ -37,6 +40,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
@@ -54,8 +58,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Optional;
+
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 @RestController
 @RequestMapping(RestApi.COLLECT_PROJECT_PATH)
@@ -86,7 +95,8 @@ public class ProjectInternalController {
     }
 
     @PostMapping()
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create {}", collectProjectDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -109,7 +119,8 @@ public class ProjectInternalController {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -119,4 +130,23 @@ public class ProjectInternalController {
         return projectInternalService.update(vitamContext, id, collectProjectDto);
     }
 
+
+    @PostMapping(ARCHIVE_UNIT_PATH + SEARCH + "/{projectId}")
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @PathVariable("projectId") final String  projectId,
+        @RequestBody final SearchCriteriaDto searchQuery)
+        throws VitamClientException, IOException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(searchQuery);
+        ParameterChecker
+            .checkParameter("The tenant Id, the accessContract Id and the SearchCriteria are mandatory parameters: ",
+                tenantId, accessContractId, searchQuery);
+        SanityChecker.checkSecureParameter(accessContractId);
+        LOGGER.debug("Calling service searchArchiveUnits for tenantId {}, accessContractId {} By Criteria {} ",
+            tenantId,
+            accessContractId, searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        return projectInternalService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+    }
 }

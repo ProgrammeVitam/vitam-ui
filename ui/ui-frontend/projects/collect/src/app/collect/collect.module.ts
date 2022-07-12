@@ -53,9 +53,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSelectModule } from '@angular/material/select';
+import { ArchiveSearchCollectComponent } from './archive-search-collect/archive-search-collect.component';
+import { TitleAndDescriptionCriteriaSearchComponent } from 'projects/archive-search/src/app/archive/archive-search/title-and-description-criteria-search/title-and-description-criteria-search.component';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './archive-search-collect/title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { ArchiveSearchHelperService } from 'projects/archive-search/src/app/archive/common-services/archive-search-helper.service';
+import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
+import { ArchiveUnitCollectApiService } from '../core/api/archive-unit-collect-api.service';
 
 @NgModule({
-  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
   imports: [
     CommonModule,
     CollectRoutingModule,
@@ -71,7 +76,14 @@ import { MatSelectModule } from '@angular/material/select';
     NgxFilesizeModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    MatSelectModule,
+    MatSelectModule
   ],
+  providers: [
+    ArchiveSearchHelperService,
+    ArchiveSharedDataService,
+    ArchiveUnitCollectApiService
+  ],
+  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent,
+    ArchiveSearchCollectComponent, TitleAndDescriptionCriteriaSearchComponent, TitleAndDescriptionCriteriaSearchCollectComponent]
 })
-export class CollectModule {}
+export class CollectModule { }
