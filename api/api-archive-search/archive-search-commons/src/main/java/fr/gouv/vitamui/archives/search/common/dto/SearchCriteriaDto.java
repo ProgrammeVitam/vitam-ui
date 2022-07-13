@@ -62,8 +62,8 @@ public class SearchCriteriaDto implements Serializable {
 
     public List<String> extractNodesCriteria() {
         return this.getCriteriaList().stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
-            .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
+                Objects::nonNull).filter(searchCriteriaEltDto -> ArchiveSearchConsts.CriteriaCategory.NODES
+                .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
             .map(CriteriaValue::getValue).collect(Collectors.toList());
     }
 
@@ -82,8 +82,8 @@ public class SearchCriteriaDto implements Serializable {
     public List<SearchCriteriaEltDto> extractCriteriaListByCategoryAndFieldNames(
         ArchiveSearchConsts.CriteriaCategory category, List<String> fieldNames) {
         return this.getCriteriaList().stream().filter(
-            Objects::nonNull).filter(searchCriteriaEltDto -> category
-            .equals(searchCriteriaEltDto.getCategory()) && fieldNames.contains(searchCriteriaEltDto.getCriteria()))
+                Objects::nonNull).filter(searchCriteriaEltDto -> category
+                .equals(searchCriteriaEltDto.getCategory()) && fieldNames.contains(searchCriteriaEltDto.getCriteria()))
             .collect(Collectors.toList());
     }
 }
