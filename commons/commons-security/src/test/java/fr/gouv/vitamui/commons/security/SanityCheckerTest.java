@@ -27,7 +27,9 @@
 
 package fr.gouv.vitamui.commons.security;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -55,7 +57,7 @@ public class SanityCheckerTest {
     private final String TEST_BAD_JSON_CRITERIA = "bad_criteria.json";
 
     @Before
-    public void setUp(){
+    public void setUp() {
     }
 
     @Test
@@ -99,7 +101,8 @@ public class SanityCheckerTest {
             try {
                 SanityChecker.checkJsonAll(json);
                 fail("Should failed with an exception");
-            } catch (final InvalidParseOperationException e) {}
+            } catch (final InvalidParseOperationException e) {
+            }
             SanityChecker.setLimitJsonSize(10000);
             SanityChecker.checkJsonAll(json);
             SanityChecker.checkJsonAll(json.toString());
@@ -117,11 +120,11 @@ public class SanityCheckerTest {
     @Test
     public void givenCriteriaWhenGoodSanityThenReturnTrue()
         throws FileNotFoundException, InvalidParseOperationException, PreconditionFailedException {
-            final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
-            final JsonNode json = JsonHandler.getFromFile(file);
+        final File file = PropertiesUtils.findFile(TEST_GOOD_JSON_CRITERIA);
+        final JsonNode json = JsonHandler.getFromFile(file);
         assertThatCode(() ->
             SanityChecker.sanitizeCriteria(Optional.of(json.toString()))).
-           doesNotThrowAnyException();
+            doesNotThrowAnyException();
 
     }
 
@@ -134,13 +137,15 @@ public class SanityCheckerTest {
     }
 
     @Test(expected = PreconditionFailedException.class)
-    public void testCheckSecureParameterWithBadString() throws PreconditionFailedException, InvalidParseOperationException {
+    public void testCheckSecureParameterWithBadString()
+        throws PreconditionFailedException, InvalidParseOperationException {
         final String bad = "a$/§§*";
         SanityChecker.checkSecureParameter(bad);
     }
 
     @Test(expected = PreconditionFailedException.class)
-    public void testCheckSecureParameterWithXmlString() throws PreconditionFailedException, InvalidParseOperationException {
+    public void testCheckSecureParameterWithXmlString()
+        throws PreconditionFailedException, InvalidParseOperationException {
         final String badText = "text<strong>text</strong>bb";
         SanityChecker.checkSecureParameter(badText);
     }
@@ -152,7 +157,8 @@ public class SanityCheckerTest {
     }
 
     @Test(expected = PreconditionFailedException.class)
-    public void testCheckSecureParameterWithGivenStringScript() throws PreconditionFailedException, InvalidParseOperationException {
+    public void testCheckSecureParameterWithGivenStringScript()
+        throws PreconditionFailedException, InvalidParseOperationException {
         final String badStringScript = "aa<script>bb";
         final String badStringCdata = "aa<![CDATA[bb";
         final String badStringEntity = "aa<!ENTITYbb";
@@ -162,13 +168,15 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void testCheckSecureParameterGivenStringGoodSanity() throws PreconditionFailedException, InvalidParseOperationException {
+    public void testCheckSecureParameterGivenStringGoodSanity()
+        throws PreconditionFailedException, InvalidParseOperationException {
         final String goodText = "abcdef";
         SanityChecker.checkSecureParameter(goodText);
     }
 
     @Test(expected = PreconditionFailedException.class)
-    public void testCheckSecureParameterGivenStringBadSize() throws PreconditionFailedException, InvalidParseOperationException {
+    public void testCheckSecureParameterGivenStringBadSize()
+        throws PreconditionFailedException, InvalidParseOperationException {
         final int limit = SanityChecker.getLimitParamSize();
         try {
             final String bad = new String(StringUtils.getRandom(40));
@@ -177,34 +185,6 @@ public class SanityCheckerTest {
         } finally {
             SanityChecker.setLimitParamSize(limit);
         }
-    }
-
-    @Test
-    public void testIsIssueOnParameterWhenGivenStringIsGood() {
-        final String goodText = "goodParameter";
-        boolean expectedResponse = SanityChecker.isIssueOnParameter(goodText);
-        Assertions.assertThat(expectedResponse).isFalse();
-    }
-
-    @Test
-    public void testIsIssueOnParameterWhenGivenStringIsBad() {
-        final String badText = "aa<![CDATA[bb";
-        boolean expectedResponse = SanityChecker.isIssueOnParameter(badText);
-        Assertions.assertThat(expectedResponse).isTrue();
-    }
-
-    @Test
-    public void testIsIssueOnParameterWithXmlString() {
-        final String badText = "text<strong>text</strong>bb";
-        boolean expectedResponse = SanityChecker.isIssueOnParameter(badText);
-        Assertions.assertThat(expectedResponse).isTrue();
-    }
-
-    @Test
-    public void testIsIssueOnParameterWithGivenStringScript() {
-        final String badString = "aa<script>bb";
-        boolean expectedResponse = SanityChecker.isIssueOnParameter(badString);
-        Assertions.assertThat(expectedResponse).isTrue();
     }
 
     @Test
@@ -233,5 +213,13 @@ public class SanityCheckerTest {
         final String badText = "aa<![CDATA[bb";
         boolean expectedResponse = SanityChecker.isValidFileName(badText);
         Assertions.assertThat(expectedResponse).isFalse();
+    }
+
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull() throws JsonProcessingException {
+        String jsonString = "{\"searchCriteriaDto\":{\"criteriaList\":[{\"criteria\":\"GUID\",\"values\":[{\"value\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\",\"id\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\"},{\"value\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\",\"id\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\"}],\"operator\":\"EQ\",\"category\":\"FIELDS\",\"dataType\":\"STRING\"}],\"pageNumber\":0,\"size\":10,\"language\":\"fr\"},\"$action\":[{\"$pull\":null,\"$add\":{\"#unitups\":[\"aeaqaaaaaehpsb22aatwmamb65ukohyaaaba\"]}}]}\n";
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode node = objectMapper.readTree(jsonString);
+        SanityChecker.sanitizeJson(node);
     }
 }

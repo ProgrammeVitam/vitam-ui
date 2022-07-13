@@ -27,7 +27,6 @@
 package fr.gouv.vitamui.archives.search.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
@@ -296,12 +295,8 @@ public class ArchivesSearchController extends AbstractUiRestController {
     @PostMapping(RestApi.RECLASSIFICATION)
     public String reclassification(@RequestBody final ReclassificationCriteriaDto reclassificationCriteriaDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode node = objectMapper.convertValue(reclassificationCriteriaDto, JsonNode.class);
-        SanityChecker.sanitizeJson(node);
+        SanityChecker.sanitizeCriteria(reclassificationCriteriaDto);
         LOGGER.debug("Reclassification query {}", reclassificationCriteriaDto);
-        LOGGER.debug("Reclassification query JSON {}", node);
         return archivesSearchService.reclassification(reclassificationCriteriaDto, buildUiHttpContext()).getBody();
     }
 
