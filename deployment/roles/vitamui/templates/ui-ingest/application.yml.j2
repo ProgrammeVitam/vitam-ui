@@ -125,7 +125,11 @@ ui-ingest:
 {% else %}
     ingest: "{{ url_prefix }}/ingest"
 {% endif %}
-
+{% if vitamui.referential.base_url is defined %}
+    referential: "{{ vitamui.referential.base_url }}"
+{% else %}
+    referential: "{{ url_prefix }}/referential"
+{% endif %}
 {% if vitamui.archive_search.base_url is defined %}
     archives-search: "{{ vitamui.archive_search.base_url }}"
 {% else %}
