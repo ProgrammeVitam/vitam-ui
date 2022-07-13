@@ -116,7 +116,7 @@
 </div>
 
 <ng-template #resultsFound>
-  <div class="vitamui-table-head" *ngIf="isToShowRulesList">
+  <div class="vitamui-table-head" *ngIf="isToShowRulesList || isToShowBlockedRulesList">
     <div class="col-4">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.IDENTIFIER' | translate }}</div>
     <div class="col-3">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.START_DATE' | translate }}</div>
     <div class="col-3">{{ 'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE.END_DATE' | translate }}</div>
