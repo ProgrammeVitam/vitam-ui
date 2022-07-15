@@ -72,6 +72,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
   isPreventInheritance = false;
   isToShowPropertiesList: boolean;
   isToShowRulesList: boolean;
+  isToShowBlockedRulesList: boolean;
 
   constructor(private translateService: TranslateService, private logger: Logger) {}
 
@@ -244,7 +245,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].AppraisalRule && archiveUnit['#management'].AppraisalRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].AppraisalRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].AppraisalRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].AppraisalRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].AppraisalRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].AppraisalRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
@@ -261,7 +262,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
             this.isPreventInheritance = archiveUnit['#management'].StorageRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].StorageRule.Inheritance.PreventRulesId) {
               const list: string[] = archiveUnit['#management'].StorageRule.Inheritance.PreventRulesId;
-              this.isToShowRulesList = archiveUnit['#management'].StorageRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].StorageRule.Inheritance.PreventRulesId.length !== 0;
               if (list) {
                 list.forEach((ruleId) => {
                   this.unitRuleDTO.push({ Rule: ruleId, status: 'BLOCKED' });
@@ -276,7 +277,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].AccessRule && archiveUnit['#management'].AccessRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].AccessRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].AccessRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].AccessRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].AccessRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].AccessRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
@@ -292,7 +293,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].ReuseRule && archiveUnit['#management'].ReuseRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].ReuseRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].ReuseRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].ReuseRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].ReuseRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].ReuseRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
@@ -308,7 +309,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].DisseminationRule && archiveUnit['#management'].DisseminationRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].DisseminationRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].DisseminationRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].DisseminationRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].DisseminationRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].DisseminationRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
@@ -324,7 +325,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].HoldRule && archiveUnit['#management'].HoldRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].HoldRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].HoldRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].HoldRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].HoldRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].HoldRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
@@ -340,7 +341,7 @@ export class ArchiveUnitRulesInformationsTabComponent implements OnInit, OnChang
           if (archiveUnit['#management'].ClassificationRule && archiveUnit['#management'].ClassificationRule.Inheritance) {
             this.isPreventInheritance = archiveUnit['#management'].ClassificationRule.Inheritance.PreventInheritance;
             if (archiveUnit['#management'].ClassificationRule.Inheritance.PreventRulesId) {
-              this.isToShowRulesList = archiveUnit['#management'].ClassificationRule.Inheritance.PreventRulesId.length !== 0;
+              this.isToShowBlockedRulesList = archiveUnit['#management'].ClassificationRule.Inheritance.PreventRulesId.length !== 0;
               const list: string[] = archiveUnit['#management'].ClassificationRule.Inheritance.PreventRulesId;
               if (list) {
                 list.forEach((ruleId) => {
