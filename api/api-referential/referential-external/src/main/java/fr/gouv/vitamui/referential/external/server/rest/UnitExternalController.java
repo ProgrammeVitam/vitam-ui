@@ -36,30 +36,25 @@
  */
 package fr.gouv.vitamui.referential.external.server.rest;
 
-import fr.gouv.vitamui.common.security.SanityChecker;
-import fr.gouv.vitamui.commons.api.ParameterChecker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
-import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.UnitExternalService;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
@@ -82,7 +77,7 @@ public class UnitExternalController {
     @Secured(ServicesData.ROLE_GET_UNITS)
     public JsonNode searchByDsl(final @PathVariable Optional<String> id, final @RequestBody JsonNode dsl) {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
-        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
+        SanityChecker.sanitizeJson(dsl);
         return unitExternalService.findUnitByDsl(id, dsl);
     }
 
@@ -92,7 +87,8 @@ public class UnitExternalController {
             @PathVariable final String id,
             @RequestBody final JsonNode dsl) throws VitamClientException {
         ParameterChecker.checkParameter("The dsl query is mandatory : ", dsl);
-        SanityChecker.sanitizeCriteria(Optional.of(dsl.toString()));
+        SanityChecker.sanitizeJson(dsl);
+        SanityChecker.sanitizeJson(dsl);
         return unitExternalService.findObjectMetadataById(id, dsl);
     }
 

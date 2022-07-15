@@ -1,0 +1,25 @@
+{
+  "dslQuery":{
+    "$query":[
+      {
+        "$or":[
+          {
+            "$in":{
+              "#id":[
+                "dfgfgggggggggggggggggggggggggggggggg"
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "$filter":{
+
+    },
+    "$projection":{
+
+    }
+  },
+  "usage":"Dissemination",
+  "version":2
+}

@@ -121,10 +121,10 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_AUDITS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) {
+    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) throws InvalidParseOperationException, PreconditionFailedException {
 
         ParameterChecker.checkParameter("Audit Options is mandatory parameter : " , auditOptions);
-        SanityChecker.sanitizeCriteria(Optional.of(auditOptions.getQuery().toString()));
+        SanityChecker.sanitizeCriteria(auditOptions);
         LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
     }
@@ -144,9 +144,10 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/probativeValue")
-    public boolean runProbativeValue(final @Valid @RequestBody ProbativeValueRequest probativeValueRequest) {
+    public boolean runProbativeValue(final @Valid @RequestBody ProbativeValueRequest probativeValueRequest)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(probativeValueRequest);
         LOGGER.debug("Run {}", probativeValueRequest);
-        SanityChecker.sanitizeCriteria(Optional.of(probativeValueRequest.getDslQuery().toString()));
         return operationExternalService.runProbativeValue(probativeValueRequest);
     }
 
