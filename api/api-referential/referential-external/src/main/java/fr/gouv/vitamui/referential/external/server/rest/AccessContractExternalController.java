@@ -124,7 +124,10 @@ public class AccessContractExternalController {
 
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_ACCESS_CONTRACTS)
-    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public AccessContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException , PreconditionFailedException{
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return accessContractExternalService.patch(partialDto);
@@ -132,7 +135,9 @@ public class AccessContractExternalController {
 
     @Secured(ServicesData.ROLE_GET_ACCESS_CONTRACTS)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException , PreconditionFailedException{
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for accessContract with id :{}", id);
         return accessContractExternalService.findHistoryById(id);
     }

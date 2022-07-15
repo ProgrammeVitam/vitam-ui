@@ -27,9 +27,7 @@
 
 package fr.gouv.vitamui.commons.security;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.PropertiesUtils;
 import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
@@ -88,6 +86,16 @@ public class SanityCheckerTest {
         Assertions.assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.checkJsonAll(json.toString())).
             isInstanceOf(InvalidParseOperationException.class);
+    }
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$fields_$and_$roots()
+        throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithProjectionRootsFieldsKeys = "probative_action_json_with_fields_projection_roots_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithProjectionRootsFieldsKeys);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(()-> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
     }
 
     @Test
@@ -216,10 +224,40 @@ public class SanityCheckerTest {
     }
 
     @Test
-    public void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull() throws JsonProcessingException {
-        String jsonString = "{\"searchCriteriaDto\":{\"criteriaList\":[{\"criteria\":\"GUID\",\"values\":[{\"value\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\",\"id\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\"},{\"value\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\",\"id\":\"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba\"}],\"operator\":\"EQ\",\"category\":\"FIELDS\",\"dataType\":\"STRING\"}],\"pageNumber\":0,\"size\":10,\"language\":\"fr\"},\"$action\":[{\"$pull\":null,\"$add\":{\"#unitups\":[\"aeaqaaaaaehpsb22aatwmamb65ukohyaaaba\"]}}]}\n";
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode node = objectMapper.readTree(jsonString);
-        SanityChecker.sanitizeJson(node);
+    public void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull()
+          throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithActionPullAddKeys = "reclassification_action_json_with_action_add_pull_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithActionPullAddKeys);
+            final JsonNode json = JsonHandler.getFromFile(file);
+            Assertions.assertThat(json).isNotNull();
+            assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+                doesNotThrowAnyException();
     }
+
+    @Test
+    public void testCheckSecureParameterWithIdAsParameter() {
+        assertThatCode(() -> SanityChecker.checkSecureParameter("#id")).
+            doesNotThrowAnyException();
+    }
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$query_$in_$or()
+          throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithInOrQueryKeys = "audit_action_json_with_in_or_query_keys.json";
+        final File file = PropertiesUtils.findFile(jsonWithInOrQueryKeys);
+            final JsonNode json = JsonHandler.getFromFile(file);
+            Assertions.assertThat(json).isNotNull();
+            assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+                doesNotThrowAnyException();
+    }
+    @Test
+    public void sanitizeJson_should_not_fail_with_keys_$exists()
+          throws FileNotFoundException, InvalidParseOperationException {
+        final String jsonWithExistsKey = "audit_action_json_with_exists_key.json";
+        final File file = PropertiesUtils.findFile(jsonWithExistsKey);
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
+    }
+
 }

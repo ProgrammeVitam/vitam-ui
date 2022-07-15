@@ -90,7 +90,8 @@ public class SanityChecker {
     // ISSUE with integration
     private static final Validator ESAPI = init();
     private static List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
-        List.of("$action", "$add", "$pull", "#unitups");
+        List.of("$action", "$add", "$pull", "#unitups", "#id", "$in",
+            "$or","$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields");
 
     private SanityChecker() {
         // Empty constructor
@@ -102,7 +103,7 @@ public class SanityChecker {
     }
 
     public static boolean isValidParameter(String value) {
-        return !isStringInfected(value, HTTP_PARAMETER_VALUE);
+        return !isStringInfected(value, HTTP_PARAMETER_VALUE) || PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST.contains(value);
     }
 
     public static boolean isValidParameterName(String value) {
