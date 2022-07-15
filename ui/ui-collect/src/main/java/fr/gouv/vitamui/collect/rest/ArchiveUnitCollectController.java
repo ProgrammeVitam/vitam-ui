@@ -31,7 +31,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
-import fr.gouv.vitamui.collect.service.CollectService;
+import fr.gouv.vitamui.collect.service.SearchCollectUnitService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
@@ -53,7 +53,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
-import static fr.gouv.vitamui.referential.common.rest.RestApi.SEARCH_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 @Api(tags = "Collect")
 @RequestMapping("${ui-collect.prefix}/archive-search")
@@ -64,28 +64,28 @@ public class ArchiveUnitCollectController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveUnitCollectController.class);
 
-    private final CollectService collectService;
+    private final SearchCollectUnitService searchCollectUnitService;
 
     @Autowired
-    public ArchiveUnitCollectController(final CollectService service) {
-        this.collectService = service;
+    public ArchiveUnitCollectController(final SearchCollectUnitService service) {
+        this.searchCollectUnitService = service;
     }
 
     @ApiOperation(value = "Get AU collect paginated")
-    @PostMapping(SEARCH_PATH + "/{projectId}")
+    @PostMapping(SEARCH + "/{projectId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ArchiveUnitsDto archiveUnits = new ArchiveUnitsDto();
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
-        ParameterChecker.checkParameter("The project identifier is a mandatory parameter: ", projectId);
-
+        ArchiveUnitsDto archiveUnits;
+        ParameterChecker.checkParameter("The Query  and the projectId are mandatories parameters: ",
+            searchQuery, projectId);
+        SanityChecker.checkSecureParameter(projectId);
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        archiveUnits = collectService.getAllArchiveUnitsForCollect(buildUiHttpContext(), projectId, searchQuery);
+        archiveUnits = searchCollectUnitService.getAllArchiveUnitsForCollect(buildUiHttpContext(), projectId, searchQuery);
 
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();

@@ -91,7 +91,6 @@ export class ArchiveSharedDataService {
 
   simpleSearchCriteriaAddObservable = this.simpleSearchCriteriaAddSubject.asObservable();
 
-
   appraisalFromMainSearchCriteriaObservable = this.searchAppraisalCriteriaActionFromMainSubject.asObservable();
   storageFromMainSearchCriteriaObservable = this.searchStorageCriteriaActionFromMainSubject.asObservable();
 
@@ -224,7 +223,6 @@ export class ArchiveSharedDataService {
   }
 
   addSimpleSearchCriteriaSubject(searchCriteria: SearchCriteriaAddAction) {
-  debugger;
     this.simpleSearchCriteriaAddSubject.next(searchCriteria);
   }
 

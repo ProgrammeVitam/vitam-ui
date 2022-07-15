@@ -27,8 +27,6 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.external.server.service.CollectExternalService;
@@ -44,7 +42,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -57,15 +54,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.Consumes;
 import java.io.InputStream;
 import java.util.Optional;
-
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 /**
  * Project External controller
@@ -144,21 +136,5 @@ public class ProjectExternalController {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[External] Project to update : {}", collectProjectDto);
         return collectExternalService.updateProject(collectProjectDto);
-    }
-
-    @ApiOperation(value = "find archive units by criteria")
-    @PostMapping(ARCHIVE_UNIT_PATH + SEARCH + "/{projectId}")
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
-        @RequestBody final SearchCriteriaDto searchQuery)
-        throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
-        SanityChecker.sanitizeCriteria(searchQuery);
-        SanityChecker.sanitizeCriteria(projectId);
-        LOGGER.debug("search archives Units by criteria = {}", searchQuery);
-
-        return collectExternalService.getAllArchiveUnitsForCollect(projectId, searchQuery);
     }
 }

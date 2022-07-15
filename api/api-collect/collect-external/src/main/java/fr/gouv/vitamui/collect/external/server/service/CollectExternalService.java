@@ -26,8 +26,6 @@
  */
 package fr.gouv.vitamui.collect.external.server.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
@@ -89,9 +87,5 @@ public class CollectExternalService extends AbstractResourceClientService<Collec
 
     public CollectProjectDto updateProject(CollectProjectDto collectProjectDto) {
         return collectInternalRestClient.update(getInternalHttpContext(), collectProjectDto);
-    }
-
-    public ArchiveUnitsDto getAllArchiveUnitsForCollect(String projectId, SearchCriteriaDto searchQuery) {
-        return collectInternalRestClient.getAllArchiveUnitsForCollect(getInternalHttpContext(), projectId, searchQuery);
     }
 }

@@ -429,6 +429,7 @@ public class ServicesData {
 
     public static final String ROLE_GET_ACCESSION_REGISTER_DETAIL = GET_ROLE_PREFIX + ACCESSION_REGISTER_DETAIL;
 
+    //------------------------------------ COLLECT -----------------------------------------
     public static final String PROJECTS = "PROJECTS";
     public static final String ROLE_GET_PROJECTS = GET_ROLE_PREFIX + PROJECTS;
     public static final String ROLE_CREATE_PROJECTS = CREATE_ROLE_PREFIX + PROJECTS;

@@ -43,6 +43,8 @@ export interface Unit {
   '#object'?: string;
   '#opi': string;
   '#version'?: string;
+  '#approximate_creation_date'?: string;
+  '#approximate_update_date'?: string;
 
   originating_agencyName?: string;
   Title?: string;

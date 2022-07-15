@@ -25,12 +25,12 @@
  * accept its terms.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Colors, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
-import { BehaviorSubject } from 'rxjs';
-import { ProjectsService } from '../projects.service';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
-import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
+import { Colors, DEFAULT_PAGE_SIZE, Direction, InfiniteScrollTable, PageRequest, Project } from 'ui-frontend-common';
+import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import { ProjectsService } from '../projects.service';
 
 @Component({
   selector: 'app-project-list',
@@ -79,9 +79,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     },
   ];
 
-  constructor(public projectsService: ProjectsService,
-     private translationService: TranslateService,
-     private router: Router) {
+  constructor(public projectsService: ProjectsService, private translationService: TranslateService, private router: Router) {
     super(projectsService);
   }
 
@@ -104,7 +102,7 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.orderChange.next(event);
   }
 
-  showProject(project : Project){
+  showProject(project: Project) {
     this.router.navigate(['collect/archive-search-collect', project.id]);
   }
 }

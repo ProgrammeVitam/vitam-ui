@@ -40,12 +40,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import {
-  AccessContract,
-  AccessContractApiService,
-  SecurityService,
-  SearchService,
-} from 'ui-frontend-common';
+import { AccessContract, AccessContractApiService, SearchService, SecurityService } from 'ui-frontend-common';
 import { ArchiveUnitCollectApiService } from '../core/api/archive-unit-collect-api.service';
 import { FilingHoldingSchemeNode } from './models/node.interface';
 import { SearchResponse } from './models/search-response.interface';
@@ -84,14 +79,13 @@ export class ArchiveUnitCollectService extends SearchService<any> {
     return data.sort(byTitle(this.locale));
   }
 
-  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId:string, accessContract: string): Observable<PagedResult> {
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, accessContract: string): Observable<PagedResult> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
     return this.archiveUnitCollectApiService.searchArchiveUnitsByCriteria(criteriaDto, projectId, headers).pipe(
       //   timeout(TIMEOUT_SEC),
       catchError((error) => {
-        debugger;
         if (error instanceof TimeoutError) {
           return throwError('Erreur : délai d’attente dépassé pour votre recherche');
         }

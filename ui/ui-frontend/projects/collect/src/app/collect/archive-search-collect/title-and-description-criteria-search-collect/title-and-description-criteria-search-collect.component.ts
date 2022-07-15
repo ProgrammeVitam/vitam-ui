@@ -41,7 +41,6 @@ import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/a
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-//import { ArchiveSharedDataService } from '../../../core/archive-shared-data.service';
 import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
 import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
 
@@ -61,9 +60,7 @@ export class TitleAndDescriptionCriteriaSearchCollectComponent implements OnInit
     archiveCriteria: '',
   };
 
-  constructor(private formBuilder: FormBuilder,
-    private archiveExchangeDataService: ArchiveSharedDataService,
-    public dialog: MatDialog) {
+  constructor(private formBuilder: FormBuilder, private archiveExchangeDataService: ArchiveSharedDataService, public dialog: MatDialog) {
     this.previousTitleDescriptionCriteriaValue = {
       archiveCriteria: '',
     };
@@ -108,12 +105,9 @@ export class TitleAndDescriptionCriteriaSearchCollectComponent implements OnInit
     this.quickSearchCriteriaForm.reset(this.emptyTitleDescriptionCriteriaForm);
   }
 
-  ngOnInit() {
-    console.log("*****ngOnInit : TitleAndDescriptionCriteriaSearchCollectComponent ******");
-  }
+  ngOnInit() {}
 
   addCriteria(keyElt: string, valueElt: CriteriaValue, labelElt: string, translated: boolean, operator: string, valueTranslated: boolean) {
-    console.log("*****addCriteria******");
     if (keyElt && valueElt) {
       this.archiveExchangeDataService.addSimpleSearchCriteriaSubject({
         keyElt,

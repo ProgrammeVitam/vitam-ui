@@ -29,11 +29,11 @@ package fr.gouv.vitamui.collect.external.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.CollectExternalService;
+import fr.gouv.vitamui.collect.external.server.service.SearchCollectUnitExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -42,7 +42,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.util.CollectionUtils;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,39 +53,41 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
 
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 /**
  * Project External controller
  */
 @Api(tags = "Collect")
-@RequestMapping(RestApi.COLLECT_ARCHIVE_UNIT_PATH)
+@RequestMapping(RestApi.COLLECT_PROJECT_PATH)
 @RestController
 @ResponseBody
 public class ArchiveUnitExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveUnitExternalController.class);
 
-    private final CollectExternalService collectExternalService;
+    private final SearchCollectUnitExternalService searchCollectUnitExternalService;
 
     @Autowired
-    public ArchiveUnitExternalController(CollectExternalService collectExternalService) {
-        this.collectExternalService = collectExternalService;
+    public ArchiveUnitExternalController(SearchCollectUnitExternalService searchCollectUnitExternalService) {
+        this.searchCollectUnitExternalService = searchCollectUnitExternalService;
     }
 
     @ApiOperation(value = "find archive units by criteria")
-    @PostMapping(SEARCH)
+    @Secured(ServicesData.ROLE_GET_PROJECTS)
+    @PostMapping(ARCHIVE_UNIT_PATH + SEARCH + "/{projectId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
+    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Query is a mandatory parameter: ", searchQuery);
 
+        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId ,searchQuery);
         SanityChecker.sanitizeCriteria(searchQuery);
+        SanityChecker.checkSecureParameter(projectId);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
-        ArchiveUnitsDto archiveUnitsForCollect =
-            new ArchiveUnitsDto(); //collectExternalService.getAllArchiveUnitsForCollect(searchQuery);
-        return archiveUnitsForCollect.getArchives();
+
+        return searchCollectUnitExternalService.getAllArchiveUnitsForCollect(projectId, searchQuery);
     }
 }

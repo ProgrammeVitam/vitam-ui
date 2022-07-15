@@ -34,17 +34,17 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse} from 'ui-frontend-common';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { SearchCriteriaHistory } from '../../collect/models/search-criteria-history.interface';
 import { SearchResponse } from '../../collect/models/search-response.interface';
 import { SearchCriteriaDto } from '../../collect/models/search.criteria';
-import { SearchCriteriaHistory } from '../../collect/models/search-criteria-history.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
   baseUrl: string;
@@ -65,22 +65,21 @@ export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
   }
 
   getFilingHoldingScheme(headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', {headers});
+    return this.http.get<SearchResponse>(this.apiUrl + '/filingholdingscheme', { headers });
   }
 
   get(unitId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    return this.http.get<any>(this.apiUrl + '/units/' + unitId, {headers});
+    return this.http.get<any>(this.apiUrl + '/units/' + unitId, { headers });
   }
 
   searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
-    debugger;
-    return this.http.post<SearchResponse>(`${this.apiUrl}/search/${projectId}`, criteriaDto, {headers});
+    return this.http.post<SearchResponse>(`${this.apiUrl}/search/${projectId}`, criteriaDto, { headers });
   }
 
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
-      headers
+      headers,
     });
   }
 
@@ -89,7 +88,7 @@ export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, {headers, responseType: 'text'});
+    return this.http.get(`${this.apiUrl}/archiveunit/${id}`, { headers, responseType: 'text' });
   }
 
   getSearchCriteriaHistory(): Observable<SearchCriteriaHistory[]> {
@@ -109,25 +108,25 @@ export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
   }
 
   getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
-    return this.http.get(`${this.apiUrl}/object/${id}`, {headers, responseType: 'text'});
+    return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/analysis`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/action`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/computed-inherited-rules`, criteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 }
