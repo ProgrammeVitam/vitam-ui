@@ -114,8 +114,8 @@ describe('ManagementRulesComponent', () => {
     { id: 'AppraisalRule', name: 'name', isDisabled: false },
     { id: 'HoldRule', name: 'name', isDisabled: true },
     { id: 'AccessRule', name: 'name', isDisabled: true },
-    { id: 'DisseminationRule', name: 'name', isDisabled: true },
-    { id: 'ReuseRule', name: 'name', isDisabled: true },
+    { id: 'DisseminationRule', name: 'name', isDisabled: false },
+    { id: 'ReuseRule', name: 'name', isDisabled: false },
     { id: 'ClassificationRule', name: 'name', isDisabled: true },
   ];
 
@@ -228,6 +228,14 @@ describe('ManagementRulesComponent', () => {
     expect(component.criteriaSearchListToSave).not.toBeUndefined();
   });
 
+  it('Should the property isDisseminationRuleActionDisabled is true when the category selected is DisseminationRule  ', () => {
+    // when
+    component.selectRule(rulesCatygories[4]);
+    // then
+    expect(component.isDisseminationActionDisabled).not.toBeNull();
+    expect(component.isDisseminationActionDisabled).toBeTruthy();
+  });
+
   it('Should the property to disabled delete property button be true when the category selected is DUA  ', () => {
     // when
     component.selectRule(rulesCatygories[1]);
@@ -242,5 +250,13 @@ describe('ManagementRulesComponent', () => {
     // then
     expect(component.isDeletePropertyDisabled).not.toBeNull();
     expect(component.isDeletePropertyDisabled).toBeFalsy();
+  });
+
+  it('Should the property isReuseRuleActionDisabled is true when the category selected is ReuseRule  ', () => {
+    // when
+    component.selectRule(rulesCatygories[5]);
+    // then
+    expect(component.isReuseRuleActionDisabled).not.toBeNull();
+    expect(component.isReuseRuleActionDisabled).toBeTruthy();
   });
 });

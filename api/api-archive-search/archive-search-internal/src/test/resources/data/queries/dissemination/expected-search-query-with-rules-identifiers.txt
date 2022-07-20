@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.DisseminationRule.Rules.Rule":"DisseminationRuleFirstIdentifier"}},{"$eq":{"#management.DisseminationRule.Rules.Rule":"DisseminationRuleSecondIdentifier"}}]}]
