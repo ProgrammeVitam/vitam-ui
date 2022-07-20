@@ -122,7 +122,7 @@ public class ContextController implements CrudController<ContextDto> {
 
     @PostMapping(value = RestApi.FINDBYCERTIFICATE_PATH)
     public ContextDto findByCertificate(final @Valid @RequestBody String data) {
-        LOGGER.info("Request data {} ", data);
+        LOGGER.debug("Request data {} ", data);
         ParameterChecker.checkParameter("The request data is a mandatory parameter: ", data);
         return contextService.findByCertificate(data);
     }
