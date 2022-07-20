@@ -95,7 +95,7 @@ public class VitamQueryHelper {
     public static Query buildSubQueryByOperator(String searchKey, String value,
         ArchiveSearchConsts.CriteriaOperators operator)
         throws InvalidCreateOperationException {
-        LOGGER.debug("buildSubQueryByOperator  searchKey{}  value {} operator {} ", searchKey, value, operator);
+        LOGGER.debug("buildSubQueryByOperator  searchKey : {}  value : {} operator : {} ", searchKey, value, operator);
         Query criteriaSubQuery;
         switch (operator) {
             case MATCH:

@@ -161,6 +161,8 @@ public class ArchiveSearchInternalService {
                 selectMultiQuery.addFacets(FacetHelper.terms(FACETS_COMPUTE_RULES_AU_NUMBER,
                     SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
                     FacetOrder.ASC));
+                selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
+                selectMultiQuery.setLimitFilter(0,1);
             }
             JsonNode dslQuery = selectMultiQuery.getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);

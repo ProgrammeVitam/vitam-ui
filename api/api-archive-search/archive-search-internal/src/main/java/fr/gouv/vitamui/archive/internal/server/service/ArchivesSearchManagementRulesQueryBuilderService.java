@@ -449,6 +449,7 @@ public class ArchivesSearchManagementRulesQueryBuilderService {
                 .addParameterCriteria(mgtRulesSubQuery, ArchiveSearchConsts.CriteriaOperators.MISSING,
                     COMPUTED_FIELDS + ruleCategory + INHERITANCE_ORIGIN_FIELD, List.of());
             mainQuery.add(mgtRulesSubQuery);
+            mainQuery.setDepthLimit(1);
         } else {
             BooleanQuery mgtRulesSubQuery = and();
             List<String> rulesIdentifiers =
