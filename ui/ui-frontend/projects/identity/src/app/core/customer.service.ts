@@ -49,17 +49,16 @@ import { CustomerApiService } from './api/customer-api.service';
 export const DEFAULT_PAGE_SIZE = 20;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CustomerService {
-
   updated = new Subject<Customer>();
 
   constructor(
     private customerApi: CustomerApiService,
     private snackBar: VitamUISnackBar,
     private sanitizer: DomSanitizer,
-    private themeService: ThemeService,
+    private themeService: ThemeService
   ) {}
 
   get(id: string): Observable<Customer> {
@@ -70,80 +69,82 @@ export class CustomerService {
     return this.customerApi.getMyCustomer();
   }
 
-  exists(properties: { code?: string, domain?: string }): Observable<any> {
-
+  exists(properties: { code?: string; domain?: string }): Observable<any> {
     const criterionArray: Criterion[] = [];
     if (properties.code) {
       criterionArray.push({ key: 'code', value: properties.code, operator: Operators.equals });
     }
     if (properties.domain) {
-      criterionArray.push({ key: 'emailDomains', value: properties.domain, operator: Operators.containsIgnoreCase });
+      criterionArray.push({ key: 'emailDomains', value: properties.domain, operator: Operators.equalsIgnoreCase });
     }
     const query: SearchQuery = { criteria: criterionArray };
 
-    const params = [{key : 'criteria', value: JSON.stringify(query)}];
+    const params = [{ key: 'criteria', value: JSON.stringify(query) }];
 
     return this.customerApi.checkExistsByParam(params);
   }
 
   create(customer: Customer, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.createCustomer(customer, logos)
-      .pipe(
-        tap(
-          (response: Customer) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerCreate', code: response.code },
-              duration: 10000
-            });
-          },
-          () => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerCreateError' },
-              duration: 10000
-            });
-          }
-        )
-      );
+    return this.customerApi.createCustomer(customer, logos).pipe(
+      tap(
+        (response: Customer) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'customerCreate', code: response.code },
+            duration: 10000,
+          });
+        },
+        () => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'customerCreateError' },
+            duration: 10000,
+          });
+        }
+      )
+    );
   }
 
-  patch(partialCustomer: { id: string, [key: string]: any }, logos?: Logo[]): Observable<Customer> {
-    return this.customerApi.patchCustomer(partialCustomer, logos)
-      .pipe(
-        tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
-        tap(
-          (updatedCustomer: Customer) => {
-            this.snackBar.openFromComponent(VitamUISnackBarComponent, {
-              panelClass: 'vitamui-snack-bar',
-              data: { type: 'customerUpdate', code: updatedCustomer.code },
-              duration: 10000
-            });
-          },
-          (error) => {
-            this.snackBar.open(error.error.message, null, {
-              panelClass: 'vitamui-snack-bar',
-              duration: 10000
-            });
-          }
-        )
-      );
+  patch(partialCustomer: { id: string; [key: string]: any }, logos?: Logo[]): Observable<Customer> {
+    return this.customerApi.patchCustomer(partialCustomer, logos).pipe(
+      tap((updatedCustomer: Customer) => this.updated.next(updatedCustomer)),
+      tap(
+        (updatedCustomer: Customer) => {
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: { type: 'customerUpdate', code: updatedCustomer.code },
+            duration: 10000,
+          });
+        },
+        (error) => {
+          this.snackBar.open(error.error.message, null, {
+            panelClass: 'vitamui-snack-bar',
+            duration: 10000,
+          });
+        }
+      )
+    );
   }
 
   public getLogoUrl(id: string, type: AttachmentType): Observable<SafeResourceUrl> {
     return this.customerApi.getLogo(id, type).pipe(
       map((res: HttpResponse<Blob>) => {
-          if (res.status === 204) {
-            switch (type) {
-              case AttachmentType.Header: return this.themeService.defaultTheme.headerUrl; break;
-              case AttachmentType.Footer: return this.themeService.defaultTheme.footerUrl; break;
-              case AttachmentType.Portal: return this.themeService.defaultTheme.portalUrl; break;
-            }
-            return null;
+        if (res.status === 204) {
+          switch (type) {
+            case AttachmentType.Header:
+              return this.themeService.defaultTheme.headerUrl;
+              break;
+            case AttachmentType.Footer:
+              return this.themeService.defaultTheme.footerUrl;
+              break;
+            case AttachmentType.Portal:
+              return this.themeService.defaultTheme.portalUrl;
+              break;
           }
-          return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
+          return null;
         }
-      )
+        return this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(res.body));
+      })
     );
   }
 
@@ -157,5 +158,4 @@ export class CustomerService {
   public getGdprReadOnlySettingStatus(): Observable<boolean> {
     return this.customerApi.getGdprSettingStatus();
   }
-
 }
