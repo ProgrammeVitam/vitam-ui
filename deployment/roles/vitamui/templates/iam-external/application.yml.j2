@@ -12,7 +12,7 @@ spring:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.iam.external.server: {{ vitamui_struct.logging_level }}
+    fr.gouv.vitamui.iam.external.server: {{ vitamui_struct.log.vitamui_level }}
 
 server:
   port: {{ vitamui_struct.port_service }}
@@ -32,8 +32,11 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-        enabled: "{{ vitamui_struct.jvm_log|lower }}"
+        enabled: "{{ vitamui_struct.accesslogs|lower }}"
         directory: "{{ vitamui_folder_log }}"
+        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+        file-date-format: ".yyyy-MM-dd"
+        suffix: ".log"
 
 management:
   server:

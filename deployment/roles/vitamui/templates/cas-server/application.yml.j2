@@ -27,8 +27,14 @@ server:
   context-path: /cas
   servlet.session.cookie.path: /cas
 {% endif %}
-  tomcat.basedir: {{ vitamui_folder_conf }}/tomcat
-
+  tomcat:
+    basedir: {{ vitamui_folder_conf }}/tomcat
+    accesslog:
+        enabled: "{{ vitamui_struct.accesslogs|lower }}"
+        directory: "{{ vitamui_folder_log }}"
+        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+        file-date-format: ".yyyy-MM-dd"
+        suffix: ".log"
 
 management:
   server:
@@ -207,19 +213,19 @@ logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
     org.reflections.Reflections: ERROR
-    org.apereo.cas.web.CasWebApplication: INFO
-    org.springframework.boot.autoconfigure.security: INFO
-    org.jasig.cas.client: INFO
-    org.apereo: INFO
-    org.springframework.cloud: INFO
+    org.apereo.cas.web.CasWebApplication: {{ vitamui_struct.log.vitamui_level }}
+    org.springframework.boot.autoconfigure.security: {{ vitamui_struct.log.vitamui_level }}
+    org.jasig.cas.client: {{ vitamui_struct.log.vitamui_level }}
+    org.apereo: {{ vitamui_struct.log.vitamui_level }}
+    org.springframework.cloud: {{ vitamui_struct.log.vitamui_level }}
     org.springframework.amqp: OFF
     org.springframework.context.annotation: OFF
     org.springframework.boot.devtools: OFF
     org.apereo.cas.web.flow: INFO
     org.apereo.inspektr.audit.support: OFF
-    fr.gouv.vitamui.cas: DEBUG
-    org.elasticsearch.metrics: DEBUG
-    fr.gouv.vitamui.commons: DEBUG
+    fr.gouv.vitamui.cas: {{ vitamui_struct.log.vitamui_level }}
+    org.elasticsearch.metrics: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.commons: {{ vitamui_struct.log.vitamui_level }}
 
 {% if vitamui.cas_server.cors.enabled|lower == "true" %}
 # Cas CORS (necessary for mobile app)
