@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.DisseminationRule.Rules.Rule":"DisseminationRuleIdentifier"}}]}, {"$or":[{"$eq":{"#management.DisseminationRule.Rules.StartDate":"2022-05-25"}}]}]

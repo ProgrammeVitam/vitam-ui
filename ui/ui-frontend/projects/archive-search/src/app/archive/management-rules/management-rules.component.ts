@@ -90,9 +90,9 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     {
       id: 'DisseminationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'),
-      isDisabled: true,
+      isDisabled: false,
     },
-    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true },
+    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: false },
     {
       id: 'ClassificationRule',
       name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'),
@@ -115,6 +115,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   isDeleteValidActionsWithProperty = false;
   isDeletePropertyDisabled = false;
   isAccessRuleActionDisabled = false;
+  isReuseRuleActionDisabled = false;
+  isDisseminationActionDisabled = false;
   isBlockInheritanceCategoryDisabled = false;
   isUnlockInheritanceCategoryDisabled = false;
   isStorageRuleActionDisabled = false;
@@ -318,6 +320,70 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchListToSave);
   }
 
+  prepareReuseRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.REUSERULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.ReuseRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.ReuseRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
   ngOnDestroy() {
     this.selectedItemSubscription?.unsubscribe();
     this.criteriaSearchListToSaveSuscription?.unsubscribe();
@@ -331,6 +397,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   selectRule(rule: any) {
     this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
     this.isAccessRuleActionDisabled = rule.id === RuleTypeEnum.ACCESSRULE;
+    this.isReuseRuleActionDisabled = rule.id === RuleTypeEnum.REUSERULE;
+    this.isDisseminationActionDisabled = rule.id === RuleTypeEnum.DISSEMINATIONRULE;
     this.isStorageRuleActionDisabled = rule.id === RuleTypeEnum.STORAGERULE;
 
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
@@ -469,7 +537,9 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           this.isRuleCategorySelected &&
           !this.isAddValidActions &&
           !this.isStorageRuleActionDisabled &&
-          !this.isAccessRuleActionDisabled
+          !this.isAccessRuleActionDisabled &&
+          !this.isReuseRuleActionDisabled &&
+          !this.isDisseminationActionDisabled
         ) {
           this.prepareActionToAdd(rule);
         }
@@ -480,7 +550,9 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           !this.isDeleteValidActions &&
           !this.isUnlockRulesInheritanceDisabled &&
           !this.isAccessRuleActionDisabled &&
-          !this.isStorageRuleActionDisabled
+          !this.isStorageRuleActionDisabled &&
+          !this.isReuseRuleActionDisabled &&
+          !this.isDisseminationActionDisabled
         ) {
           this.prepareActionToAdd(rule);
         }
@@ -514,6 +586,8 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
     this.prepareAppraisalRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
     this.prepareAccessRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
     this.prepareStorageRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareReuseRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareDisseminationRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
@@ -714,6 +788,78 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
           listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
       ) {
         actionAddOnRules.StorageRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
+  prepareDisseminationRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.DisseminationRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !==
+        -1
+      ) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !==
+        -1
+      ) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.DisseminationRule = {
           preventInheritance,
         };
       }

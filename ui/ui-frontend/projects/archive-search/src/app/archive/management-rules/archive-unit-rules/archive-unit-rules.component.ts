@@ -39,6 +39,7 @@ import { animate, AUTO_STYLE, state, style, transition, trigger } from '@angular
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ManagementRulesSharedDataService } from '../../../core/management-rules-shared-data.service';
+import { RuleTypeEnum } from '../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../models/ruleAction.interface';
 
 @Component({
@@ -179,7 +180,7 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
           actionType === RuleActionsEnum.ADD_RULES &&
           this.ruleCategoryDuaActions.rules?.filter((rule) => rule.rule !== ruleId).length === 0
         ) {
-          if (this.ruleCategory === 'AccessRule') {
+          if (this.ruleCategory === RuleTypeEnum.ACCESSRULE || this.ruleCategory === RuleTypeEnum.REUSERULE) {
             this.managementRules = this.managementRules.filter(
               (rule) => !(rule.category === this.ruleCategory && rule.actionType === RuleActionsEnum.ADD_RULES)
             );

@@ -55,7 +55,14 @@
                   {{ 'RULES.ACTIONS.DELETE_RULE' | translate }}</mat-option
                 >
                 <mat-option
-                  [disabled]="!isRuleCategorySelected || isAddValidActions || isStorageRuleActionDisabled || isAccessRuleActionDisabled"
+                  [disabled]="
+                    !isRuleCategorySelected ||
+                    isAddValidActions ||
+                    isStorageRuleActionDisabled ||
+                    isReuseRuleActionDisabled ||
+                    isAccessRuleActionDisabled ||
+                    isDisseminationActionDisabled
+                  "
                   (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
                 >
                   {{ 'RULES.ACTIONS.BLOCK_RULE_INHERITANCE' | translate }}</mat-option
@@ -66,7 +73,9 @@
                     isDeleteValidActions ||
                     !isRuleCategorySelected ||
                     isStorageRuleActionDisabled ||
-                    isAccessRuleActionDisabled
+                    isAccessRuleActionDisabled ||
+                    isReuseRuleActionDisabled ||
+                    isDisseminationActionDisabled
                   "
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >
@@ -86,7 +95,13 @@
           <mat-form-field class="vitamui-mat-select select-more-actions">
             <mat-select
               placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
-              [disabled]="!isRuleCategorySelected || !isAllActionsValid() || isAccessRuleActionDisabled"
+              [disabled]="
+                !isRuleCategorySelected ||
+                !isAllActionsValid() ||
+                isAccessRuleActionDisabled ||
+                isReuseRuleActionDisabled ||
+                isDisseminationActionDisabled
+              "
             >
               <mat-option
                 [disabled]="
