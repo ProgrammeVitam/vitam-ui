@@ -518,6 +518,8 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       computeFacets: true,
     };
 
+    this.loadExactCount();
+
     this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
         this.archiveSearchResultFacets.appraisalRuleFacets = this.archiveFacetsService.extractRulesFacetsResultsByCategory(
