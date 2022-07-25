@@ -34,28 +34,31 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CollectRoutingModule } from './collect-routing.module';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUILibraryModule } from 'vitamui-library';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
+import { VitamUILibraryModule } from 'vitamui-library';
+
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { NgxFilesizeModule } from 'ngx-filesize';
+import { ProjectRoutingModule } from './project-routing.module';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectsComponent } from './projects.component';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @NgModule({
   imports: [
     CommonModule,
-    CollectRoutingModule,
+    ProjectRoutingModule,
     VitamUICommonModule,
     MatMenuModule,
     MatSnackBarModule,
@@ -69,9 +72,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatFormFieldModule,
     MatDatepickerModule,
     MatSelectModule,
-    MatTabsModule,
-    MatNativeDateModule,
   ],
-  providers: [DatePipe],
+  providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
+  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
 })
-export class CollectModule {}
+export class ProjectModule {}

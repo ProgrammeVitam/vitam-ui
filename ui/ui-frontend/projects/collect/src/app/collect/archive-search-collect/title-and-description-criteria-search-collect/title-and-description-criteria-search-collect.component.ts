@@ -41,8 +41,7 @@ import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/a
 import { merge } from 'rxjs';
 import { debounceTime, filter, map } from 'rxjs/operators';
 import { CriteriaDataType, CriteriaOperator, diff } from 'ui-frontend-common';
-import { ArchiveSearchConstsEnum } from '../../models/archive-search-consts-enum';
-import { CriteriaValue, SearchCriteriaTypeEnum } from '../../models/search.criteria';
+import { ArchiveSearchConstsEnum, CriteriaValue, SearchCriteriaTypeEnum } from '../../core/models';
 
 const TITLE_OR_DESCRIPTION = 'TITLE_OR_DESCRIPTION';
 

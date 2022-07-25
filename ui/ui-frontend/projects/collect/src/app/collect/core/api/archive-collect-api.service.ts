@@ -38,15 +38,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BaseHttpClient, BASE_URL, PageRequest, PaginatedResponse } from 'ui-frontend-common';
-import { SearchCriteriaHistory } from '../../collect/models/search-criteria-history.interface';
-import { SearchResponse } from '../../collect/models/search-response.interface';
-import { SearchCriteriaDto } from '../../collect/models/search.criteria';
+import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse } from 'ui-frontend-common';
+import { SearchCriteriaDto, SearchCriteriaHistory, SearchResponse } from '../models';
+import { Unit } from '../../../../../../archive-search/src/app/archive/models/unit.interface';
+import { UnitDescriptiveMetadataDto } from '../../../../../../archive-search/src/app/archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
+export class ArchiveCollectApiService extends BaseHttpClient<any> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
@@ -127,6 +127,17 @@ export class ArchiveUnitCollectApiService extends BaseHttpClient<any> {
     return this.http.post(`${this.apiUrl}/computed-inherited-rules`, criteriaDto, {
       responseType: 'text',
       headers,
+    });
+  }
+
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
+    return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
+  }
+
+  updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, {
+      headers,
+      responseType: 'text' as 'json',
     });
   }
 }

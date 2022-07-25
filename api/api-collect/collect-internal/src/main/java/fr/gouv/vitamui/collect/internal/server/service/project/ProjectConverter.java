@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
-public class CollectProjectConverter {
+public class ProjectConverter {
     public static CollectProjectDto toVitamuiDto(ProjectDto projectDto) {
         return CollectProjectDto.builder()
             .archivalAgencyIdentifier(projectDto.getArchivalAgencyIdentifier())
@@ -53,7 +53,7 @@ public class CollectProjectConverter {
     }
 
     public static List<CollectProjectDto> toVitamuiDtos(List<ProjectDto> projectDtos) {
-        return projectDtos.stream().map(CollectProjectConverter::toVitamuiDto).collect(Collectors.toList());
+        return projectDtos.stream().map(ProjectConverter::toVitamuiDto).collect(Collectors.toList());
     }
 
     public static ProjectDto toVitamDto(CollectProjectDto collectProjectDto) {

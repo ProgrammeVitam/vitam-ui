@@ -38,9 +38,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { ActiveTenantGuard, AppGuard, TenantSelectionGuard, VitamUITenantSelectComponent } from 'ui-frontend-common';
-import { ArchiveSearchCollectComponent } from './archive-search-collect/archive-search-collect.component';
-
-import { ProjectsComponent } from './projects/projects.component';
 
 const routes: Route[] = [
   {
@@ -55,13 +52,13 @@ const routes: Route[] = [
   },
   {
     path: 'tenant/:tenantIdentifier',
-    component: ProjectsComponent,
+    loadChildren: () => import('./projects/project.module').then((m) => m.ProjectModule),
     canActivate: [ActiveTenantGuard],
   },
   {
     path: 'archive-search-collect/:id',
-    component: ArchiveSearchCollectComponent,
-    canActivate: [AppGuard]
+    loadChildren: () => import('./archive-search-collect/archive-search-collect.module').then((m) => m.ArchiveSearchCollectModule),
+    canActivate: [AppGuard],
   },
 ];
 
@@ -70,4 +67,4 @@ const routes: Route[] = [
   imports: [CommonModule, RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CollectRoutingModule { }
+export class CollectRoutingModule {}

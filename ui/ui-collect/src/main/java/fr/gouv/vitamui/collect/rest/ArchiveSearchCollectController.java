@@ -24,70 +24,74 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-package fr.gouv.vitamui.collect.external.server.rest;
+
+package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.SearchCollectUnitExternalService;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.collect.service.ArchiveSearchCollectService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.Produces;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
-/**
- * Project External controller
- */
 @Api(tags = "Collect")
-@RequestMapping(RestApi.COLLECT_PROJECT_PATH)
+@RequestMapping("${ui-collect.prefix}/archive-search")
 @RestController
-@ResponseBody
-public class ArchiveUnitExternalController {
+@Consumes("application/json")
+@Produces("application/json")
+public class ArchiveSearchCollectController extends AbstractUiRestController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveUnitExternalController.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectController.class);
 
-    private final SearchCollectUnitExternalService searchCollectUnitExternalService;
+    private final ArchiveSearchCollectService searchCollectUnitService;
 
     @Autowired
-    public ArchiveUnitExternalController(SearchCollectUnitExternalService searchCollectUnitExternalService) {
-        this.searchCollectUnitExternalService = searchCollectUnitExternalService;
+    public ArchiveSearchCollectController(final ArchiveSearchCollectService service) {
+        this.searchCollectUnitService = service;
     }
 
-    @ApiOperation(value = "find archive units by criteria")
-    @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @PostMapping(ARCHIVE_UNIT_PATH + SEARCH + "/{projectId}")
+    @ApiOperation(value = "Get AU collect paginated")
+    @PostMapping(SEARCH + "/{projectId}")
     @Consumes(MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
+    public VitamUIArchiveUnitResponseDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
         @RequestBody final SearchCriteriaDto searchQuery)
         throws InvalidParseOperationException, PreconditionFailedException {
-
-        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId ,searchQuery);
-        SanityChecker.sanitizeCriteria(searchQuery);
+        ArchiveUnitsDto archiveUnits;
+        ParameterChecker.checkParameter("The Query  and the projectId are mandatories parameters: ",
+            searchQuery, projectId);
         SanityChecker.checkSecureParameter(projectId);
+        SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
+        VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
+        archiveUnits = searchCollectUnitService.getAllArchiveUnitsForCollect(buildUiHttpContext(), projectId, searchQuery);
 
-        return searchCollectUnitExternalService.getAllArchiveUnitsForCollect(projectId, searchQuery);
+        if (archiveUnits != null) {
+            archiveResponseDtos = archiveUnits.getArchives();
+        }
+        return archiveResponseDtos;
+
     }
+
 }

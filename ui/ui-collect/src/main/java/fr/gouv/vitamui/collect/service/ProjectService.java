@@ -48,16 +48,16 @@ import java.util.Optional;
  * UI Collect Service
  */
 @Service
-public class CollectService extends AbstractPaginateService<CollectProjectDto> {
+public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
 
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(CollectService.class);
+    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectService.class);
 
     private final CollectExternalRestClient collectExternalRestClient;
     private final CollectStreamingExternalRestClient collectStreamingExternalRestClient;
     private final CommonService commonService;
 
     @Autowired
-    public CollectService(CommonService commonService,
+    public ProjectService(CommonService commonService,
         CollectExternalRestClient collectExternalRestClient,
         CollectStreamingExternalRestClient collectStreamingExternalRestClient) {
         this.commonService = commonService;

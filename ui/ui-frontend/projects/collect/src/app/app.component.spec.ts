@@ -77,11 +77,4 @@ describe('AppComponent', () => {
     console.log('Create App: ', app);
     expect(app).toBeTruthy();
   }));
-
-  it(`should have as title 'Collect Application'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    console.log('Title App: ', app);
-    expect(app.title).toEqual('Collect Application');
-  }));
 });

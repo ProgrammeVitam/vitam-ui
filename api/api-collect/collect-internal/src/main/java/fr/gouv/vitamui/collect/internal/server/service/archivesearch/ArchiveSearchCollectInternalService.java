@@ -27,7 +27,7 @@
  *
  */
 
-package fr.gouv.vitamui.collect.internal.server.service;
+package fr.gouv.vitamui.collect.internal.server.service.archivesearch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -48,13 +48,13 @@ import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 
-public class SearchCollectUnitInternalService {
+public class ArchiveSearchCollectInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(SearchCollectUnitInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalService.class);
 
-    public SearchCollectUnitInternalService(CollectService collectService, ObjectMapper objectMapper) {
+    public ArchiveSearchCollectInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;
         this.objectMapper = objectMapper;
     }

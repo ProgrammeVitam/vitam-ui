@@ -27,7 +27,7 @@
  *
  */
 
-package fr.gouv.vitamui.collect.internal.server.service;
+package fr.gouv.vitamui.collect.internal.server.service.project;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -47,7 +47,6 @@ import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.internal.server.service.project.CollectProjectConverter;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
@@ -88,7 +87,7 @@ public class ProjectInternalService {
     public CollectProjectDto createProject(VitamContext vitamContext, CollectProjectDto collectProjectDto) {
         LOGGER.debug("CollectProjectDto: ", collectProjectDto);
         try {
-            ProjectDto projectDto = CollectProjectConverter.toVitamDto(collectProjectDto);
+            ProjectDto projectDto = ProjectConverter.toVitamDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.initProject(vitamContext, projectDto);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
@@ -96,7 +95,7 @@ public class ProjectInternalService {
             ProjectDto responseProjectDto =
                 objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class);
-            return CollectProjectConverter.toVitamuiDto(responseProjectDto);
+            return ProjectConverter.toVitamuiDto(responseProjectDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
@@ -111,16 +110,16 @@ public class ProjectInternalService {
         Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> criteria) {
         LOGGER.debug("Page: ", page);
         LOGGER.debug("Size: ", size);
-        LOGGER.debug("OrderBy: ", orderBy.stream().findFirst().orElse(null));
-        LOGGER.debug("Direction: ", direction.stream().findFirst().orElse(null));
-        LOGGER.debug("Criteria: ", criteria.stream().findFirst().orElse(null));
+        LOGGER.debug("OrderBy: ", orderBy.orElse(null));
+        LOGGER.debug("Direction: ", direction.orElse(null));
+        LOGGER.debug("Criteria: ", criteria.orElse(null));
         try {
             RequestResponse<JsonNode> requestResponse = collectService.getProjects(vitamContext);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
             List<ProjectDto> projectDtos = objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(), new TypeReference<>(){});
-            List<CollectProjectDto> collectProjectDtos = CollectProjectConverter.toVitamuiDtos(projectDtos);
+            List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_RETRIEVE_PROJECT + ": {}", e);
@@ -147,7 +146,7 @@ public class ProjectInternalService {
         LOGGER.debug("Id: ", id);
         LOGGER.debug("CollectProjectDto: ", collectProjectDto);
         try {
-            ProjectDto projectDto = CollectProjectConverter.toVitamDto(collectProjectDto);
+            ProjectDto projectDto = ProjectConverter.toVitamDto(collectProjectDto);
             RequestResponse<JsonNode> requestResponse = collectService.updateProject(vitamContext, projectDto);
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when updating project!");
@@ -155,7 +154,7 @@ public class ProjectInternalService {
             ProjectDto responseProjectDto =
                 objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class);
-            return CollectProjectConverter.toVitamuiDto(responseProjectDto);
+            return ProjectConverter.toVitamuiDto(responseProjectDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT, e);
