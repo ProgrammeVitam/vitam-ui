@@ -173,12 +173,6 @@
             <groupId>fr.gouv.vitamui</groupId>
             <artifactId>archive-search-commons</artifactId>
         </dependency>
-        <dependency>
-            <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>archive-search-commons</artifactId>
-        </dependency>
-
-
     </dependencies>
 
     <build>

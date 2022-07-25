@@ -38,7 +38,7 @@ public class RestApi {
     public static final String STREAM_UPLOAD_PATH = "/upload";
 
     public static final String SEARCH = "/search";
-    public static final String ARCHIVE_UNIT_PATH = "/archives-search";
-    public static final String COLLECT_ARCHIVE_UNIT_PATH = COLLECT_PATH + ARCHIVE_UNIT_PATH;
+    public static final String ARCHIVES_SEARCH_PATH = "/archives-search";
+    public static final String COLLECT_ARCHIVES_SEARCH_PATH = COLLECT_PATH + ARCHIVES_SEARCH_PATH;
 
 }

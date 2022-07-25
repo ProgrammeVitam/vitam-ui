@@ -29,8 +29,8 @@ package fr.gouv.vitamui.collect.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
-import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
-import fr.gouv.vitamui.collect.internal.server.service.SearchCollectUnitInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.archivesearch.ArchiveSearchCollectInternalService;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
@@ -96,7 +96,7 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
         return new ProjectInternalService(collectService, objectMapper);
     }
     @Bean
-    public SearchCollectUnitInternalService searchCollectUnitInternalService(final CollectService collectService, ObjectMapper objectMapper) {
-        return new SearchCollectUnitInternalService(collectService, objectMapper);
+    public ArchiveSearchCollectInternalService searchCollectUnitInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+        return new ArchiveSearchCollectInternalService(collectService, objectMapper);
     }
 }

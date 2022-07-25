@@ -42,7 +42,6 @@
     "PROJECT_CONTEXT_ACQUISITION_INFORMATION": "Modalité d'entrée",
     "PROJECT_CONTEXT_LEGAL_STATUS": "Statut légal",
     "COMMENTS": "Commentaires",
-
     "RETRIVE_EXACT_COUNT": "Afficher le nombre exact",
     "MORE_THAN": "+ de ",
     "MORE_THAN_THRESHOLD": "+ de 10 000",
@@ -100,7 +99,6 @@
       "TO_OPERATION_APP": "VOIR LE JOURNAL DES OPÉRATIONS",
       "EXPORT_LIMITS": "L’export de DIP ne peut être réalisé. Merci de restreindre votre sélection à 10 000 unités archivistiques maximum."
     },
-
     "UPLOAD": {
       "TRACKING_TITLE": "Versement des fichiers en cours",
       "TERMINATED": "Téléchargement des fichiers terminé!",
@@ -120,11 +118,94 @@
       "ACK_OK": "Terminés",
       "ACK_ERROR": "Refusés"
     },
-  "TITLE_SEARCH": "Recherche : ",
-  "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s) dans le projet ",
-  "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
-  "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
-  "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur"
+    "TITLE_SEARCH": "Recherche : ",
+    "TITLE_SEARCH_AREA": "Rechercher une ou des unité(s) archivistique(s) dans le projet ",
+    "LAUNCH_SEARCH_ACTION": "Lancer une recherche",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Le contrat d'accès n'est pas trouvé dans vitam",
+    "ACCESS_CONTRACT_NOT_FOUND": "Aucun contrat d'accès n'est associé à l'utiisateur",
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Intitulé",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "Identifiant technique du versement",
+        "UAID": "Identifiant technique de l'unité archivistique",
+        "SP": "Service producteur",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
+        "PATH": "Chemin",
+        "DESCRIPTION_LEVEL": "Niveau de description",
+        "DOWNLOAD_DOC": "Télécharger le document",
+        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations",
+        "RULES": "Règles",
+        "OBJECTS": "Objets"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
+      }
+    },
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflit",
+        "INHERITED": "Hérité",
+        "CARRIED": "Porté",
+        "COPY": "Copie",
+        "TRANSFER": "Transfert",
+        "RESTRICTACCESS": "Accès réservé"
+      },
+      "RULE_STATUS": {
+        "INHERITED": "Héritée",
+        "CARRIED": "Portée",
+        "BLOCKED": "Bloquée"
+      },
+      "RULE": {
+        "IDENTIFIER": "Identifiant",
+        "START_DATE": "Début",
+        "END_DATE": "Fin",
+        "STATUS": "Statut"
+      },
+      "FINAL_ACTION": {
+        "VALUE": "Valeur",
+        "STATUS": "Statut",
+        "PROPERTY": "Propriété"
+      },
+      "PROPERTIES": "Propriétés",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Héritage de la catégorie bloqué",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "DUC": "DUC",
+        "HOLDRULE": "Gel / Dégel",
+        "ACCESSRULE": "Communicabilité",
+        "DISSEMINATIONRULE": "Diffusion",
+        "REUSERULE": "Réutilisation",
+        "CLASSIFICATIONRULE": "Classification",
+        "STORAGERULE" : "DUC"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES": {
+        "CLASSIFICATIONLEVEL": "Niveau de classification",
+        "CLASSIFICATIONOWNER": "Propriétaire",
+        "CLASSIFICATIONAUDIENCE": "Limitation du champ de diffusion",
+        "CLASSIFICATIONREASSESSINGDATE": "Date de réévaluation",
+        "NEEDREASSESSINGAUTHORIZATION": "Besoin d'autorisation de réévaluation"
+      },
+      "HOLD_RULE_PROPERTIES": {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES": "Oui",
+      "COMMON_NO": "Non"
+    }
   },
   "ACQUISITION_INFORMATION": {
     "PAYMENT": "Versement",
@@ -144,5 +225,27 @@
     "PUBLIC_ARCHIVE": "Archives publiques",
     "PRIVATE_ARCHIVE": "Archives privées",
     "PUBLIC_PRIVATE_ARCHIVE": "Archives publiques et privées"
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "La demande de mise à jour d'unité archivistique a bien été envoyée",
+    "MESSAGE": "Voulez-vous confirmer la mise à jour des métadonnées de cette unité archivistique ?",
+    "HINT": "Validation de mise à jour",
+    "NO_PERMISSION": "Votre contrat d'accès n'autorise pas cette action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "FERMER",
+    "CONFIRM_CLOSE": "Les données modifiées ne seront pas sauvegardées. Êtes-vous sûr de vouloir fermer la fenêtre ?",
+    "CLOSE_WINDOW_HINT": "Quitter la mise à jour",
+    "RECORDGRP": "Groupes de dossiers",
+    "FILE": "Dossier",
+    "ITEM": "Pièce",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Sous-fonds",
+    "CLASS": "Classe",
+    "SUBGRP": "Sous-groupe de documents",
+    "OTHERLEVEL": "Autre niveau",
+    "SERIES": "Série",
+    "SUBSERIES": "Sous-série",
+    "FONDS": "Fonds",
+    "SAVE": "ENREGISTRER"
   }
 }

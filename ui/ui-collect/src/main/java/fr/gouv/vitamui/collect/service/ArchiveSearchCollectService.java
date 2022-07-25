@@ -46,13 +46,13 @@ import java.util.Optional;
  * UI Collect Search Units Service
  */
 @Service
-public class SearchCollectUnitService extends AbstractPaginateService<CollectProjectDto> {
+public class ArchiveSearchCollectService extends AbstractPaginateService<CollectProjectDto> {
 
     private final CollectExternalRestClient collectExternalRestClient;
 
     private final CommonService commonService;
 
-    public SearchCollectUnitService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
+    public ArchiveSearchCollectService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
         this.collectExternalRestClient = collectExternalRestClient;
         this.commonService = commonService;
     }

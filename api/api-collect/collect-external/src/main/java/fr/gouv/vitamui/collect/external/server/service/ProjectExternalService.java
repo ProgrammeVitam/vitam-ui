@@ -49,14 +49,14 @@ import java.util.Optional;
 @Getter
 @Setter
 @Service
-public class CollectExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+public class ProjectExternalService extends AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
 
     private final CollectStreamingInternalRestClient collectStreamingInternalRestClient;
 
     @Autowired
-    public CollectExternalService(CollectInternalRestClient collectInternalRestClient,
+    public ProjectExternalService(CollectInternalRestClient collectInternalRestClient,
         CollectStreamingInternalRestClient collectStreamingInternalRestClient,
         ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);

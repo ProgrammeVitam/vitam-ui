@@ -43,7 +43,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVES_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 public class CollectInternalRestClient
@@ -80,7 +80,7 @@ public class CollectInternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + ARCHIVE_UNIT_PATH + SEARCH + "/" + projectId, HttpMethod.POST,
+            restTemplate.exchange(getUrl() + ARCHIVES_SEARCH_PATH + SEARCH + "/" + projectId, HttpMethod.POST,
                 request, ArchiveUnitsDto.class);
         checkResponse(response);
         return response.getBody();

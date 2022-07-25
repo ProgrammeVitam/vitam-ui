@@ -34,44 +34,49 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CollectRoutingModule } from './collect-routing.module';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
+import { ArchiveSearchHelperService } from 'projects/archive-search/src/app/archive/common-services/archive-search-helper.service';
+import { ArchiveSharedDataService } from 'projects/archive-search/src/app/core/archive-shared-data.service';
+import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
+import { TitleAndDescriptionCriteriaSearchCollectComponent } from './title-and-description-criteria-search-collect/title-and-description-criteria-search-collect.component';
+import { ArchiveSearchCollectRoutingModule } from './archive-search-collect-routing.module';
+import { ArchivePreviewComponent } from './archive-preview/archive-preview.component';
+import { ArchiveUnitRulesDetailsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-details-tab.component';
+import { ArchiveUnitInformationTabComponent } from './archive-preview/archive-unit-information-tab/archive-unit-information-tab.component';
+import { ArchiveUnitRulesInformationsTabComponent } from './archive-preview/archive-unit-rules-details-tab/archive-unit-rules-informations-tab/archive-unit-rules-informations-tab.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUILibraryModule } from 'vitamui-library';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
     CommonModule,
-    CollectRoutingModule,
-    VitamUICommonModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
+    ArchiveSearchCollectRoutingModule,
     MatSidenavModule,
+    VitamUICommonModule,
     MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    NgxFilesizeModule,
     MatFormFieldModule,
-    MatDatepickerModule,
     MatSelectModule,
+    ReactiveFormsModule,
     MatTabsModule,
-    MatNativeDateModule,
+    MatDatepickerModule,
+    MatDialogModule,
   ],
-  providers: [DatePipe],
+  providers: [ArchiveSearchHelperService, ArchiveSharedDataService],
+  declarations: [
+    ArchiveSearchCollectComponent,
+    TitleAndDescriptionCriteriaSearchCollectComponent,
+    ArchivePreviewComponent,
+    ArchiveUnitRulesDetailsTabComponent,
+    ArchiveUnitInformationTabComponent,
+    ArchiveUnitRulesInformationsTabComponent,
+  ],
 })
-export class CollectModule {}
+export class ArchiveSearchCollectModule {}

@@ -34,25 +34,21 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { ArchiveSearchCollectComponent } from './archive-search-collect.component';
 
-import { environment } from '../../../environments/environment.prod';
-import { ProjectsApiService } from './project-api.service';
+const routes: Route[] = [
+  {
+    path: '',
+    component: ArchiveSearchCollectComponent,
+  },
+];
 
-describe('ProjectService', () => {
-  beforeEach(() =>
-    TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
-      providers: [
-        { provide: BASE_URL, useValue: '/fake-api' },
-        { provide: ENVIRONMENT, useValue: environment },
-      ],
-    })
-  );
-  it('should be created', () => {
-    const service: ProjectsApiService = TestBed.get(ProjectsApiService);
-    expect(service).toBeTruthy();
-  });
-});
+@NgModule({
+  declarations: [],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class ArchiveSearchCollectRoutingModule {}

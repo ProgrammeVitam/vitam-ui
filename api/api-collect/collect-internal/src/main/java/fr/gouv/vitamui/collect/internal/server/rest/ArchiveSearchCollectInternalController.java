@@ -35,7 +35,7 @@ import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.internal.server.service.SearchCollectUnitInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.archivesearch.ArchiveSearchCollectInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -53,26 +53,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNIT_PATH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVES_SEARCH_PATH;
 import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
 
 @RestController
 @RequestMapping(RestApi.COLLECT_PROJECT_PATH)
 @Api(tags = "collect", value = "Rechercher les unités d'un projet")
-public class ArchiveUnitInternalController {
+public class ArchiveSearchCollectInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveUnitInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalController.class);
     private final InternalSecurityService securityService;
-    private final SearchCollectUnitInternalService searchArchiveUnitService;
+    private final ArchiveSearchCollectInternalService searchArchiveUnitService;
 
-    public ArchiveUnitInternalController(InternalSecurityService securityService,
-        SearchCollectUnitInternalService searchArchiveUnitService) {
+    public ArchiveSearchCollectInternalController(InternalSecurityService securityService,
+        ArchiveSearchCollectInternalService searchArchiveUnitService) {
         this.securityService = securityService;
         this.searchArchiveUnitService = searchArchiveUnitService;
     }
 
 
-    @PostMapping(ARCHIVE_UNIT_PATH + SEARCH + "/{projectId}")
+    @PostMapping(ARCHIVES_SEARCH_PATH + SEARCH + "/{projectId}")
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,

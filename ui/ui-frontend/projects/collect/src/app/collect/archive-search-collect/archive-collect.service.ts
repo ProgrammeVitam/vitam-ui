@@ -40,25 +40,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VitamUISnackBarComponent } from 'projects/archive-search/src/app/archive/shared/vitamui-snack-bar';
 import { Observable, of, throwError, TimeoutError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { AccessContract, AccessContractApiService, SearchService, SecurityService } from 'ui-frontend-common';
-import { ArchiveUnitCollectApiService } from '../core/api/archive-unit-collect-api.service';
-import { FilingHoldingSchemeNode } from './models/node.interface';
-import { SearchResponse } from './models/search-response.interface';
-import { PagedResult, SearchCriteriaDto } from './models/search.criteria';
+import { AccessContract, AccessContractApiService, CriteriaDataType, CriteriaOperator, SearchService } from 'ui-frontend-common';
+import { ArchiveCollectApiService } from '../core/api/archive-collect-api.service';
+import {
+  FilingHoldingSchemeNode,
+  PagedResult,
+  SearchCriteriaDto,
+  SearchResponse,
+  Unit,
+  SearchCriteriaTypeEnum,
+  UnitDescriptiveMetadataDto,
+} from '../core/models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ArchiveUnitCollectService extends SearchService<any> {
+export class ArchiveCollectService extends SearchService<any> {
+  projectId: string;
+
   constructor(
-    private archiveUnitCollectApiService: ArchiveUnitCollectApiService,
+    private archiveCollectApiService: ArchiveCollectApiService,
     http: HttpClient,
     @Inject(LOCALE_ID) private locale: string,
     private snackBar: MatSnackBar,
-    private securityService: SecurityService,
     private accessContractApiService: AccessContractApiService
   ) {
-    super(http, archiveUnitCollectApiService, 'ALL');
+    super(http, archiveCollectApiService, 'ALL');
   }
 
   headers = new HttpHeaders();
@@ -83,7 +90,7 @@ export class ArchiveUnitCollectService extends SearchService<any> {
     let headers = new HttpHeaders().append('Content-Type', 'application/json');
     headers = headers.append('X-Access-Contract-Id', accessContract);
 
-    return this.archiveUnitCollectApiService.searchArchiveUnitsByCriteria(criteriaDto, projectId, headers).pipe(
+    return this.archiveCollectApiService.searchArchiveUnitsByCriteria(criteriaDto, projectId, headers).pipe(
       //   timeout(TIMEOUT_SEC),
       catchError((error) => {
         if (error instanceof TimeoutError) {
@@ -115,28 +122,11 @@ export class ArchiveUnitCollectService extends SearchService<any> {
   }
 
   findArchiveUnit(id: string, headers?: HttpHeaders) {
-    return this.archiveUnitCollectApiService.findArchiveUnit(id, headers);
+    return this.archiveCollectApiService.findArchiveUnit(id, headers);
   }
 
   getObjectById(id: string, headers?: HttpHeaders) {
-    return this.archiveUnitCollectApiService.getObjectById(id, headers);
-  }
-
-  hasArchiveSearchRole(role: string, tenantIdentifier: number): Observable<boolean> {
-    const applicationIdentifier = 'ARCHIVE_SEARCH_MANAGEMENT_APP';
-    return this.securityService.hasRole(applicationIdentifier, tenantIdentifier, role);
-  }
-
-  startEliminationAnalysis(criteriaDto: SearchCriteriaDto, accessContract: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.archiveUnitCollectApiService.startEliminationAnalysis(criteriaDto, headers);
-  }
-
-  launchEliminationAction(criteriaDto: SearchCriteriaDto, accessContract: string) {
-    let headers = new HttpHeaders().append('Content-Type', 'application/json');
-    headers = headers.append('X-Access-Contract-Id', accessContract);
-    return this.archiveUnitCollectApiService.launchEliminationAction(criteriaDto, headers);
+    return this.archiveCollectApiService.getObjectById(id, headers);
   }
 
   getAccessContractById(accessContract: string): Observable<AccessContract> {
@@ -166,6 +156,87 @@ export class ArchiveUnitCollectService extends SearchService<any> {
       duration: 100000,
     });
   }
+
+  selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, accessContract: string): Observable<Unit> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+    return this.archiveCollectApiService.selectUnitWithInheritedRules(criteriaDto, headers);
+  }
+
+  buildArchiveUnitPath(archiveUnit: Unit, accessContract: string) {
+    const allunitups = archiveUnit['#allunitups'].map((unitUp) => ({ id: unitUp, value: unitUp }));
+
+    if (!allunitups || allunitups.length === 0) {
+      return of({
+        fullPath: '',
+        resumePath: '',
+      });
+    }
+
+    const criteriaSearchList = [
+      {
+        criteria: '#id',
+        values: allunitups,
+        operator: CriteriaOperator.EQ,
+        category: SearchCriteriaTypeEnum[SearchCriteriaTypeEnum.FIELDS],
+        dataType: CriteriaDataType.STRING,
+      },
+    ];
+
+    const searchCriteria = {
+      criteriaList: criteriaSearchList,
+      pageNumber: 0,
+      size: archiveUnit['#allunitups'].length,
+    };
+
+    return this.searchArchiveUnitsByCriteria(searchCriteria, this.projectId, accessContract).pipe(
+      map((pagedResult: PagedResult) => {
+        let resumePath = '';
+        let fullPath = '';
+
+        if (pagedResult.results) {
+          resumePath = `/${pagedResult.results.map((ua) => ArchiveCollectService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+          fullPath = `/${pagedResult.results.map((ua) => ArchiveCollectService.fetchTitle(ua.Title, ua.Title_)).join('/')}`;
+
+          if (pagedResult.results.length > 6) {
+            const upperBoundPath = pagedResult.results
+              .slice(0, 3)
+              .map((ua) => ArchiveCollectService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            const lowerBoundPath = pagedResult.results
+              .slice(-3)
+              .map((ua) => ArchiveCollectService.fetchTitle(ua.Title, ua.Title_))
+              .join('/');
+            resumePath = `/${upperBoundPath}/../${lowerBoundPath}`;
+          }
+        }
+
+        return {
+          fullPath,
+          resumePath,
+        };
+      })
+    );
+  }
+
+  updateUnit(id: string, tenantIdentifier: number, accessContract: string, unitMDDDto: UnitDescriptiveMetadataDto): Observable<string> {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract).append('X-Tenant-Id', '' + tenantIdentifier);
+    return this.archiveCollectApiService.updateUnit(id, unitMDDDto, headers);
+  }
+
+  launchDownloadObjectFromUnit(id: string, tenantIdentifier: number, accessContract: string) {
+    this.downloadFile(this.archiveCollectApiService.getDownloadObjectFromUnitUrl(id, accessContract, tenantIdentifier));
+  }
+
+  downloadFile(url: string) {
+    window.addEventListener('focus', window_focus, false);
+    function window_focus() {
+      window.removeEventListener('focus', window_focus, false);
+      URL.revokeObjectURL(url);
+    }
+    location.href = url;
+  }
 }
 
 function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingSchemeNode) => number {
@@ -173,7 +244,6 @@ function byTitle(locale: string): (a: FilingHoldingSchemeNode, b: FilingHoldingS
     if (!a || !b || !a.title || !b.title) {
       return 0;
     }
-
     return a.title.localeCompare(b.title, locale, { numeric: true });
   };
 }

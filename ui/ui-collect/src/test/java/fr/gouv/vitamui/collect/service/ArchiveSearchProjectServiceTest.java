@@ -27,38 +27,57 @@
  *
  */
 
-package fr.gouv.vitamui.collect.external.server.service;
+package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
-import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
-import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
+import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
+import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.ui.commons.service.CommonService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.test.context.junit4.SpringRunner;
 
-@Getter
-@Setter
-@Service
-public class SearchCollectUnitExternalService extends
-    AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
-    private final CollectInternalRestClient collectInternalRestClient;
+@RunWith(SpringRunner.class)
+public class ArchiveSearchProjectServiceTest {
 
-    public SearchCollectUnitExternalService(CollectInternalRestClient collectInternalRestClient,
-        ExternalSecurityService externalSecurityService) {
-        super(externalSecurityService);
-        this.collectInternalRestClient = collectInternalRestClient;
+    private ArchiveSearchCollectService searchCollectUnitService;
+
+    @Mock
+    private CollectExternalRestClient collectExternalRestClient;
+
+    @Mock
+    private CommonService commonService;
+
+    @Before
+    public void init() {
+        searchCollectUnitService = new ArchiveSearchCollectService( collectExternalRestClient,
+            commonService);
+        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
     }
 
-    public ArchiveUnitsDto getAllArchiveUnitsForCollect(String projectId, SearchCriteriaDto searchQuery) {
-        return collectInternalRestClient.getAllArchiveUnitsForCollect(getInternalHttpContext(), projectId, searchQuery);
-    }
+    @Test
+    public void search_collect_units_should_call_appropriate_rest_client() {
+        // Given
+        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
+        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
+        Mockito.when(searchCollectUnitService.getAllArchiveUnitsForCollect(ArgumentMatchers.any(),
+                ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
+            .thenReturn(new ArchiveUnitsDto());
 
-    @Override
-    protected CollectInternalRestClient getClient() {
-        return collectInternalRestClient;
+        // When
+        searchCollectUnitService.getAllArchiveUnitsForCollect(context, "projectId", searchCriteriaDto);
+
+        // Then
+        verify(collectExternalRestClient, Mockito.times(1))
+            .getAllArchiveUnitsForCollect(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
     }
 }

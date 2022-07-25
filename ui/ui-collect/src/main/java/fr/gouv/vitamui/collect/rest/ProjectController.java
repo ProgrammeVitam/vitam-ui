@@ -29,7 +29,7 @@ package fr.gouv.vitamui.collect.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.service.CollectService;
+import fr.gouv.vitamui.collect.service.ProjectService;
 import fr.gouv.vitamui.common.security.SafeFileChecker;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -70,11 +70,11 @@ public class ProjectController extends AbstractUiRestController {
 
     static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectController.class);
 
-    private final CollectService collectService;
+    private final ProjectService projectService;
 
     @Autowired
-    public ProjectController(final CollectService service) {
-        this.collectService = service;
+    public ProjectController(final ProjectService service) {
+        this.projectService = service;
     }
 
     @ApiOperation(value = "Get projects paginated")
@@ -87,14 +87,14 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getAllProjectsPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
-        return collectService.getAllProjectsPaginated(buildUiHttpContext(), page, size, criteria, orderBy, direction);
+        return projectService.getAllProjectsPaginated(buildUiHttpContext(), page, size, criteria, orderBy, direction);
     }
 
     @ApiOperation(value = "Create new collect project")
     @PostMapping
     public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
-        return collectService.createProject(buildUiHttpContext(), collectProjectDto);
+        return projectService.createProject(buildUiHttpContext(), collectProjectDto);
     }
 
     @ApiOperation(value = "Upload collect zip file", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -113,7 +113,7 @@ public class ProjectController extends AbstractUiRestController {
         SafeFileChecker.checkSafeFilePath(filename);
         LOGGER.debug("Start uploading file ...{} ", filename);
         ResponseEntity<Void> response =
-            collectService.streamingUpload(buildUiHttpContext(), filename, projectId, inputStream);
+            projectService.streamingUpload(buildUiHttpContext(), filename, projectId, inputStream);
 
         LOGGER.debug("The response in ui Ingest is {} ", response.toString());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -126,7 +126,7 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
-        return collectService.update(buildUiHttpContext(), collectProjectDto);
+        return projectService.update(buildUiHttpContext(), collectProjectDto);
     }
 
 }

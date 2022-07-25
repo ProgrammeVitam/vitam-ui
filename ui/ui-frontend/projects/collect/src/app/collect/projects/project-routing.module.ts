@@ -34,44 +34,24 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { CollectRoutingModule } from './collect-routing.module';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUILibraryModule } from 'vitamui-library';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatNativeDateModule } from '@angular/material/core';
+import { Route, RouterModule } from '@angular/router';
+import { ActiveTenantGuard } from 'ui-frontend-common';
+
+import { ProjectsComponent } from './projects.component';
+
+const routes: Route[] = [
+  {
+    path: '',
+    component: ProjectsComponent,
+    canActivate: [ActiveTenantGuard],
+  },
+];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CollectRoutingModule,
-    VitamUICommonModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    NgxFilesizeModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatNativeDateModule,
-  ],
-  providers: [DatePipe],
+  declarations: [],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class CollectModule {}
+export class ProjectRoutingModule {}

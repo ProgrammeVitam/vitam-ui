@@ -34,24 +34,25 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'ui-frontend-common';
-import { environment } from '../../environments/environment';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule } from 'ui-frontend-common';
 
-@NgModule({
-  declarations: [],
-  imports: [CommonModule, HttpClientModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
+import { environment } from '../../../../environments/environment';
+import { ProjectsApiService } from './project-api.service';
 
-  exports: [VitamUICommonModule],
-  providers: [
-    { provide: BASE_URL, useValue: './collect-api' },
-    { provide: ENVIRONMENT, useValue: environment },
-  ],
-})
-export class CoreModule {
-  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
-    throwIfAlreadyLoaded(parentModule, 'CoreModule');
-  }
-}
+describe('ProjectService', () => {
+  beforeEach(() =>
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, InjectorModule, LoggerModule.forRoot()],
+      providers: [
+        { provide: BASE_URL, useValue: '/fake-api' },
+        { provide: ENVIRONMENT, useValue: environment },
+      ],
+    })
+  );
+  it('should be created', () => {
+    const service: ProjectsApiService = TestBed.get(ProjectsApiService);
+    expect(service).toBeTruthy();
+  });
+});

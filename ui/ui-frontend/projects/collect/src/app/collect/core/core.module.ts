@@ -34,44 +34,24 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 
-import { CommonModule, DatePipe } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { CollectRoutingModule } from './collect-routing.module';
-import { TableFilterModule, VitamUICommonModule } from 'ui-frontend-common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { VitamUILibraryModule } from 'vitamui-library';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgxFilesizeModule } from 'ngx-filesize';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatNativeDateModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { BASE_URL, ENVIRONMENT, InjectorModule, LoggerModule, throwIfAlreadyLoaded, VitamUICommonModule } from 'ui-frontend-common';
+import { environment } from '../../../environments/environment';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    CollectRoutingModule,
-    VitamUICommonModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    MatDialogModule,
-    MatSidenavModule,
-    MatProgressSpinnerModule,
-    TableFilterModule,
-    VitamUILibraryModule,
-    ReactiveFormsModule,
-    NgxFilesizeModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatSelectModule,
-    MatTabsModule,
-    MatNativeDateModule,
+  declarations: [],
+  imports: [CommonModule, HttpClientModule, VitamUICommonModule, InjectorModule, LoggerModule.forRoot()],
+
+  exports: [VitamUICommonModule],
+  providers: [
+    { provide: BASE_URL, useValue: './collect-api' },
+    { provide: ENVIRONMENT, useValue: environment },
   ],
-  providers: [DatePipe],
 })
-export class CollectModule {}
+export class CoreModule {
+  constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
+    throwIfAlreadyLoaded(parentModule, 'CoreModule');
+  }
+}

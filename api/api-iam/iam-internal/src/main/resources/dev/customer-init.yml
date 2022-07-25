@@ -214,8 +214,6 @@ customer-init:
         - ROLE_UPDATE_PROJECTS
         - ROLE_GET_FILLING_PLAN_ACCESS
         - ROLE_GET_ACCESS_CONTRACTS
-        - ROLE_CREATE_ACCESS_CONTRACTS
-        - ROLE_UPDATE_ACCESS_CONTRACTS
 
   #- name: profileName
   #  description: desc

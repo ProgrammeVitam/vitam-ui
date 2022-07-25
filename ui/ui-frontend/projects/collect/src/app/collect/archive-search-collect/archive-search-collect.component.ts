@@ -26,16 +26,23 @@
  */
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AccessContract, Direction, ExternalParameters, ExternalParametersService, Logger } from 'ui-frontend-common';
+import {
+  AccessContract,
+  Direction,
+  ExternalParameters,
+  ExternalParametersService,
+  GlobalEventService,
+  SidenavPage,
+} from 'ui-frontend-common';
 import { Unit } from 'vitamui-library/lib/models/unit.interface';
-import { ArchiveUnitCollectService } from '../archive-unit-collect.service';
-import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto } from '../models/search.criteria';
+import { ArchiveCollectService } from './archive-collect.service';
+import { CriteriaValue, PagedResult, SearchCriteria, SearchCriteriaCategory, SearchCriteriaEltDto } from '../core/models';
 
 const PAGE_SIZE = 10;
 
@@ -44,11 +51,8 @@ const PAGE_SIZE = 10;
   templateUrl: './archive-search-collect.component.html',
   styleUrls: ['./archive-search-collect.component.scss'],
 })
-export class ArchiveSearchCollectComponent implements OnInit, OnDestroy {
+export class ArchiveSearchCollectComponent extends SidenavPage<any> implements OnInit, OnDestroy {
   accessContract: string;
-  @Output()
-  archiveUnitClick = new EventEmitter<any>();
-
   accessContractSub: Subscription;
   accessContractSubscription: Subscription;
   errorMessageSub: Subscription;
@@ -56,6 +60,7 @@ export class ArchiveSearchCollectComponent implements OnInit, OnDestroy {
   projectId: string;
   foundAccessContract = false;
   hasAccessContractManagementPermissions = false;
+  hasUpdateDescriptiveUnitMetadataRole = false;
   isLPExtended = false;
 
   searchCriteriaKeys: string[];
@@ -90,17 +95,22 @@ export class ArchiveSearchCollectComponent implements OnInit, OnDestroy {
   pageNumbers = 0;
   canLoadMore = false;
 
+  private readonly orderChange = new Subject<string>();
+
   constructor(
     private route: ActivatedRoute,
+    globalEventService: GlobalEventService,
     private externalParameterService: ExternalParametersService,
     private translateService: TranslateService,
-    private archiveUnitCollectService: ArchiveUnitCollectService,
-    private snackBar: MatSnackBar,
-    private logger: Logger
-  ) {}
+    private archiveUnitCollectService: ArchiveCollectService,
+    private snackBar: MatSnackBar
+  ) {
+    super(route, globalEventService);
+  }
+
   ngOnDestroy(): void {
-    this.accessContractSub.unsubscribe();
-    this.accessContractSubscription.unsubscribe();
+    this.accessContractSub?.unsubscribe();
+    this.accessContractSubscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -211,15 +221,15 @@ export class ArchiveSearchCollectComponent implements OnInit, OnDestroy {
             pagedResult.results.forEach((elt) => this.archiveUnits.push(elt));
           }
         }
+
         this.pageNumbers = pagedResult.pageNumbers;
-        if (this.totalResults === this.DEFAULT_RESULT_THRESHOLD) {
-          this.waitingToGetFixedCount = true;
-        } else {
-          this.waitingToGetFixedCount = false;
-        }
+
+        this.waitingToGetFixedCount = this.totalResults === this.DEFAULT_RESULT_THRESHOLD;
+
         if (this.isAllchecked) {
           this.itemSelected = this.totalResults - this.itemNotSelected;
         }
+
         this.canLoadMore = this.currentPage < this.pageNumbers - 1;
 
         this.pending = false;
@@ -277,5 +287,17 @@ export class ArchiveSearchCollectComponent implements OnInit, OnDestroy {
         }
       }
     }
+  }
+
+  showExtendedLateralPanel() {
+    this.isLPExtended = true;
+  }
+
+  backToNormalLateralPanel() {
+    this.isLPExtended = false;
+  }
+
+  emitOrderChange() {
+    this.orderChange.next();
   }
 }
