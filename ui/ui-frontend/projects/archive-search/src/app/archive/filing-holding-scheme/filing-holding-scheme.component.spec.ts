@@ -34,21 +34,21 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FilingHoldingSchemeComponent } from './filing-holding-scheme.component';
-import { InjectorModule, LoggerModule } from 'ui-frontend-common';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTreeModule } from '@angular/material/tree';
-import {  MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ArchiveApiService } from '../../core/api/archive-api.service';
-import { ActivatedRoute } from '@angular/router';
-import { environment } from '../../../environments/environment.prod';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ArchiveService } from '../archive.service';
-import { of } from 'rxjs';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {FilingHoldingSchemeComponent} from './filing-holding-scheme.component';
+import {InjectorModule, LoggerModule} from 'ui-frontend-common';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatTreeModule} from '@angular/material/tree';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {RouterTestingModule} from '@angular/router/testing';
+import {ArchiveApiService} from '../../core/api/archive-api.service';
+import {ActivatedRoute} from '@angular/router';
+import {environment} from '../../../environments/environment.prod';
+import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {ArchiveService} from '../archive.service';
+import {of} from 'rxjs';
+import {FilingHoldingSchemeNode} from '../models/node.interface';
 
 describe('FilingHoldingSchemeComponent', () => {
   let component: FilingHoldingSchemeComponent;
@@ -178,7 +178,7 @@ describe('FilingHoldingSchemeComponent', () => {
     });
     describe('showAllTreeNodes', () => {
       it('should check all nodes when select root node', () => {
-        component.showAllTreeNodes();
+        component.switchViewAllNodes();
         component.nestedDataSourceFull.data.forEach(node => {
           expect(node.hidden).toBeFalsy();
         });

@@ -4,6 +4,7 @@
   disableRipple
   [attr.aria-label]="'toggle ' + node?.label"
   (click)="nodeToggle.emit()"
+  class="arrow"
   type="button"
 >
   <i class="material-icons mat-icon-rtl-mirror">{{ expanded ? 'expand_more' : 'chevron_right' }}</i>

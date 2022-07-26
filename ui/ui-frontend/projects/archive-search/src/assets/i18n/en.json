@@ -489,7 +489,10 @@
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "No trees or plans founds for the selected access contract",
       "SHOW_ENTIRE_TREE": "Show the entire tree",
-      "SHOW_TREE_PARENT": "Collapse the tree"
+      "SHOW_TREE_PARENT": "Show only result",
+      "TREE_TITLE": "Trees and plans",
+      "TREE_LEAVES_TITLE": "Attachment position(s)",
+      "LOAD_MORE_UNITS": "Load more units"
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "It's not possible to export more than 10 000 results, please update your filters."
