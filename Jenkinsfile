@@ -45,10 +45,10 @@ pipeline {
             agent none
             steps {
                 script {
-                    env.DO_MAJ_CONTEXT = 'false'
-                    env.DO_TEST = 'false'
-                    env.DO_BUILD = 'false'
-                    env.DO_PUBLISH = 'false'
+                    env.DO_MAJ_CONTEXT = 'true'
+                    env.DO_TEST = 'true'
+                    env.DO_BUILD = 'true'
+                    env.DO_PUBLISH = 'true'
                     env.DO_CHECKMARX = 'false'
                     env.DO_CHECKMARX_SCA = 'true'
                 }
