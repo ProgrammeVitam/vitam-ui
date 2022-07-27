@@ -247,7 +247,7 @@ pipeline {
            post {
                 success {
                     archiveArtifacts (
-                        artifacts: 'reports/*.pdf',
+                        artifacts: '*.pdf',
                         fingerprint: true
                     )
                 }
