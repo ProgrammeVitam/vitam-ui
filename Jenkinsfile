@@ -242,7 +242,7 @@ pipeline {
                 sh 'gzip -d ScaResolver-linux64.tar.gz'
                 sh 'tar -xvf ScaResolver-linux64.tar'
                 //sh 'sudo ln -s /usr/local/maven/bin/mvn /usr/local/bin/mvn'
-                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD" --report-extension Pdf '
+                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD" --report-type Risk --report-extension Pdf '
            }
            post {
                 success {
@@ -253,7 +253,7 @@ pipeline {
                 }
                 failure {
                     archiveArtifacts (
-                        artifacts: 'logs/vitam-ui.${env.GIT_BRANCH}/*',
+                        artifacts: 'logs/vitam-ui.${env.GIT_BRANCH}/*.log',
                         fingerprint: true
                     )
                 }
