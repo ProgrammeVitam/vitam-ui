@@ -247,13 +247,13 @@ pipeline {
            post {
                 success {
                     archiveArtifacts (
-                        artifacts: 'reports/$CX_NAME/*.pdf',
+                        artifacts: "reports/$CX_NAME/*.pdf",
                         fingerprint: true
                     )
                 }
                 failure {
                     archiveArtifacts (
-                        artifacts: 'logs/$CX_NAME/*.log',
+                        artifacts: "logs/$CX_NAME/*.log",
                         fingerprint: true
                     )
                 }
