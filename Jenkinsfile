@@ -247,13 +247,13 @@ pipeline {
            post {
                 success {
                     archiveArtifacts (
-                        artifacts: '*.pdf',
+                        artifacts: 'reports/vitam-ui.${env.GIT_BRANCH}/*.pdf',
                         fingerprint: true
                     )
                 }
                 failure {
                     archiveArtifacts (
-                        artifacts: 'logs/*',
+                        artifacts: 'logs/vitam-ui.${env.GIT_BRANCH}/*',
                         fingerprint: true
                     )
                 }
