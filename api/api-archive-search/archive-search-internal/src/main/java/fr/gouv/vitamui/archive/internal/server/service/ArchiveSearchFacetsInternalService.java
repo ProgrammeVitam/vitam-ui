@@ -158,6 +158,8 @@ public class ArchiveSearchFacetsInternalService {
                 List.of(new CriteriaValue(TRUE)), STRING.name()));
             SelectMultiQuery selectMultiQuery = archiveSearchInternalService
                 .createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
+            selectMultiQuery.addUsedProjection("#id");
+            selectMultiQuery.setLimitFilter(0,1);
             JsonNode vitamResponse =
                 archiveSearchInternalService.searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
             VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
@@ -196,6 +198,9 @@ public class ArchiveSearchFacetsInternalService {
 
         SelectMultiQuery selectMultiQuery = archiveSearchInternalService
             .createSelectMultiQuery(criteriaList);
+
+        selectMultiQuery.setLimitFilter(0,1);
+        selectMultiQuery.trackTotalHits(true);
 
         try {
             List<SearchCriteriaEltDto> rulesCriteriaList =
