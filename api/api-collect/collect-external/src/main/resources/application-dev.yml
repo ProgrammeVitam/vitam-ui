@@ -40,7 +40,7 @@ server:
 management:
   server:
     address: localhost
-    port: 8189
+    port: 8190
     ssl:
       enabled: false
 

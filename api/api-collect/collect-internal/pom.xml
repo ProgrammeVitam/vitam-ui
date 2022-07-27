@@ -169,8 +169,10 @@
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
             <scope>test</scope>
         </dependency>
-
-
+        <dependency>
+            <groupId>fr.gouv.vitamui</groupId>
+            <artifactId>archive-search-commons</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

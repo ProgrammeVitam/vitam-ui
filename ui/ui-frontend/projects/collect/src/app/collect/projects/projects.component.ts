@@ -25,13 +25,13 @@
  * accept its terms.
  */
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'ui-frontend-common';
-import { ProjectsService } from './projects.service';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { DEFAULT_PAGE_SIZE, Direction, PageRequest, SidenavPage } from 'ui-frontend-common';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectsService } from './projects.service';
 
 @Component({
   selector: 'app-projects',

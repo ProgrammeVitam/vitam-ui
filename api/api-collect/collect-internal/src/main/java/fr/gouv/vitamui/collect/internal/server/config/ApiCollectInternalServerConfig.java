@@ -28,16 +28,17 @@
 package fr.gouv.vitamui.collect.internal.server.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitamui.collect.internal.server.security.WebSecurityConfig;
 import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.archivesearch.ArchiveSearchCollectInternalService;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
 import fr.gouv.vitamui.commons.rest.RestExceptionHandler;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
 import fr.gouv.vitamui.commons.rest.configuration.SwaggerConfiguration;
+import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAccessConfig;
 import fr.gouv.vitamui.commons.vitam.api.config.VitamAdministrationConfig;
-import fr.gouv.vitamui.commons.vitam.api.config.VitamIngestConfig;
+import fr.gouv.vitamui.commons.vitam.api.config.VitamCollectConfig;
 import fr.gouv.vitamui.iam.internal.client.IamInternalRestClientFactory;
 import fr.gouv.vitamui.iam.internal.client.UserInternalRestClient;
 import fr.gouv.vitamui.iam.security.provider.InternalApiAuthenticationProvider;
@@ -51,7 +52,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @Import({RestExceptionHandler.class, SwaggerConfiguration.class, WebSecurityConfig.class, VitamAccessConfig.class,
-    VitamIngestConfig.class, VitamAdministrationConfig.class})
+    VitamCollectConfig.class, VitamAdministrationConfig.class})
 public class ApiCollectInternalServerConfig extends AbstractContextConfiguration {
 
     @Bean
@@ -91,7 +92,11 @@ public class ApiCollectInternalServerConfig extends AbstractContextConfiguration
     }
 
     @Bean
-    public ProjectInternalService collectInternalService(final CollectClient collectClient, ObjectMapper objectMapper) {
-        return new ProjectInternalService(collectClient, objectMapper);
+    public ProjectInternalService collectInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+        return new ProjectInternalService(collectService, objectMapper);
+    }
+    @Bean
+    public ArchiveSearchCollectInternalService searchCollectUnitInternalService(final CollectService collectService, ObjectMapper objectMapper) {
+        return new ArchiveSearchCollectInternalService(collectService, objectMapper);
     }
 }

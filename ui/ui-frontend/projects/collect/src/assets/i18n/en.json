@@ -63,6 +63,93 @@
       "WAITING_ACK": "Waiting Ack",
       "ACK_OK": "Finish",
       "ACK_ERROR": "Refused"
+    },
+    "TITLE_SEARCH": "Search : ",
+    "TITLE_SEARCH_AREA": "Searching an archive unit in project ",
+    "LAUNCH_SEARCH_ACTION": "Launch the search",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Title",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "DESCRIPTION": "Description",
+        "GUID": "Ingest Technical ID",
+        "UAID": "Archive Technical ID",
+        "SP": "Originating agency",
+        "SP_CODE": "ID",
+        "SP_LABEL": "Name",
+        "PATH": "Path",
+        "DESCRIPTION_LEVEL": "Description level",
+        "DOWNLOAD_DOC": "Download the document",
+        "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations",
+        "RULES": "Rules",
+        "OBJECTS": "Objects"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
+      }
+    },
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflict",
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "COPY": "Copy",
+        "TRANSFER": "Transfer",
+        "RESTRICTACCESS": "Restrict access"
+      },
+      "RULE_STATUS": {
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "BLOCKED": "Blocked"
+      },
+      "RULE": {
+        "IDENTIFIER": "Identifier",
+        "START_DATE": "Start",
+        "END_DATE": "End",
+        "STATUS": "Status"
+      },
+      "FINAL_ACTION": {
+        "VALUE": "Value",
+        "STATUS": "Status",
+        "PROPERTY": "Property"
+      },
+      "PROPERTIES": "Properties",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Category inheritance blocked",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "STORAGERULE": "DUC",
+        "HOLDRULE": "Freeze",
+        "ACCESSRULE": "Communicability",
+        "DISSEMINATIONRULE": "Dissemination",
+        "REUSERULE": "Reuse",
+        "CLASSIFICATIONRULE": "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES": {
+        "CLASSIFICATIONLEVEL": "Classification level",
+        "CLASSIFICATIONOWNER": "Owner",
+        "CLASSIFICATIONAUDIENCE": "Broadcast scope limitation",
+        "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
+        "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
+      },
+      "HOLD_RULE_PROPERTIES": {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES": "Yes",
+      "COMMON_NO": "No"
     }
   },
   "ACQUISITION_INFORMATION": {
@@ -83,5 +170,27 @@
     "PUBLIC_ARCHIVE": "Public archives",
     "PRIVATE_ARCHIVE": "Private archives",
     "PUBLIC_PRIVATE_ARCHIVE": "Public and private archives"
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "The archival unit description metadata update request demand is successfully sent",
+    "MESSAGE": "Do you want to confirm the update of the metadata of this archival unit?",
+    "HINT": "Update validation",
+    "NO_PERMISSION": "Your access contract does not authorize this action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "CLOSE",
+    "CONFIRM_CLOSE": "Modified data will not be saved. Are you sure you want to close the window ?",
+    "CLOSE_WINDOW_HINT": "Close archival unit update",
+    "RECORDGRP": "RecordGrp",
+    "FILE": "File",
+    "ITEM": "Item",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Subfonds",
+    "CLASS": "Class",
+    "SUBGRP": "SubGrp",
+    "OTHERLEVEL": "Otherlevel",
+    "SERIES": "Series",
+    "SUBSERIES": "Subseries",
+    "FONDS": "Fonds",
+    "SAVE": "SAVE"
   }
 }

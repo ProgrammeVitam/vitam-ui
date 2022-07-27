@@ -35,5 +35,10 @@ public class RestApi {
 
     public static final String COLLECT_PATH = "/collect-api/v1";
     public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + "/projects";
+    public static final String STREAM_UPLOAD_PATH = "/upload";
+
+    public static final String SEARCH = "/search";
+    public static final String ARCHIVES_SEARCH_PATH = "/archives-search";
+    public static final String COLLECT_ARCHIVES_SEARCH_PATH = COLLECT_PATH + ARCHIVES_SEARCH_PATH;
 
 }

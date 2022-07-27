@@ -28,7 +28,7 @@ import { Injectable } from '@angular/core';
 import { Project, SearchService } from 'ui-frontend-common';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { ProjectsApiService } from '../../core/api/project-api.service';
+import { ProjectsApiService } from '../core/api/project-api.service';
 
 @Injectable({
   providedIn: 'root',

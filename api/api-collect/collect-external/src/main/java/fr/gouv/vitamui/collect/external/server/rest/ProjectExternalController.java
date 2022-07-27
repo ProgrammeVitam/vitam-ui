@@ -29,7 +29,7 @@ package fr.gouv.vitamui.collect.external.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.CollectExternalService;
+import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -70,11 +70,11 @@ public class ProjectExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectExternalController.class);
 
-    private final CollectExternalService collectExternalService;
+    private final ProjectExternalService projectExternalService;
 
     @Autowired
-    public ProjectExternalController(CollectExternalService collectExternalService) {
-        this.collectExternalService = collectExternalService;
+    public ProjectExternalController(ProjectExternalService projectExternalService) {
+        this.projectExternalService = projectExternalService;
     }
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
@@ -101,7 +101,7 @@ public class ProjectExternalController {
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
             direction);
-        return collectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+        return projectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
@@ -110,7 +110,7 @@ public class ProjectExternalController {
         PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
-        return collectExternalService.createProject(collectProjectDto);
+        return projectExternalService.createProject(collectProjectDto);
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
@@ -124,7 +124,7 @@ public class ProjectExternalController {
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.isValidFileName(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        return collectExternalService.streamingUpload(inputStream, projectId, originalFileName);
+        return projectExternalService.streamingUpload(inputStream, projectId, originalFileName);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
@@ -135,6 +135,6 @@ public class ProjectExternalController {
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[External] Project to update : {}", collectProjectDto);
-        return collectExternalService.updateProject(collectProjectDto);
+        return projectExternalService.updateProject(collectProjectDto);
     }
 }
