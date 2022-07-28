@@ -48,6 +48,14 @@ import {
 } from 'ui-frontend-common';
 import {LogbookDownloadService} from '../logbook-download.service';
 
+
+const msgForDownload : { [key: string]: string } ={
+  'EXPORT_DIP':'Télécharger le DIP',
+  'ARCHIVE_TRANSFER' :'Télécharger le DIP de transfert'
+};
+
+const DOWNLOAD_REPORT = 'Télécharger le rapport';
+
 @Component({
   selector: 'app-logbook-operation-detail',
   templateUrl: './logbook-operation-detail.component.html',
@@ -132,8 +140,10 @@ export class LogbookOperationDetailComponent implements OnInit, OnChanges {
     this.logbookDownloadService.launchDownloadReport(this.event, this.tenantIdentifier, this.accessContractId);
   }
 
+
+
   private updateDownloadButton() {
-    this.downloadButtonTitle = this.event.typeProc === 'EXPORT_DIP' ? 'Télécharger le DIP' : 'Télécharger le rapport';
+    this.downloadButtonTitle = msgForDownload[this.event.typeProc] ?? DOWNLOAD_REPORT;
     const logbookOperationReportState = this.logbookDownloadService.logbookOperationReportState(this.event);
     this.showDownloadButton = logbookOperationReportState == LogbookOperationReportState.IN_PROGRESS || logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE;
     this.disableDownloadButton = !(logbookOperationReportState == LogbookOperationReportState.DOWNLOADABLE && this.hasAccessContractId);

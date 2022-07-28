@@ -2330,6 +2330,8 @@
     "ELIMINATION_ANALYSIS_UNIT_INDEXATION.WARNING": "Avertissement lors de l'indexation de l'analyse d'élimination des unités archivistiques",
     "STP_ELIMINATION_ANALYSIS_FINALIZATION.FATAL": "Erreur technique lors du processus de finalisation de l'analyse de l'élimination des unités archivistiques",
     "EXPORT_DIP": "Export du DIP",
+    "ARCHIVE_TRANSFER": "Transfert",
+    "ARCHIVE_TRANSFER_LABEL": "Transfert des unités archivistiques et des groupes d'objets",
     "UNIT_ATTACHMENT.FATAL": "Erreur technique lors du rattachement des unités archivistiques",
     "STP_BACKUP_SCENARIO.STARTED": "Début du processus de sauvegarde ddes scénarios de préservation",
     "CHECK_DATAOBJECTPACKAGE.CHECK_NO_OBJECT.KO": "Échec de la vérification de l'absence d'objet : objet(s) trouvé(s)",
