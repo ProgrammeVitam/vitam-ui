@@ -1,3 +1,0 @@
----
-
-tmp_dir: "{{ lookup('env','PWD') }}/tmp"
