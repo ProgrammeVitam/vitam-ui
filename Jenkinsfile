@@ -227,8 +227,7 @@ pipeline {
         }
         stage('Checkmarx SCA step') {
            when {
-                //branch "develop"
-                branch "story_10188_enable_checkmarx_sca"
+                branch "develop"
                 environment(name: 'DO_CHECKMARX_SCA', value: 'true')
            }
            environment {
