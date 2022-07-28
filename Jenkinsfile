@@ -14,6 +14,11 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
         SERVICE_PROXY_PORT = credentials("http-proxy-port")
+        SERVICE_CX_SCA_USER = credentials("service-cx-sca-user")
+        SERVICE_CX_SCA_PASSWORD = credentials("service-cx-sca-password")
+        SERVICE_CX_SCA_ACCOUNT = credentials("service-cx-sca-account")
+        SERVICE_CX_SCA_SERVER = credentials("service-cx-sca-server")
+        SERVICE_CX_SCA_AUTH_SERVER = credentials("service-cx-sca-auth-server")
         NOPROXY_HOST = credentials("http_nonProxyHosts")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
@@ -45,6 +50,7 @@ pipeline {
                     env.DO_BUILD = 'true'
                     env.DO_PUBLISH = 'true'
                     env.DO_CHECKMARX = 'false'
+                    env.DO_CHECKMARX_SCA = 'true'
                 }
             }
         }
@@ -214,6 +220,39 @@ pipeline {
                 failure {
                     archiveArtifacts (
                         artifacts: 'logs/cxconsole.log',
+                        fingerprint: true
+                    )
+                }
+            }
+        }
+        stage('Checkmarx SCA step') {
+           when {
+                branch "develop"
+                environment(name: 'DO_CHECKMARX_SCA', value: 'true')
+           }
+           environment {
+                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
+                CX_NAME="vitam-ui.${env.GIT_BRANCH}"
+           }
+           steps {
+                sh 'sudo yum install -y wget'
+                sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
+                sh 'gzip -d ScaResolver-linux64.tar.gz'
+                sh 'tar -xvf ScaResolver-linux64.tar'
+                sh 'sudo ln -s /usr/local/maven/bin/mvn /usr/local/bin/mvn'
+                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD" --report-type Risk --report-extension Pdf '
+           }
+           post {
+                success {
+                    archiveArtifacts (
+                        artifacts: "reports/$CX_NAME/*.pdf",
+                        fingerprint: true
+                    )
+                }
+                failure {
+                    archiveArtifacts (
+                        artifacts: "logs/$CX_NAME/*.log",
                         fingerprint: true
                     )
                 }
