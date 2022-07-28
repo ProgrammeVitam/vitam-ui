@@ -2,17 +2,7 @@
 
 # Master playbook to fully deploy Vitam-UI
 
-- hosts: localhost
-  connection: local
-  become: false
-  roles:
-    - bootstrap_ansible
-
-- hosts: hosts_vitamui
-  roles:
-    - checks
-    - normalize
-    - users
+- import_playbook: pre_install.yml
 
 - import_playbook: rsyslog.yml
 
@@ -31,6 +21,3 @@
 - import_playbook: app_referential.yml
 
 - import_playbook: reverse_proxy.yml
-
-# condition with extra vars -e extra=yes inside roles
-- import_playbook: ../ansible-vitamui-extra/vitamui_extra.yml
