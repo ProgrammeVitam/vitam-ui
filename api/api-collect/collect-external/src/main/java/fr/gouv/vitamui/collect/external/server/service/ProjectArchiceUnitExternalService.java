@@ -42,19 +42,18 @@ import org.springframework.stereotype.Service;
 @Getter
 @Setter
 @Service
-public class ArchiveSearchCollectExternalService extends
+public class ProjectArchiceUnitExternalService extends
     AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
     private final CollectInternalRestClient collectInternalRestClient;
 
-    public ArchiveSearchCollectExternalService(CollectInternalRestClient collectInternalRestClient,
+    public ProjectArchiceUnitExternalService(CollectInternalRestClient collectInternalRestClient,
         ExternalSecurityService externalSecurityService) {
         super(externalSecurityService);
         this.collectInternalRestClient = collectInternalRestClient;
     }
-
-    public ArchiveUnitsDto getAllArchiveUnitsForCollect(String projectId, SearchCriteriaDto searchQuery) {
-        return collectInternalRestClient.getAllArchiveUnitsForCollect(getInternalHttpContext(), projectId, searchQuery);
+    public ArchiveUnitsDto searchCollectProjectArchiveUnits(String projectId, SearchCriteriaDto searchQuery) {
+        return collectInternalRestClient.searchCollectProjectArchiveUnits(getInternalHttpContext(), projectId, searchQuery);
     }
 
     @Override

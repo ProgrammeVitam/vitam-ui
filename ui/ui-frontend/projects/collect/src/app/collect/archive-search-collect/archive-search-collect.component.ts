@@ -133,7 +133,7 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
         this.foundAccessContract = true;
         this.fetchVitamAccessContract();
         if (this.archiveUnits.length === 0) {
-          this.callVitamApiService(false);
+          this.searchArchiveUnits(false);
         }
       } else {
         this.errorMessageSub = this.translateService
@@ -192,12 +192,12 @@ export class ArchiveSearchCollectComponent extends SidenavPage<any> implements O
       this.currentPage = this.currentPage + 1;
       this.criteriaSearchList = [];
       if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
-        this.callVitamApiService(false);
+        this.searchArchiveUnits(false);
       }
     }
   }
 
-  private callVitamApiService(includeFacets: boolean) {
+  private searchArchiveUnits(includeFacets: boolean) {
     this.pending = true;
 
     const sortingCriteria = { criteria: this.orderBy, sorting: this.direction };

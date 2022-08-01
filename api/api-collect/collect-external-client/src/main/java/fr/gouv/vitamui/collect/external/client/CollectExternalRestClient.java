@@ -31,20 +31,27 @@ import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
+import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.rest.client.BasePaginatingAndSortingRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import org.apache.http.client.utils.URIBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Optional;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVES_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.OBJECT_GROUPS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
 
 
 public class CollectExternalRestClient
@@ -61,8 +68,7 @@ public class CollectExternalRestClient
 
     @Override
     protected ParameterizedTypeReference<List<CollectProjectDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() {
-        };
+        return new ParameterizedTypeReference<>() {};
     }
 
     @Override
@@ -73,18 +79,39 @@ public class CollectExternalRestClient
 
     @Override
     public String getPathUrl() {
-        return RestApi.COLLECT_PROJECT_PATH;
+        return RestApi.COLLECT_PATH;
     }
 
-    public ArchiveUnitsDto getAllArchiveUnitsForCollect(ExternalHttpContext context, String projectId,
+    @Override
+    public CollectProjectDto create(final ExternalHttpContext context, final CollectProjectDto dto) {
+        return create(getUrl() + PROJECTS, context, dto);
+    }
+
+    @Override
+    public PaginatedValuesDto<CollectProjectDto> getAllPaginated(final ExternalHttpContext context, final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
+        final Optional<DirectionDto> direction) {
+        final URIBuilder builder = getUriBuilder(getUrl() + PROJECTS);
+        return getAllPaginated(builder, context, page, size, criteria, orderBy, direction, Optional.empty());
+    }
+
+    public ArchiveUnitsDto searchCollectProjectArchiveUnits(ExternalHttpContext context, String projectId,
         SearchCriteriaDto searchQuery) {
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + ARCHIVES_SEARCH_PATH + SEARCH + "/" + projectId,
+            restTemplate.exchange(getUrl() + PROJECTS + "/" + projectId + ARCHIVE_UNITS,
                 HttpMethod.POST,
                 request, ArchiveUnitsDto.class);
         checkResponse(response);
         return response.getBody();
     }
+
+    public ResponseEntity<ResultsDto> findObjectById(String id, ExternalHttpContext context) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + OBJECT_GROUPS + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
+    }
+
 }

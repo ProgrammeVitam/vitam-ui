@@ -25,7 +25,7 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.collect.internal.server.service.project;
+package fr.gouv.vitamui.collect.internal.server.service.converters;
 
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;

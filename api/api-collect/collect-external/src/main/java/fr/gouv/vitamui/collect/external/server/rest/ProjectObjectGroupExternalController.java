@@ -27,68 +27,70 @@
 package fr.gouv.vitamui.collect.external.server.rest;
 
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.ArchiveSearchCollectExternalService;
+import fr.gouv.vitamui.collect.external.server.service.ProjectObjectGroupExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
-import fr.gouv.vitamui.commons.api.domain.ServicesData;
 import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
-import javax.ws.rs.Consumes;
-
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVES_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
+import static fr.gouv.vitamui.archives.search.common.rest.RestApi.DOWNLOAD_ARCHIVE_UNIT;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_OBJECT_GROUPS_PATH;
 
 /**
  * Collect Archive search External controller
  */
 @Api(tags = "Collect")
-@RequestMapping(RestApi.COLLECT_PROJECT_PATH)
+@RequestMapping(COLLECT_PROJECT_OBJECT_GROUPS_PATH)
 @RestController
 @ResponseBody
-public class ArchiveSearchCollectExternalController {
+public class ProjectObjectGroupExternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectExternalController.class);
-
-    private final ArchiveSearchCollectExternalService archiveSearchCollectExternalService;
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupExternalController.class);
+    private final ProjectObjectGroupExternalService projectObjectGroupExternalService;
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+    private static final String MANDATORY_USAGE = "Usage is a mandatory parameter: ";
+    private static final String MANDATORY_VERSION = "Version is a mandatory parameter: ";
 
     @Autowired
-    public ArchiveSearchCollectExternalController(
-        ArchiveSearchCollectExternalService archiveSearchCollectExternalService) {
-        this.archiveSearchCollectExternalService = archiveSearchCollectExternalService;
+    public ProjectObjectGroupExternalController(
+        ProjectObjectGroupExternalService projectObjectGroupExternalService) {
+        this.projectObjectGroupExternalService = projectObjectGroupExternalService;
     }
 
-    @ApiOperation(value = "find archive units by criteria")
-    @Secured(ServicesData.ROLE_GET_PROJECTS)
-    @PostMapping(ARCHIVES_SEARCH_PATH + SEARCH + "/{projectId}")
-    @Consumes(MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    public ArchiveUnitsDto searchArchiveUnits(final @PathVariable("projectId") String projectId,
-        @RequestBody final SearchCriteriaDto searchQuery)
+    @GetMapping(value = DOWNLOAD_ARCHIVE_UNIT +
+        CommonConstants.PATH_ID, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(final @PathVariable("id") String id,
+        final @RequestParam("usage") String usage, final @RequestParam("version") Integer version)
         throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        ParameterChecker.checkParameter(MANDATORY_USAGE, usage);
+        ParameterChecker.checkParameter(MANDATORY_VERSION, version);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Download the Archive Unit Object with id {} ", id);
+        return projectObjectGroupExternalService.downloadObjectFromUnit(id, usage, version);
+    }
 
-        ParameterChecker.checkParameter("The Query and the projectId are mandatories parameters: ", projectId ,searchQuery);
-        SanityChecker.sanitizeCriteria(searchQuery);
-        SanityChecker.checkSecureParameter(projectId);
-        LOGGER.debug("search archives Units by criteria = {}", searchQuery);
-
-        return archiveSearchCollectExternalService.getAllArchiveUnitsForCollect(projectId, searchQuery);
+    @GetMapping( CommonConstants.PATH_ID)
+    public ResponseEntity<ResultsDto> findObjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find an ObjectGroup by id {} ", id);
+        return projectObjectGroupExternalService.findObjectById(id);
     }
 }

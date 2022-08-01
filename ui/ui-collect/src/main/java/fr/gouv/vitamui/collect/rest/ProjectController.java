@@ -64,7 +64,7 @@ import java.util.Optional;
 
 @Api(tags = "Collect")
 @RestController
-@RequestMapping("${ui-collect.prefix}/project")
+@RequestMapping("${ui-collect.prefix}/projects")
 @Consumes("application/json")
 @Produces("application/json")
 public class ProjectController extends AbstractUiRestController {

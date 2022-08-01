@@ -31,52 +31,39 @@ package fr.gouv.vitamui.collect.service;
 
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
+import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.stereotype.Service;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+/**
+ * UI Collect Archive Units Service
+ */
+@Service
+public class ProjectArchiveUnitService extends AbstractPaginateService<CollectProjectDto> {
 
-@RunWith(SpringRunner.class)
-public class ArchiveSearchProjectServiceTest {
+    private final CollectExternalRestClient collectExternalRestClient;
 
-    private ProjectArchiveUnitService searchCollectUnitService;
+    private final CommonService commonService;
 
-    @Mock
-    private CollectExternalRestClient collectExternalRestClient;
-
-    @Mock
-    private CommonService commonService;
-
-    @Before
-    public void init() {
-        searchCollectUnitService = new ProjectArchiveUnitService(commonService, collectExternalRestClient);
-        ServerIdentityConfigurationBuilder.setup("identityName", "identityRole", 1, 0);
+    public ProjectArchiveUnitService(CommonService commonService, CollectExternalRestClient collectExternalRestClient) {
+        this.commonService = commonService;
+        this.collectExternalRestClient = collectExternalRestClient;
     }
 
-    @Test
-    public void search_collect_units_should_call_appropriate_rest_client() {
-        // Given
-        SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
-        ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(searchCollectUnitService.searchCollectProjectArchiveUnits(ArgumentMatchers.any(),
-                ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
-            .thenReturn(new ArchiveUnitsDto());
-
-        // When
-        searchCollectUnitService.searchCollectProjectArchiveUnits(context, "projectId", searchCriteriaDto);
-
-        // Then
-        verify(collectExternalRestClient, Mockito.times(1))
-            .searchCollectProjectArchiveUnits(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
+    public ArchiveUnitsDto searchCollectProjectArchiveUnits(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
+        return collectExternalRestClient.searchCollectProjectArchiveUnits(context, projectId, searchQuery);
     }
+
+    @Override
+    protected Integer beforePaginate(final Integer page, final Integer size) {
+        return commonService.checkPagination(page, size);
+    }
+
+    public CollectExternalRestClient getClient() {
+        return collectExternalRestClient;
+    }
+
 }

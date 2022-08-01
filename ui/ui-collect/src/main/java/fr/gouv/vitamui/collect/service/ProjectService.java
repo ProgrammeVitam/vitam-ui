@@ -32,8 +32,6 @@ import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
-import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
@@ -45,12 +43,10 @@ import java.io.InputStream;
 import java.util.Optional;
 
 /**
- * UI Collect Service
+ * UI Collect Project Service
  */
 @Service
 public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
-
-    static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectService.class);
 
     private final CollectExternalRestClient collectExternalRestClient;
     private final CollectStreamingExternalRestClient collectStreamingExternalRestClient;

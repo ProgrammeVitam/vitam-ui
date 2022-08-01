@@ -24,25 +24,25 @@
  * accept its terms.
  */
 
-package fr.gouv.vitamui.archives.search.common.dto;
+package fr.gouv.vitamui.collect.internal.client;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import fr.gouv.vitamui.commons.api.domain.IdDto;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import fr.gouv.vitamui.commons.rest.client.BaseWebClientFactory;
+import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
+import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.Serializable;
+public class CollectInternalWebClientFactory extends BaseWebClientFactory {
 
+    public CollectInternalWebClientFactory(final RestClientConfiguration restClientConfiguration,
+        final WebClient.Builder webClientBuilder) {
+        super(restClientConfiguration, webClientBuilder);
+    }
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class ArchiveUnitsDto extends IdDto implements Serializable {
-    private VitamUIArchiveUnitResponseDto archives;
+    public CollectInternalWebClient getCollectInternalWebClient() {
+        return new CollectInternalWebClient(getWebClient(), getBaseUrl());
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return super.getBaseUrl();
+    }
 }

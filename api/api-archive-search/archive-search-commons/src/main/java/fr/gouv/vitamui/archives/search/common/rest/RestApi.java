@@ -26,6 +26,9 @@
  */
 package fr.gouv.vitamui.archives.search.common.rest;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class RestApi {
 
     public static final String ARCHIVE_SEARCH_PATH = "/archives-search";
@@ -45,4 +48,5 @@ public class RestApi {
     public static final String COMPUTED_INHERITED_RULES = "/computed-inherited-rules";
     public static final String RECLASSIFICATION = "/reclassification";
     public static final String UNIT_WITH_INHERITED_RULES = "/unit-with-inherited-rules";
+    public static final String ARCHIVE_UNITS = "/archive-units";
 }

@@ -29,6 +29,8 @@ package fr.gouv.vitamui.collect.config;
 
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectExternalRestClientFactory;
+import fr.gouv.vitamui.collect.external.client.CollectExternalWebClient;
+import fr.gouv.vitamui.collect.external.client.CollectExternalWebClientFactory;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClient;
 import fr.gouv.vitamui.collect.external.client.CollectStreamingExternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -44,6 +46,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @EnableConfigurationProperties
@@ -83,6 +86,21 @@ public class CollectContextConfiguration extends AbstractContextConfiguration {
     public CollectStreamingExternalRestClient collectStreamingExternalRestClient(
         final CollectStreamingExternalRestClientFactory collectStreamingExternalRestClientFactory) {
         return collectStreamingExternalRestClientFactory.getCollectStreamingExternalRestClient();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @DependsOn("uiProperties")
+    public CollectExternalWebClientFactory collectExternalWebClientFactory (
+        final CollectApplicationProperties uiProperties, final WebClient.Builder webClientBuilder) {
+        return new CollectExternalWebClientFactory(uiProperties.getCollectExternalClient(),
+            webClientBuilder);
+    }
+
+    @Bean
+    public CollectExternalWebClient archiveSearchExternalWebClient(
+        final CollectExternalWebClientFactory collectExternalWebClientFactory) {
+        return collectExternalWebClientFactory.getCollectExternalWebClient();
     }
 
 }
