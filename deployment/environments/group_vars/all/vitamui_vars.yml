@@ -74,7 +74,7 @@ vitamui:
     port_admin: 7002
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -95,7 +95,7 @@ vitamui:
     port_admin: 7401
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -114,7 +114,7 @@ vitamui:
     server_connection_timeout: 60000
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -135,7 +135,7 @@ vitamui:
     port_admin: 7003
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -157,7 +157,7 @@ vitamui:
     write_timeout: 30
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -179,7 +179,7 @@ vitamui:
     write_timeout: 30
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -203,7 +203,7 @@ vitamui:
     read_timeout: 30
     write_timeout: 30
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -224,7 +224,7 @@ vitamui:
     write_timeout: 30
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     gdpr_alert_readonly: true
     log:
       logback_max_file_size: "10MB"
@@ -249,7 +249,7 @@ vitamui:
     secure: true
     hostname_verification: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     theme:
       vitamui_platform_name: VITAM-UI
       vitamui_favicon: "{{ vitamui_defaults.folder.root_path }}/conf/assets/favicon.ico"
@@ -275,7 +275,7 @@ vitamui:
     port_admin: 7203
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
@@ -293,13 +293,13 @@ vitamui:
     port_admin: 7008
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
   ingest_external:
     host: "vitamui-ingest-external.service.{{ consul_domain }}"
@@ -312,13 +312,13 @@ vitamui:
     port_admin: 7108
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
   ingest_internal:
     host: "vitamui-ingest-internal.service.{{ consul_domain }}"
@@ -331,14 +331,14 @@ vitamui:
     port_admin: 7208
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     tmp_folder_path : "{{ vitamui_defaults.folder.root_path }}/tmp"
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
   archive_search:
     host: "archive-search.service.{{ consul_domain }}"
@@ -351,13 +351,13 @@ vitamui:
     port_admin: 7009
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
   archive_search_external:
     host: "archive-search-external.service.{{ consul_domain }}"
@@ -370,13 +370,13 @@ vitamui:
     port_admin: 7109
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
   archive_search_internal:
     host: "archive-search-internal.service.{{ consul_domain }}"
@@ -389,13 +389,13 @@ vitamui:
     port_admin: 7209
     secure: true
     jvm_log: false
-    logging_level: "INFO"
+    accesslogs: true
     log:
       logback_max_file_size: "10MB"
       logback_max_history: 30
       logback_total_size_cap: "5GB"
       root_log_level: "ERROR"
-      vitamui_level: "DEBUG"
+      vitamui_level: "INFO"
 
 ################################################################################
 
