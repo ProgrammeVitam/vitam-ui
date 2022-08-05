@@ -29,6 +29,7 @@ package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
 import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
@@ -119,6 +120,14 @@ public class ProjectInternalController {
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.update(vitamContext, id, collectProjectDto);
+    }
+
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id) throws VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Project to get  {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.getProjectById(id, vitamContext);
     }
 
 }

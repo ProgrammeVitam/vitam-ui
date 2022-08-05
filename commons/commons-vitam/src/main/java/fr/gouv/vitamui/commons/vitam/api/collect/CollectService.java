@@ -137,6 +137,13 @@ public class CollectService {
         return result;
     }
 
+    public RequestResponse<JsonNode> getProjectById(final VitamContext vitamContext, final String projectId)
+        throws VitamClientException {
+        LOGGER.debug("projectId : {}", projectId);
+        final RequestResponse<JsonNode> result = collectClient.getProjectById(vitamContext, projectId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
 
 
 }

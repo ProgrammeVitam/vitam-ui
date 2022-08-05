@@ -36,6 +36,7 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -127,6 +128,17 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
         return projectService.update(buildUiHttpContext(), collectProjectDto);
+    }
+
+    @ApiOperation(value = "Get project Details")
+    @GetMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Find the Project with ID {}", id);
+        return projectService.getOne(buildUiHttpContext(), id);
     }
 
 }

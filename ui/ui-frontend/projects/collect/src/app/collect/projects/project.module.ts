@@ -54,6 +54,8 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectsComponent } from './projects.component';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { ProjectPreviewComponent } from './project-preview/project-preview.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -72,8 +74,9 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapte
     MatFormFieldModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatTabsModule
   ],
   providers: [{ provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }],
-  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent],
+  declarations: [ProjectsComponent, ProjectListComponent, CreateProjectComponent, ProjectPreviewComponent],
 })
 export class ProjectModule {}

@@ -1,0 +1,158 @@
+<div *ngIf="(selectedProject | async); let selectedProject">
+  <vitamui-common-sidenav-header [extended]="isPanelextended" [title]="selectedProject.messageIdentifier"
+    [icon]="'vitamui-icon-file'" [hasToolTipOnTitle]="true" [toolTipTitleDuration]="300" (onclose)="emitClose()">
+    <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+      <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
+        {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
+      </button>
+      <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
+        {{ 'COLLECT.PROJECT_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
+      </button>
+      <button mat-menu-item
+        matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+        matTooltipClass="vitamui-tooltip" [matTooltipShowDelay]="300" (click)="updateMetadataDesc()"
+        [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)">
+        {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
+      </button>
+    </vitamui-common-menu-button>
+  </vitamui-common-sidenav-header>
+
+  <div class="vitamui-sidepanel-body">
+    <mat-tab-group [selectedIndex]="selectedTabIndex"
+      [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+      <!-- DESCRIPTION TAB -->
+      <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.DESCRIPTION' | translate }}">
+        <div class="row">
+          <div class="col-12">
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NAME' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.messageIdentifier">
+                  {{ selectedProject.messageIdentifier }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.ID' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.id">
+                  {{ selectedProject.id }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.DESCRIPTION' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.comment">
+                  {{ selectedProject.comment }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SP_ID' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.originatingAgencyIdentifier">
+                  {{ selectedProject.originatingAgencyIdentifier }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.SV_ID' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.submissionAgencyIdentifier">
+                  {{ selectedProject.submissionAgencyIdentifier }}
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- CONTEXT TAB -->
+      <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.CONTEXT' | translate }}">
+        <div class="row">
+          <div class="col-12">
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGENCY' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.archivalAgencyIdentifier">
+                  {{ selectedProject.archivalAgencyIdentifier }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.transferingAgencyIdentifier">
+                  {{ selectedProject.transferingAgencyIdentifier }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVAL_AGREEMENT' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.archivalAgreement">
+                  {{ selectedProject.archivalAgreement }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.archiveProfile">
+                  {{ selectedProject.archiveProfile }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.acquisitionIformation">
+                  {{ selectedProject.acquisitionIformation }}
+                </ng-container>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.legalStatus">
+                  {{ selectedProject.legalStatus }}
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <!-- ATTACHEMENT TAB -->
+      <mat-tab label="{{ 'COLLECT.PROJECT_UNIT_PREVIEW.TABS.ATTACHEMENT' | translate }}">
+        <div class="row">
+          <div class="col-12">
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.UNIT_UPS_ID' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.unitUp; else elseBlock">
+                  {{ selectedProject.unitUp }}
+                </ng-container>
+                <ng-template #elseBlock>
+                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NO_EXSISTANT_ATTACHEMENT' | translate }}
+                </ng-template>
+              </div>
+            </div>
+            <div class="read-only-field" *ngIf="!updateStarted">
+              <label>{{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.UNIT_UPS_LABEL' | translate }} :</label>
+              <div>
+                <ng-container *ngIf="selectedProject.unitUpLabel; else elseBlock">
+                  {{ selectedProject.unitUpLabel }}
+                </ng-container>
+                <ng-template #elseBlock>
+                  {{ 'COLLECT.PROJECT_UNIT_PREVIEW.FIELDS.NO_EXSISTANT_ATTACHEMENT' | translate }}
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
