@@ -30,9 +30,11 @@
 package fr.gouv.vitamui.commons.vitam.api.collect;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.JsonSerializable;
 import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -64,7 +66,12 @@ public class CollectService {
     public RequestResponseOK<JsonNode> searchUnitsByProjectId(final String projectId, final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("projectId : {}", projectId);
-        final RequestResponseOK<JsonNode> result = collectClient.getUnitsByProjectId(vitamContext, projectId);
+        /**
+         * TODO replace the empty query select by the right query  
+         */
+        final SelectMultiQuery select = new SelectMultiQuery();
+
+        final RequestResponseOK<JsonNode> result = collectClient.getUnitsByProjectId(vitamContext, projectId, select.getFinalSelect());
         VitamRestUtils.checkResponse(result);
         return result;
     }
