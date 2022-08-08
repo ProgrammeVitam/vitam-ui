@@ -30,7 +30,6 @@
 package fr.gouv.vitamui.commons.vitam.api.collect;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializable;
 import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.common.client.VitamContext;
@@ -41,6 +40,7 @@ import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+
 import javax.ws.rs.core.Response;
 
 import java.io.InputStream;
@@ -59,19 +59,17 @@ public class CollectService {
      * Search units by projectId.
      *
      * @param projectId
+     * @param searchQuery
      * @param vitamContext
      * @return
      * @throws VitamClientException
      */
-    public RequestResponseOK<JsonNode> searchUnitsByProjectId(final String projectId, final VitamContext vitamContext)
+    public RequestResponseOK<JsonNode> searchUnitsByProjectId(final String projectId, JsonNode searchQuery,
+        final VitamContext vitamContext)
         throws VitamClientException {
         LOGGER.debug("projectId : {}", projectId);
-        /**
-         * TODO replace the empty query select by the right query  
-         */
-        final SelectMultiQuery select = new SelectMultiQuery();
-
-        final RequestResponseOK<JsonNode> result = collectClient.getUnitsByProjectId(vitamContext, projectId, select.getFinalSelect());
+        final RequestResponseOK<JsonNode> result =
+            collectClient.getUnitsByProjectId(vitamContext, projectId, searchQuery);
         VitamRestUtils.checkResponse(result);
         return result;
     }
@@ -129,7 +127,8 @@ public class CollectService {
      * @return
      * @throws VitamClientException
      */
-    public Response uploadProjectZip(final VitamContext vitamContext, final String projectId, final InputStream inputStream)
+    public Response uploadProjectZip(final VitamContext vitamContext, final String projectId,
+        final InputStream inputStream)
         throws VitamClientException {
         LOGGER.debug("projectId : {}", projectId);
         final Response result = collectClient.uploadProjectZip(vitamContext, projectId, inputStream);
