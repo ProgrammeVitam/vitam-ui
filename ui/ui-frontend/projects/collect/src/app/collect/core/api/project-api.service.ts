@@ -65,4 +65,8 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   public update(data: Project): Observable<Project> {
     return super.update(data);
   }
+
+  public getById(projectId: string): Observable<Project> {
+    return super.getOne(projectId);
+  }
 }

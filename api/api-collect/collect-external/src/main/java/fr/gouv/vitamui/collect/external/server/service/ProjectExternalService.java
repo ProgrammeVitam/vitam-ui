@@ -88,4 +88,8 @@ public class ProjectExternalService extends AbstractResourceClientService<Collec
     public CollectProjectDto updateProject(CollectProjectDto collectProjectDto) {
         return collectInternalRestClient.update(getInternalHttpContext(), collectProjectDto);
     }
+
+    public CollectProjectDto findProjectById(String projectId) {
+        return collectInternalRestClient.getOne(getInternalHttpContext(), projectId);
+    }
 }

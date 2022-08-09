@@ -196,18 +196,18 @@
                   </ng-template>
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit?.EndDate }}
+                  {{ archiveUnit['#approximate_creation_date'] | dateTime: 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
-                  {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
+                  {{ archiveUnit['#approximate_update_date'] | dateTime: 'dd/MM/yyyy' }}
                 </div>
                 <div class="col-2 d-flex align-items-center clickable" (click)="openPanel(archiveUnit)">
                   <p
-                    matTooltip="{{ archiveUnit['originating_agencyName'] }}   ({{ archiveUnit['#originating_agencies'] }})"
+                    matTooltip="{{ archiveUnit['#originating_agency'] }}   ({{ archiveUnit['#originating_agencies'] }})"
                     matTooltipClass="vitamui-tooltip"
                     [matTooltipShowDelay]="300"
                   >
-                    {{ archiveUnit['originating_agencyName'] }}
+                    {{ archiveUnit['#originating_agency'] }}
                   </p>
                 </div>
               </div>

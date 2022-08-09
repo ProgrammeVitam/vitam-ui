@@ -26,6 +26,7 @@
  */
 package fr.gouv.vitamui.collect.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.gouv.vitamui.commons.api.domain.IdDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,17 +42,21 @@ import java.time.OffsetDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 public class CollectProjectDto extends IdDto {
+    @JsonProperty("id")
     private String id;
+    @JsonProperty("tenant")
+    private String tenant;
+    @JsonProperty("transactionId")
+    private String transactionId;
     private String archivalAgreement;
     private String messageIdentifier;
     private String archivalAgencyIdentifier;
-    private String transferringAgencyIdentifier;
+    private String transferingAgencyIdentifier;
     private String originatingAgencyIdentifier;
     private String submissionAgencyIdentifier;
-    private String archivalProfile;
+    private String archiveProfile;
     private String comment;
     private String status;
-    private String transactionId;
     private String unitUp;
     private OffsetDateTime createdOn;
     private OffsetDateTime lastModifyOn;

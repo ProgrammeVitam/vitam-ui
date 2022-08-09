@@ -38,8 +38,10 @@ import { ProjectsService } from './projects.service';
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
 })
-export class ProjectsComponent extends SidenavPage<ProjectsService> implements OnDestroy {
+export class ProjectsComponent extends SidenavPage<any> implements OnDestroy {
   tenantIdentifier: string;
+  projectId: string;
+  isLPExtended = false;
   createDialogSub: Subscription;
 
   @ViewChild(ProjectListComponent, { static: true }) projectListComponent: ProjectListComponent;
@@ -68,5 +70,18 @@ export class ProjectsComponent extends SidenavPage<ProjectsService> implements O
     this.createDialogSub = dialogRef.afterClosed().subscribe(() => {
       this.projectListComponent.search(new PageRequest(0, DEFAULT_PAGE_SIZE, 'archivalAgreement', Direction.ASCENDANT));
     });
+  }
+
+  openProjectDetailsPanel(selectedProjectId: string){
+    this.projectId = selectedProjectId;
+    this.openPanel(selectedProjectId);
+  }
+
+  showExtendedLateralPanel() {
+    this.isLPExtended = true;
+  }
+
+  backToNormalLateralPanel() {
+    this.isLPExtended = false;
   }
 }

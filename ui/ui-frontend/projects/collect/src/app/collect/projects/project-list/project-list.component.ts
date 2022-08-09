@@ -24,7 +24,7 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject } from 'rxjs';
@@ -79,6 +79,9 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     },
   ];
 
+  @Output()
+  previewProjectDetailsPanel: EventEmitter<any> = new EventEmitter();
+
   constructor(public projectsService: ProjectsService, private translationService: TranslateService, private router: Router) {
     super(projectsService);
   }
@@ -102,7 +105,11 @@ export class ProjectListComponent extends InfiniteScrollTable<Project> implement
     this.orderChange.next(event);
   }
 
-  showProject(project: Project) {
-    this.router.navigate(['collect/archive-search-collect', project.id]);
+  searchArchiveUnitsByProject(projectId: string) {
+    this.router.navigate(['collect/archive-search-collect', projectId]);
+  }
+
+  showProjectDetails(projectId: string) {
+    this.previewProjectDetailsPanel.emit(projectId);
   }
 }

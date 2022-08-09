@@ -40,6 +40,7 @@ import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOper
 import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
@@ -54,8 +55,10 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.springframework.util.CollectionUtils;
 
+import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Objects;
@@ -118,7 +121,10 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            List<ProjectDto> projectDtos = objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(), new TypeReference<>(){});
+            List<ProjectDto> projectDtos =
+                objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    new TypeReference<>() {
+                    });
             List<CollectProjectDto> collectProjectDtos = ProjectConverter.toVitamuiDtos(projectDtos);
             return new PaginatedValuesDto<>(collectProjectDtos, 1, MAX_RESULTS, false);
         } catch (VitamClientException e) {
@@ -233,4 +239,16 @@ public class ProjectInternalService {
         return select;
     }
 
+    public CollectProjectDto getProjectById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            RequestResponse<JsonNode> requestResponse = collectService.getProjectById(vitamContext, id);
+            if (!requestResponse.isOk()) {
+                throw new VitamClientException("Error occurs when getting project!");
+            }
+            return JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                CollectProjectDto.class);
+        } catch (VitamClientException | InvalidParseOperationException e) {
+            throw new VitamClientException("Unable to find project : ", e);
+        }
+    }
 }

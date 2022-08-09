@@ -49,4 +49,8 @@ export class ProjectsService extends SearchService<Project> {
   public updateProject(project: Project) {
     return this.projectsApiService.update(project);
   }
+
+  public getProjectById(projectId: string) {
+    return this.projectsApiService.getById(projectId);
+  }
 }

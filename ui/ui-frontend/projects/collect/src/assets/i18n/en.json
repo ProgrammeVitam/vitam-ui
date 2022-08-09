@@ -150,6 +150,54 @@
       },
       "COMMON_YES": "Yes",
       "COMMON_NO": "No"
+    },
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Intitulé",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "Identifiant technique du versement",
+        "UAID": "Identifiant technique de l'unité archivistique",
+        "SP": "Service producteur",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
+        "PATH": "Chemin",
+        "DESCRIPTION_LEVEL": "Niveau de description",
+        "DOWNLOAD_DOC": "Télécharger le document",
+        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations",
+        "RULES": "Règles",
+        "OBJECTS": "Objets"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
+      }
+    },
+    "PROJECT_UNIT_PREVIEW": {
+      "TABS": {
+        "DESCRIPTION": "Description",
+        "CONTEXT": "Context",
+        "ATTACHEMENT": "Attachement"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
+        "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
+      },
+      "FIELDS": {
+        "NAME": "Name",
+        "ID": "Project technical identifier",
+        "DESCRIPTION": "Description",
+        "SP_ID": "Originating agency",
+        "SV_ID": "Submission agency",
+        "UNIT_UPS_ID": "Attachement technical identifier",
+        "UNIT_UPS_LABEL": "Attachement unit label",
+        "NO_EXSISTANT_ATTACHEMENT": "No attachement"
+      }
     }
   },
   "ACQUISITION_INFORMATION": {

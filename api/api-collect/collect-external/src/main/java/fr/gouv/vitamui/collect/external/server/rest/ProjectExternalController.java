@@ -72,6 +72,8 @@ public class ProjectExternalController {
 
     private final ProjectExternalService projectExternalService;
 
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
     @Autowired
     public ProjectExternalController(ProjectExternalService projectExternalService) {
         this.projectExternalService = projectExternalService;
@@ -84,18 +86,18 @@ public class ProjectExternalController {
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
-        PreconditionFailedException{
+        PreconditionFailedException {
         direction.ifPresent(directionDto ->
             {
                 try {
                     SanityChecker.sanitizeCriteria(directionDto);
                 } catch (InvalidParseOperationException exception) {
                     LOGGER.error("Exception error : {}", exception.getMessage());
-                    throw new PreconditionFailedException("Exception error",exception);
+                    throw new PreconditionFailedException("Exception error", exception);
                 }
             }
         );
-        if(orderBy.isPresent()) {
+        if (orderBy.isPresent()) {
             SanityChecker.checkSecureParameter(orderBy.get());
         }
         SanityChecker.sanitizeCriteria(criteria);
@@ -106,7 +108,8 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping()
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException,
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException,
         PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
@@ -129,12 +132,23 @@ public class ProjectExternalController {
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException, PreconditionFailedException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[External] Project to update : {}", collectProjectDto);
         return projectExternalService.updateProject(collectProjectDto);
+    }
+
+    @Secured(ServicesData.ROLE_GET_PROJECTS)
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The project id {} ", id);
+        return projectExternalService.findProjectById(id);
     }
 }

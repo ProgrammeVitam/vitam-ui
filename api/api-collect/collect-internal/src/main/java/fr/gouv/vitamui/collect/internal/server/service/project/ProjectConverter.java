@@ -40,7 +40,7 @@ public class ProjectConverter {
         return CollectProjectDto.builder()
             .archivalAgencyIdentifier(projectDto.getArchivalAgencyIdentifier())
             .archivalAgreement(projectDto.getArchivalAgreement())
-            .archivalProfile(projectDto.getArchivalProfile())
+            .archiveProfile(projectDto.getArchivalProfile())
             .comment(projectDto.getComment())
             .id(projectDto.getId())
             .messageIdentifier(projectDto.getMessageIdentifier())
@@ -48,7 +48,7 @@ public class ProjectConverter {
             .transactionId(projectDto.getTransactionId())
             .originatingAgencyIdentifier(projectDto.getOriginatingAgencyIdentifier())
             .submissionAgencyIdentifier(projectDto.getSubmissionAgencyIdentifier())
-            .transferringAgencyIdentifier(projectDto.getTransferingAgencyIdentifier())
+            .transferingAgencyIdentifier(projectDto.getTransferingAgencyIdentifier())
             .build();
     }
 
@@ -61,12 +61,12 @@ public class ProjectConverter {
         externalDto.setArchivalAgencyIdentifier(collectProjectDto.getArchivalAgencyIdentifier());
         externalDto.setArchivalAgreement(collectProjectDto.getArchivalAgreement());
         externalDto.setComment(collectProjectDto.getComment());
-        externalDto.setArchivalProfile(collectProjectDto.getArchivalProfile());
+        externalDto.setArchivalProfile(collectProjectDto.getArchiveProfile());
         externalDto.setId(collectProjectDto.getId());
         externalDto.setMessageIdentifier(collectProjectDto.getMessageIdentifier());
         externalDto.setOriginatingAgencyIdentifier(collectProjectDto.getOriginatingAgencyIdentifier());
         externalDto.setSubmissionAgencyIdentifier(collectProjectDto.getSubmissionAgencyIdentifier());
-        externalDto.setTransferingAgencyIdentifier(collectProjectDto.getTransferringAgencyIdentifier());
+        externalDto.setTransferingAgencyIdentifier(collectProjectDto.getTransferingAgencyIdentifier());
         externalDto.setTransactionId(collectProjectDto.getTransactionId());
         externalDto.setUnitUp(collectProjectDto.getUnitUp());
         return externalDto;
