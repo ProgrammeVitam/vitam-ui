@@ -140,6 +140,25 @@ customer-init:
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
 
+    - name: Profil pour la gestion des règles de gestion
+      description: Gestion des règles de gestion
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
+        - ROLE_CREATE_RULES
+        - ROLE_UPDATE_RULES
+        - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
+
+    - name: Profil consultation des règles de gestion
+      description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
+
     - name: Profil pour la gestion des opérations
       description: Gérer et consulter l'ensemble des opérations d'entrées qui sont en cours
       app-name: LOGBOOK_MANAGEMENT_OPERATION_APP
@@ -172,6 +191,7 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
