@@ -52,19 +52,21 @@ public class ArchiveSearchCollectInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalService.class);
+    private static final VitamUILogger LOGGER =
+        VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalService.class);
 
     public ArchiveSearchCollectInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;
         this.objectMapper = objectMapper;
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(String projectId, SearchCriteriaDto searchQuery, VitamContext vitamContext)
+    public ArchiveUnitsDto searchArchiveUnitsByCriteria(String projectId, SearchCriteriaDto searchQuery,
+        VitamContext vitamContext)
         throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
 
         LOGGER.debug("get units by query {}", searchQuery);
         final RequestResponse<JsonNode> result =
-            collectService.searchUnitsByProjectId(projectId, vitamContext);
+            collectService.searchUnitsByProjectId(projectId, JsonHandler.toJsonNode(searchQuery), vitamContext);
         VitamRestUtils.checkResponse(result);
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
