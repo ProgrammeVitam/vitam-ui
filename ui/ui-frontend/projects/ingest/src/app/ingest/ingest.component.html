@@ -32,14 +32,23 @@
 
         <button
           class="btn primary"
-          (click)="openImportSipDialog('DEFAULT_WORKFLOW')"
+          (click)="openImportSipDialog(IngestType.DEFAULT_WORKFLOW)"
           matTooltip="{{ 'INGEST_ACTION.ToolTip_New_Ingest' | translate }}"
           i18n-matTooltip="Proof safe info hint@@proofSafeInfo"
           matTooltipClass="vitamui-tooltip"
+          [ngStyle]="{ 'margin-right': '10px' }"
         >
           <i class="vitamui-icon vitamui-icon-archive-ingest"></i>
           <span>{{ 'INGEST_ACTION.NEW_INGEST' | translate }}</span>
         </button>
+
+        <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+          <button
+            mat-menu-item
+            (click)="openImportSipDialog(IngestType.BLANK_TEST)">
+            {{ 'INGEST_ACTION.NEW_INGEST_BLANK' | translate }}
+          </button>
+        </vitamui-common-menu-button>
       </vitamui-common-banner>
 
       <div class="actions">
@@ -53,7 +62,8 @@
               >{{ 'INGEST_ACTION.START_DATE' | translate }}</span
               >
               <ng-template #showStartDate>
-                <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
+                <span
+                  (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
                 <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
               </ng-template>
               <input
@@ -73,7 +83,8 @@
               >{{ 'INGEST_ACTION.END_DATE' | translate }}</span
               >
               <ng-template #showEndDate
-                ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
+              ><span
+                (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
                 <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i>
               </ng-template>
               <input

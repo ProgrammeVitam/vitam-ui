@@ -41,6 +41,7 @@ export const LOGBOOK_OPERATION_CATEGORIES: Option[] = [
     {key: 'MASTERDATA', label: 'Données de base', info: ''},
     {key: 'ELIMINATION', label: 'Élimination', info: ''},
     {key: 'INGEST', label: 'Entrée', info: ''},
+    {key: 'INGEST_TEST', label: 'Entrée à blanc', info: ''},
     {key: 'EXPORT_DIP', label: 'Export DIP', info: ''},
     {key: 'UPDATE', label: 'Mise à jour', info: ''},
     {key: 'PRESERVATION', label: 'Préservation', info: ''},

@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import {  ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, SidenavPage } from 'ui-frontend-common';
-import { UploadComponent } from '../core/common/upload.component';
+import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
+import {ActivatedRoute, Router} from '@angular/router';
+import {GlobalEventService, SidenavPage} from 'ui-frontend-common';
+import {IngestType} from '../core/common/ingest-type.enum';
+import {UploadComponent} from '../core/common/upload.component';
 
 @Component({
   selector: 'app-holding-filling-scheme',
@@ -46,6 +47,7 @@ import { UploadComponent } from '../core/common/upload.component';
   styleUrls: ['./holding-filling-scheme.component.scss']
 })
 export class HoldingFillingSchemeComponent extends SidenavPage<any> implements OnInit {
+  IngestType = IngestType;
 
   tenantIdentifier: string;
 
@@ -59,7 +61,7 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
     });
   }
 
-  openImportTreePlanPopup(type: string) {
+  openImportTreePlanPopup(type: IngestType) {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.panelClass = 'vitamui-modal';
@@ -76,7 +78,7 @@ export class HoldingFillingSchemeComponent extends SidenavPage<any> implements O
   }
 
   changeTenant(tenantIdentifier: number) {
-    this.router.navigate(['..', tenantIdentifier], { relativeTo: this.route });
+    this.router.navigate(['..', tenantIdentifier], {relativeTo: this.route});
   }
 
 }
