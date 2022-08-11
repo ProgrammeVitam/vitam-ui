@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+	<!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+	<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+	<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+	<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+	<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+	<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.file_formats_app_0{fill-rule:evenodd;clip-rule:evenodd;}
+	.file_formats_app_1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+	.file_formats_app_2{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+	.file_formats_app_3{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+	.file_formats_app_4{fill:#BCB9BA;}
+	.file_formats_app_5{fill:#BBB9BA;}
+	.file_formats_app_6{fill:#BBB8B9;}
+	.file_formats_app_7{fill:#BAB8B9;}
+	.file_formats_app_8{fill:#B9B7B8;}
+	.file_formats_app_9{fill:#B9B7B7;}
+	.file_formats_app_10{fill:#B8B6B7;}
+	.file_formats_app_11{fill:#B8B5B6;}
+	.file_formats_app_12{fill:#B7B5B6;}
+	.file_formats_app_13{fill:#B7B4B5;}
+	.file_formats_app_14{fill:#B6B4B5;}
+	.file_formats_app_15{fill:#B6B3B4;}
+	.file_formats_app_16{fill:#B5B3B4;}
+	.file_formats_app_17{fill:#B4B2B3;}
+	.file_formats_app_18{fill:#B3B1B2;}
+	.file_formats_app_19{fill:#B3B1B1;}
+	.file_formats_app_20{fill:#B2B0B1;}
+	.file_formats_app_21{fill:#B2AFB0;}
+	.file_formats_app_22{fill:#B1AFB0;}
+	.file_formats_app_23{fill:#B1AEAF;}
+	.file_formats_app_24{fill:#B0AEAF;}
+	.file_formats_app_25{fill:#AFADAE;}
+	.file_formats_app_26{fill:#AEACAD;}
+	.file_formats_app_27{fill:#ADABAC;}
+	.file_formats_app_28{fill:#ADABAB;}
+	.file_formats_app_29{fill:#ACAAAB;}
+	.file_formats_app_30{fill:#ACAAAA;}
+	.file_formats_app_31{fill:#ABA9AA;}
+	.file_formats_app_32{fill:#AAA8A9;}
+	.file_formats_app_33{fill:#A9A7A8;}
+	.file_formats_app_34{fill:#A8A6A7;}
+	.file_formats_app_35{fill:#A7A5A6;}
+	.file_formats_app_36{fill:#A7A5A5;}
+	.file_formats_app_37{fill:#A6A4A5;}
+	.file_formats_app_38{fill:#A5A4A4;}
+	.file_formats_app_39{fill:#A5A3A4;}
+	.file_formats_app_40{fill:#A4A2A3;}
+	.file_formats_app_41{fill:#A3A1A2;}
+	.file_formats_app_42{fill:#A2A0A1;}
+	.file_formats_app_43{fill:#A19FA0;}
+	.file_formats_app_44{fill:#A09F9F;}
+	.file_formats_app_45{fill:#A09E9F;}
+	.file_formats_app_46{fill:#9F9E9E;}
+	.file_formats_app_47{fill:#9F9D9E;}
+	.file_formats_app_48{fill:#9E9D9D;}
+	.file_formats_app_49{fill:#9E9C9D;}
+	.file_formats_app_50{fill:#9D9B9C;}
+	.file_formats_app_51{fill:#9C9A9B;}
+	.file_formats_app_52{fill:#9B9A9B;}
+	.file_formats_app_53{fill:#9B999A;}
+	.file_formats_app_54{fill:#9A9999;}
+	.file_formats_app_55{fill:#9A9899;}
+	.file_formats_app_56{fill:#999898;}
+	.file_formats_app_57{fill:#999798;}
+	.file_formats_app_58{fill:#989797;}
+	.file_formats_app_59{fill:#989697;}
+	.file_formats_app_60{fill:#979596;}
+	.file_formats_app_61{fill:#969596;}
+	.file_formats_app_62{fill:#969495;}
+	.file_formats_app_63{fill:#959495;}
+	.file_formats_app_64{fill:#959394;}
+	.file_formats_app_65{fill:#949393;}
+	.file_formats_app_66{fill:#949293;}
+	.file_formats_app_67{fill:#939292;}
+	.file_formats_app_68{fill:#939192;}
+	.file_formats_app_69{fill:#929191;}
+	.file_formats_app_70{fill:#919091;}
+	.file_formats_app_71{fill:#919090;}
+	.file_formats_app_72{fill:#908F90;}
+	.file_formats_app_73{fill:#908E8F;}
+	.file_formats_app_74{fill:#8F8E8F;}
+	.file_formats_app_75{fill:#8F8D8E;}
+	.file_formats_app_76{fill:#8E8D8D;}
+	.file_formats_app_77{fill:#8E8C8D;}
+	.file_formats_app_78{fill:#8D8C8C;}
+	.file_formats_app_79{fill:#8C8B8C;}
+	.file_formats_app_80{fill:#8C8B8B;}
+	.file_formats_app_81{fill:#8B8A8B;}
+	.file_formats_app_82{fill:#8B8A8A;}
+	.file_formats_app_83{fill:#8A898A;}
+	.file_formats_app_84{fill:#8A8889;}
+	.file_formats_app_85{fill:#898888;}
+	.file_formats_app_86{fill:#898788;}
+	.file_formats_app_87{fill:#888787;}
+	.file_formats_app_88{fill:#878687;}
+	.file_formats_app_89{fill:#878686;}
+	.file_formats_app_90{fill:#868586;}
+	.file_formats_app_91{fill:#868585;}
+	.file_formats_app_92{fill:#858485;}
+	.file_formats_app_93{fill:#858484;}
+	.file_formats_app_94{fill:#848384;}
+	.file_formats_app_95{fill:#848383;}
+	.file_formats_app_96{fill:#838282;}
+	.file_formats_app_97{fill:#828182;}
+	.file_formats_app_98{fill:#828181;}
+	.file_formats_app_99{fill:#818081;}
+	.file_formats_app_100{fill:#818080;}
+	.file_formats_app_101{fill:#807F80;}
+	.file_formats_app_102{fill:#807F7F;}
+	.file_formats_app_103{fill:#7F7E7F;}
+	.file_formats_app_104{fill:#7F7E7E;}
+	.file_formats_app_105{fill:#7E7D7E;}
+	.file_formats_app_106{fill:#7D7D7D;}
+	.file_formats_app_107{fill:#7D7C7C;}
+	.file_formats_app_108{fill:#7C7B7C;}
+	.file_formats_app_109{fill:#7C7B7B;}
+	.file_formats_app_110{fill:#7B7A7B;}
+	.file_formats_app_111{fill:#7B7A7A;}
+	.file_formats_app_112{fill:#7A797A;}
+	.file_formats_app_113{fill:#7A7979;}
+	.file_formats_app_114{fill:#797879;}
+	.file_formats_app_115{fill:#787878;}
+	.file_formats_app_116{fill:#787778;}
+	.file_formats_app_117{fill:#777777;}
+	.file_formats_app_118{fill:#777676;}
+	.file_formats_app_119{fill:#767676;}
+	.file_formats_app_120{fill:#767575;}
+	.file_formats_app_121{fill:#757475;}
+	.file_formats_app_122{fill:#757474;}
+	.file_formats_app_123{fill:#747374;}
+	.file_formats_app_124{fill:#737373;}
+	.file_formats_app_125{fill:#737273;}
+	.file_formats_app_126{fill:#727272;}
+	.file_formats_app_127{fill:#727172;}
+	.file_formats_app_128{fill:#717171;}
+	.file_formats_app_129{fill:#717070;}
+	.file_formats_app_130{fill:#707070;}
+	.file_formats_app_131{fill:#706F6F;}
+	.file_formats_app_132{fill:#6F6E6F;}
+	.file_formats_app_133{fill:#6E6E6E;}
+	.file_formats_app_134{fill:#6E6D6E;}
+	.file_formats_app_135{fill:#6D6D6D;}
+	.file_formats_app_136{fill:#6D6C6D;}
+	.file_formats_app_137{fill:#6C6C6C;}
+	.file_formats_app_138{fill:#6C6B6C;}
+	.file_formats_app_139{fill:#6B6B6B;}
+	.file_formats_app_140{fill:#6B6A6A;}
+	.file_formats_app_141{fill:#6A6A6A;}
+	.file_formats_app_142{fill:#696969;}
+	.file_formats_app_143{fill:#686868;}
+	.file_formats_app_144{fill:#686768;}
+	.file_formats_app_145{fill:#676767;}
+	.file_formats_app_146{fill:#676667;}
+	.file_formats_app_147{fill:#666666;}
+	.file_formats_app_148{fill:#666566;}
+	.file_formats_app_149{fill:#656565;}
+	.file_formats_app_150{fill:#646464;}
+	.file_formats_app_151{fill:#636363;}
+	.file_formats_app_152{fill:#626262;}
+	.file_formats_app_153{fill:#626162;}
+	.file_formats_app_154{fill:#616161;}
+	.file_formats_app_155{fill:#616061;}
+	.file_formats_app_156{fill:#606060;}
+	.file_formats_app_157{fill:#5F5F60;}
+	.file_formats_app_158{fill:#5F5F5F;}
+	.file_formats_app_159{fill:#5E5E5E;}
+	.file_formats_app_160{fill:#5D5D5D;}
+	.file_formats_app_161{fill:#5C5C5C;}
+	.file_formats_app_162{fill:#5B5B5B;}
+	.file_formats_app_163{fill:#5A5A5B;}
+	.file_formats_app_164{fill:#5A5A5A;}
+	.file_formats_app_165{fill:#59595A;}
+	.file_formats_app_166{fill:#595959;}
+	.file_formats_app_167{fill:#585858;}
+	.file_formats_app_168{fill:#575757;}
+	.file_formats_app_169{fill:#565656;}
+	.file_formats_app_170{fill:#555656;}
+	.file_formats_app_171{fill:#555555;}
+	.file_formats_app_172{fill:#545455;}
+	.file_formats_app_173{fill:#545454;}
+	.file_formats_app_174{fill:#535353;}
+	.file_formats_app_175{fill:#525252;}
+	.file_formats_app_176{fill:#515151;}
+	.file_formats_app_177{fill:#505151;}
+	.file_formats_app_178{fill:#505050;}
+	.file_formats_app_179{fill:#4F5050;}
+	.file_formats_app_180{fill:#4F4F4F;}
+	.file_formats_app_181{fill:#4E4F4F;}
+	.file_formats_app_182{fill:#4E4E4E;}
+	.file_formats_app_183{fill:#4D4D4D;}
+	.file_formats_app_184{fill:#4C4C4C;}
+	.file_formats_app_185{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
+	.file_formats_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_1_);}
+	.file_formats_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000036962100913066768900000003261581263804726145_);}
+	.file_formats_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000166653893101659014910000006556314947053176452_);}
+	.file_formats_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000139257023425390785850000010639309051416219309_);}
+	.file_formats_app_190{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000039816272711495626780000005535997981125985152_);}
+	.file_formats_app_191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000111881808346295180340000014836844237580987580_);}
+	.file_formats_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000183965149702010629040000013417139159475211931_);}
+	.file_formats_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000152251710322469265140000001767766297927203236_);}
+	.file_formats_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000145748928457470138280000012633148959223132053_);}
+	.file_formats_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000178200425486027166480000000524365278916706961_);}
+	.file_formats_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000129887926108223707560000003694765117881990564_);}
+	.file_formats_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000012444212132090333950000007158533674674420136_);}
+	.file_formats_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000111875475941237154020000002420046520085891969_);}
+	.file_formats_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000021809156595086654320000013696324540514462875_);}
+	.file_formats_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000168088237457919504020000011232405068423197879_);}
+	.file_formats_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000011007246878684739450000001276437554424956035_);}
+	.file_formats_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000103970294868218623870000004144746056503055521_);}
+	.file_formats_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000173848883428132796210000003792519468783388057_);}
+	.file_formats_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000078042668136608200840000009815857885662626490_);}
+	.file_formats_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000088844346416598083600000012415661507827688639_);}
+	.file_formats_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000168822522252162589380000003043434821055623077_);}
+	.file_formats_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000156563121774754110670000014268924325401618106_);}
+	.file_formats_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000145049771590827434470000004551538460677149334_);}
+	.file_formats_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000023279658223352751500000011036829150513634972_);}
+	.file_formats_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000176723218472080412530000008573698559088525451_);}
+	.file_formats_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000092437077567084583830000016342998072077480093_);}
+	.file_formats_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000174587115525405607900000009413530183895742398_);}
+	.file_formats_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000152947206908165918390000011546905762339683502_);}
+	.file_formats_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+	.file_formats_app_215{fill:#FFFFFF;}
+</style>
+<metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+		<sliceSourceBounds  bottomLeftOrigin="true" height="117.8" width="165.1" x="17.3" y="19.1"></sliceSourceBounds>
+	</sfw>
+</metadata>
+<g>
+	<g>
+		<path class="file_formats_app_0" d="M99.8,141.7c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.1,150.2,54.2,141.7,99.8,141.7z"/>
+		<path class="file_formats_app_1" d="M99.8,142.1c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.4,56.2,142.1,99.8,142.1z"/>
+		<path class="file_formats_app_2" d="M99.8,139.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.2,56.2,139.9,99.8,139.9z"/>
+		<path class="file_formats_app_1" d="M99.8,138.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147,56.2,138.7,99.8,138.7z"/>
+		<path class="file_formats_app_3" d="M99.7,138.7c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147,56.2,138.7,99.7,138.7z"/>
+		<path class="file_formats_app_2" d="M20.9,157.4c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158,20.9,157.7,20.9,157.4z"/>
+	</g>
+</g>
+<g>
+	<ellipse class="file_formats_app_4" cx="100.3" cy="158.8" rx="58.4" ry="10.6"/>
+	<ellipse class="file_formats_app_5" cx="100.3" cy="158.8" rx="58.3" ry="10.6"/>
+	<ellipse class="file_formats_app_6" cx="100.3" cy="158.8" rx="58.2" ry="10.5"/>
+	<ellipse class="file_formats_app_7" cx="100.3" cy="158.8" rx="58.1" ry="10.5"/>
+	<ellipse class="file_formats_app_8" cx="100.3" cy="158.8" rx="58" ry="10.5"/>
+	<ellipse class="file_formats_app_9" cx="100.3" cy="158.7" rx="57.9" ry="10.4"/>
+	<ellipse class="file_formats_app_10" cx="100.3" cy="158.7" rx="57.8" ry="10.4"/>
+	<ellipse class="file_formats_app_11" cx="100.3" cy="158.7" rx="57.7" ry="10.4"/>
+	<ellipse class="file_formats_app_12" cx="100.3" cy="158.7" rx="57.6" ry="10.3"/>
+	<ellipse class="file_formats_app_13" cx="100.3" cy="158.7" rx="57.5" ry="10.3"/>
+	<ellipse class="file_formats_app_14" cx="100.3" cy="158.7" rx="57.4" ry="10.3"/>
+	<ellipse class="file_formats_app_15" cx="100.3" cy="158.7" rx="57.3" ry="10.2"/>
+	<ellipse class="file_formats_app_16" cx="100.3" cy="158.7" rx="57.2" ry="10.2"/>
+	<ellipse class="file_formats_app_17" cx="100.3" cy="158.7" rx="57" ry="10.2"/>
+	<ellipse class="file_formats_app_17" cx="100.3" cy="158.7" rx="56.9" ry="10.1"/>
+	<ellipse class="file_formats_app_18" cx="100.3" cy="158.7" rx="56.8" ry="10.1"/>
+	<ellipse class="file_formats_app_19" cx="100.3" cy="158.7" rx="56.7" ry="10.1"/>
+	<ellipse class="file_formats_app_20" cx="100.3" cy="158.7" rx="56.6" ry="10"/>
+	<ellipse class="file_formats_app_21" cx="100.3" cy="158.7" rx="56.5" ry="10"/>
+	<ellipse class="file_formats_app_22" cx="100.3" cy="158.7" rx="56.4" ry="10"/>
+	<ellipse class="file_formats_app_23" cx="100.3" cy="158.7" rx="56.3" ry="9.9"/>
+	<ellipse class="file_formats_app_24" cx="100.3" cy="158.7" rx="56.2" ry="9.9"/>
+	<ellipse class="file_formats_app_25" cx="100.3" cy="158.7" rx="56.1" ry="9.9"/>
+	<ellipse class="file_formats_app_25" cx="100.3" cy="158.7" rx="56" ry="9.8"/>
+	<ellipse class="file_formats_app_26" cx="100.2" cy="158.7" rx="55.9" ry="9.8"/>
+	<ellipse class="file_formats_app_26" cx="100.2" cy="158.7" rx="55.8" ry="9.7"/>
+	<ellipse class="file_formats_app_27" cx="100.2" cy="158.6" rx="55.7" ry="9.7"/>
+	<ellipse class="file_formats_app_28" cx="100.2" cy="158.6" rx="55.6" ry="9.7"/>
+	<ellipse class="file_formats_app_29" cx="100.2" cy="158.6" rx="55.5" ry="9.6"/>
+	<ellipse class="file_formats_app_30" cx="100.2" cy="158.6" rx="55.4" ry="9.6"/>
+	<ellipse class="file_formats_app_31" cx="100.2" cy="158.6" rx="55.3" ry="9.6"/>
+	<ellipse class="file_formats_app_32" cx="100.2" cy="158.6" rx="55.2" ry="9.5"/>
+	<ellipse class="file_formats_app_32" cx="100.2" cy="158.6" rx="55.1" ry="9.5"/>
+	<ellipse class="file_formats_app_33" cx="100.2" cy="158.6" rx="55" ry="9.5"/>
+	<ellipse class="file_formats_app_33" cx="100.2" cy="158.6" rx="54.9" ry="9.4"/>
+	<ellipse class="file_formats_app_34" cx="100.2" cy="158.6" rx="54.8" ry="9.4"/>
+	<ellipse class="file_formats_app_34" cx="100.2" cy="158.6" rx="54.7" ry="9.4"/>
+	<ellipse class="file_formats_app_35" cx="100.2" cy="158.6" rx="54.6" ry="9.3"/>
+	<ellipse class="file_formats_app_36" cx="100.2" cy="158.6" rx="54.5" ry="9.3"/>
+	<ellipse class="file_formats_app_37" cx="100.2" cy="158.6" rx="54.4" ry="9.3"/>
+	<ellipse class="file_formats_app_38" cx="100.2" cy="158.6" rx="54.3" ry="9.2"/>
+	<ellipse class="file_formats_app_39" cx="100.2" cy="158.6" rx="54.2" ry="9.2"/>
+	<ellipse class="file_formats_app_40" cx="100.2" cy="158.6" rx="54.1" ry="9.2"/>
+	<ellipse class="file_formats_app_40" cx="100.2" cy="158.6" rx="54" ry="9.1"/>
+	<ellipse class="file_formats_app_41" cx="100.2" cy="158.6" rx="53.9" ry="9.1"/>
+	<ellipse class="file_formats_app_41" cx="100.2" cy="158.6" rx="53.7" ry="9.1"/>
+	<ellipse class="file_formats_app_42" cx="100.2" cy="158.5" rx="53.6" ry="9"/>
+	<ellipse class="file_formats_app_42" cx="100.2" cy="158.5" rx="53.5" ry="9"/>
+	<ellipse class="file_formats_app_43" cx="100.2" cy="158.5" rx="53.4" ry="9"/>
+	<ellipse class="file_formats_app_44" cx="100.2" cy="158.5" rx="53.3" ry="8.9"/>
+	<ellipse class="file_formats_app_45" cx="100.2" cy="158.5" rx="53.2" ry="8.9"/>
+	<ellipse class="file_formats_app_46" cx="100.2" cy="158.5" rx="53.1" ry="8.9"/>
+	<ellipse class="file_formats_app_47" cx="100.2" cy="158.5" rx="53" ry="8.8"/>
+	<ellipse class="file_formats_app_48" cx="100.2" cy="158.5" rx="52.9" ry="8.8"/>
+	<ellipse class="file_formats_app_49" cx="100.2" cy="158.5" rx="52.8" ry="8.7"/>
+	<ellipse class="file_formats_app_50" cx="100.2" cy="158.5" rx="52.7" ry="8.7"/>
+	<ellipse class="file_formats_app_50" cx="100.2" cy="158.5" rx="52.6" ry="8.7"/>
+	<ellipse class="file_formats_app_51" cx="100.2" cy="158.5" rx="52.5" ry="8.6"/>
+	<ellipse class="file_formats_app_52" cx="100.2" cy="158.5" rx="52.4" ry="8.6"/>
+	<ellipse class="file_formats_app_53" cx="100.2" cy="158.5" rx="52.3" ry="8.6"/>
+	<ellipse class="file_formats_app_54" cx="100.2" cy="158.5" rx="52.2" ry="8.5"/>
+	<ellipse class="file_formats_app_55" cx="100.2" cy="158.5" rx="52.1" ry="8.5"/>
+	<ellipse class="file_formats_app_56" cx="100.2" cy="158.5" rx="52" ry="8.5"/>
+	<ellipse class="file_formats_app_57" cx="100.2" cy="158.5" rx="51.9" ry="8.4"/>
+	<ellipse class="file_formats_app_58" cx="100.2" cy="158.5" rx="51.8" ry="8.4"/>
+	<ellipse class="file_formats_app_59" cx="100.2" cy="158.5" rx="51.7" ry="8.4"/>
+	<ellipse class="file_formats_app_60" cx="100.2" cy="158.5" rx="51.6" ry="8.3"/>
+	<ellipse class="file_formats_app_61" cx="100.2" cy="158.4" rx="51.5" ry="8.3"/>
+	<ellipse class="file_formats_app_62" cx="100.2" cy="158.4" rx="51.4" ry="8.3"/>
+	<ellipse class="file_formats_app_63" cx="100.2" cy="158.4" rx="51.3" ry="8.2"/>
+	<ellipse class="file_formats_app_64" cx="100.2" cy="158.4" rx="51.2" ry="8.2"/>
+	<ellipse class="file_formats_app_65" cx="100.2" cy="158.4" rx="51.1" ry="8.2"/>
+	<ellipse class="file_formats_app_66" cx="100.2" cy="158.4" rx="51" ry="8.1"/>
+	<ellipse class="file_formats_app_67" cx="100.2" cy="158.4" rx="50.9" ry="8.1"/>
+	<ellipse class="file_formats_app_68" cx="100.2" cy="158.4" rx="50.8" ry="8.1"/>
+	<ellipse class="file_formats_app_69" cx="100.2" cy="158.4" rx="50.7" ry="8"/>
+	<ellipse class="file_formats_app_70" cx="100.2" cy="158.4" rx="50.6" ry="8"/>
+	<ellipse class="file_formats_app_71" cx="100.2" cy="158.4" rx="50.4" ry="8"/>
+	<ellipse class="file_formats_app_72" cx="100.2" cy="158.4" rx="50.3" ry="7.9"/>
+	<ellipse class="file_formats_app_73" cx="100.2" cy="158.4" rx="50.2" ry="7.9"/>
+	<ellipse class="file_formats_app_74" cx="100.2" cy="158.4" rx="50.1" ry="7.9"/>
+	<ellipse class="file_formats_app_75" cx="100.2" cy="158.4" rx="50" ry="7.8"/>
+	<ellipse class="file_formats_app_76" cx="100.2" cy="158.4" rx="49.9" ry="7.8"/>
+	<ellipse class="file_formats_app_77" cx="100.2" cy="158.4" rx="49.8" ry="7.7"/>
+	<ellipse class="file_formats_app_78" cx="100.2" cy="158.4" rx="49.7" ry="7.7"/>
+	<ellipse class="file_formats_app_79" cx="100.2" cy="158.4" rx="49.6" ry="7.7"/>
+	<ellipse class="file_formats_app_80" cx="100.2" cy="158.4" rx="49.5" ry="7.6"/>
+	<ellipse class="file_formats_app_81" cx="100.2" cy="158.3" rx="49.4" ry="7.6"/>
+	<ellipse class="file_formats_app_82" cx="100.1" cy="158.3" rx="49.3" ry="7.6"/>
+	<ellipse class="file_formats_app_83" cx="100.1" cy="158.3" rx="49.2" ry="7.5"/>
+	<ellipse class="file_formats_app_84" cx="100.1" cy="158.3" rx="49.1" ry="7.5"/>
+	<ellipse class="file_formats_app_85" cx="100.1" cy="158.3" rx="49" ry="7.5"/>
+	<ellipse class="file_formats_app_86" cx="100.1" cy="158.3" rx="48.9" ry="7.4"/>
+	<ellipse class="file_formats_app_87" cx="100.1" cy="158.3" rx="48.8" ry="7.4"/>
+	<ellipse class="file_formats_app_88" cx="100.1" cy="158.3" rx="48.7" ry="7.4"/>
+	<ellipse class="file_formats_app_89" cx="100.1" cy="158.3" rx="48.6" ry="7.3"/>
+	<ellipse class="file_formats_app_90" cx="100.1" cy="158.3" rx="48.5" ry="7.3"/>
+	<ellipse class="file_formats_app_91" cx="100.1" cy="158.3" rx="48.4" ry="7.3"/>
+	<ellipse class="file_formats_app_92" cx="100.1" cy="158.3" rx="48.3" ry="7.2"/>
+	<ellipse class="file_formats_app_93" cx="100.1" cy="158.3" rx="48.2" ry="7.2"/>
+	<ellipse class="file_formats_app_94" cx="100.1" cy="158.3" rx="48.1" ry="7.2"/>
+	<ellipse class="file_formats_app_95" cx="100.1" cy="158.3" rx="48" ry="7.1"/>
+	<ellipse class="file_formats_app_96" cx="100.1" cy="158.3" rx="47.9" ry="7.1"/>
+	<ellipse class="file_formats_app_97" cx="100.1" cy="158.3" rx="47.8" ry="7.1"/>
+	<ellipse class="file_formats_app_98" cx="100.1" cy="158.3" rx="47.7" ry="7"/>
+	<ellipse class="file_formats_app_99" cx="100.1" cy="158.3" rx="47.6" ry="7"/>
+	<ellipse class="file_formats_app_100" cx="100.1" cy="158.3" rx="47.5" ry="7"/>
+	<ellipse class="file_formats_app_101" cx="100.1" cy="158.3" rx="47.4" ry="6.9"/>
+	<ellipse class="file_formats_app_102" cx="100.1" cy="158.2" rx="47.3" ry="6.9"/>
+	<ellipse class="file_formats_app_103" cx="100.1" cy="158.2" rx="47.1" ry="6.9"/>
+	<ellipse class="file_formats_app_104" cx="100.1" cy="158.2" rx="47" ry="6.8"/>
+	<ellipse class="file_formats_app_105" cx="100.1" cy="158.2" rx="46.9" ry="6.8"/>
+	<ellipse class="file_formats_app_106" cx="100.1" cy="158.2" rx="46.8" ry="6.7"/>
+	<ellipse class="file_formats_app_107" cx="100.1" cy="158.2" rx="46.7" ry="6.7"/>
+	<ellipse class="file_formats_app_108" cx="100.1" cy="158.2" rx="46.6" ry="6.7"/>
+	<ellipse class="file_formats_app_109" cx="100.1" cy="158.2" rx="46.5" ry="6.6"/>
+	<ellipse class="file_formats_app_110" cx="100.1" cy="158.2" rx="46.4" ry="6.6"/>
+	<ellipse class="file_formats_app_111" cx="100.1" cy="158.2" rx="46.3" ry="6.6"/>
+	<ellipse class="file_formats_app_112" cx="100.1" cy="158.2" rx="46.2" ry="6.5"/>
+	<ellipse class="file_formats_app_113" cx="100.1" cy="158.2" rx="46.1" ry="6.5"/>
+	<ellipse class="file_formats_app_114" cx="100.1" cy="158.2" rx="46" ry="6.5"/>
+	<ellipse class="file_formats_app_115" cx="100.1" cy="158.2" rx="45.9" ry="6.4"/>
+	<ellipse class="file_formats_app_116" cx="100.1" cy="158.2" rx="45.8" ry="6.4"/>
+	<ellipse class="file_formats_app_117" cx="100.1" cy="158.2" rx="45.7" ry="6.4"/>
+	<ellipse class="file_formats_app_118" cx="100.1" cy="158.2" rx="45.6" ry="6.3"/>
+	<ellipse class="file_formats_app_119" cx="100.1" cy="158.2" rx="45.5" ry="6.3"/>
+	<ellipse class="file_formats_app_120" cx="100.1" cy="158.2" rx="45.4" ry="6.3"/>
+	<ellipse class="file_formats_app_121" cx="100.1" cy="158.2" rx="45.3" ry="6.2"/>
+	<ellipse class="file_formats_app_122" cx="100.1" cy="158.1" rx="45.2" ry="6.2"/>
+	<ellipse class="file_formats_app_123" cx="100.1" cy="158.1" rx="45.1" ry="6.2"/>
+	<ellipse class="file_formats_app_124" cx="100.1" cy="158.1" rx="45" ry="6.1"/>
+	<ellipse class="file_formats_app_125" cx="100.1" cy="158.1" rx="44.9" ry="6.1"/>
+	<ellipse class="file_formats_app_126" cx="100.1" cy="158.1" rx="44.8" ry="6.1"/>
+	<ellipse class="file_formats_app_127" cx="100.1" cy="158.1" rx="44.7" ry="6"/>
+	<ellipse class="file_formats_app_128" cx="100.1" cy="158.1" rx="44.6" ry="6"/>
+	<ellipse class="file_formats_app_129" cx="100.1" cy="158.1" rx="44.5" ry="6"/>
+	<ellipse class="file_formats_app_130" cx="100.1" cy="158.1" rx="44.4" ry="5.9"/>
+	<ellipse class="file_formats_app_131" cx="100.1" cy="158.1" rx="44.3" ry="5.9"/>
+	<ellipse class="file_formats_app_132" cx="100.1" cy="158.1" rx="44.2" ry="5.8"/>
+	<ellipse class="file_formats_app_133" cx="100.1" cy="158.1" rx="44.1" ry="5.8"/>
+	<ellipse class="file_formats_app_134" cx="100.1" cy="158.1" rx="44" ry="5.8"/>
+	<ellipse class="file_formats_app_135" cx="100.1" cy="158.1" rx="43.8" ry="5.7"/>
+	<ellipse class="file_formats_app_136" cx="100.1" cy="158.1" rx="43.7" ry="5.7"/>
+	<ellipse class="file_formats_app_137" cx="100.1" cy="158.1" rx="43.6" ry="5.7"/>
+	<ellipse class="file_formats_app_138" cx="100.1" cy="158.1" rx="43.5" ry="5.6"/>
+	<ellipse class="file_formats_app_139" cx="100.1" cy="158.1" rx="43.4" ry="5.6"/>
+	<ellipse class="file_formats_app_140" cx="100.1" cy="158.1" rx="43.3" ry="5.6"/>
+	<ellipse class="file_formats_app_141" cx="100.1" cy="158.1" rx="43.2" ry="5.5"/>
+	<ellipse class="file_formats_app_142" cx="100.1" cy="158.1" rx="43.1" ry="5.5"/>
+	<ellipse class="file_formats_app_142" cx="100.1" cy="158" rx="43" ry="5.5"/>
+	<ellipse class="file_formats_app_143" cx="100.1" cy="158" rx="42.9" ry="5.4"/>
+	<ellipse class="file_formats_app_144" cx="100.1" cy="158" rx="42.8" ry="5.4"/>
+	<ellipse class="file_formats_app_145" cx="100.1" cy="158" rx="42.7" ry="5.4"/>
+	<ellipse class="file_formats_app_146" cx="100" cy="158" rx="42.6" ry="5.3"/>
+	<ellipse class="file_formats_app_147" cx="100" cy="158" rx="42.5" ry="5.3"/>
+	<ellipse class="file_formats_app_148" cx="100" cy="158" rx="42.4" ry="5.3"/>
+	<ellipse class="file_formats_app_149" cx="100" cy="158" rx="42.3" ry="5.2"/>
+	<ellipse class="file_formats_app_150" cx="100" cy="158" rx="42.2" ry="5.2"/>
+	<ellipse class="file_formats_app_150" cx="100" cy="158" rx="42.1" ry="5.2"/>
+	<ellipse class="file_formats_app_151" cx="100" cy="158" rx="42" ry="5.1"/>
+	<ellipse class="file_formats_app_151" cx="100" cy="158" rx="41.9" ry="5.1"/>
+	<ellipse class="file_formats_app_152" cx="100" cy="158" rx="41.8" ry="5.1"/>
+	<ellipse class="file_formats_app_153" cx="100" cy="158" rx="41.7" ry="5"/>
+	<ellipse class="file_formats_app_154" cx="100" cy="158" rx="41.6" ry="5"/>
+	<ellipse class="file_formats_app_155" cx="100" cy="158" rx="41.5" ry="5"/>
+	<ellipse class="file_formats_app_156" cx="100" cy="158" rx="41.4" ry="4.9"/>
+	<ellipse class="file_formats_app_157" cx="100" cy="158" rx="41.3" ry="4.9"/>
+	<ellipse class="file_formats_app_158" cx="100" cy="158" rx="41.2" ry="4.8"/>
+	<ellipse class="file_formats_app_159" cx="100" cy="158" rx="41.1" ry="4.8"/>
+	<ellipse class="file_formats_app_159" cx="100" cy="157.9" rx="41" ry="4.8"/>
+	<ellipse class="file_formats_app_160" cx="100" cy="157.9" rx="40.9" ry="4.7"/>
+	<ellipse class="file_formats_app_160" cx="100" cy="157.9" rx="40.8" ry="4.7"/>
+	<ellipse class="file_formats_app_161" cx="100" cy="157.9" rx="40.7" ry="4.7"/>
+	<ellipse class="file_formats_app_161" cx="100" cy="157.9" rx="40.5" ry="4.6"/>
+	<ellipse class="file_formats_app_162" cx="100" cy="157.9" rx="40.4" ry="4.6"/>
+	<ellipse class="file_formats_app_163" cx="100" cy="157.9" rx="40.3" ry="4.6"/>
+	<ellipse class="file_formats_app_164" cx="100" cy="157.9" rx="40.2" ry="4.5"/>
+	<ellipse class="file_formats_app_165" cx="100" cy="157.9" rx="40.1" ry="4.5"/>
+	<ellipse class="file_formats_app_166" cx="100" cy="157.9" rx="40" ry="4.5"/>
+	<ellipse class="file_formats_app_167" cx="100" cy="157.9" rx="39.9" ry="4.4"/>
+	<ellipse class="file_formats_app_167" cx="100" cy="157.9" rx="39.8" ry="4.4"/>
+	<ellipse class="file_formats_app_168" cx="100" cy="157.9" rx="39.7" ry="4.4"/>
+	<ellipse class="file_formats_app_168" cx="100" cy="157.9" rx="39.6" ry="4.3"/>
+	<ellipse class="file_formats_app_169" cx="100" cy="157.9" rx="39.5" ry="4.3"/>
+	<ellipse class="file_formats_app_170" cx="100" cy="157.9" rx="39.4" ry="4.3"/>
+	<ellipse class="file_formats_app_171" cx="100" cy="157.9" rx="39.3" ry="4.2"/>
+	<ellipse class="file_formats_app_172" cx="100" cy="157.9" rx="39.2" ry="4.2"/>
+	<ellipse class="file_formats_app_173" cx="100" cy="157.9" rx="39.1" ry="4.2"/>
+	<ellipse class="file_formats_app_174" cx="100" cy="157.9" rx="39" ry="4.1"/>
+	<ellipse class="file_formats_app_174" cx="100" cy="157.8" rx="38.9" ry="4.1"/>
+	<ellipse class="file_formats_app_175" cx="100" cy="157.8" rx="38.8" ry="4.1"/>
+	<ellipse class="file_formats_app_175" cx="100" cy="157.8" rx="38.7" ry="4"/>
+	<ellipse class="file_formats_app_176" cx="100" cy="157.8" rx="38.6" ry="4"/>
+	<ellipse class="file_formats_app_177" cx="100" cy="157.8" rx="38.5" ry="4"/>
+	<ellipse class="file_formats_app_178" cx="100" cy="157.8" rx="38.4" ry="3.9"/>
+	<ellipse class="file_formats_app_179" cx="100" cy="157.8" rx="38.3" ry="3.9"/>
+	<ellipse class="file_formats_app_180" cx="100" cy="157.8" rx="38.2" ry="3.8"/>
+	<ellipse class="file_formats_app_181" cx="100" cy="157.8" rx="38.1" ry="3.8"/>
+	<ellipse class="file_formats_app_182" cx="100" cy="157.8" rx="38" ry="3.8"/>
+	<ellipse class="file_formats_app_183" cx="100" cy="157.8" rx="37.9" ry="3.7"/>
+	<ellipse class="file_formats_app_183" cx="100" cy="157.8" rx="37.8" ry="3.7"/>
+	<ellipse class="file_formats_app_184" cx="100" cy="157.8" rx="37.7" ry="3.7"/>
+</g>
+<g>
+	<path class="file_formats_app_185" d="M57.4,63.4l1,0.1l1-0.1C59.4,63.4,58.5,63.3,57.4,63.4z"/>
+	<g>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_01" gradientUnits="userSpaceOnUse" x1="6003.5117" y1="109.0833" x2="6000.4531" y2="73.2044" gradientTransform="matrix(-1 0 0 1 6103.7666 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+		<polygon class="file_formats_app_186" points="141.4,162.8 141.7,67.8 59.4,63.1 58.4,63.3 141.3,67.9 140.9,163 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_02" gradientUnits="userSpaceOnUse" x1="5584.9121" y1="-200.9721" x2="5683.0884" y2="-99.5475" gradientTransform="matrix(-1.0991 6.937514e-02 -1.195069e-03 1 6306.5405 -141.8854)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000084490314386765155790000016086333598420783014_);" points="
+			141,163.1 141.3,67.9 58.9,63.2 59.8,153.4 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_03" gradientUnits="userSpaceOnUse" x1="5494.8911" y1="-102.5269" x2="5593.3521" y2="-0.8078" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000165219979281230298160000002146639180733108365_);" points="
+			138.8,164.3 139,69.3 58.3,63.5 59.8,153.5 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_04" gradientUnits="userSpaceOnUse" x1="5554.9258" y1="-67.6945" x2="5562.5967" y2="34.9353" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000146500939428263393510000015760014935528748707_);" points="
+			139.2,164.2 139.5,69.2 59.3,63.4 58.3,63.5 139,69.3 138.7,164.3 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_05" gradientUnits="userSpaceOnUse" x1="5574.7783" y1="-52.983" x2="5673.3721" y2="48.8729" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000077308365313542068210000015144775201153830077_);" points="
+			136.9,164.9 137.1,70.1 58.3,63.5 59.8,153.5 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_06" gradientUnits="userSpaceOnUse" x1="5634.8726" y1="-17.9509" x2="5642.5044" y2="84.1517" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000057123972122490740440000003295399462995852942_);" points="
+			137.3,164.8 137.6,70 59.2,63.4 58.3,63.5 137.1,70.1 136.8,164.9 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_07" gradientUnits="userSpaceOnUse" x1="5656.5068" y1="-2.2833" x2="5755.2285" y2="99.7049" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099638895946571228670000005213442804403117236_);" points="
+			135.1,165.5 135.2,70.8 58.3,63.5 59.8,153.5 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_08" gradientUnits="userSpaceOnUse" x1="5716.6592" y1="32.9434" x2="5724.252" y2="134.5306" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000007396005589497808330000000038478261605468811_);" points="
+			135.5,165.4 135.7,70.7 59.2,63.4 58.3,63.5 135.2,70.9 135,165.5 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_09" gradientUnits="userSpaceOnUse" x1="5741.5229" y1="52.3096" x2="5840.373" y2="154.4308" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000103952163301245497560000016296153841625547139_);" points="
+			133.4,166.1 133.4,71.6 58.3,63.5 59.9,153.5 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_10" gradientUnits="userSpaceOnUse" x1="5799.6421" y1="85.5669" x2="5807.1973" y2="186.6541" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000042703204437358225330000003646710897764385725_);" points="
+			133.8,166 133.8,71.5 59.1,63.4 58.3,63.5 133.4,71.6 133.3,166.1 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_11" gradientUnits="userSpaceOnUse" x1="5482.7051" y1="156.9799" x2="5577.7925" y2="255.2138" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000138570380367870648660000002708612202502666670_);" points="
+			131.7,166.7 131.7,72.2 57.4,63.6 59.8,153.8 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_12" gradientUnits="userSpaceOnUse" x1="5540.6924" y1="190.0637" x2="5548.2524" y2="291.2122" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000137093661347181757430000015335236318329364884_);" points="
+			132.1,166.6 132.2,72.1 58.3,63.5 57.4,63.6 131.7,72.3 131.6,166.7 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_13" gradientUnits="userSpaceOnUse" x1="5562.2246" y1="206.3894" x2="5657.3579" y2="304.6703" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000120543464830632401710000007157775763819666564_);" points="
+			130,167.2 130,73 57.4,63.6 59.8,153.8 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_14" gradientUnits="userSpaceOnUse" x1="5620.2168" y1="239.5845" x2="5627.7461" y2="340.3255" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000092414031758720544420000016286728036567337660_);" points="
+			130.4,167.1 130.4,72.9 58.2,63.5 57.4,63.6 130,73 129.9,167.2 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_15" gradientUnits="userSpaceOnUse" x1="5643.5752" y1="256.946" x2="5738.7515" y2="355.2713" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000009565808533958908030000018153061176448870290_);" points="
+			128.3,167.8 128.3,73.7 57.4,63.6 59.8,153.8 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_16" gradientUnits="userSpaceOnUse" x1="5701.5708" y1="290.2494" x2="5709.0703" y2="390.5905" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000065763181534964210580000017954781172419266232_);" points="
+			128.7,167.7 128.7,73.6 58.2,63.5 57.4,63.6 128.3,73.7 128.3,167.8 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_17" gradientUnits="userSpaceOnUse" x1="5725.0044" y1="307.7438" x2="5820.23" y2="406.1202" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000021111404033818957250000011840021052083864223_);" points="
+			126.8,168.4 126.6,74.4 57.4,63.6 59.8,153.9 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_18" gradientUnits="userSpaceOnUse" x1="5784.4365" y1="342.6339" x2="5791.9067" y2="442.584" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000060720195081161926600000000087417481484887994_);" points="
+			127.2,168.3 127,74.3 58.2,63.6 57.4,63.6 126.6,74.4 126.8,168.3 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_19" gradientUnits="userSpaceOnUse" x1="5489.3916" y1="161.5574" x2="5579.4595" y2="254.6052" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000089572323092284870450000004827832861776922762_);" points="
+			125.1,168.9 125,74.8 56.6,63.7 59,154.1 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_20" gradientUnits="userSpaceOnUse" x1="5544.082" y1="190.506" x2="5551.8457" y2="294.3774" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000142863926239190099430000009544553414094135481_);" points="
+			125.5,168.9 125.4,74.7 57.4,63.6 56.6,63.7 125,74.8 125,168.9 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_21" gradientUnits="userSpaceOnUse" x1="5568.9189" y1="210.9883" x2="5659.0303" y2="304.0816" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000006707661614984575760000013726726438162690190_);" points="
+			123.5,169.4 123.4,75.5 56.6,63.7 59,154.1 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_22" gradientUnits="userSpaceOnUse" x1="5623.6143" y1="240.0427" x2="5631.3491" y2="343.5314" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000003804247553612021360000016568626443913929115_);" points="
+			123.9,169.4 123.8,75.4 57.4,63.6 56.6,63.7 123.4,75.5 123.5,169.4 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_23" gradientUnits="userSpaceOnUse" x1="5650.2773" y1="261.5662" x2="5740.4307" y2="354.7023" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000160185662386524474180000001617608495193799862_);" points="
+			122,169.9 121.8,76.1 56.6,63.7 59,154.1 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_24" gradientUnits="userSpaceOnUse" x1="5704.9771" y1="290.7236" x2="5712.6841" y2="393.8367" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000144329794104494394900000017395177864873879198_);" points="
+			122.4,169.9 122.2,76 57.4,63.7 56.6,63.7 121.8,76.1 122,169.9 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_25" gradientUnits="userSpaceOnUse" x1="5745.999" y1="327.141" x2="5836.2031" y2="420.3299" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000127741052520549778880000013489441708284314241_);" points="
+			120.6,170.5 120.3,76.8 56.6,63.7 59.1,154.1 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_26" gradientUnits="userSpaceOnUse" x1="5787.854" y1="343.1233" x2="5795.5337" y2="445.876" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000167388818941956398840000016884057659431809454_);" points="
+			121,170.4 120.6,76.7 57.3,63.7 56.6,63.7 120.3,76.8 120.6,170.5 		"/>
+	</g>
+	<g>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_27" gradientUnits="userSpaceOnUse" x1="-1859.5729" y1="248.2332" x2="-1704.2657" y2="58.3261" gradientTransform="matrix(1 0 0 1 1840.2769 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000183217073166374871150000004718790417557152905_);" points="
+			118.5,172.5 118.8,76.9 55.7,63.7 55.6,154.2 		"/>
+
+			<linearGradient id="SVGID_FILE_FORMATS_APP_28" gradientUnits="userSpaceOnUse" x1="7521.4185" y1="1076.5621" x2="7518.3604" y2="1040.6877" gradientTransform="matrix(-0.7615 -0.1554 -2.949967e-04 1.0065 5815.6733 197.2003)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+			<stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+			<stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+			<stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+			<stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+			<stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+			<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000116222231259815949600000001336865759650307507_);" points="
+			118.9,172.4 119.2,76.8 56.5,63.7 55.7,63.7 118.8,76.9 118.5,172.5 		"/>
+	</g>
+	<path class="file_formats_app_185" d="M59.4,63.1l1,0.1l-3.8,0.7l-0.9-0.2l0.1,0C55.8,63.7,56.6,63.1,59.4,63.1z"/>
+	<polygon class="file_formats_app_214" points="57.1,63.8 60.1,63.3 60.1,63.4 57.8,64 	"/>
+</g>
+<g>
+	<path d="M90.8,78.1c1,0.2,1.8,0.7,2.4,1.6s0.9,1.8,0.9,2.8c0,1.1-0.3,1.9-0.9,2.5c-0.6,0.6-1.4,0.8-2.4,0.6l-1.6-0.3v3.2l-2.4-0.5
+		V77.3L90.8,78.1z M89.2,80.4v2.3l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2s0.3-0.4,0.3-0.7s-0.1-0.6-0.3-0.9c-0.2-0.3-0.4-0.4-0.7-0.5
+		L89.2,80.4z"/>
+	<path d="M99,79.9c1.3,0.3,2.5,1,3.3,2.2c0.9,1.2,1.3,2.6,1.3,4s-0.4,2.7-1.3,3.5c-0.9,0.8-2,1.1-3.3,0.8l-3.4-0.7V79.1L99,79.9z
+		 M97.9,82.2v5.4l1,0.2c0.6,0.1,1.1,0,1.6-0.4c0.4-0.4,0.7-1,0.7-1.8c0-0.8-0.2-1.5-0.6-2.1c-0.4-0.6-1-1-1.6-1.1L97.9,82.2z"/>
+	<path d="M111.9,82.6v2.6l-4.4-0.9V86l3.4,0.7v2.6l-3.4-0.7v3.7l-2.4-0.5V81.2L111.9,82.6z"/>
+	<path d="M94.7,104.6c-1,0.9-2.1,1.2-3.5,0.9c-1.4-0.3-2.5-1.1-3.5-2.4c-1-1.3-1.4-2.7-1.4-4.2s0.5-2.7,1.4-3.6
+		c1-0.9,2.1-1.2,3.5-0.9c1.4,0.3,2.5,1.1,3.5,2.4c1,1.3,1.4,2.7,1.4,4.2S95.6,103.7,94.7,104.6z M89.5,101.7
+		c0.5,0.7,1.1,1.1,1.8,1.2c0.7,0.1,1.3,0,1.7-0.5c0.5-0.5,0.7-1.1,0.7-2c0-0.9-0.2-1.6-0.7-2.3c-0.5-0.7-1.1-1.1-1.7-1.2
+		c-0.7-0.1-1.3,0-1.8,0.5c-0.5,0.5-0.7,1.1-0.7,2C88.7,100.2,89,101,89.5,101.7z"/>
+	<path d="M101,96.7c1.3,0.3,2.5,1,3.3,2.2c0.9,1.2,1.3,2.6,1.3,4s-0.4,2.7-1.3,3.5c-0.9,0.8-2,1.1-3.3,0.8l-3.4-0.7V95.9L101,96.7z
+		 M100,99v5.4l1,0.2c0.6,0.1,1.1,0,1.6-0.4c0.4-0.4,0.7-1,0.7-1.8c0-0.8-0.2-1.5-0.6-2.1c-0.4-0.6-1-1-1.6-1.1L100,99z"/>
+	<path d="M113.2,99.3v2.6l-2.5-0.5v8l-2.4-0.5v-8l-2.5-0.5v-2.6L113.2,99.3z"/>
+	<path d="M89.2,114.8v6.3l-2.4-0.5V110l2.1,0.5l2.7,4.7l2.7-3.6l2.1,0.5v10.6l-2.4-0.5v-6.3l-2.5,3.2L89.2,114.8z"/>
+	<path d="M102.5,113.3c1,0.2,1.8,0.7,2.4,1.6c0.6,0.8,0.9,1.8,0.9,2.8s-0.3,1.9-0.9,2.5c-0.6,0.6-1.4,0.8-2.4,0.6l-1.6-0.3v3.2
+		l-2.4-0.5v-10.6L102.5,113.3z M100.9,115.6v2.3l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.6-0.3-0.9
+		c-0.2-0.3-0.4-0.4-0.7-0.5L100.9,115.6z"/>
+	<path d="M113.9,122.2v2.4l-0.9-0.2v1.7l-2.4-0.5v-1.7l-4-0.8v-2.6l3.7-5.4l2.6,0.6v6.4L113.9,122.2z M110.5,118.4l-1.8,2.7l1.8,0.4
+		V118.4z"/>
+</g>
+<g>
+	<path class="file_formats_app_215" d="M90.1,77.4c1,0.2,1.8,0.7,2.4,1.6c0.6,0.8,0.9,1.8,0.9,2.8s-0.3,1.9-0.9,2.5c-0.6,0.6-1.4,0.8-2.4,0.6
+		l-1.6-0.3v3.2l-2.4-0.5V76.6L90.1,77.4z M88.5,79.7v2.3l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.4,0.3-0.7s-0.1-0.6-0.3-0.9
+		S90.2,80,89.9,80L88.5,79.7z"/>
+	<path class="file_formats_app_215" d="M98.2,79.2c1.3,0.3,2.5,1,3.3,2.2c0.9,1.2,1.3,2.6,1.3,4c0,1.5-0.4,2.7-1.3,3.5c-0.9,0.8-2,1.1-3.3,0.8
+		L94.8,89V78.4L98.2,79.2z M97.2,81.5v5.4l1,0.2c0.6,0.1,1.1,0,1.6-0.4c0.4-0.4,0.7-1,0.7-1.8c0-0.8-0.2-1.5-0.6-2.1
+		c-0.4-0.6-1-1-1.6-1.1L97.2,81.5z"/>
+	<path class="file_formats_app_215" d="M111.2,81.9v2.6l-4.4-0.9v1.7l3.4,0.7v2.6l-3.4-0.7v3.7l-2.4-0.5V80.5L111.2,81.9z"/>
+	<path class="file_formats_app_215" d="M94,103.8c-1,0.9-2.1,1.2-3.5,0.9c-1.4-0.3-2.5-1.1-3.5-2.4c-1-1.3-1.4-2.7-1.4-4.2s0.5-2.7,1.4-3.6
+		c1-0.9,2.1-1.2,3.5-0.9c1.4,0.3,2.5,1.1,3.5,2.4c1,1.3,1.4,2.7,1.4,4.2C95.4,101.7,94.9,102.9,94,103.8z M88.7,101
+		c0.5,0.7,1.1,1.1,1.8,1.2c0.7,0.1,1.3,0,1.7-0.5c0.5-0.5,0.7-1.1,0.7-2c0-0.9-0.2-1.6-0.7-2.3c-0.5-0.7-1.1-1.1-1.7-1.2
+		c-0.7-0.1-1.3,0-1.8,0.5c-0.5,0.5-0.7,1.1-0.7,2C88,99.5,88.3,100.3,88.7,101z"/>
+	<path class="file_formats_app_215" d="M100.3,96c1.3,0.3,2.5,1,3.3,2.2c0.9,1.2,1.3,2.6,1.3,4s-0.4,2.7-1.3,3.5c-0.9,0.8-2,1.1-3.3,0.8l-3.4-0.7
+		V95.2L100.3,96z M99.3,98.3v5.4l1,0.2c0.6,0.1,1.1,0,1.6-0.4c0.4-0.4,0.7-1,0.7-1.8c0-0.8-0.2-1.5-0.6-2.1c-0.4-0.6-1-1-1.6-1.1
+		L99.3,98.3z"/>
+	<path class="file_formats_app_215" d="M112.5,98.5v2.6l-2.5-0.5v8l-2.4-0.5v-8l-2.5-0.5V97L112.5,98.5z"/>
+	<path class="file_formats_app_215" d="M88.5,114.1v6.3l-2.4-0.5v-10.6l2.1,0.5l2.7,4.7l2.7-3.6l2.1,0.5v10.6l-2.4-0.5v-6.3l-2.5,3.2L88.5,114.1z"
+		/>
+	<path class="file_formats_app_215" d="M101.8,112.6c1,0.2,1.8,0.7,2.4,1.6s0.9,1.8,0.9,2.8c0,1.1-0.3,1.9-0.9,2.5c-0.6,0.6-1.4,0.8-2.4,0.6
+		l-1.6-0.3v3.2l-2.4-0.5v-10.6L101.8,112.6z M100.2,114.9v2.3l1.4,0.3c0.3,0.1,0.5,0,0.7-0.2c0.2-0.2,0.3-0.4,0.3-0.7
+		s-0.1-0.6-0.3-0.9c-0.2-0.3-0.4-0.4-0.7-0.5L100.2,114.9z"/>
+	<path class="file_formats_app_215" d="M113.2,121.5v2.4l-0.9-0.2v1.7l-2.4-0.5v-1.7l-4-0.8v-2.6l3.7-5.4l2.6,0.6v6.4L113.2,121.5z M109.8,117.7
+		l-1.8,2.7l1.8,0.4V117.7z"/>
+</g>
+</svg>
