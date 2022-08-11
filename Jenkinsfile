@@ -4,7 +4,6 @@ pipeline {
     }
 
     environment {
-        SLACK_MESSAGE = "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.RUN_DISPLAY_URL}|Open>)"
         MVN_BASE = "/usr/local/maven/bin/mvn --settings ${pwd()}/.ci/settings.xml"
         MVN_COMMAND = "${MVN_BASE} --show-version --batch-mode --errors --fail-at-end -DinstallAtEnd=true -DdeployAtEnd=true "
         CI = credentials("app-jenkins")
@@ -14,11 +13,6 @@ pipeline {
         SERVICE_NEXUS_URL = credentials("service-nexus-url")
         SERVICE_PROXY_HOST = credentials("http-proxy-host")
         SERVICE_PROXY_PORT = credentials("http-proxy-port")
-        SERVICE_CX_SCA_USER = credentials("service-cx-sca-user")
-        SERVICE_CX_SCA_PASSWORD = credentials("service-cx-sca-password")
-        SERVICE_CX_SCA_ACCOUNT = credentials("service-cx-sca-account")
-        SERVICE_CX_SCA_SERVER = credentials("service-cx-sca-server")
-        SERVICE_CX_SCA_AUTH_SERVER = credentials("service-cx-sca-auth-server")
         NOPROXY_HOST = credentials("http_nonProxyHosts")
         SERVICE_REPO_SSHURL = credentials("repository-connection-string")
         SERVICE_REPOSITORY_URL=credentials("service-repository-url")
@@ -35,10 +29,6 @@ pipeline {
             )
         )
     }
-
-//    triggers {
-//        cron('45 2 * * *')
-//    }
 
     stages {
         stage('Activate steps') {
@@ -69,7 +59,6 @@ pipeline {
                 sh 'sudo yum remove -y nodejs'
                 sh 'curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -'
                 sh 'sudo yum install -y nodejs'
-         //       sh 'sudo yum install -y nodejs-16.9.0-1nodesource'
                 sh 'node -v'
                 sh '/usr/bin/node -v'
                 sh 'npm -v'
@@ -100,12 +89,6 @@ pipeline {
                 always {
                     junit '**/target/surefire-reports/*.xml'
                 }
-//                success {
-//                    archiveArtifacts (
-//                        artifacts: '**/dependency-check-report.html',
-//                        fingerprint: true
-//                    )
-//                }
             }
         }
 
@@ -188,75 +171,5 @@ pipeline {
             }
         }
 
-        stage("Checkmarx analysis") {
-            when {
-                anyOf {
-                    branch "develop*"
-                    branch "master_*"
-                    branch "master"
-                    tag pattern: "^[1-9]+(\\.rc)?(\\.[0-9]+)?\\.[0-9]+(-.*)?", comparator: "REGEXP"
-                }
-                environment(name: 'DO_CHECKMARX', value: 'true')
-            }
-            environment {
-                JAVA_TOOL_OPTIONS = ""
-            }
-            steps {
-                dir('vitam-build.git') {
-                    deleteDir()
-                }
-                sh 'mkdir -p target'
-                sh 'mkdir -p logs'
-                // KWA : Visibly, backslash escape hell. \\ => \ in groovy string.
-                sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/"  -Preset "Default 2014" -LocationPathExclude "cots,deployment,deploymentByVitam,docs,integration-tests,tools,node,node_modules,dist,target" -LocationFilesExclude "*.rpm,*.pdf" -ForceScan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
-            }
-            post {
-                success {
-                    archiveArtifacts (
-                        artifacts: 'target/checkmarx-report.pdf',
-                        fingerprint: true
-                    )
-                }
-                failure {
-                    archiveArtifacts (
-                        artifacts: 'logs/cxconsole.log',
-                        fingerprint: true
-                    )
-                }
-            }
-        }
-        stage('Checkmarx SCA step') {
-           when {
-                branch "develop"
-                environment(name: 'DO_CHECKMARX_SCA', value: 'true')
-           }
-           environment {
-                http_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                https_proxy="http://${env.SERVICE_PROXY_HOST}:${env.SERVICE_PROXY_PORT}"
-                CX_NAME="vitam-ui.${env.GIT_BRANCH}"
-           }
-           steps {
-                sh 'sudo yum install -y wget'
-                sh 'wget https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz'
-                sh 'gzip -d ScaResolver-linux64.tar.gz'
-                sh 'tar -xvf ScaResolver-linux64.tar'
-                sh 'sudo ln -s /usr/local/maven/bin/mvn /usr/local/bin/mvn'
-                sh './ScaResolver -n $CX_NAME -u $SERVICE_CX_SCA_USER -a $SERVICE_CX_SCA_ACCOUNT --server-url $SERVICE_CX_SCA_SERVER --authentication-server-url $SERVICE_CX_SCA_AUTH_SERVER -s ui -p "$SERVICE_CX_SCA_PASSWORD" --report-type Risk --report-extension Pdf '
-           }
-           post {
-                success {
-                    archiveArtifacts (
-                        artifacts: "reports/$CX_NAME/*.pdf",
-                        fingerprint: true
-                    )
-                }
-                failure {
-                    archiveArtifacts (
-                        artifacts: "logs/$CX_NAME/*.log",
-                        fingerprint: true
-                    )
-                }
-            }
-        }
     }
 }
