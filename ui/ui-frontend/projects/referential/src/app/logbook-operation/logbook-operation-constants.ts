@@ -48,7 +48,8 @@ export const LOGBOOK_OPERATION_CATEGORIES: Option[] = [
     {key: 'STORAGE_BACKUP', label: 'Sauvegarde d\'écriture', info: ''},
     {key: 'TRACEABILITY', label: 'Sécurisation', info: ''},
     {key: 'CHECK', label: 'Vérification', info: ''},
-    {key: 'EXTERNAL_LOGBOOK', label: 'Journalisation externe', info: ''}
+    {key: 'EXTERNAL_LOGBOOK', label: 'Journalisation externe', info: ''},
+    {key: 'ARCHIVE_TRANSFER', label: 'Transfert', info: ''}
 ];
 
 export const NULL_TYPE: Option[] = [

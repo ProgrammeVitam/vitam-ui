@@ -2306,6 +2306,8 @@
     "ELIMINATION_ANALYSIS_UNIT_INDEXATION.WARNING": "Warning when indexing the analysis for the elimination of archival units",
     "STP_ELIMINATION_ANALYSIS_FINALIZATION.FATAL": "Technical error during the process of finalizing the analysis of the disposal of archival units",
     "EXPORT_DIP": "Export of the DIP",
+    "ARCHIVE_TRANSFER": "Transfer",
+    "ARCHIVE_TRANSFER_LABEL": "Transfer of Archival Units and Groups of Objects",
     "UNIT_ATTACHMENT.FATAL": "Technical error when attaching archival units",
     "STP_BACKUP_SCENARIO.STARTED": "Beginning of the backup process for preservation scenarios",
     "CHECK_DATAOBJECTPACKAGE.CHECK_NO_OBJECT.KO": "Failed to verify the absence of object: object (s) found",

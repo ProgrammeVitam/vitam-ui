@@ -143,13 +143,22 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
   }
 
+
+  private manageOperationLabel(logbookOperation: Event) {
+    if(logbookOperation.type==='ARCHIVE_TRANSFER'){
+      logbookOperation.type='ARCHIVE_TRANSFER_LABEL'
+    }
+  }
+
   private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
     logbookOperationsReloaded.forEach(logbookOperation => {
       const index = this.dataSource.findIndex(o => o.id === logbookOperation.id);
+      this.manageOperationLabel(logbookOperation);
       this.dataSource[index] = logbookOperation;
     })
   }
 
+ 
   buildCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText !== undefined && this._searchText.length > 0) {
@@ -205,3 +214,7 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.eventClick.emit(event);
   }
 }
+
+
+
+
