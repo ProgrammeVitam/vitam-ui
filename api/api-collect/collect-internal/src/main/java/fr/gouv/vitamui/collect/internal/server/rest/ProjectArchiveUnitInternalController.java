@@ -34,8 +34,7 @@ import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.internal.server.service.archivesearch.ArchiveSearchCollectInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.ProjectArchiveUnitInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -53,26 +52,25 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
-import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVES_SEARCH_PATH;
-import static fr.gouv.vitamui.collect.common.rest.RestApi.SEARCH;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.COLLECT_PROJECT_ARCHIVE_UNITS_PATH;
 
 @RestController
-@RequestMapping(RestApi.COLLECT_PROJECT_PATH)
-@Api(tags = "collect", value = "Rechercher les unités d'un projet")
-public class ArchiveSearchCollectInternalController {
+@RequestMapping(COLLECT_PROJECT_ARCHIVE_UNITS_PATH)
+@Api(tags = "collect", value = "Unités archivistiques d'un projet")
+public class ProjectArchiveUnitInternalController {
 
-    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalController.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectArchiveUnitInternalController.class);
     private final InternalSecurityService securityService;
-    private final ArchiveSearchCollectInternalService searchArchiveUnitService;
+    private final ProjectArchiveUnitInternalService projectArchiveUnitInternalService;
 
-    public ArchiveSearchCollectInternalController(InternalSecurityService securityService,
-        ArchiveSearchCollectInternalService searchArchiveUnitService) {
+    public ProjectArchiveUnitInternalController(InternalSecurityService securityService,
+        ProjectArchiveUnitInternalService projectArchiveUnitInternalService) {
         this.securityService = securityService;
-        this.searchArchiveUnitService = searchArchiveUnitService;
+        this.projectArchiveUnitInternalService = projectArchiveUnitInternalService;
     }
 
-
-    @PostMapping(ARCHIVES_SEARCH_PATH + SEARCH + "/{projectId}")
+    @PostMapping("/{projectId}" + ARCHIVE_UNITS)
     public ArchiveUnitsDto searchArchiveUnitsByCriteria(
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
@@ -88,6 +86,7 @@ public class ArchiveSearchCollectInternalController {
             tenantId,
             accessContractId, searchQuery);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
-        return searchArchiveUnitService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
+        return projectArchiveUnitInternalService.searchArchiveUnitsByCriteria(projectId, searchQuery, vitamContext);
     }
+
 }

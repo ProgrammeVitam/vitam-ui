@@ -41,9 +41,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Logger, Option, StartupService } from 'ui-frontend-common';
+import { diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
-import { Unit, UnitDescriptiveMetadataDto } from '../../../core/models';
+import { Unit } from '../../../core/models';
 import { ArchiveCollectService } from '../../archive-collect.service';
 
 @Component({
@@ -84,7 +84,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   showNormalPanel = new EventEmitter<any>();
   @ViewChild('updateArchiveUnitDescMetadataAlerteMessageDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteMessageDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
-  updateArchiveUnitDescMetadataAlerteMessageDialogSubscription: Subscription;
 
   @ViewChild('updateArchiveUnitDescMetadataAlerteFormCancelDialog', { static: true })
   updateArchiveUnitDescMetadataAlerteFormCancelDialog: TemplateRef<ArchiveUnitInformationTabComponent>;
@@ -95,9 +94,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     private archiveService: ArchiveCollectService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private startupService: StartupService,
-    private translateService: TranslateService,
-    private logger: Logger
+    private translateService: TranslateService
   ) {}
 
   descriptionLevels: Option[] = [
@@ -326,55 +323,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     return this.formIsValid() && this.formHasChanges();
   }
 
-  launchUpdate() {
-    const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteMessageDialog;
-    const dialogRef = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
-    this.updateArchiveUnitDescMetadataAlerteMessageDialogSubscription = dialogRef
-      .afterClosed()
-      .pipe(filter((result) => !!result))
-      .subscribe(() => {
-        let metadataToUpdate: UnitDescriptiveMetadataDto;
-        const dif = diff(this.form.value, this.previousValue);
-        let startDate = null;
-        let endDate = null;
-        if (
-          dif.startDate != undefined &&
-          dif.startDate != null &&
-          this.getStartDate(this.form.get('startDate').value) !== this.getStartDate(this.previousValue.startDate)
-        ) {
-          startDate = this.getStartDate(this.form.get('startDate').value);
-        }
-        if (
-          dif.endDate != undefined &&
-          dif.endDate != null &&
-          this.getStartDate(this.form.get('endDate').value) !== this.getStartDate(this.previousValue.endDate)
-        ) {
-          endDate = this.getStartDate(this.form.get('endDate').value);
-        }
-
-        let desc = null;
-        if (this.hasNoDescription || (dif?.description?.length > 0 && !this.hasFrDescription && !this.hasEnDescription)) {
-          desc = dif.description;
-        }
-
-        metadataToUpdate = {
-          id: null,
-          Title: this.hasTitle ? dif?.title : null,
-          DescriptionLevel: dif?.descriptionLevel,
-          'Title_.fr': this.hasFrTitle ? dif?.title : null,
-          'Title_.en': this.hasEnTitle ? dif?.title : null,
-          Description: desc,
-          'Description_.fr': this.hasFrDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
-          'Description_.en': this.hasEnDescription ? (dif?.description?.length === 0 ? null : dif?.description) : null,
-          StartDate: startDate != null ? this.getStartDate(this.form.get('startDate').value) : null,
-          EndDate: endDate != null ? this.getStartDate(this.form.get('endDate').value) : null,
-
-          unsetAction: this.unsetAction,
-        };
-        this.updateUnit(this.archiveUnit, metadataToUpdate);
-      });
-  }
-
   cancelUpdate() {
     if (this.form.dirty) {
       const dialogToOpen = this.updateArchiveUnitDescMetadataAlerteFormCancelDialog;
@@ -410,44 +358,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
     } else {
       console.error('clearDate() error: unknown date ' + date);
     }
-  }
-
-  updateUnit(archiveUnit: Unit, metadataToUpdate: UnitDescriptiveMetadataDto) {
-    this.archiveService.updateUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract, metadataToUpdate).subscribe(
-      (response) => {
-        this.updateStarted = false;
-        this.showNormalPanel.emit();
-
-        if (this.hasTitle) {
-          this.archiveUnit.Title = this.form.get('title').value;
-        } else if (this.hasFrTitle) {
-          this.archiveUnit.Title_.fr = this.form.get('title').value;
-        } else {
-          this.archiveUnit.Title_.en = this.form.get('title').value;
-        }
-
-        if (this.hasDescription) {
-          this.archiveUnit.Description = this.form.get('description').value;
-        } else if (this.hasFrDescription) {
-          this.archiveUnit.Description_.fr = this.form.get('description').value;
-        } else if (this.hasEnDescription) {
-          this.archiveUnit.Description_.en = this.form.get('description').value;
-        } else {
-          this.archiveUnit.Description = this.form.get('description').value;
-        }
-
-        this.archiveUnit.DescriptionLevel = this.form.get('descriptionLevel').value;
-        this.archiveUnit.StartDate = this.form.get('startDate').value;
-        this.archiveUnit.EndDate = this.form.get('endDate').value;
-        const serviceUrl =
-          this.startupService.getReferentialUrl() + '/logbook-operation/tenant/' + this.tenantIdentifier + '?guid=' + response;
-
-        this.archiveService.openSnackBarForWorkflow(this.translateService.instant('UNIT_UPDATE.EXECUTE_UNIT_UPDATE_MESSAGE'), serviceUrl);
-      },
-      (error: any) => {
-        this.logger.error('Error message :', error);
-      }
-    );
   }
 
   private getStartDate(originStartDate: Date): string {

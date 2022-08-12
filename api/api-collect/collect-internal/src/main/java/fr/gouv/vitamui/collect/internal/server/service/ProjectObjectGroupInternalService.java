@@ -27,56 +27,54 @@
  *
  */
 
-package fr.gouv.vitamui.collect.internal.server.service.archivesearch;
+package fr.gouv.vitamui.collect.internal.server.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
-import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitam.common.model.RequestResponse;
-import fr.gouv.vitam.common.model.RequestResponseOK;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
-import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
-import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import org.apache.commons.lang.StringUtils;
 
-public class ArchiveSearchCollectInternalService {
+import javax.ws.rs.core.Response;
+
+public class ProjectObjectGroupInternalService {
 
     private final CollectService collectService;
     private final ObjectMapper objectMapper;
-    private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchiveSearchCollectInternalService.class);
+    private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectObjectGroupInternalService.class);
 
-    public ArchiveSearchCollectInternalService(CollectService collectService, ObjectMapper objectMapper) {
+    private static final String RESULTS = "$results";
+
+    public ProjectObjectGroupInternalService(CollectService collectService, ObjectMapper objectMapper) {
         this.collectService = collectService;
         this.objectMapper = objectMapper;
     }
 
-    public ArchiveUnitsDto searchArchiveUnitsByCriteria(String projectId, SearchCriteriaDto searchQuery,
-        VitamContext vitamContext)
-        throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
+    public Response downloadObjectFromUnit(String id, String usage, Integer version, final VitamContext vitamContext)
+        throws VitamClientException {
+        LOGGER.debug("Download Archive Unit Object with id {} , usage {} and version {}  ", id, usage, version);
+        return collectService
+            .getObjectStreamByUnitId(id, usage, version, vitamContext);
+    }
 
-        LOGGER.debug("get units by query {}", searchQuery);
-        final RequestResponse<JsonNode> result =
-            collectService.searchUnitsByProjectId(projectId, JsonHandler.toJsonNode(searchQuery), vitamContext);
-        VitamRestUtils.checkResponse(result);
-        final VitamUISearchResponseDto archivesOriginResponse =
-            objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
-
-        VitamUIArchiveUnitResponseDto responseFilled = new VitamUIArchiveUnitResponseDto();
-        responseFilled.setContext(archivesOriginResponse.getContext());
-        responseFilled.setFacetResults(archivesOriginResponse.getFacetResults());
-        responseFilled.setResults(
-            JsonHandler.getFromJsonNodeList(((RequestResponseOK) result).getResults(), ArchiveUnit.class));
-        responseFilled.setHits(archivesOriginResponse.getHits());
-        return new ArchiveUnitsDto(responseFilled);
+    public ResultsDto findObjectById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            LOGGER.debug("Get Object Group");
+            String resultStringValue = StringUtils
+                .chop(
+                    collectService.getObjectById(vitamContext, id).toJsonNode()
+                        .get(RESULTS)
+                        .toString()
+                        .substring(1));
+            return objectMapper.readValue(resultStringValue, ResultsDto.class);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Can not get the object group {} ", e);
+            throw new InternalServerException("Unable to find the ObjectGroup", e);
+        }
     }
 }

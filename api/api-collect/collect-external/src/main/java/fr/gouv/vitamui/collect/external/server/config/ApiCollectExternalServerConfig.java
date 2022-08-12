@@ -29,6 +29,8 @@ package fr.gouv.vitamui.collect.external.server.config;
 
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClientFactory;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClientFactory;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClient;
 import fr.gouv.vitamui.collect.internal.client.CollectStreamingInternalRestClientFactory;
 import fr.gouv.vitamui.commons.api.application.AbstractContextConfiguration;
@@ -46,6 +48,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 @Import({RestExceptionHandler.class, SwaggerConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
@@ -119,6 +122,21 @@ public class ApiCollectExternalServerConfig extends AbstractContextConfiguration
     public CollectStreamingInternalRestClient collectStreamingInternalRestClient(
         final CollectStreamingInternalRestClientFactory factory) {
         return factory.getCollectStreamingInternalRestClient();
+    }
+
+    @Bean
+    public CollectInternalWebClientFactory collectInternalWebClientFactory(
+        final ApiCollectExternalApplicationProperties apiCollectExternalApplicationProperties,
+        final WebClient.Builder webClientBuilder) {
+        return new CollectInternalWebClientFactory(
+            apiCollectExternalApplicationProperties.getCollectInternalClient(), webClientBuilder);
+    }
+
+
+    @Bean
+    public CollectInternalWebClient collectInternalWebClient (
+        final CollectInternalWebClientFactory factory) {
+        return factory.getCollectInternalWebClient();
     }
 
 }

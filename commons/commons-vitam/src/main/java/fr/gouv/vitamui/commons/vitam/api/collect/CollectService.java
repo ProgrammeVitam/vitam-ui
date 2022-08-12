@@ -144,5 +144,38 @@ public class CollectService {
         return result;
     }
 
+    /**
+     * Get object by id the project zip file
+     *
+     * @param vitamContext security context
+     * @param objectId object id
+     * @return RequestResponse<JsonNode>
+     * @throws VitamClientException thrown exception
+     */
+    public RequestResponse<JsonNode> getObjectById(final VitamContext vitamContext, final String objectId)
+        throws VitamClientException {
+        LOGGER.debug("objectId : {}", objectId);
+        final RequestResponse<JsonNode> result = collectClient.getObjectById(vitamContext, objectId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    /**
+     * Download object by unitId/usage/version
+     *
+     * @param unitId unit id
+     * @param usage usage
+     * @param version version
+     * @param vitamContext security context
+     * @return Response
+     * @throws VitamClientException Thrown exception
+     */
+    public Response getObjectStreamByUnitId(final String unitId, final String usage, final int version,
+        final VitamContext vitamContext)
+        throws VitamClientException {
+        final Response response = collectClient.getObjectStreamByUnitId(vitamContext, unitId, usage, version);
+        VitamRestUtils.checkResponse(response);
+        return response;
+    }
 
 }

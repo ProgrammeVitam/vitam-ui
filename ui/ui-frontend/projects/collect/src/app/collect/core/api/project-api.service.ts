@@ -38,6 +38,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project } from 'ui-frontend-common';
+import { SearchCriteriaDto, SearchResponse } from '../models';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,7 @@ export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
 
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
-    super(http, baseUrl + '/project');
+    super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
   }
 
@@ -68,5 +69,13 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   public getById(projectId: string): Observable<Project> {
     return super.getOne(projectId);
+  }
+
+  searchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, projectId: string, headers?: HttpHeaders): Observable<SearchResponse> {
+    return this.http.post<SearchResponse>(`${this.apiUrl}/archive-units/${projectId}/archive-units`, criteriaDto, { headers });
+  }
+
+  getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
+    return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
   }
 }

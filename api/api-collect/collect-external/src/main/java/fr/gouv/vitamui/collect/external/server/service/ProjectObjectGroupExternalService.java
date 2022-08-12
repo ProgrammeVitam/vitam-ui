@@ -27,51 +27,48 @@
  *
  */
 
-package fr.gouv.vitamui.collect.service;
+package fr.gouv.vitamui.collect.external.server.service;
 
-import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
-import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
-import fr.gouv.vitamui.collect.external.client.CollectExternalRestClient;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
-import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
-import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
-import fr.gouv.vitamui.ui.commons.service.CommonService;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalRestClient;
+import fr.gouv.vitamui.collect.internal.client.CollectInternalWebClient;
+import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
+import fr.gouv.vitamui.iam.security.client.AbstractResourceClientService;
+import fr.gouv.vitamui.iam.security.service.ExternalSecurityService;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
-/**
- * UI Collect Search Units Service
- */
+@Getter
+@Setter
 @Service
-public class ArchiveSearchCollectService extends AbstractPaginateService<CollectProjectDto> {
+public class ProjectObjectGroupExternalService extends
+    AbstractResourceClientService<CollectProjectDto, CollectProjectDto> {
 
-    private final CollectExternalRestClient collectExternalRestClient;
+    private final CollectInternalRestClient collectInternalRestClient;
+    private final CollectInternalWebClient collectInternalWebClient;
 
-    private final CommonService commonService;
-
-    public ArchiveSearchCollectService(CollectExternalRestClient collectExternalRestClient, CommonService commonService) {
-        this.collectExternalRestClient = collectExternalRestClient;
-        this.commonService = commonService;
+    public ProjectObjectGroupExternalService(CollectInternalRestClient collectInternalRestClient,
+        CollectInternalWebClient collectInternalWebClient,
+        ExternalSecurityService externalSecurityService) {
+        super(externalSecurityService);
+        this.collectInternalRestClient = collectInternalRestClient;
+        this.collectInternalWebClient = collectInternalWebClient;
     }
 
-    public ArchiveUnitsDto getAllArchiveUnitsForCollect(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
-        return collectExternalRestClient.getAllArchiveUnitsForCollect(context, projectId, searchQuery);
+    public Mono<ResponseEntity<Resource>> downloadObjectFromUnit(String id, String usage, Integer version) {
+        return collectInternalWebClient
+            .downloadObjectFromUnit(id, usage, version, getInternalHttpContext());
     }
 
+    public ResponseEntity<ResultsDto> findObjectById(String id) {
+        return collectInternalRestClient.findObjectById(id, getInternalHttpContext());
+    }
     @Override
-    protected Integer beforePaginate(final Integer page, final Integer size) {
-        return commonService.checkPagination(page, size);
-    }
-
-    public CollectExternalRestClient getClient() {
-        return collectExternalRestClient;
-    }
-
-    public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(ExternalHttpContext context, final Integer page,
-        final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction) {
-        return collectExternalRestClient.getAllPaginated(context, page, size, criteria, orderBy, direction);
+    protected CollectInternalRestClient getClient() {
+        return collectInternalRestClient;
     }
 }
