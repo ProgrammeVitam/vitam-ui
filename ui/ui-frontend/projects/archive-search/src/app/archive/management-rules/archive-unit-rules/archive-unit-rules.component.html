@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <div class="margin-style" *ngIf="action === 'UPDATE_PROPERTY'">
+  <div class="margin-style" *ngIf="isUpdateActionOrInheritanceUpdate(action)">
     <div class="action-style vitamui-table-head">
       {{ 'RULES.MORE_ACTIONS.UPDATE_PROPERTY' | translate }}
       <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" (click)="showUpdatePropertyBloc()">

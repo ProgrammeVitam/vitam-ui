@@ -282,4 +282,14 @@ export class ArchiveUnitRulesComponent implements OnInit, OnDestroy {
       (managementRule) => managementRule.actionType === RuleActionsEnum.DELETE_RULES && managementRule.ruleCategoryAction.rules.length === 0
     );
   }
+
+  isUpdateActionOrInheritanceUpdate(action: RuleActionsEnum): boolean {
+    return (
+      action === RuleActionsEnum.UPDATE_PROPERTY ||
+      action === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+      action === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE ||
+      action === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
+      action === RuleActionsEnum.UNLOCK_RULE_INHERITANCE
+    );
+  }
 }

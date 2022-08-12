@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-
 import { Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
+
 import { ManagementRulesSharedDataService } from '../../../../core/management-rules-shared-data.service';
 import { RuleTypeEnum } from '../../../models/rule-type-enum';
 import { ActionsRules, ManagementRules, RuleActionsEnum, RuleCategoryAction } from '../../../models/ruleAction.interface';
@@ -111,9 +111,8 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
       this.ruleActions = data;
     });
 
-    this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
-    ).stepValid = true;
+    this.ruleActions.find((action) => this.isUpdateActionOrInheritanceUpdate(action) && action.ruleType === this.ruleCategory).stepValid =
+      true;
     this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
     this.isValidValue = true;
@@ -122,11 +121,11 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
   onChangeValue() {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
+      console.log(data);
       this.ruleActions = data;
     });
-    this.ruleActions.find(
-      (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategory
-    ).stepValid = false;
+    this.ruleActions.find((action) => this.isUpdateActionOrInheritanceUpdate(action) && action.ruleType === this.ruleCategory).stepValid =
+      false;
     this.isValidValue = false;
     this.showText = false;
   }
@@ -155,5 +154,15 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
 
         this.managementRulesSharedDataService.emitManagementRules(this.managementRules);
       });
+  }
+
+  isUpdateActionOrInheritanceUpdate = (action: any): boolean => {
+    return (
+      action.actionType === RuleActionsEnum.UPDATE_PROPERTY ||
+      action.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+      action.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE ||
+      action.actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
+      action.actionType === RuleActionsEnum.UNLOCK_RULE_INHERITANCE
+    );
   }
 }
