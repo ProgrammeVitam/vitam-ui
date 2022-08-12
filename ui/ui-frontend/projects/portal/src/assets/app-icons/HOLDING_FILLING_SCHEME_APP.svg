@@ -199,7 +199,7 @@
 	.holding_filling_scheme_app_182{fill:#4E4E4E;}
 	.holding_filling_scheme_app_183{fill:#4D4D4D;}
 	.holding_filling_scheme_app_184{fill:#4C4C4C;}
-	.holding_filling_scheme_app_185{fill:url(#SVGID_1_);}
+	.holding_filling_scheme_app_185{fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_01);}
 	.holding_filling_scheme_app_186{fill:url(#SVGID_00000046297148510532194970000014742106216710542224_);}
 	.holding_filling_scheme_app_187{fill:var(--vitamui-primary);}
 	.holding_filling_scheme_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000074405428900037362500000008923748823930430384_);}
@@ -455,7 +455,7 @@
 						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 						<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 					</linearGradient>
-					<path style="fill:url(#SVGID_00000060028255640107025540000003060348898804628881_);" d="M121.7,160.9L87.4,157
+					<path style="fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_02);" d="M121.7,160.9L87.4,157
 						c-3.7-0.4-6.5-3.9-6.5-8.1V79.1c0-3.9,2.4-7.2,5.7-8.1l34.3-9.3c4.6-1.2,9,2.7,9,8v82.8C129.9,157.5,126.1,161.4,121.7,160.9z"
 						/>
 					<path class="holding_filling_scheme_app_187" d="M129.9,69.7v79.7C129.9,149.5,127.5,116.6,129.9,69.7z"/>
@@ -467,7 +467,7 @@
 						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 					</linearGradient>
 
-						<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000025427814840635707490000013550245679730764168_);" points="
+						<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_03);" points="
 						127.7,161.7 127.9,58.5 78.5,70.1 78.5,154.3 					"/>
 					<polygon class="holding_filling_scheme_app_3" points="128.4,161.4 127.7,161.7 127.9,58.5 128.3,58.9 					"/>
 				</g>
@@ -477,14 +477,14 @@
 					<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 				</linearGradient>
 
-					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000099634092215428873020000008931034686904821666_);" points="
+					<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_04);" points="
 					125.1,162.8 125.3,57.5 74.9,69.3 74.9,155.2 				"/>
 
 					<linearGradient id="SVGID_HOLDING_FILLING_SCHEME_APP_05" gradientUnits="userSpaceOnUse" x1="85.2444" y1="121.8188" x2="144.1326" y2="87.6491">
 					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 					<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 				</linearGradient>
-				<path style="fill:url(#SVGID_00000034770894112225277910000014912947319217696951_);" d="M111,164.2L73.1,159
+				<path style="fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_05);" d="M111,164.2L73.1,159
 					c-4.3-0.5-7.6-4.2-7.6-8.6V77.9c0-4,2.7-7.5,6.6-8.4l38.9-10.6c7-0.6,11.9,4.3,11.9,9.4v87.3c0,4.7-3.3,7.8-8.3,8.7
 					C114.2,164.2,111.5,164.2,111,164.2z"/>
 
@@ -501,7 +501,7 @@
 					<stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
 					<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 				</linearGradient>
-				<path style="fill:url(#SVGID_00000078723114181070596240000011126549482464645764_);" d="M111.2,164.1L70.8,159
+				<path style="fill:url(#SVGID_HOLDING_FILLING_SCHEME_APP_06);" d="M111.2,164.1L70.8,159
 					c-4.4-0.6-7.6-4.3-7.6-8.6V77.3c0-4,2.8-7.5,6.7-8.5l40.4-9.7c5.5-1.3,10.8,2.8,10.8,8.5v87.9
 					C121,160.7,116.4,164.7,111.2,164.1z"/>
 				<path class="holding_filling_scheme_app_192" d="M121,67.6v84.6C121,152.2,118.1,117.3,121,67.6z"/>

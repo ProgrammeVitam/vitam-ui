@@ -200,7 +200,7 @@
 	.rules_app_183{fill:#4D4D4D;}
 	.rules_app_184{fill:#4C4C4C;}
 	.rules_app_185{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
-	.rules_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_1_);}
+	.rules_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_01);}
 	.rules_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000150786065652101384910000008426793789305564860_);}
 	.rules_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000163041741208135004730000003939565315523838347_);}
 	.rules_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000134232202053676501770000006595407529805718166_);}
@@ -490,7 +490,7 @@
 			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000127723249586521293590000001933904513055880068_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_02);" points="
 			141,163.2 141.3,68 58.9,63.3 59.8,153.5 		"/>
 	</g>
 	<g>
@@ -500,7 +500,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000079477236111383401560000006096786702735924154_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_03);" points="
 			138.8,164.4 139,69.4 58.3,63.6 59.8,153.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_04" gradientUnits="userSpaceOnUse" x1="5554.9258" y1="-67.5619" x2="5562.5967" y2="35.0678" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
@@ -508,7 +508,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000144312973130104564910000011558571038273597115_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_04);" points="
 			139.2,164.3 139.5,69.3 59.3,63.5 58.3,63.6 139,69.5 138.7,164.4 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_05" gradientUnits="userSpaceOnUse" x1="5574.7783" y1="-52.8505" x2="5673.3716" y2="49.0054" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
@@ -516,7 +516,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000068655436879907428230000010526056061124112564_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_05);" points="
 			136.9,165 137.1,70.2 58.3,63.6 59.8,153.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_06" gradientUnits="userSpaceOnUse" x1="5634.8726" y1="-17.8183" x2="5642.5039" y2="84.2843" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
@@ -524,7 +524,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000002372895125386903190000007913202983920087982_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_06);" points="
 			137.3,164.9 137.6,70.1 59.2,63.5 58.3,63.6 137.1,70.2 136.8,165 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_07" gradientUnits="userSpaceOnUse" x1="5656.5068" y1="-2.1507" x2="5755.2285" y2="99.8375" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
@@ -532,7 +532,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000172435214696287206420000014433691747087861946_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_07);" points="
 			135.1,165.6 135.2,71 58.3,63.6 59.8,153.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_08" gradientUnits="userSpaceOnUse" x1="5716.6587" y1="33.0759" x2="5724.2515" y2="134.6631" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
@@ -540,7 +540,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000026864729009700791990000010860745274689186482_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_08);" points="
 			135.5,165.5 135.7,70.9 59.2,63.5 58.3,63.6 135.2,71 135,165.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_09" gradientUnits="userSpaceOnUse" x1="5741.5229" y1="52.4422" x2="5840.373" y2="154.5634" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
@@ -548,7 +548,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000149341927203176334170000012818762284452443536_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_09);" points="
 			133.4,166.2 133.4,71.8 58.3,63.7 59.9,153.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_10" gradientUnits="userSpaceOnUse" x1="5799.6421" y1="85.6994" x2="5807.1973" y2="186.7867" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
@@ -556,7 +556,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000052075026675310962640000018038271124037365905_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_10);" points="
 			133.8,166.2 133.8,71.7 59.1,63.6 58.3,63.7 133.4,71.8 133.3,166.2 		"/>
 	</g>
 	<g>
@@ -566,7 +566,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000093163286182860022930000002131592365448392594_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_11);" points="
 			131.7,166.8 131.7,72.4 57.4,63.7 59.8,154 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_12" gradientUnits="userSpaceOnUse" x1="5540.6924" y1="190.1962" x2="5548.2524" y2="291.3448" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
@@ -574,7 +574,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000139284249976192333680000017896298294900172928_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_12);" points="
 			132.1,166.7 132.2,72.3 58.3,63.7 57.4,63.7 131.7,72.4 131.6,166.8 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_13" gradientUnits="userSpaceOnUse" x1="5562.2246" y1="206.522" x2="5657.3579" y2="304.8029" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
@@ -582,7 +582,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000116932495465593894970000011389077694401037964_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_13);" points="
 			130,167.4 130,73.1 57.4,63.7 59.8,154 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_14" gradientUnits="userSpaceOnUse" x1="5620.2163" y1="239.717" x2="5627.7461" y2="340.458" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
@@ -590,7 +590,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000163072595202985776760000009334736141059379366_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_14);" points="
 			130.4,167.3 130.4,73 58.2,63.7 57.4,63.7 130,73.1 129.9,167.4 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_15" gradientUnits="userSpaceOnUse" x1="5643.5752" y1="257.0786" x2="5738.7515" y2="355.4038" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
@@ -598,7 +598,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000036973792183579909290000006015064373462236584_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_15);" points="
 			128.3,167.9 128.3,73.8 57.4,63.7 59.8,154 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_16" gradientUnits="userSpaceOnUse" x1="5701.5703" y1="290.3819" x2="5709.0703" y2="390.7231" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
@@ -606,7 +606,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000042724000567978608370000007576086405966947225_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_16);" points="
 			128.7,167.8 128.7,73.7 58.2,63.7 57.4,63.7 128.3,73.8 128.3,167.9 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_17" gradientUnits="userSpaceOnUse" x1="5725.0044" y1="307.8763" x2="5820.23" y2="406.2527" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
@@ -614,7 +614,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000142143356779207074980000000103192848096619445_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_17);" points="
 			126.8,168.5 126.6,74.5 57.4,63.8 59.8,154 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_18" gradientUnits="userSpaceOnUse" x1="5784.4365" y1="342.7665" x2="5791.9067" y2="442.7166" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
@@ -622,7 +622,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000031889860369486983320000014960396084523717793_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_18);" points="
 			127.2,168.4 127,74.4 58.2,63.7 57.4,63.8 126.6,74.5 126.8,168.5 		"/>
 	</g>
 	<g>
@@ -632,7 +632,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000130606201224686241810000007419046807055440021_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_19);" points="
 			125.1,169.1 125,74.9 56.6,63.8 59,154.2 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_20" gradientUnits="userSpaceOnUse" x1="5544.082" y1="190.6386" x2="5551.8452" y2="294.5099" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
@@ -640,7 +640,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000052810339931192471920000015565225912060830875_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_20);" points="
 			125.5,169 125.4,74.9 57.4,63.8 56.6,63.8 125,74.9 125,169.1 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_21" gradientUnits="userSpaceOnUse" x1="5568.9185" y1="211.1208" x2="5659.0303" y2="304.2141" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
@@ -648,7 +648,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000002373270683504700390000005625587678897722760_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_21);" points="
 			123.5,169.6 123.4,75.6 56.6,63.8 59,154.2 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_22" gradientUnits="userSpaceOnUse" x1="5623.6143" y1="240.1753" x2="5631.3491" y2="343.664" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
@@ -656,7 +656,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000095334300008408137070000004417565198584970124_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_22);" points="
 			123.9,169.5 123.8,75.5 57.4,63.8 56.6,63.8 123.4,75.6 123.5,169.6 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_23" gradientUnits="userSpaceOnUse" x1="5650.2773" y1="261.6987" x2="5740.4302" y2="354.8348" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
@@ -664,7 +664,7 @@
 			<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000053510214983495274360000000078214367019555993_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_23);" points="
 			122,170.1 121.8,76.2 56.6,63.8 59,154.2 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_24" gradientUnits="userSpaceOnUse" x1="5704.9771" y1="290.8561" x2="5712.6841" y2="393.9692" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
@@ -672,7 +672,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000016779139200150857180000013713234373043281574_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_24);" points="
 			122.4,170 122.2,76.2 57.4,63.8 56.6,63.8 121.8,76.2 122,170.1 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_25" gradientUnits="userSpaceOnUse" x1="5745.999" y1="327.2735" x2="5836.2031" y2="420.4624" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
@@ -680,7 +680,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000024687334996032604050000016546226821666623404_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_25);" points="
 			120.6,170.6 120.3,76.9 56.6,63.9 59.1,154.3 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_26" gradientUnits="userSpaceOnUse" x1="5787.854" y1="343.2558" x2="5795.5337" y2="446.0085" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
@@ -688,7 +688,7 @@
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000049181207893269074840000011984996064145386419_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_26);" points="
 			121,170.5 120.6,76.8 57.3,63.8 56.6,63.9 120.3,76.9 120.6,170.6 		"/>
 	</g>
 	<g>
@@ -707,7 +707,7 @@
 			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000000204343770905524150000005540551131407827124_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_27);" points="
 			118.5,172.6 118.8,77 55.7,63.9 55.6,154.4 		"/>
 
 			<linearGradient id="SVGID_RULES_APP_28" gradientUnits="userSpaceOnUse" x1="7521.4185" y1="1076.6937" x2="7518.3604" y2="1040.8193" gradientTransform="matrix(-0.7615 -0.1554 -2.949967e-04 1.0065 5815.6733 197.2003)">
@@ -724,7 +724,7 @@
 			<stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
 		</linearGradient>
 
-			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000017518107422021708820000007396945042938801836_);" points="
+			<polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_RULES_APP_28);" points="
 			118.9,172.5 119.2,77 56.5,63.8 55.7,63.9 118.8,77 118.5,172.6 		"/>
 	</g>
 	<path class="rules_app_185" d="M59.4,63.3l1,0.1L56.6,64l-0.9-0.2l0.1,0C55.8,63.8,56.6,63.2,59.4,63.3z"/>
