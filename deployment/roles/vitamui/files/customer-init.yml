@@ -140,6 +140,13 @@ customer-init:
         - ROLE_IMPORT_RULES
         - ROLE_EXPORT_RULES
 
+    - name: Profil consultation des règles de gestion
+      description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
+
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
       app-name: DSL_APP

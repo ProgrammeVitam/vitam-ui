@@ -38,7 +38,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GlobalEventService, Rule, RuleService, SidenavPage } from 'ui-frontend-common';
+import { Observable } from 'rxjs';
+import { ApplicationId, GlobalEventService, Role, Rule, RuleService, SecurityService, SidenavPage } from 'ui-frontend-common';
 import { Referential } from '../shared/vitamui-import-dialog/referential.enum';
 import { VitamUIImportDialogComponent } from '../shared/vitamui-import-dialog/vitamui-import-dialog.component';
 import { RuleCreateComponent } from './rule-create/rule-create.component';
@@ -60,13 +61,19 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
   ruleTypes = NULL_TYPE.concat(RULE_TYPES);
 
+  checkCreateRole = new Observable<boolean>();
+  checkImportRole = new Observable<boolean>();
+  checkExportRole = new Observable<boolean>();
+
+
   constructor(
     public ruleService: RuleService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private router: Router,
     globalEventService: GlobalEventService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private securityService: SecurityService,
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -75,7 +82,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
 
     this.route.params.subscribe((params) => {
       if (params.tenantIdentifier) {
-        this.tenantId = params.tenantIdentifier;
+        this.tenantId = parseInt(params.tenantIdentifier);
       }
     });
 
@@ -102,6 +109,8 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
   }
 
+
+
   private refreshList() {
     if (!this.ruleListComponentListComponent) {
       return;
@@ -118,7 +127,12 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() {}
+  ngOnInit() { 
+    
+    this.checkCreateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_CREATE_RULES);
+    this.checkImportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_IMPORT_RULES);
+    this.checkExportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_EXPORT_RULES);
+  }
 
   showRule(item: Rule) {
     this.openPanel(item);

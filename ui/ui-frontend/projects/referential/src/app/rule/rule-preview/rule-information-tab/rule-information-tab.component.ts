@@ -1,3 +1,4 @@
+import { OnInit } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -36,9 +37,10 @@
  */
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Rule, RuleService } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
+import {  Observable, of } from 'rxjs';
+import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { diff, Rule, RuleService, SecurityService } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
 
@@ -58,6 +60,10 @@ export class RuleInformationTabComponent {
 
   ruleTypes = RULE_TYPES;
   ruleMeasurements = RULE_MEASUREMENTS;
+
+  tenantIdentifier: number;
+  appName = "RULES_APP";
+  hasUpdateAgencyRole$: Observable<boolean>;
 
   private oldRule: Rule;
 
@@ -86,7 +92,7 @@ export class RuleInformationTabComponent {
     }
   }
 
-  constructor(private formBuilder: FormBuilder, private ruleService: RuleService) {
+  constructor(private route: ActivatedRoute,private formBuilder: FormBuilder,private securityService: SecurityService, private ruleService: RuleService) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
@@ -94,6 +100,19 @@ export class RuleInformationTabComponent {
       ruleDuration: [null, Validators.required],
       ruleMeasurement: [null, Validators.required],
     });
+  }
+
+  ngOnInit() { 
+
+     
+   this.hasUpdateAgencyRole$ = this.route.params.pipe(mergeMap(params => {
+      this.tenantIdentifier = +params.tenantIdentifier;
+      return  this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_RULES')
+    }));
+
+    
+
+  
   }
 
   unchanged(): boolean {
