@@ -1,0 +1,1135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.probative_value_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .probative_value_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .probative_value_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .probative_value_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .probative_value_app_05{fill:#BCB9BA;}
+  .probative_value_app_06{fill:#BBB9BA;}
+  .probative_value_app_07{fill:#BBB8B9;}
+  .probative_value_app_08{fill:#BAB8B9;}
+  .probative_value_app_09{fill:#B9B7B8;}
+  .probative_value_app_10{fill:#B9B7B7;}
+  .probative_value_app_11{fill:#B8B6B7;}
+  .probative_value_app_12{fill:#B8B5B6;}
+  .probative_value_app_13{fill:#B7B5B6;}
+  .probative_value_app_14{fill:#B7B4B5;}
+  .probative_value_app_15{fill:#B6B4B5;}
+  .probative_value_app_16{fill:#B6B3B4;}
+  .probative_value_app_17{fill:#B5B3B4;}
+  .probative_value_app_18{fill:#B4B2B3;}
+  .probative_value_app_19{fill:#B3B1B2;}
+  .probative_value_app_20{fill:#B3B1B1;}
+  .probative_value_app_21{fill:#B2B0B1;}
+  .probative_value_app_22{fill:#B2AFB0;}
+  .probative_value_app_23{fill:#B1AFB0;}
+  .probative_value_app_24{fill:#B1AEAF;}
+  .probative_value_app_25{fill:#B0AEAF;}
+  .probative_value_app_26{fill:#AFADAE;}
+  .probative_value_app_27{fill:#AEACAD;}
+  .probative_value_app_28{fill:#ADABAC;}
+  .probative_value_app_29{fill:#ADABAB;}
+  .probative_value_app_30{fill:#ACAAAB;}
+  .probative_value_app_31{fill:#ACAAAA;}
+  .probative_value_app_32{fill:#ABA9AA;}
+  .probative_value_app_33{fill:#AAA8A9;}
+  .probative_value_app_34{fill:#A9A7A8;}
+  .probative_value_app_35{fill:#A8A6A7;}
+  .probative_value_app_36{fill:#A7A5A6;}
+  .probative_value_app_37{fill:#A7A5A5;}
+  .probative_value_app_38{fill:#A6A4A5;}
+  .probative_value_app_39{fill:#A5A4A4;}
+  .probative_value_app_40{fill:#A5A3A4;}
+  .probative_value_app_41{fill:#A4A2A3;}
+  .probative_value_app_42{fill:#A3A1A2;}
+  .probative_value_app_43{fill:#A2A0A1;}
+  .probative_value_app_44{fill:#A19FA0;}
+  .probative_value_app_45{fill:#A09F9F;}
+  .probative_value_app_46{fill:#A09E9F;}
+  .probative_value_app_47{fill:#9F9E9E;}
+  .probative_value_app_48{fill:#9F9D9E;}
+  .probative_value_app_49{fill:#9E9D9D;}
+  .probative_value_app_50{fill:#9E9C9D;}
+  .probative_value_app_51{fill:#9D9B9C;}
+  .probative_value_app_52{fill:#9C9A9B;}
+  .probative_value_app_53{fill:#9B9A9B;}
+  .probative_value_app_54{fill:#9B999A;}
+  .probative_value_app_55{fill:#9A9999;}
+  .probative_value_app_56{fill:#9A9899;}
+  .probative_value_app_57{fill:#999898;}
+  .probative_value_app_58{fill:#999798;}
+  .probative_value_app_59{fill:#989797;}
+  .probative_value_app_60{fill:#989697;}
+  .probative_value_app_61{fill:#979596;}
+  .probative_value_app_62{fill:#969596;}
+  .probative_value_app_63{fill:#969495;}
+  .probative_value_app_64{fill:#959495;}
+  .probative_value_app_65{fill:#959394;}
+  .probative_value_app_66{fill:#949393;}
+  .probative_value_app_67{fill:#949293;}
+  .probative_value_app_68{fill:#939292;}
+  .probative_value_app_69{fill:#939192;}
+  .probative_value_app_70{fill:#929191;}
+  .probative_value_app_71{fill:#919091;}
+  .probative_value_app_72{fill:#919090;}
+  .probative_value_app_73{fill:#908F90;}
+  .probative_value_app_74{fill:#908E8F;}
+  .probative_value_app_75{fill:#8F8E8F;}
+  .probative_value_app_76{fill:#8F8D8E;}
+  .probative_value_app_77{fill:#8E8D8D;}
+  .probative_value_app_78{fill:#8E8C8D;}
+  .probative_value_app_79{fill:#8D8C8C;}
+  .probative_value_app_80{fill:#8C8B8C;}
+  .probative_value_app_81{fill:#8C8B8B;}
+  .probative_value_app_82{fill:#8B8A8B;}
+  .probative_value_app_83{fill:#8B8A8A;}
+  .probative_value_app_84{fill:#8A898A;}
+  .probative_value_app_85{fill:#8A8889;}
+  .probative_value_app_86{fill:#898888;}
+  .probative_value_app_87{fill:#898788;}
+  .probative_value_app_88{fill:#888787;}
+  .probative_value_app_89{fill:#878687;}
+  .probative_value_app_90{fill:#878686;}
+  .probative_value_app_91{fill:#868586;}
+  .probative_value_app_92{fill:#868585;}
+  .probative_value_app_93{fill:#858485;}
+  .probative_value_app_94{fill:#858484;}
+  .probative_value_app_95{fill:#848384;}
+  .probative_value_app_96{fill:#848383;}
+  .probative_value_app_97{fill:#838282;}
+  .probative_value_app_98{fill:#828182;}
+  .probative_value_app_99{fill:#828181;}
+  .probative_value_app_100{fill:#818081;}
+  .probative_value_app_101{fill:#818080;}
+  .probative_value_app_102{fill:#807F80;}
+  .probative_value_app_103{fill:#807F7F;}
+  .probative_value_app_104{fill:#7F7E7F;}
+  .probative_value_app_105{fill:#7F7E7E;}
+  .probative_value_app_106{fill:#7E7D7E;}
+  .probative_value_app_107{fill:#7D7D7D;}
+  .probative_value_app_108{fill:#7D7C7C;}
+  .probative_value_app_109{fill:#7C7B7C;}
+  .probative_value_app_110{fill:#7C7B7B;}
+  .probative_value_app_111{fill:#7B7A7B;}
+  .probative_value_app_112{fill:#7B7A7A;}
+  .probative_value_app_113{fill:#7A797A;}
+  .probative_value_app_114{fill:#7A7979;}
+  .probative_value_app_115{fill:#797879;}
+  .probative_value_app_116{fill:#787878;}
+  .probative_value_app_117{fill:#787778;}
+  .probative_value_app_118{fill:#777777;}
+  .probative_value_app_119{fill:#777676;}
+  .probative_value_app_120{fill:#767676;}
+  .probative_value_app_121{fill:#767575;}
+  .probative_value_app_122{fill:#757475;}
+  .probative_value_app_123{fill:#757474;}
+  .probative_value_app_124{fill:#747374;}
+  .probative_value_app_125{fill:#737373;}
+  .probative_value_app_126{fill:#737273;}
+  .probative_value_app_127{fill:#727272;}
+  .probative_value_app_128{fill:#727172;}
+  .probative_value_app_129{fill:#717171;}
+  .probative_value_app_130{fill:#717070;}
+  .probative_value_app_131{fill:#707070;}
+  .probative_value_app_132{fill:#706F6F;}
+  .probative_value_app_133{fill:#6F6E6F;}
+  .probative_value_app_134{fill:#6E6E6E;}
+  .probative_value_app_135{fill:#6E6D6E;}
+  .probative_value_app_136{fill:#6D6D6D;}
+  .probative_value_app_137{fill:#6D6C6D;}
+  .probative_value_app_138{fill:#6C6C6C;}
+  .probative_value_app_139{fill:#6C6B6C;}
+  .probative_value_app_140{fill:#6B6B6B;}
+  .probative_value_app_141{fill:#6B6A6A;}
+  .probative_value_app_142{fill:#6A6A6A;}
+  .probative_value_app_143{fill:#696969;}
+  .probative_value_app_144{fill:#686868;}
+  .probative_value_app_145{fill:#686768;}
+  .probative_value_app_146{fill:#676767;}
+  .probative_value_app_147{fill:#676667;}
+  .probative_value_app_148{fill:#666666;}
+  .probative_value_app_149{fill:#666566;}
+  .probative_value_app_150{fill:#656565;}
+  .probative_value_app_151{fill:#646464;}
+  .probative_value_app_152{fill:#636363;}
+  .probative_value_app_153{fill:#626262;}
+  .probative_value_app_154{fill:#626162;}
+  .probative_value_app_155{fill:#616161;}
+  .probative_value_app_156{fill:#616061;}
+  .probative_value_app_157{fill:#606060;}
+  .probative_value_app_158{fill:#5F5F60;}
+  .probative_value_app_159{fill:#5F5F5F;}
+  .probative_value_app_160{fill:#5E5E5E;}
+  .probative_value_app_161{fill:#5D5D5D;}
+  .probative_value_app_162{fill:#5C5C5C;}
+  .probative_value_app_163{fill:#5B5B5B;}
+  .probative_value_app_164{fill:#5A5A5B;}
+  .probative_value_app_165{fill:#5A5A5A;}
+  .probative_value_app_166{fill:#59595A;}
+  .probative_value_app_167{fill:#595959;}
+  .probative_value_app_168{fill:#585858;}
+  .probative_value_app_169{fill:#575757;}
+  .probative_value_app_170{fill:#565656;}
+  .probative_value_app_171{fill:#555656;}
+  .probative_value_app_172{fill:#555555;}
+  .probative_value_app_173{fill:#545455;}
+  .probative_value_app_174{fill:#545454;}
+  .probative_value_app_175{fill:#535353;}
+  .probative_value_app_176{fill:#525252;}
+  .probative_value_app_177{fill:#515151;}
+  .probative_value_app_178{fill:#505151;}
+  .probative_value_app_179{fill:#505050;}
+  .probative_value_app_180{fill:#4F5050;}
+  .probative_value_app_181{fill:#4F4F4F;}
+  .probative_value_app_182{fill:#4E4F4F;}
+  .probative_value_app_183{fill:#4E4E4E;}
+  .probative_value_app_184{fill:#4D4D4D;}
+  .probative_value_app_185{fill:#4C4C4C;}
+  .probative_value_app_186{fill:url(#SVGID_PROBATIVE_VALUE_APP_01);}
+  .probative_value_app_187{enable-background:new    ;}
+  .probative_value_app_188{clip-path:url(#SVGID_PROBATIVE_VALUE_APP_02);enable-background:new    ;}
+  .probative_value_app_189{fill:var(--vitamui-primary);}
+  .probative_value_app_190{fill:var(--vitamui-primary);}
+  .probative_value_app_191{clip-path:url(#SVGID_PROBATIVE_VALUE_APP_03);enable-background:new    ;}
+  .probative_value_app_192{fill:var(--vitamui-primary);}
+  .probative_value_app_193{fill:var(--vitamui-primary);}
+  .probative_value_app_194{fill:var(--vitamui-primary);}
+  .probative_value_app_195{fill:var(--vitamui-primary);}
+  .probative_value_app_196{fill:var(--vitamui-primary-400);}
+  .probative_value_app_197{fill:var(--vitamui-primary-400);}
+  .probative_value_app_198{fill:var(--vitamui-primary-400);}
+  .probative_value_app_199{fill:var(--vitamui-primary-400);}
+  .probative_value_app_200{fill:var(--vitamui-primary-light);}
+  .probative_value_app_201{fill:var(--vitamui-primary-light);}
+  .probative_value_app_202{fill:var(--vitamui-primary-50);}
+  .probative_value_app_203{fill:var(--vitamui-primary-50);}
+  .probative_value_app_204{fill:var(--vitamui-primary-200);}
+  .probative_value_app_205{fill:var(--vitamui-primary-200);}
+  .probative_value_app_206{fill:var(--vitamui-primary-200);}
+  .probative_value_app_207{fill:var(--vitamui-primary-200);}
+  .probative_value_app_208{fill:var(--vitamui-primary-200);}
+  .probative_value_app_209{fill:var(--vitamui-primary-200);}
+  .probative_value_app_210{fill:var(--vitamui-primary-100);}
+  .probative_value_app_211{fill:var(--vitamui-primary-100);}
+  .probative_value_app_212{fill:var(--vitamui-primary-100);}
+  .probative_value_app_213{fill:var(--vitamui-primary-50);}
+  .probative_value_app_214{fill:var(--vitamui-primary-50);}
+  .probative_value_app_215{fill:var(--vitamui-primary);}
+  .probative_value_app_216{fill:url(#SVGID_PROBATIVE_VALUE_APP_04);}
+  .probative_value_app_217{fill:url(#SVGID_PROBATIVE_VALUE_APP_05);}
+  .probative_value_app_218{fill:url(#SVGID_PROBATIVE_VALUE_APP_06);}
+  .probative_value_app_219{fill:url(#SVGID_PROBATIVE_VALUE_APP_07);}
+  .probative_value_app_220{fill:url(#SVGID_PROBATIVE_VALUE_APP_08);}
+  .probative_value_app_221{fill:url(#SVGID_PROBATIVE_VALUE_APP_09);}
+  .probative_value_app_222{fill:url(#SVGID_PROBATIVE_VALUE_APP_10);}
+  .probative_value_app_223{fill:url(#SVGID_PROBATIVE_VALUE_APP_11);}
+  .probative_value_app_224{fill:url(#SVGID_PROBATIVE_VALUE_APP_12);}
+  .probative_value_app_225{fill:url(#SVGID_PROBATIVE_VALUE_APP_13);}
+  .probative_value_app_226{fill:url(#SVGID_PROBATIVE_VALUE_APP_14);}
+  .probative_value_app_227{fill:#478AD7;}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="152.9" width="165.1" x="17.3" y="18.8"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="probative_value_app_01" d="M99.8,142c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2C17.1,150.5,54.2,142,99.8,142z"/>
+    <path class="probative_value_app_02" d="M99.8,142.3c43.6,0,78.9,8.4,78.9,18.8s-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.6,56.2,142.3,99.8,142.3z"/>
+    <path class="probative_value_app_03" d="M99.8,140.1c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.4,56.2,140.1,99.8,140.1z"/>
+    <path class="probative_value_app_02" d="M99.8,139c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147.3,56.2,139,99.8,139z"/>
+    <path class="probative_value_app_04" d="M99.7,139c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147.3,56.2,139,99.7,139z"/>
+    <path class="probative_value_app_03" d="M20.9,157.6c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158.3,20.9,158,20.9,157.6z"/>
+	</g>
+</g>
+  <g>
+	<ellipse class="probative_value_app_05" cx="117.5" cy="159.8" rx="41.2" ry="9.9"/>
+    <ellipse class="probative_value_app_06" cx="117.5" cy="159.8" rx="41.1" ry="9.8"/>
+    <ellipse class="probative_value_app_07" cx="117.5" cy="159.8" rx="41.1" ry="9.8"/>
+    <ellipse class="probative_value_app_08" cx="117.5" cy="159.8" rx="41" ry="9.8"/>
+    <ellipse class="probative_value_app_09" cx="117.5" cy="159.8" rx="40.9" ry="9.7"/>
+    <ellipse class="probative_value_app_10" cx="117.5" cy="159.8" rx="40.8" ry="9.7"/>
+    <ellipse class="probative_value_app_11" cx="117.5" cy="159.8" rx="40.8" ry="9.7"/>
+    <ellipse class="probative_value_app_12" cx="117.5" cy="159.8" rx="40.7" ry="9.6"/>
+    <ellipse class="probative_value_app_13" cx="117.5" cy="159.8" rx="40.6" ry="9.6"/>
+    <ellipse class="probative_value_app_14" cx="117.5" cy="159.8" rx="40.6" ry="9.6"/>
+    <ellipse class="probative_value_app_15" cx="117.5" cy="159.8" rx="40.5" ry="9.5"/>
+    <ellipse class="probative_value_app_16" cx="117.5" cy="159.8" rx="40.4" ry="9.5"/>
+    <ellipse class="probative_value_app_17" cx="117.5" cy="159.8" rx="40.3" ry="9.5"/>
+    <ellipse class="probative_value_app_18" cx="117.5" cy="159.8" rx="40.3" ry="9.4"/>
+    <ellipse class="probative_value_app_18" cx="117.4" cy="159.8" rx="40.2" ry="9.4"/>
+    <ellipse class="probative_value_app_19" cx="117.4" cy="159.8" rx="40.1" ry="9.4"/>
+    <ellipse class="probative_value_app_20" cx="117.4" cy="159.8" rx="40" ry="9.3"/>
+    <ellipse class="probative_value_app_21" cx="117.4" cy="159.7" rx="40" ry="9.3"/>
+    <ellipse class="probative_value_app_22" cx="117.4" cy="159.7" rx="39.9" ry="9.3"/>
+    <ellipse class="probative_value_app_23" cx="117.4" cy="159.7" rx="39.8" ry="9.3"/>
+    <ellipse class="probative_value_app_24" cx="117.4" cy="159.7" rx="39.8" ry="9.2"/>
+    <ellipse class="probative_value_app_25" cx="117.4" cy="159.7" rx="39.7" ry="9.2"/>
+    <ellipse class="probative_value_app_26" cx="117.4" cy="159.7" rx="39.6" ry="9.2"/>
+    <ellipse class="probative_value_app_26" cx="117.4" cy="159.7" rx="39.5" ry="9.1"/>
+    <ellipse class="probative_value_app_27" cx="117.4" cy="159.7" rx="39.5" ry="9.1"/>
+    <ellipse class="probative_value_app_27" cx="117.4" cy="159.7" rx="39.4" ry="9.1"/>
+    <ellipse class="probative_value_app_28" cx="117.4" cy="159.7" rx="39.3" ry="9"/>
+    <ellipse class="probative_value_app_29" cx="117.4" cy="159.7" rx="39.2" ry="9"/>
+    <ellipse class="probative_value_app_30" cx="117.4" cy="159.7" rx="39.2" ry="9"/>
+    <ellipse class="probative_value_app_31" cx="117.4" cy="159.7" rx="39.1" ry="8.9"/>
+    <ellipse class="probative_value_app_32" cx="117.4" cy="159.7" rx="39" ry="8.9"/>
+    <ellipse class="probative_value_app_33" cx="117.4" cy="159.7" rx="39" ry="8.9"/>
+    <ellipse class="probative_value_app_33" cx="117.4" cy="159.7" rx="38.9" ry="8.8"/>
+    <ellipse class="probative_value_app_34" cx="117.4" cy="159.7" rx="38.8" ry="8.8"/>
+    <ellipse class="probative_value_app_34" cx="117.4" cy="159.7" rx="38.7" ry="8.8"/>
+    <ellipse class="probative_value_app_35" cx="117.4" cy="159.7" rx="38.7" ry="8.7"/>
+    <ellipse class="probative_value_app_35" cx="117.4" cy="159.7" rx="38.6" ry="8.7"/>
+    <ellipse class="probative_value_app_36" cx="117.4" cy="159.7" rx="38.5" ry="8.7"/>
+    <ellipse class="probative_value_app_37" cx="117.4" cy="159.7" rx="38.4" ry="8.6"/>
+    <ellipse class="probative_value_app_38" cx="117.4" cy="159.6" rx="38.4" ry="8.6"/>
+    <ellipse class="probative_value_app_39" cx="117.4" cy="159.6" rx="38.3" ry="8.6"/>
+    <ellipse class="probative_value_app_40" cx="117.4" cy="159.6" rx="38.2" ry="8.5"/>
+    <ellipse class="probative_value_app_41" cx="117.4" cy="159.6" rx="38.2" ry="8.5"/>
+    <ellipse class="probative_value_app_41" cx="117.4" cy="159.6" rx="38.1" ry="8.5"/>
+    <ellipse class="probative_value_app_42" cx="117.4" cy="159.6" rx="38" ry="8.5"/>
+    <ellipse class="probative_value_app_42" cx="117.4" cy="159.6" rx="37.9" ry="8.4"/>
+    <ellipse class="probative_value_app_43" cx="117.4" cy="159.6" rx="37.9" ry="8.4"/>
+    <ellipse class="probative_value_app_43" cx="117.4" cy="159.6" rx="37.8" ry="8.4"/>
+    <ellipse class="probative_value_app_44" cx="117.4" cy="159.6" rx="37.7" ry="8.3"/>
+    <ellipse class="probative_value_app_45" cx="117.4" cy="159.6" rx="37.6" ry="8.3"/>
+    <ellipse class="probative_value_app_46" cx="117.4" cy="159.6" rx="37.6" ry="8.3"/>
+    <ellipse class="probative_value_app_47" cx="117.4" cy="159.6" rx="37.5" ry="8.2"/>
+    <ellipse class="probative_value_app_48" cx="117.4" cy="159.6" rx="37.4" ry="8.2"/>
+    <ellipse class="probative_value_app_49" cx="117.4" cy="159.6" rx="37.4" ry="8.2"/>
+    <ellipse class="probative_value_app_50" cx="117.4" cy="159.6" rx="37.3" ry="8.1"/>
+    <ellipse class="probative_value_app_51" cx="117.4" cy="159.6" rx="37.2" ry="8.1"/>
+    <ellipse class="probative_value_app_51" cx="117.4" cy="159.6" rx="37.1" ry="8.1"/>
+    <ellipse class="probative_value_app_52" cx="117.4" cy="159.6" rx="37.1" ry="8"/>
+    <ellipse class="probative_value_app_53" cx="117.4" cy="159.6" rx="37" ry="8"/>
+    <ellipse class="probative_value_app_54" cx="117.4" cy="159.6" rx="36.9" ry="8"/>
+    <ellipse class="probative_value_app_55" cx="117.4" cy="159.6" rx="36.8" ry="7.9"/>
+    <ellipse class="probative_value_app_56" cx="117.4" cy="159.5" rx="36.8" ry="7.9"/>
+    <ellipse class="probative_value_app_57" cx="117.4" cy="159.5" rx="36.7" ry="7.9"/>
+    <ellipse class="probative_value_app_58" cx="117.4" cy="159.5" rx="36.6" ry="7.8"/>
+    <ellipse class="probative_value_app_59" cx="117.4" cy="159.5" rx="36.6" ry="7.8"/>
+    <ellipse class="probative_value_app_60" cx="117.4" cy="159.5" rx="36.5" ry="7.8"/>
+    <ellipse class="probative_value_app_61" cx="117.4" cy="159.5" rx="36.4" ry="7.7"/>
+    <ellipse class="probative_value_app_62" cx="117.4" cy="159.5" rx="36.3" ry="7.7"/>
+    <ellipse class="probative_value_app_63" cx="117.4" cy="159.5" rx="36.3" ry="7.7"/>
+    <ellipse class="probative_value_app_64" cx="117.4" cy="159.5" rx="36.2" ry="7.6"/>
+    <ellipse class="probative_value_app_65" cx="117.4" cy="159.5" rx="36.1" ry="7.6"/>
+    <ellipse class="probative_value_app_66" cx="117.4" cy="159.5" rx="36" ry="7.6"/>
+    <ellipse class="probative_value_app_67" cx="117.4" cy="159.5" rx="36" ry="7.6"/>
+    <ellipse class="probative_value_app_68" cx="117.4" cy="159.5" rx="35.9" ry="7.5"/>
+    <ellipse class="probative_value_app_69" cx="117.4" cy="159.5" rx="35.8" ry="7.5"/>
+    <ellipse class="probative_value_app_70" cx="117.4" cy="159.5" rx="35.8" ry="7.5"/>
+    <ellipse class="probative_value_app_71" cx="117.4" cy="159.5" rx="35.7" ry="7.4"/>
+    <ellipse class="probative_value_app_72" cx="117.4" cy="159.5" rx="35.6" ry="7.4"/>
+    <ellipse class="probative_value_app_73" cx="117.4" cy="159.5" rx="35.5" ry="7.4"/>
+    <ellipse class="probative_value_app_74" cx="117.4" cy="159.5" rx="35.5" ry="7.3"/>
+    <ellipse class="probative_value_app_75" cx="117.4" cy="159.5" rx="35.4" ry="7.3"/>
+    <ellipse class="probative_value_app_76" cx="117.4" cy="159.5" rx="35.3" ry="7.3"/>
+    <ellipse class="probative_value_app_77" cx="117.4" cy="159.5" rx="35.2" ry="7.2"/>
+    <ellipse class="probative_value_app_78" cx="117.4" cy="159.4" rx="35.2" ry="7.2"/>
+    <ellipse class="probative_value_app_79" cx="117.4" cy="159.4" rx="35.1" ry="7.2"/>
+    <ellipse class="probative_value_app_80" cx="117.4" cy="159.4" rx="35" ry="7.1"/>
+    <ellipse class="probative_value_app_81" cx="117.4" cy="159.4" rx="35" ry="7.1"/>
+    <ellipse class="probative_value_app_82" cx="117.4" cy="159.4" rx="34.9" ry="7.1"/>
+    <ellipse class="probative_value_app_83" cx="117.4" cy="159.4" rx="34.8" ry="7"/>
+    <ellipse class="probative_value_app_84" cx="117.4" cy="159.4" rx="34.7" ry="7"/>
+    <ellipse class="probative_value_app_85" cx="117.4" cy="159.4" rx="34.7" ry="7"/>
+    <ellipse class="probative_value_app_86" cx="117.4" cy="159.4" rx="34.6" ry="6.9"/>
+    <ellipse class="probative_value_app_87" cx="117.4" cy="159.4" rx="34.5" ry="6.9"/>
+    <ellipse class="probative_value_app_88" cx="117.4" cy="159.4" rx="34.4" ry="6.9"/>
+    <ellipse class="probative_value_app_89" cx="117.4" cy="159.4" rx="34.4" ry="6.8"/>
+    <ellipse class="probative_value_app_90" cx="117.4" cy="159.4" rx="34.3" ry="6.8"/>
+    <ellipse class="probative_value_app_91" cx="117.4" cy="159.4" rx="34.2" ry="6.8"/>
+    <ellipse class="probative_value_app_92" cx="117.4" cy="159.4" rx="34.2" ry="6.8"/>
+    <ellipse class="probative_value_app_93" cx="117.4" cy="159.4" rx="34.1" ry="6.7"/>
+    <ellipse class="probative_value_app_94" cx="117.4" cy="159.4" rx="34" ry="6.7"/>
+    <ellipse class="probative_value_app_95" cx="117.4" cy="159.4" rx="33.9" ry="6.7"/>
+    <ellipse class="probative_value_app_96" cx="117.4" cy="159.4" rx="33.9" ry="6.6"/>
+    <ellipse class="probative_value_app_97" cx="117.4" cy="159.4" rx="33.8" ry="6.6"/>
+    <ellipse class="probative_value_app_98" cx="117.4" cy="159.4" rx="33.7" ry="6.6"/>
+    <ellipse class="probative_value_app_99" cx="117.4" cy="159.4" rx="33.6" ry="6.5"/>
+    <ellipse class="probative_value_app_100" cx="117.4" cy="159.3" rx="33.6" ry="6.5"/>
+    <ellipse class="probative_value_app_101" cx="117.3" cy="159.3" rx="33.5" ry="6.5"/>
+    <ellipse class="probative_value_app_102" cx="117.3" cy="159.3" rx="33.4" ry="6.4"/>
+    <ellipse class="probative_value_app_103" cx="117.3" cy="159.3" rx="33.3" ry="6.4"/>
+    <ellipse class="probative_value_app_104" cx="117.3" cy="159.3" rx="33.3" ry="6.4"/>
+    <ellipse class="probative_value_app_105" cx="117.3" cy="159.3" rx="33.2" ry="6.3"/>
+    <ellipse class="probative_value_app_106" cx="117.3" cy="159.3" rx="33.1" ry="6.3"/>
+    <ellipse class="probative_value_app_107" cx="117.3" cy="159.3" rx="33.1" ry="6.3"/>
+    <ellipse class="probative_value_app_108" cx="117.3" cy="159.3" rx="33" ry="6.2"/>
+    <ellipse class="probative_value_app_109" cx="117.3" cy="159.3" rx="32.9" ry="6.2"/>
+    <ellipse class="probative_value_app_110" cx="117.3" cy="159.3" rx="32.8" ry="6.2"/>
+    <ellipse class="probative_value_app_111" cx="117.3" cy="159.3" rx="32.8" ry="6.1"/>
+    <ellipse class="probative_value_app_112" cx="117.3" cy="159.3" rx="32.7" ry="6.1"/>
+    <ellipse class="probative_value_app_113" cx="117.3" cy="159.3" rx="32.6" ry="6.1"/>
+    <ellipse class="probative_value_app_114" cx="117.3" cy="159.3" rx="32.5" ry="6"/>
+    <ellipse class="probative_value_app_115" cx="117.3" cy="159.3" rx="32.5" ry="6"/>
+    <ellipse class="probative_value_app_116" cx="117.3" cy="159.3" rx="32.4" ry="6"/>
+    <ellipse class="probative_value_app_117" cx="117.3" cy="159.3" rx="32.3" ry="5.9"/>
+    <ellipse class="probative_value_app_118" cx="117.3" cy="159.3" rx="32.3" ry="5.9"/>
+    <ellipse class="probative_value_app_119" cx="117.3" cy="159.3" rx="32.2" ry="5.9"/>
+    <ellipse class="probative_value_app_120" cx="117.3" cy="159.3" rx="32.1" ry="5.9"/>
+    <ellipse class="probative_value_app_121" cx="117.3" cy="159.3" rx="32" ry="5.8"/>
+    <ellipse class="probative_value_app_122" cx="117.3" cy="159.2" rx="32" ry="5.8"/>
+    <ellipse class="probative_value_app_123" cx="117.3" cy="159.2" rx="31.9" ry="5.8"/>
+    <ellipse class="probative_value_app_124" cx="117.3" cy="159.2" rx="31.8" ry="5.7"/>
+    <ellipse class="probative_value_app_125" cx="117.3" cy="159.2" rx="31.7" ry="5.7"/>
+    <ellipse class="probative_value_app_126" cx="117.3" cy="159.2" rx="31.7" ry="5.7"/>
+    <ellipse class="probative_value_app_127" cx="117.3" cy="159.2" rx="31.6" ry="5.6"/>
+    <ellipse class="probative_value_app_128" cx="117.3" cy="159.2" rx="31.5" ry="5.6"/>
+    <ellipse class="probative_value_app_129" cx="117.3" cy="159.2" rx="31.5" ry="5.6"/>
+    <ellipse class="probative_value_app_130" cx="117.3" cy="159.2" rx="31.4" ry="5.5"/>
+    <ellipse class="probative_value_app_131" cx="117.3" cy="159.2" rx="31.3" ry="5.5"/>
+    <ellipse class="probative_value_app_132" cx="117.3" cy="159.2" rx="31.2" ry="5.5"/>
+    <ellipse class="probative_value_app_133" cx="117.3" cy="159.2" rx="31.2" ry="5.4"/>
+    <ellipse class="probative_value_app_134" cx="117.3" cy="159.2" rx="31.1" ry="5.4"/>
+    <ellipse class="probative_value_app_135" cx="117.3" cy="159.2" rx="31" ry="5.4"/>
+    <ellipse class="probative_value_app_136" cx="117.3" cy="159.2" rx="30.9" ry="5.3"/>
+    <ellipse class="probative_value_app_137" cx="117.3" cy="159.2" rx="30.9" ry="5.3"/>
+    <ellipse class="probative_value_app_138" cx="117.3" cy="159.2" rx="30.8" ry="5.3"/>
+    <ellipse class="probative_value_app_139" cx="117.3" cy="159.2" rx="30.7" ry="5.2"/>
+    <ellipse class="probative_value_app_140" cx="117.3" cy="159.2" rx="30.7" ry="5.2"/>
+    <ellipse class="probative_value_app_141" cx="117.3" cy="159.2" rx="30.6" ry="5.2"/>
+    <ellipse class="probative_value_app_142" cx="117.3" cy="159.2" rx="30.5" ry="5.1"/>
+    <ellipse class="probative_value_app_143" cx="117.3" cy="159.2" rx="30.4" ry="5.1"/>
+    <ellipse class="probative_value_app_143" cx="117.3" cy="159.1" rx="30.4" ry="5.1"/>
+    <ellipse class="probative_value_app_144" cx="117.3" cy="159.1" rx="30.3" ry="5.1"/>
+    <ellipse class="probative_value_app_145" cx="117.3" cy="159.1" rx="30.2" ry="5"/>
+    <ellipse class="probative_value_app_146" cx="117.3" cy="159.1" rx="30.1" ry="5"/>
+    <ellipse class="probative_value_app_147" cx="117.3" cy="159.1" rx="30.1" ry="5"/>
+    <ellipse class="probative_value_app_148" cx="117.3" cy="159.1" rx="30" ry="4.9"/>
+    <ellipse class="probative_value_app_149" cx="117.3" cy="159.1" rx="29.9" ry="4.9"/>
+    <ellipse class="probative_value_app_150" cx="117.3" cy="159.1" rx="29.9" ry="4.9"/>
+    <ellipse class="probative_value_app_151" cx="117.3" cy="159.1" rx="29.8" ry="4.8"/>
+    <ellipse class="probative_value_app_151" cx="117.3" cy="159.1" rx="29.7" ry="4.8"/>
+    <ellipse class="probative_value_app_152" cx="117.3" cy="159.1" rx="29.6" ry="4.8"/>
+    <ellipse class="probative_value_app_152" cx="117.3" cy="159.1" rx="29.6" ry="4.7"/>
+    <ellipse class="probative_value_app_153" cx="117.3" cy="159.1" rx="29.5" ry="4.7"/>
+    <ellipse class="probative_value_app_154" cx="117.3" cy="159.1" rx="29.4" ry="4.7"/>
+    <ellipse class="probative_value_app_155" cx="117.3" cy="159.1" rx="29.3" ry="4.6"/>
+    <ellipse class="probative_value_app_156" cx="117.3" cy="159.1" rx="29.3" ry="4.6"/>
+    <ellipse class="probative_value_app_157" cx="117.3" cy="159.1" rx="29.2" ry="4.6"/>
+    <ellipse class="probative_value_app_158" cx="117.3" cy="159.1" rx="29.1" ry="4.5"/>
+    <ellipse class="probative_value_app_159" cx="117.3" cy="159.1" rx="29.1" ry="4.5"/>
+    <ellipse class="probative_value_app_160" cx="117.3" cy="159.1" rx="29" ry="4.5"/>
+    <ellipse class="probative_value_app_160" cx="117.3" cy="159.1" rx="28.9" ry="4.4"/>
+    <ellipse class="probative_value_app_161" cx="117.3" cy="159.1" rx="28.8" ry="4.4"/>
+    <ellipse class="probative_value_app_161" cx="117.3" cy="159" rx="28.8" ry="4.4"/>
+    <ellipse class="probative_value_app_162" cx="117.3" cy="159" rx="28.7" ry="4.3"/>
+    <ellipse class="probative_value_app_162" cx="117.3" cy="159" rx="28.6" ry="4.3"/>
+    <ellipse class="probative_value_app_163" cx="117.3" cy="159" rx="28.5" ry="4.3"/>
+    <ellipse class="probative_value_app_164" cx="117.3" cy="159" rx="28.5" ry="4.3"/>
+    <ellipse class="probative_value_app_165" cx="117.3" cy="159" rx="28.4" ry="4.2"/>
+    <ellipse class="probative_value_app_166" cx="117.3" cy="159" rx="28.3" ry="4.2"/>
+    <ellipse class="probative_value_app_167" cx="117.3" cy="159" rx="28.3" ry="4.2"/>
+    <ellipse class="probative_value_app_168" cx="117.3" cy="159" rx="28.2" ry="4.1"/>
+    <ellipse class="probative_value_app_168" cx="117.3" cy="159" rx="28.1" ry="4.1"/>
+    <ellipse class="probative_value_app_169" cx="117.3" cy="159" rx="28" ry="4.1"/>
+    <ellipse class="probative_value_app_169" cx="117.3" cy="159" rx="28" ry="4"/>
+    <ellipse class="probative_value_app_170" cx="117.3" cy="159" rx="27.9" ry="4"/>
+    <ellipse class="probative_value_app_171" cx="117.3" cy="159" rx="27.8" ry="4"/>
+    <ellipse class="probative_value_app_172" cx="117.3" cy="159" rx="27.7" ry="3.9"/>
+    <ellipse class="probative_value_app_173" cx="117.3" cy="159" rx="27.7" ry="3.9"/>
+    <ellipse class="probative_value_app_174" cx="117.3" cy="159" rx="27.6" ry="3.9"/>
+    <ellipse class="probative_value_app_175" cx="117.3" cy="159" rx="27.5" ry="3.8"/>
+    <ellipse class="probative_value_app_175" cx="117.3" cy="159" rx="27.5" ry="3.8"/>
+    <ellipse class="probative_value_app_176" cx="117.3" cy="159" rx="27.4" ry="3.8"/>
+    <ellipse class="probative_value_app_176" cx="117.3" cy="159" rx="27.3" ry="3.7"/>
+    <ellipse class="probative_value_app_177" cx="117.3" cy="159" rx="27.2" ry="3.7"/>
+    <ellipse class="probative_value_app_178" cx="117.3" cy="158.9" rx="27.2" ry="3.7"/>
+    <ellipse class="probative_value_app_179" cx="117.3" cy="158.9" rx="27.1" ry="3.6"/>
+    <ellipse class="probative_value_app_180" cx="117.3" cy="158.9" rx="27" ry="3.6"/>
+    <ellipse class="probative_value_app_181" cx="117.3" cy="158.9" rx="26.9" ry="3.6"/>
+    <ellipse class="probative_value_app_182" cx="117.2" cy="158.9" rx="26.9" ry="3.5"/>
+    <ellipse class="probative_value_app_183" cx="117.2" cy="158.9" rx="26.8" ry="3.5"/>
+    <ellipse class="probative_value_app_184" cx="117.2" cy="158.9" rx="26.7" ry="3.5"/>
+    <ellipse class="probative_value_app_184" cx="117.2" cy="158.9" rx="26.7" ry="3.4"/>
+    <ellipse class="probative_value_app_185" cx="117.2" cy="158.9" rx="26.6" ry="3.4"/>
+</g>
+  <g>
+	<g>
+		<linearGradient id="SVGID_PROBATIVE_VALUE_APP_01" gradientUnits="userSpaceOnUse" x1="89.7851" y1="153.2438" x2="149.9805" y2="153.2438">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+    <path class="probative_value_app_186" d="M89.8,153c0.1-0.8,1.1-1.6,2.7-2.3c1.6-0.7,3.9-1.3,6.6-1.8c2.7-0.5,5.9-0.9,9.4-1.2
+			c3.5-0.3,7.4-0.4,11.4-0.4c4,0,7.9,0.2,11.4,0.5c3.5,0.3,6.7,0.7,9.4,1.3c2.7,0.5,5,1.2,6.6,1.9c1.6,0.7,2.5,1.5,2.7,2.3
+			c0.1,0.8-0.6,1.6-2.1,2.4c-1.5,0.7-3.6,1.4-6.3,1.9c-2.7,0.6-6,1-9.7,1.3c-3.7,0.3-7.8,0.5-12.1,0.5c-4.3,0-8.4-0.2-12-0.5
+			c-3.7-0.3-7-0.8-9.7-1.4c-2.7-0.6-4.8-1.2-6.3-2C90.4,154.6,89.7,153.8,89.8,153z"/>
+	</g>
+    <g class="probative_value_app_187">
+		<defs>
+			<path id="SVGID_PROBATIVE_VALUE_APP_15" class="probative_value_app_187" d="M89.5,141
+				C89.5,140.9,89.5,140.9,89.5,141C89.5,140.9,89.5,140.9,89.5,141c0-0.1,0-0.1,0-0.1c0,0,0,0,0,0l0,10.7c0,0,0,0,0,0.1
+				c0,0,0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1C89.5,148.5,89.5,144.2,89.5,141z"/>
+		</defs>
+      <clipPath id="SVGID_PROBATIVE_VALUE_APP_16">
+			<use xlink:href="#SVGID_PROBATIVE_VALUE_APP_15"  style="overflow:visible;"/>
+		</clipPath>
+      <g style="clip-path:url(#SVGID_PROBATIVE_VALUE_APP_16);enable-background:new    ;">
+			<path class="probative_value_app_189" d="M89.5,151.5l0-10.7c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0L89.5,151.5
+				C89.5,151.5,89.5,151.5,89.5,151.5C89.5,151.5,89.5,151.5,89.5,151.5C89.5,151.5,89.5,151.5,89.5,151.5
+				C89.5,151.5,89.5,151.5,89.5,151.5"/>
+        <path class="probative_value_app_190" d="M89.5,151.5l0-10.7c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,10.7c0,0,0,0,0,0
+				C89.5,151.6,89.5,151.6,89.5,151.5C89.5,151.6,89.5,151.6,89.5,151.5C89.5,151.5,89.5,151.5,89.5,151.5"/>
+		</g>
+	</g>
+    <g class="probative_value_app_187">
+		<defs>
+			<path id="SVGID_PROBATIVE_VALUE_APP_17" class="probative_value_app_187" d="M150.3,151.8
+				C150.3,151.8,150.3,151.8,150.3,151.8C150.3,151.8,150.3,151.8,150.3,151.8c0-0.1,0-0.1,0-0.1c0,0,0,0,0,0
+				c-0.1-0.8-1.1-1.6-2.7-2.3c-1.6-0.7-3.9-1.3-6.6-1.9c-2.7-0.5-6-1-9.5-1.3c-3.5-0.3-7.4-0.5-11.5-0.5c-4.1,0-7.9,0.1-11.5,0.4
+				c-3.6,0.3-6.8,0.7-9.5,1.2c-2.8,0.5-5,1.1-6.7,1.8c-1.6,0.7-2.6,1.5-2.7,2.3l0-10.7c0.1-0.8,1.1-1.5,2.8-2.2
+				c1.6-0.7,3.9-1.2,6.7-1.7c2.7-0.5,6-0.9,9.5-1.1c3.6-0.3,7.4-0.4,11.5-0.4c4.1,0,8,0.2,11.5,0.5c3.6,0.3,6.8,0.7,9.5,1.2
+				c2.8,0.5,5,1.1,6.6,1.8c1.6,0.7,2.6,1.4,2.7,2.2c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0
+				C150.3,144.3,150.3,148.6,150.3,151.8z"/>
+		</defs>
+      <clipPath id="SVGID_PROBATIVE_VALUE_APP_18">
+			<use xlink:href="#SVGID_PROBATIVE_VALUE_APP_17"  style="overflow:visible;"/>
+		</clipPath>
+      <g style="clip-path:url(#SVGID_PROBATIVE_VALUE_APP_18);enable-background:new    ;">
+			<path class="probative_value_app_192" d="M150.3,151.8l0.1-10.7c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c-0.1-0.3-0.3-0.7-0.6-1
+				c-0.4-0.3-0.9-0.6-1.5-0.9c-0.6-0.3-1.4-0.6-2.3-0.9c-0.9-0.3-1.9-0.5-3-0.8l-0.1,10.5c1.1,0.3,2.1,0.5,3,0.8
+				c0.9,0.3,1.7,0.6,2.3,0.9c0.6,0.3,1.2,0.7,1.5,1c0.4,0.3,0.6,0.7,0.6,1.1c0,0,0,0,0,0C150.3,151.7,150.3,151.7,150.3,151.8
+				C150.3,151.8,150.3,151.8,150.3,151.8C150.3,151.8,150.3,151.8,150.3,151.8"/>
+        <path class="probative_value_app_193" d="M142.8,147.9l0.1-10.5c-0.2,0-0.3-0.1-0.5-0.1c-0.2,0-0.3-0.1-0.5-0.1c-0.2,0-0.3-0.1-0.5-0.1
+				c-0.2,0-0.3-0.1-0.5-0.1l-0.1,10.5c0.2,0,0.3,0.1,0.5,0.1c0.2,0,0.3,0.1,0.5,0.1c0.2,0,0.3,0.1,0.5,0.1
+				C142.4,147.8,142.6,147.8,142.8,147.9"/>
+        <path class="probative_value_app_194" d="M140.7,147.4l0.1-10.5c-0.1,0-0.3,0-0.4-0.1c-0.1,0-0.3,0-0.4-0.1c-0.1,0-0.3,0-0.4-0.1
+				c-0.1,0-0.3,0-0.4-0.1l-0.1,10.5c0.1,0,0.3,0,0.4,0.1c0.1,0,0.3,0,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1
+				C140.5,147.4,140.6,147.4,140.7,147.4"/>
+        <path class="probative_value_app_190" d="M139,147.1l0.1-10.5c-0.1,0-0.3,0-0.4-0.1c-0.1,0-0.3,0-0.4-0.1c-0.1,0-0.3,0-0.4-0.1
+				c-0.1,0-0.3,0-0.4-0.1l0,10.4c0.1,0,0.3,0,0.4,0.1c0.1,0,0.3,0,0.4,0.1c0.1,0,0.3,0,0.4,0.1C138.8,147.1,138.9,147.1,139,147.1"
+        />
+        <path class="probative_value_app_189" d="M137.5,146.9l0-10.4c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0l0,10.4
+				c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0C137.2,146.9,137.3,146.9,137.5,146.9"/>
+        <path class="probative_value_app_195" d="M136,146.7l0-10.4c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0l0,10.4
+				c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0C135.8,146.7,135.9,146.7,136,146.7"/>
+        <path class="probative_value_app_196" d="M134.6,146.5l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.4,0l0,10.4
+				c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0C134.3,146.5,134.4,146.5,134.6,146.5"/>
+        <path class="probative_value_app_197" d="M133.2,146.4l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C132.9,146.4,133,146.4,133.2,146.4"/>
+        <path class="probative_value_app_198" d="M131.8,146.3l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C131.5,146.2,131.7,146.3,131.8,146.3"/>
+        <path class="probative_value_app_199" d="M130.4,146.1l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C130.2,146.1,130.3,146.1,130.4,146.1"/>
+        <path class="probative_value_app_200" d="M129,146.1l0-10.4c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C128.8,146,128.9,146,129,146.1"/>
+        <path class="probative_value_app_201" d="M127.7,146l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C127.5,146,127.6,146,127.7,146"/>
+        <path class="probative_value_app_202" d="M126.4,145.9l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C126.2,145.9,126.3,145.9,126.4,145.9"/>
+        <path class="probative_value_app_203" d="M125.1,145.9l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0s-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0S125,145.9,125.1,145.9"/>
+        <path class="probative_value_app_204" d="M124,145.8l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C123.8,145.8,123.9,145.8,124,145.8"/>
+        <path class="probative_value_app_205" d="M122.8,145.8l0-10.4c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C122.6,145.8,122.7,145.8,122.8,145.8"/>
+        <path class="probative_value_app_206" d="M121.8,145.8l0-10.4c-0.1,0-0.2,0-0.2,0s-0.2,0-0.2,0s-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.2,0S121.7,145.8,121.8,145.8"/>
+        <path class="probative_value_app_207" d="M120.8,145.8l0-10.4c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0
+				c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0l0,10.4c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0
+				c0.1,0,0.1,0,0.2,0s0.1,0,0.2,0C120.6,145.8,120.7,145.8,120.8,145.8"/>
+        <path class="probative_value_app_208" d="M119.8,145.7l0-10.4c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0l0,10.4
+				c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0s0.2,0,0.2,0C119.6,145.7,119.7,145.7,119.8,145.7"/>
+        <path class="probative_value_app_209" d="M118.8,145.7l0-10.4c-0.1,0-0.2,0-0.2,0s-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0l0,10.4
+				c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0C118.7,145.8,118.8,145.7,118.8,145.7"/>
+        <path class="probative_value_app_210" d="M117.9,145.8l0-10.4c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0s-0.2,0-0.2,0l0,10.4
+				c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0S117.8,145.8,117.9,145.8"/>
+        <path class="probative_value_app_211" d="M116.9,145.8l0-10.4c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C116.8,145.8,116.9,145.8,116.9,145.8"/>
+        <path class="probative_value_app_212" d="M115.9,145.8l0-10.4c-0.1,0-0.2,0-0.3,0s-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.3,0l0,10.4
+				c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0C115.7,145.8,115.8,145.8,115.9,145.8"/>
+        <path class="probative_value_app_213" d="M114.8,145.8l0-10.4c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0l0,10.4
+				c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0C114.6,145.8,114.7,145.8,114.8,145.8"/>
+        <path class="probative_value_app_214" d="M113.3,145.9l0-10.4c-0.4,0-0.8,0-1.2,0.1c-0.4,0-0.8,0-1.2,0.1c-0.4,0-0.8,0-1.2,0.1
+				c-0.4,0-0.8,0.1-1.1,0.1l0,10.4c0.4,0,0.8-0.1,1.1-0.1c0.4,0,0.8,0,1.2-0.1c0.4,0,0.8,0,1.2-0.1
+				C112.5,145.9,112.9,145.9,113.3,145.9"/>
+        <path class="probative_value_app_213" d="M108.6,146.1l0-10.4c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0l0,10.4
+				c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0C108.3,146.2,108.5,146.2,108.6,146.1"/>
+        <path class="probative_value_app_212" d="M106.9,146.3l0-10.4c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0l0,10.4
+				c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0C106.6,146.3,106.7,146.3,106.9,146.3"/>
+        <path class="probative_value_app_211" d="M105.3,146.4l0-10.4c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0l0,10.4
+				c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0C105.1,146.5,105.2,146.5,105.3,146.4"/>
+        <path class="probative_value_app_210" d="M103.8,146.6l0-10.4c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.3,0-0.4,0.1
+				l0,10.4c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1C103.5,146.6,103.6,146.6,103.8,146.6"/>
+        <path class="probative_value_app_209" d="M102.2,146.8l0-10.4c-0.2,0-0.3,0-0.5,0.1c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.3,0-0.4,0.1
+				c-0.1,0-0.3,0-0.4,0.1l0,10.5c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1C101.8,146.9,102,146.8,102.2,146.8"
+        />
+        <path class="probative_value_app_208" d="M100.4,147.1l0-10.5c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.3,0-0.4,0.1
+				c-0.1,0-0.3,0-0.4,0.1l0,10.5c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3,0,0.4-0.1
+				C100.1,147.1,100.2,147.1,100.4,147.1"/>
+        <path class="probative_value_app_207" d="M98.7,147.4l0-10.5c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.3,0-0.4,0.1c-0.1,0-0.2,0-0.4,0.1c-0.1,0-0.2,0-0.4,0.1
+				l0,10.5c0.1,0,0.2-0.1,0.4-0.1c0.1,0,0.2-0.1,0.4-0.1c0.1,0,0.2-0.1,0.4-0.1C98.4,147.4,98.5,147.4,98.7,147.4"/>
+        <path class="probative_value_app_206" d="M97.2,147.7l0-10.5c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1
+				l0,10.5c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2,0,0.3-0.1C97,147.7,97.1,147.7,97.2,147.7"/>
+        <path class="probative_value_app_205" d="M95.9,148l0-10.5c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1c-0.1,0-0.2,0-0.3,0.1
+				l0,10.5c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2,0,0.3-0.1C95.7,148,95.8,148,95.9,148"/>
+        <path class="probative_value_app_204" d="M94.9,148.3l0-10.5c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1
+				l0,10.5c0.1,0,0.1,0,0.2-0.1c0.1,0,0.2,0,0.2-0.1c0.1,0,0.2,0,0.2-0.1C94.7,148.3,94.8,148.3,94.9,148.3"/>
+        <path class="probative_value_app_203" d="M94,148.5l0-10.5c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1
+				l0,10.5c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1C93.8,148.6,93.9,148.6,94,148.5"/>
+        <path class="probative_value_app_202" d="M93.2,148.8l0-10.5c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1
+				l0,10.6c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1C93,148.9,93.1,148.8,93.2,148.8"/>
+        <path class="probative_value_app_201" d="M92.5,149.1l0-10.6c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.1,0-0.1,0.1
+				l0,10.6c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1C92.3,149.1,92.4,149.1,92.5,149.1"/>
+        <path class="probative_value_app_200" d="M91.8,149.4l0-10.6c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1l0,10.6
+				c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1C91.7,149.4,91.8,149.4,91.8,149.4"/>
+        <path class="probative_value_app_199" d="M91.3,149.6l0-10.6c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1l0,10.6
+				c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1s0.1,0,0.1-0.1C91.2,149.7,91.3,149.7,91.3,149.6"/>
+        <path class="probative_value_app_198" d="M90.8,149.9l0-10.6c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1l0,10.6
+				c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1C90.8,150,90.8,149.9,90.8,149.9"/>
+        <path class="probative_value_app_197" d="M90.4,150.2l0-10.6c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1c0,0-0.1,0-0.1,0.1l0,10.6
+				c0,0,0.1-0.1,0.1-0.1c0,0,0.1,0,0.1-0.1C90.3,150.3,90.3,150.3,90.4,150.2C90.4,150.2,90.4,150.2,90.4,150.2"/>
+        <path class="probative_value_app_196" d="M90.1,150.5l0-10.6c0,0-0.1,0-0.1,0.1s0,0-0.1,0.1c0,0,0,0.1-0.1,0.1c0,0,0,0.1-0.1,0.1l0,10.7
+				c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1C90,150.6,90,150.6,90.1,150.5C90,150.5,90.1,150.5,90.1,150.5"/>
+        <path class="probative_value_app_195" d="M89.8,150.8l0-10.7c0,0,0,0.1-0.1,0.1c0,0,0,0.1-0.1,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l0,10.7
+				c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1C89.7,151,89.7,150.9,89.8,150.8C89.8,150.9,89.8,150.8,89.8,150.8"/>
+        <path class="probative_value_app_189" d="M89.6,151.2l0-10.7c0,0,0,0,0,0.1s0,0,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0.1l0,10.7c0,0,0-0.1,0-0.1
+				c0,0,0-0.1,0-0.1C89.6,151.3,89.6,151.3,89.6,151.2C89.6,151.2,89.6,151.2,89.6,151.2"/>
+		</g>
+	</g>
+    <g>
+		<path class="probative_value_app_215" d="M89.5,151.5c0.1-0.8,1.1-1.6,2.7-2.3c1.6-0.7,3.9-1.3,6.7-1.8c2.7-0.5,6-0.9,9.5-1.2
+			c3.5-0.3,7.4-0.4,11.5-0.4c4.1,0,7.9,0.2,11.5,0.5c3.6,0.3,6.8,0.7,9.5,1.3c2.7,0.5,5,1.2,6.6,1.9c1.6,0.7,2.6,1.5,2.7,2.3
+			c0.1,0.8-0.6,1.6-2.1,2.4c-1.5,0.7-3.6,1.4-6.4,2c-2.8,0.6-6.1,1-9.8,1.3c-3.7,0.3-7.9,0.5-12.2,0.5c-4.3,0-8.4-0.2-12.2-0.5
+			c-3.7-0.3-7-0.8-9.8-1.4c-2.7-0.6-4.9-1.3-6.3-2C90.1,153.1,89.4,152.3,89.5,151.5z"/>
+	</g>
+
+    <linearGradient id="SVGID_PROBATIVE_VALUE_APP_19" gradientUnits="userSpaceOnUse" x1="96.1363" y1="119.6331" x2="122.5863" y2="143.4531">
+		<stop  offset="0" style="stop-color:#F5F5F5"/>
+      <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_19);" d="M150.3,141c-0.1-0.8-1.1-1.5-2.7-2.2
+		c-1.6-0.7-3.9-1.3-6.6-1.8c-2.7-0.5-6-0.9-9.5-1.2c-3.5-0.3-7.4-0.4-11.5-0.5c-4.1,0-8,0.1-11.5,0.4c-3.6,0.3-6.8,0.6-9.5,1.1
+		c-2.8,0.5-5,1.1-6.7,1.7c-1.6,0.7-2.6,1.4-2.8,2.2c-0.1,0.8,0.6,1.5,2,2.2c1.4,0.7,3.6,1.3,6.3,1.9c2.7,0.5,6.1,1,9.8,1.3
+		c3.7,0.3,7.8,0.5,12.2,0.5c4.3,0,8.5-0.1,12.2-0.4c3.7-0.3,7.1-0.7,9.8-1.2c2.8-0.5,4.9-1.2,6.4-1.8
+		C149.7,142.5,150.4,141.7,150.3,141z M119.5,140.9c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.2,0
+		s0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0s0,0,0,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c0,0-0.1,0-0.2,0
+		s-0.1,0-0.2,0s-0.1,0-0.2,0C119.6,140.9,119.6,140.9,119.5,140.9z"/>
+    <g>
+		<path class="probative_value_app_215" d="M120.4,140.8c0,0-0.1,0-0.1,0c0,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0
+			c0,0-0.1,0-0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0
+			c0.1,0,0.1,0,0.2,0C120.3,140.9,120.4,140.9,120.4,140.8C120.4,140.9,120.4,140.9,120.4,140.8
+			C120.4,140.9,120.4,140.8,120.4,140.8z"/>
+	</g>
+
+    <linearGradient id="SVGID_PROBATIVE_VALUE_APP_20" gradientUnits="userSpaceOnUse" x1="89.4844" y1="149.3549" x2="150.334" y2="149.3549">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_20);" d="M150.3,141.4
+		C150.3,141.4,150.3,141.4,150.3,141.4c0,0.1-0.1,0.2-0.1,0.3c0,0,0,0,0,0c0,0.1-0.1,0.2-0.2,0.3c0,0,0,0,0,0
+		c-0.1,0.1-0.2,0.2-0.3,0.3c0,0,0,0,0,0c-0.1,0.1-0.2,0.2-0.3,0.3c0,0,0,0,0,0c-0.1,0.1-0.3,0.2-0.4,0.3c0,0,0,0,0,0l0,0
+		c-0.1,0.1-0.3,0.2-0.5,0.3c0,0,0,0,0,0c-0.2,0.1-0.3,0.2-0.5,0.2c0,0,0,0,0,0c-0.2,0.1-0.4,0.2-0.6,0.2c0,0,0,0,0,0
+		c-0.2,0.1-0.4,0.2-0.6,0.2c0,0,0,0,0,0c-0.2,0.1-0.5,0.2-0.7,0.2c0,0,0,0,0,0c-0.2,0.1-0.5,0.1-0.8,0.2c0,0,0,0,0,0
+		c-0.3,0.1-0.5,0.1-0.8,0.2c0,0,0,0-0.1,0c-0.3,0.1-0.6,0.1-0.8,0.2c0,0,0,0-0.1,0c-0.3,0.1-0.6,0.1-0.9,0.2c0,0,0,0-0.1,0
+		c-0.3,0.1-0.6,0.1-0.9,0.2c0,0,0,0-0.1,0c-0.7,0.1-1.4,0.2-2.1,0.4c0,0,0,0,0,0c-0.7,0.1-1.5,0.2-2.3,0.3c0,0,0,0,0,0
+		c-0.8,0.1-1.6,0.2-2.5,0.3c0,0,0,0,0,0c-0.9,0.1-1.8,0.2-2.7,0.2c0,0,0,0-0.1,0c-0.9,0.1-1.8,0.1-2.7,0.2c-0.1,0-0.2,0-0.3,0
+		c-0.9,0-1.8,0.1-2.8,0.1c0,0,0,0,0,0c-1,0-2,0.1-3,0.1c0,0,0,0,0,0c-1,0-2.1,0-3.1,0c-1.1,0-2.1,0-3.1,0c0,0,0,0,0,0
+		c-1,0-2-0.1-3-0.1c0,0,0,0,0,0c-1,0-2-0.1-2.9-0.2c0,0,0,0,0,0c-1-0.1-1.9-0.1-2.8-0.2c0,0,0,0,0,0c-0.9-0.1-1.8-0.2-2.6-0.2
+		c0,0,0,0,0,0c-0.9-0.1-1.7-0.2-2.5-0.3c0,0,0,0,0,0c-0.8-0.1-1.6-0.2-2.3-0.3c0,0,0,0,0,0c-0.7-0.1-1.4-0.2-2.1-0.4c0,0,0,0-0.1,0
+		c-0.3-0.1-0.6-0.1-0.9-0.2c0,0-0.1,0-0.1,0c-0.3-0.1-0.6-0.1-0.8-0.2c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3-0.1
+		c-0.5-0.1-0.9-0.2-1.3-0.3c0,0,0,0-0.1,0c-0.4-0.1-0.8-0.2-1.2-0.4c-0.1,0-0.1,0-0.2-0.1c-0.3-0.1-0.7-0.2-1-0.4
+		c-0.1,0-0.1,0-0.2-0.1c-0.3-0.1-0.6-0.3-0.8-0.4c0,0,0,0-0.1,0c-0.2-0.1-0.5-0.3-0.6-0.4c0,0-0.1,0-0.1,0c-0.2-0.1-0.3-0.3-0.5-0.4
+		c0,0-0.1-0.1-0.1-0.1c-0.1-0.1-0.2-0.3-0.3-0.4c0,0,0,0,0-0.1c-0.1-0.1-0.1-0.3-0.1-0.4l0,10.7c0,0.2,0,0.3,0.1,0.5c0,0,0,0,0,0.1
+		c0.1,0.1,0.2,0.3,0.3,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0.1,0.3,0.3,0.5,0.4c0,0,0,0,0.1,0.1c0.2,0.1,0.4,0.3,0.6,0.4c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.2,0.1,0.4,0.2,0.6,0.3c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0.1,0.2,0.1c0.3,0.1,0.6,0.3,1,0.4c0,0,0,0,0.1,0
+		c0,0,0.1,0,0.1,0c0.4,0.1,0.8,0.3,1.2,0.4c0,0,0,0,0.1,0c0.4,0.1,0.8,0.2,1.3,0.4c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0
+		c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0.2,0,0.3,0.1,0.5,0.1c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0.1
+		c0.2,0,0.3,0.1,0.5,0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.2,0c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1
+		c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0,0.4,0.1c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.3,0,0.4,0.1s0.3,0,0.4,0.1
+		c0.1,0,0.2,0,0.4,0.1c0.1,0,0.2,0,0.4,0.1s0.3,0,0.4,0.1c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.4,0
+		c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0s0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0
+		c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.4,0s0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0
+		s0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.4,0s0.2,0,0.4,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0
+		s0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.1,0,0.2,0
+		c0.1,0,0.1,0,0.2,0s0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.2,0s0.2,0,0.2,0
+		s0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.3,0,0.4,0
+		c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.4,0,0.9,0,1.3-0.1c0.2,0,0.4,0,0.7,0
+		c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.3,0c0.4,0,0.8-0.1,1.2-0.1c0.4,0,0.7-0.1,1.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0s0.3,0,0.5,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4-0.1s0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.2,0,0.3,0,0.5-0.1c0.1,0,0.2,0,0.3,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1
+		c0.1,0,0.2,0,0.3-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2-0.1,0.4-0.1c0.1,0,0.2,0,0.2-0.1c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1
+		c0.1,0,0.2-0.1,0.3-0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2,0,0.3-0.1c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1c0.1,0,0.1,0,0.2-0.1
+		s0.1,0,0.2-0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1s0.1,0,0.2-0.1c0,0,0,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1s0.1,0,0.1-0.1c0,0,0,0,0,0s0,0,0,0c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1
+		c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1
+		c0,0,0,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0-0.1,0-0.1
+		c0,0,0-0.1,0-0.1c0,0,0,0,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0l0.1-10.7C150.3,141.2,150.3,141.3,150.3,141.4z"/>
+    <g>
+
+			<linearGradient id="SVGID_PROBATIVE_VALUE_APP_21" gradientUnits="userSpaceOnUse" x1="97.7286" y1="159.024" x2="135.664" y2="115.6693">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_21);" d="M147.5,139.2c0-0.1,0-0.1,0-0.2l0-0.3
+			l0-0.1l0-0.1c0,0,0-0.1,0-0.1c0-0.2,0-0.3,0-0.5l0,0c0,0,0-0.1,0-0.1c0,0,0,0,0,0l0,0c0-0.3,0-0.5-0.1-0.8
+			c-0.1-0.7-0.1-0.9-0.1-1.4c0,0,0-0.1,0-0.1l0-0.1c0-0.2,0-0.4-0.1-0.5c0-0.1,0-0.3-0.1-0.4c0,0,0,0,0-0.1l0-0.2c0,0,0,0,0-0.1
+			c0-0.1,0-0.2-0.1-0.3c0,0,0,0,0,0c0-0.2-0.1-0.3-0.1-0.5c0-0.1,0-0.3-0.1-0.4c0,0.1,0,0.3,0.1,0.4c0,0,0,0,0-0.1
+			c0-0.1,0-0.2-0.1-0.4c0,0,0,0,0,0c0,0,0,0,0,0c0-0.1,0-0.1,0-0.2c0-0.2-0.1-0.3-0.1-0.5c0-0.2-0.1-0.3-0.1-0.5
+			c0-0.1,0-0.2-0.1-0.2c0-0.2-0.1-0.4-0.1-0.6c0-0.1,0-0.1,0-0.2c0,0,0-0.1,0-0.1c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.3-0.2-0.6-0.3-1
+			c0-0.1-0.1-0.2-0.1-0.4c-0.1-0.3-0.2-0.7-0.3-1c0-0.1-0.1-0.2-0.1-0.3c-0.1-0.2-0.2-0.5-0.3-0.7c0-0.1-0.1-0.2-0.1-0.3
+			c0,0,0,0,0,0c0-0.1-0.1-0.2-0.1-0.3c-0.1-0.3-0.3-0.6-0.4-0.9c0,0,0-0.1,0-0.1c0,0,0,0,0,0l0,0c0-0.1-0.1-0.2-0.1-0.3
+			c-0.2-0.3-0.3-0.6-0.5-0.9c-0.1-0.1-0.1-0.2-0.2-0.3c-0.1-0.1-0.1-0.2-0.2-0.3c-0.7-1.2-1.6-2.3-2.5-3.2c-0.1-0.1-0.1-0.1-0.2-0.2
+			l-0.1-0.1c-0.1-0.1-0.2-0.1-0.3-0.2c-0.5-0.4-0.9-0.8-1.4-1.1c0,0,0.1,0.1,0.1,0.1l-0.6-0.4c-0.2-0.1-0.6-0.4-1.2-0.6l-0.2-0.1
+			c-0.2-0.1-0.4-0.2-0.7-0.3c-0.1,0-0.1-0.1-0.2-0.1c-0.1,0-0.2-0.1-0.2-0.1l0.5,0.2l-0.6-0.2l-0.3-0.1c-0.1,0-0.1,0-0.2-0.1
+			c-0.1,0-0.2-0.1-0.3-0.1l-0.3-0.1c-0.1,0-0.2,0-0.2-0.1c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.2,0-0.3-0.1c-0.1,0-0.3-0.1-0.4-0.1
+			c-0.2,0-0.3-0.1-0.5-0.1c-0.1,0-0.1,0-0.2,0c-0.1,0-0.1,0-0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.3-0.1-0.5-0.1-0.8-0.2
+			c-0.1,0-0.3-0.1-0.6-0.1l-0.4-0.1c-0.3,0-0.7-0.1-1-0.1l-0.8-0.1c-0.9-0.1-2-0.2-3.2-0.3l0.1,0l-0.2,0c-0.1,0-0.2,0-0.3,0
+			c-0.1,0-0.2,0-0.3,0l-0.3,0c0,0,0,0-0.1,0l-0.2,0c-0.2,0-0.4,0-0.6,0c-2.1-0.1-4.2-0.1-6.2-0.1l-0.2,0c0,0,0,0,0,0
+			c0,0-2.4,0-5.4,0.3c0,0-0.1,0-0.1,0l-0.2,0c-0.1,0-0.2,0-0.2,0c0,0,0.1,0,0.1,0c0,0-0.1,0-0.1,0c-0.1,0-0.1,0-0.2,0
+			c-0.1,0-0.2,0-0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0-0.1,0-0.1,0l-0.1,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3,0
+			c-0.1,0-0.2,0-0.3,0c-0.2,0-0.3,0-0.5,0.1l-0.2,0c-0.1,0-0.3,0-0.4,0.1l-0.4,0.1c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3,0
+			c-0.2,0-0.4,0.1-0.6,0.1l-0.1,0c-0.2,0-0.4,0.1-0.6,0.1l-0.3,0.1c0,0,0,0,0,0c0,0,0,0,0,0c-0.2,0-0.5,0.1-0.7,0.2
+			c-0.1,0-0.2,0-0.2,0.1c0,0,0,0,0,0c0,0,0,0-0.1,0l0,0c-0.1,0-0.2,0.1-0.3,0.1c-0.1,0-0.2,0-0.2,0.1c-0.1,0-0.2,0.1-0.4,0.1l0,0
+			c0,0,0,0,0,0c-2.3,0.7-4.6,1.8-6.6,3.8c-0.1,0.1-0.1,0.1-0.2,0.2c-0.5,0.5-0.9,1-1.3,1.6c0,0,0,0.1-0.1,0.1
+			c-0.1,0.2-0.3,0.4-0.4,0.6c-0.2,0.3-0.4,0.6-0.6,0.9c0,0,0,0,0,0c0,0,0,0,0,0c-0.6,1.1-1.1,2.2-1.5,3.3c-0.2,0.5-0.4,1.1-0.6,1.6
+			c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0.1,0,0.1-0.1,0.2c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0,0,0.1c0,0.1,0,0.2-0.1,0.3
+			c0,0.1-0.1,0.2-0.1,0.3c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.2-0.1,0.4c0,0.1-0.1,0.2-0.1,0.4c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1
+			c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0.1,0,0.1,0,0.2c0,0.1-0.1,0.2-0.1,0.4c0,0,0,0,0,0
+			c-0.1,0.4-0.2,0.8-0.2,1.2c-0.2,1.4-0.3,1.8-0.4,2.6c0,0,0,0.1,0,0.1l0,0.5c0,0.2,0,0.4-0.1,0.6c0,0.1-0.1,0.8-0.1,1.7l0,0.1
+			c0,0.2,0,0.4,0,0.6l0,0.3c0,0.1,0,0.2,0,0.2c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0l0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0l0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			l0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0
+			c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0.1,0,0.1,0,0.2,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0c0.1,0,0.1,0,0.2,0
+			c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0
+			c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.2,0,0.3,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4,0c0.1,0,0.2,0,0.2,0c0,0,0,0,0,0c0.1,0,0.2,0,0.2,0c0.2,0,0.3,0,0.5,0
+			c0.1,0,0.3,0,0.4,0c0,0,0,0,0.1,0c0,0,0,0,0,0v0c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4,0c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.3,0,0.5,0,0.8,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0.2,0,0.4,0,0.7,0c0.1,0,0.2,0,0.4,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6,0c0,0,0,0,0,0c0.3,0,0.6,0,1,0c0,0,0,0,0,0c0.3,0,0.5,0,0.8,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0.1,0,0.2,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0v0c0.3,0,0.5,0,0.8,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0
+			c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6,0c0,0,0,0,0,0c1.5-0.1,2.9-0.1,4.3-0.2l0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3,0
+			c0.5,0,0.9-0.1,1.4-0.1l0,0c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6-0.1c0.1,0,0.3,0,0.4,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0.2,0,0.3,0,0.5-0.1c0.2,0,0.5-0.1,0.7-0.1l0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0
+			c0.1,0,0.3,0,0.4-0.1c0.2,0,0.4,0,0.6-0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0.1,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0.1,0l0,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0.1,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2,0,0.2,0l0,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3-0.1c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0,0,0,0,0.1,0v0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0.1,0,0.1,0,0.2,0
+			c0.1,0,0.2,0,0.2-0.1c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0l0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0
+			c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0.1,0
+			c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0,0,0,0,0.1,0l0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0s0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0v0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0.1,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0C147.5,139.5,147.5,139.4,147.5,139.2L147.5,139.2z M117.6,114.8c0.2,0,0.4,0,0.6,0
+			c0.3,0,0.6,0,0.9,0c0.2,0,0.5,0,0.7,0c0.1,0,0.1,0,0.2,0c0.8,0,1.6,0,2.4,0c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0
+			c0.5,0,1,0,1.5,0.1c0.1,0,0.2,0,0.3,0c0.4,0,0.8,0.1,1.2,0.1c0.3,0,0.6,0.1,0.9,0.1c0.1,0,0.2,0,0.4,0c0.4,0,0.9,0.1,1.3,0.2
+			c0.1,0,0.2,0,0.3,0c0.4,0.1,0.7,0.1,1,0.2c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1
+			c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.2,0.1,0.3,0.1
+			c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0.1,0.1,0.1
+			c0,0,0.1,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0.1,0,0.2-0.1,0.2c0,0,0,0.1-0.1,0.1c0,0.1-0.1,0.1-0.1,0.2c0,0-0.1,0.1-0.1,0.1
+			c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.1,0-0.2,0.1-0.3,0.1c-0.2,0.1-0.4,0.1-0.6,0.2c-0.8,0.1-1.6,0.3-2.3,0.4
+			c-3,0.2-6.5,0.5-9.9,0.8c-0.1,0-0.2,0-0.3,0c-1.4,0-2.7,0-3.9-0.1c-0.1,0-0.3,0-0.4,0c-0.4,0-0.8,0-1.2-0.1c0,0-0.1,0-0.1,0
+			c-0.4,0-0.7-0.1-1.1-0.1c-0.1,0-0.2,0-0.4,0c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.3,0-0.4,0c-0.2,0-0.4-0.1-0.6-0.1c-0.1,0-0.2,0-0.3,0
+			c-0.3,0-0.5-0.1-0.8-0.1c-0.1,0-0.2,0-0.3,0c0,0,0,0,0,0c-0.3-0.1-0.6-0.1-0.8-0.2c-0.1,0-0.2,0-0.3-0.1c-0.2,0-0.4-0.1-0.6-0.1
+			c-0.1,0-0.2-0.1-0.3-0.1c-0.1,0-0.3-0.1-0.4-0.1c0,0,0,0,0,0c-0.1,0-0.3-0.1-0.4-0.1c-0.1,0-0.1-0.1-0.2-0.1c0,0-0.1,0-0.1,0
+			c-0.1,0-0.2-0.1-0.2-0.1c0,0-0.1,0-0.1-0.1c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.1-0.2-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0-0.1-0.1-0.2-0.1-0.3c0-0.3,0.5-0.6,1.2-0.9c0.5-0.2,1.2-0.4,2-0.5c0.2,0,0.4-0.1,0.6-0.1c0.1,0,0.2,0,0.4-0.1
+			c0.2,0,0.5-0.1,0.7-0.1c0.1,0,0.2,0,0.3,0c0.4,0,0.8-0.1,1.2-0.1c0.1,0,0.1,0,0.2,0c0.3,0,0.7-0.1,1.1-0.1c0.1,0,0.3,0,0.4,0
+			c0.3,0,0.6,0,0.9-0.1c0.2,0,0.4,0,0.5,0c0.3,0,0.6,0,0.9,0c0.2,0,0.4,0,0.6,0C117,114.8,117.3,114.8,117.6,114.8z M146.8,131.9
+			c0-0.1,0-0.1,0-0.2c0-0.1,0-0.1,0-0.2C146.7,131.7,146.7,131.8,146.8,131.9z M146.5,130.6C146.5,130.6,146.5,130.6,146.5,130.6
+			C146.5,130.6,146.5,130.6,146.5,130.6z"/>
+
+      <linearGradient id="SVGID_PROBATIVE_VALUE_APP_22" gradientUnits="userSpaceOnUse" x1="90.1575" y1="157.8691" x2="157.9324" y2="103.4959">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_22);" d="M139.2,118.5
+			C139.2,118.5,139.1,118.5,139.2,118.5l0.1,0.1L139.2,118.5z"/>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_PROBATIVE_VALUE_APP_23" gradientUnits="userSpaceOnUse" x1="111.9009" y1="110.9008" x2="123.7773" y2="27.766">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_23);" d="M135.3,71.8c0.2-0.9,0.3-1.8,0.5-2.7
+			c0.1-0.4,0.1-0.7,0.2-1.1c0.1-0.5,0.1-1,0.2-1.4c0.4-3,0.8-5.9,0.9-8.7c0-0.5,0.1-0.9,0.1-1.4c0-0.3,0-0.6,0-0.8
+			c0.1-1.9,0.1-3.7,0-5.5c0-0.8-0.1-1.5-0.1-2.2c-0.1-1.5-0.3-2.9-0.5-4.2c-0.2-1-0.3-1.8-0.6-2.6c0.1,0.4,0.2,0.8,0.3,1.2
+			c-0.1-0.3-0.1-0.6-0.2-0.9c0-0.1,0-0.1,0-0.2c0-0.1-0.1-0.3-0.1-0.4c0,0.1,0.1,0.2,0.1,0.3c-0.1-0.5-0.3-0.9-0.4-1.4
+			c-0.5-1.8-1.2-3.3-2-4.6c-1.4-2.4-3.2-4-5.1-4.9c-0.3-0.2-0.7-0.3-0.9-0.5c-0.2-0.1-0.5-0.2-0.8-0.3l0.1,0l-0.4-0.1l-0.1,0
+			c0,0,0,0-0.1,0l-0.1,0c0,0-0.4-0.1-1.1-0.3c0,0-0.3-0.1-0.8-0.2c-2.9-0.6-5.8-0.4-8-0.1l0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0l-0.3,0l0,0c0,0,0,0,0,0l0,0l0,0c-0.2,0-0.4,0.1-0.6,0.1c-0.4,0.1-0.8,0.2-1.1,0.3l0.1,0l-0.2,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0-0.1,0-0.1,0l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.3,0.1-0.4,0.1c0,0-0.1,0-0.1,0
+			c-0.2,0.1-0.3,0.1-0.4,0.2c-0.2,0.1-0.3,0.1-0.3,0.1c-0.1,0-0.1,0.1-0.2,0.1c-0.2,0.1-0.5,0.2-0.7,0.3c0,0,0,0,0,0l0,0
+			c0,0,0,0,0,0c-0.7,0.4-1.4,0.8-2,1.3c-0.1,0.1-0.3,0.2-0.4,0.4c-0.7,0.6-1.3,1.2-1.8,2c-0.3,0.4-0.5,0.7-0.8,1.1
+			c-0.2,0.3-0.4,0.6-0.5,0.9c0,0,0,0.1,0,0.1c0,0-0.1,0.1-0.1,0.1c0,0,0,0,0,0.1c-0.6,1.1-1.2,2.5-1.7,4.2c0,0,0,0,0,0.1
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0.1,0,0.2-0.1,0.2c0,0.1,0,0.1-0.1,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.2-0.1,0.3c-0.1,0.3-0.1,0.5-0.2,0.8
+			c0,0,0,0,0,0c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1c-0.1,0.3-0.1,0.5-0.2,0.8c-0.1,0.3-0.1,0.5-0.1,0.8c0,0,0,0,0,0.1c0,0,0,0.1,0,0.1
+			c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0,0,0,0,0.1c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1l0,0l0,0
+			c0,0.2-0.1,0.4-0.1,0.6l0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0.1c0,0.1,0,0.3,0,0.4c0,0,0-0.1,0-0.1c0,0.1,0,0.2,0,0.3l0,0l0,0.1
+			c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0.1,0,0.2,0,0.3c0,0.3-0.1,0.6-0.1,0.9c0,0.1,0,0.3,0,0.4c0,0.1,0,0.3,0,0.4
+			c0,0,0,0,0,0c0,0.1,0,0.2,0,0.2c-0.1,0.6-0.1,1.3-0.1,2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0,0,0
+			c0,0.1,0,0.1,0,0.2c0,0.2,0,0.4,0,0.7c0,0.2,0,0.4,0,0.5c0,0.1,0,0.2,0,0.4c0,0.1,0,0.2,0,0.2l0,0l0,0c0,0,0,0,0,0
+			c0,0.3,0,0.9,0,1.7c0,2,0.2,4.2,0.4,6.5c0,0.2,0,0.4,0.1,0.7c0.2,2,0.5,4.1,0.8,6.3c0,0.1,0,0.2,0,0.3c0.1,0.5,0.2,1,0.3,1.6
+			c0.1,0.5,0.2,1,0.3,1.5c0,0,0,0.1,0,0.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0.1,0,0.1c0,0,0,0,0,0c0.3,1.5,0.5,2.8,0.8,4.3
+			c0.1,0.4,0.4,2.1,0.9,4.2c0,0,0,0,0,0.1l0,0c0.3,1.2,0.6,2.6,0.9,3.9c0.2,1,0.6,2.3,0.8,3.3c0.3,1.1,0.5,2,0.8,3.2
+			c0,0.1,0,0.2,0.1,0.2c0.2,0.8,0.5,1.9,0.7,2.7l0.6,2.1c0,0,0,0.1,0.1,0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0l0,0c0,0,0,0,0,0
+			c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0c0.1,0,0.2,0,0.3,0
+			c0,0,0,0,0,0c0.2,0,0.4,0,0.6,0c0,0,0,0,0,0c0.2,0,0.4,0,0.6,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0.1,0,0.3,0,0.4,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0
+			c0.1,0,0.3,0,0.4,0c0.3,0,0.5,0,0.7,0c0,0,0,0,0,0c0.2,0,0.3,0,0.5,0c0.5,0,1.1-0.1,1.5-0.1v0c0,0,0,0,0,0c0,0,0,0,0.1,0
+			c0.4,0,0.8-0.1,1.2-0.1c0,0,0,0,0,0v0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0
+			c0.1,0,0.1,0,0.2,0v0c0,0,0,0,0,0c0.1,0,0.2,0,0.3-0.1c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0.1,0,0.2,0,0.3-0.1c0,0,0,0,0,0c0,0,0,0,0.1,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0.6-2.1c0.2-0.8,0.5-1.9,0.7-2.7
+			c0.2-0.9,0.4-1.4,0.5-2c0.1-0.5,0.2-0.9,0.4-1.4c0.3-1.1,0.6-2.4,0.9-3.4c0,0,0,0,0,0c0.3-1.3,0.7-2.7,0.9-3.9l0-0.1l0,0l0,0
+			c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0.4-1.8,0.7-3.4,0.9-4c0-0.2,0.1-0.4,0.1-0.6c0.3-1.5,0.5-2.3,0.7-3.6
+			c0-0.2,0.1-0.4,0.1-0.6l0,0c0,0,0,0,0,0c0,0,0,0,0,0C135.3,72.2,135.3,72,135.3,71.8z M136.6,43.4c0-0.1,0-0.2,0-0.3
+			c0-0.1,0-0.2-0.1-0.3c0-0.2-0.1-0.4-0.1-0.6C136.4,42.7,136.5,43,136.6,43.4z"/>
+
+      <linearGradient id="SVGID_PROBATIVE_VALUE_APP_24" gradientUnits="userSpaceOnUse" x1="116.2552" y1="97.7953" x2="116.2552" y2="97.7953">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <polygon style="fill:url(#SVGID_PROBATIVE_VALUE_APP_24);" points="116.3,97.8 116.3,97.8
+			116.3,97.8 		"/>
+
+      <linearGradient id="SVGID_PROBATIVE_VALUE_APP_25" gradientUnits="userSpaceOnUse" x1="113.5556" y1="97.5387" x2="113.5556" y2="97.5387">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <polygon style="fill:url(#SVGID_PROBATIVE_VALUE_APP_25);" points="113.6,97.5 113.6,97.5
+			113.6,97.5 		"/>
+	</g>
+
+    <linearGradient id="SVGID_PROBATIVE_VALUE_APP_26" gradientUnits="userSpaceOnUse" x1="113.0253" y1="98.1987" x2="157.2426" y2="185.1835">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_26);" d="M134,116.9c0,0-0.1,0-0.1-0.1
+		c0,0-0.1-0.1-0.1-0.1c-0.1-0.1-0.1-0.1-0.2-0.2c-1.2-1.1-2.1-2.4-2.9-3.7c-0.1-0.2-0.2-0.4-0.3-0.6c-0.5-1-0.9-2-1.1-3
+		c-0.1-0.3-0.2-0.5-0.2-0.8c0,0,0,0,0-0.1c-0.2-0.8-0.3-1.6-0.4-2.4c0-0.2,0-0.4-0.1-0.6c0-0.2,0-0.4,0-0.7c0,0,0,0,0-0.1
+		c0,0,0,0,0,0c0-0.1,0-0.2,0-0.4c0-0.1,0-0.1,0-0.2c0-1.6,0.1-3.3,0.5-5.4c0.1-0.6,0.3-1.3,0.5-1.9c0,0.1-0.1,0.1-0.1,0.2
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1,0-0.1,0.1-0.2,0.1c0,0,0,0,0,0c0,0,0,0-0.1,0c0,0-0.1,0-0.1,0
+		c-0.1,0-0.2,0.1-0.3,0.1c0,0,0,0,0,0c-0.1,0-0.1,0-0.2,0.1c-0.1,0-0.2,0.1-0.4,0.1c-0.2,0-0.4,0.1-0.6,0.1c-0.1,0-0.2,0-0.3,0
+		c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.3,0c-0.4,0-0.8,0.1-1.2,0.1c0,0,0,0-0.1,0c-0.5,0-1,0.1-1.6,0.1c-0.5,0-1.1,0.1-1.6,0.1
+		c-0.1,0-0.1,0-0.2,0c-0.6,0-1.2,0-1.8,0c-0.4,0-0.9,0-1.3,0c-0.2,0-0.4,0-0.6,0c-0.2,0-0.3,0-0.4,0c-0.2,0-0.5,0-0.7,0
+		c-0.2,0-0.3,0-0.5,0c-0.2,0-0.3,0-0.5,0c-0.2,0-0.5,0-0.7-0.1c-0.1,0-0.2,0-0.4,0c-0.1,0-0.2,0-0.3,0c-0.1,0-0.1,0-0.2,0
+		c-0.2,0-0.4,0-0.5-0.1c-0.1,0-0.2,0-0.3,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.2,0-0.2,0c-0.1,0-0.1,0-0.2,0
+		c-0.1,0-0.2,0-0.2,0c0,0,0,0-0.1,0c-0.1,0-0.2,0-0.4-0.1c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0c-0.1,0-0.2-0.1-0.3-0.1
+		c0,0,0,0-0.1,0c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0c0,0-0.1,0-0.1,0c0,0,0,0,0,0c-0.1,0-0.1-0.1-0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c-0.1-0.1-0.1-0.1-0.1-0.2c1.2,5,1,8.9,0.3,12c0,0.2-0.1,0.4-0.1,0.5c0,0.1-0.1,0.3-0.1,0.4
+		c-0.1,0.4-0.3,0.8-0.4,1.1c-0.6,1.6-1.4,2.9-2.2,3.9c-0.1,0.1-0.2,0.2-0.3,0.3c0,0,0,0.1-0.1,0.1c-0.6,0.7-1.2,1.2-1.7,1.7
+		c-0.2,0.1-0.3,0.2-0.4,0.3c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0h0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.3,0
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.1,0,0.2,0
+		c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0c0,0,0,0,0,0l0,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.3,0,0.4,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0.2,0,0.4,0,0.6,0c0.1,0,0.2,0,0.4,0c0,0,0,0,0.1,0c0,0,0,0,0,0
+		c0.1,0,0.2,0,0.3,0c0.2,0,0.4,0,0.6,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0,0,0,0,0,0c0.2,0,0.3,0,0.5,0c0.2,0,0.4,0,0.6,0
+		c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.4,0,0.7,0,1.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0.2,0,0.4,0,0.6,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0.2,0,0.4,0,0.6,0c0,0,0,0,0,0c0.2,0,0.5,0,0.7,0c0.1,0,0.1,0,0.2,0c0.1,0,0.3,0,0.4,0c0.3,0,0.6,0,0.9,0c0.1,0,0.2,0,0.2,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.2,0,0.3,0c0,0,0,0-0.1,0c0.4,0,0.7-0.1,1.1-0.1l-0.1,0
+		c0.1,0,0.2,0,0.3,0c0.3,0,0.7-0.1,1-0.1c0.1,0,0.3,0,0.4,0c0.4-0.1,0.8-0.1,1.2-0.2c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0,0.1,0,0.2,0l0,0c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		l0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2-0.1c0,0,0,0,0.1,0c0,0,0,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0,0c0.1,0,0.2-0.1,0.3-0.1l0,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0.1,0,0.1,0,0.2-0.1l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0,0,0,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0v0l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0C134.3,117,134.1,116.9,134,116.9z M129.6,110.4c0.1,0.1,0.1,0.3,0.2,0.4
+		c0,0,0-0.1-0.1-0.1C129.7,110.6,129.6,110.5,129.6,110.4z M129.9,111c0.1,0.4,0.3,0.7,0.5,1.1C130.2,111.8,130,111.4,129.9,111z"/>
+
+    <linearGradient id="SVGID_PROBATIVE_VALUE_APP_27" gradientUnits="userSpaceOnUse" x1="89.7852" y1="158.9446" x2="149.9805" y2="158.9446">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_PROBATIVE_VALUE_APP_27);" d="M150,153.3c0,0.1,0,0.2,0,0.3c0,0,0,0,0,0
+		c0,0.1-0.1,0.2-0.1,0.3c0,0,0,0,0,0c0,0.1-0.1,0.2-0.2,0.3c0,0,0,0,0,0c-0.1,0.1-0.2,0.2-0.3,0.3c0,0,0,0,0,0
+		c-0.1,0.1-0.2,0.2-0.3,0.3c0,0,0,0,0,0c-0.1,0.1-0.2,0.2-0.4,0.3c0,0,0,0,0,0c-0.1,0.1-0.3,0.2-0.5,0.3c0,0,0,0,0,0
+		c-0.2,0.1-0.3,0.2-0.5,0.3c0,0,0,0,0,0c-0.2,0.1-0.4,0.2-0.6,0.3c0,0,0,0,0,0c-0.2,0.1-0.4,0.2-0.6,0.2c0,0,0,0,0,0
+		c-0.2,0.1-0.5,0.2-0.7,0.2c0,0,0,0,0,0c-0.2,0.1-0.5,0.2-0.7,0.2c0,0,0,0,0,0c-0.3,0.1-0.5,0.1-0.8,0.2c0,0,0,0,0,0
+		c-0.3,0.1-0.6,0.1-0.8,0.2c0,0,0,0-0.1,0c-0.3,0.1-0.6,0.1-0.9,0.2c0,0,0,0,0,0c-0.3,0.1-0.6,0.1-0.9,0.2c0,0,0,0-0.1,0
+		c-0.7,0.1-1.4,0.3-2.1,0.4c0,0,0,0,0,0c-0.7,0.1-1.5,0.2-2.3,0.3c0,0,0,0,0,0c-0.8,0.1-1.6,0.2-2.5,0.3c0,0,0,0,0,0
+		c-0.9,0.1-1.7,0.2-2.6,0.2c0,0,0,0-0.1,0c-0.9,0.1-1.7,0.1-2.6,0.2c-0.1,0-0.2,0-0.3,0c-0.9,0.1-1.8,0.1-2.8,0.1c0,0,0,0,0,0
+		c-1,0-2,0.1-3,0.1c0,0,0,0,0,0c-1,0-2.1,0-3.1,0c-1,0-2.1,0-3.1,0c0,0,0,0,0,0c-1,0-2-0.1-3-0.1c0,0,0,0,0,0c-1,0-1.9-0.1-2.9-0.2
+		c0,0,0,0,0,0c-0.9-0.1-1.9-0.1-2.8-0.2c0,0,0,0,0,0c-0.9-0.1-1.8-0.2-2.6-0.3c0,0,0,0,0,0c-0.8-0.1-1.7-0.2-2.5-0.3c0,0,0,0,0,0
+		c-0.8-0.1-1.5-0.2-2.3-0.4c0,0,0,0,0,0c-0.7-0.1-1.4-0.3-2.1-0.4c0,0,0,0-0.1,0c-0.3-0.1-0.6-0.1-0.9-0.2c0,0-0.1,0-0.1,0
+		c-0.3-0.1-0.5-0.1-0.8-0.2c0,0-0.1,0-0.1,0c-0.1,0-0.2,0-0.3-0.1c-0.4-0.1-0.9-0.2-1.3-0.4c0,0,0,0-0.1,0c-0.4-0.1-0.8-0.3-1.2-0.4
+		c-0.1,0-0.1,0-0.2-0.1c-0.3-0.1-0.7-0.3-1-0.4c-0.1,0-0.1-0.1-0.2-0.1c-0.3-0.1-0.6-0.3-0.8-0.4c0,0,0,0-0.1,0
+		c-0.2-0.1-0.4-0.3-0.6-0.4c0,0,0,0-0.1-0.1c-0.2-0.1-0.3-0.3-0.5-0.4c0,0,0-0.1-0.1-0.1c-0.1-0.1-0.2-0.3-0.3-0.4c0,0,0-0.1,0-0.1
+		c-0.1-0.2-0.1-0.3-0.1-0.5l0,5.3c0,0.2,0,0.3,0.1,0.5c0,0,0,0.1,0,0.1c0.1,0.2,0.2,0.3,0.3,0.4c0,0,0,0,0,0c0,0,0,0,0,0
+		c0.1,0.2,0.3,0.3,0.5,0.4c0,0,0,0,0.1,0.1c0.2,0.1,0.4,0.3,0.6,0.4c0,0,0,0,0,0c0,0,0,0,0,0c0.2,0.1,0.4,0.2,0.6,0.3
+		c0.1,0,0.2,0.1,0.3,0.1c0.1,0,0.1,0.1,0.2,0.1c0.3,0.1,0.6,0.3,1,0.4c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0.4,0.1,0.7,0.3,1.2,0.4
+		c0,0,0,0,0.1,0c0.4,0.1,0.8,0.2,1.3,0.4c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0.1
+		c0.2,0,0.3,0.1,0.5,0.1c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.2,0.1c0.2,0,0.3,0.1,0.5,0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.2,0,0.2,0.1c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0.1,0.4,0.1c0.1,0,0.3,0,0.4,0.1
+		c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.3,0,0.4,0.1s0.3,0,0.4,0.1c0.1,0,0.2,0,0.4,0.1s0.2,0,0.4,0.1
+		c0.1,0,0.2,0,0.4,0.1c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.4,0.1c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0
+		s0.2,0,0.4,0c0.1,0,0.2,0,0.4,0s0.2,0,0.4,0c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0
+		c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0s0.2,0,0.4,0c0.1,0,0.2,0,0.4,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.4,0c0.1,0,0.2,0,0.3,0
+		s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0
+		c0.1,0,0.1,0,0.2,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0s0,0,0,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0
+		s0.2,0,0.2,0c0.1,0,0.2,0,0.2,0s0.2,0,0.2,0s0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.2,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.1,0,0.2,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.2,0,0.3,0s0.2,0,0.3,0c0.1,0,0.3,0,0.4,0c0.1,0,0.2,0,0.3,0c0,0,0,0,0,0
+		c0,0,0,0,0.1,0c0.1,0,0.3,0,0.4,0s0.3,0,0.4,0c0.4,0,0.8,0,1.3-0.1c0.2,0,0.4,0,0.7,0c0.1,0,0.2,0,0.3,0c0.1,0,0.2,0,0.3,0
+		c0.4,0,0.8-0.1,1.2-0.1c0.4,0,0.7-0.1,1.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0.2,0,0.3,0,0.5,0c0.2,0,0.3,0,0.5,0
+		c0.2,0,0.3,0,0.5,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.3,0,0.4,0
+		c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4,0c0.1,0,0.3,0,0.4-0.1c0,0,0.1,0,0.1,0c0,0,0,0,0,0
+		c0.1,0,0.2,0,0.3,0c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.1,0,0.3,0,0.4-0.1c0.2,0,0.3,0,0.5-0.1c0.1,0,0.2,0,0.3-0.1
+		c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1s0.3-0.1,0.4-0.1
+		c0.1,0,0.2,0,0.3-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.3-0.1,0.4-0.1c0.1,0,0.3-0.1,0.4-0.1c0,0,0,0,0,0
+		c0,0,0,0,0.1,0c0.1,0,0.2,0,0.3-0.1c0.1,0,0.2-0.1,0.4-0.1c0.1,0,0.2,0,0.2-0.1c0,0,0,0,0.1,0c0,0,0,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1
+		c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.1,0,0.1,0c0,0,0,0,0.1,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.3-0.1c0.1,0,0.2-0.1,0.3-0.1
+		c0,0,0.1,0,0.1,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.2-0.1,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0.1,0,0.1-0.1,0.2-0.1s0.1-0.1,0.2-0.1s0.1-0.1,0.2-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1
+		c0.1,0,0.1,0,0.2-0.1c0.1,0,0.1,0,0.2-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0.1,0,0.1,0,0.2-0.1s0.1,0,0.2-0.1
+		c0.1,0,0.1,0,0.2-0.1c0,0,0,0,0.1,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1,0c0,0,0.1,0,0.1-0.1s0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1
+		c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1s0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0
+		c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0.1,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0.1,0,0.1-0.1
+		c0,0,0.1-0.1,0.1-0.1c0,0,0.1-0.1,0.1-0.1c0,0,0,0,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1
+		c0,0,0-0.1,0.1-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0.1-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0
+		c0,0,0,0,0,0c0,0,0,0,0-0.1c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0-0.1,0-0.1
+		c0,0,0-0.1,0-0.1c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0c0,0,0,0,0,0l0,0L150,153.3z"/>
+</g>
+  <linearGradient id="SVGID_PROBATIVE_VALUE_APP_28" gradientUnits="userSpaceOnUse" x1="94.6325" y1="-282.3043" x2="259.4367" y2="-79.4684" gradientTransform="matrix(0 1 -1 0 -156.7252 -21.3053)">
+	<stop  offset="0" style="stop-color:#F5F5F5"/>
+    <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+</linearGradient>
+  <circle style="fill:url(#SVGID_PROBATIVE_VALUE_APP_28);" cx="79.6" cy="110.7" r="40.3"/>
+  <linearGradient id="SVGID_PROBATIVE_VALUE_APP_29" gradientUnits="userSpaceOnUse" x1="44.656" y1="67.6167" x2="199.0409" y2="257.6289">
+	<stop  offset="0" style="stop-color:#F5F5F5"/>
+    <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+</linearGradient>
+  <circle style="fill:url(#SVGID_PROBATIVE_VALUE_APP_29);" cx="79.6" cy="110.7" r="37.7"/>
+  <g>
+	<path class="probative_value_app_227" d="M93.5,98.3c-1,0-1.8,0.4-2.6,1.1c-5.9,5.2-11.6,10.6-16.9,16.4c-0.5,0.5-1,1.1-1.5,1.7
+		c-2.3-3-4.9-5.7-7.9-8.1c-0.8-0.6-1.5-1.1-2.6-1.1c-0.9,0-2,0.4-2.6,1.1c-0.6,0.7-1.1,1.6-1.1,2.6c0,0.9,0.3,2,1.1,2.6
+		c2.7,2.2,5.1,4.6,7.3,7.3c0.8,1.1,1.6,2.2,2.3,3.4c0.6,1,1.5,1.6,2.7,1.8c1.1,0.1,2.3-0.1,3.1-1c5.1-6,10.6-11.6,16.4-17
+		c1.6-1.5,3.3-3,5-4.4c0.7-0.6,1.1-1.7,1.1-2.6c0-0.9-0.4-2-1.1-2.6C95.4,98.8,94.5,98.3,93.5,98.3z"/>
+    <path class="probative_value_app_227" d="M79.6,80.2c-16.8,0-30.4,13.7-30.4,30.4s13.7,30.4,30.4,30.4c16.8,0,30.4-13.7,30.4-30.4
+		S96.4,80.2,79.6,80.2z M79.6,136.5c-14.2,0-25.8-11.6-25.8-25.8s11.6-25.8,25.8-25.8s25.8,11.6,25.8,25.8S93.9,136.5,79.6,136.5z"
+    />
+</g>
+</svg>
