@@ -28,23 +28,24 @@
   "INGEST_ACTION": {
     "REFRESH": "Refresh",
     "NEW_INGEST": "New deposit",
+    "NEW_INGEST_BLANK": "Make a blank deposit",
     "START_DATE": "Start date",
     "END_DATE": "End date",
     "ToolTip_Refresh": "Refresh the list of deposits",
     "ToolTip_New_Ingest": "Submit a new archive upload (SIP)",
     "SEARCH": "Rating, Title, Producer service ...",
     "MESSAGE_IDENTIFIER": {
-      "HOLDING_SCHEME": {
-        "MESSAGE_IMPORT_TYPE": "Import a position tree",
-        "MESSAGE_LABEL_IMPORT_TYPE": "Import a position tree"
+      "MESSAGE_LABEL_IMPORT_TYPE": {
+        "HOLDING_SCHEME": "Import a position tree",
+        "FILING_SCHEME": "Import a holding scheme",
+        "DEFAULT_WORKFLOW": "New Ingest",
+        "BLANK_WORKFLOW": "Test Ingest"
       },
-      "FILING_SCHEME": {
-        "MESSAGE_IMPORT_TYPE": "Import a holding scheme",
-        "MESSAGE_LABEL_IMPORT_TYPE": "Import a holding scheme"
-      },
-      "DEFAULT_WORKFLOW": {
-        "MESSAGE_IMPORT_TYPE": "Ingest a new SIP",
-        "MESSAGE_LABEL_IMPORT_TYPE": "New Ingest"
+      "MESSAGE_IMPORT_TYPE": {
+        "HOLDING_SCHEME": "Import a position tree",
+        "FILING_SCHEME": "Import a holding scheme",
+        "DEFAULT_WORKFLOW": "Ingest a new SIP",
+        "BLANK_WORKFLOW": "Test ingest a new SIP"
       }
     }
   },
@@ -63,9 +64,11 @@
     "BROWSE": "or Browse",
     "ADD_FILE_DESCRIPTION_1": "(Accepted formats: .zip, .tar, .tar.gz, .tar.bz2",
     "ADD_FILE_DESCRIPTION_2": "Max size: 10 GB ) ",
-    "CONFIRME": "Confirme the deposit",
+    "CONFIRM": "Confirm the deposit",
+    "CONFIRM_BLANK": "Confirm test deposit",
     "ALERTE_MESSAGE": "One or more installment (s) are downloading (Please do not leave this page during the deposit process and open a new tab if necessary)",
     "UPLOAD_COMPLETE_MESSAGE": "Deposit operation has been started",
+    "BLANK_UPLOAD_COMPLETE_MESSAGE": "Blank deposit operation has been started",
     "TO_OPERATION_APP": "VIEW THE OPERATIONS LOG"
   },
   "INGEST_DETAIL": {

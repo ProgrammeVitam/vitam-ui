@@ -53,9 +53,9 @@ import {
 import {merge, Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {EventFilter} from '../event-filter.interface';
+import {LogbookDownloadService} from '../logbook-download.service';
 import {LOGBOOK_OPERATION_CATEGORIES} from '../logbook-operation-constants';
 import {LogbookSearchService} from '../logbook-search.service';
-import {LogbookDownloadService} from "../logbook-download.service";
 
 const FILTER_DEBOUNCE_TIME_MS = 400;
 
@@ -119,13 +119,13 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   operationCategoriesFilterOptions: Array<{ value: string, label: string }> = [];
 
   constructor(public logbookSearchService: LogbookSearchService,
-              private logbookDownloadService: LogbookDownloadService,) {
+              private logbookDownloadService: LogbookDownloadService) {
     super(logbookSearchService);
   }
 
   ngOnInit() {
     this.pending = true;
-    this.updatedData.subscribe(() => this.onDataSourceReloaded())
+    this.updatedData.subscribe(() => this.onDataSourceReloaded());
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
     searchCriteriaChange.subscribe(() => {
@@ -133,7 +133,8 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     });
     this.refreshOperationCategoriesOptions();
     this.refreshList();
-    this.logbookDownloadService.logbookOperationsReloaded.subscribe(logbookOperationsReloaded => this.updateLogbookOperations(logbookOperationsReloaded))
+    this.logbookDownloadService.logbookOperationsReloaded
+      .subscribe(logbookOperationsReloaded => this.updateLogbookOperations(logbookOperationsReloaded));
   }
 
   private onDataSourceReloaded() {
@@ -145,8 +146,8 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
 
 
   private manageOperationLabel(logbookOperation: Event) {
-    if(logbookOperation.type==='ARCHIVE_TRANSFER'){
-      logbookOperation.type='ARCHIVE_TRANSFER_LABEL'
+    if (logbookOperation.type === 'ARCHIVE_TRANSFER') {
+      logbookOperation.type = 'ARCHIVE_TRANSFER_LABEL';
     }
   }
 
@@ -155,10 +156,10 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
       const index = this.dataSource.findIndex(o => o.id === logbookOperation.id);
       this.manageOperationLabel(logbookOperation);
       this.dataSource[index] = logbookOperation;
-    })
+    });
   }
 
- 
+
   buildCriteriaFromSearch() {
     const criteria: any = {};
     if (this._searchText !== undefined && this._searchText.length > 0) {
@@ -214,7 +215,3 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.eventClick.emit(event);
   }
 }
-
-
-
-
