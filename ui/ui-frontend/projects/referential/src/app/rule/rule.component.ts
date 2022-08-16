@@ -49,7 +49,7 @@ import { NULL_TYPE, RULE_TYPES } from './rules.constants';
 @Component({
   selector: 'app-rules',
   templateUrl: './rule.component.html',
-  styleUrls: ['./rule.component.scss']
+  styleUrls: ['./rule.component.scss'],
 })
 export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   @ViewChild(RuleListComponent, { static: true }) ruleListComponentListComponent: RuleListComponent;
@@ -65,7 +65,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   checkImportRole = new Observable<boolean>();
   checkExportRole = new Observable<boolean>();
 
-
   constructor(
     public ruleService: RuleService,
     public dialog: MatDialog,
@@ -73,7 +72,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     private router: Router,
     globalEventService: GlobalEventService,
     private formBuilder: FormBuilder,
-    private securityService: SecurityService,
+    private securityService: SecurityService
   ) {
     super(route, globalEventService);
     globalEventService.tenantEvent.subscribe(() => {
@@ -87,7 +86,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     });
 
     this.typeFilterForm = this.formBuilder.group({
-      ruleTypes: null
+      ruleTypes: null,
     });
 
     this.typeFilterForm.controls.ruleTypes.valueChanges.subscribe((value) => {
@@ -99,7 +98,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
   openCreateRuleDialog() {
     const dialogRef = this.dialog.open(RuleCreateComponent, {
       panelClass: 'vitamui-modal',
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.componentInstance.tenantIdentifier = this.tenantId;
     dialogRef.afterClosed().subscribe((result) => {
@@ -108,8 +107,6 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
       }
     });
   }
-
-
 
   private refreshList() {
     if (!this.ruleListComponentListComponent) {
@@ -127,8 +124,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     this.search = search || '';
   }
 
-  ngOnInit() { 
-    
+  ngOnInit() {
     this.checkCreateRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_CREATE_RULES);
     this.checkImportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_IMPORT_RULES);
     this.checkExportRole = this.securityService.hasRole(ApplicationId.RULES_APP, this.tenantId, Role.ROLE_EXPORT_RULES);
@@ -146,7 +142,7 @@ export class RuleComponent extends SidenavPage<Rule> implements OnInit {
     const dialogRef = this.dialog.open(VitamUIImportDialogComponent, {
       panelClass: 'vitamui-modal',
       data: Referential.RULE,
-      disableClose: true
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result && result.success) {

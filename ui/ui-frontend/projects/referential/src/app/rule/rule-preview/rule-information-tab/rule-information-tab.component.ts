@@ -1,4 +1,3 @@
-import { OnInit } from '@angular/core';
 /*
  * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2019-2020)
  * and the signatories of the "VITAM - Accord du Contributeur" agreement.
@@ -35,10 +34,10 @@ import { OnInit } from '@angular/core';
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import {  Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, switchMap } from 'rxjs/operators';
 import { diff, Rule, RuleService, SecurityService } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
@@ -49,7 +48,7 @@ import { RULE_MEASUREMENTS, RULE_TYPES } from '../../rules.constants';
   templateUrl: './rule-information-tab.component.html',
   styleUrls: ['./rule-information-tab.component.scss'],
 })
-export class RuleInformationTabComponent {
+export class RuleInformationTabComponent implements OnInit {
   @Output() updated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   form: FormGroup;
@@ -62,7 +61,7 @@ export class RuleInformationTabComponent {
   ruleMeasurements = RULE_MEASUREMENTS;
 
   tenantIdentifier: number;
-  appName = "RULES_APP";
+  appName = 'RULES_APP';
   hasUpdateAgencyRole$: Observable<boolean>;
 
   private oldRule: Rule;
@@ -92,7 +91,12 @@ export class RuleInformationTabComponent {
     }
   }
 
-  constructor(private route: ActivatedRoute,private formBuilder: FormBuilder,private securityService: SecurityService, private ruleService: RuleService) {
+  constructor(
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private securityService: SecurityService,
+    private ruleService: RuleService
+  ) {
     this.form = this.formBuilder.group({
       ruleType: [null, Validators.required],
       ruleValue: [null, Validators.required],
@@ -102,17 +106,13 @@ export class RuleInformationTabComponent {
     });
   }
 
-  ngOnInit() { 
-
-     
-   this.hasUpdateAgencyRole$ = this.route.params.pipe(mergeMap(params => {
-      this.tenantIdentifier = +params.tenantIdentifier;
-      return  this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_RULES')
-    }));
-
-    
-
-  
+  ngOnInit() {
+    this.hasUpdateAgencyRole$ = this.route.params.pipe(
+      mergeMap((params) => {
+        this.tenantIdentifier = +params.tenantIdentifier;
+        return this.securityService.hasRole(this.appName, this.tenantIdentifier, 'ROLE_UPDATE_RULES');
+      })
+    );
   }
 
   unchanged(): boolean {
