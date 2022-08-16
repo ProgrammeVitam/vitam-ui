@@ -1,0 +1,901 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.logbook_operation_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .logbook_operation_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .logbook_operation_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .logbook_operation_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .logbook_operation_app_05{fill:#BCB9BA;}
+  .logbook_operation_app_06{fill:#BBB9BA;}
+  .logbook_operation_app_07{fill:#BBB8B9;}
+  .logbook_operation_app_08{fill:#BAB8B9;}
+  .logbook_operation_app_09{fill:#B9B7B8;}
+  .logbook_operation_app_10{fill:#B9B7B7;}
+  .logbook_operation_app_11{fill:#B8B6B7;}
+  .logbook_operation_app_12{fill:#B8B5B6;}
+  .logbook_operation_app_13{fill:#B7B5B6;}
+  .logbook_operation_app_14{fill:#B7B4B5;}
+  .logbook_operation_app_15{fill:#B6B4B5;}
+  .logbook_operation_app_16{fill:#B6B3B4;}
+  .logbook_operation_app_17{fill:#B5B3B4;}
+  .logbook_operation_app_18{fill:#B4B2B3;}
+  .logbook_operation_app_19{fill:#B3B1B2;}
+  .logbook_operation_app_20{fill:#B3B1B1;}
+  .logbook_operation_app_21{fill:#B2B0B1;}
+  .logbook_operation_app_22{fill:#B2AFB0;}
+  .logbook_operation_app_23{fill:#B1AFB0;}
+  .logbook_operation_app_24{fill:#B1AEAF;}
+  .logbook_operation_app_25{fill:#B0AEAF;}
+  .logbook_operation_app_26{fill:#AFADAE;}
+  .logbook_operation_app_27{fill:#AEACAD;}
+  .logbook_operation_app_28{fill:#ADABAC;}
+  .logbook_operation_app_29{fill:#ADABAB;}
+  .logbook_operation_app_30{fill:#ACAAAB;}
+  .logbook_operation_app_31{fill:#ACAAAA;}
+  .logbook_operation_app_32{fill:#ABA9AA;}
+  .logbook_operation_app_33{fill:#AAA8A9;}
+  .logbook_operation_app_34{fill:#A9A7A8;}
+  .logbook_operation_app_35{fill:#A8A6A7;}
+  .logbook_operation_app_36{fill:#A7A5A6;}
+  .logbook_operation_app_37{fill:#A7A5A5;}
+  .logbook_operation_app_38{fill:#A6A4A5;}
+  .logbook_operation_app_39{fill:#A5A4A4;}
+  .logbook_operation_app_40{fill:#A5A3A4;}
+  .logbook_operation_app_41{fill:#A4A2A3;}
+  .logbook_operation_app_42{fill:#A3A1A2;}
+  .logbook_operation_app_43{fill:#A2A0A1;}
+  .logbook_operation_app_44{fill:#A19FA0;}
+  .logbook_operation_app_45{fill:#A09F9F;}
+  .logbook_operation_app_46{fill:#A09E9F;}
+  .logbook_operation_app_47{fill:#9F9E9E;}
+  .logbook_operation_app_48{fill:#9F9D9E;}
+  .logbook_operation_app_49{fill:#9E9D9D;}
+  .logbook_operation_app_50{fill:#9E9C9D;}
+  .logbook_operation_app_51{fill:#9D9B9C;}
+  .logbook_operation_app_52{fill:#9C9A9B;}
+  .logbook_operation_app_53{fill:#9B9A9B;}
+  .logbook_operation_app_54{fill:#9B999A;}
+  .logbook_operation_app_55{fill:#9A9999;}
+  .logbook_operation_app_56{fill:#9A9899;}
+  .logbook_operation_app_57{fill:#999898;}
+  .logbook_operation_app_58{fill:#999798;}
+  .logbook_operation_app_59{fill:#989797;}
+  .logbook_operation_app_60{fill:#989697;}
+  .logbook_operation_app_61{fill:#979596;}
+  .logbook_operation_app_62{fill:#969596;}
+  .logbook_operation_app_63{fill:#969495;}
+  .logbook_operation_app_64{fill:#959495;}
+  .logbook_operation_app_65{fill:#959394;}
+  .logbook_operation_app_66{fill:#949393;}
+  .logbook_operation_app_67{fill:#949293;}
+  .logbook_operation_app_68{fill:#939292;}
+  .logbook_operation_app_69{fill:#939192;}
+  .logbook_operation_app_70{fill:#929191;}
+  .logbook_operation_app_71{fill:#919091;}
+  .logbook_operation_app_72{fill:#919090;}
+  .logbook_operation_app_73{fill:#908F90;}
+  .logbook_operation_app_74{fill:#908E8F;}
+  .logbook_operation_app_75{fill:#8F8E8F;}
+  .logbook_operation_app_76{fill:#8F8D8E;}
+  .logbook_operation_app_77{fill:#8E8D8D;}
+  .logbook_operation_app_78{fill:#8E8C8D;}
+  .logbook_operation_app_79{fill:#8D8C8C;}
+  .logbook_operation_app_80{fill:#8C8B8C;}
+  .logbook_operation_app_81{fill:#8C8B8B;}
+  .logbook_operation_app_82{fill:#8B8A8B;}
+  .logbook_operation_app_83{fill:#8B8A8A;}
+  .logbook_operation_app_84{fill:#8A898A;}
+  .logbook_operation_app_85{fill:#8A8889;}
+  .logbook_operation_app_86{fill:#898888;}
+  .logbook_operation_app_87{fill:#898788;}
+  .logbook_operation_app_88{fill:#888787;}
+  .logbook_operation_app_89{fill:#878687;}
+  .logbook_operation_app_90{fill:#878686;}
+  .logbook_operation_app_91{fill:#868586;}
+  .logbook_operation_app_92{fill:#868585;}
+  .logbook_operation_app_93{fill:#858485;}
+  .logbook_operation_app_94{fill:#858484;}
+  .logbook_operation_app_95{fill:#848384;}
+  .logbook_operation_app_96{fill:#848383;}
+  .logbook_operation_app_97{fill:#838282;}
+  .logbook_operation_app_98{fill:#828182;}
+  .logbook_operation_app_99{fill:#828181;}
+  .logbook_operation_app_100{fill:#818081;}
+  .logbook_operation_app_101{fill:#818080;}
+  .logbook_operation_app_102{fill:#807F80;}
+  .logbook_operation_app_103{fill:#807F7F;}
+  .logbook_operation_app_104{fill:#7F7E7F;}
+  .logbook_operation_app_105{fill:#7F7E7E;}
+  .logbook_operation_app_106{fill:#7E7D7E;}
+  .logbook_operation_app_107{fill:#7D7D7D;}
+  .logbook_operation_app_108{fill:#7D7C7C;}
+  .logbook_operation_app_109{fill:#7C7B7C;}
+  .logbook_operation_app_110{fill:#7C7B7B;}
+  .logbook_operation_app_111{fill:#7B7A7B;}
+  .logbook_operation_app_112{fill:#7B7A7A;}
+  .logbook_operation_app_113{fill:#7A797A;}
+  .logbook_operation_app_114{fill:#7A7979;}
+  .logbook_operation_app_115{fill:#797879;}
+  .logbook_operation_app_116{fill:#787878;}
+  .logbook_operation_app_117{fill:#787778;}
+  .logbook_operation_app_118{fill:#777777;}
+  .logbook_operation_app_119{fill:#777676;}
+  .logbook_operation_app_120{fill:#767676;}
+  .logbook_operation_app_121{fill:#767575;}
+  .logbook_operation_app_122{fill:#757475;}
+  .logbook_operation_app_123{fill:#757474;}
+  .logbook_operation_app_124{fill:#747374;}
+  .logbook_operation_app_125{fill:#737373;}
+  .logbook_operation_app_126{fill:#737273;}
+  .logbook_operation_app_127{fill:#727272;}
+  .logbook_operation_app_128{fill:#727172;}
+  .logbook_operation_app_129{fill:#717171;}
+  .logbook_operation_app_130{fill:#717070;}
+  .logbook_operation_app_131{fill:#707070;}
+  .logbook_operation_app_132{fill:#706F6F;}
+  .logbook_operation_app_133{fill:#6F6E6F;}
+  .logbook_operation_app_134{fill:#6E6E6E;}
+  .logbook_operation_app_135{fill:#6E6D6E;}
+  .logbook_operation_app_136{fill:#6D6D6D;}
+  .logbook_operation_app_137{fill:#6D6C6D;}
+  .logbook_operation_app_138{fill:#6C6C6C;}
+  .logbook_operation_app_139{fill:#6C6B6C;}
+  .logbook_operation_app_140{fill:#6B6B6B;}
+  .logbook_operation_app_141{fill:#6B6A6A;}
+  .logbook_operation_app_142{fill:#6A6A6A;}
+  .logbook_operation_app_143{fill:#696969;}
+  .logbook_operation_app_144{fill:#686868;}
+  .logbook_operation_app_145{fill:#686768;}
+  .logbook_operation_app_146{fill:#676767;}
+  .logbook_operation_app_147{fill:#676667;}
+  .logbook_operation_app_148{fill:#666666;}
+  .logbook_operation_app_149{fill:#666566;}
+  .logbook_operation_app_150{fill:#656565;}
+  .logbook_operation_app_151{fill:#646464;}
+  .logbook_operation_app_152{fill:#636363;}
+  .logbook_operation_app_153{fill:#626262;}
+  .logbook_operation_app_154{fill:#626162;}
+  .logbook_operation_app_155{fill:#616161;}
+  .logbook_operation_app_156{fill:#616061;}
+  .logbook_operation_app_157{fill:#606060;}
+  .logbook_operation_app_158{fill:#5F5F60;}
+  .logbook_operation_app_159{fill:#5F5F5F;}
+  .logbook_operation_app_160{fill:#5E5E5E;}
+  .logbook_operation_app_161{fill:#5D5D5D;}
+  .logbook_operation_app_162{fill:#5C5C5C;}
+  .logbook_operation_app_163{fill:#5B5B5B;}
+  .logbook_operation_app_164{fill:#5A5A5B;}
+  .logbook_operation_app_165{fill:#5A5A5A;}
+  .logbook_operation_app_166{fill:#59595A;}
+  .logbook_operation_app_167{fill:#595959;}
+  .logbook_operation_app_168{fill:#585858;}
+  .logbook_operation_app_169{fill:#575757;}
+  .logbook_operation_app_170{fill:#565656;}
+  .logbook_operation_app_171{fill:#555656;}
+  .logbook_operation_app_172{fill:#555555;}
+  .logbook_operation_app_173{fill:#545455;}
+  .logbook_operation_app_174{fill:#545454;}
+  .logbook_operation_app_175{fill:#535353;}
+  .logbook_operation_app_176{fill:#525252;}
+  .logbook_operation_app_177{fill:#515151;}
+  .logbook_operation_app_178{fill:#505151;}
+  .logbook_operation_app_179{fill:#505050;}
+  .logbook_operation_app_180{fill:#4F5050;}
+  .logbook_operation_app_181{fill:#4F4F4F;}
+  .logbook_operation_app_182{fill:#4E4F4F;}
+  .logbook_operation_app_183{fill:#4E4E4E;}
+  .logbook_operation_app_184{fill:#4D4D4D;}
+  .logbook_operation_app_185{fill:#4C4C4C;}
+  .logbook_operation_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_01);}
+  .logbook_operation_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_02);}
+  .logbook_operation_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_03);}
+  .logbook_operation_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_04);}
+  .logbook_operation_app_190{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-900);}
+  .logbook_operation_app_191{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+  .logbook_operation_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-light);}
+  .logbook_operation_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
+  .logbook_operation_app_194{fill:url(#SVGID_LOGBOOK_OPERATION_APP_05);}
+  .logbook_operation_app_195{fill:url(#SVGID_LOGBOOK_OPERATION_APP_06);}
+  .logbook_operation_app_196{fill:url(#SVGID_LOGBOOK_OPERATION_APP_07);}
+  .logbook_operation_app_197{fill:var(--vitamui-primary);}
+  .logbook_operation_app_198{fill:url(#SVGID_LOGBOOK_OPERATION_APP_08);}
+  .logbook_operation_app_199{fill:#E5E4E4;}
+  .logbook_operation_app_200{fill:url(#SVGID_LOGBOOK_OPERATION_APP_09);}
+  .logbook_operation_app_201{fill:url(#SVGID_LOGBOOK_OPERATION_APP_10);}
+  .logbook_operation_app_202{fill:url(#SVGID_LOGBOOK_OPERATION_APP_11);}
+  .logbook_operation_app_203{fill:url(#SVGID_LOGBOOK_OPERATION_APP_12);}
+  .logbook_operation_app_204{fill:url(#SVGID_LOGBOOK_OPERATION_APP_13);}
+  .logbook_operation_app_205{fill:url(#SVGID_LOGBOOK_OPERATION_APP_14);}
+  .logbook_operation_app_206{fill:url(#SVGID_LOGBOOK_OPERATION_APP_15);}
+  .logbook_operation_app_207{fill:url(#SVGID_LOGBOOK_OPERATION_APP_16);}
+  .logbook_operation_app_208{fill:url(#SVGID_LOGBOOK_OPERATION_APP_17);}
+  .logbook_operation_app_209{fill:url(#SVGID_LOGBOOK_OPERATION_APP_18);}
+  .logbook_operation_app_210{fill:url(#SVGID_LOGBOOK_OPERATION_APP_19);}
+  .logbook_operation_app_211{fill:url(#SVGID_LOGBOOK_OPERATION_APP_20);}
+  .logbook_operation_app_212{fill:url(#SVGID_LOGBOOK_OPERATION_APP_21);}
+  .logbook_operation_app_213{fill:var(--vitamui-primary-light);}
+  .logbook_operation_app_214{fill:var(--vitamui-primary-50);}
+  .logbook_operation_app_215{fill:var(--vitamui-primary-900);}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="134.3" width="165.1" x="17.3" y="19"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="logbook_operation_app_01" d="M99.8,141.8c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.1,150.4,54.2,141.8,99.8,141.8z"/>
+    <path class="logbook_operation_app_02" d="M99.8,142.2c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.5,56.2,142.2,99.8,142.2z"/>
+    <path class="logbook_operation_app_03" d="M99.8,140c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.3,56.2,140,99.8,140z"/>
+    <path class="logbook_operation_app_02" d="M99.8,138.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147.1,56.2,138.9,99.8,138.9z"/>
+    <path class="logbook_operation_app_04" d="M99.7,138.9c22.9,0,43.4,2.3,57.8,6C127.4,143,45,147.4,24.6,163.3c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147.1,56.2,138.9,99.7,138.9z"/>
+    <path class="logbook_operation_app_03" d="M20.9,157.5c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158.1,20.9,157.9,20.9,157.5z"/>
+	</g>
+    <g>
+		<ellipse class="logbook_operation_app_05" cx="99.8" cy="158.1" rx="50.7" ry="9.4"/>
+      <ellipse class="logbook_operation_app_06" cx="99.8" cy="158.1" rx="50.5" ry="9.4"/>
+      <ellipse class="logbook_operation_app_07" cx="99.8" cy="158.1" rx="50.3" ry="9.4"/>
+      <ellipse class="logbook_operation_app_08" cx="99.8" cy="158.1" rx="50.2" ry="9.3"/>
+      <ellipse class="logbook_operation_app_09" cx="99.8" cy="158.1" rx="50" ry="9.3"/>
+      <ellipse class="logbook_operation_app_10" cx="99.8" cy="158.1" rx="49.8" ry="9.3"/>
+      <ellipse class="logbook_operation_app_11" cx="99.8" cy="158.1" rx="49.6" ry="9.2"/>
+      <ellipse class="logbook_operation_app_12" cx="99.8" cy="158.1" rx="49.4" ry="9.2"/>
+      <ellipse class="logbook_operation_app_13" cx="99.8" cy="158.1" rx="49.3" ry="9.2"/>
+      <ellipse class="logbook_operation_app_14" cx="99.8" cy="158.1" rx="49.1" ry="9.1"/>
+      <ellipse class="logbook_operation_app_15" cx="99.8" cy="158.1" rx="48.9" ry="9.1"/>
+      <ellipse class="logbook_operation_app_16" cx="99.8" cy="158.1" rx="48.7" ry="9.1"/>
+      <ellipse class="logbook_operation_app_17" cx="99.8" cy="158.1" rx="48.6" ry="9"/>
+      <ellipse class="logbook_operation_app_18" cx="99.8" cy="158.1" rx="48.4" ry="9"/>
+      <ellipse class="logbook_operation_app_18" cx="99.8" cy="158.1" rx="48.2" ry="9"/>
+      <ellipse class="logbook_operation_app_19" cx="99.8" cy="158.1" rx="48" ry="8.9"/>
+      <ellipse class="logbook_operation_app_20" cx="99.8" cy="158.1" rx="47.8" ry="8.9"/>
+      <ellipse class="logbook_operation_app_21" cx="99.8" cy="158.1" rx="47.7" ry="8.9"/>
+      <ellipse class="logbook_operation_app_22" cx="99.8" cy="158.1" rx="47.5" ry="8.8"/>
+      <ellipse class="logbook_operation_app_23" cx="99.8" cy="158.1" rx="47.3" ry="8.8"/>
+      <ellipse class="logbook_operation_app_24" cx="99.8" cy="158.1" rx="47.1" ry="8.8"/>
+      <ellipse class="logbook_operation_app_25" cx="99.8" cy="158.1" rx="47" ry="8.7"/>
+      <ellipse class="logbook_operation_app_26" cx="99.8" cy="158.1" rx="46.8" ry="8.7"/>
+      <ellipse class="logbook_operation_app_26" cx="99.8" cy="158.1" rx="46.6" ry="8.7"/>
+      <ellipse class="logbook_operation_app_27" cx="99.8" cy="158.1" rx="46.4" ry="8.6"/>
+      <ellipse class="logbook_operation_app_27" cx="99.8" cy="158.1" rx="46.2" ry="8.6"/>
+      <ellipse class="logbook_operation_app_28" cx="99.8" cy="158.1" rx="46.1" ry="8.6"/>
+      <ellipse class="logbook_operation_app_29" cx="99.8" cy="158.1" rx="45.9" ry="8.5"/>
+      <ellipse class="logbook_operation_app_30" cx="99.8" cy="158.1" rx="45.7" ry="8.5"/>
+      <ellipse class="logbook_operation_app_31" cx="99.8" cy="158.1" rx="45.5" ry="8.5"/>
+      <ellipse class="logbook_operation_app_32" cx="99.8" cy="158.1" rx="45.4" ry="8.5"/>
+      <ellipse class="logbook_operation_app_33" cx="99.8" cy="158.1" rx="45.2" ry="8.4"/>
+      <ellipse class="logbook_operation_app_33" cx="99.8" cy="158.1" rx="45" ry="8.4"/>
+      <ellipse class="logbook_operation_app_34" cx="99.8" cy="158.1" rx="44.8" ry="8.4"/>
+      <ellipse class="logbook_operation_app_34" cx="99.8" cy="158.1" rx="44.6" ry="8.3"/>
+      <ellipse class="logbook_operation_app_35" cx="99.8" cy="158.1" rx="44.5" ry="8.3"/>
+      <ellipse class="logbook_operation_app_35" cx="99.8" cy="158.1" rx="44.3" ry="8.3"/>
+      <ellipse class="logbook_operation_app_36" cx="99.8" cy="158.1" rx="44.1" ry="8.2"/>
+      <ellipse class="logbook_operation_app_37" cx="99.8" cy="158.1" rx="43.9" ry="8.2"/>
+      <ellipse class="logbook_operation_app_38" cx="99.8" cy="158.1" rx="43.8" ry="8.2"/>
+      <ellipse class="logbook_operation_app_39" cx="99.8" cy="158.1" rx="43.6" ry="8.1"/>
+      <ellipse class="logbook_operation_app_40" cx="99.8" cy="158.1" rx="43.4" ry="8.1"/>
+      <ellipse class="logbook_operation_app_41" cx="99.8" cy="158.1" rx="43.2" ry="8.1"/>
+      <ellipse class="logbook_operation_app_41" cx="99.8" cy="158.1" rx="43" ry="8"/>
+      <ellipse class="logbook_operation_app_42" cx="99.8" cy="158.1" rx="42.9" ry="8"/>
+      <ellipse class="logbook_operation_app_42" cx="99.8" cy="158.1" rx="42.7" ry="8"/>
+      <ellipse class="logbook_operation_app_43" cx="99.8" cy="158.1" rx="42.5" ry="7.9"/>
+      <ellipse class="logbook_operation_app_43" cx="99.8" cy="158.1" rx="42.3" ry="7.9"/>
+      <ellipse class="logbook_operation_app_44" cx="99.8" cy="158.1" rx="42.2" ry="7.9"/>
+      <ellipse class="logbook_operation_app_45" cx="99.8" cy="158.1" rx="42" ry="7.8"/>
+      <ellipse class="logbook_operation_app_46" cx="99.8" cy="158.1" rx="41.8" ry="7.8"/>
+      <ellipse class="logbook_operation_app_47" cx="99.8" cy="158.1" rx="41.6" ry="7.8"/>
+      <ellipse class="logbook_operation_app_48" cx="99.8" cy="158.1" rx="41.4" ry="7.7"/>
+      <ellipse class="logbook_operation_app_49" cx="99.8" cy="158.1" rx="41.3" ry="7.7"/>
+      <ellipse class="logbook_operation_app_50" cx="99.8" cy="158.1" rx="41.1" ry="7.7"/>
+      <ellipse class="logbook_operation_app_51" cx="99.8" cy="158.1" rx="40.9" ry="7.6"/>
+      <ellipse class="logbook_operation_app_51" cx="99.8" cy="158.1" rx="40.7" ry="7.6"/>
+      <ellipse class="logbook_operation_app_52" cx="99.8" cy="158.1" rx="40.6" ry="7.6"/>
+      <ellipse class="logbook_operation_app_53" cx="99.8" cy="158.1" rx="40.4" ry="7.5"/>
+      <ellipse class="logbook_operation_app_54" cx="99.8" cy="158.1" rx="40.2" ry="7.5"/>
+      <ellipse class="logbook_operation_app_55" cx="99.8" cy="158.1" rx="40" ry="7.5"/>
+      <ellipse class="logbook_operation_app_56" cx="99.8" cy="158.1" rx="39.8" ry="7.4"/>
+      <ellipse class="logbook_operation_app_57" cx="99.8" cy="158.1" rx="39.7" ry="7.4"/>
+      <ellipse class="logbook_operation_app_58" cx="99.8" cy="158.1" rx="39.5" ry="7.4"/>
+      <ellipse class="logbook_operation_app_59" cx="99.8" cy="158.1" rx="39.3" ry="7.3"/>
+      <ellipse class="logbook_operation_app_60" cx="99.8" cy="158.1" rx="39.1" ry="7.3"/>
+      <ellipse class="logbook_operation_app_61" cx="99.8" cy="158.1" rx="38.9" ry="7.3"/>
+      <ellipse class="logbook_operation_app_62" cx="99.8" cy="158.1" rx="38.8" ry="7.2"/>
+      <ellipse class="logbook_operation_app_63" cx="99.8" cy="158.1" rx="38.6" ry="7.2"/>
+      <ellipse class="logbook_operation_app_64" cx="99.8" cy="158.1" rx="38.4" ry="7.2"/>
+      <ellipse class="logbook_operation_app_65" cx="99.8" cy="158.1" rx="38.2" ry="7.1"/>
+      <ellipse class="logbook_operation_app_66" cx="99.8" cy="158.1" rx="38.1" ry="7.1"/>
+      <ellipse class="logbook_operation_app_67" cx="99.8" cy="158.1" rx="37.9" ry="7.1"/>
+      <ellipse class="logbook_operation_app_68" cx="99.8" cy="158.1" rx="37.7" ry="7"/>
+      <ellipse class="logbook_operation_app_69" cx="99.8" cy="158.1" rx="37.5" ry="7"/>
+      <ellipse class="logbook_operation_app_70" cx="99.8" cy="158.1" rx="37.3" ry="7"/>
+      <ellipse class="logbook_operation_app_71" cx="99.8" cy="158.1" rx="37.2" ry="6.9"/>
+      <ellipse class="logbook_operation_app_72" cx="99.8" cy="158.1" rx="37" ry="6.9"/>
+      <ellipse class="logbook_operation_app_73" cx="99.8" cy="158.1" rx="36.8" ry="6.9"/>
+      <ellipse class="logbook_operation_app_74" cx="99.8" cy="158.1" rx="36.6" ry="6.8"/>
+      <ellipse class="logbook_operation_app_75" cx="99.8" cy="158.1" rx="36.5" ry="6.8"/>
+      <ellipse class="logbook_operation_app_76" cx="99.8" cy="158.1" rx="36.3" ry="6.8"/>
+      <ellipse class="logbook_operation_app_77" cx="99.8" cy="158.1" rx="36.1" ry="6.7"/>
+      <ellipse class="logbook_operation_app_78" cx="99.8" cy="158.1" rx="35.9" ry="6.7"/>
+      <ellipse class="logbook_operation_app_79" cx="99.8" cy="158.1" rx="35.7" ry="6.7"/>
+      <ellipse class="logbook_operation_app_80" cx="99.8" cy="158.1" rx="35.6" ry="6.6"/>
+      <ellipse class="logbook_operation_app_81" cx="99.8" cy="158.1" rx="35.4" ry="6.6"/>
+      <ellipse class="logbook_operation_app_82" cx="99.8" cy="158.1" rx="35.2" ry="6.6"/>
+      <ellipse class="logbook_operation_app_83" cx="99.8" cy="158.1" rx="35" ry="6.5"/>
+      <ellipse class="logbook_operation_app_84" cx="99.8" cy="158.1" rx="34.9" ry="6.5"/>
+      <ellipse class="logbook_operation_app_85" cx="99.8" cy="158.1" rx="34.7" ry="6.5"/>
+      <ellipse class="logbook_operation_app_86" cx="99.8" cy="158.1" rx="34.5" ry="6.4"/>
+      <ellipse class="logbook_operation_app_87" cx="99.8" cy="158.1" rx="34.3" ry="6.4"/>
+      <ellipse class="logbook_operation_app_88" cx="99.8" cy="158.1" rx="34.1" ry="6.4"/>
+      <ellipse class="logbook_operation_app_89" cx="99.8" cy="158.1" rx="34" ry="6.3"/>
+      <ellipse class="logbook_operation_app_90" cx="99.8" cy="158.1" rx="33.8" ry="6.3"/>
+      <ellipse class="logbook_operation_app_91" cx="99.8" cy="158.1" rx="33.6" ry="6.3"/>
+      <ellipse class="logbook_operation_app_92" cx="99.8" cy="158.1" rx="33.4" ry="6.2"/>
+      <ellipse class="logbook_operation_app_93" cx="99.8" cy="158.1" rx="33.3" ry="6.2"/>
+      <ellipse class="logbook_operation_app_94" cx="99.8" cy="158.1" rx="33.1" ry="6.2"/>
+      <ellipse class="logbook_operation_app_95" cx="99.8" cy="158.1" rx="32.9" ry="6.1"/>
+      <ellipse class="logbook_operation_app_96" cx="99.8" cy="158.1" rx="32.7" ry="6.1"/>
+      <ellipse class="logbook_operation_app_97" cx="99.8" cy="158.1" rx="32.5" ry="6.1"/>
+      <ellipse class="logbook_operation_app_98" cx="99.8" cy="158.1" rx="32.4" ry="6"/>
+      <ellipse class="logbook_operation_app_99" cx="99.8" cy="158.1" rx="32.2" ry="6"/>
+      <ellipse class="logbook_operation_app_100" cx="99.8" cy="158.1" rx="32" ry="6"/>
+      <ellipse class="logbook_operation_app_101" cx="99.8" cy="158.1" rx="31.8" ry="5.9"/>
+      <ellipse class="logbook_operation_app_102" cx="99.8" cy="158.1" rx="31.7" ry="5.9"/>
+      <ellipse class="logbook_operation_app_103" cx="99.8" cy="158.1" rx="31.5" ry="5.9"/>
+      <ellipse class="logbook_operation_app_104" cx="99.8" cy="158.1" rx="31.3" ry="5.8"/>
+      <ellipse class="logbook_operation_app_105" cx="99.8" cy="158.1" rx="31.1" ry="5.8"/>
+      <ellipse class="logbook_operation_app_106" cx="99.8" cy="158.1" rx="30.9" ry="5.8"/>
+      <ellipse class="logbook_operation_app_107" cx="99.8" cy="158.1" rx="30.8" ry="5.7"/>
+      <ellipse class="logbook_operation_app_108" cx="99.8" cy="158.1" rx="30.6" ry="5.7"/>
+      <ellipse class="logbook_operation_app_109" cx="99.8" cy="158.1" rx="30.4" ry="5.7"/>
+      <ellipse class="logbook_operation_app_110" cx="99.8" cy="158.1" rx="30.2" ry="5.6"/>
+      <ellipse class="logbook_operation_app_111" cx="99.8" cy="158.1" rx="30.1" ry="5.6"/>
+      <ellipse class="logbook_operation_app_112" cx="99.8" cy="158.1" rx="29.9" ry="5.6"/>
+      <ellipse class="logbook_operation_app_113" cx="99.8" cy="158.1" rx="29.7" ry="5.5"/>
+      <ellipse class="logbook_operation_app_114" cx="99.8" cy="158.1" rx="29.5" ry="5.5"/>
+      <ellipse class="logbook_operation_app_115" cx="99.8" cy="158.1" rx="29.3" ry="5.5"/>
+      <ellipse class="logbook_operation_app_116" cx="99.8" cy="158.1" rx="29.2" ry="5.4"/>
+      <ellipse class="logbook_operation_app_117" cx="99.8" cy="158.1" rx="29" ry="5.4"/>
+      <ellipse class="logbook_operation_app_118" cx="99.8" cy="158.1" rx="28.8" ry="5.4"/>
+      <ellipse class="logbook_operation_app_119" cx="99.8" cy="158.1" rx="28.6" ry="5.3"/>
+      <ellipse class="logbook_operation_app_120" cx="99.8" cy="158.1" rx="28.4" ry="5.3"/>
+      <ellipse class="logbook_operation_app_121" cx="99.8" cy="158.1" rx="28.3" ry="5.3"/>
+      <ellipse class="logbook_operation_app_122" cx="99.8" cy="158.1" rx="28.1" ry="5.2"/>
+      <ellipse class="logbook_operation_app_123" cx="99.8" cy="158.1" rx="27.9" ry="5.2"/>
+      <ellipse class="logbook_operation_app_124" cx="99.8" cy="158.1" rx="27.7" ry="5.2"/>
+      <ellipse class="logbook_operation_app_125" cx="99.8" cy="158.1" rx="27.6" ry="5.1"/>
+      <ellipse class="logbook_operation_app_126" cx="99.8" cy="158.1" rx="27.4" ry="5.1"/>
+      <ellipse class="logbook_operation_app_127" cx="99.8" cy="158.1" rx="27.2" ry="5.1"/>
+      <ellipse class="logbook_operation_app_128" cx="99.8" cy="158.1" rx="27" ry="5"/>
+      <ellipse class="logbook_operation_app_129" cx="99.8" cy="158.1" rx="26.8" ry="5"/>
+      <ellipse class="logbook_operation_app_130" cx="99.8" cy="158.1" rx="26.7" ry="5"/>
+      <ellipse class="logbook_operation_app_131" cx="99.8" cy="158.1" rx="26.5" ry="4.9"/>
+      <ellipse class="logbook_operation_app_132" cx="99.8" cy="158.1" rx="26.3" ry="4.9"/>
+      <ellipse class="logbook_operation_app_133" cx="99.8" cy="158.1" rx="26.1" ry="4.9"/>
+      <ellipse class="logbook_operation_app_134" cx="99.8" cy="158.1" rx="26" ry="4.8"/>
+      <ellipse class="logbook_operation_app_135" cx="99.8" cy="158.1" rx="25.8" ry="4.8"/>
+      <ellipse class="logbook_operation_app_136" cx="99.8" cy="158.1" rx="25.6" ry="4.8"/>
+      <ellipse class="logbook_operation_app_137" cx="99.8" cy="158.1" rx="25.4" ry="4.7"/>
+      <ellipse class="logbook_operation_app_138" cx="99.8" cy="158.1" rx="25.2" ry="4.7"/>
+      <ellipse class="logbook_operation_app_139" cx="99.8" cy="158.1" rx="25.1" ry="4.7"/>
+      <ellipse class="logbook_operation_app_140" cx="99.8" cy="158.1" rx="24.9" ry="4.6"/>
+      <ellipse class="logbook_operation_app_141" cx="99.8" cy="158.1" rx="24.7" ry="4.6"/>
+      <ellipse class="logbook_operation_app_142" cx="99.8" cy="158.1" rx="24.5" ry="4.6"/>
+      <ellipse class="logbook_operation_app_143" cx="99.8" cy="158.1" rx="24.4" ry="4.5"/>
+      <ellipse class="logbook_operation_app_143" cx="99.8" cy="158.1" rx="24.2" ry="4.5"/>
+      <ellipse class="logbook_operation_app_144" cx="99.8" cy="158.1" rx="24" ry="4.5"/>
+      <ellipse class="logbook_operation_app_145" cx="99.8" cy="158.1" rx="23.8" ry="4.4"/>
+      <ellipse class="logbook_operation_app_146" cx="99.8" cy="158.1" rx="23.6" ry="4.4"/>
+      <ellipse class="logbook_operation_app_147" cx="99.8" cy="158.1" rx="23.5" ry="4.4"/>
+      <ellipse class="logbook_operation_app_148" cx="99.8" cy="158.1" rx="23.3" ry="4.3"/>
+      <ellipse class="logbook_operation_app_149" cx="99.8" cy="158.1" rx="23.1" ry="4.3"/>
+      <ellipse class="logbook_operation_app_150" cx="99.8" cy="158.1" rx="22.9" ry="4.3"/>
+      <ellipse class="logbook_operation_app_151" cx="99.8" cy="158.1" rx="22.8" ry="4.2"/>
+      <ellipse class="logbook_operation_app_151" cx="99.8" cy="158.1" rx="22.6" ry="4.2"/>
+      <ellipse class="logbook_operation_app_152" cx="99.8" cy="158.1" rx="22.4" ry="4.2"/>
+      <ellipse class="logbook_operation_app_152" cx="99.8" cy="158.1" rx="22.2" ry="4.1"/>
+      <ellipse class="logbook_operation_app_153" cx="99.8" cy="158.1" rx="22" ry="4.1"/>
+      <ellipse class="logbook_operation_app_154" cx="99.8" cy="158.1" rx="21.9" ry="4.1"/>
+      <ellipse class="logbook_operation_app_155" cx="99.8" cy="158.1" rx="21.7" ry="4"/>
+      <ellipse class="logbook_operation_app_156" cx="99.8" cy="158.1" rx="21.5" ry="4"/>
+      <ellipse class="logbook_operation_app_157" cx="99.8" cy="158.1" rx="21.3" ry="4"/>
+      <ellipse class="logbook_operation_app_158" cx="99.8" cy="158.1" rx="21.2" ry="3.9"/>
+      <ellipse class="logbook_operation_app_159" cx="99.8" cy="158.1" rx="21" ry="3.9"/>
+      <ellipse class="logbook_operation_app_160" cx="99.8" cy="158.1" rx="20.8" ry="3.9"/>
+      <ellipse class="logbook_operation_app_160" cx="99.8" cy="158.1" rx="20.6" ry="3.8"/>
+      <ellipse class="logbook_operation_app_161" cx="99.8" cy="158.1" rx="20.4" ry="3.8"/>
+      <ellipse class="logbook_operation_app_161" cx="99.8" cy="158.1" rx="20.3" ry="3.8"/>
+      <ellipse class="logbook_operation_app_162" cx="99.8" cy="158.1" rx="20.1" ry="3.7"/>
+      <ellipse class="logbook_operation_app_162" cx="99.8" cy="158.1" rx="19.9" ry="3.7"/>
+      <ellipse class="logbook_operation_app_163" cx="99.8" cy="158.1" rx="19.7" ry="3.7"/>
+      <ellipse class="logbook_operation_app_164" cx="99.8" cy="158.1" rx="19.6" ry="3.6"/>
+      <ellipse class="logbook_operation_app_165" cx="99.8" cy="158.1" rx="19.4" ry="3.6"/>
+      <ellipse class="logbook_operation_app_166" cx="99.8" cy="158.1" rx="19.2" ry="3.6"/>
+      <ellipse class="logbook_operation_app_167" cx="99.8" cy="158.1" rx="19" ry="3.5"/>
+      <ellipse class="logbook_operation_app_168" cx="99.8" cy="158.1" rx="18.8" ry="3.5"/>
+      <ellipse class="logbook_operation_app_168" cx="99.8" cy="158.1" rx="18.7" ry="3.5"/>
+      <ellipse class="logbook_operation_app_169" cx="99.8" cy="158.1" rx="18.5" ry="3.4"/>
+      <ellipse class="logbook_operation_app_169" cx="99.8" cy="158.1" rx="18.3" ry="3.4"/>
+      <ellipse class="logbook_operation_app_170" cx="99.8" cy="158.1" rx="18.1" ry="3.4"/>
+      <ellipse class="logbook_operation_app_171" cx="99.8" cy="158.1" rx="17.9" ry="3.3"/>
+      <ellipse class="logbook_operation_app_172" cx="99.8" cy="158.1" rx="17.8" ry="3.3"/>
+      <ellipse class="logbook_operation_app_173" cx="99.8" cy="158.1" rx="17.6" ry="3.3"/>
+      <ellipse class="logbook_operation_app_174" cx="99.8" cy="158.1" rx="17.4" ry="3.2"/>
+      <ellipse class="logbook_operation_app_175" cx="99.8" cy="158.1" rx="17.2" ry="3.2"/>
+      <ellipse class="logbook_operation_app_175" cx="99.8" cy="158.1" rx="17.1" ry="3.2"/>
+      <ellipse class="logbook_operation_app_176" cx="99.8" cy="158.1" rx="16.9" ry="3.1"/>
+      <ellipse class="logbook_operation_app_176" cx="99.8" cy="158.1" rx="16.7" ry="3.1"/>
+      <ellipse class="logbook_operation_app_177" cx="99.8" cy="158.1" rx="16.5" ry="3.1"/>
+      <ellipse class="logbook_operation_app_178" cx="99.8" cy="158.1" rx="16.3" ry="3"/>
+      <ellipse class="logbook_operation_app_179" cx="99.8" cy="158.1" rx="16.2" ry="3"/>
+      <ellipse class="logbook_operation_app_180" cx="99.8" cy="158.1" rx="16" ry="3"/>
+      <ellipse class="logbook_operation_app_181" cx="99.8" cy="158.1" rx="15.8" ry="2.9"/>
+      <ellipse class="logbook_operation_app_182" cx="99.8" cy="158.1" rx="15.6" ry="2.9"/>
+      <ellipse class="logbook_operation_app_183" cx="99.8" cy="158.1" rx="15.5" ry="2.9"/>
+      <ellipse class="logbook_operation_app_184" cx="99.8" cy="158.1" rx="15.3" ry="2.8"/>
+      <ellipse class="logbook_operation_app_184" cx="99.8" cy="158.1" rx="15.1" ry="2.8"/>
+      <ellipse class="logbook_operation_app_185" cx="99.8" cy="158.1" rx="14.9" ry="2.8"/>
+	</g>
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_01" gradientUnits="userSpaceOnUse" x1="99.9231" y1="174.5347" x2="99.9231" y2="168.2313">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+      <stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+    <path class="logbook_operation_app_186" d="M75,170.6l-0.2,4.6H125l-0.8-5.1c-0.3-1.6-1.6-2.9-3.3-2.9H78.3C76.6,167.4,75,168.9,75,170.6z"/>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_22" gradientUnits="userSpaceOnUse" x1="99.9231" y1="174.1418" x2="99.9231" y2="178.1832">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+      <stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_22);" points="
+		74.9,175.3 75.3,179.5 98.9,180.6 124.3,179.5 125,175.3 	"/>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_23" gradientUnits="userSpaceOnUse" x1="86.8878" y1="174.0926" x2="86.8878" y2="162.9231">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+      <stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+    <path style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_23);" d="
+		M75,170.7l-0.2,4.6h18.2l5.8-8H78.5C76.6,167.3,75,168.9,75,170.7z"/>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_24" gradientUnits="userSpaceOnUse" x1="83.9038" y1="-565.9342" x2="83.9038" y2="-570.7847" gradientTransform="matrix(1 0 0 -1 0 -390.6143)">
+		<stop  offset="0" style="stop-color:#4C4C4C"/>
+      <stop  offset="1" style="stop-color:#000000"/>
+	</linearGradient>
+
+    <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_LOGBOOK_OPERATION_APP_24);" points="
+		74.9,175.3 75.3,179.5 84.1,180 91.2,176.2 92.9,175.3 	"/>
+    <path class="logbook_operation_app_01" d="M117.3,169.1c2,0,3.6,0.5,3.6,1.1c0,0.6-1.7,1.1-3.6,1.1c-1.9,0-3.6-0.5-3.6-1.1
+		C113.7,169.6,115.2,169.1,117.3,169.1z"/>
+    <path class="logbook_operation_app_190" d="M117.3,169.1c1.9,0,3.3,0.5,3.3,0.9s-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9S115.5,169.1,117.3,169.1z"/>
+    <path class="logbook_operation_app_191" d="M117.3,169.5c1.4,0,2.7,0.3,2.7,0.8s-1.3,0.8-2.7,0.8c-1.4,0-2.7-0.3-2.7-0.8
+		C114.8,169.8,115.9,169.5,117.3,169.5z"/>
+    <path class="logbook_operation_app_192" d="M117.3,169.6c0.9,0,1.7,0.3,1.7,0.6s-0.8,0.6-1.7,0.6c-0.9,0-1.7-0.3-1.7-0.6S116.3,169.6,117.3,169.6z"/>
+    <path class="logbook_operation_app_193" d="M117.3,169.6c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5c-0.9,0-1.6-0.2-1.6-0.5
+		C115.7,169.8,116.5,169.6,117.3,169.6z"/>
+    <path class="logbook_operation_app_01" d="M107.5,169.1c2,0,3.6,0.5,3.6,1.1c0,0.6-1.7,1.1-3.6,1.1s-3.6-0.5-3.6-1.1
+		C103.9,169.6,105.5,169.1,107.5,169.1z"/>
+    <path class="logbook_operation_app_190" d="M107.5,169.1c1.7,0,3.3,0.5,3.3,0.9s-1.4,0.9-3.3,0.9c-1.7,0-3.3-0.5-3.3-0.9
+		C104.4,169.6,105.8,169.1,107.5,169.1z"/>
+    <path class="logbook_operation_app_191" d="M107.5,169.5c1.4,0,2.7,0.3,2.7,0.8s-1.3,0.8-2.7,0.8s-2.7-0.3-2.7-0.8C105,169.8,106.1,169.5,107.5,169.5z"
+    />
+    <path class="logbook_operation_app_192" d="M107.5,169.6c0.9,0,1.7,0.3,1.7,0.6s-0.8,0.6-1.7,0.6c-0.9,0-1.7-0.3-1.7-0.6S106.6,169.6,107.5,169.6z"/>
+    <path class="logbook_operation_app_193" d="M107.5,169.6c0.9,0,1.6,0.2,1.6,0.5c0,0.3-0.6,0.5-1.6,0.5c-0.9,0-1.6-0.2-1.6-0.5
+		C106,169.8,106.8,169.6,107.5,169.6z"/>
+    <path class="logbook_operation_app_01" d="M81.3,178.7c2,0,3.6-0.6,3.6-1.4s-1.7-1.4-3.6-1.4c-2,0-3.6,0.6-3.6,1.4S79.3,178.7,81.3,178.7z"/>
+    <path class="logbook_operation_app_190" d="M81.3,178.6c1.9,0,3.3-0.5,3.3-1.3c0-0.6-1.4-1.3-3.3-1.3c-1.7,0-3.3,0.5-3.3,1.3
+		C78,177.9,79.4,178.6,81.3,178.6z"/>
+    <path class="logbook_operation_app_191" d="M81.3,178.2c1.4,0,2.7-0.5,2.7-0.9s-1.3-0.9-2.7-0.9c-1.4,0-2.7,0.5-2.7,0.9S79.9,178.2,81.3,178.2z"/>
+    <path class="logbook_operation_app_193" d="M81.3,177.9c0.9,0,1.6-0.3,1.6-0.6s-0.6-0.6-1.6-0.6c-0.9,0-1.6,0.3-1.6,0.6
+		C79.7,177.8,80.5,177.9,81.3,177.9z"/>
+</g>
+  <g>
+
+		<linearGradient id="SVGID_LOGBOOK_OPERATION_APP_25" gradientUnits="userSpaceOnUse" x1="94.0811" y1="72.077" x2="94.0811" y2="72.077">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_25);" d="M94.1,72.1"/>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_26" gradientUnits="userSpaceOnUse" x1="93.0863" y1="141.8858" x2="93.0863" y2="81.0696">
+		<stop  offset="0" style="stop-color:#000000"/>
+      <stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="4.243332e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.2123" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_26);" d="M125.6,80.6l-17.5,0.3l0.1-3.8
+		c0.4-2.3-0.8-4.3-2.4-4.2l-43.7,0.6c-1.8,0.1-3.2,2.3-3,4.7l-1,46.4L57.1,158v5.5c0,0-0.2,4.7,4.8,5.5c5.1,0.7,8.6-0.5,8.6-0.5
+		l0.6-9l52.7-15.6c1.6-0.3,3.1-2.2,3.4-4.5l1.7-52.7C129.5,83.4,127.8,80.5,125.6,80.6z"/>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_27" gradientUnits="userSpaceOnUse" x1="84.0321" y1="168.1497" x2="105.7733" y2="37.9158">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="4.258544e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.179" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.3137" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4445" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5697" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6831" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.739" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.8255" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.9312" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_27);" d="M126.4,80.6l-17.5,0.3l0.1-3.8
+		c0.4-2.3-0.8-4.3-2.4-4.2L63,73.5c-1.8,0.1-3.2,2.3-3,4.7l-1,46.4L57.9,158v5.5c0,0-0.2,4.7,4.8,5.5c5.1,0.7,8.7-0.8,8.7-0.8
+		l0.4-8.7l52.7-15.6c1.6-0.3,3.1-2.2,3.4-4.5l1.7-52.7C130.3,83.4,128.6,80.5,126.4,80.6z"/>
+    <path class="logbook_operation_app_197" d="M108.2,80.9l0.2-4.6c0,0,0-2.3-1.6-3c0,0,1.2,0.8,1.2,3c0,2.2-0.1,4.6-0.1,4.6L108.2,80.9z"/>
+    <g>
+
+			<linearGradient id="SVGID_LOGBOOK_OPERATION_APP_28" gradientUnits="userSpaceOnUse" x1="539.006" y1="137.5393" x2="556.4998" y2="282.2337" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+      <polygon style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_28);" points="70,48.7 134.6,51.5 132.6,144.8
+			67,159.4 		"/>
+      <g>
+			<g>
+				<path class="logbook_operation_app_185" d="M127,65.2L97,65.1c-0.3,0-0.5-0.3-0.5-0.6v0c0-0.3,0.3-0.6,0.6-0.6l29.9,0.2c0.3,0,0.5,0.3,0.5,0.6l0,0
+					C127.4,64.9,127.2,65.2,127,65.2z"/>
+        <path class="logbook_operation_app_185" d="M126.9,68.5l-30,0.2c-0.3,0-0.5-0.3-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l29.9-0.1c0.3,0,0.5,0.2,0.5,0.6
+					l0,0C127.4,68.3,127.2,68.5,126.9,68.5z"/>
+        <path class="logbook_operation_app_185" d="M126.8,71.9l-30,0.4c-0.3,0-0.5-0.3-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30-0.4c0.3,0,0.5,0.2,0.5,0.6l0,0
+					C127.3,71.6,127.1,71.9,126.8,71.9z"/>
+        <path class="logbook_operation_app_199" d="M83.6,72.5l5.9-0.1c0.6,0,1.1-0.6,1.2-1.2l0.2-6.2c0-0.7-0.5-1.2-1.1-1.2l-5.9,0c-0.6,0-1.2,0.5-1.2,1.2
+					l-0.2,6.3C82.4,72,82.9,72.5,83.6,72.5z"/>
+
+        <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_29" gradientUnits="userSpaceOnUse" x1="520.9409" y1="183.7951" x2="537.6572" y2="180.5691" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+          <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+          <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+          <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+          <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+          <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+        <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_29);" d="M89.7,65c-0.3-0.5-1-0.8-1.5-0.4
+					c-1.7,1.3-3.4,2.7-4.8,4.4c-0.5-0.5-1-0.9-1.5-1.4c-0.4-0.4-1.2-0.5-1.6,0c-0.4,0.5-0.5,1.2,0,1.7c0.8,0.7,1.6,1.5,2.4,2.2
+					c0.4,0.4,1.2,0.5,1.6,0c0.8-1,1.6-1.9,2.4-2.7c0.4-0.4,0.9-0.8,1.3-1.2c0.1-0.1,0.2-0.2,0.3-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.5C89.7,66.3,90,65.6,89.7,65z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M126.6,81.6l-30,1.3c-0.3,0-0.6-0.2-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30-1.2c0.3,0,0.5,0.2,0.5,0.5l0,0
+					C127.1,81.3,126.9,81.6,126.6,81.6z"/>
+          <path class="logbook_operation_app_185" d="M126.5,84.9l-30,1.5c-0.3,0-0.6-0.2-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30-1.5c0.3,0,0.5,0.2,0.5,0.5l0,0
+					C127,84.7,126.8,84.9,126.5,84.9z"/>
+          <path class="logbook_operation_app_185" d="M126.5,88.3l-30,1.8c-0.3,0-0.6-0.2-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30-1.7c0.3,0,0.5,0.2,0.5,0.5l0,0
+					C126.9,88,126.7,88.3,126.5,88.3z"/>
+          <path class="logbook_operation_app_199" d="M83.1,90.9l5.9-0.4c0.6,0,1.1-0.6,1.2-1.3l0.2-6.2c0-0.7-0.5-1.2-1.1-1.2l-5.9,0.2
+					c-0.6,0-1.2,0.6-1.2,1.3l-0.2,6.3C81.9,90.4,82.4,91,83.1,90.9z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_30" gradientUnits="userSpaceOnUse" x1="520.2604" y1="202.067" x2="537.1356" y2="198.8104" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_30);" d="M89.2,83.1c-0.3-0.5-1-0.8-1.5-0.4
+					c-1.8,1.4-3.4,2.9-4.8,4.7c-0.5-0.4-1-0.9-1.5-1.3c-0.4-0.4-1.2-0.4-1.6,0.1c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.7,1.6,1.4,2.4,2.1
+					c0.4,0.4,1.2,0.5,1.6-0.1c0.8-1,1.6-2,2.5-2.8c0.4-0.4,0.9-0.9,1.3-1.3c0.1-0.1,0.2-0.2,0.3-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.6C89.2,84.4,89.5,83.7,89.2,83.1z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M126.3,98l-30.1,2.7c-0.3,0-0.6-0.2-0.5-0.6v0c0-0.3,0.3-0.6,0.6-0.7l30.1-2.6c0.3,0,0.5,0.2,0.5,0.5l0,0
+					C126.7,97.7,126.5,98,126.3,98z"/>
+          <path class="logbook_operation_app_185" d="M126.2,101.4l-30.1,2.9c-0.3,0-0.6-0.2-0.5-0.6l0,0c0-0.3,0.3-0.6,0.6-0.7l30.1-2.8
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C126.7,101.1,126.5,101.4,126.2,101.4z"/>
+          <path class="logbook_operation_app_185" d="M126.1,104.7L96,108c-0.3,0-0.6-0.2-0.5-0.5v0c0-0.3,0.3-0.6,0.6-0.7l30.1-3.1c0.3,0,0.5,0.2,0.5,0.5l0,0
+					C126.6,104.4,126.4,104.7,126.1,104.7z"/>
+          <path class="logbook_operation_app_199" d="M82.6,109.4l5.9-0.6c0.6-0.1,1.2-0.7,1.2-1.3l0.2-6.2c0-0.7-0.5-1.2-1.1-1.1l-5.9,0.5
+					c-0.6,0.1-1.2,0.7-1.2,1.3l-0.2,6.3C81.5,109,82,109.5,82.6,109.4z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_31" gradientUnits="userSpaceOnUse" x1="519.5773" y1="220.4008" x2="536.6125" y2="217.1133" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_31);" d="M88.7,101.3c-0.3-0.5-1-0.7-1.5-0.3
+					c-1.8,1.4-3.4,3.1-4.8,4.9c-0.5-0.4-1-0.8-1.5-1.3c-0.4-0.4-1.2-0.4-1.6,0.2c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.7,1.6,1.4,2.4,2
+					c0.4,0.4,1.2,0.4,1.6-0.2c0.8-1,1.6-2,2.5-3c0.4-0.5,0.9-0.9,1.3-1.3c0.1-0.1,0.2-0.2,0.3-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.6C88.8,102.6,89.1,101.8,88.7,101.3z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M125.9,114.5l-30.2,4.1c-0.3,0-0.6-0.2-0.5-0.5l0,0c0-0.3,0.3-0.6,0.6-0.7l30.2-4c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C126.4,114.2,126.2,114.5,125.9,114.5z"/>
+          <path class="logbook_operation_app_185" d="M125.8,117.9l-30.2,4.3c-0.3,0-0.6-0.2-0.5-0.5l0,0c0-0.3,0.3-0.6,0.6-0.7l30.2-4.2
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C126.3,117.6,126.1,117.8,125.8,117.9z"/>
+          <path class="logbook_operation_app_185" d="M125.8,121.3l-30.2,4.6c-0.3,0-0.6-0.2-0.5-0.5l0,0c0-0.3,0.3-0.6,0.6-0.7l30.2-4.5
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C126.2,120.9,126,121.2,125.8,121.3z"/>
+          <path class="logbook_operation_app_199" d="M82.1,127.9l5.9-0.9c0.6-0.1,1.2-0.7,1.2-1.4l0.2-6.2c0-0.7-0.5-1.2-1.1-1.1l-5.9,0.8
+					c-0.7,0.1-1.2,0.7-1.2,1.4l-0.2,6.4C81,127.6,81.5,128,82.1,127.9z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_32" gradientUnits="userSpaceOnUse" x1="518.8916" y1="238.7968" x2="536.0879" y2="235.4782" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_32);" d="M88.3,119.5c-0.3-0.5-1-0.7-1.5-0.2
+					c-1.8,1.5-3.4,3.2-4.9,5.1c-0.5-0.4-1-0.8-1.5-1.2c-0.4-0.4-1.2-0.3-1.6,0.2c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.6,1.6,1.3,2.4,1.9
+					c0.4,0.3,1.2,0.3,1.6-0.2c0.8-1.1,1.6-2.1,2.5-3.1c0.4-0.5,0.9-1,1.3-1.4c0.1-0.1,0.2-0.2,0.3-0.3c0,0,0,0,0,0
+					c0.1-0.1,0.1-0.1,0.2-0.2c0.2-0.2,0.5-0.4,0.7-0.6C88.3,120.8,88.6,120.1,88.3,119.5z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M125.6,131.1l-30.3,5.5c-0.3,0.1-0.6-0.2-0.5-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.2-5.4
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C126,130.7,125.8,131,125.6,131.1z"/>
+          <path class="logbook_operation_app_185" d="M125.5,134.4l-30.3,5.7c-0.3,0.1-0.6-0.2-0.5-0.5v0c0-0.3,0.3-0.7,0.6-0.7l30.3-5.7
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C126,134.1,125.7,134.4,125.5,134.4z"/>
+          <path class="logbook_operation_app_185" d="M125.4,137.8l-30.3,6c-0.3,0.1-0.6-0.2-0.5-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.3-5.9
+					c0.3-0.1,0.5,0.2,0.5,0.5l0,0C125.9,137.5,125.7,137.8,125.4,137.8z"/>
+          <path class="logbook_operation_app_199" d="M81.7,146.5l6-1.2c0.6-0.1,1.2-0.8,1.2-1.5l0.2-6.3c0-0.7-0.5-1.1-1.1-1l-5.9,1.1
+					c-0.7,0.1-1.2,0.8-1.2,1.5l-0.2,6.4C80.5,146.2,81,146.7,81.7,146.5z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_33" gradientUnits="userSpaceOnUse" x1="518.2034" y1="257.2553" x2="535.5617" y2="253.9055" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_33);" d="M87.8,137.8c-0.3-0.4-1-0.6-1.5-0.2
+					c-1.8,1.6-3.4,3.4-4.9,5.4c-0.5-0.4-1-0.8-1.5-1.1c-0.4-0.3-1.2-0.3-1.6,0.3c-0.4,0.5-0.5,1.4,0,1.7c0.8,0.6,1.6,1.2,2.4,1.8
+					c0.4,0.3,1.2,0.3,1.6-0.3c0.8-1.1,1.6-2.2,2.5-3.2c0.4-0.5,0.9-1,1.3-1.5c0.1-0.1,0.2-0.2,0.3-0.4c0,0,0,0,0,0
+					c0.1-0.1,0.1-0.1,0.2-0.2c0.2-0.2,0.5-0.5,0.7-0.7C87.9,139.1,88.2,138.4,87.8,137.8z"/>
+			</g>
+		</g>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_LOGBOOK_OPERATION_APP_34" gradientUnits="userSpaceOnUse" x1="547.7244" y1="167.6845" x2="565.5752" y2="315.3318" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+      <polygon style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_34);" points="73.3,46.8 139.2,49.6
+			137.2,144.8 70.3,159.8 		"/>
+      <g>
+			<g>
+				<path class="logbook_operation_app_185" d="M131.4,63.6l-30.5-0.1c-0.3,0-0.6-0.3-0.6-0.6v0c0-0.3,0.3-0.6,0.6-0.6l30.5,0.2c0.3,0,0.5,0.3,0.5,0.6v0
+					C131.9,63.4,131.7,63.6,131.4,63.6z"/>
+        <path class="logbook_operation_app_185" d="M131.3,67l-30.6,0.2c-0.3,0-0.6-0.3-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30.6-0.1c0.3,0,0.5,0.3,0.5,0.6
+					l0,0C131.8,66.8,131.6,67,131.3,67z"/>
+        <path class="logbook_operation_app_185" d="M131.3,70.4l-30.6,0.5c-0.3,0-0.6-0.3-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30.6-0.4c0.3,0,0.5,0.2,0.5,0.6
+					l0,0C131.8,70.2,131.5,70.4,131.3,70.4z"/>
+        <path class="logbook_operation_app_199" d="M87.1,71.1l6-0.1c0.6,0,1.2-0.6,1.2-1.3l0.2-6.3c0-0.7-0.5-1.2-1.1-1.2l-6,0c-0.7,0-1.2,0.6-1.2,1.2
+					L86,69.8C85.9,70.5,86.5,71.1,87.1,71.1z"/>
+
+        <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_35" gradientUnits="userSpaceOnUse" x1="525.3845" y1="182.5762" x2="542.442" y2="179.2844" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+          <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+          <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+          <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+          <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+          <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+        <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_35);" d="M93.3,63.4c-0.3-0.5-1-0.8-1.5-0.4
+					c-1.8,1.3-3.4,2.8-4.9,4.5c-0.5-0.5-1-1-1.5-1.4c-0.4-0.4-1.2-0.5-1.6,0c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.8,1.6,1.5,2.4,2.3
+					c0.4,0.4,1.2,0.5,1.6,0c0.8-1,1.6-1.9,2.5-2.8c0.4-0.4,0.9-0.8,1.4-1.2c0.1-0.1,0.2-0.2,0.4-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.5C93.4,64.7,93.7,64,93.3,63.4z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M131.1,80.3l-30.6,1.3c-0.3,0-0.6-0.3-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30.6-1.2c0.3,0,0.5,0.2,0.5,0.6
+					l0,0C131.5,80.1,131.3,80.3,131.1,80.3z"/>
+          <path class="logbook_operation_app_185" d="M131,83.8l-30.6,1.6c-0.3,0-0.6-0.2-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.6l30.6-1.5c0.3,0,0.5,0.2,0.5,0.5v0
+					C131.5,83.5,131.3,83.7,131,83.8z"/>
+          <path class="logbook_operation_app_185" d="M130.9,87.2L100.2,89c-0.3,0-0.6-0.2-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.7l30.7-1.8c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C131.4,86.9,131.2,87.2,130.9,87.2z"/>
+          <path class="logbook_operation_app_199" d="M86.6,89.9l6-0.4c0.6,0,1.2-0.6,1.2-1.3l0.2-6.3c0-0.7-0.5-1.2-1.1-1.2l-6,0.2c-0.7,0-1.2,0.6-1.2,1.3
+					l-0.2,6.5C85.5,89.4,86,89.9,86.6,89.9z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_36" gradientUnits="userSpaceOnUse" x1="524.6901" y1="201.221" x2="541.9097" y2="197.8979" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_36);" d="M92.9,81.9c-0.3-0.5-1-0.8-1.5-0.4
+					c-1.8,1.4-3.4,3-4.9,4.8c-0.5-0.5-1-0.9-1.5-1.4c-0.4-0.4-1.2-0.4-1.6,0.1c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.7,1.6,1.5,2.4,2.2
+					c0.4,0.4,1.2,0.5,1.6-0.1c0.8-1,1.6-2,2.5-2.9c0.4-0.5,0.9-0.9,1.4-1.3c0.1-0.1,0.2-0.2,0.4-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.6C92.9,83.2,93.2,82.5,92.9,81.9z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M130.7,97.1L100,99.8c-0.3,0-0.6-0.2-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.7l30.7-2.6c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C131.2,96.8,131,97.1,130.7,97.1z"/>
+          <path class="logbook_operation_app_185" d="M130.6,100.5l-30.7,3c-0.3,0-0.6-0.2-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.7l30.7-2.9c0.3,0,0.5,0.2,0.5,0.5
+					v0C131.1,100.2,130.9,100.5,130.6,100.5z"/>
+          <path class="logbook_operation_app_185" d="M130.6,104l-30.7,3.3c-0.3,0-0.6-0.2-0.6-0.6l0,0c0-0.3,0.3-0.6,0.6-0.7l30.7-3.2c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C131,103.7,130.8,103.9,130.6,104z"/>
+          <path class="logbook_operation_app_199" d="M86.2,108.7l6-0.6c0.6-0.1,1.2-0.7,1.2-1.4l0.2-6.3c0-0.7-0.5-1.2-1.1-1.1l-6,0.5
+					c-0.7,0.1-1.2,0.7-1.2,1.4l-0.2,6.5C85,108.3,85.5,108.8,86.2,108.7z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_37" gradientUnits="userSpaceOnUse" x1="523.9931" y1="219.929" x2="541.376" y2="216.5744" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_37);" d="M92.4,100.5c-0.3-0.5-1-0.7-1.5-0.3
+					c-1.8,1.5-3.5,3.1-4.9,5c-0.5-0.4-1-0.9-1.5-1.3c-0.4-0.4-1.2-0.4-1.7,0.2c-0.4,0.5-0.5,1.3,0,1.7c0.8,0.7,1.6,1.4,2.4,2.1
+					c0.4,0.4,1.2,0.4,1.6-0.2c0.8-1.1,1.6-2.1,2.5-3c0.4-0.5,0.9-0.9,1.4-1.4c0.1-0.1,0.2-0.2,0.4-0.3c0,0,0,0,0,0
+					c0.1,0,0.1-0.1,0.2-0.1c0.2-0.2,0.5-0.4,0.7-0.6C92.5,101.7,92.7,101,92.4,100.5z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M130.3,113.9l-30.8,4.1c-0.3,0-0.6-0.2-0.6-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.8-4c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C130.8,113.6,130.6,113.9,130.3,113.9z"/>
+          <path class="logbook_operation_app_185" d="M130.3,117.4l-30.8,4.4c-0.3,0-0.6-0.2-0.6-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.8-4.3
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C130.8,117.1,130.5,117.3,130.3,117.4z"/>
+          <path class="logbook_operation_app_185" d="M130.2,120.8l-30.8,4.7c-0.3,0-0.6-0.2-0.6-0.5v0c0-0.3,0.3-0.7,0.6-0.7l30.8-4.6c0.3,0,0.5,0.2,0.5,0.5
+					l0,0C130.7,120.5,130.5,120.8,130.2,120.8z"/>
+          <path class="logbook_operation_app_199" d="M85.7,127.6l6.1-0.9c0.6-0.1,1.2-0.7,1.2-1.4l0.2-6.4c0-0.7-0.5-1.2-1.1-1.1l-6.1,0.8
+					c-0.7,0.1-1.2,0.7-1.2,1.4l-0.2,6.5C84.5,127.3,85,127.7,85.7,127.6z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_38" gradientUnits="userSpaceOnUse" x1="523.2935" y1="238.7004" x2="540.8407" y2="235.3141" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_38);" d="M92,119.1c-0.3-0.5-1-0.7-1.5-0.2
+					c-1.8,1.6-3.5,3.3-5,5.2c-0.5-0.4-1-0.8-1.5-1.2c-0.4-0.4-1.2-0.3-1.7,0.2c-0.4,0.5-0.5,1.4,0,1.7c0.8,0.7,1.6,1.3,2.4,2
+					c0.4,0.3,1.2,0.4,1.6-0.2c0.8-1.1,1.6-2.1,2.5-3.1c0.4-0.5,0.9-1,1.4-1.4c0.1-0.1,0.2-0.2,0.4-0.3c0,0,0,0,0,0
+					c0.1-0.1,0.1-0.1,0.2-0.2c0.2-0.2,0.5-0.4,0.7-0.7C92,120.4,92.3,119.6,92,119.1z"/>
+			</g>
+        <g>
+				<path class="logbook_operation_app_185" d="M130,130.8l-30.9,5.6c-0.3,0.1-0.6-0.2-0.6-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.9-5.5
+					c0.3,0,0.5,0.2,0.5,0.5l0,0C130.5,130.5,130.2,130.8,130,130.8z"/>
+          <path class="logbook_operation_app_185" d="M129.9,134.3L99,140.1c-0.3,0.1-0.6-0.2-0.6-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.9-5.8
+					c0.3-0.1,0.5,0.2,0.5,0.5l0,0C130.4,133.9,130.2,134.2,129.9,134.3z"/>
+          <path class="logbook_operation_app_185" d="M129.8,137.7l-30.9,6.2c-0.3,0.1-0.6-0.2-0.6-0.5l0,0c0-0.3,0.3-0.7,0.6-0.7l30.9-6.1
+					c0.3-0.1,0.5,0.2,0.5,0.5l0,0C130.3,137.4,130.1,137.7,129.8,137.7z"/>
+          <path class="logbook_operation_app_199" d="M85.2,146.6l6.1-1.2c0.6-0.1,1.2-0.8,1.2-1.5l0.2-6.4c0-0.7-0.5-1.2-1.1-1l-6.1,1.1
+					c-0.7,0.1-1.2,0.8-1.2,1.5l-0.2,6.5C84,146.3,84.5,146.8,85.2,146.6z"/>
+
+          <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_39" gradientUnits="userSpaceOnUse" x1="522.5912" y1="257.5357" x2="540.3038" y2="254.1174" gradientTransform="matrix(0.7805 -5.627600e-02 0 1 -327.7263 -84.0262)">
+					<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+				</linearGradient>
+          <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_39);" d="M91.5,137.8c-0.3-0.5-1-0.6-1.5-0.2
+					c-1.8,1.6-3.5,3.5-5,5.5c-0.5-0.4-1-0.8-1.5-1.2c-0.4-0.3-1.2-0.3-1.7,0.3c-0.4,0.5-0.5,1.4,0,1.7c0.8,0.6,1.6,1.2,2.5,1.9
+					c0.4,0.3,1.2,0.3,1.6-0.3c0.8-1.1,1.6-2.2,2.5-3.3c0.4-0.5,0.9-1,1.4-1.5c0.1-0.1,0.2-0.2,0.4-0.4c0,0,0,0,0,0
+					c0.1-0.1,0.1-0.1,0.2-0.2c0.2-0.2,0.5-0.5,0.7-0.7C91.5,139,91.8,138.3,91.5,137.8z"/>
+			</g>
+		</g>
+	</g>
+
+    <linearGradient id="SVGID_LOGBOOK_OPERATION_APP_40" gradientUnits="userSpaceOnUse" x1="-87.4339" y1="153.6377" x2="-82.1212" y2="37.8219" gradientTransform="matrix(1 0 -0.2602 0.967 224.828 28.506)">
+		<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+      <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+      <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+      <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+      <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+      <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+      <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+      <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+	</linearGradient>
+    <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_40);" d="M87.3,98.5l-19.9,65.8
+		c-1.7,5,0.9,4.5,3.2,4.1l67.1-17.8c1.7-0.3,3.6-2.1,4.6-4.4l15.7-52c1.4-3.1,0.5-6-1.8-5.8L93.4,92C90.7,92.1,87.8,95.2,87.3,98.5z
+		"/>
+    <g>
+
+			<linearGradient id="SVGID_LOGBOOK_OPERATION_APP_41" gradientUnits="userSpaceOnUse" x1="-87.5344" y1="151.998" x2="-81.6495" y2="59.3795" gradientTransform="matrix(1 0 -0.2602 0.967 224.828 28.506)">
+			<stop  offset="8.429980e-02" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="0.1128" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.2041" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2943" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.3819" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4657" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.5417" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6226" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7477" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.9005" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <path style="fill:url(#SVGID_LOGBOOK_OPERATION_APP_41);" d="M88.4,98.4l-19.7,65.2
+			c-1.7,5,0.9,4.4,3.1,4.1l66.5-17.7c1.7-0.3,3.6-2.1,4.6-4.3l15.6-51.6c1.3-3.1,0.5-5.9-1.8-5.8l-62.2,3.5
+			C91.8,92.1,89,95.2,88.4,98.4z"/>
+      <path class="logbook_operation_app_213" d="M87.8,100.5l-13,43.2C74.8,143.7,76.7,139.8,87.8,100.5z"/>
+      <path class="logbook_operation_app_214" d="M98.5,92.8l56.4-3.5C154.9,89.3,130,92.3,98.5,92.8z"/>
+      <path class="logbook_operation_app_215" d="M70.1,166.5l67.2-17.8C137.3,148.7,95.3,156.8,70.1,166.5z"/>
+	</g>
+</g>
+</svg>
