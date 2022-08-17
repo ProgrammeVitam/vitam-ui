@@ -27,6 +27,11 @@
     "POPUP_VALIDER": "OUI",
     "POPUP_ANNULER": "NON"
   },
+  "PASTIS_POPUP_OPTION": {
+    "OPEN_PROFIL": "Ouvrir un profil depuis mon poste",
+    "CREATE_NOTICE":  "Créer une notice de profil",
+    "SEDAVIEW": "Visualiser la structure du SEDA 2.1"
+  },
   "SHARED": {
     "PASTIS_POP_UP_METADATA_LANGUAGE": {
       "SEDA_TITLE": "Affichage des métadonnées",

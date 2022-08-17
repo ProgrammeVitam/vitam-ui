@@ -27,6 +27,11 @@
     "POPUP_VALIDER": "YES",
     "POPUP_ANNULER": "NO"
   },
+  "PASTIS_POPUP_OPTION": {
+    "OPEN_PROFIL": "Open a profile from my workstation",
+    "CREATE_NOTICE":  "Create a profile notice",
+    "SEDAVIEW": "View the structure of SEDA 2.1"
+  },
   "SHARED": {
     "PASTIS_POP_UP_METADATA_LANGUAGE": {
       "SEDA_TITLE": "Viewing metadata",
