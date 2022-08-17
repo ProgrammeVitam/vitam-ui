@@ -53,8 +53,8 @@ public class ProjectArchiveUnitService extends AbstractPaginateService<CollectPr
         this.collectExternalRestClient = collectExternalRestClient;
     }
 
-    public ArchiveUnitsDto searchCollectProjectArchiveUnits(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
-        return collectExternalRestClient.searchCollectProjectArchiveUnits(context, projectId, searchQuery);
+    public ArchiveUnitsDto searchArchiveUnitsByProjectAndSearchQuery(ExternalHttpContext context, String projectId, SearchCriteriaDto searchQuery) {
+        return collectExternalRestClient.searchArchiveUnitsByProjectAndSearchQuery(context, projectId, searchQuery);
     }
 
     @Override

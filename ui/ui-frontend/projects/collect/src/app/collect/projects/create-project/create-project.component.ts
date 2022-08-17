@@ -64,9 +64,10 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   FILLING_PLAN_MODE = FilingPlanMode;
   tenantIdentifier: number;
   projectId: string;
+  createdOn: string;
   createDialogSub: Subscription;
   updateDialogSub: Subscription;
-  acquisitionInformations = [
+  acquisitionInformationsList = [
     this.translationService.instant('ACQUISITION_INFORMATION.PAYMENT'),
     this.translationService.instant('ACQUISITION_INFORMATION.PROTOCOL'),
     this.translationService.instant('ACQUISITION_INFORMATION.PURCHASE'),
@@ -80,7 +81,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.translationService.instant('ACQUISITION_INFORMATION.OTHER'),
     this.translationService.instant('ACQUISITION_INFORMATION.UNKNOWN'),
   ];
-  legalStatus = [
+  legalStatusList = [
     this.translationService.instant('LEGAL_STATUS.PUBLIC_ARCHIVE'),
     this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE'),
     this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE'),
@@ -100,7 +101,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     private confirmDialogService: ConfirmDialogService,
     private cdr: ChangeDetectorRef,
     private translationService: TranslateService
-  ) {}
+  ) { }
 
   get linkParentIdControl() {
     return this.projectForm.controls['linkParentIdControl'] as FormControl;
@@ -213,11 +214,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       .toPromise()
       .then((response) => {
         this.projectId = response.id;
+        this.createdOn = response.createdOn;
         return this.uploadService.uploadZip(this.tenantIdentifier, this.projectId);
       })
       .then((uploadOperation) => {
         uploadOperation.subscribe(
-          () => {},
+          () => { },
           (error: any) => {
             this.logger.error(error);
           },
@@ -263,7 +265,12 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   updateProject() {
-    const project = { ...this.projectForm.value, id: this.projectId };
+    // Project name should be setted from messageIdentifier field until further notice
+    const project = {
+      ...this.projectForm.value, id: this.projectId, createdOn: this.createdOn,
+      name: this.projectForm.controls['messageIdentifier'].value
+    };
+    debugger;
     this.updateDialogSub = this.projectsService.updateProject(project).subscribe();
     this.move();
   }
@@ -287,8 +294,9 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       archivalAgencyIdentifier: [null, Validators.required],
       transferringAgencyIdentifier: [null, Validators.required],
       archivalAgreement: [null, Validators.required],
-      archivalProfile: [null],
+      archiveProfile: [null],
       acquisitionInformation: [null],
+      legalStatus: [null],
       status: [null],
       linkParentIdControl: [{ included: [], excluded: [] }],
       accessContractSelect: [null],

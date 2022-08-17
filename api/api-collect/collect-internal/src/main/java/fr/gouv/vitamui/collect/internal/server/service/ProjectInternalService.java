@@ -70,6 +70,7 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
+import static fr.gouv.vitamui.collect.internal.server.service.converters.ProjectConverter.toVitamuiDto;
 
 public class ProjectInternalService {
 
@@ -96,14 +97,12 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }
-            ProjectDto responseProjectDto =
-                objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                    ProjectDto.class);
-            return ProjectConverter.toVitamuiDto(responseProjectDto);
+            return toVitamuiDto(JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                ProjectDto.class));
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_CREATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_CREATE_PROJECT, e);
-        } catch (JsonProcessingException e) {
+        } catch (InvalidParseOperationException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
@@ -159,13 +158,13 @@ public class ProjectInternalService {
                 throw new VitamClientException("Error occurs when updating project!");
             }
             ProjectDto responseProjectDto =
-                objectMapper.readValue(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
                     ProjectDto.class);
-            return ProjectConverter.toVitamuiDto(responseProjectDto);
+            return toVitamuiDto(responseProjectDto);
         } catch (VitamClientException e) {
             LOGGER.debug(UNABLE_TO_UPDATE_PROJECT + ": {}", e);
             throw new InternalServerException(UNABLE_TO_UPDATE_PROJECT, e);
-        } catch (JsonProcessingException e) {
+        } catch (InvalidParseOperationException e) {
             LOGGER.debug(UNABLE_TO_PROCESS_RESPONSE + ": {}", e);
             throw new InternalServerException(UNABLE_TO_PROCESS_RESPONSE, e);
         }
@@ -246,8 +245,9 @@ public class ProjectInternalService {
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when getting project!");
             }
-            return JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
-                CollectProjectDto.class);
+            return toVitamuiDto(
+                JsonHandler.getFromString(((RequestResponseOK) requestResponse).getFirstResult().toString(),
+                    ProjectDto.class));
         } catch (VitamClientException | InvalidParseOperationException e) {
             throw new VitamClientException("Unable to find project : ", e);
         }

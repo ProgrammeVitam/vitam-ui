@@ -79,19 +79,20 @@ public class CollectInternalRestClient
 
     @Override
     public String getPathUrl() {
-        return RestApi.COLLECT_PATH;
+
+        return RestApi.COLLECT_PROJECT_PATH;
     }
 
     @Override
     public CollectProjectDto create(final InternalHttpContext context, final CollectProjectDto dto) {
-        return create(getUrl() + PROJECTS, context, dto);
+        return create(getUrl(), context, dto);
     }
 
     @Override
     public PaginatedValuesDto<CollectProjectDto> getAllPaginated(final InternalHttpContext context, final Integer page,
         final Integer size, final Optional<String> criteria, final Optional<String> orderBy,
         final Optional<DirectionDto> direction) {
-        final URIBuilder builder = getUriBuilder(getUrl() + PROJECTS);
+        final URIBuilder builder = getUriBuilder(getUrl());
         return getAllPaginated(builder, context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
@@ -100,7 +101,7 @@ public class CollectInternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchQuery, headers);
         final ResponseEntity<ArchiveUnitsDto> response =
-            restTemplate.exchange(getUrl() + PROJECTS + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
+            restTemplate.exchange(getUrl() + "/" + projectId + ARCHIVE_UNITS, HttpMethod.POST,
                 request, ArchiveUnitsDto.class);
         checkResponse(response);
         return response.getBody();
@@ -108,7 +109,7 @@ public class CollectInternalRestClient
 
     public ResponseEntity<ResultsDto> findObjectById(String id, final InternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + OBJECT_GROUPS + CommonConstants.PATH_ID);
+            UriComponentsBuilder.fromHttpUrl(getUrl() + OBJECT_GROUPS + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }

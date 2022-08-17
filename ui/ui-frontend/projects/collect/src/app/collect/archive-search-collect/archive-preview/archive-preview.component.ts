@@ -61,11 +61,14 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   isPanelextended = false;
   selectedIndex = 0;
 
+  updateStarted = false;
+
+  @Input()
   tenantIdentifier: number;
 
-  updateStarted = false;
   @Input()
   hasAccessContractManagementPermissions: boolean;
+
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');

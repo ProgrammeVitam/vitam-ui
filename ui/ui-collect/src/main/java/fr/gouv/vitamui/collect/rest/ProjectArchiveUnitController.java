@@ -54,9 +54,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
 import static fr.gouv.vitamui.collect.common.rest.RestApi.ARCHIVE_UNITS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
 
 @Api(tags = "Collect")
-@RequestMapping("${ui-collect.prefix}/projects/archive-units")
+@RequestMapping("${ui-collect.prefix}/"+ PROJECTS + ARCHIVE_UNITS)
 @RestController
 @Consumes("application/json")
 @Produces("application/json")
@@ -84,7 +85,7 @@ public class ProjectArchiveUnitController extends AbstractUiRestController {
         SanityChecker.sanitizeCriteria(searchQuery);
         LOGGER.debug("search archives Units by criteria = {}", searchQuery);
         VitamUIArchiveUnitResponseDto archiveResponseDtos = new VitamUIArchiveUnitResponseDto();
-        ArchiveUnitsDto archiveUnits = projectArchiveUnitService.searchCollectProjectArchiveUnits(buildUiHttpContext(), projectId, searchQuery);
+        ArchiveUnitsDto archiveUnits = projectArchiveUnitService.searchArchiveUnitsByProjectAndSearchQuery(buildUiHttpContext(), projectId, searchQuery);
 
         if (archiveUnits != null) {
             archiveResponseDtos = archiveUnits.getArchives();
