@@ -63,7 +63,7 @@ export class AuditCreateComponent implements OnInit, OnDestroy {
 
   allServices = new FormControl(true);
   allNodes = new FormControl(true);
-  selectedNodes = new FormControl();
+  selectedNodes = new FormControl({included: [], excluded: []});
   accessContractSelect = new FormControl(null, Validators.required);
 
   accessionRegisters: AccessionRegister[];
