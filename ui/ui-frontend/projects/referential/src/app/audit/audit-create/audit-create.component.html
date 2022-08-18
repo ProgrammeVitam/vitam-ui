@@ -55,7 +55,7 @@
         >
           <div class="row">
             <div class="col-8 form-control">
-              <vitamui-common-slide-toggle [formControl]="allServices">Tous les services producteurs
+              <vitamui-common-slide-toggle [formControl]="allProducerServices">Tous les services producteurs
               </vitamui-common-slide-toggle>
             </div>
 
@@ -63,7 +63,7 @@
               <mat-form-field
                 class="vitamui-mat-select"
                 *ngIf="
-                  allServices.value === false &&
+                  allProducerServices.value === false &&
                   accessionRegisterSummaries &&
                   (form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING || form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
                 "
