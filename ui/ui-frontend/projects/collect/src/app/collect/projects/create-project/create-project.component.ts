@@ -270,7 +270,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       ...this.projectForm.value, id: this.projectId, createdOn: this.createdOn,
       name: this.projectForm.controls['messageIdentifier'].value
     };
-    debugger;
     this.updateDialogSub = this.projectsService.updateProject(project).subscribe();
     this.move();
   }

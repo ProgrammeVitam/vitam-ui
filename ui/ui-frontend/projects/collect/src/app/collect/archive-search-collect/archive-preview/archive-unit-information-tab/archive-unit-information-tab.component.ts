@@ -41,7 +41,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subscription } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { diff, Option, StartupService } from 'ui-frontend-common';
+import { diff, Option } from 'ui-frontend-common';
 import { extend, isEmpty } from 'underscore';
 import { Unit } from '../../../core/models';
 import { ArchiveCollectService } from '../../archive-collect.service';
@@ -88,14 +88,12 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription: Subscription;
 
   fullPath = false;
-  tenantIdentifier: number;
 
   constructor(
     private archiveService: ArchiveCollectService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-    private translateService: TranslateService,
-    private startupService: StartupService
+    private translateService: TranslateService
   ) {}
 
   descriptionLevels: Option[] = [
@@ -113,7 +111,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   ];
 
   ngOnInit() {
-    this.tenantIdentifier = parseInt(this.startupService.getTenantIdentifier());
     this.initTitleAndDescriptionsFlagValues(this.archiveUnit);
     // TODO : Créer Web service de création du chemin d'archive
     // this.uaPath$ = this.archiveService.buildArchiveUnitPath(this.archiveUnit, this.accessContract);
@@ -405,7 +402,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit["#tenant"], this.accessContract);
   }
 
   showArchiveUniteFullPath() {
