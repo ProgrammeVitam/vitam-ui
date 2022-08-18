@@ -68,15 +68,15 @@ public class ArchiveSearchProjectServiceTest {
         // Given
         SearchCriteriaDto searchCriteriaDto = new SearchCriteriaDto();
         ExternalHttpContext context = new ExternalHttpContext(9, "", "", "");
-        Mockito.when(searchCollectUnitService.searchCollectProjectArchiveUnits(ArgumentMatchers.any(),
+        Mockito.when(searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(),
                 ArgumentMatchers.any(), any(SearchCriteriaDto.class)))
             .thenReturn(new ArchiveUnitsDto());
 
         // When
-        searchCollectUnitService.searchCollectProjectArchiveUnits(context, "projectId", searchCriteriaDto);
+        searchCollectUnitService.searchArchiveUnitsByProjectAndSearchQuery(context, "projectId", searchCriteriaDto);
 
         // Then
         verify(collectExternalRestClient, Mockito.times(1))
-            .searchCollectProjectArchiveUnits(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
+            .searchArchiveUnitsByProjectAndSearchQuery(ArgumentMatchers.any(), ArgumentMatchers.any() , any(SearchCriteriaDto.class));
     }
 }

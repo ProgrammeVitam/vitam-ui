@@ -33,20 +33,41 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
+import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnitsDto;
+import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUIArchiveUnitResponseDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.exception.BadRequestException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.exists;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.ID;
 
 public class ProjectArchiveUnitInternalService {
 
@@ -64,8 +85,9 @@ public class ProjectArchiveUnitInternalService {
         throws VitamClientException, JsonProcessingException, InvalidParseOperationException {
 
         LOGGER.debug("get units by query {}", searchQuery);
+        JsonNode searchQueryToDSL = mapRequestToSelectMultiQuery(searchQuery).getFinalSelect();
         final RequestResponse<JsonNode> result =
-            collectService.searchUnitsByProjectId(projectId, JsonHandler.toJsonNode(searchQuery), vitamContext);
+            collectService.searchUnitsByProjectId(projectId, searchQueryToDSL, vitamContext);
         VitamRestUtils.checkResponse(result);
         final VitamUISearchResponseDto archivesOriginResponse =
             objectMapper.treeToValue(result.toJsonNode(), VitamUISearchResponseDto.class);
@@ -77,5 +99,67 @@ public class ProjectArchiveUnitInternalService {
             JsonHandler.getFromJsonNodeList(((RequestResponseOK) result).getResults(), ArchiveUnit.class));
         responseFilled.setHits(archivesOriginResponse.getHits());
         return new ArchiveUnitsDto(responseFilled);
+    }
+
+    public SelectMultiQuery mapRequestToSelectMultiQuery(SearchCriteriaDto searchQuery)
+        throws VitamClientException {
+        if (searchQuery == null) {
+            throw new BadRequestException("Can't parse null criteria");
+        }
+        SelectMultiQuery selectMultiQuery;
+        Optional<String> orderBy = Optional.empty();
+        Optional<DirectionDto> direction = Optional.empty();
+        try {
+            if (searchQuery.getSortingCriteria() != null) {
+                direction = Optional.of(searchQuery.getSortingCriteria().getSorting());
+                orderBy = Optional.of(searchQuery.getSortingCriteria().getCriteria());
+            }
+            selectMultiQuery = createSelectMultiQuery(searchQuery.getCriteriaList());
+            if (orderBy.isPresent()) {
+                if (DirectionDto.DESC.equals(direction.get())) {
+                    selectMultiQuery.addOrderByDescFilter(orderBy.get());
+                } else {
+                    selectMultiQuery.addOrderByAscFilter(orderBy.get());
+                }
+            }
+            selectMultiQuery
+                .setLimitFilter((long) searchQuery.getPageNumber() * searchQuery.getSize(), searchQuery.getSize());
+            selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
+            LOGGER.debug("Final query: {}", selectMultiQuery.getFinalSelect().toPrettyString());
+
+        } catch (InvalidCreateOperationException ioe) {
+            throw new VitamClientException("Unable to find archive units with pagination", ioe);
+        } catch (InvalidParseOperationException e) {
+            throw new BadRequestException("Can't parse criteria as Vitam query" + e.getMessage());
+        }
+        return selectMultiQuery;
+    }
+
+    public SelectMultiQuery createSelectMultiQuery(List<SearchCriteriaEltDto> criteriaList)
+        throws InvalidParseOperationException, InvalidCreateOperationException {
+        final BooleanQuery query = and();
+        final SelectMultiQuery select = new SelectMultiQuery();
+
+        //Handle roots
+        List<String> nodesCriteriaList = criteriaList.stream().filter(
+                Objects::nonNull).filter(searchCriteriaEltDto -> NODES
+                .equals(searchCriteriaEltDto.getCategory())).flatMap(criteria -> criteria.getValues().stream())
+            .map(CriteriaValue::getValue).collect(Collectors.toList());
+
+        // TODO : Handle criteriaList when searching by criteria !
+        query.add(exists(ID));
+
+        if (!CollectionUtils.isEmpty(nodesCriteriaList)) {
+            select.addRoots(nodesCriteriaList.toArray(new String[nodesCriteriaList.size()]));
+            query.setDepthLimit(DEFAULT_DEPTH);
+        }
+
+        if (query.isReady()) {
+            select.setQuery(query);
+        }
+
+        LOGGER.debug("Final query: {}", select.getFinalSelect().toPrettyString());
+
+        return select;
     }
 }

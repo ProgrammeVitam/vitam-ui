@@ -42,7 +42,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTreeModule } from '@angular/material/tree';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { of } from 'rxjs';
@@ -65,11 +64,6 @@ describe('ArchivePreviewComponent', () => {
 
   beforeEach(
     waitForAsync(() => {
-      const activatedRouteMock = {
-        params: of({ tenantIdentifier: 1 }),
-        data: of({ appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP' }),
-      };
-
       const archiveServiceMock = {
         getBaseUrl: () => '/fake-api',
         buildArchiveUnitPath: () => of({ resumePath: '', fullPath: '' }),
@@ -93,7 +87,6 @@ describe('ArchivePreviewComponent', () => {
         providers: [
           { provide: ArchiveCollectService, useValue: archiveServiceMock },
           { provide: BASE_URL, useValue: '/fake-api' },
-          { provide: ActivatedRoute, useValue: activatedRouteMock },
           { provide: ENVIRONMENT, useValue: environment },
           { provide: WINDOW_LOCATION, useValue: window.location },
           { provide: StartupService, useValue: { getPortalUrl: () => '', setTenantIdentifier: () => {} } },

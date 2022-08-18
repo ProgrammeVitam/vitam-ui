@@ -42,22 +42,28 @@ import java.time.OffsetDateTime;
 @EqualsAndHashCode(callSuper = true)
 @Builder
 public class CollectProjectDto extends IdDto {
+
     @JsonProperty("id")
     private String id;
     @JsonProperty("tenant")
-    private String tenant;
+    private Integer tenant;
     @JsonProperty("transactionId")
     private String transactionId;
+    @JsonProperty("unitUp")
+    private String unitUp;
+
+    private String name;
     private String archivalAgreement;
     private String messageIdentifier;
     private String archivalAgencyIdentifier;
-    private String transferingAgencyIdentifier;
+    private String transferringAgencyIdentifier;
     private String originatingAgencyIdentifier;
     private String submissionAgencyIdentifier;
     private String archiveProfile;
     private String comment;
     private String status;
-    private String unitUp;
-    private OffsetDateTime createdOn;
-    private OffsetDateTime lastModifyOn;
+    private String legalStatus;
+    private String acquisitionInformation;
+    private String createdOn;
+    private String lastModifyOn;
 }

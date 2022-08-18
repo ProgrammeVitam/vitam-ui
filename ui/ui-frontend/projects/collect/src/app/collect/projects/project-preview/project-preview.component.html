@@ -83,8 +83,8 @@
             <div class="read-only-field" *ngIf="!updateStarted">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_TRANSFERRING_AGENCY' | translate }} :</label>
               <div>
-                <ng-container *ngIf="selectedProject.transferingAgencyIdentifier">
-                  {{ selectedProject.transferingAgencyIdentifier }}
+                <ng-container *ngIf="selectedProject.transferringAgencyIdentifier">
+                  {{ selectedProject.transferringAgencyIdentifier }}
                 </ng-container>
               </div>
             </div>
@@ -107,8 +107,8 @@
             <div class="read-only-field" *ngIf="!updateStarted">
               <label>{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }} :</label>
               <div>
-                <ng-container *ngIf="selectedProject.acquisitionIformation">
-                  {{ selectedProject.acquisitionIformation }}
+                <ng-container *ngIf="selectedProject.acquisitionInformation">
+                  {{ selectedProject.acquisitionInformation }}
                 </ng-container>
               </div>
             </div>

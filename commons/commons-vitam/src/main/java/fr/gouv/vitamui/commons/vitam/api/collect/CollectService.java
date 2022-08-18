@@ -33,7 +33,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.external.client.CollectClient;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.common.client.VitamContext;
-import fr.gouv.vitam.common.database.builder.request.multiple.SelectMultiQuery;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
@@ -42,7 +41,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.util.VitamRestUtils;
 
 import javax.ws.rs.core.Response;
-
 import java.io.InputStream;
 
 public class CollectService {

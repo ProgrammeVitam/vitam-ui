@@ -56,8 +56,6 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   archiveUnit: Unit;
   @Input()
   accessContract: string;
-  @Input()
-  tenantIdentifier: number;
   uaPath$: Observable<{ fullPath: string; resumePath: string }>;
 
   @Input()
@@ -90,6 +88,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   updateArchiveUnitDescMetadataAlerteFormCancelDialogSubscription: Subscription;
 
   fullPath = false;
+
   constructor(
     private archiveService: ArchiveCollectService,
     private formBuilder: FormBuilder,
@@ -403,7 +402,7 @@ export class ArchiveUnitInformationTabComponent implements OnInit, OnChanges, On
   }
 
   onDownloadObjectFromUnit(archiveUnit: Unit) {
-    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.tenantIdentifier, this.accessContract);
+    return this.archiveService.launchDownloadObjectFromUnit(archiveUnit['#id'], this.archiveUnit["#tenant"], this.accessContract);
   }
 
   showArchiveUniteFullPath() {

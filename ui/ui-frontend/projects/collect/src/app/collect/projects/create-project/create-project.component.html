@@ -227,7 +227,7 @@
           </vitamui-common-input>
           <vitamui-common-input
             class="col-5"
-            formControlName="archivalProfile"
+            formControlName="archiveProfile"
             placeholder="{{ 'COLLECT.PROJECT_CONTEXT_ARCHIVE_PROFILE' | translate }}"
           >
           </vitamui-common-input>
@@ -243,7 +243,7 @@
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_ACQUISITION_INFORMATION' | translate }}</span>
             </label>
             <mat-select formControlName="acquisitionInformation">
-              <mat-option *ngFor="let acqInfo of acquisitionInformations" [value]="acqInfo">{{ acqInfo }}</mat-option>
+              <mat-option *ngFor="let acqInfo of acquisitionInformationsList" [value]="acqInfo">{{ acqInfo }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -251,8 +251,8 @@
             <label for="legal-status">
               <span class="pb-3">{{ 'COLLECT.PROJECT_CONTEXT_LEGAL_STATUS' | translate }}</span>
             </label>
-            <mat-select formControlName="status">
-              <mat-option *ngFor="let lgs of legalStatus" [value]="lgs">{{ lgs }}</mat-option>
+            <mat-select formControlName="legalStatus">
+              <mat-option *ngFor="let lgs of legalStatusList" [value]="lgs">{{ lgs }}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

@@ -36,7 +36,6 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit } from '../../core/models';
 
@@ -61,18 +60,15 @@ export class ArchivePreviewComponent implements OnInit, OnChanges {
   isPanelextended = false;
   selectedIndex = 0;
 
-  tenantIdentifier: number;
-
   updateStarted = false;
+
   @Input()
   hasAccessContractManagementPermissions: boolean;
+
   @Input()
   hasUpdateDescriptiveUnitMetadataRole: boolean;
   hasAccessContractManagementPermissionsMessage = this.translateService.instant('UNIT_UPDATE.NO_PERMISSION');
-  constructor(private route: ActivatedRoute, private translateService: TranslateService) {
-    this.route.params.subscribe((params) => {
-      this.tenantIdentifier = +params.tenantIdentifier;
-    });
+  constructor(private translateService: TranslateService) {
   }
 
   ngOnInit() {}
