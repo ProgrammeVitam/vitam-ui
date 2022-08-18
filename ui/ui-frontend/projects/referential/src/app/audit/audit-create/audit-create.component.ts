@@ -70,7 +70,7 @@ export class AuditCreateComponent implements OnInit {
 
   allServices = new FormControl(true);
   allNodes = new FormControl(true);
-  selectedNodes = new FormControl();
+  selectedNodes = new FormControl({included: [], excluded: []});
 
   accessContractId: string = null;
   accessionRegisterSummaries: AccessionRegisterSummary[];
