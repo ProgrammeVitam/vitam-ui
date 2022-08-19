@@ -54,10 +54,10 @@ import { ReclassificationCriteriaDto } from './models/reclassification-request.i
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
 import { PagedResult, SearchCriteria, SearchCriteriaDto, SearchCriteriaEltDto, SearchCriteriaTypeEnum } from './models/search.criteria';
+import { TransferRequestDto } from './models/transfer-request-detail.interface';
 import { Unit } from './models/unit.interface';
 import { UnitDescriptiveMetadataDto } from './models/unitDescriptiveMetadata.interface';
 import { VitamUISnackBarComponent } from './shared/vitamui-snack-bar';
-import {TransferRequestDto} from "./models/transfer-request-detail.interface";
 
 @Injectable({
   providedIn: 'root',
@@ -399,6 +399,9 @@ export class ArchiveService extends SearchService<any> {
   }
   isDisseminationRuleCriteria(criteria: SearchCriteria): boolean {
     return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.DISSEMINATION_RULE;
+  }
+  isReuseRuleCriteria(criteria: SearchCriteria): boolean {
+    return SearchCriteriaTypeEnum[criteria.category] === SearchCriteriaTypeEnum.REUSE_RULE;
   }
 }
 

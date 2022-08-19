@@ -48,29 +48,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
+public class ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest {
 
-    private static final String SEARCH_QUERY_WITH_INTERVAL_DATE = "access/interval-date-query.txt";
-    private static final String SEARCH_QUERY_WITH_IDENTIFIER_RULE = "access/identifier-rule-query.txt";
-    private static final String SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_ONLY_RULE =
-        "access/identifier-inherited-only-rule-query.txt";
-    private static final String SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_OR_SCOPED_RULE =
-        "access/identifier-inherited-or-scoped-rule-query.txt";
-    private static final String SEARCH_QUERY_WITH_WAITING_TO_RECALCULATE =
-        "access/identifier-waiting-to-recalculate-rule-query.txt";
-    private static final String SEARCH_QUERY_WITH_NO_RULES = "access/identifier-no-rules-query.txt";
     public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER =
-        "access/expected-search-query-with-rule-identifier.txt";
+        "dissemination/expected-search-query-with-rule-identifier.txt";
     public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE =
-        "access/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
-    public static String SEARCH_QUERY_WITH_ONE_DATE = "access/one-date-query.txt";
+        "dissemination/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
+
+
+    public static String SEARCH_QUERY_WITH_RULES_IDENTIFIERS =
+        "dissemination/expected-search-query-with-rules-identifiers.txt";
 
     private static final VitamUILogger LOGGER =
-        VitamUILoggerFactory.getInstance(ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class);
+        VitamUILoggerFactory.getInstance(ArchivesSearchDisseminationMgtRulesQueryBuilderServiceTest.class);
 
     @InjectMocks
     private ArchivesSearchManagementRulesQueryBuilderService archivesSearchManagementRulesQueryBuilderService;
@@ -81,270 +74,6 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         archivesSearchManagementRulesQueryBuilderService = new ArchivesSearchManagementRulesQueryBuilderService();
     }
 
-
-    @Test
-    public void testFillQueryFromCriteriaListWhenNullCriteriaList() throws InvalidCreateOperationException {
-        //Given
-        //When
-        BooleanQuery query = or();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, null);
-
-        //then
-        Assertions.assertTrue(query.getQueries().isEmpty());
-    }
-
-    @Test
-    public void testFillQueryFromCriteriaListWhenEmptyCriteriaList() throws InvalidCreateOperationException {
-        //Given
-        //When
-        BooleanQuery query = or();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, List.of());
-
-        //then
-        Assertions.assertTrue(query.getQueries().isEmpty());
-    }
-
-    @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaOnDate()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-02T02:50:12.208Z", null)));
-        searchCriteriaEltDto.setDataType(ArchiveSearchConsts.CriteriaDataType.INTERVAL.name());
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.IN.name());
-        criteriaList.add(searchCriteriaEltDto);
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_ONE_DATE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
-    }
-
-
-    @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaIntervalDate()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto
-            .setValues(List.of(new CriteriaValue("2011-11-02T02:50:12.208Z", "2021-11-02T02:50:12.208Z")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.GTE.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.debug(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_INTERVAL_DATE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-    }
-
-
-    @Test
-    public void testFillQueryFromCriteriaListWhenAccessMgtRulesSimpleCriteriaRuleCode()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_RULE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
-    }
-
-    @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedRules()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto
-            .setCriteria(
-                ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_ONLY_RULE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-    }
-
-
-    @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesWithOnlyInheritedOrScopedRules()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_OR_SCOPED_RULE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
-    }
-
-
-    @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesInWaitingToCalculate()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_WAITING_TO_RECALCULATE);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-    }
-
-    @Test
-    public void testfillQueryFromMgtRulesCriteriaListWhenAccessMgtRulesHasNoRule()
-        throws InvalidCreateOperationException, IOException {
-        //Given
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("APP-001")));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(
-            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name());
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
-        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
-        criteriaList.add(searchCriteriaEltDto);
-
-        //When
-        BooleanQuery query = and();
-        archivesSearchManagementRulesQueryBuilderService
-            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-        //then
-
-        Assertions.assertFalse(query.getQueries().isEmpty());
-        String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_NO_RULES);
-        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
-    }
-
     @Test
     void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery()
         throws Exception {
@@ -352,9 +81,9 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
         searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("Rule1")));
+            List.of(new CriteriaValue("DisseminationRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         //When
@@ -373,21 +102,49 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
     }
 
     @Test
+    void testFillQueryFromCriteriaListOfRulesIdentifiersArePresentThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("DisseminationRuleFirstIdentifier"),
+                new CriteriaValue("DisseminationRuleSecondIdentifier")));
+
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(1);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULES_IDENTIFIERS);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
+    }
+
+    @Test
     void testFillQueryFromCriteriaListRuleIdentifierAndRuleStartDateArePresentThenReturnTheExactQuery()
         throws Exception {
         //Given
         List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
         SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
         searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
         searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("Rule1")));
+            List.of(new CriteriaValue("DisseminationRuleIdentifier")));
         criteriaList.add(searchCriteriaEltDto);
 
         SearchCriteriaEltDto searchCriteriaWithDateEltDto = new SearchCriteriaEltDto();
         searchCriteriaWithDateEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE);
-        searchCriteriaWithDateEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
-        searchCriteriaWithDateEltDto.setValues(List.of(new CriteriaValue("2080-05-08T23:00:00.000Z")));
+        searchCriteriaWithDateEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaWithDateEltDto.setValues(List.of(new CriteriaValue("2022-05-24T23:00:00.000Z")));
         searchCriteriaWithDateEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
 
         criteriaList.add(searchCriteriaWithDateEltDto);
@@ -396,7 +153,6 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         BooleanQuery query = and();
         archivesSearchManagementRulesQueryBuilderService
             .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
-
 
         //then
         assertThat(query.getQueries()).isNotEmpty();
@@ -407,4 +163,246 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
     }
 
+    @Test
+    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaOnDate()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("2021-11-02T02:50:12.208Z", null)));
+        searchCriteriaEltDto.setDataType(ArchiveSearchConsts.CriteriaDataType.INTERVAL.name());
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.IN.name());
+        criteriaList.add(searchCriteriaEltDto);
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = FileReader.loadFileContent("dissemination/one-date-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaIntervalDate()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_END_DATE);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto
+            .setValues(List.of(new CriteriaValue("2011-11-02T02:50:12.208Z", "2021-11-02T02:50:12.208Z")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.GTE.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.debug(queryStr);
+        String queryFileStr = FileReader.loadFileContent("dissemination/interval-date-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+
+    @Test
+    public void testFillQueryFromCriteriaListWhenDisseminationMgtRulesSimpleCriteriaRuleCode()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("DIS-001")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr = FileReader.loadFileContent("dissemination/identifier-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+    @Test
+    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedRules()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("DIS-001")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto
+            .setCriteria(
+                ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr = FileReader.loadFileContent("dissemination/identifier-inherited-only-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+
+    @Test
+    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesWithOnlyInheritedOrScopedRules()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("DIS-001")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr = FileReader.loadFileContent("dissemination/identifier-inherited-or-scoped-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+
+    @Test
+    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesInWaitingToCalculate()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("DIS-001")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_WAITING_RECALCULATE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr =
+            FileReader.loadFileContent("dissemination/identifier-waiting-to-recalculate-rule-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
+
+    @Test
+    public void testfillQueryFromMgtRulesCriteriaListWhenDisseminationMgtRulesHasNoRule()
+        throws InvalidCreateOperationException, IOException {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.RULE_IDENTIFIER);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue("DIS-001")));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_INHERITE_AT_LEAST_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(
+            ArchiveSearchConsts.RuleOriginValues.ORIGIN_HAS_NO_ONE.name());
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE);
+        searchCriteriaEltDto.setValues(List.of(new CriteriaValue(ArchiveSearchConsts.TRUE_CRITERIA_VALUE)));
+        searchCriteriaEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+        //then
+
+        Assertions.assertFalse(query.getQueries().isEmpty());
+        String queryStr = query.getQueries().toString();
+        LOGGER.info(queryStr);
+        String queryFileStr = FileReader.loadFileContent("dissemination/identifier-no-rules-query.txt");
+        Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
+
+    }
 }

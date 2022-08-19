@@ -71,10 +71,14 @@ import { AppraisalRuleSearchComponent } from './archive-search/appraisal-rule-se
 import { ArchiveSearchRulesFacetsComponent } from './archive-search/archive-search-rules-facets/archive-search-rules-facets.component';
 import { SearchAccessRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-access-rules-facets/search-access-rules-facets.component';
 import { SearchAppraisalRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-appraisal-rules-facets/search-appraisal-rules-facets.component';
+import { SearchDisseminationRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-dissemination-rules-facets/search-dissemination-rules-facets.component';
+import { SearchReuseRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-reuse-rules-facets/search-reuse-rules-facets.component';
 import { SearchStorageRulesFacetsComponent } from './archive-search/archive-search-rules-facets/search-storage-rules-facets/search-storage-rules-facets.component';
 import { ArchiveSearchComponent } from './archive-search/archive-search.component';
 import { DipRequestCreateComponent } from './archive-search/dip-request-create/dip-request-create.component';
+import { DisseminationRuleSearchComponent } from './archive-search/dissemination-rule-search/dissemination-rule-search.component';
 import { ReclassificationComponent } from './archive-search/reclassification/reclassification.component';
+import { ReuseRuleSearchComponent } from './archive-search/reuse-rule-search/reuse-rule-search.component';
 import { RuleValidator } from './archive-search/rule.validator';
 import { SearchCriteriaListComponent } from './archive-search/search-criteria-list/search-criteria-list.component';
 import { SearchCriteriaSaverComponent } from './archive-search/search-criteria-saver/search-criteria-saver.component';
@@ -165,6 +169,10 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     AppraisalRuleSearchComponent,
     StorageRuleSearchComponent,
     AccessRuleSearchComponent,
+    ReuseRuleSearchComponent,
+    DisseminationRuleSearchComponent,
+    SearchDisseminationRulesFacetsComponent,
+    SearchReuseRulesFacetsComponent,
     SimpleCriteriaSearchComponent,
     TitleAndDescriptionCriteriaSearchComponent,
     DipRequestCreateComponent,
@@ -173,6 +181,7 @@ import { ManagementRulesValidatorService } from './validators/management-rules-v
     SearchStorageRulesFacetsComponent,
     SearchAccessRulesFacetsComponent,
     ArchiveSearchRulesFacetsComponent,
+    SearchReuseRulesFacetsComponent,
     ManagementRulesComponent,
     AddManagementRulesComponent,
     ArchiveUnitRulesComponent,

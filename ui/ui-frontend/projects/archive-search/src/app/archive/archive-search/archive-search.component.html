@@ -74,6 +74,10 @@
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
       [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
       [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
+      [reuseRuleFacets]="archiveSearchResultFacets?.reuseRuleFacets"
+      [disseminationRuleFacets]="archiveSearchResultFacets?.disseminationRuleFacets"
+      [holdRuleFacets]="archiveSearchResultFacets?.holdRuleFacets"
+      [classificationRuleFacets]="archiveSearchResultFacets?.classificationRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"
       [defaultFacetTabIndex]="defaultFacetTabIndex"
@@ -157,6 +161,42 @@
             ></app-access-rule-search>
           </div>
         </ng-container>
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'REUSE_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-reuse-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-reuse-rule-search>
+          </div>
+        </ng-container>
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'DISSEMINATION_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-dissemination-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-dissemination-rule-search>
+          </div>
+        </ng-container>
       </mat-tab>
 
       <mat-tab disabled>
@@ -200,13 +240,13 @@
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('DIFFUSION')"
-          [disabled]="isCategoryAdded('DIFFUSION') || true"
+          (click)="addCriteriaCategory('DISSEMINATION_RULE')"
+          [disabled]="isCategoryAdded('DISSEMINATION_RULE')"
         >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.DIFFUSION' | translate }}
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.DISSEMINATION_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.REUSING' | translate }}
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSE_RULE')" [disabled]="isCategoryAdded('REUSE_RULE')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.REUSE_RULE' | translate }}
         </button>
         <button
           mat-menu-item

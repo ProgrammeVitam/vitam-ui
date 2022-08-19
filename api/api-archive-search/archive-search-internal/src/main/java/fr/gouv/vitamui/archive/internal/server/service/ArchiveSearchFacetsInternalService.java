@@ -68,7 +68,9 @@ import java.util.stream.Collectors;
 import static fr.gouv.vitamui.archive.internal.server.service.ArchiveSearchInternalService.TRUE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.STORAGE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaDataType.STRING;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaOperators.EQ;
@@ -114,7 +116,7 @@ public class ArchiveSearchFacetsInternalService {
     }
 
 
-    public void mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(
+    public void mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(
         List<SearchCriteriaEltDto> initialCriteriaList,
         ArchiveSearchConsts.CriteriaCategory criteriaCategory) {
         long originRulesCriteriaCount = initialCriteriaList.stream().filter(
@@ -151,7 +153,8 @@ public class ArchiveSearchFacetsInternalService {
 
         List<FacetResultsDto> globalRulesFacets = new ArrayList<>();
         try {
-            List<ArchiveSearchConsts.CriteriaCategory> categories = List.of(APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE);
+            List<ArchiveSearchConsts.CriteriaCategory> categories =
+                List.of(APPRAISAL_RULE, ACCESS_RULE, STORAGE_RULE, REUSE_RULE, DISSEMINATION_RULE);
             List<SearchCriteriaEltDto> indexedArchiveUnitsCriteriaList = new ArrayList<>(
                 initialArchiveUnitsCriteriaList);
             indexedArchiveUnitsCriteriaList.add(new SearchCriteriaEltDto(RULES_COMPUTED, FIELDS, EQ.name(),
@@ -159,7 +162,7 @@ public class ArchiveSearchFacetsInternalService {
             SelectMultiQuery selectMultiQuery = archiveSearchInternalService
                 .createSelectMultiQuery(indexedArchiveUnitsCriteriaList);
             selectMultiQuery.addUsedProjection("#id");
-            selectMultiQuery.setLimitFilter(0,1);
+            selectMultiQuery.setLimitFilter(0, 1);
             JsonNode vitamResponse =
                 archiveSearchInternalService.searchArchiveUnits(selectMultiQuery.getFinalSelect(), vitamContext);
             VitamUISearchResponseDto archivesUnitsResults = objectMapper.treeToValue(vitamResponse,
@@ -199,7 +202,7 @@ public class ArchiveSearchFacetsInternalService {
         SelectMultiQuery selectMultiQuery = archiveSearchInternalService
             .createSelectMultiQuery(criteriaList);
 
-        selectMultiQuery.setLimitFilter(0,1);
+        selectMultiQuery.setLimitFilter(0, 1);
         selectMultiQuery.trackTotalHits(true);
 
         try {
