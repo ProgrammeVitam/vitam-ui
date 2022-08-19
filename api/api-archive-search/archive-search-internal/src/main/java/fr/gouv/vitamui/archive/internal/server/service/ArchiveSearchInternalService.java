@@ -83,8 +83,10 @@ import static fr.gouv.vitam.common.database.builder.query.QueryHelper.in;
 import static fr.gouv.vitam.common.database.builder.query.VitamFieldsHelper.unitType;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.APPRAISAL_RULE;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.DISSEMINATION_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.FIELDS;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.NODES;
+import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaCategory.REUSE_RULE;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.CriteriaMgtRulesCategory;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.DEFAULT_DEPTH;
 import static fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts.FACETS_COMPUTE_RULES_AU_NUMBER;
@@ -162,7 +164,7 @@ public class ArchiveSearchInternalService {
                     SIMPLE_FIELDS_VALUES_MAPPING.get(RULES_COMPUTED), 3,
                     FacetOrder.ASC));
                 selectMultiQuery.trackTotalHits(searchQuery.isTrackTotalHits());
-                selectMultiQuery.setLimitFilter(0,1);
+                selectMultiQuery.setLimitFilter(0, 1);
             }
             JsonNode dslQuery = selectMultiQuery.getFinalSelect();
             JsonNode vitamResponse = searchArchiveUnits(dslQuery, vitamContext);
@@ -179,13 +181,24 @@ public class ArchiveSearchInternalService {
             searchQuery.extractCriteriaListByCategory(APPRAISAL_RULE);
         List<SearchCriteriaEltDto> accessMgtRulesCriteriaList =
             searchQuery.extractCriteriaListByCategory(ACCESS_RULE);
+        List<SearchCriteriaEltDto> reuseMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(REUSE_RULE);
+        List<SearchCriteriaEltDto> disseminationMgtRulesCriteriaList =
+            searchQuery.extractCriteriaListByCategory(DISSEMINATION_RULE);
         List<SearchCriteriaEltDto> waitingToRecalculateCriteria = searchQuery
             .extractCriteriaListByCategoryAndFieldNames(FIELDS,
                 List.of(WAITING_RECALCULATE));
 
-        if (!CollectionUtils.isEmpty(waitingToRecalculateCriteria) &&
-            (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList) ||
-                !CollectionUtils.isEmpty(accessMgtRulesCriteriaList))) {
+        boolean hasAppraisalRulesCriteria = !CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList);
+        boolean hasAccessRulesCriteria = !CollectionUtils.isEmpty(accessMgtRulesCriteriaList);
+        boolean hasReuseRulesCriteria = !CollectionUtils.isEmpty(reuseMgtRulesCriteriaList);
+        boolean hasDisseminationRulesCriteria = !CollectionUtils.isEmpty(disseminationMgtRulesCriteriaList);
+        boolean hasWaitingToRecalculateCriteria = !CollectionUtils.isEmpty(waitingToRecalculateCriteria);
+
+        if (hasWaitingToRecalculateCriteria &&
+            (hasAppraisalRulesCriteria || hasAccessRulesCriteria ||
+                hasReuseRulesCriteria ||
+                hasDisseminationRulesCriteria)) {
             List<SearchCriteriaEltDto> initialCriteriaList = searchQuery.getCriteriaList().stream().filter(
                 searchCriteriaEltDto ->
                     !(FIELDS.equals(searchCriteriaEltDto.getCategory()) &&
@@ -193,15 +206,25 @@ public class ArchiveSearchInternalService {
                             .equals(WAITING_RECALCULATE)))
             ).collect(Collectors.toList());
 
-            if (!CollectionUtils.isEmpty(appraisalMgtRulesCriteriaList)) {
+            if (hasAppraisalRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         APPRAISAL_RULE);
             }
-            if (!CollectionUtils.isEmpty(accessMgtRulesCriteriaList)) {
+            if (hasAccessRulesCriteria) {
                 archiveSearchFacetsInternalService
-                    .mergeValidComputedInheritenceCriteriaWithAppraisalCriteria(initialCriteriaList,
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
                         ACCESS_RULE);
+            }
+            if (hasReuseRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        REUSE_RULE);
+            }
+            if (hasDisseminationRulesCriteria) {
+                archiveSearchFacetsInternalService
+                    .mergeValidComputedInheritenceCriteriaWithMgtRulesCriteria(initialCriteriaList,
+                        DISSEMINATION_RULE);
             }
             searchQuery.setCriteriaList(initialCriteriaList);
         }

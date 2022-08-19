@@ -57,6 +57,17 @@ export class ArchiveSearchRulesFacetsComponent implements OnInit {
   storageRuleFacets: RuleFacets;
 
   @Input()
+  disseminationRuleFacets: RuleFacets;
+
+  @Input()
+  reuseRuleFacets: RuleFacets;
+  @Input()
+  classificationRuleFacets: RuleFacets;
+
+  @Input()
+  holdRuleFacets: RuleFacets;
+
+  @Input()
   tenantIdentifier: number;
 
   facetsVisibles = true;

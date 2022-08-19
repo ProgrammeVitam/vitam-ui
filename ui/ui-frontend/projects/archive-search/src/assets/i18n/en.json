@@ -152,6 +152,8 @@
       "DUA_TITLE": "Administrative useful life",
       "ACCESS_TITLE": "Access",
       "STORAGE_TITLE": "Storage",
+      "REUSE_TITLE": "Reuse",
+      "REUSEDISSEMINATION_TITLE": "Dissemination",
       "NODES": {
         "NODE": "Position"
       },
@@ -222,6 +224,36 @@
         "FINAL_ACTION_INHERITE_FINAL_ACTION": "Inherited",
         "ELIMINATION_TECHNICAL_ID": "Elimination analysis technical identifier"
       },
+      "REUSE_RULE": {
+        "RULE_END_DATE_END": "Reuse: Max end date",
+        "RULE_END_DATE_BEGIN": "Reuse: Min end date",
+        "CREATE_INTERVAL": "Create interval",
+        "DELETE_INTERVAL": "remove interval",
+        "RULE_TITLE_REUSE_RULE": "Reuse rule title",
+        "RULE_IDENTIFIER_REUSE_RULE": "Reuse rule identifier ",
+        "RULE_START_DATE_REUSE_RULE": "Reuse rule start date",
+        "RULE_END_DATE_REUSE_RULE": "Reuse rule end date",
+        "RULE_ORIGIN_REUSE_RULE": "Reuse rule",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Hold",
+        "ORIGIN_HAS_NO_ONE": "Not specified",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
+      },
+      "DISSEMINATION_RULE": {
+        "RULE_END_DATE_END": "Dissemination: Max end date",
+        "RULE_END_DATE_BEGIN": "Dissemination: Min end date",
+        "CREATE_INTERVAL": "Create interval",
+        "DELETE_INTERVAL": "remove interval",
+        "RULE_TITLE_DISSEMINATION_RULE": "Dissemination rule title",
+        "RULE_IDENTIFIER_DISSEMINATION_RULE": "Dissemination rule identifier ",
+        "RULE_START_DATE_DISSEMINATION_RULE": "Dissemination rule start date",
+        "RULE_END_DATE_DISSEMINATION_RULE": "Dissemination rule end date",
+        "RULE_ORIGIN_DISSEMINATION_RULE": "Dissemination rule",
+        "ORIGIN_HAS_AT_LEAST_ONE": "Hold",
+        "ORIGIN_HAS_NO_ONE": "Not specified",
+        "ORIGIN_WAITING_RECALCULATE": "Waiting to compute",
+        "ORIGIN_INHERITE_AT_LEAST_ONE": "Inherited"
+      },
       "FIELDS": {
         "ID": "ID",
         "TITLE_OR_DESCRIPTION": "Title or Description",
@@ -249,6 +281,8 @@
         "TITLE_ACCESS": "Title",
         "ID_DUA": "Id",
         "ID_ACCESS": "Identifier",
+        "ID_REUSE": "Identifier",
+        "ID_DISSEMINATION": "Identifier",
         "START_DATE_DUA": "End Date",
         "END_DATE_DUA": "Start Date",
         "END_DATE_DUA_EQUAL": "Max end date",
@@ -258,6 +292,15 @@
         "END_DATE_ACCESS_EQUAL": "Max end date",
         "END_DATE_ACCESS_BEGIN": "Between ",
         "END_DATE_ACCESS_END": " and ",
+        "END_DATE_REUSE": "Rule end date",
+        "END_DATE_REUSE_EQUAL": "Max end date",
+        "END_DATE_REUSE_BEGIN": "Between ",
+        "END_DATE_REUSE_END": " and ",
+        "END_DATE_DISSEMINATION": "Rule end date",
+        "END_DATE_DISSEMINATION_EQUAL": "Max end date",
+        "END_DATE_DISSEMINATION_BEGIN": "Between ",
+        "END_DATE_DISSEMINATION_END": " and ",
+
         "ARCHIVE_UNIT_FILING_UNIT": "Filing plan",
         "ARCHIVE_UNIT_HOLDING_UNIT": "Positioning tree",
         "ARCHIVE_UNIT_WITH_OBJECTS": "Archive with objects",
@@ -286,7 +329,19 @@
           "HAS_AT_LEAST_ONE_STORAGE_RULE": "Define at least one storage rule",
           "HAS_NO_STORAGE_RULE": "Does not define a storage rule defined ",
           "WAITING_TO_RE_CALCULATE_STORAGE_RULE": "Is waiting for rule recalculation",
-          "SELECT_ALL_STORAGE_RULE": "Select all"
+          "SELECT_ALL_STORAGE_RULE": "Select all",
+
+          "INHERITE_AT_LEAST_ONE_REUSE_RULE": "Inherits at least one reuse rule",
+          "HAS_AT_LEAST_ONE_REUSE_RULE": "Define at least one reuse rule",
+          "HAS_NO_REUSE_RULE": "Does not define a reuse rule defined",
+          "WAITING_TO_RE_CALCULATE_REUSE_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_REUSE_RULE": "Select all",
+
+          "INHERITE_AT_LEAST_ONE_DISSEMINATION_RULE": "Inherits at least one Dissemination rule",
+          "HAS_AT_LEAST_ONE_DISSEMINATION_RULE": "Define at least one Dissemination rule",
+          "HAS_NO_DISSEMINATION_RULE": "Does not define a Dissemination rule defined",
+          "WAITING_TO_RE_CALCULATE_DISSEMINATION_RULE": "Is waiting for rule recalculation",
+          "SELECT_ALL_DISSEMINATION_RULE": "Select all"
         },
         "FINAL_ACTION_TYPE": {
           "TITLE": "Archive unit",
@@ -344,6 +399,34 @@
         "CALCULATED": "With computed rule"
       },
       "ACCESS_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With computed rule"
+      },
+      "REUSE_RULE": {
+        "RULES_COUNT": "Rule count",
+        "EXPIRED_RULES": "Expiration date",
+        "FINAL_ACTIONS": "Final action",
+        "WITHOUT_RULES": "That without defined rules",
+        "ARCHIVE_UNITS_COUNT": "Archive unit count",
+        "NOT_EXPIRED": "Not expired",
+        "EXPIRED": "Expired",
+        "DISTINCT_RULES": "Distinct rules",
+        "FROM_DATE": "From",
+        "SHOW_RULES_LIST": "SHOW LIST",
+        "WAITING_TO_RECALCULATE": "With not indexed rule",
+        "CALCULATED": "With computed rule"
+      },
+      "DISSEMINATION_RULE": {
         "RULES_COUNT": "Rule count",
         "EXPIRED_RULES": "Expiration date",
         "FINAL_ACTIONS": "Final action",
@@ -456,8 +539,8 @@
       "APPRAISAL_RULE": "Administrative useful life",
       "DUC": "Current useful life",
       "COMMUNICABILITY": "Communicability",
-      "REUSING": "Reusing",
-      "DIFFUSION": "Diffusion",
+      "REUSE": "Reuse",
+      "DISSEMINATION": "Dissemination",
       "CLASSIFICATION": "Classification",
       "GEL": "Freezing"
     },
@@ -465,7 +548,8 @@
       "APPRAISAL_RULE": "Appraisal",
       "STORAGE_RULE": "Storage",
       "ACCESS_RULE": "Access",
-      "REUSING": "Reusing",
+      "REUSE_RULE": "Reuse",
+      "DISSEMINATION_RULE": "Dissemination",
       "DIFFUSION": "Diffusion",
       "CLASSIFICATION": "Classification",
       "GEL": "Gel"
