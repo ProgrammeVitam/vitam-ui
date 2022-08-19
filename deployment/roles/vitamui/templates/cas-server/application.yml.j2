@@ -10,9 +10,9 @@ spring.application.name: cas-server
 
 
 server:
-{% if vitamui_struct.secure|lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
@@ -30,7 +30,7 @@ server:
   tomcat:
     basedir: {{ vitamui_folder_conf }}/tomcat
     accesslog:
-        enabled: "{{ vitamui_struct.accesslogs|lower }}"
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
         directory: "{{ vitamui_folder_log }}"
         prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
         file-date-format: ".yyyy-MM-dd"
@@ -48,11 +48,11 @@ vitamui.cas.identity: cas
 iam-client:
   server-host: {{ vitamui.iam_external.host }}
   server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure|lower == "true" %}
-  secure: {{ vitamui.iam_external.secure|lower }}
+{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
+  secure: {{ vitamui.iam_external.secure | default(secure) | lower }}
   ssl-configuration:
     keystore:
-      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
       key-password: {{ password_keystore }}
       type: JKS
     truststore:
@@ -213,21 +213,21 @@ logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
     org.reflections.Reflections: ERROR
-    org.apereo.cas.web.CasWebApplication: {{ vitamui_struct.log.vitamui_level }}
-    org.springframework.boot.autoconfigure.security: {{ vitamui_struct.log.vitamui_level }}
-    org.jasig.cas.client: {{ vitamui_struct.log.vitamui_level }}
-    org.apereo: {{ vitamui_struct.log.vitamui_level }}
-    org.springframework.cloud: {{ vitamui_struct.log.vitamui_level }}
+    org.apereo.cas.web.CasWebApplication: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    org.springframework.boot.autoconfigure.security: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    org.jasig.cas.client: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    org.apereo: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    org.springframework.cloud: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
     org.springframework.amqp: OFF
     org.springframework.context.annotation: OFF
     org.springframework.boot.devtools: OFF
     org.apereo.cas.web.flow: INFO
     org.apereo.inspektr.audit.support: OFF
-    fr.gouv.vitamui.cas: {{ vitamui_struct.log.vitamui_level }}
-    org.elasticsearch.metrics: {{ vitamui_struct.log.vitamui_level }}
-    fr.gouv.vitamui.commons: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.cas: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    org.elasticsearch.metrics: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
+    fr.gouv.vitamui.commons: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
-{% if vitamui.cas_server.cors.enabled|lower == "true" %}
+{% if vitamui.cas_server.cors.enabled | default('false') | lower == "true" %}
 # Cas CORS (necessary for mobile app)
 cas.http-web-request.cors.enabled: true
 cas.http-web-request.cors.allow-credentials: false
