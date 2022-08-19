@@ -18,11 +18,11 @@ server:
   servlet.context-path: /archive-search
   servlet.session.cookie.path: /archive-search
 {% endif %}
-  scheme: {% if vitamui.archive_search.secure | lower =='true' %}https{% else %}http{% endif %}
+  scheme: {% if vitamui.archive_search.secure | default(secure) | lower =='true' %}https{% else %}http{% endif %}
 
-{% if vitamui_struct.secure | lower =='true' %}
+{% if vitamui_struct.secure | default(secure) | lower =='true' %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
@@ -33,7 +33,7 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-        enabled: "{{ vitamui_struct.accesslogs | lower }}"
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
         directory: "{{ vitamui_folder_log }}"
         prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
         file-date-format: ".yyyy-MM-dd"
@@ -48,7 +48,7 @@ management:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.archives.*: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.archives.*: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}
@@ -60,11 +60,11 @@ ui-archive-search:
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure|lower == "true" %}
+{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -75,11 +75,11 @@ ui-archive-search:
   archive-search-external-client:
     server-host: {{ vitamui.archive_search_external.host }}
     server-port: {{ vitamui.archive_search_external.port_service }}
-{% if vitamui.archive_search_external.secure | lower == "true" %}
-    secure: {{ vitamui.archive_search_external.secure | lower }}
+{% if vitamui.archive_search_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.archive_search_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -90,11 +90,11 @@ ui-archive-search:
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
-{% if vitamui.referential_external.secure | lower == "true" %}
-    secure: {{ vitamui.referential_external.secure | lower }}
+{% if vitamui.referential_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -102,7 +102,7 @@ ui-archive-search:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
-  assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+  assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
@@ -153,10 +153,10 @@ cas:
 {% else %}
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
-  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
   callback-url: ${ui.url}/archive-search-api/callback
-{% if vitamui.cas_server.secure|lower == "true" %}
+{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   ssl:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}

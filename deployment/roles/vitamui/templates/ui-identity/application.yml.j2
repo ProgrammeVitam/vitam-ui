@@ -19,11 +19,11 @@ server:
   servlet.context-path: /identity
   servlet.session.cookie.path: /identity
 {% endif %}
-  scheme: {% if vitamui.identity.secure|lower =='true' %}https{% else %}http{% endif %}
+  scheme: {% if vitamui.identity.secure | default(secure) | lower =='true' %}https{% else %}http{% endif %}
 
-{% if vitamui_struct.secure|lower =='true' %}
+{% if vitamui_struct.secure | default(secure) | lower =='true' %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
@@ -34,7 +34,7 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-        enabled: "{{ vitamui_struct.accesslogs|lower }}"
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
         directory: "{{ vitamui_folder_log }}"
         prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
         file-date-format: ".yyyy-MM-dd"
@@ -60,7 +60,7 @@ ui-identity:
   customer:
     technical-referent-email: "{{ vitamui_platform_informations.customer.technical_referent_email }}"
     website-url: "{{ vitamui_platform_informations.customer.website_url }}"
-  assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+  assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
@@ -83,11 +83,11 @@ ui-identity:
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure|lower == "true" %}
-    secure: {{ vitamui.iam_external.secure|lower }}
+{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.iam_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -98,11 +98,11 @@ ui-identity:
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
-{% if vitamui.referential_external.secure | lower == "true" %}
-    secure: {{ vitamui.referential_external.secure | lower }}
+{% if vitamui.referential_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -141,14 +141,14 @@ cas:
 {% else %}
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
-  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http{% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
   callback-url: ${ui.url}/identity-api/callback
-{% if vitamui.cas_server.secure|lower == "true" %}
+{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   ssl:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}
-    hostname-verification: {{ vitamui.cas_server.hostname_verification }}
+    hostname-verification: {{ vitamui.cas_server.hostname_verification | default('true') }}
 {% endif %}
 
 opentracing:

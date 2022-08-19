@@ -1,9 +1,9 @@
-<Directory "{{vitamui_defaults.folder.root_path}}">
+<Directory "{{vitamui_defaults.folder.root_path | default('/vitamui')}}">
     Options Indexes FollowSymLinks
 	Require all granted
 </Directory>
 
-Alias /browse "{{vitamui_defaults.folder.root_path}}"
+Alias /browse "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
 
 # mod_autoindex configuration : https://httpd.apache.org/docs/2.2/mod/mod_autoindex.html
 
