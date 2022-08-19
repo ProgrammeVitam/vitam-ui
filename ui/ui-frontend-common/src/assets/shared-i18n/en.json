@@ -408,6 +408,7 @@
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
+    "COMPUTE_INHERITED_RULES" : "Inheritance calculation",
     "AUDIT": "Audit",
     "STP_DELETE_MASTERDATA_CONTEXT.WARNING": "Warning during the process of deleting application contexts",
     "STP_CORRECTIVE_AUDIT.KO": "Failed to correct the signatures of each corrupt archival unit or object or group of objects",

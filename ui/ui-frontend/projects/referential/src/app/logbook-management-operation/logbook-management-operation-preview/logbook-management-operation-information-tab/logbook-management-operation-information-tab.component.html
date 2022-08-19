@@ -9,7 +9,9 @@
 <div class="row">
   <div class="col-12 mb-3">
     <label> {{ 'LOGBOOK_OPERATION_INFORMATIONS.OPERATION_CATEGORY' | translate }}</label>
-    <div>{{ operation?.processType }}</div>
+    <div>
+      <vitamui-common-event-type-label [key]="operation?.processType"> </vitamui-common-event-type-label>
+    </div>
   </div>
 </div>
 

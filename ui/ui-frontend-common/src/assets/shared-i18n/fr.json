@@ -432,6 +432,7 @@
     "MESSAGE": "Une erreur interne s'est produite. Veuillez contacter un administrateur si le problème persiste."
   },
   "EVENT_TYPE_LABEL": {
+    "COMPUTE_INHERITED_RULES" : "Calcul d'héritage",
     "AUDIT": "Audit",
     "STP_DELETE_MASTERDATA_CONTEXT.WARNING": "Avertissement lors du processus de suppression des contextes applicatifs",
     "STP_CORRECTIVE_AUDIT.KO": "Échec de la correction des signatures de chaque unité archivistique ou objet ou groupe d'objets corrompue",
