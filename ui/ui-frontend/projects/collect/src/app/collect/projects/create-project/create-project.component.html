@@ -52,7 +52,7 @@
           <button (click)="move()" [disabled]="(uploadFiles$|async)?.length === 0"
                   class="btn primary"
                   type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
     </cdk-step>
@@ -74,7 +74,7 @@
         </div>
         <div class="actions">
           <button (click)="validateAndProcessUpload()" class="btn primary" type="button">{{ 'COMMON.NEXT' | translate }}</button>
-          <button (click)="onCancel()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
+          <button (click)="onClose()" class="btn link" type="button">{{'COMMON.UNDO' | translate}}</button>
         </div>
       </div>
     </cdk-step>
@@ -291,4 +291,20 @@
       </div>
     </cdk-step>
   </vitamui-common-stepper>
+
 </form>
+
+
+<ng-template #confirmDeleteAddRuleDialog>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text large bold">{{ 'UNIT_UPDATE.CONFIRM_CLOSE' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button (click)="onConfirm()" class="btn primary btn-confirm-dialog margin-btn">{{ 'UNIT_UPDATE.CLOSE' | translate }}</button>
+
+    <button  (click)="onClose()" class="btn cancel">{{ 'COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

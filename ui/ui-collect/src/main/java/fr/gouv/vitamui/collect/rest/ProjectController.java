@@ -46,7 +46,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -139,6 +141,17 @@ public class ProjectController extends AbstractUiRestController {
         SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Find the Project with ID {}", id);
         return projectService.getOne(buildUiHttpContext(), id);
+    }
+
+    @ApiOperation(value = "Delete project")
+    @DeleteMapping(CommonConstants.PATH_ID)
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete the Project with ID {}", id);
+        projectService.deleteProject(id, buildUiHttpContext());
     }
 
 }

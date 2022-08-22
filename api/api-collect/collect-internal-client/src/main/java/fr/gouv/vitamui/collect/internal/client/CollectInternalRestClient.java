@@ -113,4 +113,11 @@ public class CollectInternalRestClient
         final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
         return restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, ResultsDto.class);
     }
+
+    public void deleteProject(final InternalHttpContext context, String id) {
+        final UriComponentsBuilder uriBuilder =
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + CommonConstants.PATH_ID);
+        final HttpEntity<?> request = new HttpEntity<>(buildHeaders(context));
+        restTemplate.exchange(uriBuilder.build(id), HttpMethod.DELETE, request, Void.class);
+    }
 }
