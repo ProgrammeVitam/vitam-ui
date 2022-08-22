@@ -106,7 +106,6 @@ pipeline {
             }
             environment {
                 PUPPETEER_DOWNLOAD_HOST="${env.SERVICE_NEXUS_URL}/repository/puppeteer-chrome/"
-                JAVA_TOOL_OPTIONS = "-Dhttp.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttp.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttps.proxyHost=${env.SERVICE_PROXY_HOST} -Dhttps.proxyPort=${env.SERVICE_PROXY_PORT} -Dhttp.nonProxyHosts=${env.NOPROXY_HOST}"
                 NODE_OPTIONS="--max_old_space_size=12288"
             }
             steps {
@@ -121,12 +120,6 @@ pipeline {
                 always {
                     junit '**/target/surefire-reports/*.xml'
                 }
-//                success {
-//                    archiveArtifacts (
-//                        artifacts: '**/dependency-check-report.html',
-//                        fingerprint: true
-//                    )
-//                }
             }
         }
 
@@ -214,15 +207,13 @@ pipeline {
                 environment(name: 'DO_CHECKMARX', value: 'true')
             }
             environment {
-                JAVA_TOOL_OPTIONS = ""
                 SERVICE_CHECKMARX_URL = credentials("service-checkmarx-url")
             }
             steps {
                 dir('vitam-build.git') {
                     deleteDir()
                 }
-                sh 'mkdir -p target'
-                sh 'mkdir -p logs'
+                sh 'mkdir -p target logs'
                 // KWA : Visibly, backslash escape hell. \\ => \ in groovy string.
                 sh '/opt/CxConsole/runCxConsole.sh scan --verbose -Log "${PWD}/logs/cxconsole.log" -CxServer "$SERVICE_CHECKMARX_URL" -CxUser "VITAM openLDAP\\\\$CI_USR" -CxPassword \\"$CI_PSW\\" -ProjectName "CxServer\\SP\\Vitam\\Users\\vitam-ui $GIT_BRANCH" -LocationType folder -locationPath "${PWD}/" -Preset "Default 2014" -LocationPathExclude "cots,deployment,deploymentByVitam,docs,integration-tests,tools,node,node_modules,dist,target" -LocationFilesExclude "*.rpm,*.pdf" -ForceScan -ReportPDF "${PWD}/target/checkmarx-report.pdf"'
             }
