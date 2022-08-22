@@ -30,13 +30,14 @@
       <mat-tab label="Informations" i18n-label="Information tab@@eventDetailTabInformation">
         <div class="read-only-field">
           <label i18n="Operation category@@logbookOperationCategory">Catégorie d'opération</label>
-          <div class="word-break">{{ event?.typeProc }}</div>
+          <div class="word-break">
+            <vitamui-common-event-type-label [key]="event?.typeProc"> </vitamui-common-event-type-label>
+          </div>
         </div>
 
         <div class="panel-row">
           <div class="read-only-field">
-            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents
-              externes</label>
+            <label i18n="External Agencies Identifiers@@logbookOperationAgIdExt">Identifiants des agents externes</label>
             <div class="word-break">{{ event?.agIdExt }}</div>
           </div>
           <div class="read-only-field">
