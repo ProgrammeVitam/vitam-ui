@@ -34,94 +34,107 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-magic-numbers */
-import {ɵisObservable as isObservable, ɵisPromise as isPromise} from '@angular/core';
-import {fakeAsync, tick} from '@angular/core/testing';
-import {FormControl} from '@angular/forms';
-import {from, Observable, of} from 'rxjs';
 
-import {OntologyCreateValidators} from './ontology-create.validators';
+import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { from, Observable, of } from 'rxjs';
+
+import { OntologyCreateValidators } from './ontology-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
   return obs;
 }
 
-// TODO fix tests : replace contract access by ontology tests
-xdescribe('Ontology Create Validators', () => {
-
+describe('Ontology Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(false));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '123456'});
+      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({uniqueCode: true});
+    it('should return { idExists: true }', fakeAsync(() => {
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+        expect(result).toBeDefined();
+        expect(result).not.toBeNull();
+        expect(result).toEqual({ idExists: true });
       });
-      tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '123456'});
-    }));
 
-    it('should not call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual(null);
-      });
       tick(400);
-      expect(customerServiceSpy.exists).not.toHaveBeenCalled();
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('123456');
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({uniqueCode: true});
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('123456'))).subscribe((result) => {
+        expect(result).toEqual({ idExists: true });
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '111111'});
+      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+    }));
+
+    it('should call the service', fakeAsync(() => {
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('111111'))).subscribe((result) => {
+        expect(result).toBeDefined();
+        expect(result).not.toBeNull();
+        expect(result).toEqual({ idExists: true });
+      });
+
+      tick(400);
+      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('111111');
     }));
   });
 
   describe('uniqueDomain', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(false));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(false));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
         expect(result).toBeNull();
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({domain: 'test.com'});
+      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('AccessContractService', ['exists']);
-      customerServiceSpy.exists.and.returnValue(of(true));
-      const customerCreateValidators = new OntologyCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
-        expect(result).toEqual({uniqueDomain: true});
+    it('should return { idExists: true }', fakeAsync(() => {
+      const ontologyServiceSpy = jasmine.createSpyObj('OntologyService', ['exists']);
+      ontologyServiceSpy.exists.and.returnValue(of(true));
+      const ontologyCreateValidators = new OntologyCreateValidators(ontologyServiceSpy);
+      toObservable(ontologyCreateValidators.uniqueID()(new FormControl('test.com'))).subscribe((result) => {
+        expect(result).toBeDefined();
+        expect(result).not.toBeNull();
+        expect(result).toEqual({ idExists: true });
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({domain: 'test.com'});
+      expect(ontologyServiceSpy.exists).toHaveBeenCalled();
+      expect(ontologyServiceSpy.exists).toHaveBeenCalledWith('test.com');
     }));
   });
-
 });
