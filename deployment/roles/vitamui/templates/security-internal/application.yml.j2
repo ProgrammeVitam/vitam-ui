@@ -23,9 +23,9 @@ logging:
 
 server:
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure|lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
@@ -39,7 +39,7 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-      enabled: "{{ vitamui_struct.accesslogs }}"
+      enabled: "{{ vitamui_struct.accesslogs | default('true') }}"
       directory: "{{ vitamui_folder_log }}"
       prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
       file-date-format: ".yyyy-MM-dd"
