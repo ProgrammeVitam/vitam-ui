@@ -460,7 +460,14 @@ export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
       idToAdd = this.ruleActions[this.ruleActions.length - 1]?.id;
     }
     if (
-      rule === RuleActionsEnum.ADD_RULES &&
+      // Due to a SEDA limitation, the FinalAction field is mandatory for Appraisal & Storage rules when adding/setting
+      // any Rule, PreventInheritance or PreventRulesId field
+      (
+        rule === RuleActionsEnum.ADD_RULES ||
+        rule === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
+        rule === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+        rule === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+      ) &&
       (this.ruleCategorySelected === RuleTypeEnum.APPRAISALRULE || this.ruleCategorySelected === RuleTypeEnum.STORAGERULE) &&
       this.ruleActions.filter(
         (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategorySelected

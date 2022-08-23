@@ -56,7 +56,7 @@
     <button type="button" (click)="onUpdateRuleProperty()" [disabled]="isValidValue" class="btn primary mr-4">
       {{ 'RULES.COMMON.CONTROL' | translate }}
     </button>
-    <button type="button" (click)="onCancelAddRuleProperty()" [disabled]="isButtonCanceled" class="btn link cancel">
+    <button type="button" (click)="onCancelAddRuleProperty()" [disabled]="isCancelAddRulePropertyButtonDisabled" class="btn link cancel">
       {{ 'RULES.COMMON.UNDO' | translate }}
     </button>
   </div>
