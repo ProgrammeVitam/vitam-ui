@@ -1,4 +1,6 @@
 <div class="container">
+  <div *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
+
   <div class="d-flex padding-btm-style">
     <button type="button" (click)="onUnlockCategoryInheritance()" [disabled]="isValidValue" class="btn primary mr-4">
       {{ 'RULES.COMMON.CONTROL' | translate }}
@@ -7,8 +9,6 @@
       {{ 'RULES.COMMON.UNDO' | translate }}
     </button>
   </div>
-
-  <div *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
 </div>
 
 <ng-template #loadingMode>
