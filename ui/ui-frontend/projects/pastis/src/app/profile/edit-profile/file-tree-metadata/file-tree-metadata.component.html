@@ -25,7 +25,7 @@
         <!--Toggle button allow additional properties-->
         <div *ngIf="this.profileService.profileMode==='PUA' && this.isStandalone" class="panel-buttons" matTooltip="{{'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.ADDITIONAL_PROPERTIES_TOOLTIP' |
              translate}}">
-          <allow-additional-properties [checked]="clickedNode.additionalProperties" (stateToggleButton)="changeStatusAditionalProperties($event)">
+          <allow-additional-properties [checked]="rootAdditionalProperties" (stateToggleButton)="changeStatusAditionalProperties($event)">
           </allow-additional-properties>
         </div>
         <!--Button save-->
@@ -262,7 +262,7 @@
         </ng-container>
 
         <tr *matHeaderRowDef="displayedColumns;sticky: true" class="pastis-table-row-header" mat-header-row></tr>
-        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave(row)"
+        <tr (mouseenter)="onMouseOver(row)" (mouseleave)="onMouseLeave()"
           *matRowDef="let row; columns: displayedColumns;" class="pastis-table-row" mat-row></tr>
       </table>
     </div>

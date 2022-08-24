@@ -52,7 +52,6 @@ public class PuaPastisValidatorNOKTest {
     @Parameters
     public static Collection<String> data() {
         return Arrays.asList(new String[] {
-            "pua/pua_NOK_missing_definitions.json",
             "pua/pua_NOK_missing_management.json",
             "pua/pua_NOK_missing_properties.json",
             "pua/pua_NOK_both_management_present.json"
