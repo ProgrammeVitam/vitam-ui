@@ -499,7 +499,10 @@
     "FILING_SHCEMA": {
       "NO_TREES_NO_PLANS_FOR_ACCESS_CONTRACT": "Aucun Arbre ou Plan trouvés avec le contrat choisi",
       "SHOW_ENTIRE_TREE": "Afficher l'arborescence au complet",
-      "SHOW_TREE_PARENT": "Réduire l'arborescence"
+      "SHOW_TREE_PARENT": "Afficher seulement les résultats",
+      "TREE_TITLE": "Arbres et plans",
+      "TREE_LEAVES_TITLE": "Position(s) de rattachement",
+      "LOAD_MORE_UNITS": "Charger plus d'éléments"
     },
     "EXPORT_CSV": {
       "EXPORT_CSV_LIMIT_REACHED": "Il n'est pas possible de réaliser un export csv sur plus de 10 000 résultats de recherche, veuillez restreindre votre sélection ou affiner votre recherche."

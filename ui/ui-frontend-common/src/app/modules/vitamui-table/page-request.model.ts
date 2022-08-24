@@ -48,7 +48,8 @@ export class PageRequest {
     public orderBy: string,
     public direction: Direction,
     public criteria?: string
-  ) { }
+  ) {
+  }
 
   get httpParams() {
     let params = new HttpParams()

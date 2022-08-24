@@ -1,12 +1,11 @@
 @import '~ui-frontend-common/sass/variables/colors';
-
+/* styles applied directly to the ap-root element only */
 :host {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: white;
-  margin: 0;
-  padding: 72px 0 0 0;
+  justify-content: flex-start;
+  align-items: start;
+  width: 100%;
 
   div, mat-tree, mat-tree-node, mat-nested-tree-node {
     display: flex;
@@ -54,7 +53,6 @@
   .tree-filing-scheme {
     flex: 1;
     flex-direction: column;
-    background-color: #fafafa;
 
     mat-tree-node, mat-nested-tree-node {
       flex-direction: column;
@@ -63,7 +61,7 @@
 
   .load-more-ua {
     cursor: pointer;
-    color: #979797;
+    color: #205692;
     text-decoration: underline;
   }
 }
