@@ -14,7 +14,7 @@
 
 - name: Set mongod_output_dir_entry_point
   set_fact:
-    mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/"
+    mongod_output_dir_entry_point: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/"
 
 - import_tasks: check_auth.yml
 

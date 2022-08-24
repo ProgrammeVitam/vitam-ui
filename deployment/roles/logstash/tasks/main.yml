@@ -57,7 +57,7 @@
 
 - name: Ensure logstash directories exist
   file:
-    path: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/{{ item }}/logstash"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/logstash"
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     state: directory
@@ -84,7 +84,7 @@
 - name: apply configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "/{{ vitamui_defaults.folder.root_path | default('/vitam')}}/conf/logstash/{{ item }}"
+    dest: "/{{ vitamui_defaults.folder.root_path | default('/vitamui')}}/conf/logstash/{{ item }}"
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:

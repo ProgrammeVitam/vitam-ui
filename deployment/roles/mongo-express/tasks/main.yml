@@ -10,7 +10,7 @@
 - name: Push mongo-express script and config
   template:
     src: "env.sh.j2"
-    dest: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/mongo-express/env.sh"
+    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/mongo-express/env.sh"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
