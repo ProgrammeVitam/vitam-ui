@@ -45,7 +45,7 @@
   - name: copy theme files
     copy:
       src: ".theme"
-      dest: "{{vitamui_defaults.folder.root_path | default('/vitam')}}"
+      dest: "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
       owner: "root"
       mode: 0644
 

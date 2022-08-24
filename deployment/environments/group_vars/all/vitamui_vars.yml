@@ -62,7 +62,7 @@ vitamui:
     port_admin: 7002
     # Custom directories linked to the module
     dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
 
   identity_admin:
     host: "identity-admin.service.{{ consul_domain }}"
@@ -80,7 +80,7 @@ vitamui:
     server_connection_timeout: 60000
     # Custom directories linked to the module
     dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
 
   portal:
     host: "portal.service.{{ consul_domain }}"
@@ -112,7 +112,7 @@ vitamui:
     write_timeout: 30
     # Custom directories linked to the module
     dirs:
-      - "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets"
+      - "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
 
   iam_external:
     host: "iam-external.service.{{ consul_domain }}"
@@ -149,9 +149,9 @@ vitamui:
     hostname_verification: true
     theme:
       vitamui_platform_name: VITAM-UI
-      vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets/favicon.ico"
-      vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets/logo.png"
-      vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/assets/logo-large.png"
+      vitamui_favicon: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/favicon.ico"
+      vitam_logo: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo.png"
+      vitamui_logo_large: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets/logo-large.png"
     reset_password_url: /extras/resetPassword?username={username}&firstname={firstname}&lastname={lastname}&language={language}&ttl=1day
     cors:
       enabled: false
@@ -183,7 +183,7 @@ vitamui:
     vitamui_component_type: "internal"
     port_service: 8208
     port_admin: 7208
-    tmp_folder_path : "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/tmp"
+    tmp_folder_path : "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp"
 
   archive_search:
     host: "archive-search.service.{{ consul_domain }}"

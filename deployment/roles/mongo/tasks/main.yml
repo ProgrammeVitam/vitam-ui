@@ -22,7 +22,7 @@
 
 - name: Check that the directories exists (must be removed when the RPM plugin will be patched)
   file:
-    path: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/{{ item }}/mongod"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/mongod"
     state: directory
     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
@@ -138,7 +138,7 @@
     - name: Copy the script which initiate the replica set
       template:
         src: "init-replica.js.j2"
-        dest: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/init-replica.js"
+        dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/init-replica.js"
         owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
         group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
         mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
@@ -148,7 +148,7 @@
     # - name: Copy script that restore configuration of mongod sharded cluster
     #   template:
     #     src: "restore-mongod.js.j2"
-    #     dest: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/restore-mongod.js"
+    #     dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/restore-mongod.js"
     #     owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
     #     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     #     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
@@ -156,7 +156,7 @@
     #     - update_mongodb_configuration
 
     - name: Initiate the replica set
-      command: mongo --host {{ ip_service }} --port {{ mongodb.mongod_port }} {{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/init-replica.js
+      command: mongo --host {{ ip_service }} --port {{ mongodb.mongod_port }} {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/init-replica.js
       tags:
         - update_mongodb_configuration
 
@@ -167,7 +167,7 @@
     - name: Copy the script which create the local users
       template:
         src: "local-user.js.j2"
-        dest: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/local-user.js"
+        dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/local-user.js"
         owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
         group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
         mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
@@ -175,7 +175,7 @@
         - update_mongodb_configuration
 
     - name: Create the local shard user
-      command: "mongo --host {{ ip_service}}:{{ mongodb.mongod_port }} {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/mongod/local-user.js"
+      command: "mongo --host {{ ip_service}}:{{ mongodb.mongod_port }} {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/local-user.js"
       tags:
         - update_mongodb_configuration
 

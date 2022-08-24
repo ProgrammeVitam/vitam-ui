@@ -1,13 +1,13 @@
 ---
 
-vitamui_folder_app: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/app/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_bin: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/bin/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_conf: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/conf/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_data: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/data/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_lib: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/lib/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_log: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/log/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_scripts: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/script/{{ vitamui_struct.vitamui_component }}"
-vitamui_folder_tmp: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/tmp/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_app: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_bin: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/bin/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_conf: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_data: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/data/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_lib: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/lib/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_log: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/log/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_scripts: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/script/{{ vitamui_struct.vitamui_component }}"
+vitamui_folder_tmp: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/tmp/{{ vitamui_struct.vitamui_component }}"
 
 vitamui_conf_consul: "{{ consul.conf_folder }}"
 service_consul: "{{ consul.service_name | default('vitam-consul') }}"

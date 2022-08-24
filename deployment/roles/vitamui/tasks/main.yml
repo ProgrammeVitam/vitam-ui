@@ -18,7 +18,7 @@
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
   file:
-    path: "{{ vitamui_defaults.folder.root_path | default('/vitam') }}/{{ item }}/{{ vitamui_struct.vitamui_component }}"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/{{ vitamui_struct.vitamui_component }}"
     state: directory
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"

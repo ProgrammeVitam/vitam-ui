@@ -1,6 +1,6 @@
 - name: Ensure asset directory is present
   file:
-    path: "{{ vitamui_defaults.folder.root_path | default('/vitam')}}/conf/assets"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui')}}/conf/assets"
     state: directory
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
@@ -9,7 +9,7 @@
 - name: Deploy custom files for UI.
   copy:
     src: "{{ item }}"
-    dest: "{{ vitamui_defaults.folder.root_path | default('/vitam')}}/conf/assets"
+    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui')}}/conf/assets"
     owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
     group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
