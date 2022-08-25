@@ -15,7 +15,6 @@ import { Unit } from '../../models/unit.interface';
   styleUrls: ['./leaves-tree.component.scss'],
 })
 export class LeavesTreeComponent implements OnInit {
-
   readonly DEFAULT_UNIT_PAGE_SIZE = 10;
 
   @Input() accessContract: string;
@@ -27,15 +26,11 @@ export class LeavesTreeComponent implements OnInit {
 
   @Output() emitNode: EventEmitter<FilingHoldingSchemeNode> = new EventEmitter();
 
-  constructor(
-    private archiveService: ArchiveService,
-    private archiveSharedDataService: ArchiveSharedDataService,
-  ) {
+  constructor(private archiveService: ArchiveService, private archiveSharedDataService: ArchiveSharedDataService) {
     this.nestedTreeControlLeaves = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
-    this.archiveSharedDataService.getLastSearchCriteriaDtoSubject()
-      .subscribe((searchCriteriaDto: SearchCriteriaDto) => {
-        this.searchCriterias = searchCriteriaDto;
-      });
+    this.archiveSharedDataService.getLastSearchCriteriaDtoSubject().subscribe((searchCriteriaDto: SearchCriteriaDto) => {
+      this.searchCriterias = searchCriteriaDto;
+    });
   }
 
   ngOnInit(): void {
@@ -79,8 +74,9 @@ export class LeavesTreeComponent implements OnInit {
       trackTotalHits: false,
       computeFacets: false,
     };
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
-      .subscribe(pageResult => this.addMoreChildrenToNode(node, pageResult));
+    this.archiveService
+      .searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
+      .subscribe((pageResult) => this.addMoreChildrenToNode(node, pageResult));
   }
 
   private refreshLeavesNodes() {
@@ -107,26 +103,27 @@ export class LeavesTreeComponent implements OnInit {
     });
   }
 
-  private getLastCallCriterias(): SearchCriteriaEltDto[] {
-    return [...this.searchCriterias.criteriaList];
-  }
-
   private getCriteriaWithParentId(parentId: string): SearchCriteriaEltDto[] {
-    return [{
-      criteria: '#unitups',
-      operator: CriteriaOperator.IN,
-      category: SearchCriteriaTypeEnum.FIELDS,
-      values: [{
-        id: parentId,
-        value: parentId
-      }],
-      dataType: CriteriaDataType.STRING,
-    }];
+    return [
+      {
+        criteria: '#unitups',
+        operator: CriteriaOperator.IN,
+        category: SearchCriteriaTypeEnum.FIELDS,
+        values: [
+          {
+            id: parentId,
+            value: parentId,
+          },
+        ],
+        dataType: CriteriaDataType.STRING,
+      },
+    ];
   }
 
   nodeIsUAWithChidren(_: number, node: FilingHoldingSchemeNode): boolean {
-    return node.type === 'INGEST' &&
-      (node.descriptionLevel === DescriptionLevel.RECORDGRP || node.descriptionLevel === DescriptionLevel.FILE);
+    return (
+      node.type === 'INGEST' && (node.descriptionLevel === DescriptionLevel.RECORDGRP || node.descriptionLevel === DescriptionLevel.FILE)
+    );
   }
 
   nodeIsUAWithoutChidren(_: number, node: FilingHoldingSchemeNode): boolean {
@@ -151,7 +148,7 @@ export class LeavesTreeComponent implements OnInit {
     if (node.descriptionLevel === DescriptionLevel.ITEM) {
       return;
     }
-    const facet: ResultFacet = this.originalRequestResultFacets.find(resultFacet => node.id === resultFacet.node);
+    const facet: ResultFacet = this.originalRequestResultFacets.find((resultFacet) => node.id === resultFacet.node);
     if (facet) {
       node.count = facet.count;
     }
@@ -159,14 +156,13 @@ export class LeavesTreeComponent implements OnInit {
 
   private addMoreChildrenToNode(parentNode: FilingHoldingSchemeNode, pageResult: PagedResult): void {
     const resultList: FilingHoldingSchemeNode[] = this.convertUAToNode(pageResult.results);
-    resultList.forEach(node => {
-        const index = parentNode.children.findIndex(nodeChild => nodeChild.id === node.id);
-        if (index === -1) {
-          this.setCountOnOneUnit(node);
-          parentNode.children.push(node);
-        }
+    resultList.forEach((node) => {
+      const index = parentNode.children.findIndex((nodeChild) => nodeChild.id === node.id);
+      if (index === -1) {
+        this.setCountOnOneUnit(node);
+        parentNode.children.push(node);
       }
-    );
+    });
     parentNode.isLoadingChildren = false;
     parentNode.canLoadMoreChildren = parentNode.children.length < pageResult.totalResults;
     this.refreshLeavesNodes();
