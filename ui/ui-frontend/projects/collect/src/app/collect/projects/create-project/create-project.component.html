@@ -98,24 +98,6 @@
             placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_DESC' | translate }}"
           >
           </vitamui-common-textarea>
-          <div class="col-12">
-            <h4>{{ 'COLLECT.PROJECT_DESCRIPTION_BOUNDED_DATES' | translate }}</h4>
-            <span class="error-message">{{ dateErrorMessage }}</span>
-          </div>
-
-          <div class="col-5 vitamui-input vitamui-date">
-            <input [matDatepicker]="pickerStart" formControlName="startDate" matInput
-                   placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_START_DATE' | translate }}">
-            <mat-datepicker-toggle [for]="pickerStart" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
-          </div>
-
-          <div class="col-5 offset-2 vitamui-input vitamui-date">
-            <input [matDatepicker]="pickerEnd" formControlName="endDate" matInput
-                   placeholder="{{ 'COLLECT.PROJECT_DESCRIPTION_END_DATE' | translate }}">
-            <mat-datepicker-toggle [for]="pickerEnd" matSuffix></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
-          </div>
 
           <div class="col-12 mt-4 mb-3">
             <div class="row">
