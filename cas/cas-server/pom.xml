@@ -11,20 +11,6 @@
     <name>VITAMUI CAS Server</name>
 
     <properties>
-        <assertj-core.version>3.11.1</assertj-core.version>
-        <jackson.version>2.12.4</jackson.version>
-        <lombok.version>1.18.20</lombok.version>
-        <micrometer.version>1.7.3</micrometer.version>
-        <mockito.version>3.12.1</mockito.version>
-        <spring.boot.version>2.5.4</spring.boot.version>
-        <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
-        <spring.security.version>5.5.2</spring.security.version>
-        <spring.test.version>5.3.9</spring.test.version>
-        <spring.version>5.3.9</spring.version>
-        <swagger.version>2.1.10</swagger.version>
-        <mongo.version>4.3.1</mongo.version>
-        <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
-        <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
 
         <rpm.skip>false</rpm.skip>
         <rpm.jar-file>${project.build.finalName}.war</rpm.jar-file>
@@ -60,22 +46,19 @@
         </dependency>
 
         <!-- Consul -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
-            <version>${spring.cloud.consul.version}</version>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-commons</artifactId>
-            <version>${spring.cloud.consul.version}</version>
-		</dependency>
-         <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-context</artifactId>
-            <version>${spring.cloud.consul.version}</version>
-		</dependency>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>
 
         <!-- CAS server -->
         <dependency>
@@ -101,7 +84,6 @@
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
-            <version>${mongo.version}</version>
         </dependency>
 
         <!-- authentication delegation -->
@@ -184,7 +166,6 @@
         <dependency>
             <groupId>org.pac4j</groupId>
             <artifactId>spring-webmvc-pac4j</artifactId>
-            <version>${spring-webmvc-pac4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.pac4j</groupId>
@@ -355,7 +336,6 @@
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
-            <version>1.6.5</version>
         </dependency>
 
         <!-- OAuth support -->
@@ -404,7 +384,6 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>${micrometer.version}</version>
         </dependency>
 
         <!-- logs -->
@@ -435,7 +414,6 @@
         <dependency>
             <groupId>org.gandon.tomcat</groupId>
             <artifactId>juli-to-slf4j</artifactId>
-            <version>1.1.1</version>
         </dependency>
 
         <!-- UTIL -->
@@ -446,22 +424,18 @@
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring5</artifactId>
-            <version>${thymeleaf-spring5.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery-ui</artifactId>
-            <version>1.12.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>5.11.2</version>
         </dependency>
 
         <!-- TEST -->
@@ -473,19 +447,16 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.test.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj-core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

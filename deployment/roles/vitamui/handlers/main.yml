@@ -11,18 +11,13 @@
     state: restarted
   listen: restart service
 
-- name: restart the service
-  service:
-    name: "{{ service_name }}"
-    state: restarted
-  listen: restart service
-
 - name: test service & debug if necessary
   block:
     - name: Check whether service is listening on service port (tcp check)
       wait_for:
         host: "{{ ip_service }}"
-        port: "{{ port_test }}"
+        port: "{{ vitamui_struct.port_service }}"
+        timeout: "{{ vitamui_struct.services.start_timeout | default(start_timeout) }}"
         state: started
       listen: restart service
   rescue:
@@ -31,4 +26,3 @@
       register: journalctl_logs
     - name: printing error logs
       debug: msg={{ journalctl_logs.stdout_lines }}
-

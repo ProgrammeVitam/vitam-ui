@@ -4,7 +4,7 @@
   systemd:
     name: "vitam-{{ service_name }}"
     state: stopped
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Uninstall vitam service
   yum:
