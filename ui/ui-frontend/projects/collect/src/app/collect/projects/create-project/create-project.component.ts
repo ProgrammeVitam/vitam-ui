@@ -38,7 +38,6 @@ import { ProjectsService } from '../projects.service';
 import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
 
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-create-project',
@@ -63,8 +62,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   @ViewChild('fileSearch', { static: false }) fileSearch: any;
   FILLING_PLAN_MODE = FilingPlanMode;
   tenantIdentifier: number;
-  projectId: string;
-  createdOn: string;
+  createdProject: Project;
   createDialogSub: Subscription;
   updateDialogSub: Subscription;
   acquisitionInformationsList = [
@@ -86,7 +84,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.translationService.instant('LEGAL_STATUS.PRIVATE_ARCHIVE'),
     this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE'),
   ];
-  dateErrorMessage = '';
   closeModal = false;
 
   constructor(
@@ -213,9 +210,8 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
       .create(project)
       .toPromise()
       .then((response) => {
-        this.projectId = response.id;
-        this.createdOn = response.createdOn;
-        return this.uploadService.uploadZip(this.tenantIdentifier, this.projectId);
+        this.createdProject = response;
+        return this.uploadService.uploadZip(this.tenantIdentifier, this.createdProject.id);
       })
       .then((uploadOperation) => {
         uploadOperation.subscribe(
@@ -239,15 +235,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   /*** Step 3 : Description du versement ***/
   validateThirdStep() {
-    const startDate = this.projectForm.controls['startDate'].value;
-    const endDate = this.projectForm.controls['endDate'].value;
-
-    if (startDate !== null && endDate !== null && moment(startDate).isAfter(endDate)) {
-      this.dateErrorMessage = this.translationService.instant('COLLECT.PROJECT_DESCRIPTION_DATE_ERROR');
-      return true;
-    }
-    this.dateErrorMessage = '';
-
     return (
       this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
       this.projectForm.controls['messageIdentifier'].invalid ||
@@ -266,18 +253,25 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   updateProject() {
     // Project name should be setted from messageIdentifier field until further notice
-    const project = {
-      ...this.projectForm.value, id: this.projectId, createdOn: this.createdOn,
-      name: this.projectForm.controls['messageIdentifier'].value
+    const projectToUpdate = {
+      ...this.projectForm.value,  name: this.projectForm.controls['messageIdentifier'].value
     };
-    this.updateDialogSub = this.projectsService.updateProject(project).subscribe();
+    this.mapProjectInternalFields(projectToUpdate);
+    this.updateDialogSub = this.projectsService.updateProject(projectToUpdate).subscribe();
     this.move();
+  }
+
+  mapProjectInternalFields(project: Project){
+    project.id = this.createdProject.id;
+    project.createdOn = this.createdProject.createdOn;
+    project.unitUp = this.createdProject.unitUp;
+    project.status = this.createdProject.status;
   }
 
   /*** Step 5 : Téléchargements ***/
   close() {
     this.dialogRef.close(true);
-    this.projectId = null;
+    this.createdProject = null;
   }
 
   /*** All Steps ***/
@@ -285,8 +279,6 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.projectForm = this.formBuilder.group({
       messageIdentifier: [null],
       comment: [null],
-      startDate: [null],
-      endDate: [null],
       originatingAgencyIdentifier: [null, Validators.required],
       submissionAgencyIdentifier: [null, Validators.required],
       referentialCheckup: [true],

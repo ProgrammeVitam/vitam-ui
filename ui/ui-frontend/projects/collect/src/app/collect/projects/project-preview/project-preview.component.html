@@ -1,4 +1,4 @@
-<div *ngIf="(selectedProject | async); let selectedProject">
+<div *ngIf="(selectedProject | async); let selectedProject; else loadingSpinner">
   <vitamui-common-sidenav-header [extended]="isPanelextended" [title]="selectedProject.messageIdentifier"
     [icon]="'vitamui-icon-file'" [hasToolTipOnTitle]="true" [toolTipTitleDuration]="300" (onclose)="emitClose()">
     <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
@@ -156,3 +156,9 @@
     </mat-tab-group>
   </div>
 </div>
+
+<ng-template #loadingSpinner>
+  <div class="spinnerClass">
+    <mat-spinner class="vitamui-spinner large"></mat-spinner>
+  </div>
+</ng-template>

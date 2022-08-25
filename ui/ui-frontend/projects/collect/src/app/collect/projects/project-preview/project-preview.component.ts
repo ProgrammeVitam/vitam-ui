@@ -6,7 +6,7 @@ import { ProjectsService } from '../projects.service';
 @Component({
   selector: 'app-project-preview',
   templateUrl: './project-preview.component.html',
-  styleUrls: ['./project-preview.component.css']
+  styleUrls: ['./project-preview.component.scss']
 })
 export class ProjectPreviewComponent implements OnInit {
 
