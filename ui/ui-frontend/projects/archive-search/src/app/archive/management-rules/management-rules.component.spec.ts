@@ -140,9 +140,10 @@ describe('ManagementRulesComponent', () => {
       getAccessContract: () => of('AccessContract'),
       getselectedItems: () => of(35),
       getCriteriaSearchListToSave: () => of({}),
-      getRuleActions: () => of(ruleActions),
+      getRuleActions: () => of([...ruleActions]),
       getHasExactCount: () => of(true),
       emitRuleCategory: () => of(),
+      emitRuleActions: (_: ActionsRules[]) => {}
     };
 
     await TestBed.configureTestingModule({
@@ -259,4 +260,74 @@ describe('ManagementRulesComponent', () => {
     expect(component.isReuseRuleActionDisabled).not.toBeNull();
     expect(component.isReuseRuleActionDisabled).toBeTruthy();
   });
+
+  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for AppraisalRule', () => {
+    component.selectRule(rulesCatygories[1]);
+    component.onSelectAction('ADD_RULES');
+    expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+    expect(component.ruleActions.length).toEqual(5);
+    expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+    expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+    expect(component.ruleActions[4].actionType).toEqual('ADD_RULES');
+    expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+  });
+
+  fit('Should append BLOCK_RULE_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+    component.selectRule(rulesCatygories[1]);
+    component.onSelectAction('BLOCK_RULE_INHERITANCE');
+    expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+    expect(component.ruleActions.length).toEqual(5);
+    expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+    expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+    expect(component.ruleActions[4].actionType).toEqual('BLOCK_RULE_INHERITANCE');
+    expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+  });
+
+  fit('Should append BLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+      component.selectRule(rulesCatygories[1]);
+      component.onSelectAction('BLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+      expect(component.ruleActions[4].actionType).toEqual('BLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+    });
+
+  fit('Should append UNLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+      component.selectRule(rulesCatygories[1]);
+      component.onSelectAction('UNLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+      expect(component.ruleActions[4].actionType).toEqual('UNLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+    });
+
+  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for StorageRule',
+    () => {
+      component.selectRule(rulesCatygories[0]);
+      component.onSelectAction('ADD_RULES');
+      expect(component.ruleCategorySelected).toEqual('StorageRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('StorageRule');
+      expect(component.ruleActions[4].actionType).toEqual('ADD_RULES');
+      expect(component.ruleActions[4].ruleType).toEqual('StorageRule');
+    });
+
+  fit('Should only append ADD_RULES actions when selecting ADD_RULES action for AccessRule',
+    () => {
+      component.selectRule(rulesCatygories[3]);
+      component.onSelectAction('ADD_RULES');
+      expect(component.ruleCategorySelected).toEqual('AccessRule');
+      expect(component.ruleActions.length).toEqual(4);
+      expect(component.ruleActions[3].actionType).toEqual('ADD_RULES');
+      expect(component.ruleActions[3].ruleType).toEqual('AccessRule');
+    });
+
 });

@@ -59,7 +59,7 @@ const managementRules: ManagementRules[] = [
     actionType: 'actionType',
   },
 ];
-const ruleActions: ActionsRules[] = [
+const RULE_ACTIONS: ActionsRules[] = [
   {
     ruleType: 'AppraisalRule',
     actionType: 'UPDATE_PROPERTY',
@@ -104,13 +104,15 @@ describe('AddUpdatePropertyComponent', () => {
   const matDialogRefSpy = jasmine.createSpyObj('MatDialogRef', ['close']);
   const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open', 'close']);
 
+  let currentTestRuleActions: ActionsRules[] = RULE_ACTIONS;
+
   const managementRulesSharedDataServiceMock = {
     getCriteriaSearchDSLQuery: () => of({}),
     getManagementRules: () => of(managementRules),
     getAccessContract: () => of(accessContract),
     getselectedItems: () => of(35),
     getCriteriaSearchListToSave: () => of({}),
-    getRuleActions: () => of(ruleActions),
+    getRuleActions: () => of(currentTestRuleActions),
     emitManagementRules: () => of({}),
     emitRuleActions: () => of({}),
   };
@@ -145,14 +147,14 @@ describe('AddUpdatePropertyComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should the stepValid parameter be true after the update of the final action', () => {
+  fit('should the stepValid parameter be true after the update of the final action', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
-    component.ruleActions = ruleActions;
+    component.ruleActions = RULE_ACTIONS;
 
     // When
     component.onUpdateRuleProperty();
@@ -168,10 +170,10 @@ describe('AddUpdatePropertyComponent', () => {
     ).toBeTruthy();
   });
 
-  it('should the showText and the stepValid parameters be false after updating the final action', () => {
+  fit('should the showText and the stepValid parameters be false after updating the final action', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
-    component.ruleActions = ruleActions;
+    component.ruleActions = RULE_ACTIONS;
 
     // When
     component.onChangeValue();
@@ -187,21 +189,169 @@ describe('AddUpdatePropertyComponent', () => {
     ).toBeFalsy();
   });
 
-  it('should isButtonCanceled be true when initializing the component', () => {
+  fit('should add rule property cancel button be disabled when adding an AppraisalRule', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
-    component.ruleActions = ruleActions;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
 
     // When
     component.ngOnInit();
 
     // Then
-    expect(component.ruleActions.length).toBeDefined();
-    expect(component.ruleActions.length).toBe(5);
-    expect(component.isButtonCanceled).toBeTruthy();
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
   });
 
-  it('should a final action be defined after updating the property bloc', () => {
+  fit('should add rule property cancel button be disabled when adding a StorageRule', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.STORAGERULE;
+    currentTestRuleActions = [
+      {
+        ruleType: 'StorageRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'StorageRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
+
+    // When
+    component.ngOnInit();
+
+    // Then
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
+  });
+
+  fit('should add rule property cancel button be enabled when adding a ClassificationRule', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.CLASSIFICATIONRULE;
+    currentTestRuleActions = [
+      {
+        ruleType: 'ClassificationRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'ClassificationRule',
+        actionType: 'ADD_RULES',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
+
+    // When
+    component.ngOnInit();
+
+    // Then
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeFalsy();
+  });
+
+  fit('should add rule property cancel button be disabled when blocking a rule inheritance for AppraisalRule', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'BLOCK_RULE_INHERITANCE',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
+
+    // When
+    component.ngOnInit();
+
+    // Then
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
+  });
+
+  fit('should add rule property cancel button be disabled when blocking AppraisalRule category inheritance', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'BLOCK_CATEGORY_INHERITANCE',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
+
+    // When
+    component.ngOnInit();
+
+    // Then
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
+  });
+
+  fit('should add rule property cancel button be disabled when unocking AppraisalRule category inheritance', () => {
+    // Given
+    component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
+    currentTestRuleActions = [
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'UPDATE_PROPERTY',
+        id: 1,
+        ruleId: '',
+        stepValid: false,
+      },
+      {
+        ruleType: 'AppraisalRule',
+        actionType: 'BLOCK_CATEGORY_INHERITANCE',
+        id: 2,
+        ruleId: '',
+        stepValid: true,
+      }
+    ];
+
+    // When
+    component.ngOnInit();
+
+    // Then
+    expect(component.isCancelAddRulePropertyButtonDisabled).toBeTruthy();
+  });
+
+  fit('should a final action be defined after updating the property bloc', () => {
     // Given
     component.ruleCategory = RuleTypeEnum.APPRAISALRULE;
     component.ruleTypeDUA = ruleCategoryAction;
