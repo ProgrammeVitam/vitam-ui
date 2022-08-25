@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class SanityCheckerTest {
@@ -87,6 +88,7 @@ public class SanityCheckerTest {
         assertThatCode(() -> SanityChecker.checkJsonAll(json.toString())).
             isInstanceOf(InvalidParseOperationException.class);
     }
+
     @Test
     public void sanitizeJson_should_not_fail_with_keys_$fields_$and_$roots()
         throws FileNotFoundException, InvalidParseOperationException {
@@ -94,7 +96,7 @@ public class SanityCheckerTest {
         final File file = PropertiesUtils.findFile(jsonWithProjectionRootsFieldsKeys);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
-        assertThatCode(()-> SanityChecker.sanitizeJson(json)).
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
             doesNotThrowAnyException();
     }
 
@@ -225,13 +227,13 @@ public class SanityCheckerTest {
 
     @Test
     public void sanitizeJson_should_not_fail_with_keys_$action_$add_$pull()
-          throws FileNotFoundException, InvalidParseOperationException {
+        throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithActionPullAddKeys = "reclassification_action_json_with_action_add_pull_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithActionPullAddKeys);
-            final JsonNode json = JsonHandler.getFromFile(file);
-            Assertions.assertThat(json).isNotNull();
-            assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-                doesNotThrowAnyException();
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
     }
 
     @Test
@@ -239,25 +241,32 @@ public class SanityCheckerTest {
         assertThatCode(() -> SanityChecker.checkSecureParameter("#id")).
             doesNotThrowAnyException();
     }
+
     @Test
     public void sanitizeJson_should_not_fail_with_keys_$query_$in_$or()
-          throws FileNotFoundException, InvalidParseOperationException {
+        throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithInOrQueryKeys = "audit_action_json_with_in_or_query_keys.json";
         final File file = PropertiesUtils.findFile(jsonWithInOrQueryKeys);
-            final JsonNode json = JsonHandler.getFromFile(file);
-            Assertions.assertThat(json).isNotNull();
-            assertThatCode(() -> SanityChecker.sanitizeJson(json)).
-                doesNotThrowAnyException();
+        final JsonNode json = JsonHandler.getFromFile(file);
+        Assertions.assertThat(json).isNotNull();
+        assertThatCode(() -> SanityChecker.sanitizeJson(json)).
+            doesNotThrowAnyException();
     }
+
     @Test
     public void sanitizeJson_should_not_fail_with_keys_$exists()
-          throws FileNotFoundException, InvalidParseOperationException {
+        throws FileNotFoundException, InvalidParseOperationException {
         final String jsonWithExistsKey = "audit_action_json_with_exists_key.json";
         final File file = PropertiesUtils.findFile(jsonWithExistsKey);
         final JsonNode json = JsonHandler.getFromFile(file);
         Assertions.assertThat(json).isNotNull();
         assertThatCode(() -> SanityChecker.sanitizeJson(json)).
             doesNotThrowAnyException();
+    }
+
+    @Test
+    public void isValidParameterName_tests() {
+        assertTrue(SanityChecker.isValidParameterName("vitamui-primary"));
     }
 
 }
