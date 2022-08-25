@@ -10,7 +10,7 @@
 <!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
 <!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
 ]>
-<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+<svg version="1.1" id="Calque_1"
      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
      style="enable-background:new 0 0 200 200;" xml:space="preserve">
 <style type="text/css">
@@ -240,7 +240,7 @@
   .probative_value_app_224{fill:url(#SVGID_PROBATIVE_VALUE_APP_12);}
   .probative_value_app_225{fill:url(#SVGID_PROBATIVE_VALUE_APP_13);}
   .probative_value_app_226{fill:url(#SVGID_PROBATIVE_VALUE_APP_14);}
-  .probative_value_app_227{fill:#478AD7;}
+  .probative_value_app_227{fill:var(--vitamui-secondary-300);}
 </style>
   <metadata>
 	<sfw  xmlns="&ns_sfw;">

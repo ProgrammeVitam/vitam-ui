@@ -10,9 +10,9 @@
 	<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
 	<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
 ]>
-<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
-	 style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
 <style type="text/css">
 	.arch0{fill-rule:evenodd;clip-rule:evenodd;}
 	.arch1{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
@@ -248,420 +248,420 @@
 	</g>
 	<g>
 		<g>
-			
+
 				<ellipse transform="matrix(2.689626e-02 -0.9996 0.9996 2.689626e-02 -49.0663 262.8737)" class="arch4" cx="110.5" cy="156.6" rx="7.9" ry="51.4"/>
-			
+
 				<ellipse transform="matrix(2.694130e-02 -0.9996 0.9996 2.694130e-02 -49.1206 262.8353)" class="arch5" cx="110.4" cy="156.6" rx="7.8" ry="51.3"/>
-			
+
 				<ellipse transform="matrix(2.698654e-02 -0.9996 0.9996 2.698654e-02 -49.175 262.7968)" class="arch6" cx="110.4" cy="156.7" rx="7.8" ry="51.2"/>
-			
+
 				<ellipse transform="matrix(2.703196e-02 -0.9996 0.9996 2.703196e-02 -49.2294 262.7583)" class="arch7" cx="110.4" cy="156.7" rx="7.8" ry="51.1"/>
-			
+
 				<ellipse transform="matrix(2.707757e-02 -0.9996 0.9996 2.707757e-02 -49.2838 262.7197)" class="arch8" cx="110.3" cy="156.7" rx="7.7" ry="51"/>
-			
+
 				<ellipse transform="matrix(2.712338e-02 -0.9996 0.9996 2.712338e-02 -49.3382 262.6812)" class="arch9" cx="110.3" cy="156.7" rx="7.7" ry="50.9"/>
-			
+
 				<ellipse transform="matrix(2.716937e-02 -0.9996 0.9996 2.716937e-02 -49.3926 262.6425)" class="arch10" cx="110.2" cy="156.7" rx="7.7" ry="50.8"/>
-			
+
 				<ellipse transform="matrix(2.721557e-02 -0.9996 0.9996 2.721557e-02 -49.4471 262.6039)" class="arch11" cx="110.2" cy="156.7" rx="7.7" ry="50.7"/>
-			
+
 				<ellipse transform="matrix(2.726196e-02 -0.9996 0.9996 2.726196e-02 -49.5015 262.5652)" class="arch12" cx="110.2" cy="156.7" rx="7.6" ry="50.6"/>
-			
+
 				<ellipse transform="matrix(2.730855e-02 -0.9996 0.9996 2.730855e-02 -49.556 262.5266)" class="arch13" cx="110.1" cy="156.7" rx="7.6" ry="50.4"/>
-			
+
 				<ellipse transform="matrix(2.735533e-02 -0.9996 0.9996 2.735533e-02 -49.6105 262.4878)" class="arch14" cx="110.1" cy="156.7" rx="7.6" ry="50.3"/>
-			
+
 				<ellipse transform="matrix(2.740232e-02 -0.9996 0.9996 2.740232e-02 -49.665 262.4491)" class="arch15" cx="110" cy="156.7" rx="7.5" ry="50.2"/>
-			
+
 				<ellipse transform="matrix(2.744951e-02 -0.9996 0.9996 2.744951e-02 -49.7196 262.4102)" class="arch16" cx="110" cy="156.8" rx="7.5" ry="50.1"/>
-			
+
 				<ellipse transform="matrix(2.749690e-02 -0.9996 0.9996 2.749690e-02 -49.7741 262.3714)" class="arch17" cx="110" cy="156.8" rx="7.5" ry="50"/>
-			
+
 				<ellipse transform="matrix(2.754449e-02 -0.9996 0.9996 2.754449e-02 -49.8287 262.3326)" class="arch17" cx="109.9" cy="156.8" rx="7.5" ry="49.9"/>
-			
+
 				<ellipse transform="matrix(2.759229e-02 -0.9996 0.9996 2.759229e-02 -49.8833 262.2937)" class="arch18" cx="109.9" cy="156.8" rx="7.4" ry="49.8"/>
-			
+
 				<ellipse transform="matrix(2.764030e-02 -0.9996 0.9996 2.764030e-02 -49.9379 262.2547)" class="arch19" cx="109.8" cy="156.8" rx="7.4" ry="49.7"/>
-			
+
 				<ellipse transform="matrix(2.768851e-02 -0.9996 0.9996 2.768851e-02 -49.9925 262.2158)" class="arch20" cx="109.8" cy="156.8" rx="7.4" ry="49.6"/>
-			
+
 				<ellipse transform="matrix(2.773693e-02 -0.9996 0.9996 2.773693e-02 -50.0471 262.1768)" class="arch21" cx="109.8" cy="156.8" rx="7.3" ry="49.5"/>
-			
+
 				<ellipse transform="matrix(2.778556e-02 -0.9996 0.9996 2.778556e-02 -50.1018 262.1377)" class="arch22" cx="109.7" cy="156.8" rx="7.3" ry="49.3"/>
-			
+
 				<ellipse transform="matrix(2.783441e-02 -0.9996 0.9996 2.783441e-02 -50.1564 262.0986)" class="arch23" cx="109.7" cy="156.8" rx="7.3" ry="49.2"/>
-			
+
 				<ellipse transform="matrix(2.788347e-02 -0.9996 0.9996 2.788347e-02 -50.2111 262.0595)" class="arch24" cx="109.6" cy="156.8" rx="7.3" ry="49.1"/>
-			
+
 				<ellipse transform="matrix(2.793274e-02 -0.9996 0.9996 2.793274e-02 -50.2658 262.0204)" class="arch25" cx="109.6" cy="156.9" rx="7.2" ry="49"/>
-			
+
 				<ellipse transform="matrix(2.798223e-02 -0.9996 0.9996 2.798223e-02 -50.3206 261.9812)" class="arch25" cx="109.5" cy="156.9" rx="7.2" ry="48.9"/>
-			
+
 				<ellipse transform="matrix(2.803194e-02 -0.9996 0.9996 2.803194e-02 -50.3753 261.942)" class="arch26" cx="109.5" cy="156.9" rx="7.2" ry="48.8"/>
-			
+
 				<ellipse transform="matrix(2.808187e-02 -0.9996 0.9996 2.808187e-02 -50.4301 261.9027)" class="arch26" cx="109.5" cy="156.9" rx="7.2" ry="48.7"/>
-			
+
 				<ellipse transform="matrix(2.813201e-02 -0.9996 0.9996 2.813201e-02 -50.4849 261.8635)" class="arch27" cx="109.4" cy="156.9" rx="7.1" ry="48.6"/>
-			
+
 				<ellipse transform="matrix(2.818238e-02 -0.9996 0.9996 2.818238e-02 -50.5397 261.8241)" class="arch28" cx="109.4" cy="156.9" rx="7.1" ry="48.5"/>
-			
+
 				<ellipse transform="matrix(2.823298e-02 -0.9996 0.9996 2.823298e-02 -50.5945 261.7848)" class="arch29" cx="109.3" cy="156.9" rx="7.1" ry="48.3"/>
-			
+
 				<ellipse transform="matrix(2.828380e-02 -0.9996 0.9996 2.828380e-02 -50.6493 261.7454)" class="arch30" cx="109.3" cy="156.9" rx="7" ry="48.2"/>
-			
+
 				<ellipse transform="matrix(2.833484e-02 -0.9996 0.9996 2.833484e-02 -50.7042 261.7059)" class="arch31" cx="109.3" cy="156.9" rx="7" ry="48.1"/>
-			
+
 				<ellipse transform="matrix(2.838611e-02 -0.9996 0.9996 2.838611e-02 -50.7591 261.6665)" class="arch32" cx="109.2" cy="156.9" rx="7" ry="48"/>
-			
+
 				<ellipse transform="matrix(2.843762e-02 -0.9996 0.9996 2.843762e-02 -50.814 261.627)" class="arch32" cx="109.2" cy="157" rx="7" ry="47.9"/>
-			
+
 				<ellipse transform="matrix(2.848935e-02 -0.9996 0.9996 2.848935e-02 -50.8689 261.5874)" class="arch33" cx="109.1" cy="157" rx="6.9" ry="47.8"/>
-			
+
 				<ellipse transform="matrix(2.854132e-02 -0.9996 0.9996 2.854132e-02 -50.9238 261.5478)" class="arch33" cx="109.1" cy="157" rx="6.9" ry="47.7"/>
-			
+
 				<ellipse transform="matrix(2.859352e-02 -0.9996 0.9996 2.859352e-02 -50.9788 261.5082)" class="arch34" cx="109.1" cy="157" rx="6.9" ry="47.6"/>
-			
+
 				<ellipse transform="matrix(2.864596e-02 -0.9996 0.9996 2.864596e-02 -51.0338 261.4685)" class="arch34" cx="109" cy="157" rx="6.8" ry="47.5"/>
-			
+
 				<ellipse transform="matrix(2.869863e-02 -0.9996 0.9996 2.869863e-02 -51.0888 261.4288)" class="arch35" cx="109" cy="157" rx="6.8" ry="47.3"/>
-			
+
 				<ellipse transform="matrix(2.875155e-02 -0.9996 0.9996 2.875155e-02 -51.1438 261.3891)" class="arch36" cx="108.9" cy="157" rx="6.8" ry="47.2"/>
-			
+
 				<ellipse transform="matrix(2.880470e-02 -0.9996 0.9996 2.880470e-02 -51.1988 261.3493)" class="arch37" cx="108.9" cy="157" rx="6.8" ry="47.1"/>
-			
+
 				<ellipse transform="matrix(2.885810e-02 -0.9996 0.9996 2.885810e-02 -51.2539 261.3094)" class="arch38" cx="108.9" cy="157" rx="6.7" ry="47"/>
-			
+
 				<ellipse transform="matrix(2.891175e-02 -0.9996 0.9996 2.891175e-02 -51.309 261.2696)" class="arch39" cx="108.8" cy="157" rx="6.7" ry="46.9"/>
-			
+
 				<ellipse transform="matrix(2.896563e-02 -0.9996 0.9996 2.896563e-02 -51.3641 261.2297)" class="arch40" cx="108.8" cy="157.1" rx="6.7" ry="46.8"/>
-			
+
 				<ellipse transform="matrix(2.901977e-02 -0.9996 0.9996 2.901977e-02 -51.4192 261.1897)" class="arch40" cx="108.7" cy="157.1" rx="6.6" ry="46.7"/>
-			
+
 				<ellipse transform="matrix(2.907416e-02 -0.9996 0.9996 2.907416e-02 -51.4743 261.1497)" class="arch41" cx="108.7" cy="157.1" rx="6.6" ry="46.6"/>
-			
+
 				<ellipse transform="matrix(2.912880e-02 -0.9996 0.9996 2.912880e-02 -51.5295 261.1097)" class="arch41" cx="108.7" cy="157.1" rx="6.6" ry="46.5"/>
-			
+
 				<ellipse transform="matrix(2.918369e-02 -0.9996 0.9996 2.918369e-02 -51.5847 261.0696)" class="arch42" cx="108.6" cy="157.1" rx="6.6" ry="46.3"/>
-			
+
 				<ellipse transform="matrix(2.923883e-02 -0.9996 0.9996 2.923883e-02 -51.6399 261.0295)" class="arch42" cx="108.6" cy="157.1" rx="6.5" ry="46.2"/>
-			
+
 				<ellipse transform="matrix(2.929424e-02 -0.9996 0.9996 2.929424e-02 -51.6951 260.9894)" class="arch43" cx="108.5" cy="157.1" rx="6.5" ry="46.1"/>
-			
+
 				<ellipse transform="matrix(2.934990e-02 -0.9996 0.9996 2.934990e-02 -51.7504 260.9492)" class="arch44" cx="108.5" cy="157.1" rx="6.5" ry="46"/>
-			
+
 				<ellipse transform="matrix(2.940582e-02 -0.9996 0.9996 2.940582e-02 -51.8056 260.9089)" class="arch45" cx="108.4" cy="157.1" rx="6.5" ry="45.9"/>
-			
+
 				<ellipse transform="matrix(2.946200e-02 -0.9996 0.9996 2.946200e-02 -51.8609 260.8687)" class="arch46" cx="108.4" cy="157.1" rx="6.4" ry="45.8"/>
-			
+
 				<ellipse transform="matrix(2.951845e-02 -0.9996 0.9996 2.951845e-02 -51.9162 260.8283)" class="arch47" cx="108.4" cy="157.2" rx="6.4" ry="45.7"/>
-			
+
 				<ellipse transform="matrix(2.957516e-02 -0.9996 0.9996 2.957516e-02 -51.9716 260.788)" class="arch48" cx="108.3" cy="157.2" rx="6.4" ry="45.6"/>
-			
+
 				<ellipse transform="matrix(2.963214e-02 -0.9996 0.9996 2.963214e-02 -52.0269 260.7475)" class="arch49" cx="108.3" cy="157.2" rx="6.3" ry="45.5"/>
-			
+
 				<ellipse transform="matrix(2.968939e-02 -0.9996 0.9996 2.968939e-02 -52.0823 260.7071)" class="arch50" cx="108.2" cy="157.2" rx="6.3" ry="45.4"/>
-			
+
 				<ellipse transform="matrix(2.974692e-02 -0.9996 0.9996 2.974692e-02 -52.1377 260.6666)" class="arch50" cx="108.2" cy="157.2" rx="6.3" ry="45.2"/>
-			
+
 				<ellipse transform="matrix(2.980471e-02 -0.9996 0.9996 2.980471e-02 -52.1932 260.626)" class="arch51" cx="108.2" cy="157.2" rx="6.3" ry="45.1"/>
-			
+
 				<ellipse transform="matrix(2.986279e-02 -0.9996 0.9996 2.986279e-02 -52.2486 260.5854)" class="arch52" cx="108.1" cy="157.2" rx="6.2" ry="45"/>
-			
+
 				<ellipse transform="matrix(2.992113e-02 -0.9996 0.9996 2.992113e-02 -52.3041 260.5448)" class="arch53" cx="108.1" cy="157.2" rx="6.2" ry="44.9"/>
-			
+
 				<ellipse transform="matrix(2.997976e-02 -0.9996 0.9996 2.997976e-02 -52.3596 260.5041)" class="arch54" cx="108" cy="157.2" rx="6.2" ry="44.8"/>
-			
+
 				<ellipse transform="matrix(3.003868e-02 -0.9995 0.9995 3.003868e-02 -52.4151 260.4633)" class="arch55" cx="108" cy="157.2" rx="6.1" ry="44.7"/>
-			
+
 				<ellipse transform="matrix(3.009787e-02 -0.9995 0.9995 3.009787e-02 -52.4707 260.4226)" class="arch56" cx="108" cy="157.2" rx="6.1" ry="44.6"/>
-			
+
 				<ellipse transform="matrix(3.015735e-02 -0.9995 0.9995 3.015735e-02 -52.5262 260.3817)" class="arch57" cx="107.9" cy="157.3" rx="6.1" ry="44.5"/>
-			
+
 				<ellipse transform="matrix(3.021712e-02 -0.9995 0.9995 3.021712e-02 -52.5818 260.3409)" class="arch58" cx="107.9" cy="157.3" rx="6.1" ry="44.4"/>
-			
+
 				<ellipse transform="matrix(3.027718e-02 -0.9995 0.9995 3.027718e-02 -52.6374 260.2999)" class="arch59" cx="107.8" cy="157.3" rx="6" ry="44.2"/>
-			
+
 				<ellipse transform="matrix(3.033753e-02 -0.9995 0.9995 3.033753e-02 -52.6931 260.259)" class="arch60" cx="107.8" cy="157.3" rx="6" ry="44.1"/>
-			
+
 				<ellipse transform="matrix(3.039818e-02 -0.9995 0.9995 3.039818e-02 -52.7488 260.2179)" class="arch61" cx="107.8" cy="157.3" rx="6" ry="44"/>
-			
+
 				<ellipse transform="matrix(3.045912e-02 -0.9995 0.9995 3.045912e-02 -52.8045 260.1768)" class="arch62" cx="107.7" cy="157.3" rx="6" ry="43.9"/>
-			
+
 				<ellipse transform="matrix(3.052036e-02 -0.9995 0.9995 3.052036e-02 -52.8602 260.1357)" class="arch63" cx="107.7" cy="157.3" rx="5.9" ry="43.8"/>
-			
+
 				<ellipse transform="matrix(3.058190e-02 -0.9995 0.9995 3.058190e-02 -52.9159 260.0946)" class="arch64" cx="107.6" cy="157.3" rx="5.9" ry="43.7"/>
-			
+
 				<ellipse transform="matrix(3.064375e-02 -0.9995 0.9995 3.064375e-02 -52.9717 260.0533)" class="arch65" cx="107.6" cy="157.3" rx="5.9" ry="43.6"/>
-			
+
 				<ellipse transform="matrix(3.070590e-02 -0.9995 0.9995 3.070590e-02 -53.0275 260.0121)" class="arch66" cx="107.5" cy="157.3" rx="5.8" ry="43.5"/>
-			
+
 				<ellipse transform="matrix(3.076836e-02 -0.9995 0.9995 3.076836e-02 -53.0833 259.9708)" class="arch67" cx="107.5" cy="157.4" rx="5.8" ry="43.4"/>
-			
+
 				<ellipse transform="matrix(3.083113e-02 -0.9995 0.9995 3.083113e-02 -53.1392 259.9294)" class="arch68" cx="107.5" cy="157.4" rx="5.8" ry="43.2"/>
-			
+
 				<ellipse transform="matrix(3.089421e-02 -0.9995 0.9995 3.089421e-02 -53.195 259.8879)" class="arch69" cx="107.4" cy="157.4" rx="5.8" ry="43.1"/>
-			
+
 				<ellipse transform="matrix(3.095761e-02 -0.9995 0.9995 3.095761e-02 -53.2509 259.8465)" class="arch70" cx="107.4" cy="157.4" rx="5.7" ry="43"/>
-			
+
 				<ellipse transform="matrix(3.102132e-02 -0.9995 0.9995 3.102132e-02 -53.3069 259.8049)" class="arch71" cx="107.3" cy="157.4" rx="5.7" ry="42.9"/>
-			
+
 				<ellipse transform="matrix(3.108536e-02 -0.9995 0.9995 3.108536e-02 -53.3628 259.7634)" class="arch72" cx="107.3" cy="157.4" rx="5.7" ry="42.8"/>
-			
+
 				<ellipse transform="matrix(3.114971e-02 -0.9995 0.9995 3.114971e-02 -53.4188 259.7217)" class="arch73" cx="107.3" cy="157.4" rx="5.6" ry="42.7"/>
-			
+
 				<ellipse transform="matrix(3.121439e-02 -0.9995 0.9995 3.121439e-02 -53.4748 259.68)" class="arch74" cx="107.2" cy="157.4" rx="5.6" ry="42.6"/>
-			
+
 				<ellipse transform="matrix(3.127940e-02 -0.9995 0.9995 3.127940e-02 -53.5308 259.6383)" class="arch75" cx="107.2" cy="157.4" rx="5.6" ry="42.5"/>
-			
+
 				<ellipse transform="matrix(3.134474e-02 -0.9995 0.9995 3.134474e-02 -53.5869 259.5965)" class="arch76" cx="107.1" cy="157.4" rx="5.6" ry="42.4"/>
-			
+
 				<ellipse transform="matrix(3.141041e-02 -0.9995 0.9995 3.141041e-02 -53.643 259.5546)" class="arch77" cx="107.1" cy="157.5" rx="5.5" ry="42.2"/>
-			
+
 				<ellipse transform="matrix(3.147642e-02 -0.9995 0.9995 3.147642e-02 -53.6991 259.5127)" class="arch78" cx="107.1" cy="157.5" rx="5.5" ry="42.1"/>
-			
+
 				<ellipse transform="matrix(3.154276e-02 -0.9995 0.9995 3.154276e-02 -53.7553 259.4708)" class="arch79" cx="107" cy="157.5" rx="5.5" ry="42"/>
-			
+
 				<ellipse transform="matrix(3.160944e-02 -0.9995 0.9995 3.160944e-02 -53.8114 259.4287)" class="arch80" cx="107" cy="157.5" rx="5.4" ry="41.9"/>
-			
+
 				<ellipse transform="matrix(3.167647e-02 -0.9995 0.9995 3.167647e-02 -53.8676 259.3867)" class="arch81" cx="106.9" cy="157.5" rx="5.4" ry="41.8"/>
-			
+
 				<ellipse transform="matrix(3.174384e-02 -0.9995 0.9995 3.174384e-02 -53.9239 259.3445)" class="arch82" cx="106.9" cy="157.5" rx="5.4" ry="41.7"/>
-			
+
 				<ellipse transform="matrix(3.181156e-02 -0.9995 0.9995 3.181156e-02 -53.9801 259.3023)" class="arch83" cx="106.9" cy="157.5" rx="5.4" ry="41.6"/>
-			
+
 				<ellipse transform="matrix(3.187963e-02 -0.9995 0.9995 3.187963e-02 -54.0364 259.2601)" class="arch84" cx="106.8" cy="157.5" rx="5.3" ry="41.5"/>
-			
+
 				<ellipse transform="matrix(3.194806e-02 -0.9995 0.9995 3.194806e-02 -54.0928 259.2178)" class="arch85" cx="106.8" cy="157.5" rx="5.3" ry="41.4"/>
-			
+
 				<ellipse transform="matrix(3.201684e-02 -0.9995 0.9995 3.201684e-02 -54.1491 259.1754)" class="arch86" cx="106.7" cy="157.5" rx="5.3" ry="41.2"/>
-			
+
 				<ellipse transform="matrix(3.208598e-02 -0.9995 0.9995 3.208598e-02 -54.2055 259.133)" class="arch87" cx="106.7" cy="157.6" rx="5.3" ry="41.1"/>
-			
+
 				<ellipse transform="matrix(3.215548e-02 -0.9995 0.9995 3.215548e-02 -54.2619 259.0905)" class="arch88" cx="106.6" cy="157.6" rx="5.2" ry="41"/>
-			
+
 				<ellipse transform="matrix(3.222535e-02 -0.9995 0.9995 3.222535e-02 -54.3184 259.0479)" class="arch89" cx="106.6" cy="157.6" rx="5.2" ry="40.9"/>
-			
+
 				<ellipse transform="matrix(3.229558e-02 -0.9995 0.9995 3.229558e-02 -54.3748 259.0053)" class="arch90" cx="106.6" cy="157.6" rx="5.2" ry="40.8"/>
-			
+
 				<ellipse transform="matrix(3.236619e-02 -0.9995 0.9995 3.236619e-02 -54.4313 258.9626)" class="arch91" cx="106.5" cy="157.6" rx="5.1" ry="40.7"/>
-			
+
 				<ellipse transform="matrix(3.243717e-02 -0.9995 0.9995 3.243717e-02 -54.4879 258.9199)" class="arch92" cx="106.5" cy="157.6" rx="5.1" ry="40.6"/>
-			
+
 				<ellipse transform="matrix(3.250853e-02 -0.9995 0.9995 3.250853e-02 -54.5444 258.8771)" class="arch93" cx="106.4" cy="157.6" rx="5.1" ry="40.5"/>
-			
+
 				<ellipse transform="matrix(3.258027e-02 -0.9995 0.9995 3.258027e-02 -54.601 258.8343)" class="arch94" cx="106.4" cy="157.6" rx="5.1" ry="40.4"/>
-			
+
 				<ellipse transform="matrix(3.265239e-02 -0.9995 0.9995 3.265239e-02 -54.6577 258.7913)" class="arch95" cx="106.4" cy="157.6" rx="5" ry="40.3"/>
-			
+
 				<ellipse transform="matrix(3.272490e-02 -0.9995 0.9995 3.272490e-02 -54.7143 258.7483)" class="arch96" cx="106.3" cy="157.6" rx="5" ry="40.1"/>
-			
+
 				<ellipse transform="matrix(3.279779e-02 -0.9995 0.9995 3.279779e-02 -54.771 258.7053)" class="arch97" cx="106.3" cy="157.7" rx="5" ry="40"/>
-			
+
 				<ellipse transform="matrix(3.287109e-02 -0.9995 0.9995 3.287109e-02 -54.8278 258.6622)" class="arch98" cx="106.2" cy="157.7" rx="4.9" ry="39.9"/>
-			
+
 				<ellipse transform="matrix(3.294477e-02 -0.9995 0.9995 3.294477e-02 -54.8845 258.619)" class="arch99" cx="106.2" cy="157.7" rx="4.9" ry="39.8"/>
-			
+
 				<ellipse transform="matrix(3.301886e-02 -0.9995 0.9995 3.301886e-02 -54.9413 258.5757)" class="arch100" cx="106.2" cy="157.7" rx="4.9" ry="39.7"/>
-			
+
 				<ellipse transform="matrix(3.309335e-02 -0.9995 0.9995 3.309335e-02 -54.9982 258.5324)" class="arch101" cx="106.1" cy="157.7" rx="4.9" ry="39.6"/>
-			
+
 				<ellipse transform="matrix(3.316824e-02 -0.9994 0.9994 3.316824e-02 -55.055 258.489)" class="arch102" cx="106.1" cy="157.7" rx="4.8" ry="39.5"/>
-			
+
 				<ellipse transform="matrix(3.324354e-02 -0.9994 0.9994 3.324354e-02 -55.1119 258.4456)" class="arch103" cx="106" cy="157.7" rx="4.8" ry="39.4"/>
-			
+
 				<ellipse transform="matrix(3.331926e-02 -0.9994 0.9994 3.331926e-02 -55.1689 258.4021)" class="arch104" cx="106" cy="157.7" rx="4.8" ry="39.3"/>
-			
+
 				<ellipse transform="matrix(3.339539e-02 -0.9994 0.9994 3.339539e-02 -55.2258 258.3585)" class="arch105" cx="106" cy="157.7" rx="4.7" ry="39.1"/>
-			
+
 				<ellipse transform="matrix(3.347195e-02 -0.9994 0.9994 3.347195e-02 -55.2828 258.3148)" class="arch106" cx="105.9" cy="157.7" rx="4.7" ry="39"/>
-			
+
 				<ellipse transform="matrix(3.354892e-02 -0.9994 0.9994 3.354892e-02 -55.3399 258.2711)" class="arch107" cx="105.9" cy="157.7" rx="4.7" ry="38.9"/>
-			
+
 				<ellipse transform="matrix(3.362633e-02 -0.9994 0.9994 3.362633e-02 -55.3969 258.2273)" class="arch108" cx="105.8" cy="157.8" rx="4.7" ry="38.8"/>
-			
+
 				<ellipse transform="matrix(3.370416e-02 -0.9994 0.9994 3.370416e-02 -55.4541 258.1834)" class="arch109" cx="105.8" cy="157.8" rx="4.6" ry="38.7"/>
-			
+
 				<ellipse transform="matrix(3.378243e-02 -0.9994 0.9994 3.378243e-02 -55.5112 258.1395)" class="arch110" cx="105.8" cy="157.8" rx="4.6" ry="38.6"/>
-			
+
 				<ellipse transform="matrix(3.386113e-02 -0.9994 0.9994 3.386113e-02 -55.5684 258.0955)" class="arch111" cx="105.7" cy="157.8" rx="4.6" ry="38.5"/>
-			
+
 				<ellipse transform="matrix(3.394028e-02 -0.9994 0.9994 3.394028e-02 -55.6256 258.0514)" class="arch112" cx="105.7" cy="157.8" rx="4.6" ry="38.4"/>
-			
+
 				<ellipse transform="matrix(3.401987e-02 -0.9994 0.9994 3.401987e-02 -55.6829 258.0072)" class="arch113" cx="105.6" cy="157.8" rx="4.5" ry="38.3"/>
-			
+
 				<ellipse transform="matrix(3.409991e-02 -0.9994 0.9994 3.409991e-02 -55.7402 257.963)" class="arch114" cx="105.6" cy="157.8" rx="4.5" ry="38.1"/>
-			
+
 				<ellipse transform="matrix(3.418041e-02 -0.9994 0.9994 3.418041e-02 -55.7975 257.9187)" class="arch115" cx="105.5" cy="157.8" rx="4.5" ry="38"/>
-			
+
 				<ellipse transform="matrix(3.426136e-02 -0.9994 0.9994 3.426136e-02 -55.8549 257.8743)" class="arch116" cx="105.5" cy="157.8" rx="4.4" ry="37.9"/>
-			
+
 				<ellipse transform="matrix(3.434277e-02 -0.9994 0.9994 3.434277e-02 -55.9123 257.8298)" class="arch117" cx="105.5" cy="157.8" rx="4.4" ry="37.8"/>
-			
+
 				<ellipse transform="matrix(3.442465e-02 -0.9994 0.9994 3.442465e-02 -55.9697 257.7853)" class="arch118" cx="105.4" cy="157.9" rx="4.4" ry="37.7"/>
-			
+
 				<ellipse transform="matrix(3.450700e-02 -0.9994 0.9994 3.450700e-02 -56.0272 257.7407)" class="arch119" cx="105.4" cy="157.9" rx="4.4" ry="37.6"/>
-			
+
 				<ellipse transform="matrix(3.458982e-02 -0.9994 0.9994 3.458982e-02 -56.0847 257.696)" class="arch120" cx="105.3" cy="157.9" rx="4.3" ry="37.5"/>
-			
+
 				<ellipse transform="matrix(3.467311e-02 -0.9994 0.9994 3.467311e-02 -56.1423 257.6512)" class="arch121" cx="105.3" cy="157.9" rx="4.3" ry="37.4"/>
-			
+
 				<ellipse transform="matrix(3.475690e-02 -0.9994 0.9994 3.475690e-02 -56.1999 257.6063)" class="arch122" cx="105.3" cy="157.9" rx="4.3" ry="37.3"/>
-			
+
 				<ellipse transform="matrix(3.484116e-02 -0.9994 0.9994 3.484116e-02 -56.2575 257.5614)" class="arch123" cx="105.2" cy="157.9" rx="4.2" ry="37.1"/>
-			
+
 				<ellipse transform="matrix(3.492592e-02 -0.9994 0.9994 3.492592e-02 -56.3152 257.5164)" class="arch124" cx="105.2" cy="157.9" rx="4.2" ry="37"/>
-			
+
 				<ellipse transform="matrix(3.501116e-02 -0.9994 0.9994 3.501116e-02 -56.373 257.4713)" class="arch125" cx="105.1" cy="157.9" rx="4.2" ry="36.9"/>
-			
+
 				<ellipse transform="matrix(3.509692e-02 -0.9994 0.9994 3.509692e-02 -56.4307 257.4261)" class="arch126" cx="105.1" cy="157.9" rx="4.2" ry="36.8"/>
-			
+
 				<ellipse transform="matrix(3.518317e-02 -0.9994 0.9994 3.518317e-02 -56.4885 257.3808)" class="arch127" cx="105.1" cy="157.9" rx="4.1" ry="36.7"/>
-			
+
 				<ellipse transform="matrix(3.526993e-02 -0.9994 0.9994 3.526993e-02 -56.5464 257.3354)" class="arch128" cx="105" cy="158" rx="4.1" ry="36.6"/>
-			
+
 				<ellipse transform="matrix(3.535720e-02 -0.9994 0.9994 3.535720e-02 -56.6043 257.29)" class="arch129" cx="105" cy="158" rx="4.1" ry="36.5"/>
-			
+
 				<ellipse transform="matrix(3.544500e-02 -0.9994 0.9994 3.544500e-02 -56.6622 257.2445)" class="arch130" cx="104.9" cy="158" rx="4.1" ry="36.4"/>
-			
+
 				<ellipse transform="matrix(3.553331e-02 -0.9994 0.9994 3.553331e-02 -56.7202 257.1989)" class="arch131" cx="104.9" cy="158" rx="4" ry="36.3"/>
-			
+
 				<ellipse transform="matrix(3.562215e-02 -0.9994 0.9994 3.562215e-02 -56.7782 257.1532)" class="arch132" cx="104.9" cy="158" rx="4" ry="36.2"/>
-			
+
 				<ellipse transform="matrix(3.571152e-02 -0.9994 0.9994 3.571152e-02 -56.8363 257.1074)" class="arch133" cx="104.8" cy="158" rx="4" ry="36"/>
-			
+
 				<ellipse transform="matrix(3.580143e-02 -0.9994 0.9994 3.580143e-02 -56.8944 257.0615)" class="arch134" cx="104.8" cy="158" rx="3.9" ry="35.9"/>
-			
+
 				<ellipse transform="matrix(3.589188e-02 -0.9994 0.9994 3.589188e-02 -56.9526 257.0156)" class="arch135" cx="104.7" cy="158" rx="3.9" ry="35.8"/>
-			
+
 				<ellipse transform="matrix(3.598288e-02 -0.9994 0.9994 3.598288e-02 -57.0108 256.9695)" class="arch136" cx="104.7" cy="158" rx="3.9" ry="35.7"/>
-			
+
 				<ellipse transform="matrix(3.607443e-02 -0.9993 0.9993 3.607443e-02 -57.069 256.9234)" class="arch137" cx="104.6" cy="158" rx="3.9" ry="35.6"/>
-			
+
 				<ellipse transform="matrix(3.616653e-02 -0.9993 0.9993 3.616653e-02 -57.1273 256.8771)" class="arch138" cx="104.6" cy="158.1" rx="3.8" ry="35.5"/>
-			
+
 				<ellipse transform="matrix(3.625920e-02 -0.9993 0.9993 3.625920e-02 -57.1857 256.8308)" class="arch139" cx="104.6" cy="158.1" rx="3.8" ry="35.4"/>
-			
+
 				<ellipse transform="matrix(3.635243e-02 -0.9993 0.9993 3.635243e-02 -57.2441 256.7844)" class="arch140" cx="104.5" cy="158.1" rx="3.8" ry="35.3"/>
-			
+
 				<ellipse transform="matrix(3.644624e-02 -0.9993 0.9993 3.644624e-02 -57.3025 256.7379)" class="arch141" cx="104.5" cy="158.1" rx="3.7" ry="35.2"/>
-			
+
 				<ellipse transform="matrix(3.654062e-02 -0.9993 0.9993 3.654062e-02 -57.361 256.6912)" class="arch142" cx="104.4" cy="158.1" rx="3.7" ry="35"/>
-			
+
 				<ellipse transform="matrix(3.663559e-02 -0.9993 0.9993 3.663559e-02 -57.4195 256.6445)" class="arch142" cx="104.4" cy="158.1" rx="3.7" ry="34.9"/>
-			
+
 				<ellipse transform="matrix(3.673115e-02 -0.9993 0.9993 3.673115e-02 -57.4781 256.5977)" class="arch143" cx="104.4" cy="158.1" rx="3.7" ry="34.8"/>
-			
+
 				<ellipse transform="matrix(3.682730e-02 -0.9993 0.9993 3.682730e-02 -57.5367 256.5508)" class="arch144" cx="104.3" cy="158.1" rx="3.6" ry="34.7"/>
-			
+
 				<ellipse transform="matrix(3.692406e-02 -0.9993 0.9993 3.692406e-02 -57.5954 256.5038)" class="arch145" cx="104.3" cy="158.1" rx="3.6" ry="34.6"/>
-			
+
 				<ellipse transform="matrix(3.702141e-02 -0.9993 0.9993 3.702141e-02 -57.6542 256.4567)" class="arch146" cx="104.2" cy="158.1" rx="3.6" ry="34.5"/>
-			
+
 				<ellipse transform="matrix(3.711938e-02 -0.9993 0.9993 3.711938e-02 -57.7129 256.4095)" class="arch147" cx="104.2" cy="158.2" rx="3.5" ry="34.4"/>
-			
+
 				<ellipse transform="matrix(3.721797e-02 -0.9993 0.9993 3.721797e-02 -57.7718 256.3621)" class="arch148" cx="104.2" cy="158.2" rx="3.5" ry="34.3"/>
-			
+
 				<ellipse transform="matrix(3.731719e-02 -0.9993 0.9993 3.731719e-02 -57.8307 256.3147)" class="arch149" cx="104.1" cy="158.2" rx="3.5" ry="34.2"/>
-			
+
 				<ellipse transform="matrix(3.741703e-02 -0.9993 0.9993 3.741703e-02 -57.8896 256.2672)" class="arch150" cx="104.1" cy="158.2" rx="3.5" ry="34"/>
-			
+
 				<ellipse transform="matrix(3.751751e-02 -0.9993 0.9993 3.751751e-02 -57.9486 256.2195)" class="arch150" cx="104" cy="158.2" rx="3.4" ry="33.9"/>
-			
+
 				<ellipse transform="matrix(3.761863e-02 -0.9993 0.9993 3.761863e-02 -58.0076 256.1718)" class="arch151" cx="104" cy="158.2" rx="3.4" ry="33.8"/>
-			
+
 				<ellipse transform="matrix(3.772040e-02 -0.9993 0.9993 3.772040e-02 -58.0667 256.124)" class="arch151" cx="104" cy="158.2" rx="3.4" ry="33.7"/>
-			
+
 				<ellipse transform="matrix(3.782282e-02 -0.9993 0.9993 3.782282e-02 -58.1259 256.076)" class="arch152" cx="103.9" cy="158.2" rx="3.4" ry="33.6"/>
-			
+
 				<ellipse transform="matrix(3.792591e-02 -0.9993 0.9993 3.792591e-02 -58.1851 256.028)" class="arch153" cx="103.9" cy="158.2" rx="3.3" ry="33.5"/>
-			
+
 				<ellipse transform="matrix(3.802966e-02 -0.9993 0.9993 3.802966e-02 -58.2444 255.9798)" class="arch154" cx="103.8" cy="158.2" rx="3.3" ry="33.4"/>
-			
+
 				<ellipse transform="matrix(3.813409e-02 -0.9993 0.9993 3.813409e-02 -58.3037 255.9315)" class="arch155" cx="103.8" cy="158.3" rx="3.3" ry="33.3"/>
-			
+
 				<ellipse transform="matrix(3.823921e-02 -0.9993 0.9993 3.823921e-02 -58.363 255.8831)" class="arch156" cx="103.7" cy="158.3" rx="3.2" ry="33.2"/>
-			
+
 				<ellipse transform="matrix(3.834501e-02 -0.9993 0.9993 3.834501e-02 -58.4225 255.8346)" class="arch157" cx="103.7" cy="158.3" rx="3.2" ry="33"/>
-			
+
 				<ellipse transform="matrix(3.845150e-02 -0.9993 0.9993 3.845150e-02 -58.482 255.7859)" class="arch158" cx="103.7" cy="158.3" rx="3.2" ry="32.9"/>
-			
+
 				<ellipse transform="matrix(3.855870e-02 -0.9993 0.9993 3.855870e-02 -58.5415 255.7372)" class="arch159" cx="103.6" cy="158.3" rx="3.2" ry="32.8"/>
-			
+
 				<ellipse transform="matrix(3.866661e-02 -0.9993 0.9993 3.866661e-02 -58.6011 255.6883)" class="arch159" cx="103.6" cy="158.3" rx="3.1" ry="32.7"/>
-			
+
 				<ellipse transform="matrix(3.877523e-02 -0.9992 0.9992 3.877523e-02 -58.6608 255.6393)" class="arch160" cx="103.5" cy="158.3" rx="3.1" ry="32.6"/>
-			
+
 				<ellipse transform="matrix(3.888458e-02 -0.9992 0.9992 3.888458e-02 -58.7205 255.5902)" class="arch160" cx="103.5" cy="158.3" rx="3.1" ry="32.5"/>
-			
+
 				<ellipse transform="matrix(3.899466e-02 -0.9992 0.9992 3.899466e-02 -58.7803 255.541)" class="arch161" cx="103.5" cy="158.3" rx="3" ry="32.4"/>
-			
+
 				<ellipse transform="matrix(3.910548e-02 -0.9992 0.9992 3.910548e-02 -58.8401 255.4916)" class="arch161" cx="103.4" cy="158.3" rx="3" ry="32.3"/>
-			
+
 				<ellipse transform="matrix(3.921705e-02 -0.9992 0.9992 3.921705e-02 -58.9 255.4422)" class="arch162" cx="103.4" cy="158.3" rx="3" ry="32.2"/>
-			
+
 				<ellipse transform="matrix(3.932937e-02 -0.9992 0.9992 3.932937e-02 -58.96 255.3925)" class="arch163" cx="103.3" cy="158.4" rx="3" ry="32"/>
-			
+
 				<ellipse transform="matrix(3.944245e-02 -0.9992 0.9992 3.944245e-02 -59.02 255.3428)" class="arch164" cx="103.3" cy="158.4" rx="2.9" ry="31.9"/>
-			
+
 				<ellipse transform="matrix(3.955631e-02 -0.9992 0.9992 3.955631e-02 -59.0801 255.293)" class="arch165" cx="103.3" cy="158.4" rx="2.9" ry="31.8"/>
-			
+
 				<ellipse transform="matrix(3.967094e-02 -0.9992 0.9992 3.967094e-02 -59.1403 255.243)" class="arch166" cx="103.2" cy="158.4" rx="2.9" ry="31.7"/>
-			
+
 				<ellipse transform="matrix(3.978636e-02 -0.9992 0.9992 3.978636e-02 -59.2005 255.1929)" class="arch167" cx="103.2" cy="158.4" rx="2.8" ry="31.6"/>
-			
+
 				<ellipse transform="matrix(3.990258e-02 -0.9992 0.9992 3.990258e-02 -59.2608 255.1426)" class="arch167" cx="103.1" cy="158.4" rx="2.8" ry="31.5"/>
-			
+
 				<ellipse transform="matrix(4.001960e-02 -0.9992 0.9992 4.001960e-02 -59.3211 255.0922)" class="arch168" cx="103.1" cy="158.4" rx="2.8" ry="31.4"/>
-			
+
 				<ellipse transform="matrix(4.013743e-02 -0.9992 0.9992 4.013743e-02 -59.3816 255.0417)" class="arch168" cx="103.1" cy="158.4" rx="2.8" ry="31.3"/>
-			
+
 				<ellipse transform="matrix(4.025609e-02 -0.9992 0.9992 4.025609e-02 -59.4421 254.991)" class="arch169" cx="103" cy="158.4" rx="2.7" ry="31.2"/>
-			
+
 				<ellipse transform="matrix(4.037557e-02 -0.9992 0.9992 4.037557e-02 -59.5026 254.9402)" class="arch170" cx="103" cy="158.4" rx="2.7" ry="31.1"/>
-			
+
 				<ellipse transform="matrix(4.049589e-02 -0.9992 0.9992 4.049589e-02 -59.5632 254.8893)" class="arch171" cx="102.9" cy="158.5" rx="2.7" ry="30.9"/>
-			
+
 				<ellipse transform="matrix(4.061706e-02 -0.9992 0.9992 4.061706e-02 -59.6239 254.8382)" class="arch172" cx="102.9" cy="158.5" rx="2.7" ry="30.8"/>
-			
+
 				<ellipse transform="matrix(4.073909e-02 -0.9992 0.9992 4.073909e-02 -59.6847 254.787)" class="arch173" cx="102.9" cy="158.5" rx="2.6" ry="30.7"/>
-			
+
 				<ellipse transform="matrix(4.086199e-02 -0.9992 0.9992 4.086199e-02 -59.7455 254.7356)" class="arch174" cx="102.8" cy="158.5" rx="2.6" ry="30.6"/>
-			
+
 				<ellipse transform="matrix(4.098576e-02 -0.9992 0.9992 4.098576e-02 -59.8064 254.6841)" class="arch174" cx="102.8" cy="158.5" rx="2.6" ry="30.5"/>
-			
+
 				<ellipse transform="matrix(4.111042e-02 -0.9992 0.9992 4.111042e-02 -59.8674 254.6325)" class="arch175" cx="102.7" cy="158.5" rx="2.5" ry="30.4"/>
-			
+
 				<ellipse transform="matrix(4.123597e-02 -0.9991 0.9991 4.123597e-02 -59.9285 254.5807)" class="arch175" cx="102.7" cy="158.5" rx="2.5" ry="30.3"/>
-			
+
 				<ellipse transform="matrix(4.136243e-02 -0.9991 0.9991 4.136243e-02 -59.9896 254.5287)" class="arch176" cx="102.6" cy="158.5" rx="2.5" ry="30.2"/>
-			
+
 				<ellipse transform="matrix(4.148980e-02 -0.9991 0.9991 4.148980e-02 -60.0508 254.4766)" class="arch177" cx="102.6" cy="158.5" rx="2.5" ry="30.1"/>
-			
+
 				<ellipse transform="matrix(4.161811e-02 -0.9991 0.9991 4.161811e-02 -60.1121 254.4243)" class="arch178" cx="102.6" cy="158.5" rx="2.4" ry="29.9"/>
-			
+
 				<ellipse transform="matrix(4.174734e-02 -0.9991 0.9991 4.174734e-02 -60.1734 254.3719)" class="arch179" cx="102.5" cy="158.6" rx="2.4" ry="29.8"/>
-			
+
 				<ellipse transform="matrix(4.187753e-02 -0.9991 0.9991 4.187753e-02 -60.2349 254.3193)" class="arch180" cx="102.5" cy="158.6" rx="2.4" ry="29.7"/>
-			
+
 				<ellipse transform="matrix(4.200867e-02 -0.9991 0.9991 4.200867e-02 -60.2964 254.2666)" class="arch181" cx="102.4" cy="158.6" rx="2.3" ry="29.6"/>
-			
+
 				<ellipse transform="matrix(4.214079e-02 -0.9991 0.9991 4.214079e-02 -60.358 254.2137)" class="arch182" cx="102.4" cy="158.6" rx="2.3" ry="29.5"/>
-			
+
 				<ellipse transform="matrix(4.227388e-02 -0.9991 0.9991 4.227388e-02 -60.4196 254.1606)" class="arch183" cx="102.4" cy="158.6" rx="2.3" ry="29.4"/>
-			
+
 				<ellipse transform="matrix(4.240796e-02 -0.9991 0.9991 4.240796e-02 -60.4814 254.1074)" class="arch183" cx="102.3" cy="158.6" rx="2.3" ry="29.3"/>
-			
+
 				<ellipse transform="matrix(4.254305e-02 -0.9991 0.9991 4.254305e-02 -60.5432 254.054)" class="arch184" cx="102.3" cy="158.6" rx="2.2" ry="29.2"/>
 		</g>
 		<g>
 			<linearGradient id="ARCH_ID_1_" gradientUnits="userSpaceOnUse" x1="100.1591" y1="115.4664" x2="156.6212" y2="82.7045">
-				<stop  offset="0" style="stop-color:#130005"/>
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 				<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 			</linearGradient>
 			<path class="arch185" d="M124.1,158.3L89.9,154c-3.9-0.4-6.9-4.1-6.9-8.5V71.7c0-4.1,2.5-7.6,6.1-8.6l35.1-10.7
 				c6.2-0.6,10.6,4.3,10.6,9.4v87.5c0,4.7-2.9,7.9-7.4,8.9C127,158.3,124.6,158.3,124.1,158.3z"/>
 			<linearGradient id="ARCH_ID_2_" gradientUnits="userSpaceOnUse" x1="162.111" y1="168.4346" x2="96.635" y2="91.1136">
-				<stop  offset="0" style="stop-color:#130005"/>
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 				<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 			</linearGradient>
 			<path class="arch186" d="M124.3,158.2l-36.5-4.1c-4-0.5-7-4.1-7-8.6V71.1c0-4.1,2.5-7.7,6.1-8.6l36.5-9.9c4.9-1.3,9.6,2.8,9.6,8.5
@@ -669,7 +669,7 @@
 			<path class="arch187" d="M133,61.1V146C133,146,130.4,111,133,61.1z"/>
 		</g>
 		<g>
-			
+
 				<linearGradient id="ARCH_ID_3_" gradientUnits="userSpaceOnUse" x1="471.8586" y1="19.7411" x2="570.6444" y2="121.7956" gradientTransform="matrix(-1 0 0 1 663.9603 0)">
 				<stop  offset="0" style="stop-color:#F5F5F5"/>
 				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
@@ -677,14 +677,14 @@
 			<polygon class="arch188" points="130.7,159.1 130.8,49.2 78.2,61.5 78.2,151.1 			"/>
 			<polygon class="arch3" points="131.4,158.7 130.7,159.1 130.8,49.2 131.3,49.6 			"/>
 		</g>
-		
+
 			<linearGradient id="ARCH_ID_4_" gradientUnits="userSpaceOnUse" x1="509.6628" y1="55.5131" x2="610.4695" y2="159.6555" gradientTransform="matrix(-1 0 0 1 663.9603 0)">
 			<stop  offset="0" style="stop-color:#F5F5F5"/>
 			<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
 		</linearGradient>
 		<polygon class="arch189" points="127.9,160.2 128.1,48 74.4,60.6 74.4,152.1 		"/>
 		<linearGradient id="ARCH_ID_5_" gradientUnits="userSpaceOnUse" x1="85.436" y1="116.5749" x2="148.1456" y2="80.1879">
-			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 			<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 		</linearGradient>
 		<path class="arch190" d="M112.9,161.7l-40.4-5.5c-4.6-0.6-8.1-4.5-8.1-9.1V69.8c0-4.3,2.9-8,7.1-9L113,49.5
@@ -705,7 +705,7 @@
 		<path class="arch191" d="M113.1,161.6l-43-5.4c-4.6-0.6-8.1-4.5-8.1-9.2V69.1c0-4.3,2.9-8,7.1-9l43-10.3c5.8-1.4,11.4,3,11.4,9v93.6
 			C123.5,158,118.6,162.3,113.1,161.6z"/>
 		<linearGradient id="ARCH_ID_7_" gradientUnits="userSpaceOnUse" x1="67.2231" y1="122.1729" x2="89.0981" y2="74.2844">
-			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 			<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 		</linearGradient>
 		<path class="arch192" d="M75.6,130.8c0.1,0,0.3,0,0.4,0c0,0,0,0,0.1,0c1.5,0.1,3.1-0.2,4.1-0.4c0.1,0,0.2,0,0.2-0.1
@@ -723,7 +723,7 @@
 			c0,0.8,0,1.7-0.1,2.5c-0.1,1.1-0.2,2.3-0.4,3.4c-0.2,1.6-0.5,3.1-0.9,4.5c-0.2,0.8-0.5,1.6-0.7,2.4c-0.5,1.6-1.2,3.1-1.9,4.5
 			c-3.5,7-9.1,11.6-15,11.5C72.7,122.8,70.5,122,68.5,120.7z"/>
 		<linearGradient id="ARCH_ID_8_" gradientUnits="userSpaceOnUse" x1="122.5859" y1="105.8347" x2="99.4866" y2="105.8347">
-			<stop  offset="0" style="stop-color:#130005"/>
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
 			<stop  offset="1" style="stop-color:var(--vitamui-primary)"/>
 		</linearGradient>
 		<path class="arch193" d="M119.4,110.7v1.1c0,0.3-0.2,0.5-0.5,0.5h-13.9c-0.3,0-0.5-0.2-0.5-0.5v-11.3c0-0.3,0.2-0.5,0.5-0.5
@@ -758,7 +758,7 @@
 			c0-0.1-0.1-0.3-0.1-0.4c-0.1-0.2-0.1-0.5-0.2-0.7l-4,0.2C91.5,103.4,91.8,105,92,106.6z"/>
 		<path class="arch197" d="M61.3,103v7.7l2.4,0c0.5-2.9,1.5-5.5,2.7-7.9L61.3,103z"/>
 		<g>
-			
+
 				<linearGradient id="ARCH_ID_12_" gradientUnits="userSpaceOnUse" x1="273.6244" y1="101.6856" x2="330.0459" y2="159.9741" gradientTransform="matrix(0.9981 6.100544e-02 -6.100256e-02 0.9981 -223.4489 -57.5538)">
 				<stop  offset="0" style="stop-color:#E5E4E4"/>
 				<stop  offset="0.7896" style="stop-color:#4C4C4C"/>
@@ -776,7 +776,7 @@
 			</g>
 			<g>
 				<g>
-					
+
 						<linearGradient id="ARCH_ID_13_" gradientUnits="userSpaceOnUse" x1="206.5442" y1="146.1033" x2="263.4061" y2="204.8468" gradientTransform="matrix(0.9467 -0.3221 0.3221 0.9467 -208.6366 0.4112)">
 						<stop  offset="0" style="stop-color:#F5F5F5"/>
 						<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
@@ -791,7 +791,7 @@
 						C83.6,61.3,94.4,73.3,93,88z"/>
 				</g>
 			</g>
-			
+
 				<linearGradient id="ARCH_ID_14_" gradientUnits="userSpaceOnUse" x1="219.0277" y1="200.1998" x2="255.9694" y2="173.0278" gradientTransform="matrix(0.9467 -0.3221 0.3221 0.9467 -208.6366 0.4112)">
 				<stop  offset="0" style="stop-color:#F5F5F5"/>
 				<stop  offset="0.7896" style="stop-color:#BCB9BA"/>
@@ -803,7 +803,7 @@
 				C98.5,85.2,95.1,74.1,87,66.7z"/>
 			<path class="arch52" d="M90.8,65.8c7,7.7,9.9,18.9,6.6,30.1c-3.4,11.9-12.8,20.8-24,24.2c11.7-2.6,21.9-11.6,25.4-23.8
 				C102.2,84.7,98.7,73.1,90.8,65.8z"/>
-			
+
 				<linearGradient id="ARCH_ID_15_" gradientUnits="userSpaceOnUse" x1="224.2354" y1="201.1014" x2="207.5895" y2="206.6838" gradientTransform="matrix(0.9467 -0.3221 0.3221 0.9467 -208.6366 0.4112)">
 				<stop  offset="0" style="stop-color:#BCB9BA"/>
 				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
@@ -815,7 +815,7 @@
 			</linearGradient>
 			<path class="arch206" d="M65.6,120.3c0.3-1-1.4-2.7-3.9-3.6s-4.8-1-5.3,0l0,0l-16.6,42.1c0,0,0,0,0,0c0,0,0,0,0,0l0,0l0,0
 				c-0.4,1,1.3,2.7,3.8,3.7c2.5,1,4.9,1,5.3-0.1l0,0l0,0c0,0,0,0,0,0c0,0,0,0,0,0L65.6,120.3L65.6,120.3z"/>
-			
+
 				<linearGradient id="ARCH_ID_17_" gradientUnits="userSpaceOnUse" x1="198.2493" y1="225.1459" x2="218.0457" y2="201.1261" gradientTransform="matrix(0.9467 -0.3221 0.3221 0.9467 -208.6366 0.4112)">
 				<stop  offset="0" style="stop-color:#BCB9BA"/>
 				<stop  offset="0.7896" style="stop-color:#9B9A9B"/>
