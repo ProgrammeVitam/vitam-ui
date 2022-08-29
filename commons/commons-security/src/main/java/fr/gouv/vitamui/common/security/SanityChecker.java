@@ -32,22 +32,16 @@ import com.google.json.JsonSanitizer;
 import fr.gouv.vitam.common.StringUtils;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
-import fr.gouv.vitam.common.logging.SysErrLogger;
 import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeCriteriaException;
-import fr.gouv.vitamui.commons.api.exception.InvalidSanitizeParameterException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.utils.JsonUtils;
 import org.owasp.esapi.Validator;
 import org.owasp.esapi.errors.IntrusionException;
 import org.owasp.esapi.errors.ValidationException;
 import org.owasp.esapi.reference.DefaultValidator;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,6 +52,7 @@ import java.util.Optional;
  * XML: check if XML file is not exceed the limit size, and it does not contain CDATA, ENTITY or SCRIPT tag
  */
 public class SanityChecker {
+
     private static final String INVALID_IDENTIFIER_SANITIZE = "Sanitizing failed; Invalid input identifier : ";
     private static final String INVALID_HEADER_SANITIZE = "Sanitizing failed; Invalid request header : ";
     private static final String INVALID_CRITERIA = "Criteria failed when sanitizing, it may contains insecure data : ";
@@ -94,6 +89,9 @@ public class SanityChecker {
 
     // ISSUE with integration
     private static final Validator ESAPI = init();
+    private static final List<String> PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST =
+        List.of("$action", "$add", "$pull", "#unitups", "#allunitups", "#id", "$in",
+            "$or", "$exists", "$projection", "$query", "$filter", "$roots", "$and", "$fields");
 
     private SanityChecker() {
         // Empty constructor
@@ -104,30 +102,23 @@ public class SanityChecker {
         return new DefaultValidator();
     }
 
+    public static boolean isValidParameter(String value) {
+        return !isStringInfected(value, HTTP_PARAMETER_VALUE) || PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST.contains(value);
+    }
 
-    public static boolean isValidFileName(String value) {
-        return !isStringInfected(value, HTTP_PARAMETER_VALUE);
+    public static boolean isValidParameterName(String value) {
+        return !isStringInfected(value, HTTP_PARAMETER_NAME);
     }
 
     /**
-     * Sabitize the json
+     * Sanitize the fileName
      *
-     * @param json
-     * @return sanitized json as String
-     * @throws InvalidParseOperationException
+     * @param fileName
+     * @return true/false
      */
-    public static String sanitizeJsonNode(JsonNode json) throws InvalidParseOperationException {
-        if (json == null) {
-            return "";
-        }
-        final String jsonish = JsonHandler.writeAsString(json);
-        try {
-            return JsonSanitizer.sanitize(jsonish);
-        } catch (final RuntimeException e) {
-            throw new InvalidParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK, e);
-        }
+    public static boolean isValidFileName(String fileName) {
+        return !StringUtils.HTML_PATTERN.matcher(fileName).find() && !isStringInfected(fileName, HTTP_PARAMETER_VALUE);
     }
-
 
     /**
      * checkJsonAll : Check sanity of json : size, invalid tag
@@ -135,7 +126,7 @@ public class SanityChecker {
      * @param json as JsonNode
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
-    public static void checkJsonAll(JsonNode json) throws InvalidParseOperationException {
+    public static void checkJsonAll(JsonNode json) throws InvalidParseOperationException, PreconditionFailedException {
         if (json == null || json.isMissingNode()) {
             throw new InvalidParseOperationException(JSON_IS_NOT_VALID_FROM_SANITIZE_CHECK);
         }
@@ -158,7 +149,7 @@ public class SanityChecker {
      * @param json as String
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
-    public static void checkJsonAll(String json) throws InvalidParseOperationException {
+    public static void checkJsonAll(String json) throws InvalidParseOperationException, PreconditionFailedException {
         try {
             final String wellFormedJson = JsonSanitizer.sanitize(json);
             if (!wellFormedJson.equals(json)) {
@@ -171,53 +162,54 @@ public class SanityChecker {
         checkJsonSanity(JsonHandler.getFromString(json));
     }
 
-
     /**
-     * checkParameter : Check sanity of String: no javascript/xml tag, neither html tag
+     * checkSecureParameter : Check sanity of String: no javascript/xml tag, neither html tag
+     * check if the string is not infected or contains illegal characters
      *
      * @param params
+     * @throws PreconditionFailedException
      * @throws InvalidParseOperationException
      */
-    public static void checkParameter(String... params) throws InvalidParseOperationException {
+    public static void checkSecureParameter(String... params)
+        throws PreconditionFailedException, InvalidParseOperationException {
         for (final String param : params) {
-            checkParam(param);
-        }
-    }
-
-    public static void check(String... ids) {
-        try {
-            for (final String id : ids) {
-                SanityChecker.checkParameter(id);
+            if (param != null) {
+                checkSecureParam(param);
             }
-        } catch (final InvalidParseOperationException e) {
-            throw new InvalidSanitizeParameterException(INVALID_IDENTIFIER_SANITIZE + Arrays.toString(ids));
         }
     }
 
-    public static  void sanitizeCriteria(Optional<String> criteria) {
+    /**
+     * sanitizeCriteria : Check sanity of  an optional String: no javascript/xml tag, neither html tag
+     */
+    public static void sanitizeCriteria(final Optional<String> criteria) {
         criteria.ifPresent(c -> {
             try {
                 SanityChecker.checkJsonAll(c);
             } catch (InvalidParseOperationException e) {
-                throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + c);
+                throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA, e.getMessage());
+            } catch (PreconditionFailedException exception) {
+                throw new PreconditionFailedException("The object is not valid ", exception);
             }
         });
     }
 
-    public static void sanitizeCriteria(Object query) {
+    public static void sanitizeCriteria(Object query)
+        throws PreconditionFailedException, InvalidParseOperationException {
         JsonNode jsonNode = JsonUtils.toJsonNode(query);
         try {
             SanityChecker.checkJsonAll(jsonNode);
-        }
-        catch (InvalidParseOperationException e) {
-            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + jsonNode.toPrettyString());
+        } catch (PreconditionFailedException exception) {
+            throw new PreconditionFailedException("The object is not valid ", exception);
+        } catch (InvalidParseOperationException exception) {
+            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA, exception.getMessage());
         }
     }
 
     /**
      * Find out XSS by ESAPI validator
      *
-     * @param value     of string
+     * @param value of string
      * @param validator name declared in ESAPI.properties
      * @return boolean
      */
@@ -225,49 +217,17 @@ public class SanityChecker {
         return !ESAPI.isValidInput(validator, value, validator, REQUEST_LIMIT, true);
     }
 
-    private static boolean isIssueOnParam(String param) {
-        try {
-            checkParam(param);
-            return false;
-        } catch (final InvalidParseOperationException e) {
-            SysErrLogger.FAKE_LOGGER.ignoreLog(e);
-            return true;
-        }
-    }
-
-    private static void checkParam(String param) throws InvalidParseOperationException {
-        checkSanityTags(param, getLimitParamSize());
-        checkHtmlPattern(param);
-    }
-
-    /**
-     * CheckXMLSanityFileSize : check size of xml file
-     *
-     * @param xmlFile as File
-     * @throws IOException                    when read file exception
-     * @throws InvalidParseOperationException when Sanity Check is in error
-     */
-    protected static void checkXmlSanityFileSize(File xmlFile) throws InvalidParseOperationException {
-        if (xmlFile.length() > getLimitFileSize()) {
-            throw new InvalidParseOperationException("File size exceeds sanity check");
-        }
-    }
-
-    /**
-     * CheckXMLSanityTags : check invalid tag contains of a xml file
-     *
-     * @param xmlFile : XML file path as String
-     * @throws IOException                    when read file error
-     * @throws InvalidParseOperationException when Sanity Check is in error
-     */
-    protected static void checkXmlSanityTags(File xmlFile) throws InvalidParseOperationException, IOException {
-        try (final Reader fileReader = new FileReader(xmlFile)) {
-            try (final BufferedReader bufReader = new BufferedReader(fileReader)) {
-                String line = null;
-                while ((line = bufReader.readLine()) != null) {
-                    checkXmlSanityTags(line);
-                }
+    private static void checkSecureParam(String param)
+        throws PreconditionFailedException, InvalidParseOperationException {
+        if (isValidParameter(param)) {
+            try {
+                checkSanityTags(param, getLimitParamSize());
+                checkHtmlPattern(param);
+            } catch (InvalidParseOperationException exception) {
+                throw new InvalidParseOperationException("Error with the parameter ", exception);
             }
+        } else {
+            throw new PreconditionFailedException("the parameter is not valid");
         }
     }
 
@@ -286,7 +246,7 @@ public class SanityChecker {
     /**
      * Check for all RULES and Esapi
      *
-     * @param line  line to check
+     * @param line line to check
      * @param limit limit size
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
@@ -298,7 +258,7 @@ public class SanityChecker {
     /**
      * Check using ESAPI from OWASP
      *
-     * @param line  line to check
+     * @param line line to check
      * @param limit limit size
      * @throws InvalidParseOperationException when Sanity Check is in error
      */
@@ -313,10 +273,7 @@ public class SanityChecker {
         // Issue with integration of ESAPI
         try {
             ESAPI.getValidSafeHTML("CheckSafeHtml", line, limit, true);
-        } catch (final NoClassDefFoundError e) {
-            // Ignore
-            throw new InvalidParseOperationException("Invalid ESAPI sanity check", e);
-        } catch (ValidationException | IntrusionException e) {
+        } catch (NoClassDefFoundError | ValidationException | IntrusionException e) {
             throw new InvalidParseOperationException("Invalid ESAPI sanity check", e);
         }
     }
@@ -350,7 +307,9 @@ public class SanityChecker {
         try {
             SanityChecker.checkJsonSanity(json);
         } catch (InvalidParseOperationException e) {
-            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA + json.toString());
+            throw new InvalidSanitizeCriteriaException(INVALID_CRITERIA, json.toString());
+        } catch (PreconditionFailedException exception) {
+            throw new PreconditionFailedException("The Json field is not valid", exception);
         }
     }
 
@@ -371,7 +330,11 @@ public class SanityChecker {
             while (fields.hasNext()) {
                 final Map.Entry<String, JsonNode> entry = fields.next();
                 final String key = entry.getKey();
-                checkSanityTags(key, getLimitFieldSize());
+                if (isValidParameterName(key) || PARAMETERS_KEYS_OF_DSL_QUERY_WHITELIST.contains(key)) {
+                    checkSanityTags(key, getLimitFieldSize());
+                } else {
+                    throw new PreconditionFailedException("Invalid JSON key: " + key);
+                }
                 final JsonNode value = entry.getValue();
 
                 if (value.isArray()) {
@@ -392,10 +355,10 @@ public class SanityChecker {
         }
     }
 
-    private static void validateJSONField(JsonNode value) throws InvalidParseOperationException {
-        final String svalue = JsonHandler.writeAsString(value);
-        checkSanityTags(svalue, getLimitFieldSize());
-        checkHtmlPattern(svalue);
+    private static void validateJSONField(JsonNode jsonNode) throws InvalidParseOperationException {
+        final String jsonAsString = JsonHandler.writeAsString(jsonNode);
+        checkSanityTags(jsonAsString, getLimitFieldSize());
+        checkHtmlPattern(jsonAsString);
     }
 
     /**
@@ -411,7 +374,7 @@ public class SanityChecker {
         }
     }
 
-    /**
+    /*
      * @return the limit File Size (XML or JSON)
      */
     public static long getLimitFileSize() {

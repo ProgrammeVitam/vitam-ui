@@ -34,14 +34,15 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpHeaders } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {HttpHeaders} from '@angular/common/http';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import '@angular/localize/init';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FilingPlanMode } from 'projects/vitamui-library/src/public-api';
-import { Subscription } from 'rxjs';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {FilingPlanMode} from 'projects/vitamui-library/src/public-api';
+import {EMPTY, Subscription} from 'rxjs';
+import {map, switchMap, take} from 'rxjs/operators';
 import {
   AccessionRegisterSummary,
   ConfirmDialogService,
@@ -49,9 +50,10 @@ import {
   ExternalParametersService,
   StartupService,
 } from 'ui-frontend-common';
-import { AccessContractService } from '../../access-contract/access-contract.service';
-import { AuditService } from '../audit.service';
-import { AuditCreateValidators } from './audit-create-validator';
+import {AccessContractService} from '../../access-contract/access-contract.service';
+import {AuditAction, AuditType} from '../../models/audit.interface';
+import {AuditService} from '../audit.service';
+import {AuditCreateValidators} from './audit-create-validator';
 
 const PROGRESS_BAR_MULTIPLICATOR = 100;
 
@@ -61,6 +63,7 @@ const PROGRESS_BAR_MULTIPLICATOR = 100;
   styleUrls: ['./audit-create.component.scss'],
 })
 export class AuditCreateComponent implements OnInit {
+  AuditAction = AuditAction;
   @Input() tenantIdentifier: number;
 
   FILLING_PLAN_MODE_INCLUDE = FilingPlanMode.INCLUDE_ONLY;
@@ -68,9 +71,9 @@ export class AuditCreateComponent implements OnInit {
   form: FormGroup;
   stepIndex = 0;
 
-  allServices = new FormControl(true);
+  allProducerServices = new FormControl(true);
   allNodes = new FormControl(true);
-  selectedNodes = new FormControl();
+  selectedNodes = new FormControl({included: [], excluded: []});
 
   accessContractId: string = null;
   accessionRegisterSummaries: AccessionRegisterSummary[];
@@ -81,7 +84,7 @@ export class AuditCreateComponent implements OnInit {
   // "Expression has changed after it was checked" error so we instead manually define the value.
   // Make sure to update this value whenever you add or remove a step from the  template.
   private stepCount = 1;
-  private keyPressSubscription: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(
     public dialogRef: MatDialogRef<AuditCreateComponent>,
@@ -94,27 +97,17 @@ export class AuditCreateComponent implements OnInit {
     private auditCreateValidator: AuditCreateValidators,
     private externalParameterService: ExternalParametersService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
-    this.externalParameterService.getUserExternalParameters().subscribe((parameters) => {
-      const accessConctractId: string = parameters.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
-      if (accessConctractId && accessConctractId.length > 0) {
-        this.accessContractId = accessConctractId;
-        this.auditService.getAllAccessionRegister(this.accessContractId).subscribe((accessionRegisterSummaries) => {
-          this.accessionRegisterSummaries = accessionRegisterSummaries;
-        });
-      } else {
-        this.snackBar.open(
-          $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
-          null,
-          {
-            panelClass: 'vitamui-snack-bar',
-            duration: 10000,
-          }
-        );
-      }
-    });
+    this.externalParameterService.getUserExternalParameters()
+      .pipe(switchMap((params: Map<string, string>) => this.extractAccesContractIdAndGetAccessionRegisterSummaries(params)))
+      .pipe(take(1))
+      .subscribe((accessContractAndRegisterSummary) => {
+        this.accessContractId = accessContractAndRegisterSummary.accessContractId;
+        this.accessionRegisterSummaries = accessContractAndRegisterSummary.accessionRegisterSummaries;
+      });
 
     this.form = this.formBuilder.group({
       auditActions: [null, Validators.required],
@@ -124,51 +117,84 @@ export class AuditCreateComponent implements OnInit {
       query: [this.getRootQuery(null)],
     });
 
-    this.form.controls.auditActions.valueChanges.subscribe((auditActions) => {
-      // Update the validators
-      if (auditActions === 'AUDIT_FILE_RECTIFICATION') {
-        this.allServices.setValue(false);
-        this.form.get('evidenceAudit').setValidators(Validators.required);
-      } else {
-        this.allServices.setValue(true);
-        this.form.get('evidenceAudit').clearValidators();
-      }
-      this.updateObjectIdValidators();
-      this.form.updateValueAndValidity();
 
-      // Update the audit type
-      if (auditActions === 'AUDIT_FILE_EXISTING' || auditActions === 'AUDIT_FILE_INTEGRITY') {
-        this.form.controls.auditType.setValue(this.allServices.value ? 'tenant' : 'originatingagency');
-      } else {
-        this.form.controls.auditType.setValue('dsl');
-      }
-    });
+    this.subscriptions.add(
+      this.form.controls.auditActions.valueChanges
+        .subscribe((auditActions) => this.changeDefaultOnActionSelection(auditActions)));
 
-    this.keyPressSubscription = this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef).subscribe(() => this.onCancel());
+    this.subscriptions.add(
+      this.confirmDialogService.listenToEscapeKeyPress(this.dialogRef)
+        .subscribe(() => this.onCancel()));
 
-    this.allServices.valueChanges.subscribe((value) => {
-      if (this.form.controls.auditActions.value !== 'AUDIT_FILE_RECTIFICATION') {
-        this.form.controls.auditType.setValue(value ? 'tenant' : 'originatingagency');
-      }
-      this.form.controls.objectId.setValue(value ? this.startupService.getTenantIdentifier() : null);
+    this.subscriptions.add(
+      this.allProducerServices.valueChanges
+        .subscribe((value) => this.updateFieldsOnAllProducerServicesChange(value)));
 
-      this.updateObjectIdValidators();
-      this.form.updateValueAndValidity();
-    });
+    this.subscriptions.add(
+      this.selectedNodes.valueChanges
+        .subscribe((value) => this.changeQueryOnNodesSelection(value)));
 
-    this.selectedNodes.valueChanges.subscribe((value) => {
-      if (value && value.included && value.included.length > 0) {
-        this.form.controls.query.setValue(this.getRootQuery(value.included));
-      } else {
-        this.form.controls.query.setValue(this.getRootQuery(null));
-      }
-    });
+    this.subscriptions.add(
+      this.form.controls.evidenceAudit.valueChanges
+        .subscribe((value) => this.form.controls.auditType.setValue(value)));
 
-    this.form.controls.evidenceAudit.valueChanges.subscribe((value) => {
-      this.form.controls.auditType.setValue(value);
-    });
+    this.subscriptions.add(
+      this.allNodes.valueChanges
+        .subscribe((value) => (this.stepCount = value ? 1 : 2)));
+  }
 
-    this.allNodes.valueChanges.subscribe((value) => (this.stepCount = value ? 1 : 2));
+  private extractAccesContractIdAndGetAccessionRegisterSummaries(params: Map<string, string>) {
+    const accessContractId = params.get(ExternalParameters.PARAM_ACCESS_CONTRACT);
+    if (!accessContractId || accessContractId.length < 1) {
+      this.snackBar.open(
+        $localize`:access contrat not set message@@accessContratNotSetErrorMessage:Aucun contrat d'accès n'est associé à l'utiisateur`,
+        null,
+        {
+          panelClass: 'vitamui-snack-bar',
+          duration: 10000,
+        }
+      );
+      return EMPTY;
+    }
+    return this.auditService.getAllAccessionRegister(accessContractId)
+      .pipe(map((accessionRegisterSummaries) => ({accessContractId, accessionRegisterSummaries})));
+  }
+
+  private changeDefaultOnActionSelection(auditActions: AuditAction): void {
+    // Update the validators
+    if (auditActions === AuditAction.AUDIT_FILE_RECTIFICATION) {
+      this.allProducerServices.setValue(false);
+      this.form.get('evidenceAudit').setValidators(Validators.required);
+    } else {
+      this.allProducerServices.setValue(true);
+      this.form.get('evidenceAudit').clearValidators();
+    }
+    this.updateObjectIdValidators();
+    this.form.updateValueAndValidity();
+
+    // Update the audit type
+    if (auditActions === AuditAction.AUDIT_FILE_EXISTING || auditActions === AuditAction.AUDIT_FILE_INTEGRITY) {
+      this.form.controls.auditType.setValue(this.allProducerServices.value ? AuditType.tenant : AuditType.originatingagency);
+    } else {
+      this.form.controls.auditType.setValue(AuditType.dsl);
+    }
+  }
+
+  private changeQueryOnNodesSelection(value: { included: Array<string>, excluded: Array<string> }): void {
+    if (value && value.included && value.included.length > 0) {
+      this.form.controls.query.setValue(this.getRootQuery(value.included));
+    } else {
+      this.form.controls.query.setValue(this.getRootQuery(null));
+    }
+  }
+
+  private updateFieldsOnAllProducerServicesChange(allProducerServices: boolean): void {
+    if (this.form.controls.auditActions.value !== AuditAction.AUDIT_FILE_RECTIFICATION) {
+      this.form.controls.auditType.setValue(allProducerServices ? AuditType.tenant : AuditType.originatingagency);
+    }
+    this.form.controls.objectId.setValue(allProducerServices ? this.startupService.getTenantIdentifier() : null);
+    this.updateObjectIdValidators();
+    this.form.updateValueAndValidity();
   }
 
   /**
@@ -176,9 +202,10 @@ export class AuditCreateComponent implements OnInit {
    */
   private updateObjectIdValidators() {
     if (
-      this.allServices.value &&
+      this.allProducerServices.value &&
       this.accessionRegisterSummaries &&
-      (this.form.value.auditActions === 'AUDIT_FILE_EXISTING' || this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY')
+      (this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING
+        || this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY)
     ) {
       this.form.get('objectId').setValidators(Validators.required);
     } else {
@@ -187,14 +214,15 @@ export class AuditCreateComponent implements OnInit {
   }
 
   isStepValid(): boolean {
-    const isEvidenceAuditValid = this.form.value.auditActions === 'AUDIT_FILE_CONSISTENCY' && this.accessContractId != null;
+    const isEvidenceAuditValid = this.form.value.auditActions === AuditAction.AUDIT_FILE_CONSISTENCY && this.accessContractId != null;
     const isRectificationAuditValid =
-      this.form.value.auditActions === 'AUDIT_FILE_RECTIFICATION' &&
+      this.form.value.auditActions === AuditAction.AUDIT_FILE_RECTIFICATION &&
       this.accessContractId != null &&
       !this.form.get('evidenceAudit').invalid &&
       !this.form.get('evidenceAudit').pending;
     const isOtherAuditValid =
-      (this.form.value.auditActions === 'AUDIT_FILE_INTEGRITY' || this.form.value.auditActions === 'AUDIT_FILE_EXISTING') &&
+      (this.form.value.auditActions === AuditAction.AUDIT_FILE_INTEGRITY
+        || this.form.value.auditActions === AuditAction.AUDIT_FILE_EXISTING) &&
       this.accessContractId != null &&
       !this.form.get('auditType').invalid &&
       !this.form.get('auditType').pending &&
@@ -204,8 +232,8 @@ export class AuditCreateComponent implements OnInit {
   }
 
   ngOnDestroy = () => {
-    this.keyPressSubscription.unsubscribe();
-  };
+    this.subscriptions.unsubscribe();
+  }
 
   onCancel() {
     if (this.form.dirty) {
@@ -222,16 +250,17 @@ export class AuditCreateComponent implements OnInit {
     }
     this.isDisabledButton = true;
 
-    this.auditService.create(this.form.value, new HttpHeaders({ 'X-Access-Contract-Id': this.accessContractId })).subscribe(
-      () => {
-        this.isDisabledButton = false;
-        this.dialogRef.close({ success: true, action: 'none' });
-      },
-      (error: any) => {
-        this.dialogRef.close({ success: false, action: 'none' });
-        console.error(error);
-      }
-    );
+    this.auditService.create(this.form.value, new HttpHeaders({'X-Access-Contract-Id': this.accessContractId}))
+      .subscribe(
+        () => {
+          this.isDisabledButton = false;
+          this.dialogRef.close({success: true, action: 'none'});
+        },
+        (error: any) => {
+          this.dialogRef.close({success: false, action: 'none'});
+          console.error(error);
+        }
+      );
   }
 
   get stepProgress() {
@@ -243,7 +272,7 @@ export class AuditCreateComponent implements OnInit {
       return {
         $query: [
           {
-            $or: [{ $exists: '#id' }],
+            $or: [{$exists: '#id'}],
           },
         ],
         $filter: {},
@@ -254,7 +283,7 @@ export class AuditCreateComponent implements OnInit {
     return {
       $query: [
         {
-          $or: [{ $in: { '#allunitups': includedRoots } }],
+          $or: [{$in: {'#allunitups': includedRoots}}],
         },
       ],
       $filter: {},

@@ -36,9 +36,11 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -101,19 +103,24 @@ public class ProviderController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public IdentityProviderDto getOne(final @PathVariable String id,
-            @ApiParam(defaultValue = "KEYSTORE,IDPMETADATA") @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get provider={}, embedded={}", id, embedded);
+            @ApiParam(defaultValue = "KEYSTORE,IDPMETADATA") @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
+        LOGGER.debug("Get provider={}, embedded={}", id, embedded);
         return service.getOne(buildUiHttpContext(), id, embedded);
     }
 
     @ApiOperation(value = "Get all entities")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
-        RestUtils.checkCriteria(criteria);
+    public Collection<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
+        LOGGER.debug("Get all with criteria={}, embedded={}", criteria, embedded);
         return service.getAll(buildUiHttpContext(), criteria, embedded);
     }
 
@@ -127,9 +134,11 @@ public class ProviderController extends AbstractUiRestController {
     @ApiOperation(value = "Get metadata provider")
     @GetMapping("/{id}/idpMetadata")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(@RequestParam(required = true) final Integer tenantId, final @PathVariable String id) {
+    public ResponseEntity<Resource> getIdpMetadataProviderByProviderId(@RequestParam(required = true) final Integer tenantId, final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get keystore provider ={}");
         ParameterChecker.checkParameter("Parameters are mandatory : ", tenantId, id);
+        SanityChecker.checkSecureParameter(String.valueOf(tenantId), id);
         final IdentityProviderDto dto = service.getOne(buildUiHttpContext(tenantId), id, IamUtils.buildOptionalEmbedded(ProviderEmbeddedOptions.IDPMETADATA));
         final HttpHeaders headers = new HttpHeaders();
         final ByteArrayResource resource = new ByteArrayResource(dto.getIdpMetadata().getBytes());
@@ -155,9 +164,13 @@ public class ProviderController extends AbstractUiRestController {
     @PatchMapping(value = CommonConstants.PATH_ID)
     @ApiOperation(value = "Update partially provider")
     @ResponseStatus(HttpStatus.OK)
-    public IdentityProviderDto patchProvider(final @RequestBody Map<String, Object> provider, final @PathVariable String id) {
-        LOGGER.debug("Update partially provider id={} with partialDto={}", id, provider);
+    public IdentityProviderDto patchProvider(final @RequestBody Map<String, Object> provider, final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(provider);
+        LOGGER.debug("Update partially provider id={} with partialDto={}", id, provider);
         return service.patch(buildUiHttpContext(), provider, null, null, id, ProviderPatchType.JSON);
     }
 
@@ -166,10 +179,12 @@ public class ProviderController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderKeystore(final @RequestPart("keystore") MultipartFile keystore, final @RequestPart("provider") String provider,
-            final @PathVariable String id) throws IOException {
-        LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
+            final @PathVariable String id) throws IOException, InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Parameters are mandatory : ", keystore, provider, id);
         SanityChecker.isValidFileName(keystore.getOriginalFilename());
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Update keystore provider id={} with partialDto={}", id, provider);
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), keystore, null, id, ProviderPatchType.KEYSTORE);
     }
 
@@ -178,10 +193,13 @@ public class ProviderController extends AbstractUiRestController {
     @ResponseStatus(HttpStatus.OK)
     @ApiIgnore // FXME MDI - Ignore with Failed to execute goal 'convertSwagger2markup': Type of parameter 'provider' must not be blank
     public IdentityProviderDto patchProviderIdpMetadata(final @RequestPart("idpMetadata") MultipartFile idpMetadata,
-            final @RequestPart("provider") String provider, final @PathVariable String id) throws IOException {
-        LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
+            final @RequestPart("provider") String provider, final @PathVariable String id)
+        throws IOException, InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Parameters are mandatory : ", provider, idpMetadata, id);
         SanityChecker.isValidFileName(idpMetadata.getOriginalFilename());
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Update idpMetadata provider id={} with partialDto", id, provider);
         return service.patch(buildUiHttpContext(), VitamUIUtils.convertObjectFromJson(provider, Map.class), null, idpMetadata, id, ProviderPatchType.IDPMETADATA);
     }
 }

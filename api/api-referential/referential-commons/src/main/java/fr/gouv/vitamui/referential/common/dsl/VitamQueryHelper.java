@@ -47,11 +47,7 @@ import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
@@ -85,6 +81,11 @@ public class VitamQueryHelper {
     private static final String EV_DATE_TIME_END = "evDateTime_End";
     private static final String OPI = "Opi";
     private static final String ORIGINATING_AGENCY = "OriginatingAgency";
+
+    public static final Collection<String> staticAcquisitionInformations = List.of(
+        "Versement", "Protocole", "Achat", "Copie", "Dation", "Dépôt", "Dévolution",
+        "Don", "Legs", "Réintégration", "Autres", VitamQueryHelper.ACQUISITION_INFORMATION_NON_RENSEIGNE);
+    public static final String ACQUISITION_INFORMATION_NON_RENSEIGNE = "Non renseigné";
 
     private VitamQueryHelper() {
         throw new UnsupportedOperationException("Utility class");

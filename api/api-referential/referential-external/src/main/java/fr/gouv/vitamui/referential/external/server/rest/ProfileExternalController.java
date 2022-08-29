@@ -79,10 +79,10 @@ public class ProfileExternalController {
     private ProfileExternalService profileExternalService;
 
     @GetMapping()
-    //@Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
+    @Secured(ServicesData.ROLE_GET_ARCHIVE_PROFILES)
     public Collection<ProfileDto> getAll(final Optional<String> criteria) {
         LOGGER.debug("get all profile criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return profileExternalService.getAll(criteria);
     }
 

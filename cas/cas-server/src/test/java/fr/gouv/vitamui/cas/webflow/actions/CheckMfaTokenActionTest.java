@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import lombok.val;
@@ -13,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileNotFoundException;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -37,7 +39,7 @@ public class CheckMfaTokenActionTest extends BaseWebflowActionTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
         ticketRegistry = mock(TicketRegistry.class);

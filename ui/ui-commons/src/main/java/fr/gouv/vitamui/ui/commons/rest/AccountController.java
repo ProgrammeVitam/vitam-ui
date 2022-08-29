@@ -38,8 +38,11 @@ package fr.gouv.vitamui.ui.commons.rest;
 
 import java.util.Map;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,9 +71,12 @@ public class AccountController extends AbstractUiRestController {
     }
 
     @PatchMapping(CommonConstants.PATH_ME)
-    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch me with {}", partialDto);
+    public UserDto patchMe(@RequestBody final Map<String, Object> partialDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("The User Entity is a mandatory parameter: ", partialDto);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch me with {}", partialDto);
         return service.patchMe(buildUiHttpContext(), partialDto);
     }
 }

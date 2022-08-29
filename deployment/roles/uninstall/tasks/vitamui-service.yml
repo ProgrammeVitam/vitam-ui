@@ -4,7 +4,7 @@
   systemd:
     name: "vitamui-{{ service_name }}"
     state: stopped
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Uninstall vitamui service
   yum:

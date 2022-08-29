@@ -94,6 +94,8 @@ public class IngestGeneratorODTFile {
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(IngestGeneratorODTFile.class);
     public static final String FIRST_TITLE = "Bordereau de versement d'archives";
     public static final String SECOND_TITLE = "Détail des unités archivistiques de type répertoire et dossiers:";
+    private static final String NO_TEXT = "_ _ _ _" ;
+    private static final String LOGO_PATH = "/logo_ministere.";
 
     @Value("${tmp_folder_path}")
     private String tmpFolderPath;
@@ -125,7 +127,8 @@ public class IngestGeneratorODTFile {
             cell.addParagraph(myCustomer.getAddress().getCountry());
         }
 
-        if (myCustomer.isHasCustomGraphicIdentity() && customerLogo != null) {
+        if (myCustomer != null  && myCustomer.isHasCustomGraphicIdentity()
+            && customerLogo != null) {
 
             byte[] customerLogoBytes = customerLogo.getInputStream().readAllBytes();
             String customerLogoBase64Image = Base64.getEncoder().encodeToString(customerLogoBytes);
@@ -133,7 +136,7 @@ public class IngestGeneratorODTFile {
                 .getDecoder()
                 .decode(customerLogoBase64Image);
 
-            imgFile = tmpFolderPath + "/logo_ministere." + getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
+            imgFile = tmpFolderPath + LOGO_PATH+ getExtensionByCustomerLogo(customerLogoBase64Image).toLowerCase();
             FileUtils.writeByteArrayToFile(new File(imgFile), customerLogoDecodedBytes);
             headerTable.getCellByPosition(1,0).setImage(new URI(imgFile));
 
@@ -230,7 +233,7 @@ public class IngestGeneratorODTFile {
 
         table.getColumnByIndex(1).getCellByIndex(0).setStringValue(getManifestPrincipalData(manifest,"MessageIdentifier"));
         table.getColumnByIndex(1).getCellByIndex(1).setStringValue(getManifestPrincipalData(manifest,"Comment"));
-        if(!archiveUnitDtoList.isEmpty() && archiveUnitDtoList != null) {
+        if(!archiveUnitDtoList.isEmpty()) {
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
                 "Date de début : " + getStartedDate(getArchiveUnitStartDatesList(archiveUnitDtoList)));
             table.getColumnByIndex(1).getCellByIndex(2).addParagraph(
@@ -414,8 +417,8 @@ public class IngestGeneratorODTFile {
         DocumentBuilder builder;
         try {
             builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new InputSource(new StringReader(xmlString)));
-            return doc;
+            return builder.parse(new InputSource(new StringReader(xmlString)));
+
         } catch (Exception e) {
             LOGGER.error("Error while converting string to XML Document {}", e.getMessage());
             throw new IngestFileGenerationException("Error while converting string to XML Document {}", e);
@@ -435,14 +438,13 @@ public class IngestGeneratorODTFile {
 
         if(!CollectionUtils.isEmpty(listOfDate)) {
             String lastEndDate = listOfDate.stream().map(
-                endDate ->
-                    manageDateFormat(endDate))
+                    this::manageDateFormat)
                 .sorted().collect(Collectors.toList())
                 .get(listOfDate.size()-1);
 
             return transformDate(lastEndDate);
         }
-        return "_ _ _ _";
+        return NO_TEXT;
     }
 
     private Map<String, String> getSystemIdValues(Document document) {
@@ -486,18 +488,18 @@ public class IngestGeneratorODTFile {
 
     private List<String> getArchiveUnitStartDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
         return archiveUnitDtoList.stream().map(ArchiveUnitDto::getStartDate ).filter(startDate->
-            startDate != "_ _ _ _"
+            !startDate.equals(NO_TEXT)
         ).collect(Collectors.toList());
     }
 
     private List<String> getArchiveUnitEndDatesList(List<ArchiveUnitDto> archiveUnitDtoList) {
         return archiveUnitDtoList.stream().map(ArchiveUnitDto::getEndDate ).filter(endDate->
-            endDate != "_ _ _ _"
+            !endDate.equals(NO_TEXT)
         ).collect(Collectors.toList());
     }
 
     private String transformDate(String date) {
-        if(date != "_ _ _ _") {
+        if(!date.equals(NO_TEXT)){
             LocalDate finalDate = LocalDate.parse(date);
             return finalDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         }
@@ -533,17 +535,16 @@ public class IngestGeneratorODTFile {
 
         if(!CollectionUtils.isEmpty(listOfDate)) {
            String firstStartDate =  listOfDate.stream().map(
-               startDate ->
-                   manageDateFormat(startDate))
+                   this::manageDateFormat)
                .sorted().findFirst().get();
             return transformDate(firstStartDate);
         }
-        return "_ _ _ _";
+        return NO_TEXT;
     }
 
     private String getData(Element element, String tagName) {
         return element.getElementsByTagName(tagName).getLength() == 0 ?
-            "_ _ _ _" :
+            NO_TEXT :
             element.getElementsByTagName(tagName).item(0).getTextContent();
     }
 

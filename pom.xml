@@ -6,7 +6,7 @@
 
     <groupId>fr.gouv.vitamui</groupId>
     <artifactId>parent</artifactId>
-    <version>5.0-SNAPSHOT</version>
+    <version>6.rc.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>VITAMUI</name>
     <description>${project.artifactId}</description>
@@ -73,7 +73,7 @@
         <asciidoctorj.pdf.version>1.5.3</asciidoctorj.pdf.version>
         <assertj.version>3.15.0</assertj.version>
         <bouncycastle.version>1.68</bouncycastle.version>
-        <cas.version>6.4.5</cas.version>
+        <cas.version>6.4.6.3</cas.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <commons.collections.version>3.2.2</commons.collections.version>
         <commons.collections4.version>4.4</commons.collections4.version>
@@ -84,15 +84,16 @@
         <commons.text.version>1.8</commons.text.version>
         <cucumber.version>5.6.0</cucumber.version>
         <easymock.version>4.2</easymock.version>
-        <embedded.mongo.version>2.2.0</embedded.mongo.version>
+        <embedded.mongo.version>3.3.2</embedded.mongo.version>
         <fake.sftp.server.rule.version>2.0.1</fake.sftp.server.rule.version>
+        <font.awesome.version>5.11.2</font.awesome.version>
         <glassfish.javax.el.version>2.2.6</glassfish.javax.el.version>
-        <gson.version>2.8.6</gson.version>
+        <gson.version>2.8.9</gson.version>
         <guava.version>29.0-jre</guava.version>
         <http.client.version>4.5.13</http.client.version>
         <http.core.version>4.4.14</http.core.version>
         <glassfish.jaxb.version>2.3.2</glassfish.jaxb.version>
-        <jackson.version>2.12.4</jackson.version>
+        <jackson.version>2.12.7</jackson.version>
         <jaeger.tracing.version>3.2.2</jaeger.tracing.version>
         <jakarta.xml.binding.version>2.3.2</jakarta.xml.binding.version>
         <javax.el.version.version>3.0.1-b06</javax.el.version.version>
@@ -118,8 +119,11 @@
         <junit.vintage.engine.version>5.7.0</junit.vintage.engine.version>
         <jruby.complete.version>9.2.13.0</jruby.complete.version>
         <jsonassert.version>1.5.0</jsonassert.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
         <lombok.version>1.18.20</lombok.version>
+        <jakarta.mail.version>1.6.5</jakarta.mail.version>
+        <juli.to.slf4j.version>1.1.1</juli.to.slf4j.version>
+        <jquery.ui.version>1.12.1</jquery.ui.version>
         <micrometer.version>1.7.3</micrometer.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <mockito.version>3.12.1</mockito.version>
@@ -136,23 +140,26 @@
         <serenity.spring.version>2.2.2</serenity.spring.version>
         <serenity.version>2.2.2</serenity.version>
         <slf4j.version>1.7.30</slf4j.version>
-        <spring.boot.version>2.5.6</spring.boot.version>
-        <spring.version>5.3.12</spring.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
+        <spring.version>5.3.18</spring.version>
         <spring.cloud.consul.version>3.0.3</spring.cloud.consul.version>
         <spring.security.version>5.5.3</spring.security.version>
+        <spring.test.version>5.3.18</spring.test.version>
+        <spring-webmvc-pac4j.version>5.1.0</spring-webmvc-pac4j.version>
         <swagger.version>3.0.0</swagger.version>
         <trang.version>20181222</trang.version>
-        <vitam.version>5.0-SNAPSHOT</vitam.version>
+        <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
+        <vitam.version>6.rc.0-SNAPSHOT</vitam.version>
         <xml.apis-version>2.0.2</xml.apis-version>
         <xml.resolver.version>1.2</xml.resolver.version>
         <xom.version>1.3.4</xom.version>
         <xdocreport.version>2.0.2</xdocreport.version>
-        <xerces.version>2.12.1</xerces.version>
-        <esapi.version>2.2.3.1</esapi.version>
-        <antisamy.version>1.6.4</antisamy.version>
+        <xerces.version>2.12.2</xerces.version>
+        <esapi.version>2.3.0.0</esapi.version>
+        <antisamy.version>1.6.7</antisamy.version>
         <json-sanitize.version>1.2.2</json-sanitize.version>
         <freemarker.upgraded.version>2.3.30</freemarker.upgraded.version>
-        <mongo.driver.sync.version>4.1.2</mongo.driver.sync.version>
+        <mongo.driver.sync.version>4.6.1</mongo.driver.sync.version>
 
 
         <!-- Web Pack -->
@@ -351,6 +358,32 @@
 
             <dependency>
                 <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-internal</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-internal-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-external</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
+                <artifactId>collect-external-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>fr.gouv.vitamui</groupId>
                 <artifactId>iam-commons</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -482,6 +515,16 @@
                 <version>${spring.cloud.consul.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-commons</artifactId>
+                <version>${spring.cloud.consul.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-context</artifactId>
+                <version>${spring.cloud.consul.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-logging</artifactId>
                 <version>${spring.boot.version}</version>
@@ -546,6 +589,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
                 <version>${spring.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
@@ -566,6 +615,11 @@
                 <groupId>io.opentracing.contrib</groupId>
                 <artifactId>opentracing-spring-jaeger-web-starter</artifactId>
                 <version>${jaeger.tracing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pac4j</groupId>
+                <artifactId>spring-webmvc-pac4j</artifactId>
+                <version>${spring-webmvc-pac4j.version}</version>
             </dependency>
 
             <!-- Security -->
@@ -594,6 +648,11 @@
                 <artifactId>spring-security-test</artifactId>
                 <version>${spring.security.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.thymeleaf</groupId>
+                <artifactId>thymeleaf-spring5</artifactId>
+                <version>${thymeleaf-spring5.version}</version>
             </dependency>
 
             <!-- Apereo CAS Server Core Api Ticket -->
@@ -631,6 +690,16 @@
                 <artifactId>javax.ws.rs-api</artifactId>
                 <version>${javax.ws.rs.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>jquery-ui</artifactId>
+                <version>${jquery.ui.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>font-awesome</artifactId>
+                <version>${font.awesome.version}</version>
+            </dependency>
 
             <!-- Log -->
             <dependency>
@@ -667,9 +736,20 @@
             </dependency>
 
             <!-- Mongo-Driver -->
+
             <dependency>
                 <groupId>org.mongodb</groupId>
                 <artifactId>mongodb-driver-sync</artifactId>
+                <version>${mongo.driver.sync.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>mongodb-driver-core</artifactId>
+                <version>${mongo.driver.sync.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mongodb</groupId>
+                <artifactId>bson</artifactId>
                 <version>${mongo.driver.sync.version}</version>
             </dependency>
 
@@ -696,6 +776,33 @@
             <dependency>
                 <groupId>fr.gouv.vitam</groupId>
                 <artifactId>access-external-client</artifactId>
+                <version>${vitam.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>de.flapdoodle.embed</groupId>
+                        <artifactId>de.flapdoodle.embed.mongo</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.mongodb</groupId>
+                        <artifactId>mongo-java-driver</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.logging.log4j</groupId>
+                        <artifactId>log4j-to-slf4j</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mailapi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.netty</groupId>
+                        <artifactId>netty-all</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>fr.gouv.vitam</groupId>
+                <artifactId>collect-client</artifactId>
                 <version>${vitam.version}</version>
                 <exclusions>
                     <exclusion>
@@ -787,6 +894,12 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>
@@ -885,6 +998,11 @@
                 <artifactId>commons-codec</artifactId>
                 <version>${apache.commons.codec.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.gandon.tomcat</groupId>
+                <artifactId>juli-to-slf4j</artifactId>
+                <version>${juli.to.slf4j.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -916,6 +1034,12 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.shell</groupId>
+                        <artifactId>spring-shell</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>xml-apis</groupId>
@@ -1061,6 +1185,12 @@
                 <artifactId>json-sanitizer</artifactId>
                 <version>${json-sanitize.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>jakarta.mail</artifactId>
+                <version>${jakarta.mail.version}</version>
+            </dependency>
+
             <!-- Test -->
             <dependency>
                 <groupId>fr.gouv.vitamui.commons</groupId>
@@ -1129,6 +1259,12 @@
                 <groupId>org.powermock</groupId>
                 <artifactId>powermock-api-mockito2</artifactId>
                 <version>${powermock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${spring.test.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.javassist</groupId>
@@ -1968,9 +2104,12 @@
                 <sonar.exclusions>**/node_modules/**, **/sass/**</sonar.exclusions>
                 <sonar.java.spotbugs.reportPaths>./target/spotbugsXml.xml</sonar.java.spotbugs.reportPaths>
                 <sonar.java.pmd.reportPaths>./target/pmd.xml</sonar.java.pmd.reportPaths>
-                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html</sonar.dependencyCheck.htmlReportPath>
-                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json</sonar.dependencyCheck.jsonReportPath>
-                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml</sonar.dependencyCheck.xmlReportPath>
+                <sonar.dependencyCheck.htmlReportPath>./target/dependency-check-report.html
+                </sonar.dependencyCheck.htmlReportPath>
+                <sonar.dependencyCheck.jsonReportPath>./target/dependency-check-report.json
+                </sonar.dependencyCheck.jsonReportPath>
+                <sonar.dependencyCheck.xmlReportPath>./target/dependency-check-report.xml
+                </sonar.dependencyCheck.xmlReportPath>
                 <!-- TODO: This properties need to bo specify by the user who execute
                 the report (ex: Jenkins or developper) -->
                 <sonar.host.url/>

@@ -1,21 +1,42 @@
-version: '3'
+version: '3.5'
 
 services:
   mongo-dev:
     image: mongo:4.0.6
     container_name: vitamui-mongo
     hostname: vitamui-mongo
-#    environment:
-        # provide your credentials here
-#        - MONGO_INITDB_ROOT_USERNAME=root
-#        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
+    #    environment:
+    # provide your credentials here
+    #        - MONGO_INITDB_ROOT_USERNAME=root
+    #        - MONGO_INITDB_ROOT_PASSWORD=rootpwd
     ports:
-        # 27018 is selected in order to avoid a conflict with Vitam docker instance
+      # 27018 is selected in order to avoid a conflict with Vitam docker instance
       - "27018:27018"
     volumes:
-        # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
+      # if you wish to setup additional user accounts specific per DB or with different roles you can use following entry point
       - "$PWD/mongo-entrypoint:/scripts/mongo/data"
       - "$PWD/replica-set/:/scripts/mongo/replica-set"
+    networks:
+      - local_vitamui_network
 
     # no --auth is needed here as presence of username and password add this option automatically
     command: mongod --replSet "rs0" --port=27018
+
+  mongo-express-dev:
+    container_name: vitamui-mongo-express
+    image: mongo-express
+    restart: always
+    ports:
+      - "18081:8081"
+    depends_on:
+      - mongo-dev
+    networks:
+      - local_vitamui_network
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: mongod_dbuser_admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: mongod_dbpwd_admin
+      ME_CONFIG_MONGODB_URL: "mongodb://mongod_dbuser_admin:mongod_dbpwd_admin@mongo-dev:27018/"
+
+networks:
+  local_vitamui_network:
+    name: mongo_default

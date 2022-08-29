@@ -45,6 +45,7 @@ import fr.gouv.vitamui.ingest.common.rest.RestApi;
 import fr.gouv.vitamui.ingest.external.client.IngestExternalRestClient;
 import fr.gouv.vitamui.ingest.external.server.service.IngestExternalService;
 import fr.gouv.vitamui.ingest.internal.client.IngestInternalRestClient;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -103,7 +104,11 @@ public class IngestExternalControllerTest extends ApiIngestExternalControllerTes
 
     @Test
     public void testIngest() {
-        // to enhance in the future with appropriate verbs and real cases and so on ..
-        // ingestExternalService.ingest();
+
+        Assert.assertNotNull(ingestExternalService);
+        Assert.assertNotNull(externalSecurityService);
+        Assert.assertNotNull(ingestExternalRestClient);
+        Assert.assertNotNull(ingestInternalRestClient);
+
     }
 }

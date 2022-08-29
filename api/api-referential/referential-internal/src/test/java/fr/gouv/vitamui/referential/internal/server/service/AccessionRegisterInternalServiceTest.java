@@ -103,31 +103,35 @@ class AccessionRegisterInternalServiceTest {
         doNothing().when(vitamUILogger).info(any());
     }
 
-   @Test
+    @Test
     void should_call_appropriate_api_once_when_get_paginated_is_invoked() throws IOException,
-       InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
+        InvalidCreateOperationException, InvalidParseOperationException, VitamClientException {
         //Given
         VitamContext vitamContext = new VitamContext(0);
         Map<String, Object> vitamCriteria = new HashMap<>();
         int pageNumber = 0;
         int size = 20;
-        JsonNode query = VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, Optional.empty(), Optional.empty());
-        doReturn(buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailResponseDto.class))
+        JsonNode query =
+            VitamQueryHelper.createQueryDSL(vitamCriteria, pageNumber, size, Optional.empty(), Optional.empty());
+        doReturn(
+            buildResponseFrom("data/accession-register-details-mocked.json", AccessionRegisterDetailResponseDto.class))
             .when(adminExternalClient).findAccessionRegisterDetails(vitamContext, query);
         doReturn(buildResponseFrom("data/agencies-mocked.json", AgenciesModel.class))
             .when(agencyService).findAgencies(any(VitamContext.class), any(JsonNode.class));
 
         //When
         accessionRegisterInternalService
-            .getAllPaginated(pageNumber, size, Optional.empty(), Optional.empty(), vitamContext, Optional.empty());
+            .getAllPaginated(Optional.empty(), pageNumber, size, null, null, vitamContext);
 
         //Then
         verify(adminExternalClient, times(1)).findAccessionRegisterDetails(vitamContext, query);
         verify(agencyService, times(1)).findAgencies(any(VitamContext.class), any(JsonNode.class));
     }
 
-    private <T> RequestResponse<T> buildResponseFrom(String filename, Class<T> clazz) throws IOException, InvalidParseOperationException {
-        InputStream inputStream = AccessionRegisterInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
+    private <T> RequestResponse<T> buildResponseFrom(String filename, Class<T> clazz)
+        throws IOException, InvalidParseOperationException {
+        InputStream inputStream =
+            AccessionRegisterInternalServiceTest.class.getClassLoader().getResourceAsStream(filename);
         assert inputStream != null;
         JsonNode data = objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class);
         return RequestResponseOK.getFromJsonNode(data, clazz);

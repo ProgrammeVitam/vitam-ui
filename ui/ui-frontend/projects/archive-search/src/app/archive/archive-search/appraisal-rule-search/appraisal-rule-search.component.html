@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtDua
             ><span (click)="pickerBeginDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | date: 'dd/MM/yyyy' }}
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -74,7 +74,7 @@
       </div>
       <div class="col-1 form-control">
         <button
-          [ngStyle]="{ 'background-color': 'green', width: '30', height: '30' }"
+           class="validate-date-small-button"
           *ngIf="!endDateInterval && appraisalRuleCriteriaForm.get('appraisalRuleStartDate').value"
           type="button"
           mat-mini-fab
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtDua
             ><span (click)="pickerEndDua.open()"
-              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | date: 'dd/MM/yyyy' }}
+              >{{ appraisalRuleCriteriaForm.get('appraisalRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input

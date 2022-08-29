@@ -1,5 +1,5 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2021)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
  *
  * contact.vitam@culture.gouv.fr
  *
@@ -8,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -29,6 +29,7 @@ package fr.gouv.vitamui.archive.internal.server.service;
 
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
+import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -42,18 +43,31 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
 import static fr.gouv.vitam.common.database.builder.query.QueryHelper.or;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
+
+    private static final String SEARCH_QUERY_WITH_INTERVAL_DATE = "access/interval-date-query.txt";
+    private static final String SEARCH_QUERY_WITH_IDENTIFIER_RULE = "access/identifier-rule-query.txt";
+    private static final String SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_ONLY_RULE =
+        "access/identifier-inherited-only-rule-query.txt";
+    private static final String SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_OR_SCOPED_RULE =
+        "access/identifier-inherited-or-scoped-rule-query.txt";
+    private static final String SEARCH_QUERY_WITH_WAITING_TO_RECALCULATE =
+        "access/identifier-waiting-to-recalculate-rule-query.txt";
+    private static final String SEARCH_QUERY_WITH_NO_RULES = "access/identifier-no-rules-query.txt";
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER =
+        "access/expected-search-query-with-rule-identifier.txt";
+    public static String SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE =
+        "access/expected-search-query-with-rule-identifier-and-rule-startDate.txt";
+    public static String SEARCH_QUERY_WITH_ONE_DATE = "access/one-date-query.txt";
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class);
@@ -111,7 +125,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         //then
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent("access/one-date-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_ONE_DATE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -138,10 +152,9 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
 
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
-        LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/interval-date-query.txt");
+        LOGGER.debug(queryStr);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_INTERVAL_DATE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
 
 
@@ -166,7 +179,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/identifier-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_RULE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -201,9 +214,8 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/identifier-inherited-only-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_ONLY_RULE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
 
 
@@ -244,7 +256,7 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/identifier-inherited-or-scoped-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_IDENTIFIER_INHERITED_OR_SCOPED_RULE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
@@ -287,9 +299,8 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/identifier-waiting-to-recalculate-rule-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_WAITING_TO_RECALCULATE);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
-
     }
 
     @Test
@@ -329,28 +340,71 @@ public class ArchivesSearchAccessMgtRulesQueryBuilderServiceTest {
         Assertions.assertFalse(query.getQueries().isEmpty());
         String queryStr = query.getQueries().toString();
         LOGGER.info(queryStr);
-        String queryFileStr = loadFileContent("access/identifier-no-rules-query.txt");
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_NO_RULES);
         Assertions.assertEquals(queryStr.trim(), queryFileStr.trim());
 
     }
 
-    private String loadFileContent(String filename) throws IOException {
-        InputStream inputStream = ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/queries/" + filename);
-        String fileContent = readFromInputStream(inputStream);
-        return fileContent;
+    @Test
+    void testFillQueryFromCriteriaListRuleIdentifierIsPresentThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("Rule1")));
+        criteriaList.add(searchCriteriaEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(1);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
     }
 
-    private String readFromInputStream(InputStream inputStream)
-        throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
+    @Test
+    void testFillQueryFromCriteriaListRuleIdentifierAndRuleStartDateArePresentThenReturnTheExactQuery()
+        throws Exception {
+        //Given
+        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
+        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
+        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_IDENTIFIER_CRITERIA);
+        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
+        searchCriteriaEltDto.setValues(
+            List.of(new CriteriaValue("Rule1")));
+        criteriaList.add(searchCriteriaEltDto);
+
+        SearchCriteriaEltDto searchCriteriaWithDateEltDto = new SearchCriteriaEltDto();
+        searchCriteriaWithDateEltDto.setCriteria(ArchiveSearchConsts.MANAGEMENT_RULE_START_DATE);
+        searchCriteriaWithDateEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.ACCESS_RULE);
+        searchCriteriaWithDateEltDto.setValues(List.of(new CriteriaValue("2080-05-08T23:00:00.000Z")));
+        searchCriteriaWithDateEltDto.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
+
+        criteriaList.add(searchCriteriaWithDateEltDto);
+
+        //When
+        BooleanQuery query = and();
+        archivesSearchManagementRulesQueryBuilderService
+            .fillQueryFromMgtRulesCriteriaList(query, criteriaList);
+
+
+        //then
+        assertThat(query.getQueries()).isNotEmpty();
+        assertThat(query.getQueries()).hasSize(2);
+        String queryStr = query.getQueries().toString();
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
+        assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
+
     }
+
 }

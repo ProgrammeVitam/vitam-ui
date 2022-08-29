@@ -94,15 +94,15 @@
         </div>
       </td>
       <td>
-        <div class="vitamui-cell-content">{{ event?.dateTime | date: 'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-content">{{ event?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
         <div class="vitamui-cell-sub-content cell-content-bold">
-          <span>{{ event?.dateTime | date: 'HH:mm:ss':'-2000' }}</span>
+          <span>{{ event?.dateTime | dateTime: 'HH:mm:ss' }}</span>
         </div>
       </td>
       <td>
-        <div class="vitamui-cell-content">{{ (event | lastEvent)?.dateTime | date: 'dd/MM/yyyy' }}</div>
+        <div class="vitamui-cell-content">{{ (event | lastEvent)?.dateTime | dateTime: 'dd/MM/yyyy' }}</div>
         <div class="vitamui-cell-sub-content cell-content-bold">
-          <span>{{ (event | lastEvent)?.dateTime | date: 'HH:mm:ss':'-2000' }}</span>
+          <span>{{ (event | lastEvent)?.dateTime | dateTime: 'HH:mm:ss' }}</span>
         </div>
       </td>
       <td>
@@ -110,7 +110,7 @@
       </td>
       <td>
         <div class="vitamui-cell-content cell-content-bold break-content" [ngClass]="event | eventTypeColorClass">
-          {{ (event | lastEvent)?.type }}
+          <vitamui-common-event-type-label [key]="(event | lastEvent)?.type"></vitamui-common-event-type-label>
         </div>
       </td>
     </tr>

@@ -4,14 +4,14 @@
     "SUBMIT": "Confirmer",
     "UPDATE": "Modifier",
     "APPLY_UPDATE": "Appliquer les modifications ",
-    "REQUIRED" : "Champ requis"
+    "REQUIRED": "Champ requis"
   },
   "LOGBOOK_OPERATION_LIST": {
-    "NO_RESULTS" : "Fin des résultats",
-    "HOUR" : "Heure",
-    "NEXT" : "Suivant",
-    "PREVIOUS" : "Précédent",
-    "STATE" : "Etat",
+    "NO_RESULTS": "Fin des résultats",
+    "HOUR": "Heure",
+    "NEXT": "Suivant",
+    "PREVIOUS": "Précédent",
+    "STATE": "Etat",
     "STATUS": "Statut",
     "RESULTS": "Résultats",
     "ONE_RESULT": "Résultat",
@@ -42,19 +42,19 @@
     "AND": "et le :",
     "ADD_INTREVAL": "AJOUTER UN INTERVALLE",
     "DELETE_INTERVAL": "SUPPRIMER L'INTERVALLE",
-    "OPERATION_CATEGORY" : {
-      "TRACEABILITY" : "Sécurisation",
-      "INGEST" : "Entrée",
-      "STORAGE_BACKUP":"Sauvegarde des journaux des écritures",
-      "AUDIT":"Audit",
-      "MASTERDATA":"Données de base",
-      "ELIMINATION":"Élimination des unités archivistiques",
-      "CHECK":"Vérification des journaux sécurisés",
-      "UPDATE":"Mise à jour",
-      "EXPORT_DIP":"Export du DIP",
-      "RECLASSIFICATION":"Modification d’arborescence des unités archivistiques",
-      "PRESERVATION":"Processus global de préservation",
-      "EXTERNAL_LOGBOOK":"Journalisation d’événements externes"
+    "OPERATION_CATEGORY": {
+      "TRACEABILITY": "Sécurisation",
+      "INGEST": "Entrée",
+      "STORAGE_BACKUP": "Sauvegarde des journaux des écritures",
+      "AUDIT": "Audit",
+      "MASTERDATA": "Données de base",
+      "ELIMINATION": "Élimination des unités archivistiques",
+      "CHECK": "Vérification des journaux sécurisés",
+      "UPDATE": "Mise à jour",
+      "EXPORT_DIP": "Export du DIP",
+      "RECLASSIFICATION": "Modification d’arborescence des unités archivistiques",
+      "PRESERVATION": "Processus global de préservation",
+      "EXTERNAL_LOGBOOK": "Journalisation d’événements externes"
     }
   },
   "STATE_VALUE": {
@@ -104,7 +104,7 @@
     "LIST": {
       "NB_ENTRIES": "{{nb}} entrées",
       "DATE": "Date",
-      "OPERATION_IDENTIFIER": "Identifiant technique du versement",
+      "OPERATION_IDENTIFIER": "Identifiant du message",
       "ORIGINATING_AGENCY": "Service producteur",
       "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
       "ACQUISITION_INFORMATION": "Modalité d'entrée",
@@ -148,6 +148,36 @@
       "OPERATION_ELIMINATIONS": "Eliminations",
       "OPERATION_TRANSFERTS": "Transferts",
       "OPERATION_PRESERVATIONS": "Préservations"
+    },
+    "PREVIEW": {
+      "OPERATION_LIST": "Liste des opérations",
+      "STATISTICS": "Statistiques",
+      "DATE": "Date",
+      "ORIGINATING_AGENCY": "Service producteur",
+      "ARCHIVAL_AGREEMENT": "Contrat d'entrée",
+      "ARCHIVAL_PROFILE": "Profil d'archivage",
+      "ACQUISITION_INFORMATION": "Modalité d'entrée",
+      "STATUS": "Statut",
+      "LEGAL_STATUS": "Statut des archives",
+      "OPERATION_TECHNICAL_IDENTIFIER": "Identifiant technique du versement",
+      "SUBMISSION_AGENCY": "Service versant",
+      "COMMENTS": "Commentaires",
+      "OPERATIONS": {
+        "COUNTER": "opération",
+        "COUNTER_PLURAL": "opérations",
+        "FILTER_BY_OPERATIONS": "Opération effectuée",
+        "ORDER_BY_CREATION_DATE": "Date de l'opération",
+        "ORDER_BY_UNITS": "Nb d'UA",
+        "ORDER_BY_OBJECTS": "Nb d'OT",
+        "ORDER_BY_GOTS": "Nb de GOT",
+        "ORDER_BY_OBJ_SIZE": "Volumétrie",
+        "TYPE": {
+          "INGEST": "Entrée",
+          "PRESERVATION": "Préservation",
+          "TRANSFERT": "Transfert",
+          "ELIMINATION": "Elimination"
+        }
+      }
     }
   }
 }

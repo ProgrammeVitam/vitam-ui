@@ -60,7 +60,7 @@ public class VitamUIAccessContractService  {
 
     public RequestResponse<?> patchAccessContract(final VitamContext vitamContext, final String id, JsonNode jsonNode)  throws InvalidParseOperationException, AccessExternalClientException {
         LOGGER.debug("patch: {}, {}", id, jsonNode);
-        LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.debug("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
         return adminExternalClient.updateAccessContract(vitamContext,id,jsonNode);
     }
 

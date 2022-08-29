@@ -54,8 +54,6 @@ import fr.gouv.vitam.common.model.RequestResponse;
 import fr.gouv.vitam.common.model.RequestResponseOK;
 import fr.gouv.vitam.common.model.administration.AccessContractModel;
 import fr.gouv.vitam.common.model.administration.AgenciesModel;
-import fr.gouv.vitam.common.model.elimination.EliminationRequestBody;
-import fr.gouv.vitamui.archive.internal.server.rulesupdate.converter.RuleOperationsConverter;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.service.RulesUpdateCommonService;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.ArchiveUnit;
@@ -63,19 +61,14 @@ import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationAction;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationQueryActionType;
-import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.commons.api.domain.AccessContractModelDto;
 import fr.gouv.vitamui.commons.api.domain.AgencyModelDto;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
-import fr.gouv.vitamui.commons.vitam.api.access.EliminationService;
-import fr.gouv.vitamui.commons.vitam.api.access.ExportDipV2Service;
 import fr.gouv.vitamui.commons.vitam.api.access.UnitService;
 import fr.gouv.vitamui.commons.vitam.api.administration.AccessContractService;
-import fr.gouv.vitamui.commons.vitam.api.administration.AgencyService;
-import fr.gouv.vitamui.commons.vitam.api.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import fr.gouv.vitamui.commons.vitam.api.dto.VitamUISearchResponseDto;
 import fr.gouv.vitamui.iam.common.dto.AccessContractsResponseDto;
@@ -86,13 +79,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
-import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
@@ -101,7 +90,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.ArgumentMatchers.any;
@@ -116,14 +104,8 @@ public class ArchiveSearchInternalServiceTest {
     @MockBean(name = "unitService")
     private UnitService unitService;
 
-    @MockBean(name = "agencyService")
-    private AgencyService agencyService;
-
     @MockBean(name = "archiveSearchAgenciesInternalService")
     private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalService;
-
-    @InjectMocks
-    private ArchiveSearchAgenciesInternalService archiveSearchAgenciesInternalServiceInjected;
 
     @MockBean(name = "archiveSearchRulesInternalService")
     private ArchiveSearchRulesInternalService archiveSearchRulesInternalService;
@@ -137,14 +119,9 @@ public class ArchiveSearchInternalServiceTest {
     @InjectMocks
     private ArchiveSearchInternalService archiveSearchInternalService;
 
-    @MockBean(name = "exportDipV2Service")
-    private ExportDipV2Service exportDipV2Service;
+    @MockBean(name = "archiveSearchInternalService")
+    private ArchiveSearchFacetsInternalService archiveSearchFacetsInternalService;
 
-    @MockBean(name = "eliminationService")
-    private EliminationService eliminationService;
-
-    @MockBean(name = "ruleOperationsConverter")
-    private RuleOperationsConverter ruleOperationsConverter;
 
     @InjectMocks
     private RulesUpdateCommonService rulesUpdateCommonService;
@@ -154,51 +131,9 @@ public class ArchiveSearchInternalServiceTest {
 
     public final String FILING_HOLDING_SCHEME_RESULTS = "data/vitam_filing_holding_units_response.json";
     public final String UPDATE_RULES_ASYNC_RESPONSE = "data/update_rules_async_response.json";
-    public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE = "data/update_unit_descriptive_metadata_response.json";
-    public final String ELIMINATION_ANALYSIS_QUERY = "data/elimination/query.json";
-    public final String ELIMINATION_ANALYSIS_FINAL_QUERY = "data/elimination/expected_query.json";
+    public final String UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE =
+        "data/update_unit_descriptive_metadata_response.json";
     public final String FILLING_HOLDING_SCHEME_EXPECTED_QUERY = "data/fillingholding/expected_query.json";
-
-    // CSV Export data tests
-    public final String FR_ARCHIVE_UNITS_RESULTS_CSV = "data/export-csv/vitam_archive_units_response_fr.csv";
-    public final String EN_ARCHIVE_UNITS_RESULTS_CSV = "data/export-csv/vitam_archive_units_response_en.csv";
-    public final String VITAM_UNIT_RESULTS = "data/export-csv/vitam_units_response.json";
-    public final String VITAM_UNIT_ONE_RESULTS = "data/export-csv/vitam_units_one_response.json";
-
-    // Tests encode special weired chars
-    public final String VITAM_UNIT_ONE_RESULT_TO_ENCODE =
-        "data/export-csv/vitam_units_one_response_to_encode_end_to_end.json";
-    public final String ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY =
-        "data/export-csv/vitam_archive_units_response_correctly_encoded.csv";
-    public final String VITAM_UNIT_RESULTS_TO_ENCODE = "data/export-csv/vitam_units_response_to_encode.json";
-
-    // Filing Unit
-    public final String ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT =
-        "data/export-csv/filing-unit/vitam_archive_units_response_fr.csv";
-    public final String VITAM_UNIT_RESULTS_FILING_UNIT = "data/export-csv/filing-unit/vitam_units_one_response.json";
-    public final String VITAM_UNIT_ONE_RESULT_FILING_UNIT = "data/export-csv/filing-unit/vitam_units_response.json";
-
-    // Holding Unit
-    public final String ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT =
-        "data/export-csv/holding-unit/vitam_archive_units_response_fr.csv";
-    public final String VITAM_UNIT_RESULTS_HOLDING_UNIT = "data/export-csv/holding-unit/vitam_units_one_response.json";
-    public final String VITAM_UNIT_ONE_RESULT_HOLDING_UNIT = "data/export-csv/holding-unit/vitam_units_response.json";
-
-    // Unit With Object
-    public final String ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT =
-        "data/export-csv/unit-with-object/vitam_archive_units_response_fr.csv";
-    public final String VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT =
-        "data/export-csv/unit-with-object/vitam_units_one_response.json";
-    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT =
-        "data/export-csv/unit-with-object/vitam_units_response.json";
-
-    // Unit Without Object
-    public final String ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT =
-        "data/export-csv/unit-without-object/vitam_archive_units_response_fr.csv";
-    public final String VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT =
-        "data/export-csv/unit-without-object/vitam_units_one_response.json";
-    public final String VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT =
-        "data/export-csv/unit-without-object/vitam_units_response.json";
 
     @BeforeEach
     public void setUp() {
@@ -206,8 +141,8 @@ public class ArchiveSearchInternalServiceTest {
         archiveSearchInternalService =
             new ArchiveSearchInternalService(objectMapper, unitService, archiveSearchAgenciesInternalService,
                 archiveSearchRulesInternalService, archivesSearchFieldsQueryBuilderService,
-                exportDipV2Service, archivesSearchManagementRulesQueryBuilderService, eliminationService,
-                ruleOperationsConverter, rulesUpdateCommonService, accessContractService);
+                archivesSearchManagementRulesQueryBuilderService,
+                rulesUpdateCommonService, archiveSearchFacetsInternalService);
     }
 
     @Test
@@ -228,7 +163,7 @@ public class ArchiveSearchInternalServiceTest {
 
         // Then
         Assertions.assertThat(vitamUISearchResponseDto).isNotNull();
-        Assertions.assertThat(vitamUISearchResponseDto.getResults().size()).isEqualTo(20);
+        Assertions.assertThat(vitamUISearchResponseDto.getResults()).hasSize(20);
     }
 
     private RequestResponse<JsonNode> buildUnitMetadataResponse(String filename)
@@ -237,19 +172,11 @@ public class ArchiveSearchInternalServiceTest {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         InputStream inputStream = ArchiveSearchInternalServiceTest.class.getClassLoader()
             .getResourceAsStream(filename);
+        Assertions.assertThat(inputStream).isNotNull();
         return RequestResponseOK
             .getFromJsonNode(objectMapper.readValue(ByteStreams.toByteArray(inputStream), JsonNode.class));
     }
 
-    @Test
-    public void getFinalEliminationConstructedQuery() throws Exception {
-        JsonNode fromString = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_QUERY));
-        EliminationRequestBody eliminationRequestBody2 =
-            archiveSearchInternalService.getEliminationRequestBody(fromString);
-
-        JsonNode resultExpected = JsonHandler.getFromFile(PropertiesUtils.findFile(ELIMINATION_ANALYSIS_FINAL_QUERY));
-        Assertions.assertThat(eliminationRequestBody2.getDslRequest()).isEqualTo(resultExpected);
-    }
 
 
     @Test
@@ -263,76 +190,12 @@ public class ArchiveSearchInternalServiceTest {
             archiveSearchInternalService.createQueryForHoldingFillingUnit();
 
         // Then
-        Assertions.assertThat(expectedQuery.toString()).isEqualTo(String.valueOf(givenQuery));
+        Assertions.assertThat(expectedQuery.toString()).hasToString(String.valueOf(givenQuery));
         Assertions.assertThat(
             givenQuery.get(BuilderToken.GLOBAL.FILTER.exactToken()).get(BuilderToken.SELECTFILTER.ORDERBY.exactToken())
                 .has("Title")).isTrue();
     }
 
-    @Test
-    public void testUpdateArchiveUnitsRulesWithCorrectAccessContractThenReturnSuccess() throws Exception {
-        // Given
-        when(unitService.massUpdateUnitsRules(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
-
-        RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
-        response1.setHttpCode(200);
-        response1.setHits(1, 1, 1, 1);
-        response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, true));
-
-        when(accessContractService.findAccessContractById(any(), any()))
-            .thenReturn(response1);
-
-        RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
-        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponse);
-        List<AccessContractModelDto> results =
-            List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, true));
-        JsonHandler.toJsonNode(results);
-        AccessContractResponseDto response = new AccessContractResponseDto();
-        response.setResults(results);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
-            .thenReturn(response);
-
-        // Configure the mapper
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, true));
-
-        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto agencyCodeCriteria = new SearchCriteriaEltDto();
-        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
-        agencyCodeCriteria.setValues(List.of(new CriteriaValue("CODE1")));
-        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        criteriaList.add(agencyCodeCriteria);
-        agencyCodeCriteria = new SearchCriteriaEltDto();
-        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD);
-        agencyCodeCriteria.setValues(List.of(new CriteriaValue("ANY_LABEL")));
-        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-
-        SearchCriteriaEltDto searchCriteriaElementsNodes = new SearchCriteriaEltDto();
-        searchCriteriaElementsNodes.setCriteria("NODE");
-        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
-        searchCriteriaElementsNodes.setValues(
-            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
-        criteriaList.add(agencyCodeCriteria);
-        criteriaList.add(searchCriteriaElementsNodes);
-        searchQuery.setSize(20);
-        searchQuery.setPageNumber(20);
-        searchQuery.setCriteriaList(criteriaList);
-        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
-        ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
-
-        //When //Then
-        String expectingGuid =
-            archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
-        assertThatCode(() -> {
-            archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
-        }).doesNotThrowAnyException();
-
-        Assertions.assertThat(expectingGuid).isEqualTo("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
-    }
 
     @Test
     public void testReclassificationThenOK() throws Exception {
@@ -367,7 +230,8 @@ public class ArchiveSearchInternalServiceTest {
         reclassificationCriteriaDto.setSearchCriteriaDto(searchQuery);
 
         //When //Then
-        String expectingGuid = archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
+        String expectingGuid =
+            archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
         assertThatCode(() -> {
             archiveSearchInternalService.reclassification(new VitamContext(1), reclassificationCriteriaDto);
         }).doesNotThrowAnyException();
@@ -402,7 +266,7 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023",Arrays.asList("StartDate"));
+            buildUnitDescriptiveMetadataDto(null, null, null, null, "01/01/2023", Arrays.asList("StartDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -417,7 +281,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",Arrays.asList("StartDate", "Description"));
+            buildUnitDescriptiveMetadataDto("some title", null, null, null, "01/01/2023",
+                Arrays.asList("StartDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -433,7 +298,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,Arrays.asList("StartDate", "EndDate"));
+            buildUnitDescriptiveMetadataDto("some title", "some description", "Item", null, null,
+                Arrays.asList("StartDate", "EndDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -449,7 +315,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto(null, null, null, null, null,Arrays.asList("StartDate", "EndDate", "Description"));
+            buildUnitDescriptiveMetadataDto(null, null, null, null, null,
+                Arrays.asList("StartDate", "EndDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -465,7 +332,8 @@ public class ArchiveSearchInternalServiceTest {
             .thenReturn(buildUnitMetadataResponse(UPDATE_UNIT_DESCRIPTIVE_METADATA_RESPONSE));
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
-            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,Arrays.asList("StartDate", "EndDate", "Description"));
+            buildUnitDescriptiveMetadataDto("Title", null, "Item", null, null,
+                Arrays.asList("StartDate", "EndDate", "Description"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -482,7 +350,8 @@ public class ArchiveSearchInternalServiceTest {
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
-                "french title", "english title", "french description", "english description",  "Item", null, null,Arrays.asList("StartDate", "EndDate"));
+                "french title", "english title", "french description", "english description", "Item", null, null,
+                Arrays.asList("StartDate", "EndDate"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -500,7 +369,8 @@ public class ArchiveSearchInternalServiceTest {
 
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto =
             buildFullUnitDescriptiveMetadataDto(
-                null, "english title", "french description", null,  "Item", null, null,Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
+                null, "english title", "french description", null, "Item", null, null,
+                Arrays.asList("StartDate", "EndDate", "Title_.fr", "Description_.en"));
 
         //When //Then
         ObjectNode expectingQuery = archiveSearchInternalService.createUpdateQuery(unitDescriptiveMetadataDto);
@@ -511,7 +381,8 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     private UnitDescriptiveMetadataDto buildUnitDescriptiveMetadataDto
-        (String title, String description, String descriptionLevel, String startDate, String endDate, List<String> unsetAction) {
+        (String title, String description, String descriptionLevel, String startDate, String endDate,
+            List<String> unsetAction) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle(title);
@@ -524,7 +395,8 @@ public class ArchiveSearchInternalServiceTest {
     }
 
     private UnitDescriptiveMetadataDto buildFullUnitDescriptiveMetadataDto
-        (String title_fr, String title_en, String description_fr,String description_en, String descriptionLevel, String startDate, String endDate, List<String> unsetAction) {
+        (String title_fr, String title_en, String description_fr, String description_en, String descriptionLevel,
+            String startDate, String endDate, List<String> unsetAction) {
         UnitDescriptiveMetadataDto unitDescriptiveMetadataDto = new UnitDescriptiveMetadataDto();
         unitDescriptiveMetadataDto.setId("aeeaaaaaagh23tjvabz5gal6qlt6iaaaaaaq");
         unitDescriptiveMetadataDto.setTitle_fr(title_fr);
@@ -538,67 +410,6 @@ public class ArchiveSearchInternalServiceTest {
         return unitDescriptiveMetadataDto;
     }
 
-    @Test
-    public void testUpdateArchiveUnitsRulesWithInCorrectAccessContractThenReturBadRequest() throws Exception {
-        // Given
-        when(unitService.massUpdateUnitsRules(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(UPDATE_RULES_ASYNC_RESPONSE));
-
-        RequestResponseOK<AccessContractModel> response1 = new RequestResponseOK<>();
-        response1.setHttpCode(200);
-        response1.setHits(1, 1, 1, 1);
-        response1.addResult(createAccessContractModel("contratTNR", "contrat d acces", 0, false));
-
-        when(accessContractService.findAccessContractById(any(), any()))
-            .thenReturn(response1);
-
-        RequestResponse<AccessContractModel> requestResponse = Mockito.mock(RequestResponse.class);
-        Mockito.when(accessContractService.findAccessContracts(ArgumentMatchers.any(), ArgumentMatchers.any()))
-            .thenReturn(requestResponse);
-        List<AccessContractModelDto> results =
-            List.of(createAccessContractModelDto("contratTNR", "contrat d acces", 0, false));
-        JsonHandler.toJsonNode(results);
-        AccessContractResponseDto response = new AccessContractResponseDto();
-        response.setResults(results);
-        Mockito.when(objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class))
-            .thenReturn(response);
-
-        // Configure the mapper
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(createAccessContractsResponseDto("contratTNR", "contrat d acces", 0, false));
-
-        SearchCriteriaDto searchQuery = new SearchCriteriaDto();
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto agencyCodeCriteria = new SearchCriteriaEltDto();
-        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_ID_FIELD);
-        agencyCodeCriteria.setValues(List.of(new CriteriaValue("CODE1")));
-        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        criteriaList.add(agencyCodeCriteria);
-        agencyCodeCriteria = new SearchCriteriaEltDto();
-        agencyCodeCriteria.setCriteria(ArchiveSearchConsts.ORIGINATING_AGENCY_LABEL_FIELD);
-        agencyCodeCriteria.setValues(List.of(new CriteriaValue("ANY_LABEL")));
-        agencyCodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-
-        SearchCriteriaEltDto searchCriteriaElementsNodes = new SearchCriteriaEltDto();
-        searchCriteriaElementsNodes.setCriteria("NODE");
-        searchCriteriaElementsNodes.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
-        searchCriteriaElementsNodes.setValues(
-            Arrays.asList(new CriteriaValue("node1"), new CriteriaValue("node2"), new CriteriaValue("node3")));
-        criteriaList.add(agencyCodeCriteria);
-        criteriaList.add(searchCriteriaElementsNodes);
-        searchQuery.setSize(20);
-        searchQuery.setPageNumber(20);
-        searchQuery.setCriteriaList(criteriaList);
-        RuleSearchCriteriaDto ruleSearchCriteriaDto = new RuleSearchCriteriaDto();
-        ruleSearchCriteriaDto.setSearchCriteriaDto(searchQuery);
-
-        //When //Then
-        assertThatCode(() -> {
-            archiveSearchInternalService.updateArchiveUnitsRules(new VitamContext(1), ruleSearchCriteriaDto);
-        }).hasMessage("the access contract using to update unit rules has no writing permission to update units");
-
-    }
 
     AccessContractModel createAccessContractModel(String identifier, String name, Integer tenant,
         Boolean writingPermission) {
@@ -636,421 +447,6 @@ public class ArchiveSearchInternalServiceTest {
         accessContractModel.setTenant(tenant);
         accessContractModel.setWritingPermission(writingPermission);
         return accessContractModel;
-    }
-
-
-
-    @Test
-    public void testExportCSVWithFrThenReturnTheExactExpectedFile() throws Exception {
-        // Given
-        setUpData();
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(FR_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFile() throws Exception {
-        // Given
-        setUpData();
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.ENGLISH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(EN_ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithFrAndSpecialCharsThenReturnTheExactExpectedContentCorrectlyEncoded() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_TO_ENCODE);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_TO_ENCODE));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_TO_ENCODE_CORRECTLY).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsFilingUnit() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_FILING_UNIT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_FILING_UNIT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_FILING_UNIT).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsHoldingUnit() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_HOLDING_UNIT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_HOLDING_UNIT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_HOLDING_UNIT).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithObject() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITH_OBJECT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITH_OBJECT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITH_OBJECT).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    @Test
-    public void testExportCSVWithEnThenReturnTheExactExpectedFileAsUnitWithoutObject() throws Exception {
-        // Given
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_RESULTS_UNIT_WITHOUT_OBJECT);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any()))
-            .thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_ONE_RESULT_UNIT_WITHOUT_OBJECT));
-        // query
-        List<SearchCriteriaEltDto> criteriaList = new ArrayList<>();
-        SearchCriteriaEltDto searchCriteriaEltDto = new SearchCriteriaEltDto();
-        searchCriteriaEltDto.setCriteria(ArchiveSearchConsts.ALL_ARCHIVE_UNIT_TYPES_CRITERIA);
-        searchCriteriaEltDto.setCategory(ArchiveSearchConsts.CriteriaCategory.FIELDS);
-        searchCriteriaEltDto.setValues(
-            List.of(new CriteriaValue("ARCHIVE_UNIT_WITH_OBJECTS"), new CriteriaValue("ARCHIVE_UNIT_WITHOUT_OBJECTS")));
-        criteriaList.add(searchCriteriaEltDto);
-
-        SearchCriteriaDto query = new SearchCriteriaDto();
-        query.setLanguage(Locale.FRENCH.getLanguage());
-        query.setSize(20);
-        query.setPageNumber(20);
-        query.setCriteriaList(criteriaList);
-
-        Resource GivenResourceCsv = new ByteArrayResource(ArchiveSearchInternalService.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_WITH_CONTENT_UNIT_WITHOUT_OBJECT).readAllBytes());
-        // When
-        Resource responseCsv =
-            archiveSearchInternalService.exportToCsvSearchArchiveUnitsByCriteria(query, new VitamContext(1));
-
-        // Then
-        Assertions.assertThat(responseCsv).isNotNull();
-        InputStream inputStream = responseCsv.getInputStream();
-
-
-        // The exact match of available bytes number
-        Assertions.assertThat(GivenResourceCsv.getInputStream().available())
-            .isEqualTo(responseCsv.getInputStream().available());
-        Assertions.assertThat(inputStream.available()).isPositive();
-        // Read the CSV InputStream
-        List<String[]> results = readCSVFromInputStream(inputStream);
-        List<String[]> resultsExpected = readCSVFromInputStream(GivenResourceCsv.getInputStream());
-
-        // Two expecting entries here
-        //1: The CSV Header
-        Assertions.assertThat(results.get(0)[0]).isEqualTo(resultsExpected.get(0)[0]);
-        //2: The first line content
-        Assertions.assertThat(results.get(1)[0]).isEqualTo(resultsExpected.get(1)[0]);
-        Assertions.assertThat(responseCsv).isNotNull();
-    }
-
-    private void setUpData() throws Exception {
-        when(unitService.searchUnits(any(), any()))
-            .thenReturn(buildUnitMetadataResponse(VITAM_UNIT_RESULTS));
-        when(agencyService.findAgencies(any(), any())).thenReturn(buildAgenciesResponse());
-
-        when(archiveSearchAgenciesInternalService.findOriginAgenciesByCodes(any(), any()))
-            .thenReturn(List.of(buildAgencyModelDtos()));
-
-        RequestResponse<JsonNode> jsonNodeRequestResponse = buildArchiveUnit(VITAM_UNIT_ONE_RESULTS);
-        ResultsDto resultsDto = buildResults(jsonNodeRequestResponse);
-
-        when(archiveSearchAgenciesInternalService.fillOriginatingAgencyName(any(), any()))
-            .thenReturn(buildArchiveUnits(resultsDto));
-
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        when(objectMapper.treeToValue(any(), any())).thenReturn(buildVitamUISearchResponseDto(VITAM_UNIT_RESULTS));
     }
 
     @SneakyThrows

@@ -51,7 +51,7 @@
                   >Date de début</span
                 >
                 <ng-template #showStartDate>
-                  <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | date: 'dd/MM/yyyy' }}</span>
+                  <span (click)="pickerStart.open()">{{ dateRangeFilterForm.get('startDate').value | dateTime: 'dd/MM/yyyy' }}</span>
                   <i class="material-icons clear-date-icon clickable" (click)="clearDate('startDate')">clear</i>
                 </ng-template>
                 <input
@@ -71,7 +71,7 @@
                   >Date de fin</span
                 >
                 <ng-template #showEndDate
-                  ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | date: 'dd/MM/yyyy' }} </span>
+                  ><span (click)="pickerEnd.open()">{{ dateRangeFilterForm.get('endDate').value | dateTime: 'dd/MM/yyyy' }} </span>
                   <i class="material-icons clear-date-icon clickable" (click)="clearDate('endDate')">clear</i></ng-template
                 >
                 <input

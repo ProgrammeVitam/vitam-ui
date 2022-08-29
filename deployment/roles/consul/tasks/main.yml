@@ -4,7 +4,6 @@
   fail: msg="{{ vitam_site_name }} not correctly configured"
   when: vitam_site_name|regex_search('[^a-zA-Z0-9\\-]') # found a bug ; no "_" allowed
 
-
 - name: Install {{ consul.package_name }} package
   package:
     name: "{{ consul.package_name }}"
@@ -19,14 +18,7 @@
 - name: rustine VITAMUI ensure vitam user is member of vitamui group
   user:
     name: vitam
-    groups: vitam, {{ vitamui_defaults.users.group }}
-
-- name: Enable {{ consul.service_name }} service
-  service:
-    name: "{{ consul.service_name }}"
-    enabled: true
-  notify:
-      - restart consul
+    groups: vitam, {{ vitamui_defaults.users.group | default('vitamui') }}
 
 #### Configuration ####
 
@@ -35,8 +27,8 @@
     path: "{{ vitam_defaults.folder.root_path }}/{{ item }}/consul"
     state: directory
     owner: "{{ vitam_defaults.users.vitam }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   with_items:
     - app
     - bin
@@ -53,8 +45,8 @@
     src: "{{ item }}.j2"
     dest: "{{ consul.conf_folder }}/{{ item }}"
     owner: "{{ vitam_defaults.users.vitam }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "consul.json"
   notify:
@@ -67,6 +59,7 @@
   service:
     name: "{{ consul.service_name }}"
     state: started
+    enabled: "{{ consul.at_boot | default(service_at_boot) }}"
 
 # Changing the resolv.conf doesn't work into a docker container...
 - name: Add consul nameserver to resolv.conf

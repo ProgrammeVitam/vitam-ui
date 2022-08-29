@@ -78,7 +78,6 @@ public class ExternalParamProfileService extends AbstractPaginateService<Externa
 
     @Override
     public LogbookOperationsResponseDto findHistoryById(final ExternalHttpContext context, final String id) {
-        SanityChecker.check(id);
         final JsonNode body = client.findHistoryById(context, id);
         try {
             return JsonUtils.treeToValue(body, LogbookOperationsResponseDto.class, false);

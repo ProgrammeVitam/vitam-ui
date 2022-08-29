@@ -21,7 +21,7 @@ server:
     key-store: src/main/resources/dev/keystore_ui-ingest.jks
     key-store-password: changeme
     key-password: changeme
-    enabled-protocols: TLSv1.1,TLSv1.2,TLSv1.3
+    enabled-protocols: TLSv1.2,TLSv1.3
     ciphers: ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
 
   servlet.session.cookie.path: /ingest-api
@@ -85,7 +85,7 @@ ui-ingest:
     secure: true
     ssl-configuration:
       keystore:
-        key-path: src/main/resources/dev/keystore_ui-referential.jks
+        key-path: src/main/resources/dev/keystore_ui-ingest.jks
         key-password: changeme
         type: JKS
       truststore:

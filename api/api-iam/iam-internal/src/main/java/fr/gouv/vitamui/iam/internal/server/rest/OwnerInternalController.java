@@ -37,10 +37,13 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.CrudController;
@@ -84,7 +87,7 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(final @RequestParam String criteria) {
         LOGGER.debug("Check exists by criteria {}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         final boolean exist = internalOwnerService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -96,9 +99,12 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public OwnerDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria) {
+    public OwnerDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get one {} criteria={}", id, criteria);
         ParameterChecker.checkParameter("The identifier is mandatory : ", id);
+        SanityChecker.sanitizeCriteria(criteria);
+        SanityChecker.checkSecureParameter(id);
         return internalOwnerService.getOne(id, criteria);
     }
 
@@ -107,8 +113,10 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
      */
     @Override
     @PostMapping
-    public OwnerDto create(@Valid final @RequestBody OwnerDto dto) {
+    public OwnerDto create(@Valid final @RequestBody OwnerDto dto) throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
+        SanityChecker.sanitizeCriteria(dto);
         return internalOwnerService.create(dto);
     }
 
@@ -117,9 +125,12 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
      */
     @Override
     @PutMapping(CommonConstants.PATH_ID)
-    public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto) {
+    public OwnerDto update(final @PathVariable("id") String id, final @Valid @RequestBody OwnerDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Update {} with {}", id, dto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(dto);
         Assert.isTrue(StringUtils.equals(id, dto.getId()), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.update(dto);
     }
@@ -129,17 +140,22 @@ public class OwnerInternalController implements CrudController<OwnerDto> {
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalOwnerService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get logbook for owner with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         return internalOwnerService.findHistoryById(id);
     }
 }

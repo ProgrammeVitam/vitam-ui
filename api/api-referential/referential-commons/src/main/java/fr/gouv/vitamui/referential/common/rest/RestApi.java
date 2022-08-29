@@ -38,8 +38,6 @@ package fr.gouv.vitamui.referential.common.rest;
 
 /**
  * The URLs of the REST API.
- *
- *
  */
 public abstract class RestApi {
 
@@ -91,11 +89,17 @@ public abstract class RestApi {
 
     public static final String PROBATIVE_VALUE_URL = PREFIX + "/probativevalue";
 
-    public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH  = PREFIX + "/logbook-management-operation";
+    public static final String LOGBOOK_MANAGEMENT_OPERATION_PATH = PREFIX + "/logbook-management-operation";
 
     public static final String OPERATIONS_PATH = "/operations";
 
     public static final String  ARCHIVAL_PROFILE_URL = PREFIX + ARCHIVAL_PROFILE;
+
+    public static final String DETAILS = "/details";
+
+    public static final String EXPORT_CSV =  "/export-csv";
+
+    public static final String DETAILS_EXPORT_CSV = DETAILS + EXPORT_CSV;
 
     /**
      * Constants of Logbook Management Oerations Actions

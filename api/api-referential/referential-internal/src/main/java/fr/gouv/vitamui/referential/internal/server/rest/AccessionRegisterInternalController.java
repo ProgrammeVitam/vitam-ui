@@ -37,18 +37,24 @@
 package fr.gouv.vitamui.referential.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.internal.server.accessionregister.AccessionRegisterInternalService;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -79,22 +85,36 @@ public class AccessionRegisterInternalController {
     public Collection<AccessionRegisterSummaryDto> getAll(@RequestParam final Optional<String> criteria,
         @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) String accessContractId) {
         LOGGER.debug("get all customer criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         final VitamContext vitamContext =
             securityService.buildVitamContext(securityService.getTenantIdentifier(), accessContractId);
         return detailInternalService.getAll(vitamContext);
     }
 
-    @GetMapping(value = "/details", params = {"page", "size"})
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page,
+    @GetMapping(value = RestApi.DETAILS, params = {"page", "size"})
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
         @RequestParam(required = false) final Optional<DirectionDto> direction) {
-        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, criteria={}, orderBy={}, ascendant={}",
-            page, size, criteria, orderBy, direction);
+        LOGGER.debug("getPaginateEntities accession registers page={}, size={}, orderBy={}, direction={}, criteria={}",
+            page, size, orderBy, direction, criteria);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        return detailInternalService.getAllPaginated(page, size, orderBy, direction, vitamContext, criteria);
+        return detailInternalService.getAllPaginated(criteria, page, size,
+            orderBy.orElse(null), direction.orElse(null),
+            vitamContext);
+    }
+
+    @PostMapping(RestApi.DETAILS_EXPORT_CSV)
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
+        @RequestHeader(value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
+        @RequestBody final AccessionRegisterSearchDto searchQuery) {
+        LOGGER.info("Export to CSV of accession register details {}", searchQuery);
+        final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
+        Resource exportedResult = detailInternalService.exportToCsvAccessionRegister(searchQuery, vitamContext);
+        return new ResponseEntity<>(exportedResult, HttpStatus.OK);
     }
 
 }

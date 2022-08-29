@@ -15,11 +15,11 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
-  scheme: {% if vitamui.portal.secure|lower =='true' %}https{% else %}http{% endif %}
+  scheme: {% if vitamui.portal.secure | default(secure) | lower =='true' %}https{% else %}http{% endif %}
 
-{% if vitamui.portal.secure|lower =='true' %}
+{% if vitamui.portal.secure | default(secure) | lower =='true' %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     enabled-protocols: {{ssl_setting.enabled_protocols}}
@@ -30,9 +30,11 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-        enabled: "{{ vitamui_struct.jvm_log|lower }}"
+        enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
         directory: "{{ vitamui_folder_log }}"
-
+        prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+        file-date-format: ".yyyy-MM-dd"
+        suffix: ".log"
 
 management:
   server:
@@ -57,11 +59,11 @@ ui-portal:
   iam-external-client:
     server-host: {{ vitamui.iam_external.host }}
     server-port: {{ vitamui.iam_external.port_service }}
-{% if vitamui.iam_external.secure|lower == "true" %}
+{% if vitamui.iam_external.secure | default(secure) | lower == "true" %}
     secure: true
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -72,11 +74,11 @@ ui-portal:
   referential-external-client:
     server-host: {{ vitamui.referential_external.host }}
     server-port: {{ vitamui.referential_external.port_service }}
-{% if vitamui.referential_external.secure | lower == "true" %}
-    secure: {{ vitamui.referential_external.secure | lower }}
+{% if vitamui.referential_external.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.referential_external.secure | default(secure) | lower }}
     ssl-configuration:
       keystore:
-        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
         key-password: {{ password_keystore }}
         type: JKS
       truststore:
@@ -84,7 +86,7 @@ ui-portal:
         key-password: {{ password_truststore }}
       hostname-verification: false
 {%endif %}
-  assets: "{{ vitamui_defaults.folder.root_path }}/conf/assets"
+  assets: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/conf/assets"
   portal-logo: "{{ vitamui_platform_informations.theme.portal_logo }}"
   header-logo: "{{ vitamui_platform_informations.theme.header_logo }}"
   footer-logo: "{{ vitamui_platform_informations.theme.footer_logo }}"
@@ -137,10 +139,10 @@ cas:
 {% else %}
   external-url: "{{ url_prefix }}/cas"
 {% endif %}
-  internal-url: {% if vitamui.cas_server.secure|lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
+  internal-url: {% if vitamui.cas_server.secure | default(secure) | lower == "true" %}https{% else %}http {% endif %}://{{ vitamui.cas_server.host }}:{{ vitamui.cas_server.port_service }}{% if vitamui.cas_server.base_url is undefined %}/cas{% endif %}
 
   callback-url: ${ui.url}/portal-api/callback
-{% if vitamui.cas_server.secure|lower == "true" %}
+{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   ssl:
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
     trust-store-password: {{ password_truststore }}

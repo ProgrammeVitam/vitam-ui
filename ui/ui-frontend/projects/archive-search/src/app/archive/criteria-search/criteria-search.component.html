@@ -13,7 +13,7 @@
                   : criteriaVal.key
               }}:{{
                 criteriaVal.dataType === 'DATE'
-                  ? (criteriaValue.value.value | date: 'dd/MM/yyyy')
+                  ? (criteriaValue.value.value | dateTime: 'dd/MM/yyyy')
                   : criteriaValue.valueTranslated
                   ? ('ARCHIVE_SEARCH.SEARCH_CRITERIA_FILTER.' + getCategoryName(criteriaVal.category) + '.' + criteriaValue.label
                     | translate)
@@ -35,7 +35,7 @@
                 : criteriaVal.key) + ' : '
                 }}
               </ng-container>
-              {{ criteriaValue.value.value | date: 'dd/MM/yyyy' }}
+              {{ criteriaValue.value.value | dateTime: 'dd/MM/yyyy' }}
             </div>
             <div
               class="vitamui-remove-search-criteria"
@@ -99,17 +99,17 @@
                 }}
               </ng-container>
               <ng-container *ngIf="criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | date:
+                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_BETWEEN' | translate }} {{ criteriaValue.value.beginInterval | dateTime:
                 'dd/MM/yyyy' }}
-                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | date:
+                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_AND' | translate }} {{ criteriaValue.value.endInterval | dateTime:
                 'dd/MM/yyyy' }}
               </ng-container>
               <ng-container *ngIf="criteriaValue.value.beginInterval && !criteriaValue.value.endInterval">
-                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | date:
+                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_GTE' | translate }} {{ criteriaValue.value.beginInterval | dateTime:
                 'dd/MM/yyyy' }}
               </ng-container>
               <ng-container *ngIf="!criteriaValue.value.beginInterval && criteriaValue.value.endInterval">
-                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | date:
+                {{ 'ARCHIVE_SEARCH.SEARCH_CRITERIA_LTE' | translate }} {{ criteriaValue.value.endInterval | dateTime:
                 'dd/MM/yyyy' }}
               </ng-container>
             </div>

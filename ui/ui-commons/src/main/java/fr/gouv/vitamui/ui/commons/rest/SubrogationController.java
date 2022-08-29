@@ -39,7 +39,10 @@ package fr.gouv.vitamui.ui.commons.rest;
 import java.util.Collection;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -84,41 +87,49 @@ public class SubrogationController extends AbstractUiRestController {
     @ApiOperation(value = "Create subrogation")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public SubrogationDto create(@RequestBody final SubrogationDto entityDto) {
+    public SubrogationDto create(@RequestBody final SubrogationDto entityDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
 
     @ApiOperation(value = "get subrogation by id")
     @GetMapping(CommonConstants.PATH_ID)
-    public SubrogationDto getOne(final @PathVariable String id) {
-        LOGGER.debug("get subrogation id={}", id);
+    public SubrogationDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("get subrogation id={}", id);
         return service.getOne(buildUiHttpContext(), id, Optional.empty());
     }
 
     @ApiOperation(value = "get all subrogation")
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public Collection<SubrogationDto> getAll(@RequestParam final Optional<String> criteria) {
-        LOGGER.info("get all subrogation");
-        RestUtils.checkCriteria(criteria);
+    public Collection<SubrogationDto> getAll(@RequestParam final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("get all subrogation");
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Delete subrogation for admin users")
     @DeleteMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable final String id) {
-        LOGGER.debug("Delete {}", id);
+    public void delete(@PathVariable final String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Delete {}", id);
         service.delete(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "accept subrogation for surrogate users")
     @PatchMapping("/surrogate/accept/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public SubrogationDto accept(@PathVariable final String id) {
+    public SubrogationDto accept(@PathVariable final String id) throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Accepte subrogation id={}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.accept(buildUiHttpContext(), id);
@@ -127,21 +138,23 @@ public class SubrogationController extends AbstractUiRestController {
     @ApiOperation(value = "decline subrogation for surrogate users")
     @DeleteMapping("/surrogate/decline/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void decline(@PathVariable final String id) {
-        LOGGER.debug("Decline subrogation id={}", id);
+    public void decline(@PathVariable final String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Decline subrogation id={}", id);
         service.decline(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "get the subrogation of the current user as the surrogate")
     @GetMapping("/me/surrogate")
-    public SubrogationDto getMySubrogationAsSurrogate() {
+    public SubrogationDto getMySubrogationAsSurrogate() throws InvalidParseOperationException, PreconditionFailedException {
         return service.getMySubrogationAsSurrogate(buildUiHttpContext());
     }
 
     @ApiOperation(value = "get the subrogation of the current user as the super user")
     @GetMapping("/me/superuser")
-    public SubrogationDto getMySubrogationAsSuperuser() {
+    public SubrogationDto getMySubrogationAsSuperuser() throws InvalidParseOperationException, PreconditionFailedException {
         return service.getMySubrogationAsSuperuser(buildUiHttpContext());
     }
 
@@ -150,17 +163,23 @@ public class SubrogationController extends AbstractUiRestController {
     public PaginatedValuesDto<UserDto> getGenericUsers(@RequestParam final Integer page,
             @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
             @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size,
-                criteria, orderBy, direction);
-        RestUtils.checkCriteria(criteria);
+            criteria, orderBy, direction);
         return service.getGenericUsers(buildUiHttpContext(), page, size, criteria, orderBy, direction);
     }
 
     @GetMapping(path = "/groups" + CommonConstants.PATH_ID)
-    public GroupDto getGroupById(final @PathVariable("id") String id) {
-        LOGGER.debug("Get a group by ID  {}", id);
+    public GroupDto getGroupById(final @PathVariable("id") String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get a group by ID  {}", id);
         return service.getGroupById(buildUiHttpContext(), id);
     }
 

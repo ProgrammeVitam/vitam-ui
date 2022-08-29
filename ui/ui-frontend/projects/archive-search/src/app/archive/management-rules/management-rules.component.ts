@@ -35,7 +35,7 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,18 +44,18 @@ import { filter } from 'rxjs/operators';
 import { Logger, StartupService } from 'ui-frontend-common';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
+import { ArchiveSearchConstsEnum } from '../models/archive-search-consts-enum';
 import { RuleTypeEnum } from '../models/rule-type-enum';
 import { ActionsRules, RuleActions, RuleActionsEnum, RuleCategoryAction, RuleSearchCriteriaDto } from '../models/ruleAction.interface';
 import { SearchCriteriaDto, SearchCriteriaEltDto } from '../models/search.criteria';
 
 const ARCHIVE_UNIT_HOLDING_UNIT = 'ARCHIVE_UNIT_HOLDING_UNIT';
-
 @Component({
   selector: 'app-management-rules',
   templateUrl: './management-rules.component.html',
   styleUrls: ['./management-rules.component.css'],
 })
-export class ManagementRulesComponent implements OnInit, OnDestroy {
+export class ManagementRulesComponent implements OnInit, OnChanges, OnDestroy {
   criteriaSearchListToSave: SearchCriteriaEltDto[] = [];
   criteriaSearchListToSaveSuscription: Subscription;
   criteriaSearchDSLQuery: SearchCriteriaDto;
@@ -64,7 +64,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   accessContractSubscription: Subscription;
   tenantIdentifier: string;
   tenantIdentifierSubscription: Subscription;
+  hasExactCountSubscription: Subscription;
   selectedItem: number;
+  selectedItemToShow: string;
   selectedItemSubscription: Subscription;
   ruleActions: ActionsRules[] = [];
   actionsSelected: string[] = [];
@@ -81,13 +83,21 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   actionSelected: string;
 
   rulesCatygories: { id: string; name: string; isDisabled: boolean }[] = [
-    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: true },
+    { id: 'StorageRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.STORAGE_RULE'), isDisabled: false },
     { id: 'AppraisalRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.APPRAISAL_RULE'), isDisabled: false },
     { id: 'HoldRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.HOLD_RULE'), isDisabled: true },
-    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: true },
-    { id: 'DisseminationRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'), isDisabled: true },
-    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: true },
-    { id: 'ClassificationRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'), isDisabled: true },
+    { id: 'AccessRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.ACCESS_RULE'), isDisabled: false },
+    {
+      id: 'DisseminationRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.DISSEMINATION_RULE'),
+      isDisabled: false,
+    },
+    { id: 'ReuseRule', name: this.translateService.instant('RULES.CATEGORIES_NAME.REUSE_RULE'), isDisabled: false },
+    {
+      id: 'ClassificationRule',
+      name: this.translateService.instant('RULES.CATEGORIES_NAME.CLASSIFICATION_RULE'),
+      isDisabled: true,
+    },
   ];
 
   rulesCatygoriesToShow: { id: string; name: string; isDisabled: boolean }[] = [];
@@ -99,10 +109,18 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   isAddValidActions = false;
   isUpdateValidActions = false;
   isAddPropertyValidActions = false;
+  isUpdateValidActionsWithFinalAction = false;
   isUpdateValidActionsWithProperty = false;
   isDeleteValidActions = false;
   isDeleteValidActionsWithProperty = false;
   isDeletePropertyDisabled = false;
+  isAccessRuleActionDisabled = false;
+  isReuseRuleActionDisabled = false;
+  isDisseminationActionDisabled = false;
+  isBlockInheritanceCategoryDisabled = false;
+  isUnlockInheritanceCategoryDisabled = false;
+  isStorageRuleActionDisabled = false;
+  isUnlockRulesInheritanceDisabled = false;
 
   messageNotUpdate: string;
   messageNotAdd: string;
@@ -110,6 +128,8 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   messageNotAddProperty: string;
   messageNotDelete: string;
   messageNotToDeleteProperty: string;
+  hasExactCount: boolean;
+  resultNumberToShow: string;
 
   @ViewChild('confirmRuleActionsDialog', { static: true }) confirmRuleActionsDialog: TemplateRef<ManagementRulesComponent>;
   showConfirmRuleActionsDialogSuscription: Subscription;
@@ -126,32 +146,45 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private logger: Logger
   ) {
+    this.applyChanges();
+  }
+
+  applyChanges() {
     this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
       this.isUpdateValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
             (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isUpdateValidActionsWithProperty =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.actionType === RuleActionsEnum.ADD_RULES &&
+            rule.ruleCategoryAction.rules?.length === 0 &&
+            rule.ruleCategoryAction.preventRulesIdToAdd?.length === 0
+        ).length !== 0;
+
+      this.isUpdateValidActionsWithFinalAction =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.finalAction &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
+
       this.isAddValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
             (rule.actionType === RuleActionsEnum.UPDATE_RULES || rule.actionType === RuleActionsEnum.DELETE_RULES)
         ).length !== 0;
       this.isAddPropertyValidActions =
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
+            rule.ruleCategoryAction.rules &&
             rule.ruleCategoryAction.rules.length !== 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
@@ -159,7 +192,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length !== 0 &&
+            rule.ruleCategoryAction.rules?.length !== 0 &&
             (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
         ).length !== 0;
 
@@ -167,9 +200,94 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         data.filter(
           (rule) =>
             rule.category === this.ruleCategorySelected &&
-            rule.ruleCategoryAction.rules.length === 0 &&
+            rule.ruleCategoryAction.rules?.length === 0 &&
             rule.actionType === RuleActionsEnum.ADD_RULES
         ).length !== 0;
+
+      this.isBlockInheritanceCategoryDisabled =
+        data.filter((rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE)
+          .length !== 0;
+      this.isUnlockInheritanceCategoryDisabled =
+        data.filter(
+          (rule) => rule.category === this.ruleCategorySelected && rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+        ).length !== 0;
+
+      this.isUnlockRulesInheritanceDisabled =
+        data.filter(
+          (rule) =>
+            rule.category === this.ruleCategorySelected &&
+            (rule.actionType === RuleActionsEnum.ADD_RULES || rule.actionType === RuleActionsEnum.UPDATE_RULES)
+        ).length !== 0;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.ruleCategorySelected) {
+      this.applyChanges();
+    }
+  }
+
+  prepareAccessRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.ACCESSRULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AccessRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.ACCESSRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.AccessRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.AccessRule = {
+          preventInheritance,
+        };
+      }
     });
   }
 
@@ -181,6 +299,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.loadSelectedItem();
     this.loadCriteriaSearchListToSave();
     this.loadCriteriaSearchDSLQuery();
+    this.loadHasExactCount();
 
     if (this.criteriaSearchListToSave.length === 0) {
       this.initializeParameters();
@@ -191,6 +310,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.messageNotAddProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_ADD');
     this.messageNotDelete = this.translateService.instant('RULES.ACTIONS.NOT_TO_DELETE');
     this.messageNotToDeleteProperty = this.translateService.instant('RULES.ACTIONS.FINAL_ACTION_NOT_TO_DELETE_PROPERTY');
+    this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
   }
 
   initializeParameters() {
@@ -200,6 +320,70 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.managementRulesSharedDataService.emitCriteriaSearchListToSave(this.criteriaSearchListToSave);
   }
 
+  prepareReuseRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.REUSERULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.ReuseRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.REUSERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.ReuseRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.ReuseRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
   ngOnDestroy() {
     this.selectedItemSubscription?.unsubscribe();
     this.criteriaSearchListToSaveSuscription?.unsubscribe();
@@ -207,10 +391,15 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     this.showConfirmRuleActionsDialogSuscription?.unsubscribe();
     this.showConfirmLeaveRuleActionsDialogSuscription?.unsubscribe();
     this.tenantIdentifierSubscription?.unsubscribe();
+    this.hasExactCountSubscription?.unsubscribe();
   }
 
   selectRule(rule: any) {
     this.isDeletePropertyDisabled = rule.id === RuleTypeEnum.APPRAISALRULE;
+    this.isAccessRuleActionDisabled = rule.id === RuleTypeEnum.ACCESSRULE;
+    this.isReuseRuleActionDisabled = rule.id === RuleTypeEnum.REUSERULE;
+    this.isDisseminationActionDisabled = rule.id === RuleTypeEnum.DISSEMINATIONRULE;
+    this.isStorageRuleActionDisabled = rule.id === RuleTypeEnum.STORAGERULE;
 
     if (this.rulesCatygoriesToShow.find((ruleCategory) => ruleCategory.name === rule.name) === undefined) {
       this.rulesCatygoriesToShow.push(rule);
@@ -219,7 +408,9 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       this.indexOfSelectedCategory = this.rulesCatygoriesToShow.indexOf(rule);
     }
     this.ruleCategorySelected = rule.id;
+    this.managementRulesSharedDataService.emitRuleCategory(rule.id);
     this.isRuleCategorySelected = true;
+    this.applyChanges();
   }
 
   loadCriteriaSearchDSLQuery() {
@@ -249,10 +440,18 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
   loadSelectedItem() {
     this.selectedItemSubscription = this.managementRulesSharedDataService.getselectedItems().subscribe((response) => {
       this.selectedItem = response;
+      this.resultNumberToShow = this.translateService.instant('ARCHIVE_SEARCH.MORE_THAN_THRESHOLD');
+      this.selectedItemToShow = response === ArchiveSearchConstsEnum.RESULTS_MAX_NUMBER ? this.resultNumberToShow : response.toString();
     });
   }
 
-  onSelectAction(rule: string) {
+  loadHasExactCount() {
+    this.hasExactCountSubscription = this.managementRulesSharedDataService.getHasExactCount().subscribe((paramater) => {
+      this.hasExactCount = paramater;
+    });
+  }
+
+  prepareActionToAdd(rule: string) {
     let idToAdd = 0;
     this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
       this.ruleActions = data;
@@ -261,8 +460,18 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       idToAdd = this.ruleActions[this.ruleActions.length - 1]?.id;
     }
     if (
-      rule === RuleActionsEnum.ADD_RULES &&
-      this.ruleActions.filter((action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY).length === 0
+      // Due to a SEDA limitation, the FinalAction field is mandatory for Appraisal & Storage rules when adding/setting
+      // any Rule, PreventInheritance or PreventRulesId field
+      (
+        rule === RuleActionsEnum.ADD_RULES ||
+        rule === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
+        rule === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+        rule === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+      ) &&
+      (this.ruleCategorySelected === RuleTypeEnum.APPRAISALRULE || this.ruleCategorySelected === RuleTypeEnum.STORAGERULE) &&
+      this.ruleActions.filter(
+        (action) => action.actionType === RuleActionsEnum.UPDATE_PROPERTY && action.ruleType === this.ruleCategorySelected
+      ).length === 0
     ) {
       this.ruleActions.push({
         ruleType: this.ruleCategorySelected,
@@ -271,6 +480,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
         ruleId: '',
         stepValid: false,
       });
+
       this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 2, ruleId: '', stepValid: false });
     } else {
       this.ruleActions.push({ ruleType: this.ruleCategorySelected, actionType: rule, id: idToAdd + 1, ruleId: '', stepValid: false });
@@ -280,6 +490,84 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     }
 
     this.managementRulesSharedDataService.emitRuleActions(this.ruleActions);
+  }
+
+  onSelectAction(rule: string) {
+    switch (rule) {
+      case 'ADD_RULES':
+        if (this.isRuleCategorySelected && !this.isAddValidActions) {
+          this.prepareActionToAdd(rule);
+        }
+
+        break;
+
+      case 'UPDATE_RULES':
+        if (this.isRuleCategorySelected && !this.isUpdateValidActions && !this.isUpdateValidActionsWithProperty) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'DELETE_RULES':
+        if (this.isRuleCategorySelected && !this.isDeleteValidActions && !this.isDeleteValidActionsWithProperty) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+
+      case 'UPDATE_PROPERTY':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isAddPropertyValidActions &&
+          !this.isAddValidActions &&
+          !this.isUpdateValidActionsWithFinalAction &&
+          !this.isUpdateValidActionsWithProperty
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'DELETE_PROPERTY':
+        if (!this.isDeletePropertyDisabled && !this.isStorageRuleActionDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+
+      case 'BLOCK_CATEGORY_INHERITANCE':
+        if (!this.isBlockInheritanceCategoryDisabled && !this.isUnlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'UNLOCK_CATEGORY_INHERITANCE':
+        if (!this.isUnlockInheritanceCategoryDisabled && !this.isBlockInheritanceCategoryDisabled && !this.isStorageRuleActionDisabled) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'BLOCK_RULE_INHERITANCE':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isAddValidActions &&
+          !this.isStorageRuleActionDisabled &&
+          !this.isAccessRuleActionDisabled &&
+          !this.isReuseRuleActionDisabled &&
+          !this.isDisseminationActionDisabled
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      case 'UNLOCK_RULE_INHERITANCE':
+        if (
+          this.isRuleCategorySelected &&
+          !this.isDeleteValidActions &&
+          !this.isUnlockRulesInheritanceDisabled &&
+          !this.isAccessRuleActionDisabled &&
+          !this.isStorageRuleActionDisabled &&
+          !this.isReuseRuleActionDisabled &&
+          !this.isDisseminationActionDisabled
+        ) {
+          this.prepareActionToAdd(rule);
+        }
+        break;
+      default:
+        this.logger.info('', 'The action could not be created or added');
+        break;
+    }
   }
 
   returnToArchiveSearchPage() {
@@ -302,51 +590,11 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     const actionUpdateOnRules: any = {};
     const actionDeleteOnRules: any = {};
 
-    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
-      if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
-        this.ruleCategoryDuaActionsToAdd = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
-        )?.ruleCategoryAction;
-
-        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
-          actionAddOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToAdd?.rules,
-            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-          };
-        }
-        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
-          actionAddOnRules.AppraisalRule = {
-            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
-          };
-        }
-      }
-
-      if (
-        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
-      ) {
-        this.ruleCategoryDuaActionsToUpdate = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
-        )?.ruleCategoryAction;
-        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
-          actionUpdateOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
-          };
-        }
-      }
-
-      if (
-        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
-      ) {
-        this.ruleCategoryDuaActionsToDelete = data.find(
-          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
-        )?.ruleCategoryAction;
-        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
-          actionDeleteOnRules.AppraisalRule = {
-            rules: this.ruleCategoryDuaActionsToDelete?.rules,
-          };
-        }
-      }
-    });
+    this.prepareAppraisalRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareAccessRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareStorageRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareReuseRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
+    this.prepareDisseminationRuleActionsObject(actionAddOnRules, actionUpdateOnRules, actionDeleteOnRules);
 
     const allRuleActions: RuleActions = {
       add: this.objectToArray(actionAddOnRules),
@@ -358,6 +606,7 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe(filter((result) => !!result))
       .subscribe(() => {
+        this.criteriaSearchDSLQuery.trackTotalHits = this.hasExactCount;
         const ruleSearchCriteriaDto: RuleSearchCriteriaDto = {
           searchCriteriaDto: this.criteriaSearchDSLQuery,
           ruleActions: allRuleActions,
@@ -391,6 +640,237 @@ export class ManagementRulesComponent implements OnInit, OnDestroy {
     } else {
       return !(this.ruleActions.filter((action) => action.stepValid === false).length !== 0);
     }
+  }
+
+  prepareAppraisalRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+
+      const preventRulesIdToAdd: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.ADD_RULES
+      )?.ruleCategoryAction?.preventRulesIdToAdd;
+
+      const preventRulesIdToRemove: string[] = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.APPRAISALRULE && managementRule.actionType === RuleActionsEnum.DELETE_RULES
+      )?.ruleCategoryAction?.preventRulesIdToRemove;
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules?.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules?.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.AppraisalRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToAdd,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.APPRAISALRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.AppraisalRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
+          };
+        } else {
+          actionDeleteOnRules.AppraisalRule = {
+            rules: undefined,
+            preventInheritance: preventInheritance ? preventInheritance : false,
+            preventRulesIdToRemove,
+          };
+        }
+      }
+      if (actionAddOnRules.AppraisalRule && actionAddOnRules.AppraisalRule.preventRulesIdToAdd) {
+        actionAddOnRules.AppraisalRule.preventRulesIdToAdd = preventRulesIdToAdd;
+      }
+      if (actionDeleteOnRules.AppraisalRule && actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove) {
+        actionDeleteOnRules.AppraisalRule.preventRulesIdToRemove = preventRulesIdToRemove;
+      }
+
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.AppraisalRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
+  prepareStorageRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.STORAGERULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.StorageRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (data.findIndex((rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !== -1) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.STORAGERULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.StorageRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.StorageRule = {
+          preventInheritance,
+        };
+      }
+    });
+  }
+
+  prepareDisseminationRuleActionsObject(actionAddOnRules: any, actionUpdateOnRules: any, actionDeleteOnRules: any) {
+    this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {
+      const preventInheritance: boolean = data.find(
+        (managementRule) =>
+          managementRule.category === RuleTypeEnum.DISSEMINATIONRULE &&
+          (managementRule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+            managementRule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      )?.ruleCategoryAction.preventInheritance;
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES) !== -1
+      ) {
+        this.ruleCategoryDuaActionsToAdd = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.ADD_RULES
+        )?.ruleCategoryAction;
+
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length !== 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToAdd?.rules,
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+        if (this.ruleCategoryDuaActionsToAdd?.rules.length === 0 && this.ruleCategoryDuaActionsToAdd?.finalAction !== null) {
+          actionAddOnRules.DisseminationRule = {
+            finalAction: this.ruleCategoryDuaActionsToAdd?.finalAction,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES) !==
+        -1
+      ) {
+        this.ruleCategoryDuaActionsToUpdate = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.UPDATE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToUpdate?.rules.length !== 0) {
+          actionUpdateOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToUpdate?.rules,
+            preventInheritance,
+          };
+        }
+      }
+
+      if (
+        data.findIndex((rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES) !==
+        -1
+      ) {
+        this.ruleCategoryDuaActionsToDelete = data.find(
+          (rule) => rule.category === RuleTypeEnum.DISSEMINATIONRULE && rule.actionType === RuleActionsEnum.DELETE_RULES
+        )?.ruleCategoryAction;
+        if (this.ruleCategoryDuaActionsToDelete?.rules.length !== 0) {
+          actionDeleteOnRules.DisseminationRule = {
+            rules: this.ruleCategoryDuaActionsToDelete?.rules,
+            preventInheritance,
+          };
+        }
+      }
+      const listOfActionTypes: string[] = data.map((rule) => rule.actionType);
+      if (
+        listOfActionTypes.length === 1 &&
+        (listOfActionTypes[0] === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+          listOfActionTypes[0] === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE)
+      ) {
+        actionAddOnRules.DisseminationRule = {
+          preventInheritance,
+        };
+      }
+    });
   }
 
   private objectToArray(object: any): any[] {

@@ -1,9 +1,16 @@
 export interface RegisterValueEventModel {
-  operation: string;
-  operationType: string;
-  totalGots: number;
-  totalUnits: number;
-  totalObjects: number;
-  objectSize: number;
-  creationdate: string;
+  Opc: string;
+  OpType: RegisterValueEventType;
+  Gots: number
+  Units: number
+  Objects: number
+  ObjSize: number
+  CreationDate: string
+}
+
+export enum RegisterValueEventType {
+  INGEST = 'INGEST',
+  PRESERVATION = 'PRESERVATION',
+  TRANSFERT = 'TRANSFERT',
+  ELIMINATION = 'ELIMINATION',
 }

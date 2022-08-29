@@ -36,14 +36,16 @@
  */
 package fr.gouv.vitamui.iam.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.rest.CrudController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
 import fr.gouv.vitamui.iam.common.dto.common.ProviderEmbeddedOptions;
 import fr.gouv.vitamui.iam.common.rest.RestApi;
@@ -99,17 +101,21 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @GetMapping
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
     public List<IdentityProviderDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
-        LOGGER.debug("Get all criteria={} embedded={}", criteria, embedded);
-        RestUtils.checkCriteria(criteria);
+
+        SanityChecker.sanitizeCriteria(criteria);
         EnumUtils.checkValidEnum(ProviderEmbeddedOptions.class, embedded);
+        LOGGER.debug("Get all criteria={} embedded={}", criteria, embedded);
         return identityProviderCrudService.getAll(criteria, embedded);
     }
 
     @GetMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_GET_PROVIDERS)
-    public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded) {
-        LOGGER.debug("Get {}", id);
+    public IdentityProviderDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get {}", id);
         return identityProviderCrudService.getOne(id, embedded);
     }
 
@@ -122,7 +128,10 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Override
     @PostMapping
     @Secured(ServicesData.ROLE_CREATE_PROVIDERS)
-    public IdentityProviderDto create(final @Valid @RequestBody IdentityProviderDto dto) {
+    public IdentityProviderDto create(final @Valid @RequestBody IdentityProviderDto dto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("Create {}", dto);
         return identityProviderCrudService.create(dto);
     }
@@ -135,9 +144,13 @@ public class IdentityProviderExternalController implements CrudController<Identi
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
     @Secured(ServicesData.ROLE_UPDATE_PROVIDERS)
-    public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch {} with {}", id, partialDto);
+    public IdentityProviderDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return identityProviderCrudService.patch(partialDto);
     }

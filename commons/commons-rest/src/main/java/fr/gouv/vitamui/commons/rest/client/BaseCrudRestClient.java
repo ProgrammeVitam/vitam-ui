@@ -107,7 +107,6 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public boolean checkExist(final C context, final String criteria) {
         LOGGER.debug("Check exists criteria={}", criteria);
-        SanityChecker.check(criteria);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final URIBuilder builder = getUriBuilderFromPath(CommonConstants.PATH_CHECK);
         builder.addParameter(CRITERIA_QUERY_PARAM, criteria);
@@ -125,8 +124,6 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public D getOne(final C context, final String id, final Optional<String> criteria) {
         LOGGER.debug("Get {}, criteria={}", id, criteria);
-
-        SanityChecker.check(id);
         SanityChecker.sanitizeCriteria(criteria);
 
         return getOne(context, id, criteria, Optional.empty());
@@ -143,6 +140,14 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
         final ResponseEntity<D> response = restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request,
                 getDtoClass());
         checkResponse(response);
+        return response.getBody();
+    }
+
+    public D create(String url, final C context, final D dto) {
+        LOGGER.debug("Create {}", dto);
+        final HttpEntity<D> request = new HttpEntity<>(dto, buildHeaders(context));
+        final ResponseEntity<D> response = restTemplate.exchange(url, HttpMethod.POST, request, getDtoClass());
+        checkResponse(response, 200, 201);
         return response.getBody();
     }
 
@@ -195,7 +200,6 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
 
     public void delete(final C context, final String id) {
         LOGGER.debug("Delete {}", id);
-        SanityChecker.check(id);
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         restTemplate.exchange(getUrl() + CommonConstants.PATH_ID, HttpMethod.DELETE, request, getDtoClass(), id);
     }
@@ -209,7 +213,6 @@ public abstract class BaseCrudRestClient<D extends IdDto, C extends AbstractHttp
      */
     public JsonNode findHistoryById(final C context, final String id) {
         LOGGER.debug("Get logbook of id :{}", id);
-        SanityChecker.check(id);
         final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(getUrl());
         uriBuilder.path(CommonConstants.PATH_LOGBOOK);
         final HttpEntity<Map<String, Object>> request = new HttpEntity<>(buildHeaders(context));

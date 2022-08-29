@@ -2142,8 +2142,8 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         </context-group>
       </trans-unit><trans-unit id="subrogationBannerAdmin" datatype="html">
         <source>Subrogation de l'utilisateur
-    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:'HH:mm:ss'}}"/></source><target state="final">Subrogation de l'utilisateur
-    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | date:'HH:mm:ss'}}"/></target>
+    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | dateTime:'HH:mm:ss'}}"/></source><target state="final">Subrogation de l'utilisateur
+    <x id="INTERPOLATION" equiv-text="{{ authService?.user?.email }}"/> jusqu'à <x id="INTERPOLATION_1" equiv-text="{{endDate | dateTime:'HH:mm:ss'}}"/></target>
 
         <note priority="1" from="description">subrogationBannerAdmin</note>
       <context-group purpose="location"><context context-type="sourcefile">../commons/src/app/modules/vitamui-common/subrogation/subrogation-banner/subrogation-banner.component.html</context><context context-type="linenumber">3</context></context-group></trans-unit><trans-unit id="subrogationCancelButton" datatype="html">
@@ -2508,10 +2508,10 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
         <note priority="1" from="description">user info tab disabled</note>
       <context-group purpose="location"><context context-type="sourcefile">src/app/user/user-preview/user-information-tab/user-information-tab.component.html</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="userInfoTabBlocked" datatype="html">
         <source>
-        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container>"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | date: 'medium' }}"/>)
+        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container>"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | dateTime: 'medium' }}"/>)
         <x id="CLOSE_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;/ng-container>"/>
       </source><target state="final">
-        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container>"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | date: 'medium' }}"/>)
+        Compte bloqué <x id="START_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;ng-container>"/>(depuis le <x id="INTERPOLATION" equiv-text="{{ user?.lastConnection | dateTime: 'medium' }}"/>)
         <x id="CLOSE_TAG_NG-CONTAINER" ctype="x-ng-container" equiv-text="&lt;/ng-container>"/>
       </target>
 
@@ -2727,10 +2727,10 @@ lock_outline          <x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"
       </trans-unit><trans-unit id="notificationSubrogationActivated" datatype="html">
         <source>
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: 'mm'}}"/>. Veuillez ne pas changer d'application.
+      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | dateTime: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | dateTime: 'mm'}}"/>. Veuillez ne pas changer d'application.
     </source><target state="final">
       <x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i>"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i>"/> Le mode subrogation est activté pour <x id="INTERPOLATION" equiv-text="{{data.duration}}"/> minutes, jusqu'à
-      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | date: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | date: 'mm'}}"/>. Veuillez ne pas changer d'application.
+      <x id="INTERPOLATION_1" equiv-text="{{data.endTime | dateTime: 'H'}}"/>h<x id="INTERPOLATION_2" equiv-text="{{data.endTime | dateTime: 'mm'}}"/>. Veuillez ne pas changer d'application.
     </target>
         <context-group purpose="location">
           <context context-type="sourcefile">../commons/src/app/modules/vitamui-common/components/vitamui-snack-bar/vitamui-snack-bar.component.html</context>

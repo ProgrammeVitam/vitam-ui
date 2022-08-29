@@ -49,7 +49,7 @@
 - name: Enable logstash
   service:
     name: "{{ logstash.service_name }}"
-    enabled: yes
+    enabled: "{{ logstash.at_boot | default(service_at_boot) }}"
   notify:
     - restart logstash
 
@@ -57,11 +57,11 @@
 
 - name: Ensure logstash directories exist
   file:
-    path: "{{ vitamui_defaults.folder.root_path }}/{{ item }}/logstash"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/logstash"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   with_items:
     - data
     - log
@@ -74,19 +74,19 @@
 - name: ensure json conf extra  directory exists
   file:
     path: "{{ logstash_confextra_dir }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   notify:
     - restart logstash
 
 - name: apply configuration files
   template:
     src: "{{ item }}.j2"
-    dest: "/{{ vitamui_defaults.folder.root_path}}/conf/logstash/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    dest: "/{{ vitamui_defaults.folder.root_path | default('/vitamui')}}/conf/logstash/{{ item }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "jvm.options"
     - "log4j2.properties"
@@ -98,18 +98,18 @@
 - name: Ensure conf.d subdir exists
   file:
     path: "{{ logstash_conf_dir }}/conf.d/"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
 
 - name: configure logstash parser
   template:
     src: "conf.d/{{ item }}.j2"
     dest: "{{ logstash_conf_dir }}/conf.d/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.script_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "01-logstash-vitam-filter.conf"
     - "02-logstash-vitam-filter.conf"
@@ -128,17 +128,17 @@
 - name: Ensure conf.d subdir exists
   file:
     path: "{{ logstash_conf_dir }}/conf.d/extra"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     state: directory
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
 
 - name: configure extra parser configuration
   template:
     src: "conf.d/extra/{{ item }}.j2"
     dest: "{{ logstash_conf_dir }}/conf.d/extra/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: "{{ vitam_defaults.folder.conf_permission }}"
   with_items:
     - "elasticsearch-template.json"

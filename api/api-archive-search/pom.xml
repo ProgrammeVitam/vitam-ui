@@ -5,14 +5,14 @@
     <parent>
         <artifactId>api-parent</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
-        <version>5.0-SNAPSHOT</version>
+        <version>6.rc.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>api-archive-search</artifactId>
     <packaging>pom</packaging>
     <description>VITAMUI Archive Search API</description>
-
+    <name>VITAMUI Archive Search API</name>
     <modules>
         <module>archive-search-commons</module>
         <module>archive-search-external</module>

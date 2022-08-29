@@ -8,47 +8,47 @@
     package:
       name: httpd
     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
-  
+
   - name: Install Apache package for displaying data content
     package:
       name: apache2
     when: ( ansible_distribution == "Debian")
-  
+
   # TODO : idéalement, Apache ne devrait écouter que sur l'IP d'admin
-  
+
   - name: Ensure  Apache autostart && Apache is started on Centos
-    service: 
+    service:
       name: httpd
       enabled: yes
       state: started
     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
-  
+
   - name: Ensure  Apache autostart && Apache is started on Debian
-    service: 
+    service:
       name: apache2
       enabled: yes
       state: started
     when: (ansible_distribution == "Debian" )
-  
+
   - name: add vitamui group to apache user on Centos
     user:
       name: apache
       groups: vitamui
     when: (ansible_distribution == "CentOS" or ansible_distribution == "RedHat")
-  
+
   - name: add vitamui group to apache user on Centos
     user:
       name: www-data
       groups: vitamui
     when: (ansible_distribution == "Debian" )
-  
+
   - name: copy theme files
     copy:
       src: ".theme"
-      dest: "{{vitamui_defaults.folder.root_path}}"
+      dest: "{{vitamui_defaults.folder.root_path | default('/vitamui')}}"
       owner: "root"
       mode: 0644
-  
+
   - name: add configuration file for mapping on Centos # + notify httpd restart
     template:
       src: "{{item}}.j2"
@@ -59,7 +59,7 @@
     notify: restart apache
     with_items:
     - "httpd-offer-view.conf"
-  
+
   - name: add configuration file for mapping on Debian # + notify httpd restart
     template:
       src: "{{item}}.j2"
@@ -70,7 +70,7 @@
     notify: restart apache2
     with_items:
     - "httpd-offer-view.conf"
-  
+
   - name: activate offer view in Debian only
     file:
       src: '/etc/apache2/sites-available/{{item}}'

@@ -11,6 +11,8 @@ vitam_defaults:
     vitam: "vitam"
     vitamdb: "vitamdb"
     group: "vitam"
+  services:
+    at_boot: false
 
 # Mandatory Vitam services for VitamUI
 vitam_vars:
@@ -29,6 +31,9 @@ vitam_vars:
   ingest_external:
     host: "ingest-external.service.{{ vitam_site_name }}.{{ consul_domain }}"
     port_service: 8443
+  collect:
+    host: "collect.service.{{ vitam_site_name }}.{{ consul_domain }}"
+    port_service: 8030
   security_internal:
     port_admin: 28005
     port_service: 8005

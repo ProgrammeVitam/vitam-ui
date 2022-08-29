@@ -92,6 +92,8 @@ public class ArchiveSearchStreamingExternalRestClient
 
     public ResponseEntity<Resource> downloadObjectFromUnit(String id, String usage, Integer version,
         ExternalHttpContext context) {
+
+        LOGGER.debug("download binary object with id : {}, version : {}, usage : {}", id,version, usage);
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(
                 getUrl() + RestApi.DOWNLOAD_ARCHIVE_UNIT + CommonConstants.PATH_ID + "?usage=" + usage + "&version=" +
@@ -100,11 +102,9 @@ public class ArchiveSearchStreamingExternalRestClient
         ResponseEntity<Resource> responseEntity =
             restTemplate.exchange(uriBuilder.build(id), HttpMethod.GET, request, Resource.class);
 
-        ResponseEntity<Resource> result = ResponseEntity.ok()
+
+        return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).body(responseEntity.getBody());
-
-
-        return result;
     }
 
 

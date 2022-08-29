@@ -46,6 +46,7 @@ hosts_ui_portal
 hosts_ui_referential
 hosts_ui_ingest
 hosts_ui_archive_search
+hosts_ui_collect
 hosts_ui_pastis
 
 [hosts_ui_identity]
@@ -61,6 +62,9 @@ localhost
 localhost
 
 [hosts_ui_archive_search]
+localhost
+
+[hosts_ui_collect]
 localhost
 
 [hosts_ui_pastis]

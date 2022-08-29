@@ -1,9 +1,12 @@
 ---
 
-# Defaults values if unset
-# memory: "-Xms512m -Xmx512m"
-# gc: ""
-# java: ""
+# Defaults values if unset can be override globaly
+# vitamui_defaults:
+#   services:
+#     jvm_opts:
+#       memory: "-Xms512m -Xmx512m"
+#       gc: ""
+#       java: ""
 
 vitamui:
   identity:
@@ -82,6 +85,21 @@ vitamui:
       # gc: ""
       # java: ""
   archive_search_internal:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  collect:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  collect_external:
+    jvm_opts:
+      # memory: "-Xms512m -Xmx512m"
+      # gc: ""
+      # java: ""
+  collect_internal:
     jvm_opts:
       # memory: "-Xms512m -Xmx512m"
       # gc: ""

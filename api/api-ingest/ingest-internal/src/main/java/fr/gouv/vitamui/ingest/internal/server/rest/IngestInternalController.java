@@ -27,6 +27,7 @@
 package fr.gouv.vitamui.ingest.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.ingest.external.api.exception.IngestExternalException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -34,6 +35,7 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.IngestFileGenerationException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
@@ -86,7 +88,15 @@ public class IngestInternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction) throws PreconditionFailedException, InvalidParseOperationException {
+
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER
             .debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
                 orderBy, direction);
@@ -95,41 +105,53 @@ public class IngestInternalController {
     }
 
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getAllPaginated(@PathVariable("id") String id) {
-        LOGGER.debug("get Ingest Entities for id={} ", id);
+    public LogbookOperationDto getOne(@PathVariable("id") String id) throws PreconditionFailedException , InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get Ingest Entities for id={} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return ingestInternalService.getOne(vitamContext, id);
     }
 
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
     public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
-        throws IngestFileGenerationException {
+        throws IngestFileGenerationException, PreconditionFailedException {
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         try {
-            LOGGER.debug("export ODT report for operation with id :{}", id);
             ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+            SanityChecker.checkSecureParameter(id);
+            LOGGER.debug("export ODT report for operation with id :{}", id);
             byte[] response = this.ingestInternalService.generateODTReport(vitamContext, id);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (IOException | URISyntaxException | IngestFileGenerationException e) {
             LOGGER.error("Error with generating Report : {} ", e.getMessage());
             throw new IngestFileGenerationException("Unable to generate the ingest report " + e);
+        } catch (PreconditionFailedException | InvalidParseOperationException exception ) {
+            LOGGER.error("The id parameter is not valid" , exception.getMessage());
+            throw new PreconditionFailedException("The id parameter is not valid" ,exception.getMessage());
         }
     }
 
     @ApiOperation(value = "Upload an SIP", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @PostMapping(value = CommonConstants.INGEST_UPLOAD_V2, consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void streamingUpload(
+    public ResponseEntity<Void> streamingUpload(
         InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
     )
-        throws IngestExternalException {
-        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        throws IngestExternalException, PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
         SanityChecker.isValidFileName(originalFileName);
-        ingestInternalService.streamingUpload(inputStream, contextId, action);
+        SanityChecker.checkSecureParameter(action, contextId, originalFileName);
+        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+        final String operationId = ingestInternalService.streamingUpload(inputStream, contextId, action);
+        if (operationId != null) {
+            return ResponseEntity.ok().header(CommonConstants.X_OPERATION_ID_HEADER, operationId).build();
+        } else {
+            LOGGER.error("Cannot retrieve operation id");
+            throw new IngestExternalException("Cannot retrieve operation id");
+        }
     }
 }

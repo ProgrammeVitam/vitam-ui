@@ -2,7 +2,7 @@
 
 <form [formGroup]="exportDIPform" (ngSubmit)="onSubmit()">
   <div class="content vitamui-form">
-    <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.REQUEST_DIP' | translate }}</div>
+    <div class="text-title">{{ 'ARCHIVE_SEARCH.DIP.REQUEST_DIP_EXPORT' | translate }}</div>
     <div class="text large bold">{{ 'ARCHIVE_SEARCH.DIP.DIP_PARAMS' | translate }}</div>
     <div class="text-title" *ngIf="selectedItemCountKnown && itemSelected > 1">
       {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.ITEMS_SELECTED' | translate }}

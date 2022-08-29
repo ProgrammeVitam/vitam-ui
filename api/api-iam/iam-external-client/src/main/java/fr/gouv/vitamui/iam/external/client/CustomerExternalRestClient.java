@@ -110,7 +110,6 @@ public class CustomerExternalRestClient extends BasePaginatingAndSortingRestClie
 
     public ResponseEntity<Resource> getCustomerLogo(final ExternalHttpContext context, final String id) {
         LOGGER.debug("Get logo for customer with id {}", id);
-        SanityChecker.check(id);
         final URIBuilder builder = getUriBuilderFromPath("/" + id + "/logo");
         final HttpEntity<Void> request = new HttpEntity<>(buildHeaders(context));
         final ResponseEntity<Resource> response =

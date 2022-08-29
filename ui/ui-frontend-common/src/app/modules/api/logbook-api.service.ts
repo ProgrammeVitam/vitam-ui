@@ -71,6 +71,7 @@ export class LogbookApiService implements PaginatedApi<Event> {
     const subrogator: string = LogbookApiService.getUserIdentifier(apiEvent.evIdAppSession, SUBROGATOR_INDEX);
     return {
       id: apiEvent.evId,
+      obIdIn: apiEvent.obIdIn,
       idRequest: apiEvent.evIdReq,
       parentId: apiEvent.evParentId,
       type: apiEvent.evType,
@@ -181,7 +182,8 @@ export class LogbookApiService implements PaginatedApi<Event> {
 
     // The pagination and order are defined in the Vitam DSL query stored in the `criteria` property
     // We don't actually need to use the other properties of the page request
-    return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers }).pipe(
+    return this.http.post<VitamResponse<ApiEvent>>(this.apiUrl + '/operations', JSON.parse(pageRequest.criteria), { headers })
+      .pipe(
       map((response) => ({
         pageNum: pageRequest.page,
         pageSize: pageRequest.size,

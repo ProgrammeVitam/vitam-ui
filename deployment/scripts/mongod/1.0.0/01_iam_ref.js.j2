@@ -165,21 +165,6 @@ db.tenants.insert({
 });
 
 db.tenants.insert({
-  "_id": "auto_tenant",
-  "name": "Tenant Auto Referentiel",
-  "proof": true,
-  "enabled": true,
-  "readonly": false,
-  "identifier": NumberInt(2),
-  "ownerId": "system_owner",
-  "customerId": "system_customer",
-  "ingestContractHoldingIdentifier" : "IC-000001",
-  "itemIngestContractIdentifier" : "IC-000001",
-  "accessContractHoldingIdentifier" : "AC-000001",
-  "accessContractLogbookIdentifier" : "AC-000002"
-});
-
-db.tenants.insert({
   "_id": "cas_tenant",
   "name": "Tenant CAS",
   "enabled": true,

@@ -1,4 +1,5 @@
-# remove the dlab repository
+---
+
 - name: Reload systemd
   command: systemctl daemon-reload
 
@@ -14,10 +15,10 @@
     - logstash
     - mongo
 
-- name: Clean repository metadata
-  shell: yum clean metadata
-  ignore_errors: yes
+- name: Clean repository data
+  shell: yum clean all
+  ignore_errors: true
 
 - name: Ensure yum cache is reset
   command: yum makecache
-  ignore_errors: yes
+  ignore_errors: true

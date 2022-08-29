@@ -38,12 +38,22 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
 import {DEFAULT_PAGE_SIZE, Direction, Event, InfiniteScrollTable, PageRequest} from 'ui-frontend-common';
 
 import {
-  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, TemplateRef, ViewChild
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 
 import {merge, Subject} from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
 import {EventFilter} from '../event-filter.interface';
+import {LogbookDownloadService} from '../logbook-download.service';
 import {LOGBOOK_OPERATION_CATEGORIES} from '../logbook-operation-constants';
 import {LogbookSearchService} from '../logbook-search.service';
 
@@ -99,33 +109,56 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   direction = Direction.ASCENDANT;
 
   private readonly searchFiltersChange = new Subject<Readonly<EventFilter>>();
-  private readonly filterChange = new Subject<{[key: string]: any[]}>();
+  private readonly filterChange = new Subject<{ [key: string]: any[] }>();
   private readonly searchChange = new Subject<string>();
   private readonly orderChange = new Subject<string>();
 
-  filterMap: {[key: string]: any[]} = {
+  filterMap: { [key: string]: any[] } = {
     operationCategories: null,
   };
-  operationCategoriesFilterOptions: Array<{value: string, label: string}> = [];
+  operationCategoriesFilterOptions: Array<{ value: string, label: string }> = [];
 
-  constructor(public logbookSearchService: LogbookSearchService) {
+  constructor(public logbookSearchService: LogbookSearchService,
+              private logbookDownloadService: LogbookDownloadService) {
     super(logbookSearchService);
   }
 
   ngOnInit() {
-
     this.pending = true;
+    this.updatedData.subscribe(() => this.onDataSourceReloaded());
     const searchCriteriaChange = merge(this.searchChange, this.filterChange, this.orderChange, this.searchFiltersChange)
       .pipe(debounceTime(FILTER_DEBOUNCE_TIME_MS));
-
     searchCriteriaChange.subscribe(() => {
       this.refreshList();
     });
-
     this.refreshOperationCategoriesOptions();
     this.refreshList();
-
+    this.logbookDownloadService.logbookOperationsReloaded
+      .subscribe(logbookOperationsReloaded => this.updateLogbookOperations(logbookOperationsReloaded));
   }
+
+  private onDataSourceReloaded() {
+    if (this.pending) {
+      return;
+    }
+    this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
+  }
+
+
+  private manageOperationLabel(logbookOperation: Event) {
+    if (logbookOperation.type === 'ARCHIVE_TRANSFER') {
+      logbookOperation.type = 'ARCHIVE_TRANSFER_LABEL';
+    }
+  }
+
+  private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
+    logbookOperationsReloaded.forEach(logbookOperation => {
+      const index = this.dataSource.findIndex(o => o.id === logbookOperation.id);
+      this.manageOperationLabel(logbookOperation);
+      this.dataSource[index] = logbookOperation;
+    });
+  }
+
 
   buildCriteriaFromSearch() {
     const criteria: any = {};
@@ -156,17 +189,16 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
   }
 
   refreshOperationCategoriesOptions() {
-    this.operationCategoriesFilterOptions = LOGBOOK_OPERATION_CATEGORIES.
-      map((operationCategory) => ({value: operationCategory.key, label: operationCategory.label}));
+    this.operationCategoriesFilterOptions = LOGBOOK_OPERATION_CATEGORIES.map((operationCategory) => ({
+      value: operationCategory.key,
+      label: operationCategory.label
+    }));
   }
 
   refreshList() {
     const pageRequest = new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction);
-
     const query = JSON.stringify(LogbookSearchService.buildVitamQuery(pageRequest, this.buildCriteriaFromSearch()));
-
     this.search(new PageRequest(0, DEFAULT_PAGE_SIZE, this.orderBy, this.direction, query));
-
   }
 
   onFilterChange(key: string, values: any[]) {

@@ -37,12 +37,15 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.GroupDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -105,6 +108,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     public List<GroupDto> getAll(final Optional<String> criteria, @RequestParam final Optional<String> embedded) {
         LOGGER.debug("get all criteria={}, embedded={}", criteria, embedded);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
+        SanityChecker.sanitizeCriteria(criteria);
         return internalGroupService.getAll(criteria, embedded);
     }
 
@@ -117,10 +121,15 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping(params = { "page", "size" })
     public PaginatedValuesDto<GroupDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
             @RequestParam(required = false) final Optional<String> criteria, @RequestParam(required = false) final Optional<String> orderBy,
-            @RequestParam(required = false) final Optional<DirectionDto> direction, @RequestParam(required = false) final Optional<String> embedded) {
+            @RequestParam(required = false) final Optional<DirectionDto> direction, @RequestParam(required = false) final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size, orderBy, direction, embedded);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        SanityChecker.checkSecureParameter(String.valueOf(size), String.valueOf(page));
         return internalGroupService.getAllPaginated(page, size, criteria, orderBy, direction, embedded);
     }
 
@@ -132,9 +141,12 @@ public class GroupInternalController implements CrudController<GroupDto> {
      * @return
      */
     @GetMapping(CommonConstants.PATH_ID)
-    public GroupDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria, final @RequestParam Optional<String> embedded) {
+    public GroupDto getOne(final @PathVariable("id") String id, final @RequestParam Optional<String> criteria, final @RequestParam Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Get {} criteria={} embedded={}", id, criteria, embedded);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.sanitizeCriteria(criteria);
+        SanityChecker.checkSecureParameter(id);
         EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return internalGroupService.getOne(id, criteria, embedded);
     }
@@ -146,7 +158,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
     public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
         LOGGER.debug("check exist criteria={}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         final boolean exist = internalGroupService.checkExist(criteria);
         return RestUtils.buildBooleanResponse(exist);
     }
@@ -156,8 +168,10 @@ public class GroupInternalController implements CrudController<GroupDto> {
      */
     @PostMapping
     @Override
-    public GroupDto create(final @Valid @RequestBody GroupDto dto) {
+    public GroupDto create(final @Valid @RequestBody GroupDto dto) throws InvalidParseOperationException,
+        PreconditionFailedException {
         LOGGER.debug("Create {}", dto);
+        SanityChecker.sanitizeCriteria(dto);
         return internalGroupService.create(dto);
     }
 
@@ -175,17 +189,22 @@ public class GroupInternalController implements CrudController<GroupDto> {
      */
     @Override
     @PatchMapping(CommonConstants.PATH_ID)
-    public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public GroupDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Patch {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "The DTO identifier must match the path identifier for update.");
         return internalGroupService.patch(partialDto);
     }
 
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) throws VitamClientException {
+    public JsonNode findHistoryById(final @PathVariable("id") String id)
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get logbook for group with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
         return internalGroupService.findHistoryById(id);
     }
 
@@ -198,7 +217,7 @@ public class GroupInternalController implements CrudController<GroupDto> {
     @GetMapping(CommonConstants.PATH_LEVELS)
     public List<String> getLevels(final Optional<String> criteria) {
         LOGGER.debug("Get levels with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return internalGroupService.getLevels(criteria);
     }
 }

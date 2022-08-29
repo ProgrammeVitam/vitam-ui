@@ -1,5 +1,6 @@
 /*
- * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2020)
+ * Copyright French Prime minister Office/SGMAP/DINSIC/Vitam Program (2015-2022)
+ *
  * contact.vitam@culture.gouv.fr
  *
  * This software is a computer program whose purpose is to implement a digital archiving back-office system managing
@@ -7,7 +8,7 @@
  *
  * This software is governed by the CeCILL 2.1 license under French law and abiding by the rules of distribution of free
  * software. You can use, modify and/ or redistribute the software under the terms of the CeCILL 2.1 license as
- * circulated by CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+ * circulated by CEA, CNRS and INRIA at the following URL "https://cecill.info".
  *
  * As a counterpart to the access to the source code and rights to copy, modify and redistribute granted by the license,
  * users are provided only with a limited warranty and the software's author, the holder of the economic rights, and the
@@ -23,7 +24,6 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-
 package fr.gouv.vitamui.archives.search.external.client;
 
 
@@ -33,6 +33,7 @@ import fr.gouv.vitamui.archives.search.common.dto.ExportDipCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.ReclassificationCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.RuleSearchCriteriaDto;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaDto;
+import fr.gouv.vitamui.archives.search.common.dto.TransferRequestDto;
 import fr.gouv.vitamui.archives.search.common.dto.UnitDescriptiveMetadataDto;
 import fr.gouv.vitamui.archives.search.common.rest.RestApi;
 import fr.gouv.vitamui.commons.api.CommonConstants;
@@ -147,10 +148,8 @@ public class ArchiveSearchExternalRestClient
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
-                request, Resource.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV_SEARCH_PATH, HttpMethod.POST,
+            request, Resource.class);
     }
 
     public ResponseEntity<String> exportDIPCriteria(ExportDipCriteriaDto exportDipCriteriaDto,
@@ -158,10 +157,16 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling export DIP by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<ExportDipCriteriaDto> request = new HttpEntity<>(exportDipCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.EXPORT_DIP, HttpMethod.POST,
+            request, String.class);
+    }
+
+    public ResponseEntity<String> transferRequest(TransferRequestDto transferRequestDto,
+        ExternalHttpContext context) {
+        LOGGER.debug("Calling transfer request");
+        MultiValueMap<String, String> headers = buildSearchHeaders(context);
+        final HttpEntity<TransferRequestDto> request = new HttpEntity<>(transferRequestDto, headers);
+        return restTemplate.exchange(getUrl() + RestApi.TRANSFER_REQUEST, HttpMethod.POST, request, String.class);
     }
 
     public ResponseEntity<JsonNode> startEliminationAnalysis(ExternalHttpContext context, SearchCriteriaDto query) {
@@ -185,10 +190,8 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling updateArchiveUnitsRules by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<RuleSearchCriteriaDto> request = new HttpEntity<>(ruleSearchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.MASS_UPDATE_UNITS_RULES, HttpMethod.POST,
+            request, String.class);
     }
 
     public ResponseEntity<String> computedInheritedRules(SearchCriteriaDto searchCriteriaDto,
@@ -196,14 +199,13 @@ public class ArchiveSearchExternalRestClient
         LOGGER.debug("Calling computed inherited rules by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
         final HttpEntity<SearchCriteriaDto> request = new HttpEntity<>(searchCriteriaDto, headers);
-        final ResponseEntity<String> response =
-            restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
-                request, String.class);
-        return response;
+        return restTemplate.exchange(getUrl() + RestApi.COMPUTED_INHERITED_RULES, HttpMethod.POST,
+            request, String.class);
     }
 
 
-    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(ExternalHttpContext context, SearchCriteriaDto query) {
+    public ResponseEntity<ResultsDto> selectUnitWithInheritedRules(ExternalHttpContext context,
+        SearchCriteriaDto query) {
         LOGGER.debug("Calling select Unit With Inherited Rules by criteria");
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
 
@@ -227,7 +229,8 @@ public class ArchiveSearchExternalRestClient
         return response;
     }
 
-    public ResponseEntity<String> updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto, ExternalHttpContext context) {
+    public ResponseEntity<String> updateUnitById(String id, UnitDescriptiveMetadataDto unitDescriptiveMetadataDto,
+        ExternalHttpContext context) {
         final UriComponentsBuilder uriBuilder =
             UriComponentsBuilder.fromHttpUrl(getUrl() + RestApi.ARCHIVE_UNIT_INFO + CommonConstants.PATH_ID);
         final HttpEntity<?> request = new HttpEntity<>(unitDescriptiveMetadataDto, buildHeaders(context));

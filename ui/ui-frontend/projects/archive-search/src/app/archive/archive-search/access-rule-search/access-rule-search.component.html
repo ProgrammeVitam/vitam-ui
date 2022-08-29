@@ -59,7 +59,7 @@
           >
           <ng-template #showBeginDtAccessRule
             ><span (click)="pickerBeginAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | date: 'dd/MM/yyyy' }}
+              >{{ accessRuleCriteriaForm.get('accessRuleStartDate').value | dateTime: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -98,7 +98,7 @@
           >
           <ng-template #showEndDtAccessRule
             ><span (click)="pickerEndAccessRule.open()"
-              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | date: 'dd/MM/yyyy' }}
+              >{{ accessRuleCriteriaForm.get('accessRuleEndDate').value | dateTime: 'dd/MM/yyyy' }}
             </span>
           </ng-template>
           <input
@@ -113,7 +113,7 @@
       </div>
       <div class="col-1 form-control">
         <button
-          [ngStyle]="{ 'background-color': 'green', width: '30', height: '30' }"
+           class="validate-date-small-button"
           *ngIf="
             endDateInterval &&
             accessRuleCriteriaForm.get('accessRuleStartDate').value &&

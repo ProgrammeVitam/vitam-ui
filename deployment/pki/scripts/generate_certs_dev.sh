@@ -33,12 +33,14 @@ function generateCerts {
     generateHostCertAndStorePassphrase          referential-internal        hosts_vitamui_referential_internal
     generateHostCertAndStorePassphrase          ingest-internal     hosts_vitamui_ingest_internal
     generateHostCertAndStorePassphrase          archive-search-internal     hosts_vitamui_archive_search_internal
+    generateHostCertAndStorePassphrase          collect-internal     hosts_vitamui_collect_internal
     #Zone externe
     generateHostCertAndStorePassphrase          iam-external        hosts_vitamui_iam_external
     generateHostCertAndStorePassphrase          cas-server          hosts_cas_server
     generateHostCertAndStorePassphrase          referential-external        hosts_vitamui_referential_external
     generateHostCertAndStorePassphrase          ingest-external     hosts_vitamui_ingest_external
     generateHostCertAndStorePassphrase          archive-search-external     hosts_vitamui_archive_search_external
+    generateHostCertAndStorePassphrase          collect-external     hosts_vitamui_collect_external
     generateHostCertAndStorePassphrase          pastis-external     hosts_vitamui_pastis_external
     #Zone UI
     generateHostCertAndStorePassphrase          ui-portal           hosts_ui_portal
@@ -47,6 +49,7 @@ function generateCerts {
     generateHostCertAndStorePassphrase          ui-referential      hosts_ui_referential
     generateHostCertAndStorePassphrase          ui-ingest           hosts_ui_ingest
     generateHostCertAndStorePassphrase          ui-archive-search          hosts_ui_archive_search
+    generateHostCertAndStorePassphrase          ui-collect          hosts_ui_collect
     generateHostCertAndStorePassphrase          ui-pastis     hosts_ui_pastis
     #Reverse
     generateHostCertAndStorePassphrase          reverse             hosts_vitamui_reverseproxy

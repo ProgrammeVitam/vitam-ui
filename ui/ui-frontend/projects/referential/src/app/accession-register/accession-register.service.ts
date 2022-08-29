@@ -34,11 +34,11 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, map, withLatestFrom } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {catchError, map, withLatestFrom} from 'rxjs/operators';
 import {
   AccessionRegisterDetail,
   AccessionRegisterStats,
@@ -49,8 +49,9 @@ import {
   ExternalParametersService,
   SearchService,
 } from 'ui-frontend-common';
-import { AccessionRegisterDetailApiService } from '../core/api/accession-register-detail-api.service';
-import { FacetDetails } from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import {AccessionRegisterDetailApiService} from '../core/api/accession-register-detail-api.service';
+import {FacetDetails} from 'ui-frontend-common/app/modules/models/operation/facet-details.interface';
+import {VitamUISnackBar, VitamUISnackBarComponent} from "../shared/vitamui-snack-bar";
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   updated = new Subject<AccessionRegisterDetail>();
 
   private searchTextChange$ = new BehaviorSubject<string>('');
-  private statusFilterChange$ = new BehaviorSubject<{ [key: string]: any[] }>(null);
+  private statusFilterChange$ = new BehaviorSubject<Map<string, Array<string>>>(null);
   private dateIntervalChange$ = new BehaviorSubject<{ endDateMin: string; endDateMax: string }>(null);
 
   private openAdvancedSearchPanel: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -72,11 +73,12 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
   private globalResetEvent$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    accessionRegisterApiService: AccessionRegisterDetailApiService,
+    private accessionRegisterApiService: AccessionRegisterDetailApiService,
     http: HttpClient,
     private translateService: TranslateService,
     private externalParameterService: ExternalParametersService,
-    private bytesPipe: BytesPipe
+    private bytesPipe: BytesPipe,
+    private snackBar: VitamUISnackBar,
   ) {
     super(http, accessionRegisterApiService, 'ALL');
   }
@@ -90,15 +92,42 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
       ),
       map(([storedAndCompleted, storedAndUpdated, unstored]) => {
         const data = [
-          { value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: storedAndCompleted },
-          { value: AccessionRegisterStatus.STORED_AND_UPDATED, label: storedAndUpdated },
-          { value: AccessionRegisterStatus.UNSTORED, label: unstored },
+          {value: AccessionRegisterStatus.STORED_AND_COMPLETED, label: storedAndCompleted},
+          {value: AccessionRegisterStatus.STORED_AND_UPDATED, label: storedAndUpdated},
+          {value: AccessionRegisterStatus.UNSTORED, label: unstored},
         ];
         return data.sort(this.sortByLabel(locale));
       }),
       catchError((error) => {
         return of(error);
       })
+    );
+  }
+
+  exportAccessionRegisterCsv(criteria: any, accessContract: string) {
+    let headers = new HttpHeaders().append('Content-Type', 'application/json');
+    headers = headers.append('X-Access-Contract-Id', accessContract);
+
+    return this.accessionRegisterApiService.exportAccessionRegisterCsv(criteria, headers).subscribe(
+      file => {
+        const element = document.createElement('a');
+        element.href = window.URL.createObjectURL(file);
+        element.download = 'export-accession-registers.csv';
+        element.style.visibility = 'hidden';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      },
+      (errors: HttpErrorResponse) => {
+        if (errors.status === 413) {
+          console.log('Please update filter to reduce size of response' + errors.message);
+          this.snackBar.openFromComponent(VitamUISnackBarComponent, {
+            panelClass: 'vitamui-snack-bar',
+            data: {type: 'exportCsvLimitReached', limit: '10 000'},
+            duration: 10000,
+          });
+        }
+      }
     );
   }
 
@@ -165,7 +194,7 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
     return stateFacetDetails;
   }
 
-  notifyFilterChange(value: { [key: string]: any[] }) {
+  notifyFilterChange(value: Map<string, Array<string>>) {
     this.statusFilterChange$.next(value);
     this.globalSearchButtonEvent$.next(true);
   }
@@ -181,6 +210,10 @@ export class AccessionRegistersService extends SearchService<AccessionRegisterDe
 
   getDateIntervalChanges(): BehaviorSubject<{ endDateMin: string; endDateMax: string }> {
     return this.dateIntervalChange$;
+  }
+
+  getSearchTextChange(): BehaviorSubject<string> {
+    return this.searchTextChange$;
   }
 
   toggleOpenAdvancedSearchPanel() {

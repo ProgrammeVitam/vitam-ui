@@ -36,9 +36,6 @@
  */
 package fr.gouv.vitamui.referential.internal.server.operation;
 
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
-import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -77,6 +74,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.and;
+import static fr.gouv.vitam.common.database.builder.query.QueryHelper.eq;
+
 @Service
 public class OperationInternalService {
 
@@ -89,18 +89,19 @@ public class OperationInternalService {
     private ObjectMapper objectMapper;
 
     @Autowired
-    OperationInternalService(OperationService operationService, LogbookService logbookService, ObjectMapper objectMapper) {
+    OperationInternalService(OperationService operationService, LogbookService logbookService,
+        ObjectMapper objectMapper) {
         this.operationService = operationService;
         this.logbookService = logbookService;
         this.objectMapper = objectMapper;
     }
 
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(final Integer pageNumber, final Integer size,
-            final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
-            Optional<String> criteria) {
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, VitamContext vitamContext,
+        Optional<String> criteria) {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query;
-        LOGGER.info("All Operations EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+        LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         try {
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {
@@ -123,11 +124,11 @@ public class OperationInternalService {
     private LogbookOperationsResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<LogbookOperation> requestResponse;
         try {
-            LOGGER.info("All Operations EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("All Operations EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             requestResponse = logbookService.selectOperations(query, vitamContext);
 
             final LogbookOperationsResponseDto logbookOperationsResponseDto = objectMapper
-                    .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
+                .treeToValue(requestResponse.toJsonNode(), LogbookOperationsResponseDto.class);
 
             return logbookOperationsResponseDto;
         } catch (VitamClientException | JsonProcessingException e) {
@@ -140,10 +141,10 @@ public class OperationInternalService {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         try {
-            LOGGER.info("All Operations Audit EvIdAppSession : {} " , context.getApplicationSessionId());
-            if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions()))  {
+            LOGGER.info("All Operations Audit EvIdAppSession : {} ", context.getApplicationSessionId());
+            if ("AUDIT_FILE_CONSISTENCY".equals(auditOptions.getAuditActions())) {
                 operationService.lauchEvidenceAudit(context, auditOptions.getQuery());
-            } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions()))  {
+            } else if ("AUDIT_FILE_RECTIFICATION".equals(auditOptions.getAuditActions())) {
                 operationService.launchRectificationAudit(context, auditOptions.getAuditType());
             } else {
                 auditOptions.setQuery(null);
@@ -156,8 +157,8 @@ public class OperationInternalService {
 
     public Response export(VitamContext context, String id, ReportType type) {
         try {
-            LOGGER.info("Export  Operations EvIdAppSession : {} " , context.getApplicationSessionId());
-            switch(type) {
+            LOGGER.info("Export  Operations EvIdAppSession : {} ", context.getApplicationSessionId());
+            switch (type) {
                 case AUDIT:
                     return operationService.exportAudit(context, id);
                 case TRACEABILITY:
@@ -182,14 +183,15 @@ public class OperationInternalService {
 
             RequestResponse response = logbookService.checkTraceability(vitamContext, select.getFinalSelect());
             return response.toJsonNode();
-        } catch (InvalidCreateOperationException | AccessExternalClientServerException | InvalidParseOperationException | AccessUnauthorizedException e) {
+        } catch (InvalidCreateOperationException | AccessExternalClientServerException |
+                 InvalidParseOperationException | AccessUnauthorizedException e) {
             throw new InternalServerException("Unable to check traceability operation", e);
         }
     }
 
     public JsonNode findHistoryByIdentifier(VitamContext vitamContext, String id) {
         try {
-            LOGGER.info("Operation History EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.info("Operation History EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
             RequestResponse<LogbookOperation> requestResponse = logbookService.selectOperationbyId(id, vitamContext);
             return requestResponse.toJsonNode();
         } catch (VitamClientException e) {
@@ -199,7 +201,7 @@ public class OperationInternalService {
 
     public void runProbativeValue(VitamContext context, ProbativeValueRequest probativeValueRequest) {
         try {
-            LOGGER.info("All Operations Probative Value EvIdAppSession : {} " , context.getApplicationSessionId());
+            LOGGER.info("All Operations Probative Value EvIdAppSession : {} ", context.getApplicationSessionId());
             operationService.runProbativeValue(context, probativeValueRequest);
         } catch (VitamClientException e) {
             throw new InternalServerException("Unable to generate Probative value", e);

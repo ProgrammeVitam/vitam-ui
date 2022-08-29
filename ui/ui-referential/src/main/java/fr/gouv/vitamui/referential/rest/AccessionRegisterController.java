@@ -36,20 +36,28 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterDetailDto;
 import fr.gouv.vitamui.referential.common.dto.AccessionRegisterSummaryDto;
 import fr.gouv.vitamui.referential.service.AccessionRegisterDetailService;
 import fr.gouv.vitamui.referential.service.AccessionRegisterSummaryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -82,22 +90,45 @@ public class AccessionRegisterController extends AbstractUiRestController {
     @ApiOperation(value = "Get accession register summary entities")
     @GetMapping("/summary")
     @ResponseStatus(HttpStatus.OK)
-    public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria) {
+    public Collection<AccessionRegisterSummaryDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return summaryService.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Get accession register details entities paginated")
     @GetMapping(value = "/details", params = {"page", "size"})
     @ResponseStatus(HttpStatus.OK)
-    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(@RequestParam final Integer page,
+    public PaginatedValuesDto<AccessionRegisterDetailDto> getAllPaginated(
+        @RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()){
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return detailsService.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
+    }
+
+    @ApiOperation(value = "Export accession register by criteria into csv format")
+    @PostMapping("/details/export-csv")
+    @Consumes(MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Resource> exportCsvArchiveUnitsByCriteria(
+        @RequestBody final AccessionRegisterSearchDto searchQuery
+    ) throws InvalidParseOperationException, PreconditionFailedException{
+        LOGGER.debug("Export accession register by criteria into csv format = {}", searchQuery);
+        Resource exportedCsvResult =
+            detailsService.exportAccessionRegisterCsv(searchQuery, buildUiHttpContext()).getBody();
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment")
+            .body(exportedCsvResult);
     }
 
 }

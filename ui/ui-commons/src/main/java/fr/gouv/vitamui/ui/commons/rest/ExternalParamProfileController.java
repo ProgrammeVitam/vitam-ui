@@ -36,11 +36,14 @@
  */
 package fr.gouv.vitamui.ui.commons.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.ExternalParamProfileDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
@@ -91,7 +94,10 @@ public class ExternalParamProfileController extends AbstractUiRestController {
     @GetMapping(CommonConstants.PATH_ID)
     @Produces("application/json")
     @ResponseStatus(HttpStatus.OK)
-    public ExternalParamProfileDto getOne(final @PathVariable String id) {
+    public ExternalParamProfileDto getOne(final @PathVariable String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get external param profile's profile with id :{}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
@@ -99,7 +105,10 @@ public class ExternalParamProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create external parameter profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto) {
+    public ExternalParamProfileDto create(@RequestBody final ExternalParamProfileDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
@@ -111,36 +120,48 @@ public class ExternalParamProfileController extends AbstractUiRestController {
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
         @RequestParam final Optional<DirectionDto> direction,
-        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded) {
+        @ApiParam(defaultValue = "ALL") @RequestParam final Optional<String> embedded)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         LOGGER
             .debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}, embedded = {}", page, size,
                 criteria, orderBy, direction,
                 embedded);
-        RestUtils.checkCriteria(criteria);
-        EnumUtils.checkValidEnum(EmbeddedOptions.class, embedded);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, embedded, buildUiHttpContext());
     }
 
     @ApiOperation(value = "get history by external parameter profile profile's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
-        LOGGER.debug("get logbook for external parameter profile's profile with id :{}", id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for external parameter profile's profile with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 
     @PatchMapping(value = CommonConstants.PATH_ME)
     @ApiOperation(value = "Update partially entity")
     @ResponseStatus(HttpStatus.OK)
-    public ExternalParamProfileDto patch(@RequestBody final Map<String, Object> externalParamProfile) {
+    public ExternalParamProfileDto patch(@RequestBody final Map<String, Object> externalParamProfile)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(externalParamProfile);
         LOGGER.debug("Update partially provider with partialDto={}", externalParamProfile);
         return service.patch(buildUiHttpContext(), externalParamProfile, externalParamProfile.get("id").toString());
     }
 
     @ApiOperation(value = "Check entity exists by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
-        RestUtils.checkCriteria(Optional.of(criteria));
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
         LOGGER.debug("reponse value={}", exist);

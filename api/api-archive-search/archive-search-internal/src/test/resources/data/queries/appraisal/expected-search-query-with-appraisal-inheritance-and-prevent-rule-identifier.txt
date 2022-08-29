@@ -1,0 +1,1 @@
+[{"$or":[{"$in":{"#management.AppraisalRule.Inheritance.PreventRulesId":["APP-00001"]}}]}, {"$or":[{"$eq":{"#management.AppraisalRule.Inheritance.PreventInheritance":"false"}}]}]

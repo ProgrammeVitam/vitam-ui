@@ -1,0 +1,35 @@
+{
+  "searchCriteriaDto":{
+    "criteriaList":[
+      {
+        "criteria":"GUID",
+        "values":[
+          {
+            "value":"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba",
+            "id":"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba"
+          },
+          {
+            "value":"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba",
+            "id":"aeaqaaaaaehpsb22aatwmamb6uvpedaaaaba"
+          }
+        ],
+        "operator":"EQ",
+        "category":"FIELDS",
+        "dataType":"STRING"
+      }
+    ],
+    "pageNumber":0,
+    "size":10,
+    "language":"fr"
+  },
+  "$action":[
+    {
+      "$pull":null,
+      "$add":{
+        "#unitups":[
+          "aeaqaaaaaehpsb22aatwmamb65ukohyaaaba"
+        ]
+      }
+    }
+  ]
+}

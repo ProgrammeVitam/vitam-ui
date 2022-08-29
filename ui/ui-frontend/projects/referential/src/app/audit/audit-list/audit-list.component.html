@@ -33,7 +33,7 @@
         </td>
         <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.id }}</td>
         <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.type }}</td>
-        <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.dateTime | date: 'dd/MM/yyyy'  }}
+        <td class="clickable" (click)="auditClick.emit(audit)">{{ audit?.dateTime | dateTime: 'dd/MM/yyyy'  }}
         </td>
         <td class="clickable" (click)="auditClick.emit(audit)"
             [ngClass]="{'text-green': auditStatus(audit) == 'OK', 'text-grey':auditStatus(audit) == 'STARTED',

@@ -1,5 +1,10 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav mode="side" [fixedInViewport]="true" [opened]="show" *ngIf="foundAccessContract" vitamuiCommonResizeSidebar="left">
+  <mat-sidenav
+    mode="side"
+    [fixedInViewport]="true"
+    [opened]="show"
+    *ngIf="foundAccessContract"
+               vitamuiCommonResizeSidebar="left">
     <app-filing-holding-scheme [accessContract]="accessContract"></app-filing-holding-scheme>
   </mat-sidenav>
 
@@ -18,6 +23,7 @@
       [accessContract]="accessContract"
       (backToNormalLateralPanel)="backToNormalLateralPanel()"
       [hasAccessContractManagementPermissions]="hasAccessContractManagementPermissions"
+      [hasUpdateDescriptiveUnitMetadataRole]="hasUpdateDescriptiveUnitMetadataRole"
     ></app-archive-preview>
   </mat-sidenav>
 

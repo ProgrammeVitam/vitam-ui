@@ -28,6 +28,18 @@
       "OPERATIONS": "Logbook"
     }
   },
+    "EXCEPTIONS" : {
+     "HTTP_STATUS_CODE_BAD_REQUEST": "Error: invalid request",
+     "HTTP_STATUS_CODE_FORBIDDEN" : "You do not have the necessary rights to perform this operation.",
+     "HTTP_STATUS_CODE_NOT_FOUND": "Error: Resource does not exist",
+     "HTTP_STATUS_CODE_SERVICE_UNAVAILABLE": "A technical error has occurred: service unavailable",
+     "HTTP_STATUS_CODE_GATEWAY_TIMEOUT" : "A technical error has occurred: the server is not responding.",
+     "HTTP_STATUS_CODE_EXPECTATION_FAILED": "The platform configuration does not allow you to perform this action, please contact your administrator",
+     "HTTP_STATUS_PRECONDITION_FAILED_EXCEPTION": "The added parameter is invalid and not proper, please correct it",
+     "CLIENT_ERROR_START": "A technical error has occurred: invalid request",
+     "SERVER_ERROR_START": "A technical error has occurred: internal error",
+     "TIME_OUT_ERROR" : "A technical error has occurred: the server is not responding."
+  },
   "COLOR": {
     "PRIMARY": "Primary color",
     "SECONDARY": "Secondary color",
@@ -201,8 +213,8 @@
       "TOOLTIP": "Access to dashboards of the archiving service"
     },
     "ARCHIVE_SEARCH_MANAGEMENT_APP": {
-      "NAME": "Archives Search Service",
-      "TOOLTIP": "Archives Search Service"
+      "NAME": "Research, consultation and management of archives",
+      "TOOLTIP": "Search, manage and consult the archives"
     },
     "INGEST_MANAGEMENT_APP": {
       "NAME": "Ingest management",
@@ -396,6 +408,20 @@
     "MESSAGE": "An internal error occured. Please contact an administrator if the problem persists"
   },
   "EVENT_TYPE_LABEL": {
+    "COMPUTE_INHERITED_RULES" : "Calculation of applicable management rules",
+    "COMPUTE_INHERITED_RULES_FINALIZATION" : "Finalization the calculation of the applicable management rules",
+    "COMPUTED_INHERITED_RULES_CHECK_DISTRIBUTION_THRESHOLD" : "Verification of processing limitation thresholds for archival units",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION" : "Process for preparing the calculation of the applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES_PREPARATION.STARTED" : "Process for preparing the calculation of the applicable management rules",
+    "COMPUTE_INHERITED_RULES_PREPARATION" : "Preparation of the calculation of the applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES.STARTED": "Process for calculating the applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES": "Process for calculating the applicable management rules",
+    "COMPUTE_INHERITED_RULES_ACTION":"Calculation of applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION.STARTED" : "Process for finalizing the calculation of the applicable management rules",
+    "STP_COMPUTE_INHERITED_RULES_FINALIZATION" : "Finalization of the calculation of the applicable management rules",
+    "CHECK_ATTACHEMENT":"Verification of the connection between existing objects, groups of objects and archival units and new ones",
+    "CHECK_OBJECT_SIZE" : "File size check",
+    "OBJ_STORAGE" : "Writing objects and groups of objects to the storage offer",
     "AUDIT": "Audit",
     "STP_DELETE_MASTERDATA_CONTEXT.WARNING": "Warning during the process of deleting application contexts",
     "STP_CORRECTIVE_AUDIT.KO": "Failed to correct the signatures of each corrupt archival unit or object or group of objects",
@@ -1481,6 +1507,12 @@
     "STP_PROBATIVE_VALUE_LIST_SECURED_FILES_TO_DOWNLOAD.OK": "Success of the process for preparing the list of signatures in secure files",
     "EVIDENCE_AUDIT_CHECK_DATABASE.FATAL": "Technical error while retrieving data from the database",
     "MASS_UPDATE": "Update of archival unit metadata",
+    "MASS_UPDATE_RULES_CHECK" : "Verification of rights, parameters and classification level",
+    "COMPUTE_INHERITED_RULES_PROGENY_IDENTIFIER" : "Identification of inherited archival units",
+    "STP_INVALIDATE.STARTED": "Start invalidation of calculated rules",
+    "STP_INVALIDATE": "Invalidation of calculated rules",
+    "COMPUTE_INHERITED_RULES_INVALIDATOR": "Invalidate outdated legacy management rules",
+    "COMPUTE_INHERITED_RULES_INVALIDATOR.OK" : "Successful process of invalidate outdated legacy management rules",
     "LFC.UNITS_RULES_COMPUTE.REF_INCONSISTENCY.KO": "Failed to check the consistency of the business rule whose cancellation is requested in relation to its category: the request to cancel a business rule is not consistent with its category ",
     "FINALIZE_OG_LFC_TRACEABILITY.FINALIZE_OG_LFC_TRACEABILITY.OK": "Successful completion of securing object group lifecycle logs",
     "FILINGSCHEME.WARNING": "Warning during the filing plan entry process",
@@ -2294,6 +2326,8 @@
     "ELIMINATION_ANALYSIS_UNIT_INDEXATION.WARNING": "Warning when indexing the analysis for the elimination of archival units",
     "STP_ELIMINATION_ANALYSIS_FINALIZATION.FATAL": "Technical error during the process of finalizing the analysis of the disposal of archival units",
     "EXPORT_DIP": "Export of the DIP",
+    "ARCHIVE_TRANSFER": "Transfer",
+    "ARCHIVE_TRANSFER_LABEL": "Transfer of Archival Units and Groups of Objects",
     "UNIT_ATTACHMENT.FATAL": "Technical error when attaching archival units",
     "STP_BACKUP_SCENARIO.STARTED": "Beginning of the backup process for preservation scenarios",
     "CHECK_DATAOBJECTPACKAGE.CHECK_NO_OBJECT.KO": "Failed to verify the absence of object: object (s) found",

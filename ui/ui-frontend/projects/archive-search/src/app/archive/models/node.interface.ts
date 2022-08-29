@@ -34,11 +34,12 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import {Id} from 'ui-frontend-common';
+import { Id } from 'ui-frontend-common';
 
 export interface FilingHoldingSchemeNode extends Id {
   title: string;
   type: string;
+  descriptionLevel?: string;
   label?: string;
   children: FilingHoldingSchemeNode[];
   parents: FilingHoldingSchemeNode[];
@@ -48,4 +49,32 @@ export interface FilingHoldingSchemeNode extends Id {
   checked: boolean;
   count?: number;
   hidden?: boolean;
+  isLoadingChildren?: boolean;
+  canLoadMoreChildren?: boolean;
+}
+
+export function nodeHasChildren(node: FilingHoldingSchemeNode): boolean {
+  return node.children && node.children.length > 0;
+}
+
+export function nodeHasMatch(node: FilingHoldingSchemeNode): boolean {
+  return node.count && node.count > 0;
+}
+
+export function copyNodeWhithoutChildren(node: FilingHoldingSchemeNode): FilingHoldingSchemeNode {
+  return {
+    id: node.id,
+    title: node.title,
+    type: node.type,
+    label: node.label,
+    children: null,
+    parents: null,
+    vitamId: node.vitamId,
+    checked: node.checked,
+    count: node.count,
+
+    hidden: node.hidden,
+    isLoadingChildren: false,
+    canLoadMoreChildren: true,
+  };
 }

@@ -35,51 +35,54 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ArchiveSharedDataServiceService } from '../../core/archive-shared-data-service.service';
+import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ArchiveService } from '../archive.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
+import { copyNodeWhithoutChildren, FilingHoldingSchemeNode, nodeHasChildren, nodeHasMatch } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ResultFacet } from '../models/search.criteria';
 
 @Component({
   selector: 'app-filing-holding-scheme',
   templateUrl: './filing-holding-scheme.component.html',
-  styleUrls: ['./filing-holding-scheme.component.scss']
+  styleUrls: ['./filing-holding-scheme.component.scss'],
 })
-export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
-  @Input()
-  accessContract: string;
-  tenantIdentifier: number;
-  subscriptionNodesFull: Subscription;
-  subscriptionNodesFiltred: Subscription;
+export class FilingHoldingSchemeComponent implements OnChanges, OnDestroy {
+  @Input() accessContract: string;
+  HOST_PADDING_TOP = 72;
+  RESIZABLE_DIV_MINIMUM_HEIGHT = 100;
 
-  subscriptionFacets: Subscription;
+  tenantIdentifier: number;
+
+  private subscriptions = new Subscription();
+
   nestedTreeControlFull: NestedTreeControl<FilingHoldingSchemeNode>;
   nestedDataSourceFull: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
 
-  nestedTreeControlFiltred: NestedTreeControl<FilingHoldingSchemeNode>;
-  nestedDataSourceFiltred: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
+  nestedDataSourceLeaves: MatTreeNestedDataSource<FilingHoldingSchemeNode>;
 
   disabled: boolean;
   loadingHolding = true;
   node: string;
   nodeData: NodeData;
-  hasResults = false;
-  linkOneToNotKeep = false;
-  linkTwoToNotKeep = true;
-  fullNodes: FilingHoldingSchemeNode[] = [];
-  filtredNodes: FilingHoldingSchemeNode[] = [];
+  hasMatchesInSearch = false;
 
-  filtered: boolean;
+  fullNodes: FilingHoldingSchemeNode[] = [];
+  showEveryNodes = true;
+
+  isHandlerDragging = false;
+  @ViewChild('resizebar') resizebar: any;
+  @ViewChild('resizableBox') resizableBox: any;
+  requestResultFacets: ResultFacet[];
 
   constructor(
+    private hostElementRef: ElementRef,
     private archiveService: ArchiveService,
     private route: ActivatedRoute,
-    private archiveSharedDataServiceService: ArchiveSharedDataServiceService
+    private archiveSharedDataService: ArchiveSharedDataService,
   ) {
     this.route.params.subscribe((params) => {
       this.tenantIdentifier = params.tenantIdentifier;
@@ -88,42 +91,55 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     this.nestedTreeControlFull = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
     this.nestedDataSourceFull = new MatTreeNestedDataSource();
 
-    this.nestedTreeControlFiltred = new NestedTreeControl<FilingHoldingSchemeNode>((node) => node.children);
-    this.nestedDataSourceFiltred = new MatTreeNestedDataSource();
+    this.nestedDataSourceLeaves = new MatTreeNestedDataSource();
 
-    this.subscriptionNodesFull = this.archiveSharedDataServiceService.getNodesTarget().subscribe((nodeId) => {
-      if (nodeId == null) {
-        this.showAllTreeNodes();
-      } else {
-        this.recursiveShowById(this.nestedDataSourceFull.data, false, nodeId);
-        this.recursiveShowById(this.nestedDataSourceFiltred.data, false, nodeId);
-      }
-    });
+    this.subscriptions.add(
+      this.archiveSharedDataService.getNodesTarget()
+        .subscribe((nodeId) => {
+          if (nodeId == null) {
+            this.switchViewAllNodes();
+          } else {
+            this.foundNodeAndSetCheck(this.nestedDataSourceFull.data, false, nodeId);
+            this.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, false, nodeId);
+          }
+        }));
 
-    this.subscriptionFacets = this.archiveSharedDataServiceService.getFacets().subscribe((facets) => {
-      this.hasResults = true;
-      if (facets && facets.length > 0) {
-        for (const node of this.nestedDataSourceFull.data) {
-          this.recursiveByNode(node, facets);
-        }
-      } else {
-        for (const node of this.nestedDataSourceFull.data) {
-          node.count = 0;
-          node.hidden = true;
-        }
-      }
-      this.filterNodes();
-    });
+    this.subscriptions.add(
+      this.archiveSharedDataService.getFacets()
+        .subscribe((facets) => {
+          if (facets && facets.length > 0) {
+            this.requestResultFacets = facets;
+            this.hasMatchesInSearch = true;
+            for (const node of this.nestedDataSourceFull.data) {
+              this.setCountRecursively(node, facets);
+            }
+          } else {
+            this.hasMatchesInSearch = false;
+            for (const node of this.nestedDataSourceFull.data) {
+              node.count = 0;
+              node.hidden = true;
+            }
+          }
+          this.refreshSourceNodes();
+          this.filterNodesToLeavesOnly();
+        }));
 
-    this.archiveSharedDataServiceService.getFilingHoldingNodes().subscribe((nodes) => {
+    this.archiveSharedDataService.getFilingHoldingNodes().subscribe((nodes) => {
       if (nodes) {
         this.fullNodes = nodes;
-        this.showAllTreeNodes();
+        this.switchViewAllNodes();
       }
     });
   }
+
+  private refreshSourceNodes() {
+    const data = this.nestedDataSourceFull.data;
+    this.nestedDataSourceFull.data = null;
+    this.nestedDataSourceFull.data = data;
+  }
+
   convertNodesToList(holdingSchemas: FilingHoldingSchemeNode[]): string[] {
-    let nodeDataList: string[] = [];
+    const nodeDataList: string[] = [];
     for (const node of holdingSchemas) {
       if (node && node.id) {
         nodeDataList.push(node.id);
@@ -132,7 +148,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     return nodeDataList;
   }
 
-  recursive(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
+  foundNodesAndSetCount(nodes: FilingHoldingSchemeNode[], facets: ResultFacet[]): number {
     let nodesChecked = 0;
     if (nodes.length === 0) {
       return 0;
@@ -149,7 +165,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
       }
       let nodesCheckedChilren = 0;
       if (node.children) {
-        nodesCheckedChilren = this.recursive(node.children, facets);
+        nodesCheckedChilren = this.foundNodesAndSetCount(node.children, facets);
       }
       node.hidden = nodesCheckedChilren === 0 && nodesChecked === 0;
       nodesChecked += nodesCheckedChilren;
@@ -157,7 +173,7 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     return nodesChecked;
   }
 
-  recursiveByNode(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
+  setCountRecursively(node: FilingHoldingSchemeNode, facets: ResultFacet[]): number {
     let nodesChecked = 0;
     if (!node) {
       return 0;
@@ -173,14 +189,39 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     let nodesCheckedChilren = 0;
     if (node.children) {
       for (const child of node.children) {
-        nodesCheckedChilren += this.recursiveByNode(child, facets);
+        nodesCheckedChilren += this.setCountRecursively(child, facets);
       }
     }
     node.hidden = nodesCheckedChilren === 0 && nodesChecked === 0;
     return nodesCheckedChilren;
   }
 
-  ngOnInit() {}
+  @HostListener('window:mousedown', ['$event'])
+  onMouseDown(event: MouseEvent) {
+    // If mousedown event is fired from .handler, toggle flag to true
+    if (event && this.resizebar && event.target === this.resizebar.nativeElement) {
+      this.isHandlerDragging = true;
+    }
+  }
+
+  @HostListener('window:mouseup')
+  onMouseUp() {
+    // Turn off dragging flag when user mouse is up
+    this.isHandlerDragging = false;
+  }
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    // Don't do anything if dragging flag is false
+    if (!this.isHandlerDragging) {
+      return false;
+    }
+    let height = event.clientY - this.HOST_PADDING_TOP;
+    height = Math.max(this.RESIZABLE_DIV_MINIMUM_HEIGHT, height);
+    height = Math.min(this.hostElementRef.nativeElement.offsetHeight - this.RESIZABLE_DIV_MINIMUM_HEIGHT - this.HOST_PADDING_TOP, height);
+    this.resizableBox.nativeElement.style.height = height + 'px';
+    this.resizableBox.nativeElement.style.flex = '0 0 auto';
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.accessContract) {
@@ -189,107 +230,124 @@ export class FilingHoldingSchemeComponent implements OnInit, OnChanges {
     }
   }
 
-  initFilingHoldingSchemeTree() {
-    this.loadingHolding = true;
-    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract).subscribe((nodes) => {
-      this.fullNodes = nodes;
-      this.nestedDataSourceFull.data = nodes;
-      this.nestedTreeControlFull.dataNodes = nodes;
-      this.loadingHolding = false;
-      this.filtered = false;
-      this.archiveSharedDataServiceService.emitEntireNodes(this.convertNodesToList(nodes));
-      this.archiveSharedDataServiceService.emitFilingHoldingNodes(nodes);
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
-  filterNodes() {
-    this.filtredNodes = [];
+
+  initFilingHoldingSchemeTree() {
+    this.loadingHolding = true;
+    this.archiveService.loadFilingHoldingSchemeTree(this.tenantIdentifier, this.accessContract)
+      .subscribe((nodes) => {
+        this.fullNodes = nodes;
+        this.nestedDataSourceFull.data = nodes;
+        this.nestedTreeControlFull.dataNodes = nodes;
+        this.loadingHolding = false;
+        this.archiveSharedDataService.emitEntireNodes(this.convertNodesToList(nodes));
+        this.archiveSharedDataService.emitFilingHoldingNodes(nodes);
+      });
+  }
+
+  filterNodesToLeavesOnly() {
+    const leaves = [];
     for (const node of this.fullNodes) {
-      let filtredNode = this.buildrecursiveTree(node);
-      if (filtredNode !== null) {
-        this.filtredNodes.push(filtredNode);
+      // TODO simplify
+      const filtredNode = this.buildrecursiveTree(node);
+      if (filtredNode != null) {
+        const leavesOfNode = this.keepEndNodesWithResultsOnly(filtredNode);
+        leaves.push(...leavesOfNode);
       }
     }
-    this.nestedDataSourceFiltred.data = this.filtredNodes;
-    this.nestedTreeControlFiltred.dataNodes = this.filtredNodes;
+    this.nestedDataSourceLeaves.data = leaves;
+
     this.loadingHolding = false;
-    this.filtered = true;
+    this.showEveryNodes = false;
+  }
+
+  keepEndNodesWithResultsOnly(node: FilingHoldingSchemeNode): FilingHoldingSchemeNode[] {
+    if (node.count < 1) {
+      return [];
+    }
+    if (!node.children || node.children.length < 1) {
+      return [copyNodeWhithoutChildren(node)];
+    }
+    const childResult: FilingHoldingSchemeNode[] = [];
+    for (const child of node.children) {
+      childResult.push(...this.keepEndNodesWithResultsOnly(child));
+    }
+    const addedCount = childResult.reduce((accumulator, schemeNode) => accumulator + schemeNode.count, 0);
+    if (addedCount < node.count) {
+      const nodeCopy = copyNodeWhithoutChildren(node);
+      nodeCopy.children = childResult;
+      return [nodeCopy];
+    }
+    return childResult;
   }
 
   buildrecursiveTree(node: FilingHoldingSchemeNode) {
-    if (node.count === 0) return null;
-    else {
-      let filtredNode: FilingHoldingSchemeNode = {
-        count: node.count,
-        id: node.id,
-        label: node.label,
-        title: node.title,
-        type: node.type,
-        children: null,
-        parents: null,
-        vitamId: node.vitamId,
-        checked: node.checked
-      };
-      if (node.children && node.children.length > 0) {
-        let filtredChildren = [];
-
-        for (const child of node.children) {
-          let childFiltred = this.buildrecursiveTree(child);
-          if (childFiltred) {
-            filtredChildren.push(childFiltred);
-          }
-        }
-        if (filtredChildren && filtredChildren.length > 0) {
-          filtredNode.children = filtredChildren;
-        }
-      }
-      return filtredNode;
-    }
-  }
-
-  hasNestedChild = (_: number, node: any) => node.children && node.children.length;
-
-  emitNode(node: FilingHoldingSchemeNode) {
-    this.nodeData = { id: node.id, title: node.title, checked: node.checked, count: node.count };
-    this.recursiveShowById(this.nestedDataSourceFull.data, node.checked, node.id);
-    this.archiveSharedDataServiceService.emitNode(this.nodeData);
-  }
-
-  onTouched = () => {};
-
-  showAllTreeNodes() {
-    this.filtered = false;
-  }
-
-  recursiveShow(nodes: FilingHoldingSchemeNode[], show: boolean) {
-    if (nodes.length === 0) {
+    if (node.count === 0) {
       return;
     }
-    for (const node of nodes) {
-      node.hidden = show;
-      this.recursiveShow(node.children, show);
-      this.linkOneToNotKeep = true;
-      this.linkTwoToNotKeep = false;
-    }
-  }
+    const filtredNode = copyNodeWhithoutChildren(node);
+    if (node.children && node.children.length > 0) {
+      const filtredChildren = [];
 
-  recursiveShowById(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
-    let found = false;
-    if (nodes.length !== 0) {
-      for (const node of nodes) {
-        if (node.id === nodeId) {
-          node.checked = checked;
-          found = true;
-        }
-        if (!found && node.children) {
-          found = this.recursiveShowById(node.children, checked, nodeId);
+      for (const child of node.children) {
+        const childFiltred = this.buildrecursiveTree(child);
+        if (childFiltred) {
+          filtredChildren.push(childFiltred);
         }
       }
-      return found;
+      if (filtredChildren && filtredChildren.length > 0) {
+        filtredNode.children = filtredChildren;
+      }
     }
+    return filtredNode;
+  }
+
+  nodeHasChidren(_: number, node: FilingHoldingSchemeNode): boolean {
+    return nodeHasChildren(node);
+  }
+
+  nodeHasNoChidren(_: number, node: FilingHoldingSchemeNode): boolean {
+    return !nodeHasChildren(node);
+  }
+
+  nodeHasMatchsOrShowAll(node: FilingHoldingSchemeNode): boolean {
+    return this.showEveryNodes || nodeHasMatch(node);
+  }
+
+  emitNode(node: FilingHoldingSchemeNode) {
+    this.nodeData = {id: node.id, title: node.title, checked: node.checked, count: node.count};
+    this.foundNodeAndSetCheck(this.nestedDataSourceFull.data, node.checked, node.id);
+    this.foundNodeAndSetCheck(this.nestedDataSourceLeaves.data, node.checked, node.id);
+    this.archiveSharedDataService.emitNode(this.nodeData);
+  }
+
+  switchViewAllNodes() {
+    this.showEveryNodes = !this.showEveryNodes;
+  }
+
+  foundNodeAndSetCheck(nodes: FilingHoldingSchemeNode[], checked: boolean, nodeId: string): boolean {
+    if (nodes.length < 1) {
+      return;
+    }
+    let nodeHasBeenChecked = false;
+    for (const node of nodes) {
+      if (node.id === nodeId) {
+        node.checked = checked;
+        nodeHasBeenChecked = true;
+      } else if (node.children) {
+        nodeHasBeenChecked = this.foundNodeAndSetCheck(node.children, checked, nodeId);
+      }
+      if (nodeHasBeenChecked) {
+        break;
+      }
+    }
+    return nodeHasBeenChecked;
   }
 
   emitClose() {
-    this.archiveSharedDataServiceService.emitToggle(false);
+    this.archiveSharedDataService.emitToggle(false);
   }
 }

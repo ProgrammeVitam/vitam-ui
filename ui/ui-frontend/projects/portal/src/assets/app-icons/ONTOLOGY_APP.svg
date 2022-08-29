@@ -1,0 +1,764 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1"
+     xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.ontology_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .ontology_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .ontology_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .ontology_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .ontology_app_05{fill:#BCB9BA;}
+  .ontology_app_06{fill:#BBB9BA;}
+  .ontology_app_07{fill:#BBB8B9;}
+  .ontology_app_08{fill:#BAB8B9;}
+  .ontology_app_09{fill:#B9B7B8;}
+  .ontology_app_10{fill:#B9B7B7;}
+  .ontology_app_11{fill:#B8B6B7;}
+  .ontology_app_12{fill:#B8B5B6;}
+  .ontology_app_13{fill:#B7B5B6;}
+  .ontology_app_14{fill:#B7B4B5;}
+  .ontology_app_15{fill:#B6B4B5;}
+  .ontology_app_16{fill:#B6B3B4;}
+  .ontology_app_17{fill:#B5B3B4;}
+  .ontology_app_18{fill:#B4B2B3;}
+  .ontology_app_19{fill:#B3B1B2;}
+  .ontology_app_20{fill:#B3B1B1;}
+  .ontology_app_21{fill:#B2B0B1;}
+  .ontology_app_22{fill:#B2AFB0;}
+  .ontology_app_23{fill:#B1AFB0;}
+  .ontology_app_24{fill:#B1AEAF;}
+  .ontology_app_25{fill:#B0AEAF;}
+  .ontology_app_26{fill:#AFADAE;}
+  .ontology_app_27{fill:#AEACAD;}
+  .ontology_app_28{fill:#ADABAC;}
+  .ontology_app_29{fill:#ADABAB;}
+  .ontology_app_30{fill:#ACAAAB;}
+  .ontology_app_31{fill:#ACAAAA;}
+  .ontology_app_32{fill:#ABA9AA;}
+  .ontology_app_33{fill:#AAA8A9;}
+  .ontology_app_34{fill:#A9A7A8;}
+  .ontology_app_35{fill:#A8A6A7;}
+  .ontology_app_36{fill:#A7A5A6;}
+  .ontology_app_37{fill:#A7A5A5;}
+  .ontology_app_38{fill:#A6A4A5;}
+  .ontology_app_39{fill:#A5A4A4;}
+  .ontology_app_40{fill:#A5A3A4;}
+  .ontology_app_41{fill:#A4A2A3;}
+  .ontology_app_42{fill:#A3A1A2;}
+  .ontology_app_43{fill:#A2A0A1;}
+  .ontology_app_44{fill:#A19FA0;}
+  .ontology_app_45{fill:#A09F9F;}
+  .ontology_app_46{fill:#A09E9F;}
+  .ontology_app_47{fill:#9F9E9E;}
+  .ontology_app_48{fill:#9F9D9E;}
+  .ontology_app_49{fill:#9E9D9D;}
+  .ontology_app_50{fill:#9E9C9D;}
+  .ontology_app_51{fill:#9D9B9C;}
+  .ontology_app_52{fill:#9C9A9B;}
+  .ontology_app_53{fill:#9B9A9B;}
+  .ontology_app_54{fill:#9B999A;}
+  .ontology_app_55{fill:#9A9999;}
+  .ontology_app_56{fill:#9A9899;}
+  .ontology_app_57{fill:#999898;}
+  .ontology_app_58{fill:#999798;}
+  .ontology_app_59{fill:#989797;}
+  .ontology_app_60{fill:#989697;}
+  .ontology_app_61{fill:#979596;}
+  .ontology_app_62{fill:#969596;}
+  .ontology_app_63{fill:#969495;}
+  .ontology_app_64{fill:#959495;}
+  .ontology_app_65{fill:#959394;}
+  .ontology_app_66{fill:#949393;}
+  .ontology_app_67{fill:#949293;}
+  .ontology_app_68{fill:#939292;}
+  .ontology_app_69{fill:#939192;}
+  .ontology_app_70{fill:#929191;}
+  .ontology_app_71{fill:#919091;}
+  .ontology_app_72{fill:#919090;}
+  .ontology_app_73{fill:#908F90;}
+  .ontology_app_74{fill:#908E8F;}
+  .ontology_app_75{fill:#8F8E8F;}
+  .ontology_app_76{fill:#8F8D8E;}
+  .ontology_app_77{fill:#8E8D8D;}
+  .ontology_app_78{fill:#8E8C8D;}
+  .ontology_app_79{fill:#8D8C8C;}
+  .ontology_app_80{fill:#8C8B8C;}
+  .ontology_app_81{fill:#8C8B8B;}
+  .ontology_app_82{fill:#8B8A8B;}
+  .ontology_app_83{fill:#8B8A8A;}
+  .ontology_app_84{fill:#8A898A;}
+  .ontology_app_85{fill:#8A8889;}
+  .ontology_app_86{fill:#898888;}
+  .ontology_app_87{fill:#898788;}
+  .ontology_app_88{fill:#888787;}
+  .ontology_app_89{fill:#878687;}
+  .ontology_app_90{fill:#878686;}
+  .ontology_app_91{fill:#868586;}
+  .ontology_app_92{fill:#868585;}
+  .ontology_app_93{fill:#858485;}
+  .ontology_app_94{fill:#858484;}
+  .ontology_app_95{fill:#848384;}
+  .ontology_app_96{fill:#848383;}
+  .ontology_app_97{fill:#838282;}
+  .ontology_app_98{fill:#828182;}
+  .ontology_app_99{fill:#828181;}
+  .ontology_app_100{fill:#818081;}
+  .ontology_app_101{fill:#818080;}
+  .ontology_app_102{fill:#807F80;}
+  .ontology_app_103{fill:#807F7F;}
+  .ontology_app_104{fill:#7F7E7F;}
+  .ontology_app_105{fill:#7F7E7E;}
+  .ontology_app_106{fill:#7E7D7E;}
+  .ontology_app_107{fill:#7D7D7D;}
+  .ontology_app_108{fill:#7D7C7C;}
+  .ontology_app_109{fill:#7C7B7C;}
+  .ontology_app_110{fill:#7C7B7B;}
+  .ontology_app_111{fill:#7B7A7B;}
+  .ontology_app_112{fill:#7B7A7A;}
+  .ontology_app_113{fill:#7A797A;}
+  .ontology_app_114{fill:#7A7979;}
+  .ontology_app_115{fill:#797879;}
+  .ontology_app_116{fill:#787878;}
+  .ontology_app_117{fill:#787778;}
+  .ontology_app_118{fill:#777777;}
+  .ontology_app_119{fill:#777676;}
+  .ontology_app_120{fill:#767676;}
+  .ontology_app_121{fill:#767575;}
+  .ontology_app_122{fill:#757475;}
+  .ontology_app_123{fill:#757474;}
+  .ontology_app_124{fill:#747374;}
+  .ontology_app_125{fill:#737373;}
+  .ontology_app_126{fill:#737273;}
+  .ontology_app_127{fill:#727272;}
+  .ontology_app_128{fill:#727172;}
+  .ontology_app_129{fill:#717171;}
+  .ontology_app_130{fill:#717070;}
+  .ontology_app_131{fill:#707070;}
+  .ontology_app_132{fill:#706F6F;}
+  .ontology_app_133{fill:#6F6E6F;}
+  .ontology_app_134{fill:#6E6E6E;}
+  .ontology_app_135{fill:#6E6D6E;}
+  .ontology_app_136{fill:#6D6D6D;}
+  .ontology_app_137{fill:#6D6C6D;}
+  .ontology_app_138{fill:#6C6C6C;}
+  .ontology_app_139{fill:#6C6B6C;}
+  .ontology_app_140{fill:#6B6B6B;}
+  .ontology_app_141{fill:#6B6A6A;}
+  .ontology_app_142{fill:#6A6A6A;}
+  .ontology_app_143{fill:#696969;}
+  .ontology_app_144{fill:#686868;}
+  .ontology_app_145{fill:#686768;}
+  .ontology_app_146{fill:#676767;}
+  .ontology_app_147{fill:#676667;}
+  .ontology_app_148{fill:#666666;}
+  .ontology_app_149{fill:#666566;}
+  .ontology_app_150{fill:#656565;}
+  .ontology_app_151{fill:#646464;}
+  .ontology_app_152{fill:#636363;}
+  .ontology_app_153{fill:#626262;}
+  .ontology_app_154{fill:#626162;}
+  .ontology_app_155{fill:#616161;}
+  .ontology_app_156{fill:#616061;}
+  .ontology_app_157{fill:#606060;}
+  .ontology_app_158{fill:#5F5F60;}
+  .ontology_app_159{fill:#5F5F5F;}
+  .ontology_app_160{fill:#5E5E5E;}
+  .ontology_app_161{fill:#5D5D5D;}
+  .ontology_app_162{fill:#5C5C5C;}
+  .ontology_app_163{fill:#5B5B5B;}
+  .ontology_app_164{fill:#5A5A5B;}
+  .ontology_app_165{fill:#5A5A5A;}
+  .ontology_app_166{fill:#59595A;}
+  .ontology_app_167{fill:#595959;}
+  .ontology_app_168{fill:#585858;}
+  .ontology_app_169{fill:#575757;}
+  .ontology_app_170{fill:#565656;}
+  .ontology_app_171{fill:#555656;}
+  .ontology_app_172{fill:#555555;}
+  .ontology_app_173{fill:#545455;}
+  .ontology_app_174{fill:#545454;}
+  .ontology_app_175{fill:#535353;}
+  .ontology_app_176{fill:#525252;}
+  .ontology_app_177{fill:#515151;}
+  .ontology_app_178{fill:#505151;}
+  .ontology_app_179{fill:#505050;}
+  .ontology_app_180{fill:#4F5050;}
+  .ontology_app_181{fill:#4F4F4F;}
+  .ontology_app_182{fill:#4E4F4F;}
+  .ontology_app_183{fill:#4E4E4E;}
+  .ontology_app_184{fill:#4D4D4D;}
+  .ontology_app_185{fill:#4C4C4C;}
+  .ontology_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary-50);}
+  .ontology_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_01);}
+  .ontology_app_188{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_02);}
+  .ontology_app_189{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_03);}
+  .ontology_app_190{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_04);}
+  .ontology_app_191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_05);}
+  .ontology_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_06);}
+  .ontology_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_07);}
+  .ontology_app_194{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_08);}
+  .ontology_app_195{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_09);}
+  .ontology_app_196{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_10);}
+  .ontology_app_197{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_11);}
+  .ontology_app_198{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_12);}
+  .ontology_app_199{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_13);}
+  .ontology_app_200{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_14);}
+  .ontology_app_201{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_15);}
+  .ontology_app_202{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_16);}
+  .ontology_app_203{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_17);}
+  .ontology_app_204{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_18);}
+  .ontology_app_205{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_19);}
+  .ontology_app_206{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_20);}
+  .ontology_app_207{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_21);}
+  .ontology_app_208{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_22);}
+  .ontology_app_209{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_23);}
+  .ontology_app_210{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_24);}
+  .ontology_app_211{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_25);}
+  .ontology_app_212{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_26);}
+  .ontology_app_213{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_27);}
+  .ontology_app_214{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_28);}
+  .ontology_app_215{fill-rule:evenodd;clip-rule:evenodd;fill:var(--vitamui-primary);}
+  .ontology_app_216{fill:#FFFFFF;}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="117.8" width="165.1" x="17.3" y="19.1"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="ontology_app_01" d="M99.8,141.7c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2
+			C17.1,150.2,54.2,141.7,99.8,141.7z"/>
+    <path class="ontology_app_02" d="M99.8,142.1c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,150.4,56.2,142.1,99.8,142.1z"/>
+    <path class="ontology_app_03" d="M99.8,139.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,148.2,56.2,139.9,99.8,139.9z"/>
+    <path class="ontology_app_02" d="M99.8,138.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C20.9,147,56.2,138.7,99.8,138.7z"/>
+    <path class="ontology_app_04" d="M99.7,138.7c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C20.8,147,56.2,138.7,99.7,138.7z"/>
+    <path class="ontology_app_03" d="M20.9,157.4c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C20.9,158,20.9,157.7,20.9,157.4z"/>
+	</g>
+</g>
+  <g>
+	<ellipse class="ontology_app_05" cx="100.3" cy="154.6" rx="58.4" ry="14.7"/>
+    <ellipse class="ontology_app_06" cx="100.3" cy="154.6" rx="58.3" ry="14.7"/>
+    <ellipse class="ontology_app_07" cx="100.3" cy="154.6" rx="58.2" ry="14.7"/>
+    <ellipse class="ontology_app_08" cx="100.3" cy="154.6" rx="58.1" ry="14.6"/>
+    <ellipse class="ontology_app_09" cx="100.3" cy="154.6" rx="58" ry="14.6"/>
+    <ellipse class="ontology_app_10" cx="100.3" cy="154.6" rx="57.9" ry="14.5"/>
+    <ellipse class="ontology_app_11" cx="100.3" cy="154.6" rx="57.8" ry="14.5"/>
+    <ellipse class="ontology_app_12" cx="100.3" cy="154.6" rx="57.7" ry="14.4"/>
+    <ellipse class="ontology_app_13" cx="100.3" cy="154.6" rx="57.6" ry="14.4"/>
+    <ellipse class="ontology_app_14" cx="100.3" cy="154.6" rx="57.5" ry="14.3"/>
+    <ellipse class="ontology_app_15" cx="100.3" cy="154.6" rx="57.4" ry="14.3"/>
+    <ellipse class="ontology_app_16" cx="100.3" cy="154.6" rx="57.3" ry="14.2"/>
+    <ellipse class="ontology_app_17" cx="100.3" cy="154.6" rx="57.2" ry="14.2"/>
+    <ellipse class="ontology_app_18" cx="100.3" cy="154.5" rx="57" ry="14.1"/>
+    <ellipse class="ontology_app_18" cx="100.3" cy="154.5" rx="56.9" ry="14.1"/>
+    <ellipse class="ontology_app_19" cx="100.3" cy="154.5" rx="56.8" ry="14"/>
+    <ellipse class="ontology_app_20" cx="100.3" cy="154.5" rx="56.7" ry="14"/>
+    <ellipse class="ontology_app_21" cx="100.3" cy="154.5" rx="56.6" ry="13.9"/>
+    <ellipse class="ontology_app_22" cx="100.3" cy="154.5" rx="56.5" ry="13.9"/>
+    <ellipse class="ontology_app_23" cx="100.3" cy="154.5" rx="56.4" ry="13.8"/>
+    <ellipse class="ontology_app_24" cx="100.3" cy="154.5" rx="56.3" ry="13.8"/>
+    <ellipse class="ontology_app_25" cx="100.3" cy="154.5" rx="56.2" ry="13.7"/>
+    <ellipse class="ontology_app_26" cx="100.3" cy="154.5" rx="56.1" ry="13.7"/>
+    <ellipse class="ontology_app_26" cx="100.3" cy="154.5" rx="56" ry="13.6"/>
+    <ellipse class="ontology_app_27" cx="100.2" cy="154.5" rx="55.9" ry="13.6"/>
+    <ellipse class="ontology_app_27" cx="100.2" cy="154.5" rx="55.8" ry="13.5"/>
+    <ellipse class="ontology_app_28" cx="100.2" cy="154.5" rx="55.7" ry="13.5"/>
+    <ellipse class="ontology_app_29" cx="100.2" cy="154.5" rx="55.6" ry="13.5"/>
+    <ellipse class="ontology_app_30" cx="100.2" cy="154.4" rx="55.5" ry="13.4"/>
+    <ellipse class="ontology_app_31" cx="100.2" cy="154.4" rx="55.4" ry="13.4"/>
+    <ellipse class="ontology_app_32" cx="100.2" cy="154.4" rx="55.3" ry="13.3"/>
+    <ellipse class="ontology_app_33" cx="100.2" cy="154.4" rx="55.2" ry="13.3"/>
+    <ellipse class="ontology_app_33" cx="100.2" cy="154.4" rx="55.1" ry="13.2"/>
+    <ellipse class="ontology_app_34" cx="100.2" cy="154.4" rx="55" ry="13.2"/>
+    <ellipse class="ontology_app_34" cx="100.2" cy="154.4" rx="54.9" ry="13.1"/>
+    <ellipse class="ontology_app_35" cx="100.2" cy="154.4" rx="54.8" ry="13.1"/>
+    <ellipse class="ontology_app_35" cx="100.2" cy="154.4" rx="54.7" ry="13"/>
+    <ellipse class="ontology_app_36" cx="100.2" cy="154.4" rx="54.6" ry="13"/>
+    <ellipse class="ontology_app_37" cx="100.2" cy="154.4" rx="54.5" ry="12.9"/>
+    <ellipse class="ontology_app_38" cx="100.2" cy="154.4" rx="54.4" ry="12.9"/>
+    <ellipse class="ontology_app_39" cx="100.2" cy="154.4" rx="54.3" ry="12.8"/>
+    <ellipse class="ontology_app_40" cx="100.2" cy="154.4" rx="54.2" ry="12.8"/>
+    <ellipse class="ontology_app_41" cx="100.2" cy="154.4" rx="54.1" ry="12.7"/>
+    <ellipse class="ontology_app_41" cx="100.2" cy="154.3" rx="54" ry="12.7"/>
+    <ellipse class="ontology_app_42" cx="100.2" cy="154.3" rx="53.9" ry="12.6"/>
+    <ellipse class="ontology_app_42" cx="100.2" cy="154.3" rx="53.7" ry="12.6"/>
+    <ellipse class="ontology_app_43" cx="100.2" cy="154.3" rx="53.6" ry="12.5"/>
+    <ellipse class="ontology_app_43" cx="100.2" cy="154.3" rx="53.5" ry="12.5"/>
+    <ellipse class="ontology_app_44" cx="100.2" cy="154.3" rx="53.4" ry="12.4"/>
+    <ellipse class="ontology_app_45" cx="100.2" cy="154.3" rx="53.3" ry="12.4"/>
+    <ellipse class="ontology_app_46" cx="100.2" cy="154.3" rx="53.2" ry="12.4"/>
+    <ellipse class="ontology_app_47" cx="100.2" cy="154.3" rx="53.1" ry="12.3"/>
+    <ellipse class="ontology_app_48" cx="100.2" cy="154.3" rx="53" ry="12.3"/>
+    <ellipse class="ontology_app_49" cx="100.2" cy="154.3" rx="52.9" ry="12.2"/>
+    <ellipse class="ontology_app_50" cx="100.2" cy="154.3" rx="52.8" ry="12.2"/>
+    <ellipse class="ontology_app_51" cx="100.2" cy="154.3" rx="52.7" ry="12.1"/>
+    <ellipse class="ontology_app_51" cx="100.2" cy="154.3" rx="52.6" ry="12.1"/>
+    <ellipse class="ontology_app_52" cx="100.2" cy="154.2" rx="52.5" ry="12"/>
+    <ellipse class="ontology_app_53" cx="100.2" cy="154.2" rx="52.4" ry="12"/>
+    <ellipse class="ontology_app_54" cx="100.2" cy="154.2" rx="52.3" ry="11.9"/>
+    <ellipse class="ontology_app_55" cx="100.2" cy="154.2" rx="52.2" ry="11.9"/>
+    <ellipse class="ontology_app_56" cx="100.2" cy="154.2" rx="52.1" ry="11.8"/>
+    <ellipse class="ontology_app_57" cx="100.2" cy="154.2" rx="52" ry="11.8"/>
+    <ellipse class="ontology_app_58" cx="100.2" cy="154.2" rx="51.9" ry="11.7"/>
+    <ellipse class="ontology_app_59" cx="100.2" cy="154.2" rx="51.8" ry="11.7"/>
+    <ellipse class="ontology_app_60" cx="100.2" cy="154.2" rx="51.7" ry="11.6"/>
+    <ellipse class="ontology_app_61" cx="100.2" cy="154.2" rx="51.6" ry="11.6"/>
+    <ellipse class="ontology_app_62" cx="100.2" cy="154.2" rx="51.5" ry="11.5"/>
+    <ellipse class="ontology_app_63" cx="100.2" cy="154.2" rx="51.4" ry="11.5"/>
+    <ellipse class="ontology_app_64" cx="100.2" cy="154.2" rx="51.3" ry="11.4"/>
+    <ellipse class="ontology_app_65" cx="100.2" cy="154.2" rx="51.2" ry="11.4"/>
+    <ellipse class="ontology_app_66" cx="100.2" cy="154.2" rx="51.1" ry="11.3"/>
+    <ellipse class="ontology_app_67" cx="100.2" cy="154.1" rx="51" ry="11.3"/>
+    <ellipse class="ontology_app_68" cx="100.2" cy="154.1" rx="50.9" ry="11.2"/>
+    <ellipse class="ontology_app_69" cx="100.2" cy="154.1" rx="50.8" ry="11.2"/>
+    <ellipse class="ontology_app_70" cx="100.2" cy="154.1" rx="50.7" ry="11.2"/>
+    <ellipse class="ontology_app_71" cx="100.2" cy="154.1" rx="50.6" ry="11.1"/>
+    <ellipse class="ontology_app_72" cx="100.2" cy="154.1" rx="50.4" ry="11.1"/>
+    <ellipse class="ontology_app_73" cx="100.2" cy="154.1" rx="50.3" ry="11"/>
+    <ellipse class="ontology_app_74" cx="100.2" cy="154.1" rx="50.2" ry="11"/>
+    <ellipse class="ontology_app_75" cx="100.2" cy="154.1" rx="50.1" ry="10.9"/>
+    <ellipse class="ontology_app_76" cx="100.2" cy="154.1" rx="50" ry="10.9"/>
+    <ellipse class="ontology_app_77" cx="100.2" cy="154.1" rx="49.9" ry="10.8"/>
+    <ellipse class="ontology_app_78" cx="100.2" cy="154.1" rx="49.8" ry="10.8"/>
+    <ellipse class="ontology_app_79" cx="100.2" cy="154.1" rx="49.7" ry="10.7"/>
+    <ellipse class="ontology_app_80" cx="100.2" cy="154.1" rx="49.6" ry="10.7"/>
+    <ellipse class="ontology_app_81" cx="100.2" cy="154.1" rx="49.5" ry="10.6"/>
+    <ellipse class="ontology_app_82" cx="100.2" cy="154" rx="49.4" ry="10.6"/>
+    <ellipse class="ontology_app_83" cx="100.1" cy="154" rx="49.3" ry="10.5"/>
+    <ellipse class="ontology_app_84" cx="100.1" cy="154" rx="49.2" ry="10.5"/>
+    <ellipse class="ontology_app_85" cx="100.1" cy="154" rx="49.1" ry="10.4"/>
+    <ellipse class="ontology_app_86" cx="100.1" cy="154" rx="49" ry="10.4"/>
+    <ellipse class="ontology_app_87" cx="100.1" cy="154" rx="48.9" ry="10.3"/>
+    <ellipse class="ontology_app_88" cx="100.1" cy="154" rx="48.8" ry="10.3"/>
+    <ellipse class="ontology_app_89" cx="100.1" cy="154" rx="48.7" ry="10.2"/>
+    <ellipse class="ontology_app_90" cx="100.1" cy="154" rx="48.6" ry="10.2"/>
+    <ellipse class="ontology_app_91" cx="100.1" cy="154" rx="48.5" ry="10.1"/>
+    <ellipse class="ontology_app_92" cx="100.1" cy="154" rx="48.4" ry="10.1"/>
+    <ellipse class="ontology_app_93" cx="100.1" cy="154" rx="48.3" ry="10"/>
+    <ellipse class="ontology_app_94" cx="100.1" cy="154" rx="48.2" ry="10"/>
+    <ellipse class="ontology_app_95" cx="100.1" cy="154" rx="48.1" ry="10"/>
+    <ellipse class="ontology_app_96" cx="100.1" cy="154" rx="48" ry="9.9"/>
+    <ellipse class="ontology_app_97" cx="100.1" cy="153.9" rx="47.9" ry="9.9"/>
+    <ellipse class="ontology_app_98" cx="100.1" cy="153.9" rx="47.8" ry="9.8"/>
+    <ellipse class="ontology_app_99" cx="100.1" cy="153.9" rx="47.7" ry="9.8"/>
+    <ellipse class="ontology_app_100" cx="100.1" cy="153.9" rx="47.6" ry="9.7"/>
+    <ellipse class="ontology_app_101" cx="100.1" cy="153.9" rx="47.5" ry="9.7"/>
+    <ellipse class="ontology_app_102" cx="100.1" cy="153.9" rx="47.4" ry="9.6"/>
+    <ellipse class="ontology_app_103" cx="100.1" cy="153.9" rx="47.3" ry="9.6"/>
+    <ellipse class="ontology_app_104" cx="100.1" cy="153.9" rx="47.1" ry="9.5"/>
+    <ellipse class="ontology_app_105" cx="100.1" cy="153.9" rx="47" ry="9.5"/>
+    <ellipse class="ontology_app_106" cx="100.1" cy="153.9" rx="46.9" ry="9.4"/>
+    <ellipse class="ontology_app_107" cx="100.1" cy="153.9" rx="46.8" ry="9.4"/>
+    <ellipse class="ontology_app_108" cx="100.1" cy="153.9" rx="46.7" ry="9.3"/>
+    <ellipse class="ontology_app_109" cx="100.1" cy="153.9" rx="46.6" ry="9.3"/>
+    <ellipse class="ontology_app_110" cx="100.1" cy="153.9" rx="46.5" ry="9.2"/>
+    <ellipse class="ontology_app_111" cx="100.1" cy="153.8" rx="46.4" ry="9.2"/>
+    <ellipse class="ontology_app_112" cx="100.1" cy="153.8" rx="46.3" ry="9.1"/>
+    <ellipse class="ontology_app_113" cx="100.1" cy="153.8" rx="46.2" ry="9.1"/>
+    <ellipse class="ontology_app_114" cx="100.1" cy="153.8" rx="46.1" ry="9"/>
+    <ellipse class="ontology_app_115" cx="100.1" cy="153.8" rx="46" ry="9"/>
+    <ellipse class="ontology_app_116" cx="100.1" cy="153.8" rx="45.9" ry="8.9"/>
+    <ellipse class="ontology_app_117" cx="100.1" cy="153.8" rx="45.8" ry="8.9"/>
+    <ellipse class="ontology_app_118" cx="100.1" cy="153.8" rx="45.7" ry="8.8"/>
+    <ellipse class="ontology_app_119" cx="100.1" cy="153.8" rx="45.6" ry="8.8"/>
+    <ellipse class="ontology_app_120" cx="100.1" cy="153.8" rx="45.5" ry="8.8"/>
+    <ellipse class="ontology_app_121" cx="100.1" cy="153.8" rx="45.4" ry="8.7"/>
+    <ellipse class="ontology_app_122" cx="100.1" cy="153.8" rx="45.3" ry="8.7"/>
+    <ellipse class="ontology_app_123" cx="100.1" cy="153.8" rx="45.2" ry="8.6"/>
+    <ellipse class="ontology_app_124" cx="100.1" cy="153.8" rx="45.1" ry="8.6"/>
+    <ellipse class="ontology_app_125" cx="100.1" cy="153.8" rx="45" ry="8.5"/>
+    <ellipse class="ontology_app_126" cx="100.1" cy="153.7" rx="44.9" ry="8.5"/>
+    <ellipse class="ontology_app_127" cx="100.1" cy="153.7" rx="44.8" ry="8.4"/>
+    <ellipse class="ontology_app_128" cx="100.1" cy="153.7" rx="44.7" ry="8.4"/>
+    <ellipse class="ontology_app_129" cx="100.1" cy="153.7" rx="44.6" ry="8.3"/>
+    <ellipse class="ontology_app_130" cx="100.1" cy="153.7" rx="44.5" ry="8.3"/>
+    <ellipse class="ontology_app_131" cx="100.1" cy="153.7" rx="44.4" ry="8.2"/>
+    <ellipse class="ontology_app_132" cx="100.1" cy="153.7" rx="44.3" ry="8.2"/>
+    <ellipse class="ontology_app_133" cx="100.1" cy="153.7" rx="44.2" ry="8.1"/>
+    <ellipse class="ontology_app_134" cx="100.1" cy="153.7" rx="44.1" ry="8.1"/>
+    <ellipse class="ontology_app_135" cx="100.1" cy="153.7" rx="44" ry="8"/>
+    <ellipse class="ontology_app_136" cx="100.1" cy="153.7" rx="43.8" ry="8"/>
+    <ellipse class="ontology_app_137" cx="100.1" cy="153.7" rx="43.7" ry="7.9"/>
+    <ellipse class="ontology_app_138" cx="100.1" cy="153.7" rx="43.6" ry="7.9"/>
+    <ellipse class="ontology_app_139" cx="100.1" cy="153.7" rx="43.5" ry="7.8"/>
+    <ellipse class="ontology_app_140" cx="100.1" cy="153.7" rx="43.4" ry="7.8"/>
+    <ellipse class="ontology_app_141" cx="100.1" cy="153.6" rx="43.3" ry="7.7"/>
+    <ellipse class="ontology_app_142" cx="100.1" cy="153.6" rx="43.2" ry="7.7"/>
+    <ellipse class="ontology_app_143" cx="100.1" cy="153.6" rx="43.1" ry="7.7"/>
+    <ellipse class="ontology_app_143" cx="100.1" cy="153.6" rx="43" ry="7.6"/>
+    <ellipse class="ontology_app_144" cx="100.1" cy="153.6" rx="42.9" ry="7.6"/>
+    <ellipse class="ontology_app_145" cx="100.1" cy="153.6" rx="42.8" ry="7.5"/>
+    <ellipse class="ontology_app_146" cx="100.1" cy="153.6" rx="42.7" ry="7.5"/>
+    <ellipse class="ontology_app_147" cx="100" cy="153.6" rx="42.6" ry="7.4"/>
+    <ellipse class="ontology_app_148" cx="100" cy="153.6" rx="42.5" ry="7.4"/>
+    <ellipse class="ontology_app_149" cx="100" cy="153.6" rx="42.4" ry="7.3"/>
+    <ellipse class="ontology_app_150" cx="100" cy="153.6" rx="42.3" ry="7.3"/>
+    <ellipse class="ontology_app_151" cx="100" cy="153.6" rx="42.2" ry="7.2"/>
+    <ellipse class="ontology_app_151" cx="100" cy="153.6" rx="42.1" ry="7.2"/>
+    <ellipse class="ontology_app_152" cx="100" cy="153.6" rx="42" ry="7.1"/>
+    <ellipse class="ontology_app_152" cx="100" cy="153.5" rx="41.9" ry="7.1"/>
+    <ellipse class="ontology_app_153" cx="100" cy="153.5" rx="41.8" ry="7"/>
+    <ellipse class="ontology_app_154" cx="100" cy="153.5" rx="41.7" ry="7"/>
+    <ellipse class="ontology_app_155" cx="100" cy="153.5" rx="41.6" ry="6.9"/>
+    <ellipse class="ontology_app_156" cx="100" cy="153.5" rx="41.5" ry="6.9"/>
+    <ellipse class="ontology_app_157" cx="100" cy="153.5" rx="41.4" ry="6.8"/>
+    <ellipse class="ontology_app_158" cx="100" cy="153.5" rx="41.3" ry="6.8"/>
+    <ellipse class="ontology_app_159" cx="100" cy="153.5" rx="41.2" ry="6.7"/>
+    <ellipse class="ontology_app_160" cx="100" cy="153.5" rx="41.1" ry="6.7"/>
+    <ellipse class="ontology_app_160" cx="100" cy="153.5" rx="41" ry="6.6"/>
+    <ellipse class="ontology_app_161" cx="100" cy="153.5" rx="40.9" ry="6.6"/>
+    <ellipse class="ontology_app_161" cx="100" cy="153.5" rx="40.8" ry="6.5"/>
+    <ellipse class="ontology_app_162" cx="100" cy="153.5" rx="40.7" ry="6.5"/>
+    <ellipse class="ontology_app_162" cx="100" cy="153.5" rx="40.5" ry="6.5"/>
+    <ellipse class="ontology_app_163" cx="100" cy="153.5" rx="40.4" ry="6.4"/>
+    <ellipse class="ontology_app_164" cx="100" cy="153.4" rx="40.3" ry="6.4"/>
+    <ellipse class="ontology_app_165" cx="100" cy="153.4" rx="40.2" ry="6.3"/>
+    <ellipse class="ontology_app_166" cx="100" cy="153.4" rx="40.1" ry="6.3"/>
+    <ellipse class="ontology_app_167" cx="100" cy="153.4" rx="40" ry="6.2"/>
+    <ellipse class="ontology_app_168" cx="100" cy="153.4" rx="39.9" ry="6.2"/>
+    <ellipse class="ontology_app_168" cx="100" cy="153.4" rx="39.8" ry="6.1"/>
+    <ellipse class="ontology_app_169" cx="100" cy="153.4" rx="39.7" ry="6.1"/>
+    <ellipse class="ontology_app_169" cx="100" cy="153.4" rx="39.6" ry="6"/>
+    <ellipse class="ontology_app_170" cx="100" cy="153.4" rx="39.5" ry="6"/>
+    <ellipse class="ontology_app_171" cx="100" cy="153.4" rx="39.4" ry="5.9"/>
+    <ellipse class="ontology_app_172" cx="100" cy="153.4" rx="39.3" ry="5.9"/>
+    <ellipse class="ontology_app_173" cx="100" cy="153.4" rx="39.2" ry="5.8"/>
+    <ellipse class="ontology_app_174" cx="100" cy="153.4" rx="39.1" ry="5.8"/>
+    <ellipse class="ontology_app_175" cx="100" cy="153.4" rx="39" ry="5.7"/>
+    <ellipse class="ontology_app_175" cx="100" cy="153.4" rx="38.9" ry="5.7"/>
+    <ellipse class="ontology_app_176" cx="100" cy="153.3" rx="38.8" ry="5.6"/>
+    <ellipse class="ontology_app_176" cx="100" cy="153.3" rx="38.7" ry="5.6"/>
+    <ellipse class="ontology_app_177" cx="100" cy="153.3" rx="38.6" ry="5.5"/>
+    <ellipse class="ontology_app_178" cx="100" cy="153.3" rx="38.5" ry="5.5"/>
+    <ellipse class="ontology_app_179" cx="100" cy="153.3" rx="38.4" ry="5.4"/>
+    <ellipse class="ontology_app_180" cx="100" cy="153.3" rx="38.3" ry="5.4"/>
+    <ellipse class="ontology_app_181" cx="100" cy="153.3" rx="38.2" ry="5.3"/>
+    <ellipse class="ontology_app_182" cx="100" cy="153.3" rx="38.1" ry="5.3"/>
+    <ellipse class="ontology_app_183" cx="100" cy="153.3" rx="38" ry="5.3"/>
+    <ellipse class="ontology_app_184" cx="100" cy="153.3" rx="37.9" ry="5.2"/>
+    <ellipse class="ontology_app_184" cx="100" cy="153.3" rx="37.8" ry="5.2"/>
+    <ellipse class="ontology_app_185" cx="100" cy="153.3" rx="37.7" ry="5.1"/>
+</g>
+  <g>
+	<path class="ontology_app_186" d="M58.4,63.4l1,0.1l1-0.1C60.4,63.4,59.5,63.3,58.4,63.4z"/>
+    <g>
+
+			<linearGradient id="SVGID_ONTOLOGY_APP_01" gradientUnits="userSpaceOnUse" x1="6002.5103" y1="108.0974" x2="5999.52" y2="73.0192" gradientTransform="matrix(-1 0 0 1 6103.7666 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+      <polygon class="ontology_app_187" points="142.4,160.7 142.7,67.8 60.4,63.1 59.4,63.3 142.3,67.9 141.9,160.9 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_29" gradientUnits="userSpaceOnUse" x1="5584.8452" y1="-201.0804" x2="5681.6489" y2="-101.0734" gradientTransform="matrix(-1.0991 6.937514e-02 -1.195069e-03 1 6306.5405 -141.8854)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_29);" points="
+			142,161 142.3,67.9 59.9,63.2 60.8,151.2 		"/>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_ONTOLOGY_APP_30" gradientUnits="userSpaceOnUse" x1="5494.7993" y1="-102.6571" x2="5591.8882" y2="-2.3555" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_30);" points="
+			139.8,162.1 140,69.3 59.4,63.5 60.9,151.4 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_31" gradientUnits="userSpaceOnUse" x1="5554.0337" y1="-68.0616" x2="5561.5391" y2="32.3555" gradientTransform="matrix(-1.0702 4.431804e-02 -1.197360e-03 1 6045.7871 -94.4147)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_31);" points="
+			140.2,162 140.5,69.2 60.3,63.4 59.4,63.5 140,69.3 139.7,162.1 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_32" gradientUnits="userSpaceOnUse" x1="5574.665" y1="-53.1268" x2="5671.8862" y2="47.3117" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_32);" points="
+			137.9,162.8 138.1,70.1 59.4,63.5 60.9,151.4 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_33" gradientUnits="userSpaceOnUse" x1="5633.959" y1="-18.3315" x2="5641.4253" y2="81.5584" gradientTransform="matrix(-1.046 2.926696e-02 -1.203160e-03 1 5994.4224 -62.3936)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_33);" points="
+			138.3,162.7 138.6,70 60.3,63.4 59.4,63.5 138.1,70.1 137.8,162.8 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_34" gradientUnits="userSpaceOnUse" x1="5656.3711" y1="-2.4409" x2="5753.7207" y2="98.13" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_34);" points="
+			136.1,163.4 136.2,70.9 59.4,63.5 60.9,151.4 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_35" gradientUnits="userSpaceOnUse" x1="5715.7231" y1="32.5489" x2="5723.1509" y2="131.9235" gradientTransform="matrix(-1.0224 1.455498e-02 -1.208830e-03 1 5944.2148 -31.0937)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_35);" points="
+			136.5,163.3 136.7,70.8 60.2,63.4 59.4,63.5 136.2,70.9 136,163.4 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_36" gradientUnits="userSpaceOnUse" x1="5741.3359" y1="52.1087" x2="5838.8125" y2="152.8109" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_36);" points="
+			134.4,164 134.4,71.6 59.3,63.5 60.9,151.4 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_37" gradientUnits="userSpaceOnUse" x1="5798.6826" y1="85.1581" x2="5806.0728" y2="184.0326" gradientTransform="matrix(-1 0 0 1 5897.8711 0)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_37);" points="
+			134.8,163.9 134.8,71.5 60.2,63.5 59.3,63.5 134.4,71.6 134.3,164 		"/>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_ONTOLOGY_APP_38" gradientUnits="userSpaceOnUse" x1="5482.6167" y1="156.7964" x2="5576.3325" y2="253.6128" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_38);" points="
+			132.7,164.6 132.7,72.3 58.4,63.6 60.8,151.7 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_39" gradientUnits="userSpaceOnUse" x1="5539.8042" y1="189.6432" x2="5547.1992" y2="288.5791" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_39);" points="
+			133.1,164.5 133.2,72.2 59.3,63.5 58.4,63.6 132.7,72.3 132.6,164.6 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_40" gradientUnits="userSpaceOnUse" x1="5562.1152" y1="206.1924" x2="5655.876" y2="303.0559" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_40);" points="
+			131,165.1 131,73 58.4,63.6 60.8,151.7 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_41" gradientUnits="userSpaceOnUse" x1="5619.3066" y1="239.1506" x2="5626.6709" y2="337.6789" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_41);" points="
+			131.4,165 131.4,72.9 59.2,63.6 58.4,63.6 131,73 130.9,165.1 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_42" gradientUnits="userSpaceOnUse" x1="5643.4438" y1="256.7352" x2="5737.2476" y2="353.6431" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_42);" points="
+			129.3,165.7 129.3,73.7 58.4,63.6 60.8,151.7 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_43" gradientUnits="userSpaceOnUse" x1="5700.6387" y1="289.8017" x2="5707.9731" y2="387.9302" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_43);" points="
+			129.7,165.6 129.7,73.6 59.2,63.6 58.4,63.6 129.3,73.7 129.3,165.7 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_44" gradientUnits="userSpaceOnUse" x1="5724.8711" y1="307.541" x2="5818.7231" y2="404.4985" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_44);" points="
+			127.8,166.2 127.6,74.4 58.4,63.7 60.8,151.7 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_45" gradientUnits="userSpaceOnUse" x1="5783.4814" y1="342.172" x2="5790.7861" y2="439.9093" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_45);" points="
+			128.2,166.2 128,74.3 59.2,63.6 58.4,63.7 127.6,74.4 127.8,166.2 		"/>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_ONTOLOGY_APP_46" gradientUnits="userSpaceOnUse" x1="5489.3037" y1="161.3739" x2="5577.9995" y2="253.0042" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_46);" points="
+			126.1,166.8 126,74.8 57.6,63.7 60,152 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_47" gradientUnits="userSpaceOnUse" x1="5543.1938" y1="190.0856" x2="5550.792" y2="291.7443" gradientTransform="matrix(-1.0744 -1.239340e-02 -1.202076e-03 0.9999 6050.1606 -35.4869)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_47);" points="
+			126.5,166.7 126.4,74.7 58.4,63.7 57.6,63.7 126,74.8 126,166.8 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_48" gradientUnits="userSpaceOnUse" x1="5568.8091" y1="210.7913" x2="5657.5488" y2="302.4672" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_48);" points="
+			124.5,167.3 124.4,75.5 57.6,63.7 60,152 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_49" gradientUnits="userSpaceOnUse" x1="5622.7046" y1="239.6088" x2="5630.2739" y2="340.8849" gradientTransform="matrix(-1.0502 -2.616579e-02 -1.207899e-03 0.9999 5998.5933 -6.1878)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_49);" points="
+			124.9,167.3 124.8,75.4 58.4,63.7 57.6,63.7 124.4,75.5 124.5,167.3 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_50" gradientUnits="userSpaceOnUse" x1="5650.146" y1="261.3554" x2="5738.9268" y2="353.0741" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#4C4C4C"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_50);" points="
+			123,167.8 122.8,76.1 57.6,63.7 60,152 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_51" gradientUnits="userSpaceOnUse" x1="5704.0454" y1="290.2759" x2="5711.5869" y2="391.1764" gradientTransform="matrix(-1.0265 -3.962788e-02 -1.213591e-03 0.9999 5948.188 22.4515)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_51);" points="
+			123.4,167.8 123.2,76 58.4,63.7 57.6,63.7 122.8,76.1 123,167.8 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_52" gradientUnits="userSpaceOnUse" x1="5745.6489" y1="326.7147" x2="5834.4795" y2="418.4846" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_52);" points="
+			121.6,168.4 121.3,76.8 57.6,63.7 60.1,152 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_53" gradientUnits="userSpaceOnUse" x1="5786.8984" y1="342.6613" x2="5794.4131" y2="443.2013" gradientTransform="matrix(-1.0039 -5.299334e-02 0 1 5901.6616 51.0892)">
+			<stop  offset="0" style="stop-color:#F5F5F5"/>
+        <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_53);" points="
+			122,168.3 121.7,76.7 58.3,63.7 57.6,63.7 121.3,76.8 121.6,168.4 		"/>
+	</g>
+    <g>
+
+			<linearGradient id="SVGID_ONTOLOGY_APP_54" gradientUnits="userSpaceOnUse" x1="-1856.7909" y1="245.0148" x2="-1704.0437" y2="58.2378" gradientTransform="matrix(1 0 0 1 1840.2769 0)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_54);" points="
+			119.6,170.4 119.8,76.9 56.7,63.7 56.6,152.1 		"/>
+
+      <linearGradient id="SVGID_ONTOLOGY_APP_55" gradientUnits="userSpaceOnUse" x1="7520.1021" y1="1075.3785" x2="7517.1118" y2="1040.2996" gradientTransform="matrix(-0.7615 -0.1554 -2.949967e-04 1.0065 5815.6733 197.2003)">
+			<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-200)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+		</linearGradient>
+
+      <polygon style="fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_ONTOLOGY_APP_55);" points="
+			119.9,170.3 120.2,76.8 57.5,63.7 56.7,63.7 119.8,76.9 119.5,170.4 		"/>
+	</g>
+    <path class="ontology_app_186" d="M60.4,63.1l1,0.1l-3.8,0.7l-0.9-0.2l0.1,0C56.8,63.7,57.6,63.1,60.4,63.1z"/>
+    <polygon class="ontology_app_215" points="58.1,63.8 61.1,63.3 61.1,63.5 58.8,64 	"/>
+</g>
+  <g>
+	<path d="M109.2,140.5c-0.2,0.2-0.3,0.5-0.4,0.8c-0.1,0.4-0.2,0.8-0.4,1.2s-0.3,0.9-0.5,1.3s-0.4,0.8-0.7,1.1s-0.7,0.5-1.1,0.6
+		c-0.5,0.1-1,0.1-1.7-0.1c-1.1-0.3-2-1.1-2.8-2.3c-0.8-1.3-1.2-2.7-1.2-4.3c0-0.7,0.1-1.3,0.2-1.8c0.1-0.5,0.3-1,0.5-1.3
+		s0.4-0.6,0.5-0.8c0.2-0.2,0.3-0.4,0.5-0.5l0.2-0.1l2.2,2.9c-0.1,0-0.2,0.1-0.3,0.2c-0.1,0.1-0.3,0.3-0.5,0.7
+		c-0.2,0.4-0.3,0.8-0.3,1.2c0,0.4,0.1,0.8,0.3,1.2c0.2,0.4,0.5,0.6,0.8,0.7c0.2,0.1,0.4,0,0.6-0.2c0.2-0.2,0.3-0.5,0.4-0.8
+		s0.2-0.8,0.4-1.2s0.3-0.9,0.5-1.3c0.2-0.4,0.4-0.8,0.7-1.1s0.7-0.5,1.1-0.6c0.5-0.1,1-0.1,1.7,0.1c1.2,0.3,2.3,1.2,3.1,2.4
+		c0.8,1.3,1.3,2.8,1.3,4.6c0,0.7-0.1,1.4-0.2,2c-0.2,0.6-0.3,1.1-0.6,1.5c-0.2,0.4-0.4,0.7-0.7,1s-0.4,0.5-0.6,0.6l-0.2,0.2
+		l-2.2-2.9c0,0,0.1-0.1,0.1-0.1c0.1-0.1,0.2-0.2,0.3-0.3c0.2-0.2,0.3-0.3,0.4-0.5s0.2-0.4,0.3-0.8s0.1-0.6,0.1-1
+		c0-0.6-0.1-1-0.4-1.5c-0.3-0.4-0.6-0.7-1-0.8C109.5,140.2,109.3,140.3,109.2,140.5z"/>
+    <path d="M110.8,122.6l3,0.8v11.4l-13.2-3.7v-11.2l3,0.8v7.2l2.1,0.6V123l2.8,0.8v5.6l2.3,0.6V122.6z"/>
+    <path d="M100.6,111.7c0-2.2,0.6-3.9,1.9-4.9c1.3-1.1,2.8-1.4,4.7-0.9c1.9,0.5,3.4,1.7,4.7,3.5s1.9,3.8,1.9,6v5.6l-13.2-3.7V111.7z
+		 M103.8,114.2l6.8,1.9v-1.7c0-1-0.3-2-1-2.9c-0.6-0.9-1.5-1.5-2.4-1.8c-1-0.3-1.8-0.2-2.4,0.4c-0.6,0.5-1,1.3-1,2.4V114.2z"/>
+    <path d="M111,101.7l2.8,1.8v4.2l-13.2-9.2v-4.3l13.2-1.8v4.2l-2.8,0.3V101.7z M104.3,97.4l3.9,2.4v-2.7L104.3,97.4z"/>
+</g>
+  <g>
+	<path class="ontology_app_216" d="M108.4,139.7c-0.2,0.2-0.3,0.5-0.4,0.8c-0.1,0.4-0.2,0.8-0.4,1.2c-0.1,0.4-0.3,0.9-0.5,1.3
+		c-0.2,0.4-0.4,0.8-0.7,1.1s-0.7,0.5-1.1,0.6c-0.5,0.1-1,0.1-1.7-0.1c-1.1-0.3-2-1.1-2.8-2.3c-0.8-1.3-1.2-2.7-1.2-4.3
+		c0-0.7,0.1-1.3,0.2-1.8c0.1-0.5,0.3-1,0.5-1.3s0.4-0.6,0.5-0.8c0.2-0.2,0.3-0.4,0.5-0.5l0.2-0.1l2.2,2.9c-0.1,0-0.2,0.1-0.3,0.2
+		c-0.1,0.1-0.3,0.3-0.5,0.7c-0.2,0.4-0.3,0.8-0.3,1.2c0,0.4,0.1,0.8,0.3,1.2s0.5,0.6,0.8,0.7c0.2,0.1,0.4,0,0.6-0.2
+		c0.2-0.2,0.3-0.5,0.4-0.8s0.2-0.8,0.4-1.2s0.3-0.9,0.5-1.3c0.2-0.4,0.4-0.8,0.7-1.1s0.7-0.5,1.1-0.6c0.5-0.1,1-0.1,1.7,0.1
+		c1.2,0.3,2.3,1.2,3.1,2.4s1.3,2.8,1.3,4.6c0,0.7-0.1,1.4-0.2,2c-0.2,0.6-0.3,1.1-0.6,1.5c-0.2,0.4-0.4,0.7-0.7,1
+		c-0.2,0.3-0.4,0.5-0.6,0.6l-0.2,0.2l-2.2-2.9c0,0,0.1-0.1,0.1-0.1c0.1-0.1,0.2-0.2,0.3-0.3c0.2-0.2,0.3-0.3,0.4-0.5
+		s0.2-0.4,0.3-0.8s0.1-0.6,0.1-1c0-0.6-0.1-1-0.4-1.5s-0.6-0.7-1-0.8C108.8,139.5,108.6,139.5,108.4,139.7z"/>
+    <path class="ontology_app_216" d="M110.1,121.9l3,0.8l0,11.4l-13.2-3.7l0-11.2l3,0.8l0,7.2l2.1,0.6v-5.6l2.8,0.8l0,5.6l2.3,0.6L110.1,121.9z"
+    />
+    <path class="ontology_app_216" d="M99.9,111c0-2.2,0.6-3.9,1.9-4.9c1.3-1.1,2.8-1.4,4.7-0.9c1.9,0.5,3.4,1.7,4.7,3.5s1.9,3.8,1.9,6v5.6
+		l-13.2-3.7V111z M103.1,113.5l6.8,1.9v-1.7c0-1-0.3-2-1-2.9c-0.6-0.9-1.5-1.5-2.4-1.8c-1-0.3-1.8-0.2-2.4,0.4c-0.6,0.5-1,1.3-1,2.4
+		V113.5z"/>
+    <path class="ontology_app_216" d="M110.3,100.9l2.8,1.8l0,4.2l-13.2-9.2v-4.3l13.2-1.8v4.2l-2.8,0.3V100.9z M103.6,96.7l3.9,2.4v-2.7
+		L103.6,96.7z"/>
+</g>
+</svg>

@@ -1,8 +1,8 @@
 ---
 
-- name: "Install {{ vitamui_struct.package_name }} package"
+- name: "Install {{ vitamui_struct.package_name | default(package_name) }} package"
   package:
-    name: "{{ vitamui_struct.package_name }}"
+    name: "{{ vitamui_struct.package_name| default(package_name)  }}"
     state: latest
   register: result
   retries: "{{ packages_install_retries_number }}"
@@ -14,22 +14,15 @@
     - restart service
   when: force_vitamui_version is not defined
 
-- name: Ensure {{ service_name }} service is enabled at boot
-  service:
-    name: "{{ service_name }}"
-    enabled: true
-  notify:
-    - restart service
-
 #### Configuration ####
 
 - name: Check that the directories exist (must be removed when the RPM plugin will be patched)
   file:
-    path: "{{ vitamui_defaults.folder.root_path }}/{{ item }}/{{ vitamui_struct.vitamui_component }}"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/{{ item }}/{{ vitamui_struct.vitamui_component }}"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   with_items:
     - app
     - bin
@@ -46,9 +39,9 @@
   file:
     path: "{{ vitamui_folder_conf }}/sysconfig"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   notify:
     - restart service
 
@@ -56,11 +49,11 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   loop: "{{ vitamui_struct.dirs }}"
-  when: 
+  when:
     - vitamui_struct.dirs is defined
     - vitamui_struct.dirs|length > 0
   notify:
@@ -70,9 +63,9 @@
   template:
     src: "{{ item }}.j2"
     dest: "{{ vitamui_folder_conf }}/sysconfig/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "java_opts"
   tags:
@@ -84,9 +77,9 @@
   template:
     src: "{{ item }}.j2"
     dest: "{{ vitamui_folder_conf }}/{{ item }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "logback.xml"
   tags:
@@ -96,9 +89,9 @@
   template:
     src: "{{ item }}"
     dest: "{{ vitamui_folder_conf }}/{{ item | basename | regex_replace('\\.j2$') }}"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_fileglob:
     - "{{ role_path }}/templates/{{ vitamui_struct.vitamui_component }}/*"
   no_log: "{{ hide_passwords_during_deploy }}"
@@ -107,14 +100,14 @@
   notify:
     - restart service
 
-- name: "Copy {{ vitamui_struct.package_name }} jks keystore (server)"
+- name: "Copy {{ vitamui_struct.service_name | default(service_name) }} jks keystore (server)"
   copy:
-    src: "{{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.store_name }}.jks"
-    dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: "( vitamui_struct.secure|lower == 'true' ) and ({{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.store_name }}.jks || echo nofile') == \"\" }})"
+    src: "{{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks"
+    dest: "{{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks"
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  when: "( vitamui_struct.secure | default(secure) | lower == 'true' ) and ({{ lookup('pipe', 'test -f {{ inventory_dir }}/keystores/server/{{ inventory_hostname }}/keystore_{{ vitamui_struct.vitamui_component }}.jks || echo nofile') == \"\" }})"
   tags:
     - update_vitamui_certificates
   notify:
@@ -125,12 +118,12 @@
   copy:
     src: "{{ item.src }}"
     dest: "{{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks"
-    owner: "{{ vitamui_defaults.users.vitamui }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
-  when: 
-    - vitamui_struct.secure|lower == 'true'
-    - vitamui_certificate_type is defined 
+    owner: "{{ vitamui_defaults.users.vitamui | default('vitamui') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
+  when:
+    - vitamui_struct.secure | default(secure) | lower == 'true'
+    - vitamui_certificate_type is defined
     - "vitamui_certificate_type|lower == '{{ item.name }}'"
     - "{{ lookup('pipe', 'test -f {{ item.src }} || echo nofile') == \"\"}}"
   with_items:
@@ -143,20 +136,20 @@
   notify:
     - restart service
 
-- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}" 
+- name: "Execute sub-tasks for the component type: {{ vitamui_struct.vitamui_component_type }}"
   include_tasks: "{{ vitamui_struct.vitamui_component_type }}.yml"
   when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component_type }}.yml || echo nofile') == \"\" }}"
 
-- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}" 
+- name: "Execute sub-tasks for the component: {{ vitamui_struct.vitamui_component }}"
   include_tasks: "{{ vitamui_struct.vitamui_component }}.yml"
   when: "{{ lookup('pipe', 'test -f {{ role_path }}/tasks/{{ vitamui_struct.vitamui_component }}.yml || echo nofile') == \"\" }}"
 
-- name: flush_handlers
-  meta: flush_handlers
+- meta: flush_handlers
   tags:
     - always
 
-- name: "Ensure {{ service_name }} service is started"
+- name: "Ensure {{ vitamui_struct.service_name | default(service_name) }} service is started"
   service:
-    name: "{{ service_name }}"
+    name: "{{ vitamui_struct.service_name | default(service_name) }}"
     state: started
+    enabled: "{{ vitamui_struct.at_boot | default(at_boot) }}"

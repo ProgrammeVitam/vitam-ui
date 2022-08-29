@@ -1,0 +1,1 @@
+[{"$or":[{"$eq":{"#management.DisseminationRule.Rules.StartDate":"2021-11-09"}}]}]

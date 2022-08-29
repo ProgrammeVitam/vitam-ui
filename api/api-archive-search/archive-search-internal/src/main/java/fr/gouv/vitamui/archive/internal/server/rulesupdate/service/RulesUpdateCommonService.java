@@ -52,7 +52,7 @@ public class RulesUpdateCommonService {
 
     public void deleteAttributesFromObjectNode(ObjectNode dslRequest, String ...attributes) {
 
-        Arrays.stream(attributes).forEach(attribute -> dslRequest.remove(attribute));
+        Arrays.stream(attributes).forEach(dslRequest::remove);
     }
 
     public void setMassUpdateUnitRuleRequest(MassUpdateUnitRuleRequest massUpdateUnitRuleRequest, RuleActions ruleActions, ObjectNode dslRequest ) {
