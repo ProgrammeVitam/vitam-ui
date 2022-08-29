@@ -52,6 +52,16 @@ export enum SearchCriteriaTypeEnum {
   NODES = 'NODES',
 }
 
+export enum SearchCriteriaMgtRuleEnum {
+  APPRAISAL_RULE = 'APPRAISAL_RULE',
+  ACCESS_RULE = 'ACCESS_RULE',
+  CLASSIFICATION_RULE = 'CLASSIFICATION_RULE',
+  DISSEMINATION_RULE = 'DISSEMINATION_RULE',
+  REUSE_RULE = 'REUSE_RULE',
+  STORAGE_RULE = 'STORAGE_RULE',
+  HOLD_RULE = 'HOLD_RULE',
+}
+
 export interface SearchCriteriaValue {
   value?: CriteriaValue;
   label?: string;
@@ -146,6 +156,10 @@ export class ArchiveSearchResultFacets {
   appraisalRuleFacets?: RuleFacets;
   accessRuleFacets?: RuleFacets;
   storageRuleFacets?: RuleFacets;
+  reuseRuleFacets?: RuleFacets;
+  disseminationRuleFacets?: RuleFacets;
+  holdRuleFacets?: RuleFacets;
+  classificationRuleFacets?: RuleFacets;
 }
 
 export class RuleFacets {

@@ -58,9 +58,10 @@
                   [disabled]="
                     !isRuleCategorySelected ||
                     isAddValidActions ||
-                    isAccessRuleActionDisabled ||
                     isStorageRuleActionDisabled ||
-                    isAccessRuleActionDisabled
+                    isReuseRuleActionDisabled ||
+                    isAccessRuleActionDisabled ||
+                    isDisseminationActionDisabled
                   "
                   (click)="onSelectAction('BLOCK_RULE_INHERITANCE')"
                 >
@@ -68,7 +69,13 @@
                 >
                 <mat-option
                   [disabled]="
-                    !isRuleCategorySelected || isUnlockRulesInheritanceDisabled || isStorageRuleActionDisabled || isAccessRuleActionDisabled
+                    isUnlockRulesInheritanceDisabled ||
+                    isDeleteValidActions ||
+                    !isRuleCategorySelected ||
+                    isStorageRuleActionDisabled ||
+                    isAccessRuleActionDisabled ||
+                    isReuseRuleActionDisabled ||
+                    isDisseminationActionDisabled
                   "
                   (click)="onSelectAction('UNLOCK_RULE_INHERITANCE')"
                 >
@@ -88,10 +95,22 @@
           <mat-form-field class="vitamui-mat-select select-more-actions">
             <mat-select
               placeholder=" {{ 'RULES.OTHER_ACTIONS' | translate }}"
-              [disabled]="!isRuleCategorySelected || !isAllActionsValid() || isAccessRuleActionDisabled"
+              [disabled]="
+                !isRuleCategorySelected ||
+                !isAllActionsValid() ||
+                isAccessRuleActionDisabled ||
+                isReuseRuleActionDisabled ||
+                isDisseminationActionDisabled
+              "
             >
               <mat-option
-                [disabled]="!isRuleCategorySelected || isAddPropertyValidActions || isAddValidActions || isUpdateValidActionsWithProperty"
+                [disabled]="
+                  !isRuleCategorySelected ||
+                  isAddPropertyValidActions ||
+                  isAddValidActions ||
+                  isUpdateValidActionsWithFinalAction ||
+                  isUpdateValidActionsWithProperty
+                "
                 (click)="onSelectAction('UPDATE_PROPERTY')"
                 matTooltip="{{ isAddPropertyValidActions ? messageNotAddProperty : isAddValidActions ? messageNotAdd : '' }}"
                 matTooltipClass="vitamui-tooltip-rules "

@@ -48,6 +48,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.InputStream;
 import java.util.List;
 
+import static fr.gouv.vitamui.collect.common.rest.RestApi.PROJECTS;
+import static fr.gouv.vitamui.collect.common.rest.RestApi.STREAM_UPLOAD_PATH;
+
 /**
  * A REST client to stream file to Collect API.
  */
@@ -62,7 +65,7 @@ public class CollectStreamingExternalRestClient
 
     @Override
     public String getPathUrl() {
-        return RestApi.COLLECT_PROJECT_PATH;
+        return RestApi.COLLECT_PATH;
     }
 
     @Override
@@ -84,7 +87,7 @@ public class CollectStreamingExternalRestClient
         String projectId, InputStream inputStream) {
         LOGGER.debug("Calling upload using streaming process");
         final UriComponentsBuilder uriBuilder =
-            UriComponentsBuilder.fromHttpUrl(getUrl() + "/upload");
+            UriComponentsBuilder.fromHttpUrl(getUrl() + PROJECTS + STREAM_UPLOAD_PATH);
 
         final MultiValueMap<String, String> headersList = new HttpHeaders();
         headersList.addAll(buildHeaders(context));

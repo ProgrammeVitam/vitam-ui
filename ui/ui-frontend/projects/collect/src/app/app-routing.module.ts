@@ -26,7 +26,6 @@ const routes: Routes = [
     resolve: { userAnalytics: AnalyticsResolver },
     data: { appId: 'COLLECT_APP' },
   },
-
   { path: '**', redirectTo: '' },
 ];
 

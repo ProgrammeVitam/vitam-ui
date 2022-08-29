@@ -1,20 +1,15 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Optional;
-
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
+import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
+import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
 import fr.gouv.vitamui.commons.api.exception.InvalidFormatException;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.commons.rest.client.ExternalHttpContext;
+import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
+import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import fr.gouv.vitamui.iam.external.client.CasExternalRestClient;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
 import org.junit.Before;
@@ -27,11 +22,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.webflow.execution.Event;
 
-import fr.gouv.vitamui.cas.provider.Pac4jClientIdentityProviderDto;
-import fr.gouv.vitamui.cas.provider.ProvidersService;
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
-import fr.gouv.vitamui.iam.common.dto.IdentityProviderDto;
-import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link DispatcherAction}.
@@ -61,7 +63,7 @@ public final class DispatcherActionTest extends BaseWebflowActionTest {
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
         providersService = mock(ProvidersService.class);

@@ -35,7 +35,13 @@
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
 import { Injectable } from '@angular/core';
-import { ResultFacet, ResultFacetList, RuleFacets, SearchCriteriaTypeEnum } from './../models/search.criteria';
+import {
+  ArchiveSearchResultFacets,
+  ResultFacet,
+  ResultFacetList,
+  RuleFacets,
+  SearchCriteriaMgtRuleEnum,
+} from './../models/search.criteria';
 
 @Injectable({
   providedIn: 'root',
@@ -64,7 +70,48 @@ export class ArchiveFacetsService {
     return nodesFacets;
   }
 
-  extractRulesFacetsResultsByCategory(facetResults: ResultFacetList[], category: SearchCriteriaTypeEnum): RuleFacets {
+  extractRulesFacetsResults(facetResults: ResultFacetList[]): ArchiveSearchResultFacets {
+    let archiveSearchResultFacets: ArchiveSearchResultFacets = new ArchiveSearchResultFacets();
+
+    if (facetResults) {
+      archiveSearchResultFacets.appraisalRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.APPRAISAL_RULE
+      );
+
+      archiveSearchResultFacets.accessRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.ACCESS_RULE
+      );
+
+      archiveSearchResultFacets.disseminationRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.DISSEMINATION_RULE
+      );
+
+      archiveSearchResultFacets.reuseRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.REUSE_RULE
+      );
+
+      archiveSearchResultFacets.holdRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.HOLD_RULE
+      );
+
+      archiveSearchResultFacets.classificationRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.CLASSIFICATION_RULE
+      );
+
+      archiveSearchResultFacets.storageRuleFacets = this.extractRulesFacetsResultsByCategory(
+        facetResults,
+        SearchCriteriaMgtRuleEnum.STORAGE_RULE
+      );
+    }
+    return archiveSearchResultFacets;
+  }
+  private extractRulesFacetsResultsByCategory(facetResults: ResultFacetList[], category: string): RuleFacets {
     const rulesFacets = new RuleFacets();
     if (facetResults && facetResults.length > 0) {
       for (const facet of facetResults) {

@@ -44,7 +44,8 @@ import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 import { InjectorModule, LoggerModule, VitamuiMissingTranslationHandler } from 'ui-frontend-common';
-import { InheritedPropertyDto, Unit, UnitRuleDto } from '../../../models/unit.interface';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
+import { InheritedPropertyDto, ManagementRule, RuleCategoryVitamUiDto, Unit, UnitRuleDto } from '../../../models/unit.interface';
 import { ArchiveUnitRulesInformationsTabComponent } from './archive-unit-rules-informations-tab.component';
 
 export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
@@ -71,15 +72,19 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
   const inheritedPropertyCarried: InheritedPropertyDto = {
     PropertyName: 'name',
     PropertyValue: {},
-    Paths: ['firstId'],
+    Paths: [['firstId']],
   };
   const inheritedProperty: InheritedPropertyDto = {
     PropertyName: 'name',
     PropertyValue: {},
-    Paths: [['firstId', 'secondId', 'thirdId']],
+    Paths: [
+      ['firstId', 'secondId', 'thirdId'],
+      ['firstId2', 'secondId2', 'thirdId2'],
+    ],
   };
 
   const archiveUnit: Unit = {
+    '#management': null,
     '#allunitups': [],
     '#id': 'id',
     '#object': '',
@@ -108,6 +113,7 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
         BrowserAnimationsModule,
         HttpClientTestingModule,
         LoggerModule.forRoot(),
+        VitamUICommonTestModule,
         TranslateModule.forRoot({
           missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
           defaultLanguage: 'fr',
@@ -127,46 +133,131 @@ describe('ArchiveUnitRulesInformationsTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('the component should be created', () => {
     expect(component).toBeTruthy();
   });
-  it('should return Hérité as Final Action value', () => {
-    expect(component.getFinalActionStatus(inheritedProperty)).toEqual('Hérité');
+  it('should the returned key as Final Action value be', () => {
+    expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
+    );
   });
 
   it('should return Elimination as Rule Property Name', () => {
-    expect(component.getPropertyValue('DESTROY')).toEqual('Elimination');
+    expect(component.getPropertyValue('DESTROY')).not.toBeNull();
+    expect(component.getPropertyValue('DESTROY')).toEqual('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.DESTROY');
+    expect(component.getPropertyValue('DESTROY')).toBeDefined();
   });
 
-  it('should return DUA as Rule Category Name', () => {
-    expect(component.getRuleCategoryName('AppraisalRule')).toEqual('DUA');
+  it('should the returned key as Rule Category Name be', () => {
+    expect(component.getRuleCategoryName('AppraisalRule')).toBeDefined();
+    expect(component.getRuleCategoryName('AppraisalRule')).toEqual('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.CATEGORY_NAME.APPRAISALRULE');
+    expect(component.getRuleCategoryName('AppraisalRule')).not.toBeNull();
   });
 
   it('should return Sort final as Rule Property Name', () => {
-    expect(component.getPropertyName('FinalAction')).toEqual('Sort final');
+    expect(component.getPropertyName('FinalAction')).not.toBeNull();
+    expect(component.getPropertyName('FinalAction')).not.toBeNaN();
+    expect(component.getPropertyName('FinalAction')).toBeDefined();
+    expect(component.getPropertyName('FinalAction')).toEqual('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.FINAL_ACTION_VALUE');
   });
 
-  it('should return Conservation as Rule Property Name', () => {
-    expect(component.getPropertyValue('KEEP')).toEqual('Conservation');
+  it('should the returned key as Rule Property Name be', () => {
+    expect(component.getPropertyValue('KEEP')).not.toBeNull();
+    expect(component.getPropertyValue('KEEP')).not.toBeNaN();
+    expect(component.getPropertyValue('KEEP')).toBeDefined();
+    expect(component.getPropertyValue('KEEP')).toEqual('ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.KEEP');
   });
 
-  it('should return Porté as Final Action value', () => {
-    expect(component.getFinalActionStatus(inheritedPropertyCarried)).toEqual('Porté');
+  it('should the returned key as Final Action be carried when the paths contain one element', () => {
+    expect(component.getFinalActionStatus(inheritedPropertyCarried)).not.toBeNull();
+    expect(component.getFinalActionStatus(inheritedPropertyCarried)).not.toBeNaN();
+    expect(component.getFinalActionStatus(inheritedPropertyCarried)).toBeDefined();
+    expect(component.getFinalActionStatus(inheritedPropertyCarried)).toEqual(
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.CARRIED'
+    );
+  });
+
+  it('should the returned key as Final Action be inherited when the paths contains more than 1 element', () => {
+    expect(component.getFinalActionStatus(inheritedProperty)).not.toBeNull();
+    expect(component.getFinalActionStatus(inheritedProperty)).not.toBeNaN();
+    expect(component.getFinalActionStatus(inheritedProperty)).toBeDefined();
+    expect(component.getFinalActionStatus(inheritedProperty)).toEqual(
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULES_FINAL_ACTION.INHERITED'
+    );
   });
 
   it('the parameter of showing properties list should be true', () => {
+    // Given
     component.ruleCategory = 'AppraisalRule';
-    component.getInheritedRulesDetails(archiveUnit);
-    expect(component.isToShowPropertiesList).toBeTruthy();
+    // When
+    component.archiveUnitRules = archiveUnit;
+
+    // Then
+    expect(component.isToShowPropertiesList).not.toBeDefined();
+    expect(component.getInheritedRulesDetails(archiveUnit)).not.toBeDefined();
+    expect(component.isToShowPropertiesList).not.toBeNull();
   });
 
   it('the value of listOfPropertiesCollapsed should be false', () => {
+    // When
     component.getHoldRuleInformations(unitRuleDto);
+    // Then
     expect(component.listOfPropertiesCollapsed).not.toBeTruthy();
   });
 
-  it('the value of listOfPropertiesCollapsed should be false', () => {
+  it('the returned value of getClassificationRulePropertyStatus should be undefined when the property is unknown', () => {
+    // Given
     const property = 'UnknownProperty';
-    expect(component.getClassificationRulePropertyStatus(property)).toThrowError('No property found');
+    // When
+    component.archiveUnitRules = archiveUnit;
+    // Then
+    expect(component.getClassificationRulePropertyStatus(property)).not.toBeDefined();
+    expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
+  });
+
+  // new tests
+  it('the returned key of getClassificationRulePropertyStatus when the proprty is ClassificationAudience should be', () => {
+    // Given
+    const property = 'ClassificationAudience';
+    const classificationRule: RuleCategoryVitamUiDto = {
+      Rules: [],
+      FinalAction: 'sort final',
+      ClassificationLevel: 'ClassificationLevel',
+      ClassificationOwner: 'ClassificationOwner',
+      ClassificationAudience: 'ClassificationAudience',
+      ClassificationReassessingDate: '2020/12/12',
+      NeedReassessingAuthorization: true,
+      Inheritance: null,
+    };
+
+    const unitManagementRules: ManagementRule = {
+      AppraisalRule: null,
+      HoldRule: null,
+      StorageRule: null,
+      ReuseRule: null,
+      ClassificationRule: classificationRule,
+      DisseminationRule: null,
+      AccessRule: null,
+    };
+    const archiveUnit: Unit = {
+      '#management': unitManagementRules,
+      '#allunitups': [],
+      '#id': 'id',
+      '#object': '',
+      '#unitType': '',
+      '#unitups': [],
+      '#opi': '',
+      Title_: { fr: 'Teste', en: 'Test' },
+      Description_: { fr: 'DescriptionFr', en: 'DescriptionEn' },
+    };
+    // When
+    component.archiveUnitRules = archiveUnit;
+
+    // Then
+    expect(component.getClassificationRulePropertyStatus(property)).toBeDefined();
+    expect(component.getClassificationRulePropertyStatus(property)).not.toBeNull();
+    expect(component.getClassificationRulePropertyStatus(property)).toEqual(
+      'ARCHIVE_SEARCH.ARCHIVE_UNIT_RULES_DETAILS.RULE_STATUS.CARRIED'
+    );
   });
 });

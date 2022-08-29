@@ -1,0 +1,52 @@
+<vitamui-common-sidenav-header
+  [extended]="isPanelextended"
+  [title]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : (archiveUnit.Title_.en | truncate: 30)"
+  [icon]="
+    archiveUnit?.DescriptionLevel === 'File' || archiveUnit?.DescriptionLevel === 'Item' ? 'vitamui-icon-file' : 'vitamui-icon-folder'
+  "
+  [hasToolTipOnTitle]="true"
+  [toolTipTitleText]="archiveUnit?.Title ? archiveUnit?.Title : archiveUnit.Title_.fr ? archiveUnit.Title_.fr : archiveUnit.Title_.en"
+  [toolTipTitleDuration]="300"
+  (onclose)="emitClose()"
+>
+  <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
+    <button mat-menu-item *ngIf="!isPanelextended" (click)="showExtendedPanel()">
+      {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_MORE_DETAILS' | translate }}
+    </button>
+    <button mat-menu-item *ngIf="isPanelextended" (click)="showNormalPanel()">
+      {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.ACTIONS.SHOW_ONLY_INFORMATION_DETAILS' | translate }}
+    </button>
+    <button
+      mat-menu-item
+      matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
+      matTooltipClass="vitamui-tooltip"
+      [matTooltipShowDelay]="300"
+      (click)="updateMetadataDesc()"
+      [disabled]="updateStarted || (!hasAccessContractManagementPermissions || !hasUpdateDescriptiveUnitMetadataRole)"
+    >
+      {{ 'UNIT_UPDATE.UPDATE_DESC_METADATA' | translate }}
+    </button>
+  </vitamui-common-menu-button>
+</vitamui-common-sidenav-header>
+
+<div class="vitamui-sidepanel-body">
+  <mat-tab-group [selectedIndex]="selectedIndex" [ngClass]="isPanelextended ? 'extended-preview-tab-group' : 'preview-tab-group'">
+    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.INFORMATIONS' | translate }}">
+      <app-archive-unit-information-tab
+        [archiveUnit]="archiveUnit"
+        [accessContract]="accessContract"
+        [updateStarted]="updateStarted"
+        (showNormalPanel)="showNormalPanel()"
+      ></app-archive-unit-information-tab>
+    </mat-tab>
+
+    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.RULES' | translate }}" [disabled]="!isPanelextended">
+      <app-archive-unit-rules-details-tab
+        [archiveUnit]="archiveUnit"
+        [accessContract]="accessContract"
+      ></app-archive-unit-rules-details-tab>
+    </mat-tab>
+
+    <mat-tab label="{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.TABS.OBJECTS' | translate }}" [disabled]="true"> </mat-tab>
+  </mat-tab-group>
+</div>

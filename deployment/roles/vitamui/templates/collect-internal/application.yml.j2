@@ -15,13 +15,13 @@ spring:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.collect.internal.server: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.collect.internal.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
 server:
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure|lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
@@ -35,14 +35,34 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-      enabled: "{{ vitamui_struct.jvm_log|lower }}"
+      enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
       directory: "{{ vitamui_folder_log }}"
+      prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
 
 management:
   server:
     port: {{ vitamui_struct.port_admin }}
     ssl:
       enabled: false
+
+clients:
+  iam-internal:
+    server-host: {{ vitamui.iam_internal.host }}
+    server-port: {{ vitamui.iam_internal.port_service }}
+{% if vitamui.iam_internal.secure | default(secure) | lower == "true" %}
+    secure: {{ vitamui.iam_internal.secure | default(secure) | lower }}
+    ssl-configuration:
+      keystore:
+        key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
+        key-password: {{ password_keystore }}
+        type: JKS
+      truststore:
+        key-path: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
+        key-password: {{ password_truststore }}
+      hostname-verification: false
+{% endif %}
 
 server-identity:
   identityName: {{ vitamui_site_name if groups['hosts_vitamui_consul_server'] | default([]) | length > 0 else vitam_site_name }}

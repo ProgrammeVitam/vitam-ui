@@ -30,6 +30,7 @@
 package fr.gouv.vitamui.archive.internal.server.service;
 
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
+import fr.gouv.vitamui.archive.internal.server.utils.FileReader;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.CriteriaValue;
 import fr.gouv.vitamui.archives.search.common.dto.SearchCriteriaEltDto;
@@ -42,10 +43,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +94,7 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -132,7 +129,7 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(2);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULE_IDENTIFIER_AND_RULE_START_DATE);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
     }
@@ -160,28 +157,8 @@ class ArchivesSearchStorageRuleQueryBuilderServiceTest {
         assertThat(query.getQueries()).isNotEmpty();
         assertThat(query.getQueries()).hasSize(1);
         String queryStr = query.getQueries().toString();
-        String queryFileStr = loadFileContent(SEARCH_QUERY_WITH_RULES_IDENTIFIERS);
+        String queryFileStr = FileReader.loadFileContent(SEARCH_QUERY_WITH_RULES_IDENTIFIERS);
         assertThat(queryStr.trim()).isEqualTo(queryFileStr.trim());
 
-    }
-
-    private String readFromInputStream(InputStream inputStream)
-        throws IOException {
-        StringBuilder resultStringBuilder = new StringBuilder();
-        try (BufferedReader br
-            = new BufferedReader(new InputStreamReader(inputStream))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                resultStringBuilder.append(line).append("\n");
-            }
-        }
-        return resultStringBuilder.toString();
-    }
-
-    private String loadFileContent(String filename) throws IOException {
-        InputStream inputStream = ArchivesSearchAccessMgtRulesQueryBuilderServiceTest.class.getClassLoader()
-            .getResourceAsStream("data/queries/" + filename);
-        String fileContent = readFromInputStream(inputStream);
-        return fileContent;
     }
 }

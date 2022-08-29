@@ -36,11 +36,9 @@
  */
 package fr.gouv.vitamui.ingest.internal.client;
 
-import fr.gouv.vitamui.commons.rest.client.BaseRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.BaseStreamingRestClientFactory;
 import fr.gouv.vitamui.commons.rest.client.configuration.HttpPoolConfiguration;
 import fr.gouv.vitamui.commons.rest.client.configuration.RestClientConfiguration;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * A Rest client factory to create specialized IAM Rest clients

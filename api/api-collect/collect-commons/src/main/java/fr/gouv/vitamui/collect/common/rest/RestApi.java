@@ -34,6 +34,12 @@ import lombok.experimental.UtilityClass;
 public class RestApi {
 
     public static final String COLLECT_PATH = "/collect-api/v1";
-    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + "/projects";
+    public static final String ARCHIVE_UNITS = "/archive-units";
+    public static final String PROJECTS = "/projects";
+    public static final String OBJECT_GROUPS = "/object-groups";
+    public static final String STREAM_UPLOAD_PATH = "/upload";
+    public static final String COLLECT_PROJECT_PATH = COLLECT_PATH + PROJECTS;
+    public static final String COLLECT_PROJECT_ARCHIVE_UNITS_PATH = COLLECT_PATH + PROJECTS;
+    public static final String COLLECT_PROJECT_OBJECT_GROUPS_PATH = COLLECT_PATH + PROJECTS + OBJECT_GROUPS;
 
 }

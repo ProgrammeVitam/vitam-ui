@@ -4,18 +4,22 @@
 <form [formGroup]="sipForm">
   <div class="content">
     <ng-container [ngSwitch]="contextId">
-      <ng-container *ngSwitchCase="'HOLDING_SCHEME'">
+      <ng-container *ngSwitchCase="IngestType.HOLDING_SCHEME">
         <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.HOLDING_SCHEME' | translate }}</h4>
         <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.HOLDING_SCHEME' | translate }}</h2>
       </ng-container>
-      <ng-container *ngSwitchCase="'FILING_SCHEME'">
+      <ng-container *ngSwitchCase="IngestType.FILING_SCHEME">
         <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.FILING_SCHEME' | translate }}</h4>
         <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.FILING_SCHEME' | translate }}</h2>
       </ng-container>
-      <ng-container *ngSwitchCase="'DEFAULT_WORKFLOW'">
+      <ng-container *ngSwitchCase="IngestType.DEFAULT_WORKFLOW">
         <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate }}</h4>
-        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate }}</h2> </ng-container
-      >¯
+        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.DEFAULT_WORKFLOW' | translate }}</h2>
+      </ng-container>
+      <ng-container *ngSwitchCase="IngestType.BLANK_TEST">
+        <h4>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_IMPORT_TYPE.BLANK_WORKFLOW' | translate }}</h4>
+        <h2>{{ 'INGEST_ACTION.MESSAGE_IDENTIFIER.MESSAGE_LABEL_IMPORT_TYPE.BLANK_WORKFLOW' | translate }}</h2>
+      </ng-container>
     </ng-container>
     <div class="d-flex">
       <div
@@ -38,17 +42,17 @@
           </div>
         </div>
 
-        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)" />
+        <input type="file" #fileSearch class="input-file" (change)="handleFileInput($event.target.files)"/>
 
         <div class="drop-area">
-          <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br /></div>
+          <div *ngIf="!fileSize || !hasSip" class="sip-drop">{{ 'INGEST_UPLOAD.ADD_FILE' | translate }} <br/></div>
           <div *ngIf="!fileSize || !hasSip">
             <div class="sip-drop">
               <div class="upload">
                 <span class="url-select" (click)="addSip()">{{ 'INGEST_UPLOAD.BROWSE' | translate }}</span>
               </div>
               <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_1' | translate }}</span
-              ><br />
+              ><br/>
               <span class="sip-drop-small">{{ 'INGEST_UPLOAD.ADD_FILE_DESCRIPTION_2' | translate }}</span>
             </div>
           </div>
@@ -57,7 +61,7 @@
     </div>
     <div class="actions">
       <button type="button" class="btn primary" [disabled]="isDisabled || hasError" (click)="upload()">
-        {{ 'INGEST_UPLOAD.CONFIRME' | translate }}
+        {{(contextId === IngestType.BLANK_TEST ? 'INGEST_UPLOAD.CONFIRM_BLANK' : 'INGEST_UPLOAD.CONFIRM') | translate }}
       </button>
       <button type="button" class="btn cancel" (click)="onCancel()">{{ 'COMMON.CANCEL' | translate }}</button>
     </div>

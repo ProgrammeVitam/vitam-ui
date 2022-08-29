@@ -40,9 +40,7 @@ public abstract class ArchivesSearchApiControllerTest<T extends IdDto> extends A
 
     @Override
     protected Authentication buildUserAuthenticated() {
-        final Authentication authentication =
-            new ExternalAuthentication(buildPrincipal(), buildCredentials(), null, buildUserRoles());
-        return authentication;
+        return new ExternalAuthentication(buildPrincipal(), buildCredentials(), null, buildUserRoles());
     }
 
     protected AuthUserDto buildPrincipal() {

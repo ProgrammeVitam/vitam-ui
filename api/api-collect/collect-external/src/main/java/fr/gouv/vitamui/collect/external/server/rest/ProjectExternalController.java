@@ -29,13 +29,14 @@ package fr.gouv.vitamui.collect.external.server.rest;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.external.server.service.CollectExternalService;
+import fr.gouv.vitamui.collect.external.server.service.ProjectExternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import io.swagger.annotations.Api;
@@ -69,11 +70,13 @@ public class ProjectExternalController {
 
     private static final VitamUILogger LOGGER = VitamUILoggerFactory.getInstance(ProjectExternalController.class);
 
-    private final CollectExternalService collectExternalService;
+    private final ProjectExternalService projectExternalService;
+
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
 
     @Autowired
-    public ProjectExternalController(CollectExternalService collectExternalService) {
-        this.collectExternalService = collectExternalService;
+    public ProjectExternalController(ProjectExternalService projectExternalService) {
+        this.projectExternalService = projectExternalService;
     }
 
     @Secured(ServicesData.ROLE_GET_PROJECTS)
@@ -82,19 +85,35 @@ public class ProjectExternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        direction.ifPresent(directionDto ->
+            {
+                try {
+                    SanityChecker.sanitizeCriteria(directionDto);
+                } catch (InvalidParseOperationException exception) {
+                    LOGGER.error("Exception error : {}", exception.getMessage());
+                    throw new PreconditionFailedException("Exception error", exception);
+                }
+            }
+        );
+        if (orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
             direction);
-        return collectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
+        return projectExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
     @PostMapping()
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException,
+        PreconditionFailedException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create : {}", collectProjectDto);
-        return collectExternalService.createProject(collectProjectDto);
+        return projectExternalService.createProject(collectProjectDto);
     }
 
     @Secured(ServicesData.ROLE_CREATE_PROJECTS)
@@ -103,22 +122,33 @@ public class ProjectExternalController {
     public ResponseEntity<Void> streamingUpload(InputStream inputStream,
         @RequestHeader(value = CommonConstants.X_PROJECT_ID_HEADER) final String projectId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) throws InvalidParseOperationException {
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The project ID is a mandatory parameter: ", projectId);
         SanityChecker.checkSecureParameter(projectId);
         SanityChecker.isValidFileName(originalFileName);
         LOGGER.debug("[External] upload collect zip file : {}", originalFileName);
-        return collectExternalService.streamingUpload(inputStream, projectId, originalFileName);
+        return projectExternalService.streamingUpload(inputStream, projectId, originalFileName);
     }
 
     @Secured(ServicesData.ROLE_UPDATE_PROJECTS)
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
-        throws InvalidParseOperationException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+    public CollectProjectDto updateProject(final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
         SanityChecker.checkSecureParameter(id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("[External] Project to update : {}", collectProjectDto);
-        return collectExternalService.updateProject(collectProjectDto);
+        return projectExternalService.updateProject(collectProjectDto);
+    }
+
+    @Secured(ServicesData.ROLE_GET_PROJECTS)
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("The project id {} ", id);
+        return projectExternalService.findProjectById(id);
     }
 }

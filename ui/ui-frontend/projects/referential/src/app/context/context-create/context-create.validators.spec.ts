@@ -34,69 +34,78 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-/* tslint:disable:no-magic-numbers */
-import {ɵisObservable as isObservable, ɵisPromise as isPromise} from '@angular/core';
-import {fakeAsync, tick} from '@angular/core/testing';
-import {FormControl} from '@angular/forms';
-import {from, Observable, of} from 'rxjs';
-import {ContextCreateValidators} from './context-create.validators';
+
+import { ɵisObservable as isObservable, ɵisPromise as isPromise } from '@angular/core';
+import { fakeAsync, tick } from '@angular/core/testing';
+import { FormControl } from '@angular/forms';
+import { from, Observable, of } from 'rxjs';
+import { ContextCreateValidators } from './context-create.validators';
 
 function toObservable(r: any): Observable<any> {
   const obs = isPromise(r) ? from(r) : r;
-  if (!(isObservable(obs))) {
+  if (!isObservable(obs)) {
     throw new Error(`Expected validator to return Promise or Observable.`);
   }
 
   return obs;
 }
 
-// TODO replace customer tests by context tests
-xdescribe('Context Create Validators', () => {
-
+describe('Context Create Validators', () => {
   describe('uniqueCode', () => {
     it('should return null', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(false));
-      const customerCreateValidators = new ContextCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
+      contextServiceSpy.existsProperties.and.returnValue(of(false));
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+
+      toObservable(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
         expect(result).toBeNull();
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '123456'});
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
-    it('should return { uniqueCode: true }', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new ContextCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
-        expect(result).toEqual({uniqueCode: true});
+    it('should return { nameExists: true }', fakeAsync(() => {
+      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
+      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      toObservable(contextCreateValidators.uniqueName()(new FormControl('123456'))).subscribe((result) => {
+        expect(result).toBeDefined();
+        expect(result).not.toBeNull();
+        expect(result).toEqual({ nameExists: true });
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '123456'});
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '123456' });
     }));
 
     it('should not call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new ContextCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
+      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
+      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      toObservable(contextCreateValidators.uniqueName('123456')(new FormControl('123456'))).subscribe((result) => {
         expect(result).toEqual(null);
       });
+
       tick(400);
-      expect(customerServiceSpy.exists).not.toHaveBeenCalled();
+      expect(contextServiceSpy.existsProperties).not.toHaveBeenCalled();
     }));
 
     it('should call the service', fakeAsync(() => {
-      const customerServiceSpy = jasmine.createSpyObj('CustomerService', ['existsProperties']);
-      customerServiceSpy.existsProperties.and.returnValue(of(true));
-      const customerCreateValidators = new ContextCreateValidators(customerServiceSpy);
-      toObservable(customerCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
-        expect(result).toEqual({uniqueCode: true});
+      const contextServiceSpy = jasmine.createSpyObj('ContextService', ['existsProperties']);
+      contextServiceSpy.existsProperties.and.returnValue(of(true));
+      const contextCreateValidators = new ContextCreateValidators(contextServiceSpy);
+      toObservable(contextCreateValidators.uniqueName('123456')(new FormControl('111111'))).subscribe((result) => {
+        expect(result).toBeDefined();
+        expect(result).not.toBeNull();
+        expect(result).toEqual({ nameExists: true });
       });
       tick(400);
-      expect(customerServiceSpy.exists).toHaveBeenCalledWith({code: '111111'});
+
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalled();
+      expect(contextServiceSpy.existsProperties).toHaveBeenCalledWith({ name: '111111' });
     }));
   });
-
 });

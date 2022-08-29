@@ -53,8 +53,8 @@ customer-init:
         - ROLE_GET_MANAGEMENT_CONTRACTS
         - ROLE_GET_ARCHIVE_PROFILES
 
-    - name: Profil pour les services agents
-      description: Gestion des services agents dans Vitam
+    - name:  Profil gestion des services agents
+      description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
       app-name: AGENCIES_APP
       level:
       roles:
@@ -139,6 +139,13 @@ customer-init:
         - ROLE_DELETE_RULES
         - ROLE_IMPORT_RULES
         - ROLE_EXPORT_RULES
+
+    - name: Profil consultation des règles de gestion
+      description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
 
     - name: Lancement de recherches par DSL
       description: Lancement de recherches par DSL dans Vitam
@@ -243,6 +250,7 @@ customer-init:
         - ROLE_CREATE_PROJECTS
         - ROLE_UPDATE_PROJECTS
         - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_ACCESS_CONTRACTS
 
   # Other Default profiles for admin group
   admin-profiles:

@@ -150,6 +150,7 @@ public class IngestInternalController {
         if (operationId != null) {
             return ResponseEntity.ok().header(CommonConstants.X_OPERATION_ID_HEADER, operationId).build();
         } else {
+            LOGGER.error("Cannot retrieve operation id");
             throw new IngestExternalException("Cannot retrieve operation id");
         }
     }

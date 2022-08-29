@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 26.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [
+  <!ENTITY ns_extend "http://ns.adobe.com/Extensibility/1.0/">
+<!ENTITY ns_ai "http://ns.adobe.com/AdobeIllustrator/10.0/">
+<!ENTITY ns_graphs "http://ns.adobe.com/Graphs/1.0/">
+<!ENTITY ns_vars "http://ns.adobe.com/Variables/1.0/">
+<!ENTITY ns_imrep "http://ns.adobe.com/ImageReplacement/1.0/">
+<!ENTITY ns_sfw "http://ns.adobe.com/SaveForWeb/1.0/">
+<!ENTITY ns_custom "http://ns.adobe.com/GenericCustomNamespace/1.0/">
+<!ENTITY ns_adobe_xpath "http://ns.adobe.com/XPath/1.0/">
+]>
+<svg version="1.1" id="Calque_1" xmlns:x="&ns_extend;" xmlns:i="&ns_ai;" xmlns:graph="&ns_graphs;"
+     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200"
+     style="enable-background:new 0 0 200 200;" xml:space="preserve">
+<style type="text/css">
+	.audit_app_01{fill-rule:evenodd;clip-rule:evenodd;}
+  .audit_app_02{fill-rule:evenodd;clip-rule:evenodd;fill:#BCB9BA;}
+  .audit_app_03{fill-rule:evenodd;clip-rule:evenodd;fill:#F5F5F5;}
+  .audit_app_04{fill-rule:evenodd;clip-rule:evenodd;fill:#E5E4E4;}
+  .audit_app_05{fill:#BCB9BA;}
+  .audit_app_06{fill:#BBB9BA;}
+  .audit_app_07{fill:#BBB8B9;}
+  .audit_app_08{fill:#BAB8B9;}
+  .audit_app_09{fill:#B9B7B8;}
+  .audit_app_10{fill:#B9B7B7;}
+  .audit_app_11{fill:#B8B6B7;}
+  .audit_app_12{fill:#B8B5B6;}
+  .audit_app_13{fill:#B7B5B6;}
+  .audit_app_14{fill:#B7B4B5;}
+  .audit_app_15{fill:#B6B4B5;}
+  .audit_app_16{fill:#B6B3B4;}
+  .audit_app_17{fill:#B5B3B4;}
+  .audit_app_18{fill:#B4B2B3;}
+  .audit_app_19{fill:#B3B1B2;}
+  .audit_app_20{fill:#B3B1B1;}
+  .audit_app_21{fill:#B2B0B1;}
+  .audit_app_22{fill:#B2AFB0;}
+  .audit_app_23{fill:#B1AFB0;}
+  .audit_app_24{fill:#B1AEAF;}
+  .audit_app_25{fill:#B0AEAF;}
+  .audit_app_26{fill:#AFADAE;}
+  .audit_app_27{fill:#AEACAD;}
+  .audit_app_28{fill:#ADABAC;}
+  .audit_app_29{fill:#ADABAB;}
+  .audit_app_30{fill:#ACAAAB;}
+  .audit_app_31{fill:#ACAAAA;}
+  .audit_app_32{fill:#ABA9AA;}
+  .audit_app_33{fill:#AAA8A9;}
+  .audit_app_34{fill:#A9A7A8;}
+  .audit_app_35{fill:#A8A6A7;}
+  .audit_app_36{fill:#A7A5A6;}
+  .audit_app_37{fill:#A7A5A5;}
+  .audit_app_38{fill:#A6A4A5;}
+  .audit_app_39{fill:#A5A4A4;}
+  .audit_app_40{fill:#A5A3A4;}
+  .audit_app_41{fill:#A4A2A3;}
+  .audit_app_42{fill:#A3A1A2;}
+  .audit_app_43{fill:#A2A0A1;}
+  .audit_app_44{fill:#A19FA0;}
+  .audit_app_45{fill:#A09F9F;}
+  .audit_app_46{fill:#A09E9F;}
+  .audit_app_47{fill:#9F9E9E;}
+  .audit_app_48{fill:#9F9D9E;}
+  .audit_app_49{fill:#9E9D9D;}
+  .audit_app_50{fill:#9E9C9D;}
+  .audit_app_51{fill:#9D9B9C;}
+  .audit_app_52{fill:#9C9A9B;}
+  .audit_app_53{fill:#9B9A9B;}
+  .audit_app_54{fill:#9B999A;}
+  .audit_app_55{fill:#9A9999;}
+  .audit_app_56{fill:#9A9899;}
+  .audit_app_57{fill:#999898;}
+  .audit_app_58{fill:#999798;}
+  .audit_app_59{fill:#989797;}
+  .audit_app_60{fill:#989697;}
+  .audit_app_61{fill:#979596;}
+  .audit_app_62{fill:#969596;}
+  .audit_app_63{fill:#969495;}
+  .audit_app_64{fill:#959495;}
+  .audit_app_65{fill:#959394;}
+  .audit_app_66{fill:#949393;}
+  .audit_app_67{fill:#949293;}
+  .audit_app_68{fill:#939292;}
+  .audit_app_69{fill:#939192;}
+  .audit_app_70{fill:#929191;}
+  .audit_app_71{fill:#919091;}
+  .audit_app_72{fill:#919090;}
+  .audit_app_73{fill:#908F90;}
+  .audit_app_74{fill:#908E8F;}
+  .audit_app_75{fill:#8F8E8F;}
+  .audit_app_76{fill:#8F8D8E;}
+  .audit_app_77{fill:#8E8D8D;}
+  .audit_app_78{fill:#8E8C8D;}
+  .audit_app_79{fill:#8D8C8C;}
+  .audit_app_80{fill:#8C8B8C;}
+  .audit_app_81{fill:#8C8B8B;}
+  .audit_app_82{fill:#8B8A8B;}
+  .audit_app_83{fill:#8B8A8A;}
+  .audit_app_84{fill:#8A898A;}
+  .audit_app_85{fill:#8A8889;}
+  .audit_app_86{fill:#898888;}
+  .audit_app_87{fill:#898788;}
+  .audit_app_88{fill:#888787;}
+  .audit_app_89{fill:#878687;}
+  .audit_app_90{fill:#878686;}
+  .audit_app_91{fill:#868586;}
+  .audit_app_92{fill:#868585;}
+  .audit_app_93{fill:#858485;}
+  .audit_app_94{fill:#858484;}
+  .audit_app_95{fill:#848384;}
+  .audit_app_96{fill:#848383;}
+  .audit_app_97{fill:#838282;}
+  .audit_app_98{fill:#828182;}
+  .audit_app_99{fill:#828181;}
+  .audit_app_100{fill:#818081;}
+  .audit_app_101{fill:#818080;}
+  .audit_app_102{fill:#807F80;}
+  .audit_app_103{fill:#807F7F;}
+  .audit_app_104{fill:#7F7E7F;}
+  .audit_app_105{fill:#7F7E7E;}
+  .audit_app_106{fill:#7E7D7E;}
+  .audit_app_107{fill:#7D7D7D;}
+  .audit_app_108{fill:#7D7C7C;}
+  .audit_app_109{fill:#7C7B7C;}
+  .audit_app_110{fill:#7C7B7B;}
+  .audit_app_111{fill:#7B7A7B;}
+  .audit_app_112{fill:#7B7A7A;}
+  .audit_app_113{fill:#7A797A;}
+  .audit_app_114{fill:#7A7979;}
+  .audit_app_115{fill:#797879;}
+  .audit_app_116{fill:#787878;}
+  .audit_app_117{fill:#787778;}
+  .audit_app_118{fill:#777777;}
+  .audit_app_119{fill:#777676;}
+  .audit_app_120{fill:#767676;}
+  .audit_app_121{fill:#767575;}
+  .audit_app_122{fill:#757475;}
+  .audit_app_123{fill:#757474;}
+  .audit_app_124{fill:#747374;}
+  .audit_app_125{fill:#737373;}
+  .audit_app_126{fill:#737273;}
+  .audit_app_127{fill:#727272;}
+  .audit_app_128{fill:#727172;}
+  .audit_app_129{fill:#717171;}
+  .audit_app_130{fill:#717070;}
+  .audit_app_131{fill:#707070;}
+  .audit_app_132{fill:#706F6F;}
+  .audit_app_133{fill:#6F6E6F;}
+  .audit_app_134{fill:#6E6E6E;}
+  .audit_app_135{fill:#6E6D6E;}
+  .audit_app_136{fill:#6D6D6D;}
+  .audit_app_137{fill:#6D6C6D;}
+  .audit_app_138{fill:#6C6C6C;}
+  .audit_app_139{fill:#6C6B6C;}
+  .audit_app_140{fill:#6B6B6B;}
+  .audit_app_141{fill:#6B6A6A;}
+  .audit_app_142{fill:#6A6A6A;}
+  .audit_app_143{fill:#696969;}
+  .audit_app_144{fill:#686868;}
+  .audit_app_145{fill:#686768;}
+  .audit_app_146{fill:#676767;}
+  .audit_app_147{fill:#676667;}
+  .audit_app_148{fill:#666666;}
+  .audit_app_149{fill:#666566;}
+  .audit_app_150{fill:#656565;}
+  .audit_app_151{fill:#646464;}
+  .audit_app_152{fill:#636363;}
+  .audit_app_153{fill:#626262;}
+  .audit_app_154{fill:#626162;}
+  .audit_app_155{fill:#616161;}
+  .audit_app_156{fill:#616061;}
+  .audit_app_157{fill:#606060;}
+  .audit_app_158{fill:#5F5F60;}
+  .audit_app_159{fill:#5F5F5F;}
+  .audit_app_160{fill:#5E5E5E;}
+  .audit_app_161{fill:#5D5D5D;}
+  .audit_app_162{fill:#5C5C5C;}
+  .audit_app_163{fill:#5B5B5B;}
+  .audit_app_164{fill:#5A5A5B;}
+  .audit_app_165{fill:#5A5A5A;}
+  .audit_app_166{fill:#59595A;}
+  .audit_app_167{fill:#595959;}
+  .audit_app_168{fill:#585858;}
+  .audit_app_169{fill:#575757;}
+  .audit_app_170{fill:#565656;}
+  .audit_app_171{fill:#555656;}
+  .audit_app_172{fill:#555555;}
+  .audit_app_173{fill:#545455;}
+  .audit_app_174{fill:#545454;}
+  .audit_app_175{fill:#535353;}
+  .audit_app_176{fill:#525252;}
+  .audit_app_177{fill:#515151;}
+  .audit_app_178{fill:#505151;}
+  .audit_app_179{fill:#505050;}
+  .audit_app_180{fill:#4F5050;}
+  .audit_app_181{fill:#4F4F4F;}
+  .audit_app_182{fill:#4E4F4F;}
+  .audit_app_183{fill:#4E4E4E;}
+  .audit_app_184{fill:#4D4D4D;}
+  .audit_app_185{fill:#4C4C4C;}
+  .audit_app_186{fill:url(#SVGID_AUDIT_APP_01);}
+  .audit_app_187{fill:url(#SVGID_AUDIT_APP_02);}
+  .audit_app_188{fill:url(#SVGID_AUDIT_APP_03);}
+  .audit_app_189{fill:url(#SVGID_AUDIT_APP_04);}
+  .audit_app_190{fill:url(#SVGID_AUDIT_APP_05);}
+  .audit_app_191{fill:url(#SVGID_AUDIT_APP_06);}
+  .audit_app_192{fill:url(#SVGID_AUDIT_APP_07);}
+  .audit_app_193{fill:url(#SVGID_AUDIT_APP_08);}
+  .audit_app_194{fill:var(--vitamui-primary-light);}
+  .audit_app_195{fill:var(--vitamui-primary-50);}
+  .audit_app_196{fill:url(#SVGID_AUDIT_APP_09);}
+  .audit_app_197{fill:url(#SVGID_AUDIT_APP_10);}
+  .audit_app_198{fill:url(#SVGID_AUDIT_APP_11);}
+  .audit_app_199{fill:url(#SVGID_AUDIT_APP_12);}
+  .audit_app_200{fill:url(#SVGID_AUDIT_APP_13);}
+  .audit_app_201{fill:url(#SVGID_AUDIT_APP_14);}
+  .audit_app_202{fill:url(#SVGID_AUDIT_APP_15);}
+  .audit_app_203{fill:url(#SVGID_AUDIT_APP_16);}
+  .audit_app_204{fill:url(#SVGID_AUDIT_APP_17);}
+  .audit_app_205{fill:url(#SVGID_AUDIT_APP_18);}
+  .audit_app_206{fill:var(--vitamui-primary);}
+  .audit_app_207{fill:var(--vitamui-primary-900);}
+  .audit_app_208{fill:var(--vitamui-primary-dark);}
+  .audit_app_209{fill:url(#SVGID_AUDIT_APP_19);}
+  .audit_app_210{fill:url(#SVGID_AUDIT_APP_20);}
+  .audit_app_211{fill:url(#SVGID_AUDIT_APP_21);}
+  .audit_app_212{fill:url(#SVGID_AUDIT_APP_22);}
+  .audit_app_213{fill:url(#SVGID_AUDIT_APP_23);}
+  .audit_app_214{fill:url(#SVGID_AUDIT_APP_24);}
+  .audit_app_215{fill:url(#SVGID_AUDIT_APP_25);}
+  .audit_app_216{fill:url(#SVGID_AUDIT_APP_26);}
+  .audit_app_217{fill:url(#SVGID_AUDIT_APP_27);}
+  .audit_app_218{fill:url(#SVGID_AUDIT_APP_28);}
+  .audit_app_219{fill:url(#SVGID_AUDIT_APP_29);}
+  .audit_app_220{fill:url(#SVGID_AUDIT_APP_30);}
+  .audit_app_221{fill:url(#SVGID_AUDIT_APP_31);}
+  .audit_app_222{fill:url(#SVGID_AUDIT_APP_32);}
+  .audit_app_223{fill:url(#SVGID_AUDIT_APP_33);}
+  .audit_app_224{fill:url(#SVGID_AUDIT_APP_34);}
+  .audit_app_225{fill:url(#SVGID_AUDIT_APP_35);}
+  .audit_app_226{fill:url(#SVGID_AUDIT_APP_36);}
+  .audit_app_227{fill:#FFFFFF;}
+</style>
+  <metadata>
+	<sfw  xmlns="&ns_sfw;">
+		<slices></slices>
+    <sliceSourceBounds  bottomLeftOrigin="true" height="117.6" width="165.1" x="17.5" y="19.2"></sliceSourceBounds>
+	</sfw>
+</metadata>
+  <g>
+	<g>
+		<path class="audit_app_01" d="M100,141.6c45.6,0,82.6,8.5,82.6,19s-37,20.2-82.6,20.2s-82.6-9.7-82.6-20.2C17.3,150.1,54.3,141.6,100,141.6
+			z"/>
+    <path class="audit_app_02" d="M100,141.9c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.1,150.2,56.4,141.9,100,141.9z"/>
+    <path class="audit_app_03" d="M100,139.7c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.1,148,56.4,139.7,100,139.7z"/>
+    <path class="audit_app_02" d="M100,138.6c43.6,0,78.9,8.4,78.9,18.8c0,10.4-35.3,18.8-78.9,18.8s-78.9-8.4-78.9-18.8
+			C21.1,146.9,56.4,138.6,100,138.6z"/>
+    <path class="audit_app_04" d="M99.9,138.6c22.9,0,43.4,2.3,57.8,6c-30.2-1.8-112.6,2.6-132.9,18.5c-2.5-1.8-3.8-3.8-3.8-5.7
+			C21,146.9,56.4,138.6,99.9,138.6z"/>
+    <path class="audit_app_03" d="M21.1,157.2c0-10.4,35.3-18.8,78.9-18.8s78.9,8.4,78.9,18.8c0,0.4,0,0.6-0.1,1c-2.2-9.8-36.6-17.7-78.8-17.7
+			s-76.6,7.9-78.8,17.7C21.1,157.9,21.1,157.6,21.1,157.2z"/>
+	</g>
+</g>
+  <g>
+	<ellipse class="audit_app_05" cx="102.2" cy="160.6" rx="67.8" ry="9.8"/>
+    <ellipse class="audit_app_06" cx="102.2" cy="160.6" rx="67.6" ry="9.8"/>
+    <ellipse class="audit_app_07" cx="102.2" cy="160.6" rx="67.5" ry="9.8"/>
+    <ellipse class="audit_app_08" cx="102.2" cy="160.6" rx="67.4" ry="9.7"/>
+    <ellipse class="audit_app_09" cx="102.2" cy="160.6" rx="67.3" ry="9.7"/>
+    <ellipse class="audit_app_10" cx="102.2" cy="160.6" rx="67.2" ry="9.7"/>
+    <ellipse class="audit_app_11" cx="102.2" cy="160.6" rx="67" ry="9.6"/>
+    <ellipse class="audit_app_12" cx="102.2" cy="160.6" rx="66.9" ry="9.6"/>
+    <ellipse class="audit_app_13" cx="102.2" cy="160.6" rx="66.8" ry="9.6"/>
+    <ellipse class="audit_app_14" cx="102.2" cy="160.5" rx="66.7" ry="9.6"/>
+    <ellipse class="audit_app_15" cx="102.2" cy="160.5" rx="66.6" ry="9.5"/>
+    <ellipse class="audit_app_16" cx="102.2" cy="160.5" rx="66.4" ry="9.5"/>
+    <ellipse class="audit_app_17" cx="102.2" cy="160.5" rx="66.3" ry="9.5"/>
+    <ellipse class="audit_app_18" cx="102.2" cy="160.5" rx="66.2" ry="9.4"/>
+    <ellipse class="audit_app_18" cx="102.2" cy="160.5" rx="66.1" ry="9.4"/>
+    <ellipse class="audit_app_19" cx="102.2" cy="160.5" rx="66" ry="9.4"/>
+    <ellipse class="audit_app_20" cx="102.2" cy="160.5" rx="65.8" ry="9.3"/>
+    <ellipse class="audit_app_21" cx="102.2" cy="160.5" rx="65.7" ry="9.3"/>
+    <ellipse class="audit_app_22" cx="102.2" cy="160.4" rx="65.6" ry="9.3"/>
+    <ellipse class="audit_app_23" cx="102.2" cy="160.4" rx="65.5" ry="9.2"/>
+    <ellipse class="audit_app_24" cx="102.2" cy="160.4" rx="65.4" ry="9.2"/>
+    <ellipse class="audit_app_25" cx="102.2" cy="160.4" rx="65.2" ry="9.2"/>
+    <ellipse class="audit_app_26" cx="102.2" cy="160.4" rx="65.1" ry="9.1"/>
+    <ellipse class="audit_app_26" cx="102.2" cy="160.4" rx="65" ry="9.1"/>
+    <ellipse class="audit_app_27" cx="102.2" cy="160.4" rx="64.9" ry="9.1"/>
+    <ellipse class="audit_app_27" cx="102.2" cy="160.4" rx="64.8" ry="9"/>
+    <ellipse class="audit_app_28" cx="102.2" cy="160.4" rx="64.6" ry="9"/>
+    <ellipse class="audit_app_29" cx="102.1" cy="160.3" rx="64.5" ry="9"/>
+    <ellipse class="audit_app_30" cx="102.1" cy="160.3" rx="64.4" ry="8.9"/>
+    <ellipse class="audit_app_31" cx="102.1" cy="160.3" rx="64.3" ry="8.9"/>
+    <ellipse class="audit_app_32" cx="102.1" cy="160.3" rx="64.2" ry="8.9"/>
+    <ellipse class="audit_app_33" cx="102.1" cy="160.3" rx="64" ry="8.8"/>
+    <ellipse class="audit_app_33" cx="102.1" cy="160.3" rx="63.9" ry="8.8"/>
+    <ellipse class="audit_app_34" cx="102.1" cy="160.3" rx="63.8" ry="8.8"/>
+    <ellipse class="audit_app_34" cx="102.1" cy="160.3" rx="63.7" ry="8.8"/>
+    <ellipse class="audit_app_35" cx="102.1" cy="160.3" rx="63.6" ry="8.7"/>
+    <ellipse class="audit_app_35" cx="102.1" cy="160.3" rx="63.5" ry="8.7"/>
+    <ellipse class="audit_app_36" cx="102.1" cy="160.2" rx="63.3" ry="8.7"/>
+    <ellipse class="audit_app_37" cx="102.1" cy="160.2" rx="63.2" ry="8.6"/>
+    <ellipse class="audit_app_38" cx="102.1" cy="160.2" rx="63.1" ry="8.6"/>
+    <ellipse class="audit_app_39" cx="102.1" cy="160.2" rx="63" ry="8.6"/>
+    <ellipse class="audit_app_40" cx="102.1" cy="160.2" rx="62.9" ry="8.5"/>
+    <ellipse class="audit_app_41" cx="102.1" cy="160.2" rx="62.7" ry="8.5"/>
+    <ellipse class="audit_app_41" cx="102.1" cy="160.2" rx="62.6" ry="8.5"/>
+    <ellipse class="audit_app_42" cx="102.1" cy="160.2" rx="62.5" ry="8.4"/>
+    <ellipse class="audit_app_42" cx="102.1" cy="160.2" rx="62.4" ry="8.4"/>
+    <ellipse class="audit_app_43" cx="102.1" cy="160.1" rx="62.3" ry="8.4"/>
+    <ellipse class="audit_app_43" cx="102.1" cy="160.1" rx="62.1" ry="8.3"/>
+    <ellipse class="audit_app_44" cx="102.1" cy="160.1" rx="62" ry="8.3"/>
+    <ellipse class="audit_app_45" cx="102.1" cy="160.1" rx="61.9" ry="8.3"/>
+    <ellipse class="audit_app_46" cx="102.1" cy="160.1" rx="61.8" ry="8.2"/>
+    <ellipse class="audit_app_47" cx="102.1" cy="160.1" rx="61.7" ry="8.2"/>
+    <ellipse class="audit_app_48" cx="102.1" cy="160.1" rx="61.5" ry="8.2"/>
+    <ellipse class="audit_app_49" cx="102.1" cy="160.1" rx="61.4" ry="8.1"/>
+    <ellipse class="audit_app_50" cx="102.1" cy="160.1" rx="61.3" ry="8.1"/>
+    <ellipse class="audit_app_51" cx="102.1" cy="160" rx="61.2" ry="8.1"/>
+    <ellipse class="audit_app_51" cx="102.1" cy="160" rx="61.1" ry="8"/>
+    <ellipse class="audit_app_52" cx="102.1" cy="160" rx="60.9" ry="8"/>
+    <ellipse class="audit_app_53" cx="102.1" cy="160" rx="60.8" ry="8"/>
+    <ellipse class="audit_app_54" cx="102.1" cy="160" rx="60.7" ry="8"/>
+    <ellipse class="audit_app_55" cx="102.1" cy="160" rx="60.6" ry="7.9"/>
+    <ellipse class="audit_app_56" cx="102.1" cy="160" rx="60.5" ry="7.9"/>
+    <ellipse class="audit_app_57" cx="102.1" cy="160" rx="60.3" ry="7.9"/>
+    <ellipse class="audit_app_58" cx="102.1" cy="160" rx="60.2" ry="7.8"/>
+    <ellipse class="audit_app_59" cx="102.1" cy="160" rx="60.1" ry="7.8"/>
+    <ellipse class="audit_app_60" cx="102.1" cy="159.9" rx="60" ry="7.8"/>
+    <ellipse class="audit_app_61" cx="102.1" cy="159.9" rx="59.9" ry="7.7"/>
+    <ellipse class="audit_app_62" cx="102.1" cy="159.9" rx="59.7" ry="7.7"/>
+    <ellipse class="audit_app_63" cx="102.1" cy="159.9" rx="59.6" ry="7.7"/>
+    <ellipse class="audit_app_64" cx="102.1" cy="159.9" rx="59.5" ry="7.6"/>
+    <ellipse class="audit_app_65" cx="102.1" cy="159.9" rx="59.4" ry="7.6"/>
+    <ellipse class="audit_app_66" cx="102.1" cy="159.9" rx="59.3" ry="7.6"/>
+    <ellipse class="audit_app_67" cx="102.1" cy="159.9" rx="59.1" ry="7.5"/>
+    <ellipse class="audit_app_68" cx="102" cy="159.9" rx="59" ry="7.5"/>
+    <ellipse class="audit_app_69" cx="102" cy="159.8" rx="58.9" ry="7.5"/>
+    <ellipse class="audit_app_70" cx="102" cy="159.8" rx="58.8" ry="7.4"/>
+    <ellipse class="audit_app_71" cx="102" cy="159.8" rx="58.7" ry="7.4"/>
+    <ellipse class="audit_app_72" cx="102" cy="159.8" rx="58.5" ry="7.4"/>
+    <ellipse class="audit_app_73" cx="102" cy="159.8" rx="58.4" ry="7.3"/>
+    <ellipse class="audit_app_74" cx="102" cy="159.8" rx="58.3" ry="7.3"/>
+    <ellipse class="audit_app_75" cx="102" cy="159.8" rx="58.2" ry="7.3"/>
+    <ellipse class="audit_app_76" cx="102" cy="159.8" rx="58.1" ry="7.2"/>
+    <ellipse class="audit_app_77" cx="102" cy="159.8" rx="57.9" ry="7.2"/>
+    <ellipse class="audit_app_78" cx="102" cy="159.7" rx="57.8" ry="7.2"/>
+    <ellipse class="audit_app_79" cx="102" cy="159.7" rx="57.7" ry="7.2"/>
+    <ellipse class="audit_app_80" cx="102" cy="159.7" rx="57.6" ry="7.1"/>
+    <ellipse class="audit_app_81" cx="102" cy="159.7" rx="57.5" ry="7.1"/>
+    <ellipse class="audit_app_82" cx="102" cy="159.7" rx="57.3" ry="7.1"/>
+    <ellipse class="audit_app_83" cx="102" cy="159.7" rx="57.2" ry="7"/>
+    <ellipse class="audit_app_84" cx="102" cy="159.7" rx="57.1" ry="7"/>
+    <ellipse class="audit_app_85" cx="102" cy="159.7" rx="57" ry="7"/>
+    <ellipse class="audit_app_86" cx="102" cy="159.7" rx="56.9" ry="6.9"/>
+    <ellipse class="audit_app_87" cx="102" cy="159.7" rx="56.7" ry="6.9"/>
+    <ellipse class="audit_app_88" cx="102" cy="159.6" rx="56.6" ry="6.9"/>
+    <ellipse class="audit_app_89" cx="102" cy="159.6" rx="56.5" ry="6.8"/>
+    <ellipse class="audit_app_90" cx="102" cy="159.6" rx="56.4" ry="6.8"/>
+    <ellipse class="audit_app_91" cx="102" cy="159.6" rx="56.3" ry="6.8"/>
+    <ellipse class="audit_app_92" cx="102" cy="159.6" rx="56.2" ry="6.7"/>
+    <ellipse class="audit_app_93" cx="102" cy="159.6" rx="56" ry="6.7"/>
+    <ellipse class="audit_app_94" cx="102" cy="159.6" rx="55.9" ry="6.7"/>
+    <ellipse class="audit_app_95" cx="102" cy="159.6" rx="55.8" ry="6.6"/>
+    <ellipse class="audit_app_96" cx="102" cy="159.6" rx="55.7" ry="6.6"/>
+    <ellipse class="audit_app_97" cx="102" cy="159.5" rx="55.6" ry="6.6"/>
+    <ellipse class="audit_app_98" cx="102" cy="159.5" rx="55.4" ry="6.5"/>
+    <ellipse class="audit_app_99" cx="102" cy="159.5" rx="55.3" ry="6.5"/>
+    <ellipse class="audit_app_100" cx="102" cy="159.5" rx="55.2" ry="6.5"/>
+    <ellipse class="audit_app_101" cx="102" cy="159.5" rx="55.1" ry="6.4"/>
+    <ellipse class="audit_app_102" cx="102" cy="159.5" rx="55" ry="6.4"/>
+    <ellipse class="audit_app_103" cx="102" cy="159.5" rx="54.8" ry="6.4"/>
+    <ellipse class="audit_app_104" cx="102" cy="159.5" rx="54.7" ry="6.4"/>
+    <ellipse class="audit_app_105" cx="102" cy="159.5" rx="54.6" ry="6.3"/>
+    <ellipse class="audit_app_106" cx="102" cy="159.4" rx="54.5" ry="6.3"/>
+    <ellipse class="audit_app_107" cx="102" cy="159.4" rx="54.4" ry="6.3"/>
+    <ellipse class="audit_app_108" cx="102" cy="159.4" rx="54.2" ry="6.2"/>
+    <ellipse class="audit_app_109" cx="102" cy="159.4" rx="54.1" ry="6.2"/>
+    <ellipse class="audit_app_110" cx="102" cy="159.4" rx="54" ry="6.2"/>
+    <ellipse class="audit_app_111" cx="102" cy="159.4" rx="53.9" ry="6.1"/>
+    <ellipse class="audit_app_112" cx="102" cy="159.4" rx="53.8" ry="6.1"/>
+    <ellipse class="audit_app_113" cx="102" cy="159.4" rx="53.6" ry="6.1"/>
+    <ellipse class="audit_app_114" cx="101.9" cy="159.4" rx="53.5" ry="6"/>
+    <ellipse class="audit_app_115" cx="101.9" cy="159.4" rx="53.4" ry="6"/>
+    <ellipse class="audit_app_116" cx="101.9" cy="159.3" rx="53.3" ry="6"/>
+    <ellipse class="audit_app_117" cx="101.9" cy="159.3" rx="53.2" ry="5.9"/>
+    <ellipse class="audit_app_118" cx="101.9" cy="159.3" rx="53" ry="5.9"/>
+    <ellipse class="audit_app_119" cx="101.9" cy="159.3" rx="52.9" ry="5.9"/>
+    <ellipse class="audit_app_120" cx="101.9" cy="159.3" rx="52.8" ry="5.8"/>
+    <ellipse class="audit_app_121" cx="101.9" cy="159.3" rx="52.7" ry="5.8"/>
+    <ellipse class="audit_app_122" cx="101.9" cy="159.3" rx="52.6" ry="5.8"/>
+    <ellipse class="audit_app_123" cx="101.9" cy="159.3" rx="52.4" ry="5.7"/>
+    <ellipse class="audit_app_124" cx="101.9" cy="159.3" rx="52.3" ry="5.7"/>
+    <ellipse class="audit_app_125" cx="101.9" cy="159.2" rx="52.2" ry="5.7"/>
+    <ellipse class="audit_app_126" cx="101.9" cy="159.2" rx="52.1" ry="5.6"/>
+    <ellipse class="audit_app_127" cx="101.9" cy="159.2" rx="52" ry="5.6"/>
+    <ellipse class="audit_app_128" cx="101.9" cy="159.2" rx="51.8" ry="5.6"/>
+    <ellipse class="audit_app_129" cx="101.9" cy="159.2" rx="51.7" ry="5.6"/>
+    <ellipse class="audit_app_130" cx="101.9" cy="159.2" rx="51.6" ry="5.5"/>
+    <ellipse class="audit_app_131" cx="101.9" cy="159.2" rx="51.5" ry="5.5"/>
+    <ellipse class="audit_app_132" cx="101.9" cy="159.2" rx="51.4" ry="5.5"/>
+    <ellipse class="audit_app_133" cx="101.9" cy="159.2" rx="51.2" ry="5.4"/>
+    <ellipse class="audit_app_134" cx="101.9" cy="159.1" rx="51.1" ry="5.4"/>
+    <ellipse class="audit_app_135" cx="101.9" cy="159.1" rx="51" ry="5.4"/>
+    <ellipse class="audit_app_136" cx="101.9" cy="159.1" rx="50.9" ry="5.3"/>
+    <ellipse class="audit_app_137" cx="101.9" cy="159.1" rx="50.8" ry="5.3"/>
+    <ellipse class="audit_app_138" cx="101.9" cy="159.1" rx="50.6" ry="5.3"/>
+    <ellipse class="audit_app_139" cx="101.9" cy="159.1" rx="50.5" ry="5.2"/>
+    <ellipse class="audit_app_140" cx="101.9" cy="159.1" rx="50.4" ry="5.2"/>
+    <ellipse class="audit_app_141" cx="101.9" cy="159.1" rx="50.3" ry="5.2"/>
+    <ellipse class="audit_app_142" cx="101.9" cy="159.1" rx="50.2" ry="5.1"/>
+    <ellipse class="audit_app_143" cx="101.9" cy="159.1" rx="50" ry="5.1"/>
+    <ellipse class="audit_app_143" cx="101.9" cy="159" rx="49.9" ry="5.1"/>
+    <ellipse class="audit_app_144" cx="101.9" cy="159" rx="49.8" ry="5"/>
+    <ellipse class="audit_app_145" cx="101.9" cy="159" rx="49.7" ry="5"/>
+    <ellipse class="audit_app_146" cx="101.9" cy="159" rx="49.6" ry="5"/>
+    <ellipse class="audit_app_147" cx="101.9" cy="159" rx="49.4" ry="4.9"/>
+    <ellipse class="audit_app_148" cx="101.9" cy="159" rx="49.3" ry="4.9"/>
+    <ellipse class="audit_app_149" cx="101.9" cy="159" rx="49.2" ry="4.9"/>
+    <ellipse class="audit_app_150" cx="101.9" cy="159" rx="49.1" ry="4.8"/>
+    <ellipse class="audit_app_151" cx="101.9" cy="159" rx="49" ry="4.8"/>
+    <ellipse class="audit_app_151" cx="101.9" cy="158.9" rx="48.8" ry="4.8"/>
+    <ellipse class="audit_app_152" cx="101.9" cy="158.9" rx="48.7" ry="4.8"/>
+    <ellipse class="audit_app_152" cx="101.9" cy="158.9" rx="48.6" ry="4.7"/>
+    <ellipse class="audit_app_153" cx="101.9" cy="158.9" rx="48.5" ry="4.7"/>
+    <ellipse class="audit_app_154" cx="101.9" cy="158.9" rx="48.4" ry="4.7"/>
+    <ellipse class="audit_app_155" cx="101.9" cy="158.9" rx="48.3" ry="4.6"/>
+    <ellipse class="audit_app_156" cx="101.9" cy="158.9" rx="48.1" ry="4.6"/>
+    <ellipse class="audit_app_157" cx="101.8" cy="158.9" rx="48" ry="4.6"/>
+    <ellipse class="audit_app_158" cx="101.8" cy="158.9" rx="47.9" ry="4.5"/>
+    <ellipse class="audit_app_159" cx="101.8" cy="158.8" rx="47.8" ry="4.5"/>
+    <ellipse class="audit_app_160" cx="101.8" cy="158.8" rx="47.7" ry="4.5"/>
+    <ellipse class="audit_app_160" cx="101.8" cy="158.8" rx="47.5" ry="4.4"/>
+    <ellipse class="audit_app_161" cx="101.8" cy="158.8" rx="47.4" ry="4.4"/>
+    <ellipse class="audit_app_161" cx="101.8" cy="158.8" rx="47.3" ry="4.4"/>
+    <ellipse class="audit_app_162" cx="101.8" cy="158.8" rx="47.2" ry="4.3"/>
+    <ellipse class="audit_app_162" cx="101.8" cy="158.8" rx="47.1" ry="4.3"/>
+    <ellipse class="audit_app_163" cx="101.8" cy="158.8" rx="46.9" ry="4.3"/>
+    <ellipse class="audit_app_164" cx="101.8" cy="158.8" rx="46.8" ry="4.2"/>
+    <ellipse class="audit_app_165" cx="101.8" cy="158.8" rx="46.7" ry="4.2"/>
+    <ellipse class="audit_app_166" cx="101.8" cy="158.7" rx="46.6" ry="4.2"/>
+    <ellipse class="audit_app_167" cx="101.8" cy="158.7" rx="46.5" ry="4.1"/>
+    <ellipse class="audit_app_168" cx="101.8" cy="158.7" rx="46.3" ry="4.1"/>
+    <ellipse class="audit_app_168" cx="101.8" cy="158.7" rx="46.2" ry="4.1"/>
+    <ellipse class="audit_app_169" cx="101.8" cy="158.7" rx="46.1" ry="4"/>
+    <ellipse class="audit_app_169" cx="101.8" cy="158.7" rx="46" ry="4"/>
+    <ellipse class="audit_app_170" cx="101.8" cy="158.7" rx="45.9" ry="4"/>
+    <ellipse class="audit_app_171" cx="101.8" cy="158.7" rx="45.7" ry="4"/>
+    <ellipse class="audit_app_172" cx="101.8" cy="158.7" rx="45.6" ry="3.9"/>
+    <ellipse class="audit_app_173" cx="101.8" cy="158.6" rx="45.5" ry="3.9"/>
+    <ellipse class="audit_app_174" cx="101.8" cy="158.6" rx="45.4" ry="3.9"/>
+    <ellipse class="audit_app_175" cx="101.8" cy="158.6" rx="45.3" ry="3.8"/>
+    <ellipse class="audit_app_175" cx="101.8" cy="158.6" rx="45.1" ry="3.8"/>
+    <ellipse class="audit_app_176" cx="101.8" cy="158.6" rx="45" ry="3.8"/>
+    <ellipse class="audit_app_176" cx="101.8" cy="158.6" rx="44.9" ry="3.7"/>
+    <ellipse class="audit_app_177" cx="101.8" cy="158.6" rx="44.8" ry="3.7"/>
+    <ellipse class="audit_app_178" cx="101.8" cy="158.6" rx="44.7" ry="3.7"/>
+    <ellipse class="audit_app_179" cx="101.8" cy="158.6" rx="44.5" ry="3.6"/>
+    <ellipse class="audit_app_180" cx="101.8" cy="158.5" rx="44.4" ry="3.6"/>
+    <ellipse class="audit_app_181" cx="101.8" cy="158.5" rx="44.3" ry="3.6"/>
+    <ellipse class="audit_app_182" cx="101.8" cy="158.5" rx="44.2" ry="3.5"/>
+    <ellipse class="audit_app_183" cx="101.8" cy="158.5" rx="44.1" ry="3.5"/>
+    <ellipse class="audit_app_184" cx="101.8" cy="158.5" rx="43.9" ry="3.5"/>
+    <ellipse class="audit_app_184" cx="101.8" cy="158.5" rx="43.8" ry="3.4"/>
+    <ellipse class="audit_app_185" cx="101.8" cy="158.5" rx="43.7" ry="3.4"/>
+</g>
+  <g>
+	<g>
+		<g>
+			<linearGradient id="SVGID_AUDIT_APP_01" gradientUnits="userSpaceOnUse" x1="85.6772" y1="63.7702" x2="85.6772" y2="63.7702">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+        <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+        <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+        <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+        <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+        <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+        <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+        <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path class="audit_app_186" d="M85.7,63.8"/>
+      <g>
+				<g>
+
+						<linearGradient id="SVGID_AUDIT_APP_37" gradientUnits="userSpaceOnUse" x1="84.6452" y1="136.1907" x2="84.6452" y2="73.0992">
+						<stop  offset="0" style="stop-color:#000000"/>
+              <stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+              <stop  offset="4.243332e-02" style="stop-color:var(--vitamui-primary-800)"/>
+              <stop  offset="0.2123" style="stop-color:var(--vitamui-primary-700)"/>
+              <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
+              <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
+              <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_37);" d="M118.4,72.6L100.2,73l0.1-3.9
+						c0.4-2.3-0.8-4.5-2.4-4.4l-45.3,0.6c-1.9,0.1-3.4,2.4-3.1,4.9l-1,48.2L47.3,153v5.7c0,0-0.2,4.9,5,5.7c5.2,0.8,8.9-0.5,8.9-0.5
+						l0.6-9.4l54.7-16.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-54.7C122.4,75.5,120.7,72.5,118.4,72.6z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_38" gradientUnits="userSpaceOnUse" x1="72.9576" y1="177.1826" x2="95.5122" y2="42.0762">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="4.258544e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.179" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.3137" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4445" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5697" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6831" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.739" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.8255" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9312" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_38);" d="M119.2,72.6L101,73l0.1-3.9
+						c0.4-2.3-0.8-4.5-2.4-4.4l-45.3,0.6c-1.9,0.1-3.4,2.4-3.1,4.9l-1,48.2L48.2,153v5.7c0,0-0.2,4.9,5,5.7c5.2,0.8,9.1-0.8,9.1-0.8
+						l0.4-9l54.7-16.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-54.7C123.2,75.5,121.5,72.5,119.2,72.6z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_39" gradientUnits="userSpaceOnUse" x1="52.5367" y1="78.0039" x2="59.8857" y2="78.0039">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_39);" d="M52.5,76.3l6.2,0.1
+						c0,0,1.4,2.8,1.1,2.8c-0.3,0-3.6,0.6-3.6,0.6L54,78.9L52.5,76.3z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_40" gradientUnits="userSpaceOnUse" x1="89.8638" y1="69.9319" x2="80.3887" y2="160.1661">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+            <stop  offset="1" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_40);" d="M125.4,80.5v-6.3
+						c0,0-65.3,2.3-66.7,2.2c0,0-3,3.3-6.2-0.1l-1,82.3c0,0-0.9,3.7,5.7,3C57.9,161.4,125.4,80.5,125.4,80.5z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_41" gradientUnits="userSpaceOnUse" x1="57.2927" y1="117.8724" x2="125.4136" y2="117.8724">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+            <stop  offset="0.5573" style="stop-color:#E5E4E4"/>
+            <stop  offset="0.7758" style="stop-color:#E8E7E7"/>
+            <stop  offset="0.9599" style="stop-color:#F2F2F2"/>
+            <stop  offset="0.9992" style="stop-color:#F5F5F5"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_41);" d="M125.4,80.5v-6.3
+						c0,0-65.3,2.3-66.7,2.2c0,0-0.6,58.3-1.5,85.2C57.9,161.4,125.4,80.5,125.4,80.5z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_42" gradientUnits="userSpaceOnUse" x1="91.4788" y1="172.9932" x2="96.9902" y2="52.8444">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_42);" d="M59,88.7l-2.3,70.6
+						c-0.4,5.4,2.2,4.8,4.4,4.4l64.6-19.1c1.7-0.3,3.2-2.2,3.6-4.7l1.8-55.8c0.5-3.4-1.2-6.4-3.5-6.2l-64.1,3.8
+						C60.8,81.9,58.7,85.2,59,88.7z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_43" gradientUnits="userSpaceOnUse" x1="91.3745" y1="171.2922" x2="97.4796" y2="75.2085">
+						<stop  offset="8.429980e-02" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="0.1128" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.2041" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2943" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.3819" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4657" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.5417" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6226" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7477" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9005" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_43);" d="M60.2,88.6l-2.2,70
+						c-0.4,5.3,2.2,4.8,4.4,4.4l64-19c1.7-0.3,3.1-2.2,3.5-4.6l1.7-55.3c0.5-3.3-1.2-6.3-3.5-6.2l-63.5,3.8
+						C62,81.8,59.9,85.1,60.2,88.6z"/>
+          <path class="audit_app_194" d="M60.1,90.8l-1.5,46.3C58.7,137.2,59.6,133,60.1,90.8z"/>
+          <path class="audit_app_195" d="M69.1,82.5l57.6-3.7C126.6,78.8,101.6,82,69.1,82.5z"/>
+          <g>
+
+							<linearGradient id="SVGID_AUDIT_APP_44" gradientUnits="userSpaceOnUse" x1="58.0784" y1="43.4679" x2="51.3161" y2="142.4631">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+                <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+                <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_44);" points="52.6,160.9 52.5,160.9
+							53.2,77 53.4,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_45" gradientUnits="userSpaceOnUse" x1="58.5381" y1="43.4753" x2="51.7762" y2="142.4645">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_45);" points="53.1,160.9 52.9,160.9
+							53.7,77 53.8,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_46" gradientUnits="userSpaceOnUse" x1="58.9978" y1="43.4827" x2="52.2363" y2="142.4658">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_46);" points="53.5,160.9 53.4,160.9
+							54.2,77 54.3,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_47" gradientUnits="userSpaceOnUse" x1="59.4573" y1="43.4902" x2="52.6963" y2="142.4672">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_47);" points="54,160.9 53.8,160.9
+							54.6,77 54.8,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_48" gradientUnits="userSpaceOnUse" x1="59.9169" y1="43.4976" x2="53.1563" y2="142.4685">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_48);" points="54.5,160.9 54.3,160.9
+							55.1,77 55.2,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_49" gradientUnits="userSpaceOnUse" x1="60.3764" y1="43.505" x2="53.6162" y2="142.4699">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_49);" points="54.9,160.9 54.8,160.9
+							55.5,77 55.7,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_50" gradientUnits="userSpaceOnUse" x1="60.8358" y1="43.5124" x2="54.076" y2="142.4712">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_50);" points="55.4,160.9 55.2,160.9
+							56,77 56.1,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_51" gradientUnits="userSpaceOnUse" x1="61.2952" y1="43.5198" x2="54.5358" y2="142.4726">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_51);" points="55.8,160.9 55.7,160.9
+							56.4,77 56.6,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_52" gradientUnits="userSpaceOnUse" x1="61.7545" y1="43.5272" x2="54.9955" y2="142.4739">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_52);" points="56.3,160.9 56.1,160.9
+							56.9,77 57.1,77 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_53" gradientUnits="userSpaceOnUse" x1="62.2137" y1="43.5346" x2="55.4552" y2="142.4753">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_53);" points="56.8,160.9 56.6,160.9
+							57.4,77 57.5,77 						"/>
+					</g>
+          <path class="audit_app_206" d="M100.3,72.9l0.2-4.7c0,0,0-2.4-1.6-3.1c0,0,1.3,0.8,1.3,3.1c0,2.3-0.1,4.8-0.1,4.8L100.3,72.9z"/>
+          <path class="audit_app_206" d="M51.5,74.1l0.1-4.9c0,0,0.1-2.4,1.8-3.2c0,0-1.3,0.8-1.5,3.2c-0.1,2.4-0.1,4.9-0.1,4.9L51.5,74.1z"/>
+				</g>
+        <path class="audit_app_207" d="M60.1,161.7l64.8-19.1C124.9,142.6,83.6,151.3,60.1,161.7z"/>
+			</g>
+      <path class="audit_app_208" d="M51.5,75.7V152l1.1-75.7c0,0,1.7,0.2,6.2,0.1c15.7-0.4,52.1-1.7,51.8-1.7C110.2,74.7,51.5,75.7,51.5,75.7z
+				"/>
+		</g>
+	</g>
+</g>
+  <g>
+	<g>
+		<g>
+
+				<linearGradient id="SVGID_AUDIT_APP_54" gradientUnits="userSpaceOnUse" x1="109.2677" y1="63.1185" x2="109.2677" y2="63.1185">
+				<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+          <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+          <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+          <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+          <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+          <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+          <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+          <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+			</linearGradient>
+      <path style="fill:url(#SVGID_AUDIT_APP_54);" d="M109.3,63.1"/>
+      <g>
+				<g>
+
+						<linearGradient id="SVGID_AUDIT_APP_55" gradientUnits="userSpaceOnUse" x1="108.1564" y1="141.105" x2="108.1564" y2="73.1645">
+						<stop  offset="0" style="stop-color:#000000"/>
+              <stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+              <stop  offset="4.243332e-02" style="stop-color:var(--vitamui-primary-800)"/>
+              <stop  offset="0.2123" style="stop-color:var(--vitamui-primary-700)"/>
+              <stop  offset="0.3813" style="stop-color:var(--vitamui-primary-600)"/>
+              <stop  offset="0.5467" style="stop-color:var(--vitamui-primary)"/>
+              <stop  offset="0.7072" style="stop-color:var(--vitamui-primary-400)"/>
+              <stop  offset="0.8609" style="stop-color:var(--vitamui-primary-light)"/>
+              <stop  offset="1" style="stop-color:var(--vitamui-primary-light)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_55);" d="M144.5,72.7L124.9,73l0.2-4.2
+						c0.4-2.5-0.9-4.8-2.6-4.7l-48.8,0.6c-2,0.1-3.6,2.6-3.4,5.3l-1.1,51.9L68,159.2v6.1c0,0-0.3,5.3,5.4,6.1
+						c5.6,0.8,9.6-0.6,9.6-0.6l0.7-10.1l58.9-17.4c1.8-0.3,3.4-2.4,3.8-5l1.9-58.9C148.8,75.8,147,72.5,144.5,72.7z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_56" gradientUnits="userSpaceOnUse" x1="95.5705" y1="185.2474" x2="119.8586" y2="39.757">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="4.258544e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.179" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.3137" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4445" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5697" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6831" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.739" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.8255" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9312" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_56);" d="M145.4,72.7L125.8,73l0.2-4.2
+						c0.4-2.5-0.9-4.8-2.6-4.7l-48.8,0.6c-2,0.1-3.6,2.6-3.4,5.3l-1.1,51.9l-1.2,37.3v6.1c0,0-0.3,5.3,5.4,6.1
+						c5.6,0.8,9.8-0.9,9.8-0.9l0.5-9.7l58.9-17.4c1.8-0.3,3.4-2.4,3.8-5l1.9-58.9C149.7,75.8,147.9,72.5,145.4,72.7z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_57" gradientUnits="userSpaceOnUse" x1="73.5801" y1="78.4461" x2="81.4939" y2="78.4461">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_57);" d="M73.6,76.6l6.7,0.1c0,0,1.5,3,1.2,3
+						c-0.3,0-3.9,0.6-3.9,0.6l-2.4-0.9L73.6,76.6z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_58" gradientUnits="userSpaceOnUse" x1="113.7761" y1="69.7537" x2="103.5727" y2="166.9231">
+						<stop  offset="0" style="stop-color:#F5F5F5"/>
+            <stop  offset="0.7896" style="stop-color:#9B9A9B"/>
+            <stop  offset="1" style="stop-color:#4C4C4C"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_58);" d="M152.1,81.1v-6.8
+						c0,0-70.4,2.5-71.8,2.4c0,0-3.2,3.6-6.7-0.1l-1,88.6c0,0-1,4,6.2,3.2C79.4,168.3,152.1,81.1,152.1,81.1z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_59" gradientUnits="userSpaceOnUse" x1="78.7017" y1="121.3788" x2="152.0582" y2="121.3788">
+						<stop  offset="0" style="stop-color:#FFFFFF"/>
+            <stop  offset="0.5573" style="stop-color:#E5E4E4"/>
+            <stop  offset="0.7758" style="stop-color:#E8E7E7"/>
+            <stop  offset="0.9599" style="stop-color:#F2F2F2"/>
+            <stop  offset="0.9992" style="stop-color:#F5F5F5"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_59);" d="M152.1,81.1v-6.8
+						c0,0-70.4,2.5-71.8,2.4c0,0-0.7,62.8-1.6,91.8C79.4,168.3,152.1,81.1,152.1,81.1z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_60" gradientUnits="userSpaceOnUse" x1="115.5152" y1="180.7361" x2="121.4502" y2="51.3529">
+						<stop  offset="0" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="3.934753e-02" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.1654" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2899" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4107" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.5264" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6312" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6963" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7969" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.92" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_60);" d="M80.6,90L78.2,166
+						c-0.4,5.8,2.4,5.2,4.8,4.8l69.6-20.6c1.8-0.3,3.4-2.4,3.8-5l1.9-60.1c0.6-3.6-1.2-6.9-3.8-6.7l-69,4.1
+						C82.5,82.6,80.2,86.2,80.6,90z"/>
+
+          <linearGradient id="SVGID_AUDIT_APP_61" gradientUnits="userSpaceOnUse" x1="115.4028" y1="178.9043" x2="121.9772" y2="75.4359">
+						<stop  offset="8.429980e-02" style="stop-color:var(--vitamui-primary-900)"/>
+            <stop  offset="0.1128" style="stop-color:var(--vitamui-primary-800)"/>
+            <stop  offset="0.2041" style="stop-color:var(--vitamui-primary-700)"/>
+            <stop  offset="0.2943" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.3819" style="stop-color:var(--vitamui-primary-600)"/>
+            <stop  offset="0.4657" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.5417" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.6226" style="stop-color:var(--vitamui-primary)"/>
+            <stop  offset="0.7477" style="stop-color:var(--vitamui-primary-400)"/>
+            <stop  offset="0.9005" style="stop-color:var(--vitamui-primary-100)"/>
+            <stop  offset="1" style="stop-color:var(--vitamui-primary-50)"/>
+					</linearGradient>
+          <path style="fill:url(#SVGID_AUDIT_APP_61);" d="M81.9,89.9l-2.4,75.4
+						c-0.4,5.7,2.3,5.1,4.7,4.7l68.9-20.4c1.8-0.3,3.4-2.4,3.8-5l1.9-59.6c0.6-3.6-1.2-6.8-3.7-6.7l-68.4,4.1
+						C83.7,82.6,81.5,86.1,81.9,89.9z"/>
+          <path class="audit_app_194" d="M81.8,92.3l-1.6,49.9C80.2,142.2,81.2,137.6,81.8,92.3z"/>
+          <path class="audit_app_195" d="M91.4,83.3l62-4C153.4,79.3,126.4,82.8,91.4,83.3z"/>
+          <g>
+
+							<linearGradient id="SVGID_AUDIT_APP_62" gradientUnits="userSpaceOnUse" x1="79.5477" y1="41.2558" x2="72.2657" y2="147.8595">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+                <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+                <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_62);" points="73.7,167.7 73.5,167.7
+							74.3,77.4 74.5,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_63" gradientUnits="userSpaceOnUse" x1="80.0427" y1="41.2637" x2="72.7612" y2="147.861">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_63);" points="74.2,167.8 74,167.7
+							74.8,77.4 75,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_64" gradientUnits="userSpaceOnUse" x1="80.5377" y1="41.2717" x2="73.2566" y2="147.8624">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_64);" points="74.7,167.8 74.5,167.7
+							75.3,77.4 75.5,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_65" gradientUnits="userSpaceOnUse" x1="81.0326" y1="41.2797" x2="73.752" y2="147.8639">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_65);" points="75.1,167.8 75,167.7
+							75.8,77.4 76,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_66" gradientUnits="userSpaceOnUse" x1="81.5275" y1="41.2877" x2="74.2473" y2="147.8653">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_66);" points="75.6,167.8 75.5,167.7
+							76.3,77.4 76.5,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_67" gradientUnits="userSpaceOnUse" x1="82.0223" y1="41.2957" x2="74.7425" y2="147.8668">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_67);" points="76.1,167.8 76,167.7
+							76.8,77.4 77,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_68" gradientUnits="userSpaceOnUse" x1="82.517" y1="41.3037" x2="75.2377" y2="147.8682">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_68);" points="76.6,167.8 76.5,167.7
+							77.3,77.4 77.5,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_69" gradientUnits="userSpaceOnUse" x1="83.0117" y1="41.3116" x2="75.7328" y2="147.8697">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_69);" points="77.1,167.8 77,167.8
+							77.8,77.4 78,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_70" gradientUnits="userSpaceOnUse" x1="83.5063" y1="41.3196" x2="76.2279" y2="147.8711">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_70);" points="77.6,167.8 77.5,167.8
+							78.3,77.4 78.5,77.4 						"/>
+
+            <linearGradient id="SVGID_AUDIT_APP_71" gradientUnits="userSpaceOnUse" x1="84.0009" y1="41.3276" x2="76.7229" y2="147.8726">
+							<stop  offset="0" style="stop-color:#F5F5F5"/>
+              <stop  offset="0.5392" style="stop-color:#9B9A9B"/>
+              <stop  offset="1" style="stop-color:#4C4C4C"/>
+						</linearGradient>
+            <polygon style="fill:url(#SVGID_AUDIT_APP_71);" points="78.1,167.8 78,167.8
+							78.8,77.4 78.9,77.4 						"/>
+					</g>
+          <path class="audit_app_206" d="M125,73l0.2-5.1c0,0,0-2.5-1.7-3.4c0,0,1.4,0.9,1.4,3.4s-0.1,5.1-0.1,5.1L125,73z"/>
+          <path class="audit_app_206" d="M72.4,74.3l0.1-5.2c0,0,0.1-2.6,2-3.4c0,0-1.4,0.8-1.6,3.4c-0.1,2.6-0.2,5.3-0.2,5.3L72.4,74.3z"/>
+				</g>
+        <path class="audit_app_207" d="M81.8,168.6l69.8-20.6C151.5,148,107.1,157.3,81.8,168.6z"/>
+			</g>
+      <path class="audit_app_208" d="M72.4,75.9v82.2l1.1-81.5c0,0,1.9,0.2,6.7,0.1c16.9-0.5,56.1-1.8,55.8-1.8C135.6,74.9,72.4,75.9,72.4,75.9
+				z"/>
+		</g>
+	</g>
+    <g>
+		<path class="audit_app_207" d="M97,127.1l-0.9,4.1l-5.3,0.9l5.7-21.8l5.4-0.5l5.3,19.7l-5,0.8l-0.8-3.8L97,127.1z M99.1,116.6l-1.1,5.3
+			l2.1-0.3L99.1,116.6z"/>
+      <path class="audit_app_207" d="M115.4,122.2c0.4-0.7,0.6-1.5,0.6-2.4v-11.3l4.3-0.4v11.1c0,2.5-0.6,4.7-1.7,6.5c-1.2,1.8-2.7,2.9-4.5,3.2
+			c-1.9,0.3-3.5-0.3-4.7-1.8c-1.2-1.5-1.9-3.6-1.9-6.2v-11.6l4.5-0.4v11.5c0,0.9,0.2,1.6,0.6,2.2c0.4,0.6,0.9,0.8,1.4,0.7
+			C114.5,123.3,114.9,122.9,115.4,122.2z"/>
+      <path class="audit_app_207" d="M127.8,107.4c1.9-0.2,3.5,0.6,4.7,2.3c1.2,1.7,1.8,3.8,1.8,6.3s-0.6,4.8-1.8,6.7c-1.2,2-2.8,3.1-4.7,3.5
+			l-5,0.8v-19.1L127.8,107.4z M126.8,112.9v8.1l1-0.1c0.8-0.1,1.4-0.6,1.9-1.4c0.5-0.8,0.8-1.8,0.8-2.9c0-1.1-0.3-2-0.8-2.7
+			c-0.5-0.7-1.2-1-1.9-0.9L126.8,112.9z"/>
+      <path class="audit_app_207" d="M136.2,106.7l3.7-0.3v17.9l-3.7,0.6V106.7z"/>
+      <path class="audit_app_207" d="M150.6,105.3v5l-2.8,0.3V123l-3.5,0.6v-12.5l-2.9,0.3v-5.2L150.6,105.3z"/>
+	</g>
+    <g>
+		<path class="audit_app_227" d="M97.4,126.7l-0.9,4.1l-5.3,0.9l5.7-21.8l5.4-0.5l5.3,19.7l-5,0.8l-0.8-3.8L97.4,126.7z M99.6,116.2
+			l-1.1,5.3l2.1-0.3L99.6,116.2z"/>
+      <path class="audit_app_227" d="M115.8,121.8c0.4-0.7,0.6-1.5,0.6-2.4v-11.3l4.3-0.4v11.1c0,2.5-0.6,4.7-1.7,6.5c-1.2,1.8-2.7,2.9-4.5,3.2
+			c-1.9,0.3-3.5-0.3-4.7-1.8c-1.2-1.5-1.9-3.6-1.9-6.2v-11.6l4.5-0.4V120c0,0.9,0.2,1.6,0.6,2.2c0.4,0.6,0.9,0.8,1.4,0.7
+			C114.9,122.8,115.4,122.5,115.8,121.8z"/>
+      <path class="audit_app_227" d="M128.2,107c1.9-0.2,3.5,0.6,4.7,2.3c1.2,1.7,1.8,3.8,1.8,6.3s-0.6,4.8-1.8,6.7c-1.2,2-2.8,3.1-4.7,3.5
+			l-5,0.8v-19.1L128.2,107z M127.3,112.5v8.1l1-0.1c0.8-0.1,1.4-0.6,1.9-1.4c0.5-0.8,0.8-1.8,0.8-2.9c0-1.1-0.3-2-0.8-2.7
+			c-0.5-0.7-1.2-1-1.9-0.9L127.3,112.5z"/>
+      <path class="audit_app_227" d="M136.6,106.2l3.7-0.3v17.9l-3.7,0.6V106.2z"/>
+      <path class="audit_app_227" d="M151,104.9v5l-2.8,0.3v12.3l-3.5,0.6v-12.5l-2.9,0.3v-5.2L151,104.9z"/>
+	</g>
+</g>
+</svg>

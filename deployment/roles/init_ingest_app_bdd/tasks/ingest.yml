@@ -1,18 +1,18 @@
 ---
 - name: prepare directory for ingest scripts
   file:
-    path: "{{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/ingest"
+    path: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/scripts/ingest"
     state: directory
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
 
 - name: Copy the ingest database scripts files
   template:
     src: "{{ item }}"
-    dest: "{{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/ingest/{{ item | basename | regex_replace('\\.j2$') }}"
-    owner: "{{ vitamui_defaults.users.vitamuidb }}"
-    group: "{{ vitamui_defaults.users.group }}"
+    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/scripts/ingest/{{ item | basename | regex_replace('\\.j2$') }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
     mode: 0755
   with_fileglob:
     - "{{ role_path }}/templates/ingest/*"
@@ -20,7 +20,7 @@
     - update_mongodb_configuration
 
 - name: Load ingest scripts in database
-  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path }}/app/mongod/scripts/ingest/{{ item | basename | regex_replace('\\.j2$') }}"
+  command: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin {{ mongo_credentials }} {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/scripts/ingest/{{ item | basename | regex_replace('\\.j2$') }}"
   no_log: "{{ hide_passwords_during_deploy }}"
   with_fileglob:
     - "{{ role_path }}/templates/ingest/*"

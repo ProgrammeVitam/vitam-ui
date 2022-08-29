@@ -60,17 +60,27 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
   managementRulesSubscription: Subscription;
   isValidValue = true;
   showText = false;
-  isButtonCanceled = false;
+  isCancelAddRulePropertyButtonDisabled = false;
 
   @ViewChild('confirmDeleteAddRulePropertyDialog', { static: true })
   confirmDeleteAddRulePropertyDialog: TemplateRef<AddUpdatePropertyComponent>;
 
   constructor(private managementRulesSharedDataService: ManagementRulesSharedDataService, private dialog: MatDialog) {
+  }
+
+  ngOnInit() {
     this.ruleActionsSubscription = this.managementRulesSharedDataService.getRuleActions().subscribe((data) => {
-      this.isButtonCanceled =
+      this.isCancelAddRulePropertyButtonDisabled =
         data.filter(
           (rule) =>
-            rule.actionType === RuleActionsEnum.ADD_RULES &&
+            // Due to a SEDA limitation, the FinalAction field is mandatory for Appraisal & Storage rules when adding/setting
+            // any Rule, PreventInheritance or PreventRulesId field
+            (
+              rule.actionType === RuleActionsEnum.ADD_RULES ||
+              rule.actionType === RuleActionsEnum.BLOCK_RULE_INHERITANCE ||
+              rule.actionType === RuleActionsEnum.BLOCK_CATEGORY_INHERITANCE ||
+              rule.actionType === RuleActionsEnum.UNLOCK_CATEGORY_INHERITANCE
+            ) &&
             (rule.ruleType === RuleTypeEnum.APPRAISALRULE || rule.ruleType === RuleTypeEnum.STORAGERULE)
         ).length !== 0;
     });
@@ -81,8 +91,6 @@ export class AddUpdatePropertyComponent implements OnInit, OnDestroy {
     this.ruleActionsSubscription?.unsubscribe();
     this.showConfirmDeleteAddRulePropertySuscription?.unsubscribe();
   }
-
-  ngOnInit() {}
 
   onUpdateRuleProperty() {
     this.managementRulesSubscription = this.managementRulesSharedDataService.getManagementRules().subscribe((data) => {

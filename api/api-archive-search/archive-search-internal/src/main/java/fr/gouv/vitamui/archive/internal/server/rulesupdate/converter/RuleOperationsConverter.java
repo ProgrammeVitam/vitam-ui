@@ -161,7 +161,7 @@ public class RuleOperationsConverter {
             copyProperties(vitamUiRuleCategoryActionDeletion,new RuleCategoryActionDeletion());
 
         List<RuleAction> ruleActionList = new ArrayList<>();
-        if(vitamUiRuleCategoryActionDeletion != null && vitamUiRuleCategoryActionDeletion.getRules().isPresent()) {
+        if(vitamUiRuleCategoryActionDeletion != null && vitamUiRuleCategoryActionDeletion.getRules() != null) {
             vitamUiRuleCategoryActionDeletion.getRules().ifPresent(ruleCategoryAction -> {
                 ruleCategoryAction.forEach(rule ->
                     ruleActionList.add(convertToVitamRuleAction(rule)));

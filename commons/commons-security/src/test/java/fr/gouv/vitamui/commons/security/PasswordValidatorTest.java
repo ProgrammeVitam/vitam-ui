@@ -27,59 +27,72 @@
 
 package fr.gouv.vitamui.commons.security;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.security.client.password.PasswordValidator;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+
 public class PasswordValidatorTest {
 
-    private final String PASSWORD_VALID_1 = "Change-itChange-it0!0!";
-    private final String PASSWORD_VALID_2 = "adminChange-itChange-it0!0!";
-    private final String PASSWORD_VALID_3 = "adMIChange-itChange-it0!0!";
-    private final String USER_LASTNAME = "ADMIN";
-    private final Integer MAX_OCCURRENCES_CHARS_TO_CHECK = 4;
+    private static final String CREDENTIALS_DETAILS_FILE = "credentialsRepository/userCredentials.json";
     private final String POLICY_PATTERN = "'(^(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]{12,}$)|(^(?=(.*[$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]){2,})(?=(?:.*[A-Z]){2,})(?=(?:.*[\\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]{12,}$)|(^(?=(.*[$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[\\d]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]{12,}$)|(^(?=(.*[$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]){2,})(?=(?:.*[a-z]){2,})(?=(?:.*[A-Z]){2,})[A-Za-zÀ-ÿ0-9$@!%*#£?&=\\-\\/:;\\(\\)\"\\.,\\?!'\\[\\]{}^\\+\\=_\\\\\\|~<>`]{12,}$)'";
 
     PasswordValidator passwordValidator;
+
+    private JsonNode jsonNode;
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
+        jsonNode =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(CREDENTIALS_DETAILS_FILE));
         passwordValidator = new PasswordValidator();
     }
 
     @Test
     public void givenPasswordValidThenOK() {
-        boolean valid = passwordValidator.isValid(POLICY_PATTERN, PASSWORD_VALID_1);
+        boolean valid = passwordValidator.isValid(POLICY_PATTERN, jsonNode.findValue("PASSWORD_VALID_1").textValue());
         Assertions.assertThat(valid).isTrue();
     }
 
     @Test
     public void givenPassword1ValidButContainsOccurrenceOfUserLastNameThenTrue() {
-        boolean valid = passwordValidator.isContainsUserOccurrences(USER_LASTNAME,PASSWORD_VALID_2, MAX_OCCURRENCES_CHARS_TO_CHECK);
+        boolean valid = passwordValidator.isContainsUserOccurrences(jsonNode.findValue("USER_LASTNAME").textValue(),
+            jsonNode.findValue("PASSWORD_VALID_2").textValue(), Integer.parseInt(jsonNode.findValue("MAX_OCCURRENCES_CHARS_TO_CHECK").textValue()));
         Assertions.assertThat(valid).isTrue();
     }
 
     @Test
     public void givenPassword2ValidButContainsOccurrenceOfUserLastNameThenTrue() {
-        boolean valid = passwordValidator.isContainsUserOccurrences(USER_LASTNAME,PASSWORD_VALID_3, MAX_OCCURRENCES_CHARS_TO_CHECK);
+        boolean valid = passwordValidator.isContainsUserOccurrences(jsonNode.findValue("USER_LASTNAME").textValue(),
+            jsonNode.findValue("PASSWORD_VALID_3").textValue(), Integer.parseInt(jsonNode.
+                findValue("MAX_OCCURRENCES_CHARS_TO_CHECK").textValue()));
         Assertions.assertThat(valid).isTrue();
     }
 
     @Test
     public void givenPassword3ValidButContainsOccurrenceOfUserLastNameThenFalse() {
-        boolean valid = passwordValidator.isContainsUserOccurrences(USER_LASTNAME,PASSWORD_VALID_1, MAX_OCCURRENCES_CHARS_TO_CHECK);
+        boolean valid = passwordValidator.isContainsUserOccurrences(jsonNode.findValue("USER_LASTNAME").textValue(),
+            jsonNode.findValue("PASSWORD_VALID_1").textValue(), Integer.parseInt(jsonNode
+                .findValue("MAX_OCCURRENCES_CHARS_TO_CHECK").textValue()));
         Assertions.assertThat(valid).isFalse();
     }
 
     @Test
     public void givenPasswordConfirmationOKThenTrue() {
-        boolean valid = passwordValidator.isEqualConfirmed(PASSWORD_VALID_1, PASSWORD_VALID_1);
+        boolean valid = passwordValidator.isEqualConfirmed(jsonNode.findValue("PASSWORD_VALID_1").textValue(),
+            jsonNode.findValue("PASSWORD_VALID_1").textValue());
         Assertions.assertThat(valid).isTrue();
     }
 
     @Test
     public void givenPasswordConfirmationKOThenFalse() {
-        boolean valid = passwordValidator.isEqualConfirmed(PASSWORD_VALID_1, PASSWORD_VALID_2);
+        boolean valid = passwordValidator.isEqualConfirmed(jsonNode.findValue("PASSWORD_VALID_1").textValue(),
+            jsonNode.findValue("PASSWORD_VALID_2").textValue());
         Assertions.assertThat(valid).isFalse();
     }
 }

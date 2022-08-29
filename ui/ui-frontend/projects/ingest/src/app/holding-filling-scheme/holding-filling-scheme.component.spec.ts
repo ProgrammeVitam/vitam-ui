@@ -34,28 +34,28 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import {ComponentFixture, TestBed, waitForAsync} from '@angular/core/testing';
+import {FormBuilder} from '@angular/forms';
 
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterTestingModule } from '@angular/router/testing';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {RouterTestingModule} from '@angular/router/testing';
 
-import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
-import { InjectorModule, LoggerModule, SearchBarModule } from 'ui-frontend-common';
-import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
-import { environment } from '../../environments/environment';
-import { IngestService } from '../ingest/ingest.service';
-import { HoldingFillingSchemeComponent } from './holding-filling-scheme.component';
+import {Component, NO_ERRORS_SCHEMA} from '@angular/core';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {ActivatedRoute} from '@angular/router';
+import {of} from 'rxjs';
+import {InjectorModule, LoggerModule, SearchBarModule} from 'ui-frontend-common';
+import {VitamUICommonTestModule} from 'ui-frontend-common/testing';
+import {environment} from '../../environments/environment';
+import {IngestService} from '../ingest/ingest.service';
+import {HoldingFillingSchemeComponent} from './holding-filling-scheme.component';
+import {IngestType} from "../core/common/ingest-type.enum";
 
-@Component({ selector: 'app-ingest-list', template: '' })
+@Component({selector: 'app-ingest-list', template: ''})
 class IngestListStubComponent {
 }
 
@@ -70,7 +70,7 @@ describe('HoldingFilingSchemeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     const matDialogSpy = jasmine.createSpyObj('MatDialog', ['open']);
-    matDialogSpy.open.and.returnValue({ afterClosed: () => of(true) });
+    matDialogSpy.open.and.returnValue({afterClosed: () => of(true)});
     TestBed.configureTestingModule({
       imports: [
         MatDatepickerModule,
@@ -93,10 +93,13 @@ describe('HoldingFilingSchemeComponent', () => {
       ],
       providers: [
         FormBuilder,
-        { provide: MatDialog, useValue: matDialogSpy },
-        { provide: IngestService, useValue: ingestServiceMock },
-        { provide: ActivatedRoute, useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'HOLDING_FILLING_SCHEME_APP' }) } },
-        { provide: environment, useValue: environment }
+        {provide: MatDialog, useValue: matDialogSpy},
+        {provide: IngestService, useValue: ingestServiceMock},
+        {
+          provide: ActivatedRoute,
+          useValue: {params: of({tenantIdentifier: 1}), data: of({appId: 'HOLDING_FILLING_SCHEME_APP'})}
+        },
+        {provide: environment, useValue: environment}
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -115,14 +118,14 @@ describe('HoldingFilingSchemeComponent', () => {
 
   it('should call open', () => {
     const matDialogSpy = TestBed.inject(MatDialog);
-    component.openImportTreePlanPopup('HOLDING_SCHEME');
+    component.openImportTreePlanPopup(IngestType.HOLDING_SCHEME);
     expect(matDialogSpy.open).toHaveBeenCalled();
     expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
   });
 
   it('should open a modal with HoldingFillingSchemeComponent', () => {
     const matDialogSpy = TestBed.inject(MatDialog);
-    component.openImportTreePlanPopup('FILING_SCHEME');
+    component.openImportTreePlanPopup(IngestType.FILING_SCHEME);
     expect(matDialogSpy.open).toHaveBeenCalledTimes(1);
   });
 });

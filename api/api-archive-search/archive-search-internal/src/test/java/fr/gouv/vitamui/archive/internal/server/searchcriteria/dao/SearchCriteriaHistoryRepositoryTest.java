@@ -66,21 +66,21 @@ public class SearchCriteriaHistoryRepositoryTest {
     }
 
     @Test
-    public void testSaveSearchCriteriaHistory() {
+    void testSaveSearchCriteriaHistory() {
         final SearchCriteriaHistory
             s = repository.save(Utils.buildSearchCriteriaHistory());
         assertThat(s.getUserId()).isEqualTo("999");
     }
 
     @Test
-    public void testGetSearchCriteriaHistoryDtos() {
+    void testGetSearchCriteriaHistoryDtos() {
         final SearchCriteriaHistory
             s1 = repository.save(Utils.buildSearchCriteriaHistory());
 
         final SearchCriteriaHistory
             s2 = repository.save(Utils.buildSearchCriteriaHistory());
         List<SearchCriteriaHistory> list = (List<SearchCriteriaHistory>) repository.findAll();
-        assertThat(list.size()).isEqualTo(2);
+        assertThat(list).hasSize(2);
     }
 
 }

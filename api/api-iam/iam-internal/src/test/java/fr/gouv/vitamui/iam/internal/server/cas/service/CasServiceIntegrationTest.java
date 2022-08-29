@@ -1,5 +1,9 @@
 package fr.gouv.vitamui.iam.internal.server.cas.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.PropertiesUtils;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.UserDto;
 import fr.gouv.vitamui.commons.api.enums.UserStatusEnum;
@@ -49,6 +53,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.FileNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -61,16 +66,7 @@ import static org.junit.Assert.assertTrue;
 @EnableMongoRepositories(basePackageClasses = {CustomSequenceRepository.class, TokenRepository.class}, repositoryBaseClass = VitamUIRepositoryImpl.class)
 public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
-    private static final int PASSWORD_EXPIRATION_DELAY = 42;
-
-    private static final String EMAIL = "surrogate@vitamui.com";
-
-    private static final String PASSWORD = "passwd";
-
-    private static final String CUSTOMER_ID = "customerId";
-
-    private static final String USER_IDENTIFIER = "123456";
-
+    private static final String CREDENTIALS_DETAILS_FILE = "credentialsRepository/userCredentials.json";
     @InjectMocks
     private CasInternalService casService;
 
@@ -120,8 +116,12 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private PasswordValidator passwordValidator = new PasswordValidator();
 
+    private JsonNode jsonNode;
+
     @Before
-    public void setup() {
+    public void setup() throws FileNotFoundException, InvalidParseOperationException {
+        jsonNode =
+            JsonHandler.getFromFile(PropertiesUtils.findFile(CREDENTIALS_DETAILS_FILE));
         MockitoAnnotations.initMocks(this);
         casService.setTokenRepository(tokenRepository);
         casService.setIamLogbookService(iamLogbookService);
@@ -144,19 +144,19 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     @Test
     public void testLogoutSubrogation() {
         final String superUser = "superUser@vitamui.com";
-        final String surrogate = EMAIL;
+        final String surrogate = jsonNode.findValue("EMAIL").textValue();
         final Subrogation subro = new Subrogation();
         subro.setSuperUser(superUser);
         subro.setSuperUserCustomerId("superUserCustomerId");
         subro.setSurrogate(surrogate);
         subro.setSurrogateCustomerId("surrogateCustomerId");
         Mockito.when(subrogationRepository.findBySuperUserAndSurrogate(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
-                .thenReturn(Optional.of(subro));
+            .thenReturn(Optional.of(subro));
         Mockito.when(userRepository.findByEmail(ArgumentMatchers.anyString())).thenReturn(new User());
         casService.deleteSubrogationBySuperUserAndSurrogate(superUser, surrogate);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
-                .is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
+            .is(EventType.EXT_VITAMUI_LOGOUT_SURROGATE);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -166,11 +166,11 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         final UserDto user = new UserDto();
         user.setType(UserTypeEnum.GENERIC);
         user.setId("ID");
-        user.setEmail(EMAIL);
+        user.setEmail(jsonNode.findValue("EMAIL").textValue());
         final Subrogation subro = getUsersByEmail(user);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
-                .is(EventType.EXT_VITAMUI_START_SURROGATE_GENERIC);
+            .is(EventType.EXT_VITAMUI_START_SURROGATE_GENERIC);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -180,11 +180,11 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
         final UserDto user = new UserDto();
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setId("ID");
-        user.setEmail(EMAIL);
+        user.setEmail(jsonNode.findValue("EMAIL").textValue());
         final Subrogation subro = getUsersByEmail(user);
 
         final Criteria criteria = Criteria.where("obId").is(subro.getId()).and("obIdReq").is(MongoDbCollections.SUBROGATIONS).and("evType")
-                .is(EventType.EXT_VITAMUI_START_SURROGATE_USER);
+            .is(EventType.EXT_VITAMUI_START_SURROGATE_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -206,20 +206,20 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
     private User prepareUserPwd(final String pwd) {
         final User user = new User();
-        user.setEmail(EMAIL);
+        user.setEmail(jsonNode.findValue("EMAIL").textValue());
         user.setLastname("zz");
         user.setType(UserTypeEnum.NOMINATIVE);
         user.setStatus(UserStatusEnum.ENABLED);
-        user.setCustomerId(CUSTOMER_ID);
-        user.setIdentifier(USER_IDENTIFIER);
+        user.setCustomerId(jsonNode.findValue("CUSTOMER_ID").textValue());
+        user.setIdentifier(jsonNode.findValue("USER_IDENTIFIER").textValue());
         if (pwd != null) {
             user.setPassword(passwordEncoder.encode(pwd));
         }
-        Mockito.when(userRepository.findByEmail(EMAIL)).thenReturn(user);
+        Mockito.when(userRepository.findByEmail(jsonNode.findValue("EMAIL").textValue())).thenReturn(user);
         final Customer customer = new Customer();
-        customer.setId(CUSTOMER_ID);
-        customer.setPasswordRevocationDelay(PASSWORD_EXPIRATION_DELAY);
-        Mockito.when(customerRepository.findById(CUSTOMER_ID)).thenReturn(Optional.of(customer));
+        customer.setId(jsonNode.findValue("CUSTOMER_ID").textValue());
+        customer.setPasswordRevocationDelay(Integer.parseInt(jsonNode.findValue("PASSWORD_EXPIRATION_DELAY").textValue()));
+        Mockito.when(customerRepository.findById(jsonNode.findValue("CUSTOMER_ID").textValue())).thenReturn(Optional.of(customer));
 
         return user;
     }
@@ -229,10 +229,10 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
         final User user = prepareUserPwd(null);
 
-        casService.updatePassword(EMAIL, PASSWORD);
+        casService.updatePassword(jsonNode.findValue("EMAIL").textValue(), jsonNode.findValue("PASSWORD").textValue());
 
         final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_INIT);
+            .is(EventType.EXT_VITAMUI_PASSWORD_INIT);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
     }
@@ -242,11 +242,12 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
 
         final User user = prepareUserPwd("oldPassword");
         final String oldPassword = user.getPassword();
-        final OffsetDateTime passwordExpirationDate = OffsetDateTime.now().plusMonths(PASSWORD_EXPIRATION_DELAY);
-        casService.updatePassword(EMAIL, PASSWORD);
+        final OffsetDateTime passwordExpirationDate = OffsetDateTime.now().plusMonths(Integer.parseInt(jsonNode.findValue("PASSWORD_EXPIRATION_DELAY").textValue())
+        );
+        casService.updatePassword(jsonNode.findValue("EMAIL").textValue(), jsonNode.findValue("PASSWORD").textValue());
 
         final Criteria criteria = Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType")
-                .is(EventType.EXT_VITAMUI_PASSWORD_CHANGE);
+            .is(EventType.EXT_VITAMUI_PASSWORD_CHANGE);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         assertNotEquals("Password should not be the same", oldPassword, user.getPassword());
@@ -257,22 +258,22 @@ public class CasServiceIntegrationTest extends AbstractLogbookIntegrationTest {
     public void testPasswordUpdateAlreadyUsedPassword() {
 
         final User user = prepareUserPwd("oldPassword");
-        user.getOldPasswords().add(passwordEncoder.encode(PASSWORD));
+        user.getOldPasswords().add(passwordEncoder.encode(jsonNode.findValue("PASSWORD").textValue()));
 
-        casService.updatePassword(EMAIL, PASSWORD);
+        casService.updatePassword(jsonNode.findValue("EMAIL").textValue(), jsonNode.findValue("PASSWORD").textValue());
     }
 
     @Test
     public void testUpdateNbFailedAttempsNoSurrogate() {
 
         final User user = new User();
-        user.setIdentifier(USER_IDENTIFIER);
+        user.setIdentifier(jsonNode.findValue("USER_IDENTIFIER").textValue());
         user.setStatus(UserStatusEnum.BLOCKED);
 
         casService.updateNbFailedAttempsPlusLastConnectionAndStatus(user, 4, UserStatusEnum.ENABLED);
 
         final Criteria criteria =
-                Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_BLOCK_USER);
+            Criteria.where("obId").is(user.getIdentifier()).and("obIdReq").is(MongoDbCollections.USERS).and("evType").is(EventType.EXT_VITAMUI_BLOCK_USER);
         final Collection<Event> events = eventRepository.findAll(Query.query(criteria));
         assertThat(events).hasSize(1);
         final Event event = events.iterator().next();

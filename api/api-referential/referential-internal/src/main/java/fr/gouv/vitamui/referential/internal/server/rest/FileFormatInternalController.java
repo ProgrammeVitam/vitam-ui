@@ -191,8 +191,10 @@ public class FileFormatInternalController {
     @Consumes(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public JsonNode importFileFormats(@RequestParam("fileName") String fileName, @RequestParam("file") MultipartFile file) {
-        LOGGER.debug("import file format file {}", fileName);
+
         SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        SanityChecker.isValidFileName(fileName);
+        LOGGER.debug("import file format file {}", fileName);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return fileFormatInternalService.importFileFormats(vitamContext, fileName, file);
     }

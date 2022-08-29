@@ -56,10 +56,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.RoundingMode;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.security.Security;
 import java.text.CharacterIterator;
 import java.text.DecimalFormat;
@@ -79,7 +80,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,7 +103,7 @@ public final class VitamUIUtils {
     /**
      * Random Generator
      */
-    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
+    private static final SecureRandom secureRandom = new SecureRandom();
 
     /**
      * Verify parameter respect the pattern  {@link #EMAIL_PATTERN}
@@ -127,7 +127,7 @@ public final class VitamUIUtils {
         }
         final byte[] result = new byte[length];
         for (int i = 0; i < result.length; i++) {
-            result[i] = (byte) (RANDOM.nextInt(95) + 32);
+            result[i] = (byte) (secureRandom.nextInt(95) + 32);
         }
         return result;
     }
@@ -173,13 +173,12 @@ public final class VitamUIUtils {
 
     public static <T> T convertObjectFromJson(final String json, final Class<T> clazz)
         throws JsonParseException, JsonMappingException, IOException {
-        final T object = new ObjectMapper().readValue(json, clazz);
-        return object;
+        return new ObjectMapper().readValue(json, clazz);
     }
 
     public static void saveContentInFile(final String filename, final String content) throws IOException {
         final File file = new File(filename);
-        FileUtils.writeStringToFile(file, content, Charset.forName("UTF-8"));
+        FileUtils.writeStringToFile(file, content, StandardCharsets.UTF_8);
     }
 
     public static void saveContentInFile(final String filename, final byte[] content) throws IOException {
@@ -269,8 +268,8 @@ public final class VitamUIUtils {
     public static String getBase64(final MultipartFile file) throws IOException {
         try (final InputStream fileInputStream = file.getInputStream()) {
             final byte[] fileInByteArray = IOUtils.toByteArray(fileInputStream);
-            final String fileBase64 = new String(Base64.getEncoder().encode(fileInByteArray), "UTF-8");
-            return fileBase64;
+            return new String(Base64.getEncoder().encode(fileInByteArray), StandardCharsets.UTF_8);
+
         }
     }
 
@@ -283,7 +282,7 @@ public final class VitamUIUtils {
 
     public static <T extends List, S> List<S> unionOf(final T... l) {
         final List<S> unionList = new ArrayList<>();
-        Arrays.asList(l).stream().forEach(e -> unionList.addAll(e));
+        Arrays.asList(l).stream().forEach(unionList::addAll);
         return Collections.unmodifiableList(unionList);
     }
 

@@ -49,13 +49,13 @@ import fr.gouv.vitamui.commons.vitam.api.model.ObjectQualifierTypeEnum;
 import fr.gouv.vitamui.ui.commons.service.AbstractPaginateService;
 import fr.gouv.vitamui.ui.commons.service.CommonService;
 import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -71,7 +71,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
     private final ArchiveSearchExternalRestClient archiveSearchExternalRestClient;
     private final ArchiveSearchExternalWebClient archiveSearchExternalWebClient;
-    private CommonService commonService;
+    private final CommonService commonService;
 
     @Autowired
     public ArchivesSearchService(final CommonService commonService,
@@ -94,8 +94,7 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     public ArchiveUnitsDto findArchiveUnits(final SearchCriteriaDto searchQuery,
         final ExternalHttpContext context) {
         LOGGER.debug("calling find archive units by criteria {} ", searchQuery);
-        ArchiveUnitsDto archiveUnits = getClient().searchArchiveUnitsByCriteria(context, searchQuery);
-        return archiveUnits;
+        return getClient().searchArchiveUnitsByCriteria(context, searchQuery);
     }
 
     public VitamUISearchResponseDto findFilingHoldingScheme(ExternalHttpContext context) {
@@ -108,10 +107,8 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
 
         ResultsDto got = findObjectById(id, context).getBody();
         String usage = getUsage(Objects.requireNonNull(got), objectData);
-        final Mono<ResponseEntity<Resource>> resourceResponseEntityResponse =
-            archiveSearchExternalWebClient
+        return archiveSearchExternalWebClient
                 .downloadObjectFromUnit(id, usage, getVersion(got.getQualifiers(), usage), context);
-        return resourceResponseEntityResponse;
     }
 
     public ResponseEntity<ResultsDto> findUnitById(String id, ExternalHttpContext context) {
@@ -131,49 +128,34 @@ public class ArchivesSearchService extends AbstractPaginateService<ArchiveUnitsD
     }
 
     public String getUsage(ResultsDto got, ObjectData objectData) {
-        List<QualifiersDto> qualifiers = got.getQualifiers();
         String finalUsage = null;
-        for (QualifiersDto qualifier : qualifiers) {
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.BINARYMASTER.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.BINARYMASTER);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
+        for (QualifiersDto qualifier : got.getQualifiers()) {
+            finalUsage = Arrays.stream(ObjectQualifierTypeEnum.values())
+                .map(ObjectQualifierTypeEnum::getValue)
+                .filter(value -> value.equals(qualifier.getQualifier()))
+                .findFirst().orElse(null);
+            String filename = getObjectDataFilename(objectData, qualifier);
+            if (filename == null) {
+                LOGGER.debug("Objectdata with first FileInfoModel.filename null : {}", objectData);
+                continue;
             }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.DISSEMINATION.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.DISSEMINATION);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
-            }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.TEXTCONTENT.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.TEXTCONTENT);
-                if (StringUtils.isEmpty(objectData.getFilename())) {
-                    continue;
-                }
-            }
-            if (qualifier.getQualifier().equals(ObjectQualifierTypeEnum.THUMBNAIL.getValue())) {
-                finalUsage = updateObjectDataFilename(objectData, qualifier, ObjectQualifierTypeEnum.THUMBNAIL);
-            }
+            objectData.setFilename(filename);
+            objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
         }
         return finalUsage;
     }
 
-    @NotNull
-    private String updateObjectDataFilename(ObjectData objectData, QualifiersDto qualifier,
-        ObjectQualifierTypeEnum objectQualifierTypeEnum) {
-        if (qualifier.getVersions().get(0).getFileInfoModel() != null &&
-            StringUtils.isEmpty(objectData.getFilename())) {
-            String filename = qualifier.getVersions().get(0).getFileInfoModel().getFilename();
-            objectData.setFilename(filename);
+    private String getObjectDataFilename(ObjectData objectData, QualifiersDto qualifier) {
+        if (qualifier.getVersions() != null && qualifier.getVersions().get(0).getFileInfoModel() == null
+            || StringUtils.isNotEmpty(objectData.getFilename())) {
+            return null;
         }
-        objectData.setMimeType(qualifier.getVersions().get(0).getFormatIdentification().getMimeType());
-        return objectQualifierTypeEnum.getValue();
+        return qualifier.getVersions().get(0).getFileInfoModel().getFilename();
     }
 
     public Integer getVersion(List<QualifiersDto> qualifiers, String usage) {
         List<VersionsDto> versions =
-            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().get().getVersions();
+            qualifiers.stream().filter(q -> q.getQualifier().equals(usage)).findFirst().orElseThrow().getVersions();
         return Integer.parseInt(versions.get(0).getDataObjectVersion().split("_")[1]);
     }
 

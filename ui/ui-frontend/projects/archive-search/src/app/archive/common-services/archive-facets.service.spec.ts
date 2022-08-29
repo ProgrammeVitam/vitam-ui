@@ -36,7 +36,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ResultFacet, ResultFacetList, SearchCriteriaTypeEnum } from '../models/search.criteria';
+import { ResultFacet, ResultFacetList } from '../models/search.criteria';
 import { ArchiveFacetsService } from './archive-facets.service';
 
 describe('CustomerService', () => {
@@ -60,12 +60,12 @@ describe('CustomerService', () => {
     expect(resultFacets).toEqual(expectedResultNodesFacets);
   });
 
-  it('should call extractRulesFacetsResultsByCategory', () => {
-    let resultFacets = archiveFacetsService.extractRulesFacetsResultsByCategory(facetResultsInput, SearchCriteriaTypeEnum.APPRAISAL_RULE);
-    expect(resultFacets.expiredRulesListFacets).toEqual(expectedResultExpiredFacets);
-    expect(resultFacets.finalActionsFacets).toEqual(expectedResultFinalActionsFacets);
-    expect(resultFacets.noRulesFacets).toEqual(expectedResultCountWithoutRulesFacets);
-    expect(resultFacets.waitingToRecalculateRulesListFacets).toEqual(expectedResultComputeRulesFacets);
+  it('should call extractRulesFacetsResults for appraisal', () => {
+    let resultFacets = archiveFacetsService.extractRulesFacetsResults(facetResultsInput);
+    expect(resultFacets.appraisalRuleFacets.expiredRulesListFacets).toEqual(expectedResultExpiredFacets);
+    expect(resultFacets.appraisalRuleFacets.finalActionsFacets).toEqual(expectedResultFinalActionsFacets);
+    expect(resultFacets.appraisalRuleFacets.noRulesFacets).toEqual(expectedResultCountWithoutRulesFacets);
+    expect(resultFacets.appraisalRuleFacets.waitingToRecalculateRulesListFacets).toEqual(expectedResultComputeRulesFacets);
   });
 });
 const expectedResultNodesFacets: ResultFacet[] = [{ node: 'node1', count: 10 }];

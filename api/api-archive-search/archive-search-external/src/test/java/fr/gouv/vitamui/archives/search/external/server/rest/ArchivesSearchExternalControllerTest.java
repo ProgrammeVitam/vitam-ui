@@ -61,10 +61,10 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -94,7 +94,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
     private ExternalSecurityService externalSecurityService;
 
     @Test
-    public void testArchiveController() {
+    void testArchiveController() {
         Assertions.assertNotNull(archivesSearchExternalService);
     }
 
@@ -159,7 +159,7 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         nodeCriteria.setCriteria("NODES");
         nodeCriteria.setOperator(ArchiveSearchConsts.CriteriaOperators.EQ.name());
         nodeCriteria.setCategory(ArchiveSearchConsts.CriteriaCategory.NODES);
-        nodeCriteria.setValues(Arrays.asList(new CriteriaValue("<s>insecure</s>")));
+        nodeCriteria.setValues(List.of(new CriteriaValue("<s>insecure</s>")));
         query.setCriteriaList(List.of(nodeCriteria));
         ArchiveUnitsDto expectedResponse = new ArchiveUnitsDto();
         Mockito
@@ -193,8 +193,9 @@ public class ArchivesSearchExternalControllerTest extends ApiArchiveSearchExtern
         SearchCriteriaDto query = new SearchCriteriaDto();
         query.setLanguage(Locale.FRENCH.getLanguage());
 
-        Resource resource = new ByteArrayResource(ArchivesSearchExternalControllerTest.class.getClassLoader()
-            .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV).readAllBytes());
+        Resource resource = new ByteArrayResource(
+            Objects.requireNonNull(ArchivesSearchExternalControllerTest.class.getClassLoader()
+                .getResourceAsStream(ARCHIVE_UNITS_RESULTS_CSV)).readAllBytes());
 
         when(archivesSearchExternalService.exportCsvArchiveUnitsByCriteria(query))
             .thenReturn(resource);

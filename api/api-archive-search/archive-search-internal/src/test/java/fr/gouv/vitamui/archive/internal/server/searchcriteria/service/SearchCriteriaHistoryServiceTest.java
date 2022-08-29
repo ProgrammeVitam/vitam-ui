@@ -89,7 +89,7 @@ public class SearchCriteriaHistoryServiceTest {
     }
 
     @Test
-    public void testCreateSearchCriteriaHistory() throws Exception {
+    void testCreateSearchCriteriaHistory() throws Exception {
         final SearchCriteriaHistoryDto searchCriteriaHistoryDto =
             searchCriteriaHistoryConverter.convertEntityToDto(Utils.buildSearchCriteriaHistory());
 

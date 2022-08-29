@@ -29,9 +29,10 @@ package fr.gouv.vitamui.collect.internal.server.rest;
 
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.collect.common.dto.CollectProjectDto;
 import fr.gouv.vitamui.collect.common.rest.RestApi;
-import fr.gouv.vitamui.collect.internal.server.service.project.ProjectInternalService;
+import fr.gouv.vitamui.collect.internal.server.service.ProjectInternalService;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
@@ -86,7 +87,8 @@ public class ProjectInternalController {
     }
 
     @PostMapping()
-    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto) throws InvalidParseOperationException {
+    public CollectProjectDto createProject(@RequestBody CollectProjectDto collectProjectDto)
+        throws InvalidParseOperationException {
         SanityChecker.sanitizeCriteria(collectProjectDto);
         LOGGER.debug("Project to create {}", collectProjectDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
@@ -109,7 +111,8 @@ public class ProjectInternalController {
     }
 
     @PutMapping(CommonConstants.PATH_ID)
-    public CollectProjectDto updateProject(final @PathVariable("id") String id, @RequestBody CollectProjectDto collectProjectDto)
+    public CollectProjectDto updateProject(final @PathVariable("id") String id,
+        @RequestBody CollectProjectDto collectProjectDto)
         throws InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         SanityChecker.sanitizeCriteria(collectProjectDto);
@@ -117,6 +120,14 @@ public class ProjectInternalController {
         LOGGER.debug("[Internal] Project to update : {}", collectProjectDto);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
         return projectInternalService.update(vitamContext, id, collectProjectDto);
+    }
+
+    @GetMapping(CommonConstants.PATH_ID)
+    public CollectProjectDto findProjectById(final @PathVariable("id") String id) throws VitamClientException {
+        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("Project to get  {}", id);
+        final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
+        return projectInternalService.getProjectById(id, vitamContext);
     }
 
 }

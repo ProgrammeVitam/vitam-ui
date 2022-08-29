@@ -36,20 +36,17 @@
  */
 package fr.gouv.vitamui.iam.common.dto;
 
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.web.multipart.MultipartFile;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 /**
  * Customer Creation data : dto containing customer information and possibly a log.
- *
- *
  */
 @Getter
 @Setter
@@ -62,10 +59,15 @@ public class CustomerCreationFormData {
     @NotNull
     private String tenantName;
 
+    @JsonIgnore
     private Optional<MultipartFile> header;
+    @JsonIgnore
     private Optional<MultipartFile> footer;
+    @JsonIgnore
     private Optional<MultipartFile> portal;
+    @JsonIgnore
     private Optional<MultipartFile> logo;
+
     /**
      * Default Constructor for ModelAttribute creation.
      */
