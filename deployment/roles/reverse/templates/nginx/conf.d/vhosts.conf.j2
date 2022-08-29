@@ -62,6 +62,15 @@ server {
   }
 {% endif %}
 
+{% if groups['hosts_ui_pastis']|length > 0 %}
+  # UI PASTIS
+  location /pastis {
+    proxy_pass https://PASTIS/pastis;
+    include /etc/nginx/conf.d/proxy_params;
+  }
+{% endif %}
+
+
 {% if groups['hosts_ui_collect']|length > 0 %}
   # UI COLLECT
   location /collect {

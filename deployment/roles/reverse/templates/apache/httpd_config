@@ -97,6 +97,12 @@
 {% endfor %}
 
 
+    # UI PASTIS
+{% for host in groups['hosts_ui_pastis'] %}
+    ProxyPassMatch ^/pastis(/.*)$ {% if vitamui.pastis.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.pastis.port_service }}/pastis$1
+    ProxyPassReverse /pastis {% if vitamui.pastis.secure|lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.pastis.port_service }}/pastis
+{% endfor %}
+
     # UI ARCHIVE SEARCH
 {% for host in groups['hosts_ui_archive_search'] %}
     ProxyPassMatch ^/archive-search(/.*)$ {% if vitamui.archive_search.secure | default(secure) | lower == "true" %}https{% else %}http{% endif %}://{{ hostvars[host]['ip_service'] }}:{{ vitamui.archive_search.port_service }}/archive-search$1

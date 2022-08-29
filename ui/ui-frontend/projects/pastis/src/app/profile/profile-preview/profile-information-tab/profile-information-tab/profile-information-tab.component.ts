@@ -20,7 +20,7 @@ export class ProfileInformationTabComponent {
   @Input()
   set inputProfile(profileDescription: ProfileDescription) {
     this._inputProfile = profileDescription;
-
+    this.statusProfile.setValue(this.inputProfile.status === 'INACTIVE' ? false : true)
     this.resetForm(this.inputProfile);
     this.updated.emit(false);
   }

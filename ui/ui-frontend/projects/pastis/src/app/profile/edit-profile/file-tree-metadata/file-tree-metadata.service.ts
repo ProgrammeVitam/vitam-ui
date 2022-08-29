@@ -86,6 +86,7 @@ export class FileTreeMetadataService {
           child.type !== TypeConstants.attribute) {
 
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -97,6 +98,7 @@ export class FileTreeMetadataService {
           });
         } else if (!childrenToExclude && child.type !== TypeConstants.attribute) {
           data.push({
+            nomDuChampEdit: child.editName,
             id: child.id,
             nomDuChamp: child.name,
             nomDuChampFr: this.onResolveName(child.name, sedaChild),
@@ -107,6 +109,7 @@ export class FileTreeMetadataService {
             enumeration: child.sedaData.Enumeration});
         } else if (clickedNode.type  === TypeConstants.element && sedaChild.Element === SedaElementConstants.simple) {
           data.push({
+            nomDuChampEdit: child.editName,
             id: clickedNode.id,
             nomDuChamp: clickedNode.name,
             nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),
@@ -121,6 +124,7 @@ export class FileTreeMetadataService {
       }
     } else {
       data.push({
+        nomDuChampEdit: clickedNode.editName,
         id: clickedNode.id,
         nomDuChamp: clickedNode.name,
         nomDuChampFr: this.onResolveName(clickedNode.name, sedaChild),
@@ -163,10 +167,10 @@ export class FileTreeMetadataService {
     if (sedaNode.Name === fileNode.name) {
       allowedCardinalityListResult = this.allowedCardinality.get(sedaNode.Cardinality);
     }
-    if (sedaNode.Children.length > 0) {
+    if (sedaNode.Children.length > 0 ) {
       // Search the sedaNode children to find the correnpondent cardinality list
       for (const child of sedaNode.Children) {
-        if ((child.Name === fileNode.name) || (sedaNode.Name === fileNode.name)) {
+        if ((child.Name === fileNode.name)  ) {
           // Used in the case we wish to "correct" the node's cardinality, since
           // the seda cardinality wont include the cardinality retrieved by node's rng file.
           // In this case, the condition will return the rng file cardinality list
@@ -176,7 +180,7 @@ export class FileTreeMetadataService {
           this.allowedSedaCardinalities.next(resultList);
         }
       }
-    } else {
+    } /*else {
       for (const [card, cardlist] of this.allowedCardinality) {
         if (card === fileNode.cardinality) {
           !fileNode.cardinality ? allowedCardinalityListResult.push('1') : allowedCardinalityListResult = cardlist;
@@ -184,7 +188,7 @@ export class FileTreeMetadataService {
           this.allowedSedaCardinalities.next(resultList);
         }
       }
-    }
+    }*/
     this.allowedSedaCardinalities.next(resultList);
     if (allowedCardinalityListResult.length < 1) {
       allowedCardinalityListResult = this.allowedCardinality.get(fileNode.cardinality);

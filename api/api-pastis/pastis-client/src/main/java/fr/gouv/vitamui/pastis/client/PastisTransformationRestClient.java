@@ -48,18 +48,13 @@ import fr.gouv.vitamui.pastis.common.dto.profiles.Notice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileNotice;
 import fr.gouv.vitamui.pastis.common.dto.profiles.ProfileResponse;
 import fr.gouv.vitamui.pastis.common.rest.RestApi;
-import fr.gouv.vitamui.pastis.common.util.FileSystemResource;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 public class PastisTransformationRestClient
@@ -104,18 +99,6 @@ public class PastisTransformationRestClient
                 request, ProfileResponse.class);
     }
 
-    public ResponseEntity<ProfileResponse> loadProfileFromFile(MultipartFile file, ExternalHttpContext context)
-        throws IOException {
-        LOGGER.debug("Upload profile");
-        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
-        bodyMap.add("file", new FileSystemResource(file.getBytes(), file.getOriginalFilename()));
-        final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_UPLOAD_PROFILE,
-            HttpMethod.POST,
-            request,
-            ProfileResponse.class);
-    }
-
     public ResponseEntity<String> getArchiveProfile(final ElementProperties json, ExternalHttpContext context)
        {
         LOGGER.debug("Download archive profile");
@@ -132,19 +115,6 @@ public class PastisTransformationRestClient
         final HttpEntity<ProfileNotice> request = new HttpEntity<>(json, headers);
             return restTemplate.exchange(getUrl() + RestApi.PASTIS_DOWNLOAD_PUA, HttpMethod.POST,
                 request, String.class);
-    }
-
-
-    public ResponseEntity<ElementProperties> loadProfilePA(Resource resource, ExternalHttpContext context)
-        throws IOException {
-        LOGGER.debug("Upload profile");
-        MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
-        bodyMap.add("file", new FileSystemResource(resource.getInputStream().readAllBytes(), "test_eeee.rng"));
-        final HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, buildHeaders(context));
-        return restTemplate.exchange(getUrl() + RestApi.PASTIS_TRANSFORM_PROFILE_PA,
-            HttpMethod.POST,
-            request,
-            ElementProperties.class);
     }
 
     public ResponseEntity<ProfileResponse> createProfile(String profileType, ExternalHttpContext context)

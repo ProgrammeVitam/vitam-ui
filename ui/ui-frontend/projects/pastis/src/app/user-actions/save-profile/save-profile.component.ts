@@ -36,23 +36,24 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {Subscription} from 'rxjs';
-import {environment} from '../../../environments/environment';
-import {FileService} from '../../core/services/file.service';
-import { NoticeService } from '../../core/services/notice.service';
-import { NotificationService } from '../../core/services/notification.service';
 import {ProfileService} from '../../core/services/profile.service';
-import {ArchivalProfileUnit} from '../../models/archival-profile-unit';
+import {FileService} from '../../core/services/file.service';
 import {FileNode} from '../../models/file-node';
-import {Profile} from '../../models/profile';
-import {ProfileDescription} from '../../models/profile-description.model';
+import {PastisDialogData} from "../../shared/pastis-dialog/classes/pastis-dialog-data";
+import {Subscription} from "rxjs";
 import {DataGeneriquePopupService} from '../../shared/data-generique-popup.service';
-import {PastisDialogData} from '../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {CreateNoticeComponent} from '../create-notice/create-notice.component';
-import {SaveProfileOptionsComponent} from '../save-profile-options/save-profile-options.component';
+import {MatDialog} from "@angular/material/dialog";
+import {CreateNoticeComponent} from "../create-notice/create-notice.component";
+import {SaveProfileOptionsComponent} from "../save-profile-options/save-profile-options.component";
+import {ArchivalProfileUnit} from "../../models/archival-profile-unit";
+import {Profile} from "../../models/profile";
+import {ProfileDescription} from "../../models/profile-description.model";
+import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {environment} from "../../../environments/environment";
+import {Router} from '@angular/router';
+import {NoticeService} from '../../core/services/notice.service';
+import {NotificationService} from '../../core/services/notification.service';
+import {ToggleSidenavService} from "../../core/services/toggle-sidenav.service";
 
 export interface PastisDialogDataCreate {
   height: string;
@@ -103,8 +104,8 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   data: FileNode[] = [];
   donnees: string[];
 
-  subscription1$: Subscription;
   subscription2$: Subscription;
+  subscription3$: Subscription;
   subscriptions: Subscription[] = [];
 
   archivalProfileUnit: ArchivalProfileUnit;
@@ -118,7 +119,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
   constructor(private profileService: ProfileService, private fileService: FileService,
               private dataGeneriquePopupService: DataGeneriquePopupService, private noticeService: NoticeService,
               private translateService: TranslateService, public dialog: MatDialog, private router: Router,
-              private notificationService: NotificationService) {
+              private notificationService: NotificationService, private toggleService : ToggleSidenavService) {
     this.editProfile = this.router.url.substring(this.router.url.lastIndexOf('/') - 4, this.router.url.lastIndexOf('/')) === 'edit';
   }
 
@@ -196,6 +197,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
             }
           );
           dialogRef.afterClosed().subscribe((result) => {
+            this.toggleService.showPending();
             let retour;
             if (result.success) {
               retour = result.data;
@@ -214,14 +216,16 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
                   // Create ro update existing PUA
                     if (!this.editProfile) {
                     this.profileService.createArchivalUnitProfile(this.archivalProfileUnit).subscribe(() => {
-                      console.log('ok create');
-                      this.success('La création du profil a bien été effectué');
-                    });
-                  } else {
+                      this.toggleService.hidePending();
+                      console.log("ok create")
+                      this.success("La création du profil a bien été effectué");
+                    })
+                  }else{
                     this.profileService.updateProfilePua(this.archivalProfileUnit).subscribe(() => {
-                      console.log('ok update');
-                      this.success('La modification du profil a bien été effectué');
-                    });
+                      this.toggleService.hidePending();
+                      console.log("ok update")
+                      this.success("La modification du profil a bien été effectué");
+                    })
                   }
                   });
                 });
@@ -258,8 +262,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(createdProfile,  myFile).subscribe(() => {
-              this.success('La création du profil a bien été effectué');
-            });
+              this.toggleService.hidePending();
+              this.success("La création du profil a bien été effectué");
+            })
           });
         }
       });
@@ -270,8 +275,9 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
           this.profileService.uploadFile(this.data, this.profileDescription, this.profileService.profileMode).subscribe(retrievedData => {
             const myFile = this.blobToFile(retrievedData, 'file');
             this.profileService.updateProfileFilePa(this.noticeService.paNotice(this.profileDescription, false),  myFile).subscribe(() => {
-              this.success('La modification du profil a bien été effectué');
-            });
+              this.toggleService.hidePending();
+              this.success("La modification du profil a bien été effectué");
+            })
           });
         }
       });
@@ -331,7 +337,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         });
       }
       if (local && this.profileService.profileMode === 'PA' && this.editProfile) {
-        this.fileService.notice.subscribe((value: ProfileDescription) => {
+        this.subscription3$=this.fileService.notice.subscribe((value: ProfileDescription) => {
           this.downloadFile(JSON.stringify(value), true);
         });
       }
@@ -341,6 +347,7 @@ export class UserActionSaveProfileComponent implements OnInit, OnDestroy {
         this.downloadFile(retrievedData, false);
       });
       this.subscriptions.push(this.subscription2$);
+      this.subscriptions.push(this.subscription3$);
     }
 
   }

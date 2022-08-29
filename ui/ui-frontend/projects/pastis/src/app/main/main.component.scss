@@ -2,7 +2,17 @@
 @import "../../assets/css/mixins";
 @import "../../assets/css/layout";
 
+::ng-deep .vitamui-spinner.mat-progress-spinner circle, .vitamui-spinner .mat-spinner circle{
+  stroke: var(--vitamui-primary) !important;
+}
 
+.steackhouse{
+  display: block;
+  position: absolute;
+  right: 50%;
+  top: 30%;
+  z-index: 1000;
+}
 
 .pastis-btn-show-profile{
   position: absolute;
@@ -36,6 +46,8 @@
   position: fixed;
   @extend .pastis-slide-nav-profile;
 }
+
+
 .pastis-toaster-font{
   .pastis-toaster-font{
       font-family: Mulish;

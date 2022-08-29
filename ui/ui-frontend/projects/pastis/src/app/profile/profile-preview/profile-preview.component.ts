@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, EventEmitter, HostListener, Input, Output, ViewChild} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {MatTab, MatTabGroup, MatTabHeader} from '@angular/material/tabs';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {StartupService} from 'ui-frontend-common';
 import {ConfirmActionComponent} from '../../../../../vitamui-library/src/lib/components/confirm-action/confirm-action.component';
 import {environment} from '../../../environments/environment';
 import {PastisConfiguration} from '../../core/classes/pastis-configuration';
@@ -46,8 +45,8 @@ export class ProfilePreviewComponent implements AfterViewInit {
     }
   }
 
-  constructor(private matDialog: MatDialog, private router: Router, private startupService: StartupService,
-              private pastisConfig: PastisConfiguration, private profileService: ProfileService) {
+  constructor(private matDialog: MatDialog, private router: Router, 
+              private pastisConfig: PastisConfiguration, private profileService: ProfileService, private route: ActivatedRoute) {
   }
 
   ngAfterViewInit() {
@@ -110,10 +109,7 @@ export class ProfilePreviewComponent implements AfterViewInit {
   }
 
   editProfile(inputProfile: ProfileDescription) {
-    this.router.navigate([this.pastisConfig.pastisPathPrefix + (this.isStandalone ? '' : this.startupService.getTenantIdentifier()) + this.pastisConfig.pastisEditPage, inputProfile.id], {
-      state: inputProfile,
-      skipLocationChange: false
-    });
+    this.router.navigate([this.pastisConfig.pastisEditPage, inputProfile.id], {state: inputProfile,relativeTo: this.route ,skipLocationChange: false});
   }
 
   downloadProfile(inputProfile: ProfileDescription) {

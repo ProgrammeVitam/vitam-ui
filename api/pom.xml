@@ -19,8 +19,8 @@
         <module>api-referential</module>
         <module>api-ingest</module>
         <module>api-archive-search</module>
-        <module>api-collect</module>
         <module>api-pastis</module>
+        <module>api-collect</module>
     </modules>
 
 </project>

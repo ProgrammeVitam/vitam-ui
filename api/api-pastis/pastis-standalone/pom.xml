@@ -5,7 +5,7 @@
     <parent>
         <artifactId>api-pastis</artifactId>
         <groupId>fr.gouv.vitamui</groupId>
-        <version>5.0-SNAPSHOT</version>
+        <version>6.rc.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>fr.gouv.vitamui</groupId>
-            <artifactId>pastis</artifactId>
+            <artifactId>pastis-external</artifactId>
             <exclusions>
                 <exclusion>
                     <groupId>fr.gouv.vitamui</groupId>
@@ -232,10 +232,11 @@
                                 </goals>
                                 <configuration>
                                     <target>
-                                        <get src="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip"
-                                             dest="${project.build.directory}/jdk11.zip"
-                                             verbose="false"
-                                             usetimestamp="true"/>
+                                        <get
+                                            src="https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_windows-x64_bin.zip"
+                                            dest="${project.build.directory}/jdk11.zip"
+                                            verbose="false"
+                                            usetimestamp="true"/>
                                     </target>
                                 </configuration>
                             </execution>
@@ -246,8 +247,9 @@
                                 <phase>package</phase>
                                 <configuration>
                                     <tasks>
-                                        <echo message="unzipping file" />
-                                        <unzip src="${project.build.directory}/jdk11.zip" dest="${project.build.directory}/jdk11/" />
+                                        <echo message="unzipping file"/>
+                                        <unzip src="${project.build.directory}/jdk11.zip"
+                                               dest="${project.build.directory}/jdk11/"/>
                                     </tasks>
                                 </configuration>
                                 <goals>

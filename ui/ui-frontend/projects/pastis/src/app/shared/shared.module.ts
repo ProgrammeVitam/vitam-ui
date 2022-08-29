@@ -39,11 +39,13 @@ import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonModule } from 'ui-frontend-common';
 import { PastisMaterialModule} from '../material.module';
 import { CenterMatmenuDirective } from '../profile/edit-profile/file-tree-metadata/center-matmenu.directive';
+import { ModifyTextButtonComponent } from './modify-text-button/modify-text-button.component';
 import { PastisBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-breadcrumb/pastis-breadcrumb.component';
 import { PastisTitleBreadcrumbComponent } from './pastis-breadcrumb-components/pastis-title-breadcrumb/pastis-title-breadcrumb.component';
 import { PastisDialogConfirmComponent } from './pastis-dialog/pastis-dialog-confirm/pastis-dialog-confirm.component';
@@ -61,7 +63,8 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     PastisBreadcrumbComponent,
     PastisTitleBreadcrumbComponent,
     PastisGenericPopupComponent,
-    PastisPopupOptionComponent
+    PastisPopupOptionComponent,
+    ModifyTextButtonComponent
   ],
   imports: [CommonModule,
     FormsModule,
@@ -69,20 +72,22 @@ import { PastisUnderConstructionComponent } from './pastis-under-construction/pa
     PastisMaterialModule,
     MatSlideToggleModule,
     PortalModule,
-    TranslateModule
+    TranslateModule,
+    VitamUICommonModule
   ],
   entryComponents: [PastisDialogConfirmComponent, PastisUnderConstructionComponent],
-  exports: [
-    PastisUnderConstructionComponent,
-    MatTooltipModule,
-    PastisMaterialModule,
-    PastisDialogConfirmComponent,
-    CenterMatmenuDirective,
-    PastisPopupMetadataLanguageComponent,
-    PastisBreadcrumbComponent,
-    PastisTitleBreadcrumbComponent,
-    PastisGenericPopupComponent,
-    PastisPopupOptionComponent
-  ],
+    exports: [
+        PastisUnderConstructionComponent,
+        MatTooltipModule,
+        PastisMaterialModule,
+        PastisDialogConfirmComponent,
+        CenterMatmenuDirective,
+        PastisPopupMetadataLanguageComponent,
+        PastisBreadcrumbComponent,
+        PastisTitleBreadcrumbComponent,
+        PastisGenericPopupComponent,
+        PastisPopupOptionComponent,
+        ModifyTextButtonComponent
+    ],
 })
 export class SharedModule {}

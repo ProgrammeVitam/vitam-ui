@@ -44,6 +44,7 @@ export interface MetadataHeaders {
     id: number;
     nomDuChamp: string;
     nomDuChampFr: string;
+    nomDuChampEdit: string;
     type: string;
     valeurFixe: string;
     cardinalite: string[];

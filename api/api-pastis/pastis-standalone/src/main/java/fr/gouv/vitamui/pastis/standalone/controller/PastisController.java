@@ -98,7 +98,7 @@ class PastisController {
         tags = {"pastis"})
     @PostMapping(value = RestApi.PASTIS_DOWNLOAD_PUA, consumes = APPLICATION_JSON_UTF8, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<String> getArchiveUnitProfile(@RequestBody final ProfileNotice json) throws  TechnicalException {
-        String pua = profileService.getArchiveUnitProfile(json);
+        String pua = profileService.getArchiveUnitProfile(json, true);
         if (pua != null) {
             return ResponseEntity.ok(pua);
         } else {
@@ -112,7 +112,7 @@ class PastisController {
         tags = {"pastis"})
     @GetMapping(value = RestApi.PASTIS_CREATE_PROFILE)
     ResponseEntity<ProfileResponse> createProfile(@RequestParam(name = "type") String profileType) throws NoSuchAlgorithmException, TechnicalException {
-        ProfileResponse profileResponse = profileService.createProfile(profileType);
+        ProfileResponse profileResponse = profileService.createProfile(profileType, true);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {
@@ -149,7 +149,8 @@ class PastisController {
     @PostMapping(value = RestApi.PASTIS_UPLOAD_PROFILE,
         consumes = "multipart/form-data", produces = "application/json")
     ResponseEntity<ProfileResponse> loadProfileFromFile(@RequestParam MultipartFile file) throws NoSuchAlgorithmException, TechnicalException {
-        ProfileResponse profileResponse = profileService.loadProfileFromFile(file);
+        String originalFileName = file.getOriginalFilename();
+        ProfileResponse profileResponse = profileService.loadProfileFromFile(file, originalFileName,true);
         if (profileResponse != null) {
             return ResponseEntity.ok(profileResponse);
         } else {

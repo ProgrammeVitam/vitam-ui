@@ -98,7 +98,7 @@ export class CreateProfileComponent implements OnInit {
 
   changeChoiceCreateProfile($event: string) {
     console.log($event);
-    if ($event == this.firstChoice) {
+    if ($event === this.firstChoice) {
       this.profilPaChoice = true;
     } else {
       this.profilPaChoice = false;

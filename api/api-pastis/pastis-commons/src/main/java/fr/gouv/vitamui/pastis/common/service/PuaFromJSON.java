@@ -53,9 +53,8 @@ public class PuaFromJSON {
 
     private static final String SCHEMA = "http://json-schema.org/draft-04/schema";
     private static final String TYPE = "object";
-    private static final Boolean ADDITIONALPROPERTIES = false;
-    private final PuaPastisValidator puaPastisValidator;
 
+    private final PuaPastisValidator puaPastisValidator;
     @Autowired
     public PuaFromJSON(final PuaPastisValidator puaPastisValidator){
         this.puaPastisValidator = puaPastisValidator;
@@ -64,21 +63,22 @@ public class PuaFromJSON {
     public String getControlSchemaFromElementProperties(ElementProperties elementProperties) throws IOException {
         // We use a JSONObject instead of POJO, since Jackson and Gson will add unnecessary
         // backslashes during mapping string object values back to string
+
         JSONObject controlSchema = puaPastisValidator.sortedJSON();
         // 1. Add Schema
         controlSchema.put("$schema", SCHEMA);
         // 2. Add  type
         controlSchema.put("type", TYPE);
         // 3. Add additionProperties
-        controlSchema.put("additionalProperties", ADDITIONALPROPERTIES);
+        controlSchema.put("additionalProperties", elementProperties.isAdditionalProperties());
         // 4. Check if tree contains Management metadata
         addPatternProperties(elementProperties, controlSchema);
         List<ElementProperties> elementsForTree = puaPastisValidator.ignoreMetadata(elementProperties);
         controlSchema.put("required", puaPastisValidator.getHeadRequired(elementsForTree));
 
         // 5. Add definitions
-        JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
-        controlSchema.put("definitions", definitionsFromBasePua);
+            JSONObject definitionsFromBasePua = puaPastisValidator.getDefinitionsFromExpectedProfile();
+            controlSchema.put("definitions", definitionsFromBasePua);
         // 6. Add ArchiveUnitProfile and the rest of the tree
 
         JSONArray allElements = puaPastisValidator.getJSONObjectFromAllTree(elementsForTree);

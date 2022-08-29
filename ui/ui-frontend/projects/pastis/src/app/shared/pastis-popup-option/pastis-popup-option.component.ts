@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
 import { FileUploader } from 'ng2-file-upload';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
@@ -13,7 +13,7 @@ import { ArchivalProfileUnit } from '../../models/archival-profile-unit';
 import { FileNode } from '../../models/file-node';
 import { Profile } from '../../models/profile';
 import { ProfileDescription } from '../../models/profile-description.model';
-import { CreateProfileComponent } from '../../profile/create-profile/create-profile.component';
+import { CreateNoticeChoiceComponent } from '../../profile/create-notice-choice/create-notice-choice.component';
 import { CreateNoticeComponent } from '../../user-actions/create-notice/create-notice.component';
 import { PastisDialogDataCreate } from '../../user-actions/save-profile/save-profile.component';
 import { PastisDialogData } from '../pastis-dialog/classes/pastis-dialog-data';
@@ -58,7 +58,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
 
   subscription1$: Subscription;
   subscription2$: Subscription;
-  _uploadProfileSub: Subscription;
+  uploadProfileSub: Subscription;
   subscriptions: Subscription[] = [];
   isStandalone: boolean = environment.standalone;
   popupCreationCancelLabel: string;
@@ -88,7 +88,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private profileService: ProfileService,
               public dialog: MatDialog, private noticeService: NoticeService,
               private translateService: TranslateService, private loaderService: NgxUiLoaderService,
-              private notificationService: NotificationService) { }
+              private notificationService: NotificationService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     constantToTranslate.call(this, this.editProfile);
@@ -108,7 +108,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   goToSedaView() {
-    window.open(this.sedaUrl);
+    const url = document.URL+ '/sedaview'
+    window.open(url, '_blank');
   }
 
   uploadProfile(files: File[]): void {
@@ -117,11 +118,11 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     if (fileToUpload) {
       const formData = new FormData();
       formData.append('file', fileToUpload, fileToUpload.name);
-      this._uploadProfileSub = this.profileService.uploadProfile(formData).subscribe( (response: any) => {
+      this.uploadProfileSub = this.profileService.uploadProfile(formData).subscribe( (response: any) => {
         if (response) {
           console.log('File submited! Reponse is : ', response);
 
-          this.router.navigateByUrl(this.newProfileUrl, { state: response });
+          this.router.navigate([this.newProfileUrl], { state: response, relativeTo: this.route});
         }
       });
     }
@@ -130,7 +131,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   changeExpand() {
     this.expanded = !this.expanded;
   }
-  async createProfile() {
+  async createNotice() {
     this.loaderService.start();
     const dataToSendToPopUp = {} as PastisDialogData;
     dataToSendToPopUp.titleDialog = this.popupCreationTitleDialog;
@@ -139,7 +140,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
     dataToSendToPopUp.height = '800px';
     dataToSendToPopUp.okLabel = this.popupCreationOkLabel;
     dataToSendToPopUp.cancelLabel = this.popupCreationCancelLabel;
-    const dialogRef = this.dialog.open(CreateProfileComponent, {
+    const dialogRef = this.dialog.open(CreateNoticeChoiceComponent, {
         width: '800px',
         panelClass: 'pastis-popup-modal-box',
         data: dataToSendToPopUp
@@ -165,6 +166,7 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
             let retour;
             if (result.success) {
               retour = result.data;
+              console.log(retour.identifier + "identifier")
               if (result.mode === 'PUA') {
                 console.log('je suis sur un enregistrement d\'un PUA');
 
@@ -199,8 +201,8 @@ export class PastisPopupOptionComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this._uploadProfileSub) {
-      this._uploadProfileSub.unsubscribe();
+    if (this.uploadProfileSub) {
+      this.uploadProfileSub.unsubscribe();
     }
   }
 

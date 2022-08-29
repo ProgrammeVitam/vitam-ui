@@ -36,7 +36,7 @@ The fact that you are presently reading this means that you have had
 knowledge of the CeCILL-C license and that you accept its terms.
 */
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
-import {Component, Input, OnDestroy, ViewChild, } from '@angular/core';
+import {Component, Input, OnDestroy, ViewChild } from '@angular/core';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, Subscription, throwError} from 'rxjs';
 import {environment} from '../../../../environments/environment';
@@ -53,6 +53,7 @@ import {DuplicateMetadataComponent} from '../../../user-actions/duplicate-metada
 import {UserActionRemoveMetadataComponent} from '../../../user-actions/remove-metadata/remove-metadata.component';
 import {FileTreeMetadataService} from '../file-tree-metadata/file-tree-metadata.service';
 import { FileTreeService } from './file-tree.service';
+import {PUA} from "../../../models/pua.model";
 
 const FILE_TREE_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE';
 
@@ -164,6 +165,9 @@ export class FileTreeComponent implements OnDestroy {
   popupDuplicateSousTitreMetadonnee: string;
   popupDuplicateDeleteTypeTextM: string;
   popupDuplicateDeleteTypeTextF: string ;
+  text: string;
+
+  nonEditFileNode: boolean= false;
 
   private _fileServiceTabChildrenRulesChange: Subscription;
   private _fileServiceCollectionName: Subscription;
@@ -258,7 +262,7 @@ export class FileTreeComponent implements OnDestroy {
   async addNewItem(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     dataToSendToPopUp.titleDialog = this.popupAddTitleDialog;
-    dataToSendToPopUp.subTitleDialog = this.popupAddSubTitleDialog + ` "${node.name}"`, node.name;
+    dataToSendToPopUp.subTitleDialog = `${this.popupAddSubTitleDialog} ${node.name}`, node.name;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.width = '800px';
     dataToSendToPopUp.okLabel = this.popupAddOkLabel;
@@ -303,6 +307,10 @@ export class FileTreeComponent implements OnDestroy {
       newNode.parent = parent;
       newNode.children = [];
       newNode.sedaData = sedaChild;
+      if (this.isElementComplex(newNode) || newNode.name === "Management") {
+        newNode.puaData = new PUA()
+        newNode.puaData.additionalProperties = false;
+      }
       console.log('Parent node name: ' + parent.name);
       console.log('New node  : ', newNode);
 
@@ -444,7 +452,7 @@ export class FileTreeComponent implements OnDestroy {
     }
     let counter = 0;
     archiveUnit.children.forEach(child => {
-      if (child.name === 'ArchiveUnit') {
+      if (child.name === 'ArchiveUnit' || child.nonEditFileNode) {
         counter++;
         const archiveUnitLevel = archiveUnit.level - 1 + '.' + counter;
         FileTreeComponent.uaIdAndPosition.set(archiveUnitLevel, child.id);
@@ -530,15 +538,15 @@ export class FileTreeComponent implements OnDestroy {
   async remove(node: FileNode) {
     const dataToSendToPopUp = {} as PastisDialogData;
     const nodeType = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveSedaElementAttribut : this.popupRemoveSedaElementMetadonnee;
-    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + node.name + '" ?';
-    dataToSendToPopUp.subTitleDialog = node.sedaData.Element == SedaElementConstants.attribute ?
+    dataToSendToPopUp.titleDialog = this.popupRemoveTitre + ' ' + nodeType + ' "' + this.onResolveName(node) + '" ?';
+    dataToSendToPopUp.subTitleDialog = node.sedaData.Element === SedaElementConstants.attribute ?
       this.popupRemoveSousTitreAttribut : this.popupRemoveSousTitreMetadonnee;
     dataToSendToPopUp.fileNode = node;
     dataToSendToPopUp.component = UserActionRemoveMetadataComponent;
 
     const popUpAnswer = await this.fileService.openPopup(dataToSendToPopUp) as FileNode;
     if (popUpAnswer) {
-      const deleteTypeText = node.sedaData.Element == SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
+      const deleteTypeText = node.sedaData.Element === SedaElementConstants.attribute ? this.popupRemoveDeleteTypeTextM : this.popupRemoveDeleteTypeTextF;
       this.removeItem(node, this.fileService.nodeChange.getValue());
       this.loggingService.showSuccess(nodeType + node.name + this.notificationRemoveSuccessOne + deleteTypeText + this.notificationRemoveSuccessTwo);
     }
@@ -785,5 +793,13 @@ export class FileTreeComponent implements OnDestroy {
     if (this._fileTreeServiceUpdateMedataTable != null) {
       this._fileTreeServiceUpdateMedataTable.unsubscribe();
     }
+  }
+
+  changeFileNode($event: string, node: FileNode) {
+    node.nonEditFileNode = true;
+    node.editName = $event;
+    this.fileService.nodeChange.next(node);
+
+    this.updateMedataTable(node);
   }
 }

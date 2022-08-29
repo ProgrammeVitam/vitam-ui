@@ -39,6 +39,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -102,9 +104,9 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) {
+    public Collection<ArchivalProfileUnitDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -124,7 +126,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     public PaginatedValuesDto<ArchivalProfileUnitDto> getAllPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -142,7 +144,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
     public ArchivalProfileUnitDto getById(final @PathVariable("identifier") String identifier)
-        throws UnsupportedEncodingException {
+        throws UnsupportedEncodingException, InvalidParseOperationException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -158,7 +160,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto) {
+    public ArchivalProfileUnitDto update(@RequestBody final ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
         LOGGER.debug("update profile {}", archivalProfileUnitDto.getId());
         return service.update(buildUiHttpContext(), archivalProfileUnitDto);
     }
@@ -173,7 +175,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ArchivalProfileUnitDto> create(
-        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) {
+        @Valid @RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
         LOGGER.debug("create archival unit profile={}", archivalProfileUnitDto);
         ArchivalProfileUnitDto result = service.create(buildUiHttpContext(), archivalProfileUnitDto);
         if (result != null) {
@@ -192,7 +194,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      */
     @ApiOperation(value = "import Archival Unit Profile")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) {
+    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) throws InvalidParseOperationException {
         LOGGER.debug("Import Archival Unit Profile from a file {}", file != null ? file.getOriginalFilename() : null);
         return service.importArchivalUnitProfiles(buildUiHttpContext(), file);
     }
@@ -207,7 +209,7 @@ public class ArchivalProfileUnitController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create ontology")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) {
+    public ResponseEntity<Void> check(@RequestBody ArchivalProfileUnitDto archivalProfileUnitDto) throws InvalidParseOperationException {
         LOGGER.debug("check ability to create profile={}", archivalProfileUnitDto);
         final boolean exist = service.check(buildUiHttpContext(), archivalProfileUnitDto);
         LOGGER.debug("response value={}" + exist);

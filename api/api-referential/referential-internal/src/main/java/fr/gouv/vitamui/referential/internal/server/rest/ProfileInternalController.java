@@ -46,9 +46,9 @@ import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.iam.security.service.InternalSecurityService;
 import fr.gouv.vitamui.referential.common.dto.ProfileDto;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
@@ -71,6 +71,14 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -159,7 +167,7 @@ public class ProfileInternalController {
     public ProfileDto create(@Valid @RequestBody ProfileDto archivalProfile, @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER) Integer tenant) {
         LOGGER.debug("create profile={}", archivalProfile);
         final VitamContext vitamContext = securityService.buildVitamContext(securityService.getTenantIdentifier());
-        archivalProfile.setTenant(0);
+        archivalProfile.setTenant(vitamContext.getTenantId());
         return profileInternalService.create(vitamContext, archivalProfile);
     }
 

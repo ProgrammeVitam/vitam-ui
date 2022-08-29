@@ -1,4 +1,5 @@
 {
+  "additionalProperties": false,
   "name": "DescriptiveMetadata",
   "type": "element",
   "cardinality": null,
@@ -7,12 +8,14 @@
   "dataType": null,
   "value": null,
   "documentation": null,
+  "editName": null,
   "level": 0,
   "id": 0,
   "parentId": null,
   "choices": [],
   "children": [
     {
+      "additionalProperties": false,
       "name": "ArchiveUnit",
       "type": "element",
       "cardinality": null,
@@ -21,12 +24,14 @@
       "dataType": null,
       "value": null,
       "documentation": null,
+      "editName": null,
       "level": 1,
       "id": 1,
       "parentId": 0,
       "choices": [],
       "children": [
         {
+          "additionalProperties": false,
           "name": "id",
           "type": "attribute",
           "cardinality": null,
@@ -35,6 +40,7 @@
           "dataType": "ID",
           "value": null,
           "documentation": null,
+          "editName": null,
           "level": 2,
           "id": 2,
           "parentId": 1,
@@ -43,6 +49,7 @@
           "puaData": null
         },
         {
+          "additionalProperties": false,
           "name": "ArchiveUnitProfile",
           "type": "element",
           "cardinality": "0-1",
@@ -51,6 +58,7 @@
           "dataType": "token",
           "value": null,
           "documentation": "DescriptionLevel : cardinalité 0-1 / valeur au choix",
+          "editName": null,
           "level": 2,
           "id": 17,
           "parentId": 1,
@@ -59,6 +67,7 @@
           "puaData": null
         },
         {
+          "additionalProperties": false,
           "name": "Management",
           "type": "element",
           "cardinality": "0-1",
@@ -67,12 +76,14 @@
           "dataType": "null",
           "value": null,
           "documentation": null,
+          "editName": null,
           "level": 2,
           "id": 12,
           "parentId": 1,
           "choices": [],
           "children": [
             {
+              "additionalProperties": false,
               "name": "AppraisalRule",
               "type": "element",
               "cardinality": "0-1",
@@ -81,12 +92,14 @@
               "dataType": "null",
               "value": null,
               "documentation": "Appraisal : cardinalité 0-1 / contient obligatoirement Rule et FinalAction",
+              "editName": null,
               "level": 3,
               "id": 13,
               "parentId": 12,
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": false,
                   "name": "Rule",
                   "type": "element",
                   "cardinality": "1",
@@ -95,6 +108,7 @@
                   "dataType": "token",
                   "value": null,
                   "documentation": "Rule : cardinalité 1",
+                  "editName": null,
                   "level": 4,
                   "id": 16,
                   "parentId": 13,
@@ -103,6 +117,7 @@
                   "puaData": null
                 },
                 {
+                  "additionalProperties": false,
                   "name": "StartDate",
                   "type": "element",
                   "cardinality": "1",
@@ -111,6 +126,7 @@
                   "dataType": "token",
                   "value": null,
                   "documentation": "StartDate : cardinalité 0-1 / valeur date libre",
+                  "editName": null,
                   "level": 4,
                   "id": 15,
                   "parentId": 13,
@@ -119,6 +135,7 @@
                   "puaData": null
                 },
                 {
+                  "additionalProperties": false,
                   "name": "FinalAction",
                   "type": "element",
                   "cardinality": "1",
@@ -127,6 +144,7 @@
                   "dataType": "token",
                   "value": null,
                   "documentation": "FinalAction : cardinalité 1-1 / valeur au choix",
+                  "editName": null,
                   "level": 4,
                   "id": 14,
                   "parentId": 13,
@@ -136,21 +154,22 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             }
           ],
           "puaData": null
         },
         {
+          "additionalProperties": false,
           "name": "Content",
           "type": "element",
           "cardinality": null,
@@ -159,12 +178,14 @@
           "dataType": null,
           "value": null,
           "documentation": null,
+          "editName": null,
           "level": 2,
           "id": 3,
           "parentId": 1,
           "choices": [],
           "children": [
             {
+              "additionalProperties": false,
               "name": "DescriptionLevel",
               "type": "element",
               "cardinality": "0-1",
@@ -173,18 +194,21 @@
               "dataType": "token",
               "value": null,
               "documentation": "DescriptionLevel : cardinalité 0-1",
+              "editName": null,
               "level": 3,
               "id": 5,
               "parentId": 3,
               "choices": [],
               "children": [],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": null,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
+                "minLenght": null,
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
                 "enum": [
                   "Fonds",
                   "Subfonds",
@@ -197,12 +221,11 @@
                   "File",
                   "Item",
                   "OtherLevel"
-                ],
-                "minLenght": null,
-                "maxLenght": null
+                ]
               }
             },
             {
+              "additionalProperties": false,
               "name": "Title",
               "type": "element",
               "cardinality": "0-N",
@@ -211,6 +234,7 @@
               "dataType": "string",
               "value": null,
               "documentation": "Title : cardinalité 0-N / valeur au choix",
+              "editName": null,
               "level": 3,
               "id": 4,
               "parentId": 3,
@@ -219,6 +243,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": false,
               "name": "FilePlanPosition",
               "type": "element",
               "cardinality": "0-N",
@@ -227,6 +252,7 @@
               "dataType": "token",
               "value": null,
               "documentation": "FilePlanPosition : cardinalité 0-N / valeur au choix",
+              "editName": null,
               "level": 3,
               "id": 8,
               "parentId": 3,
@@ -235,6 +261,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": false,
               "name": "Tag",
               "type": "element",
               "cardinality": "0-N",
@@ -243,6 +270,7 @@
               "dataType": "token",
               "value": null,
               "documentation": "Tag : cardinalité 0-N / valeur au choix",
+              "editName": null,
               "level": 3,
               "id": 11,
               "parentId": 3,
@@ -251,6 +279,7 @@
               "puaData": null
             },
             {
+              "additionalProperties": false,
               "name": "Keyword",
               "type": "element",
               "cardinality": "0-1",
@@ -259,12 +288,14 @@
               "dataType": "null",
               "value": null,
               "documentation": "Keyword : cardinalité 0-N / valeur au choix",
+              "editName": null,
               "level": 3,
               "id": 6,
               "parentId": 3,
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": false,
                   "name": "KeywordContent",
                   "type": "element",
                   "cardinality": "1",
@@ -273,6 +304,7 @@
                   "dataType": "string",
                   "value": null,
                   "documentation": "Identifier : cardinalité 1 / valeur au choix",
+                  "editName": null,
                   "level": 4,
                   "id": 7,
                   "parentId": 6,
@@ -282,18 +314,19 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             },
             {
+              "additionalProperties": false,
               "name": "OriginatingAgency",
               "type": "element",
               "cardinality": "0-1",
@@ -302,12 +335,14 @@
               "dataType": "null",
               "value": null,
               "documentation": "OriginatingAgency : cardinalité 0-1 / valeur au choix",
+              "editName": null,
               "level": 3,
               "id": 9,
               "parentId": 3,
               "choices": [],
               "children": [
                 {
+                  "additionalProperties": false,
                   "name": "Identifier",
                   "type": "element",
                   "cardinality": "1",
@@ -316,6 +351,7 @@
                   "dataType": "string",
                   "value": null,
                   "documentation": "Identifier : cardinalité 1-1 / valeur au choix",
+                  "editName": null,
                   "level": 4,
                   "id": 10,
                   "parentId": 9,
@@ -325,15 +361,15 @@
                 }
               ],
               "puaData": {
-                "maximum": null,
-                "minimum": null,
                 "additionalProperties": false,
-                "exclusiveMaximum": null,
-                "exclusiveMinimum": null,
                 "pattern": null,
-                "enum": null,
                 "minLenght": null,
-                "maxLenght": null
+                "maxLenght": null,
+                "minimum": null,
+                "maximum": null,
+                "exclusiveMinimum": null,
+                "exclusiveMaximum": null,
+                "enum": null
               }
             }
           ],

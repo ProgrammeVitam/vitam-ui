@@ -39,7 +39,6 @@ package fr.gouv.vitamui.pastis.common.dto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import fr.gouv.vitamui.pastis.common.dto.factory.RngTagFactory;
 import fr.gouv.vitamui.pastis.common.util.RNGConstants;
 import lombok.Data;
 import lombok.Getter;
@@ -91,7 +90,19 @@ public class ElementRNG {
     public static void setDocumentationForParentElement(ElementProperties parentNode, ElementRNG node) {
         if (null != parentNode.getType() &&
             RNGConstants.MetadaDataType.ELEMENT.getLabel().equals(parentNode.getType())) {
-            parentNode.setDocumentation(node.getValue());
+            if(parentNode.getName() != null && parentNode.getName().equals("ArchiveUnit")
+                && node.getValue().contains("Commentaire : ")){
+                parentNode.setDocumentation(node.getValue().replace("Commentaire : ", ""));
+                if(parentNode.getDocumentation() != null ){
+                    parentNode.setEditName(parentNode.getDocumentation());
+                }
+            }else{
+                if(parentNode.getDocumentation() != null ){
+                    parentNode.setEditName(node.getValue());
+                }else{
+                    parentNode.setDocumentation(node.getValue());
+                }
+            }
         } else {
             setDocumentationForParentElement(parentNode.getParent(), node);
         }

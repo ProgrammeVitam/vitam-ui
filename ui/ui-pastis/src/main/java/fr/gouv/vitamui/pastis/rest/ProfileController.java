@@ -38,6 +38,8 @@ knowledge of the CeCILL-C license and that you accept its terms.
 package fr.gouv.vitamui.pastis.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
@@ -104,9 +106,9 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<ProfileDto> getAll(final Optional<String> criteria) {
+    public Collection<ProfileDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException {
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
+        SanityChecker.sanitizeCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -126,7 +128,7 @@ public class ProfileController extends AbstractUiRestController {
     public PaginatedValuesDto<ProfileDto> getAllPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size,
         @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy,
-        @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<DirectionDto> direction) throws InvalidParseOperationException {
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria,
             orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
@@ -142,7 +144,7 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Get profile by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public ProfileDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException, InvalidParseOperationException {
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         ParameterChecker.checkParameter(IDMANDATORYMESSAGE, identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -156,7 +158,7 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "download profile by id")
     @GetMapping(value = RestApi.DOWNLOAD_PROFILE + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> download(final @PathVariable("id") String id) {
+    public ResponseEntity<Resource> download(final @PathVariable("id") String id) throws InvalidParseOperationException {
         LOGGER.debug("download {} profile with id :{}", id);
         ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
         Resource body = service.download(buildUiHttpContext(), id).getBody();
@@ -175,7 +177,7 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Importer un fichier xsd ou rng dans un profil")
     @PutMapping(value = RestApi.UPDATE_PROFILE_FILE + CommonConstants.PATH_ID)
     public ResponseEntity<JsonNode> importProfileFile(final @PathVariable("id") String id,
-        @RequestParam("file") MultipartFile file) throws IOException {
+        @RequestParam("file") MultipartFile file) throws IOException, InvalidParseOperationException {
         LOGGER.debug("Update profile file with id :{}", id);
         ParameterChecker.checkParameter("profileFile stream is a mandatory parameter: ", file);
         ParameterChecker.checkParameter(IDMANDATORYMESSAGE, id);
@@ -192,7 +194,7 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<JsonNode> updateProfile(@RequestBody final ProfileDto profileDto) {
+    public ResponseEntity<JsonNode> updateProfile(@RequestBody final ProfileDto profileDto) throws InvalidParseOperationException {
         LOGGER.debug("update profile {}", profileDto.getId());
         return service.updateProfile(buildUiHttpContext(), profileDto);
     }
@@ -207,7 +209,7 @@ public class ProfileController extends AbstractUiRestController {
     @ApiOperation(value = "Create Archival Profile")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto) {
+    public ResponseEntity<ProfileDto> create(@Valid @RequestBody ProfileDto profileDto) throws InvalidParseOperationException {
         LOGGER.debug("create profile={}", profileDto);
         ProfileDto result = service.create(buildUiHttpContext(), profileDto);
         if (result != null) {
@@ -225,7 +227,7 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "import profile")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) {
+    public ResponseEntity<JsonNode> importProfiles(@Context HttpServletRequest request, MultipartFile file) throws InvalidParseOperationException {
         LOGGER.debug("Import profile from a file {}", file != null ? file.getOriginalFilename() : null);
         return service.importProfiles(buildUiHttpContext(), file);
     }
@@ -240,7 +242,7 @@ public class ProfileController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create profile")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto) {
+    public ResponseEntity<Void> check(@RequestBody ProfileDto profileDto) throws InvalidParseOperationException {
         LOGGER.debug("check ability to create profile={}", profileDto);
         final boolean exist = service.check(buildUiHttpContext(), profileDto);
         LOGGER.debug("response value={}" + exist);

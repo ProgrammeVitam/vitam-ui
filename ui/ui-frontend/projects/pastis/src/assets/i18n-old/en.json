@@ -85,7 +85,9 @@
         "CARDINALITE ": "Cardinality",
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
+        "CONTROLE_METADONNEE": "Metadata control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
+        "INFO_EXPRESSION": "List to perform predefined checks for certain values (e.g. date or email address)",
         "SUPPRIMER": "Remove",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "The metadata",

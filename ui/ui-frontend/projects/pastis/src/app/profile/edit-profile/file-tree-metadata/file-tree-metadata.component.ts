@@ -54,6 +54,7 @@ import {AttributeData} from '../../../models/edit-attribute-models';
 import {
   CardinalityConstants,
   DataTypeConstants,
+  DateFormatType,
   FileNode,
   FileNodeInsertAttributeParams,
   FileNodeInsertParams,
@@ -64,13 +65,19 @@ import {
 import {CardinalityValues, MetadataHeaders} from '../../../models/models';
 import {SedaData, SedaElementConstants} from '../../../models/seda-data';
 import {PastisDialogData} from '../../../shared/pastis-dialog/classes/pastis-dialog-data';
-import {PastisPopupMetadataLanguageService} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
+import {
+  PastisPopupMetadataLanguageService
+} from '../../../shared/pastis-popup-metadata-language/pastis-popup-metadata-language.service';
 import {FileTreeService} from '../file-tree/file-tree.service';
+import {UserActionAddPuaControlComponent} from '../../../user-actions/add-pua-control/add-pua-control.component';
 import {AttributesPopupComponent} from './attributes/attributes.component';
 import {FileTreeMetadataService} from './file-tree-metadata.service';
+import {PuaData} from '../../../models/pua-data';
+import {FileTreeComponent} from '../file-tree/file-tree.component';
 
 
 const FILE_TREE_METADATA_TRANSLATE_PATH = 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA';
+const ADD_PUA_CONTROL_TRANSLATE_PATH = 'USER_ACTION.ADD_PUA_CONTROL';
 
 function constantToTranslate() {
   this.notificationAjoutMetadonnee = this.translated('.NOTIFICATION_AJOUT_METADONNEE');
@@ -79,6 +86,9 @@ function constantToTranslate() {
   this.popupSousTitre = this.translated('.POPUP_SOUS_TITRE');
   this.popupValider = this.translated('.POPUP_VALIDER');
   this.popupAnnuler = this.translated('.POPUP_ANNULER');
+  this.popupControlOkLabel = this.translated('.POPUP_CONTROL_OK_BUTTON_LABEL');
+  this.popupControlSubTitleDialog = this.translated('.POPUP_CONTROL_SUB_TITLE_DIALOG');
+  this.popupControlTitleDialog = this.translated('.POPUP_CONTROL_TITLE_DIALOG');
 }
 
 @Component({
@@ -92,6 +102,7 @@ function constantToTranslate() {
 
 export class FileTreeMetadataComponent {
 
+  rootAdditionalProperties: boolean;
   valueOrData = Object.values(ValueOrDataConstants);
   dataType = Object.values(DataTypeConstants);
   cardinalityList: string[];
@@ -104,6 +115,8 @@ export class FileTreeMetadataComponent {
   @ViewChild('autosize', {static: false}) autosize: CdkTextareaAutosize;
 
   displayedColumns: string[] = ['nomDuChamp', 'valeurFixe', 'cardinalite', 'commentaire', 'menuoption'];
+
+  selectedRegex = '';
 
   clickedNode: FileNode = {} as FileNode;
 
@@ -130,6 +143,29 @@ export class FileTreeMetadataComponent {
 
   isStandalone: boolean = environment.standalone;
 
+  enumerationControl: boolean;
+  valueControl: boolean;
+  lengthControl: boolean;
+  expressionControl: boolean;
+  arrayControl: string[];
+  clickedControl: FileNode;
+  enumerationsSedaControl: string[];
+  enumsControlSeleted: string[] = [];
+  editedEnumControl: string[];
+  openControls: boolean;
+
+  radioExpressionReguliere: string;
+  regex: string;
+  customRegex: string;
+  formatagePredefini: Array<{ label: string, value: string }> =
+    [
+      {label: 'AAAA-MM-JJ', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}'},
+      {label: 'AAAA-MM-JJTHH:MM:SS', value: '[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}'},
+      {label: 'AAAA', value: '[0-9]{4}'},
+      {label: 'AAAA-MM', value: '[0-9]{4}-[0-9]{2}'}
+    ];
+  availableRegex: Array<{ label: string, value: string }>;
+
   public breadcrumbDataTop: Array<BreadcrumbDataTop>;
   public breadcrumbDataMetadata: Array<BreadcrumbDataMetadata>;
 
@@ -144,6 +180,9 @@ export class FileTreeMetadataComponent {
   popupSousTitre: string;
   popupValider: string;
   popupAnnuler: string;
+  popupControlTitleDialog: string;
+  popupControlSubTitleDialog: string;
+  popupControlOkLabel: string;
 
   @Output()
   public insertItem: EventEmitter<FileNodeInsertParams> = new EventEmitter<FileNodeInsertParams>();
@@ -188,6 +227,7 @@ export class FileTreeMetadataComponent {
   cardinalite: string[];
   commentaire: string;
   enumeration: string[];
+  additionalPropertiesMetadonnee: boolean;
 
   constructor(private fileService: FileService, private fileMetadataService: FileTreeMetadataService,
               private sedaService: SedaService, private fb: FormBuilder, private notificationService: NotificationService,
@@ -204,7 +244,6 @@ export class FileTreeMetadataComponent {
   }
 
   ngOnInit() {
-
     if (!this.isStandalone) {
       constantToTranslate.call(this);
       this.translatedOnChange();
@@ -215,9 +254,13 @@ export class FileTreeMetadataComponent {
       this.popupSousTitre = 'Edition des attributs de';
       this.popupValider = 'Valider';
       this.popupAnnuler = 'Annuler';
+      this.popupControlTitleDialog = 'Veuillez séléctionner un ou plusieurs contrôles';
+      this.popupControlSubTitleDialog = 'Ajouter des contrôles supplémentaires à';
+      this.popupControlOkLabel = 'AJOUTER LES CONTROLES';
     }
 
 
+    this.additionalPropertiesMetadonnee = false;
     this.docPath = this.isStandalone ? 'assets/doc/Standalone - Documentation APP - PASTIS.pdf' : 'assets/doc/VITAM UI - Documentation APP - PASTIS.pdf';
     this.languagePopup = false;
     this._sedalanguageSub = this.metadataLanguageService.sedaLanguage.subscribe(
@@ -232,22 +275,25 @@ export class FileTreeMetadataComponent {
       this.clickedNode = node;
       // BreadCrumb for navigation through metadatas
       if (node && node !== undefined) {
-        const breadCrumbNodeLabel: string =  node.name;
+        const breadCrumbNodeLabel: string = node.name;
         this.fileService.tabRootNode.subscribe(tabRootNode => {
           if (tabRootNode) {
             const tabLabel = (nodeNameToLabel as any)[tabRootNode.name];
-            this.breadcrumbDataMetadata = [{ label: tabLabel, node: tabRootNode}];
+            this.breadcrumbDataMetadata = [{label: tabLabel, node: tabRootNode}];
             if (tabRootNode.name !== breadCrumbNodeLabel) {
               if (node.parent) {
                 if (node.parent.name !== tabRootNode.name) {
                   if (node.parent.parent) {
                     if (node.parent.parent.name !== tabRootNode.name) {
-                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: '...' } ]);
+                      this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{label: '...'}]);
                     }
                   }
-                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: node.parent.name, node: node.parent } ]);
+                  this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{
+                    label: node.parent.name,
+                    node: node.parent
+                  }]);
                 }
-                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([ { label: breadCrumbNodeLabel, node } ]);
+                this.breadcrumbDataMetadata = this.breadcrumbDataMetadata.concat([{label: breadCrumbNodeLabel, node}]);
               }
             }
           }
@@ -256,7 +302,11 @@ export class FileTreeMetadataComponent {
     });
     // BreadCrump Top for navigation
     this.profileModeLabel = this.profileService.profileMode === 'PUA' ? 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PUA' : 'PROFILE.EDIT_PROFILE.FILE_TREE_METADATA.PA';
-    this.breadcrumbDataTop = [{ label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL', url: this.startupService.getPortalUrl(), external: true}, { label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'}, { label: this.profileModeLabel }];
+    this.breadcrumbDataTop = [{
+      label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.PORTAIL',
+      url: this.startupService.getPortalUrl(),
+      external: true
+    }, {label: 'PROFILE.EDIT_PROFILE.BREADCRUMB.CREER_ET_GERER_PROFIL', url: '/'}, {label: this.profileModeLabel}];
 
     this._fileServiceSubscription = this.fileService.currentTree.subscribe(fileTree => {
       if (fileTree) {
@@ -273,7 +323,8 @@ export class FileTreeMetadataComponent {
           const filteredData = this.fileService.filteredNode.getValue();
           // Initial data for metadata table based on rules defined by tabChildrenRulesChange
           if (filteredData) {
-            const dataTable = this.fileMetadataService.fillDataTable(this.selectedSedaNode, filteredData, tabChildrenToInclude, tabChildrenToExclude);
+            const dataTable = this.fileMetadataService
+              .fillDataTable(this.selectedSedaNode, filteredData, tabChildrenToInclude, tabChildrenToExclude);
             this.matDataSource = new MatTableDataSource<MetadataHeaders>(dataTable);
           }
         }
@@ -292,14 +343,16 @@ export class FileTreeMetadataComponent {
     this._fileMetadataServiceSubscriptionDataSource = this.fileMetadataService.dataSource.subscribe(data => {
       this.matDataSource = new MatTableDataSource<MetadataHeaders>(data);
     });
+
+    this.rootAdditionalProperties = FileTreeComponent.archiveUnits.additionalProperties
   }
 
   navigate(d: BreadcrumbDataTop) {
-      if (d.external) {
-        window.location.assign(d.url);
-      } else {
-        this.router.navigate([d.url], {skipLocationChange: false});
-      }
+    if (d.external) {
+      window.location.assign(d.url);
+    } else {
+      this.router.navigate([d.url], {skipLocationChange: false});
+    }
   }
 
   navigateMetadata(d: BreadcrumbDataMetadata) {
@@ -427,8 +480,16 @@ export class FileTreeMetadataComponent {
     }
   }
 
+  isAloneAndSimple(metadatas: MatTableDataSource<MetadataHeaders>): boolean {
+    if (metadatas.data.length === 1 && !this.isElementComplex(metadatas.data[0].nomDuChamp)) {
+      return true;
+    }
+    return false;
+  }
+
   onAddNode() {
     if (this.clickedNode.name === 'DescriptiveMetadata') {
+      console.log('Yes');
       let elements: SedaData[];
       elements.push({
         Name: 'ArchiveUnit',
@@ -519,6 +580,149 @@ export class FileTreeMetadataComponent {
     }
   }
 
+  async onControlClick(fileNodeId: number) {
+    const popData = {} as PastisDialogData;
+    if (fileNodeId && fileNodeId === this.clickedNode.id) {
+      this.resetContols();
+      popData.fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+      popData.titleDialog = this.popupControlTitleDialog;
+      popData.subTitleDialog = this.popupControlSubTitleDialog + ' "' + popData.fileNode.name + '"';
+      this.clickedControl = popData.fileNode;
+      popData.width = '800px';
+      popData.component = UserActionAddPuaControlComponent;
+      popData.okLabel = this.popupControlOkLabel;
+      popData.cancelLabel = this.popupAnnuler;
+
+      const popUpAnswer = <string[]>await this.fileService.openPopup(popData);
+      console.log('The answer for arrays control was ', popUpAnswer);
+      if (popUpAnswer) {
+        this.arrayControl = popUpAnswer;
+        this.setControlsVues(this.arrayControl, popData.fileNode.name);
+        this.openControls = true;
+      }
+    }
+  }
+
+  onEditControlClick(fileNodeId: number) {
+    this.resetContols();
+    const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+    this.clickedControl = fileNode;
+    if (fileNode.puaData && fileNode.puaData.enum) {
+      this.enumerationsSedaControl = this.selectedSedaNode.Enumeration;
+      this.enumerationControl = true;
+      this.editedEnumControl = [];
+      this.enumsControlSeleted = [];
+      this.openControls = true;
+      const type: string = this.selectedSedaNode.Type;
+      this.setAvailableRegex(type);
+      fileNode.puaData.enum.forEach(e => {
+        this.editedEnumControl.push(e);
+        this.enumsControlSeleted.push(e);
+      });
+    }
+    if (fileNode.puaData && fileNode.puaData.pattern) {
+      const actualPattern = fileNode.puaData.pattern;
+      this.openControls = true;
+      this.expressionControl = true;
+      if (this.formatagePredefini.map(e => e.value).includes(actualPattern)) {
+        const type: string = this.selectedSedaNode.Type;
+        this.setAvailableRegex(type);
+        this.regex = this.availableRegex.filter(e => e.value === actualPattern).map(e => e.value)[0];
+        this.radioExpressionReguliere = 'select';
+      } else {
+        this.customRegex = actualPattern;
+        this.radioExpressionReguliere = 'input';
+      }
+    } else {
+      this.customRegex = '';
+    }
+  }
+
+  isAppliedControl(fileNodeId: number): boolean {
+    const fileNode = this.fileService.findChildById(fileNodeId, this.clickedNode);
+    if (fileNode.puaData && fileNode.puaData.enum) {
+      return true;
+    }
+    if (fileNode.puaData && fileNode.puaData.pattern) {
+      return true;
+    }
+    return false;
+  }
+
+
+  resetContols() {
+    this.arrayControl = [];
+    this.enumerationControl = false;
+    this.expressionControl = false;
+    this.lengthControl = false;
+    this.valueControl = false;
+    this.enumsControlSeleted = [];
+    this.editedEnumControl = [];
+    this.openControls = false;
+    this.regex = undefined;
+    this.customRegex = undefined;
+    this.enumerationsSedaControl = [];
+  }
+
+  private setAvailableRegex(type: string) {
+    switch (type) {
+      case DateFormatType.date:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJ');
+        break;
+      case DateFormatType.dateTime:
+        this.availableRegex = this.formatagePredefini.filter(e => e.label === 'AAAA-MM-JJTHH:MM:SS');
+        break;
+      case DateFormatType.dateType:
+        this.availableRegex = this.formatagePredefini;
+        break;
+      default:
+        this.availableRegex = this.formatagePredefini
+          .filter(e => e.label === 'AAAA-MM-JJ' || e.label === 'AAAA');
+        break;
+    }
+  }
+
+  isDataType(): boolean {
+    const type: string = this.selectedSedaNode.Type;
+    return (type === DateFormatType.date || type === DateFormatType.dateTime || type === DateFormatType.dateType);
+  }
+
+  setControlsVues(elements: string[], sedaName: string) {
+    if ((elements.includes('Enumération'))
+      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.ENUMERATIONS_LABEL'))) {
+      this.enumerationControl = true;
+
+      this.enumerationsSedaControl = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Enumeration;
+      this.editedEnumControl = this.enumerationsSedaControl;
+      this.enumsControlSeleted = this.enumerationsSedaControl;
+      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      this.setAvailableRegex(type);
+    }
+    if ((elements.includes('Expression régulière'))
+      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.EXPRESSION_REGULIERE_LABEL'))) {
+      this.radioExpressionReguliere = 'select';
+      this.expressionControl = true;
+      this.customRegex = '';
+      const type: string = this.sedaService.findSedaChildByName(sedaName, this.selectedSedaNode).Type;
+      this.setAvailableRegex(type);
+      this.regex = this.formatagePredefini[0].value;
+    }
+    if ((this.isStandalone && elements.includes('Longueur Min/Max'))
+      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.LENGTH_MIN_MAX_LABEL'))) {
+      this.lengthControl = true;
+    }
+    if ((this.isStandalone && elements.includes('Valeur Min/Max'))
+      || elements.includes(this.translated(ADD_PUA_CONTROL_TRANSLATE_PATH + '.VALUE_MIN_MAX_LABEL'))) {
+      this.valueControl = true;
+    }
+
+  }
+
+  isNotRegexCustomisable(): boolean {
+    const type: string = this.selectedSedaNode.Type;
+    return (type === DateFormatType.date || type === DateFormatType.dateTime);
+  }
+
   onDeleteNode(nodeId: number) {
     const nodeToDelete = this.fileService.getFileNodeById(this.fileService.nodeChange.getValue(), nodeId);
     this.removeNode.emit(nodeToDelete);
@@ -573,15 +777,18 @@ export class FileTreeMetadataComponent {
     const node = this.sedaService.findSedaChildByName(nodeName, this.selectedSedaNode);
 
     if (node && node.Children.length > 0) {
-      return (node.Children.find(c => c.Element == SedaElementConstants.attribute) !== undefined);
+      return (node.Children.find(c => c.Element === SedaElementConstants.attribute) !== undefined);
     }
     return false;
   }
 
 
-  isSedaObligatory(name: string): boolean {
-    return this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode);
+  isDeltable(name: string): boolean {
+    const node = this.fileService.getFileNodeByName(this.clickedNode, name);
+    return ((node.parent.children.filter(child => child.name === name).length > 1 && this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode))
+      || !this.sedaService.isSedaNodeObligatory(name, this.selectedSedaNode));
   }
+
 
   getSedaDefinition(elementName: string) {
     const node = this.getSedaNode(elementName);
@@ -659,12 +866,26 @@ export class FileTreeMetadataComponent {
     }
   }
 
-  onChange(val: any, $event: MatCheckboxChange) {
+  onChangeSelected(element: any, value: any) {
+    if (value === undefined) {
+      this.setOrigineNodeValue(element, value)
+    } else {
+      console.log(value + " Valeur On Change Selected")
+      this.setNodeValue(element, value);
+    }
 
-    // @ts-ignore
-    this.setNodeValue(val, $event);
+  }
 
-
+  private setOrigineNodeValue(metadata: any, newValue: any) {
+    console.log(metadata.cardinalite + 'new Value ' + newValue);
+    if (this.clickedNode.name === metadata.nomDuChamp) {
+      this.clickedNode.value = null;
+    } else if (this.clickedNode.children.length > 0) {
+      const childNode = this.fileService.getFileNodeById(this.clickedNode, metadata.id);
+      if (childNode) {
+        childNode.value = null;
+      }
+    }
   }
 
   changeSedaLanguage() {
@@ -685,5 +906,125 @@ export class FileTreeMetadataComponent {
   isDuplicated(nomDuChamp: any) {
     return this.sedaService.isDuplicated(nomDuChamp, this.selectedSedaNode);
   }
+
+  isElementEdit(node: MetadataHeaders): boolean {
+    if (this.profileService.profileMode === 'PUA') {
+      return false;
+    }
+    if (node.nomDuChampEdit) {
+      return true;
+    }
+    return false;
+  }
+
+  isEmptyEnumeration(enumerations: string[]): boolean {
+    return enumerations ? enumerations.length === 0 : false;
+  }
+
+  setPatternExpressionReguliere() {
+    if (!this.clickedControl.puaData) {
+      this.clickedControl.puaData = {} as PuaData;
+    }
+
+    this.clickedControl.puaData.pattern = (this.radioExpressionReguliere === 'select') ? this.regex : this.customRegex;
+  }
+
+  onDeleteControls() {
+    if (this.enumerationControl) {
+      this.clickedNode.puaData.enum = null;
+      this.clickedNode.sedaData.Enumeration = [];
+    }
+    if (this.expressionControl) {
+      this.clickedNode.puaData.pattern = null;
+    }
+    this.resetContols();
+  }
+
+  onSubmitControls() {
+    if (this.enumerationControl) {
+
+      if (this.clickedNode.puaData) {
+        this.clickedNode.puaData.enum = this.enumsControlSeleted;
+      } else {
+        this.clickedNode.puaData = {
+          enum: this.enumsControlSeleted
+        };
+      }
+
+    }
+    if (this.expressionControl) {
+      this.setPatternExpressionReguliere();
+    }
+    this.resetContols();
+  }
+
+  onRemoveEnumsControl(element: string) {
+    let indexOfElement = this.enumsControlSeleted.indexOf(element);
+    if (indexOfElement >= 0) {
+      this.enumsControlSeleted.splice(indexOfElement, 1);
+      this.editedEnumControl = [];
+      this.enumsControlSeleted.forEach(e => {
+        this.editedEnumControl.push(e);
+      });
+    }
+
+    if (this.editedEnumControl.includes(element)) {
+      indexOfElement = this.editedEnumControl.indexOf(element);
+      this.editedEnumControl.splice(indexOfElement, 1)[0];
+    }
+    if (this.enumsControlSeleted.length === 0) {
+      this.editedEnumControl = null;
+    }
+  }
+
+  addEnumsControl(element: string) {
+    this.enumsControlSeleted.push(element);
+  }
+
+  addEnumsControlList(elements: string[]) {
+    this.enumsControlSeleted = elements;
+  }
+
+  closeControlsVue() {
+    this.openControls = false;
+    this.resetContols();
+  }
+
+  changeStatusAditionalProperties($event: boolean) {
+    FileTreeComponent.archiveUnits.additionalProperties = $event;
+    this.rootAdditionalProperties = FileTreeComponent.archiveUnits.additionalProperties;
+  }
+
+
+  isElementNameNotContentManagement(nomDuChamp: string) {
+    return !(nomDuChamp === 'Content' );
+  }
+
+  changeAutorisation($event: MatCheckboxChange, element: any) {
+    console.log($event.checked + 'test' + element.nomDuChamp);
+    this.additionalPropertiesMetadonnee = $event.checked;
+    this.setNodeAdditionalPropertiesChange(this.additionalPropertiesMetadonnee, element);
+  }
+
+  private setNodeAdditionalPropertiesChange(additionalPropertiesMetadonnee: boolean, element: MetadataHeaders) {
+
+    for (const node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id) {
+
+        node.puaData.additionalProperties = additionalPropertiesMetadonnee;
+      }
+    }
+
+  }
+
+  getNodeAdditionalProperties(element: MetadataHeaders): boolean {
+    for (const node of this.clickedNode.children) {
+      if (node.name === element.nomDuChamp && node.id === element.id && node.puaData) {
+        return node.puaData.additionalProperties;
+      }
+    }
+    return false;
+  }
+
 
 }

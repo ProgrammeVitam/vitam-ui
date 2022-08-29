@@ -64,10 +64,10 @@ localhost
 [hosts_ui_archive_search]
 localhost
 
-[hosts_ui_collect]
+[hosts_ui_pastis]
 localhost
 
-[hosts_ui_pastis]
+[hosts_ui_collect]
 localhost
 
 ########################################################

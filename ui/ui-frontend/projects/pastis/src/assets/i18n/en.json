@@ -27,6 +27,11 @@
     "POPUP_VALIDER": "YES",
     "POPUP_ANNULER": "NO"
   },
+  "PASTIS_POPUP_OPTION": {
+    "OPEN_PROFIL": "Open a profile from my workstation",
+    "CREATE_NOTICE":  "Create a profile notice",
+    "SEDAVIEW": "View the structure of SEDA 2.1"
+  },
   "SHARED": {
     "PASTIS_POP_UP_METADATA_LANGUAGE": {
       "SEDA_TITLE": "Viewing metadata",
@@ -95,12 +100,23 @@
       "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
       "POPUP_CREATION_TITLE_DIALOG":  "Choice of profile type",
       "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a profile",
-      "POPUP_CREATION_OK_LABEL": "TERMINATE",
+      "POPUP_CREATION_OK_LABEL": "CONFIRM",
       "CHOICE": {
         "FIRST_CHOICE": "PA",
         "SECOND_CHOICE": "PUA",
         "TITLE": "Select an archive profile"
+      },
+      "NOTICE_CHOICE": {
+        "FIRST_CHOICE": "PA",
+        "SECOND_CHOICE": "PUA",
+        "TITLE": "Choose the type of record to create :"
       }
+    },
+    "POP_UP_CREATION_NOTICE_CHOICE": {
+      "POPUP_CREATION_CANCEL_LABEL":"CANCEL",
+      "POPUP_CREATION_TITLE_DIALOG":  "Choice of record type",
+      "POPUP_CREATION_SUBTITLE_DIALOG":"Creating a record",
+      "POPUP_CREATION_OK_LABEL": "CONFIRM"
     },
     "EDIT_PROFILE": {
       "NOTICE_TAB": "Notice",
@@ -160,15 +176,26 @@
         "POPUP_SOUS_TITRE": "Editing attributes of",
         "POPUP_VALIDER": "Validate",
         "POPUP_ANNULER": "Cancel",
-        "ENREGISTRER_PROFIL_TOOLTIP": "Save profile",
-        "TELECHARGER_MANUEL_TOOLTIP": "Setting",
+        "ENREGISTRER_PROFIL_TOOLTIP": "Export profile",
+        "TELECHARGER_MANUEL_TOOLTIP": "Settings and resources",
         "NOM_METADONNEE": "Metadata name",
         "VALEUR_FIXE": "Fixed value",
         "CARDINALITE": "Cardinality",
         "COMMENTAIRE": "Comment",
         "DUPLIQUER": "Duplicate",
+        "CONTROLE_METADONNEE": "Metadata control",
+        "EDITION_CONTROLE": "Edit controls",
+        "ENUMERATION_CONTROLE": "\"Enumeration\" type control",
+        "FORMAT_ENUMERATION_AUTORISES": "Allowed date format(s) for this metadata ",
+        "INFO_EXPRESSION": "Set regular expression for metadata value",
+        "INFO_ENNUMERATION": "Mention allowed values",
+        "FORMATAGE_PREDEFINI": "Use predefined formatting",
+        "SAISIR_EXPRESSION": "Enter a regular expression",
+        "EXPRESSION_CONTROLE": "\"Regular expression\" type control",
         "ATTRIBUT_METADONNEE": "Metadata attributes",
         "SUPPRIMER": "Remove",
+        "AUTORISER_PRESENCE_METADONNEE": "Allow the presence of undeclared metadata",
+        "ADDITIONAL_PROPERTIES_TOOLTIP": "Authorize or not the presence, in a slip, of metadata not declared in the PUA",
         "MESSAGE_METADONNEE_SANS_FILLES": {
           "PARTIEUN": "The metadata",
           "PARTIEDEUX": "does not contain any child metadata. You must add at least one to it to be able to use it in your profile."
@@ -177,17 +204,22 @@
           "NOM_ATTRIBUT": "Attribute name",
           "VALEUR_FIXE": "Fixed value",
           "COMMENTAIRE": "Comment"
-        }
+        },
+        "POPUP_CONTROL_OK_BUTTON_LABEL": "ADD CONTROLS",
+        "POPUP_CONTROL_DELETE_BUTTON_LABEL": "delete controls",
+        "POPUP_CONTROL_SUB_TITLE_DIALOG": "Add additional controls to",
+        "POPUP_CONTROL_TITLE_DIALOG": "Please select one or more controls"
       }
     },
     "LIST_PROFILE": {
-      "SEARCH_PLACEHOLDER": "Search for a profile by its title",
+      "SEARCH_PLACEHOLDER": "Search for a profile by its username and its entitled",
       "CREER_NOUVEAU_PROFIL": "create a new profile",
       "IMPORTER_PROFIL": "import a profile",
       "LISTE_DES_PROFILS": "List of profiles",
       "TOUS_LES_PROFILS": "All profiles",
       "TABLE": {
         "TYPE_ETAT": "Type / State",
+        "TYPE": "Type",
         "IDENTIFIANT": "Username",
         "INTITULE": "Entitled",
         "DERNIERES_MODIFICATIONS": "Latest changes"
@@ -213,6 +245,14 @@
       "METADATA_ADD": "The metadata to add",
       "BOUTON_AJOUTER": "Add",
       "MESSAGE_PLUS_METADONNEE": "There is no more metadata to add"
+    },
+    "ADD_PUA_CONTROL": {
+      "ENUMERATIONS_LABEL": "Enumeration",
+      "EXPRESSION_REGULIERE_LABEL": "Regular expression",
+      "LENGTH_MIN_MAX_LABEL": "Length Min/Max",
+      "VALUE_MIN_MAX_LABEL": "Value Min/Max",
+      "ENUMERATIONS_DEFINITION": "Report allowed values",
+      "EXPRESSION_REGULIERE_DEFINITION": "Define a regular expression for the metadata value"
     }
   },
   "COMMON": {

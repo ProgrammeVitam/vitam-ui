@@ -89,12 +89,7 @@ export class ProfileService implements OnDestroy  {
 
   getAllProfiles(): void {
     if (environment.standalone) {
-      this.getStandaloneProfiles().subscribe((profiles: ProfileDescription[]) => {
-        if (profiles) {
-          this.retrievedProfiles.next(profiles);
-          console.log('Profiles: ', this.retrievedProfiles);
-        }
-      });
+      this.getAllProfilesStandalone();
     } else {
       this.getAllProfilesVitam();
     }
@@ -122,6 +117,21 @@ export class ProfileService implements OnDestroy  {
 
     allProfilesPUA = this.apiService.get(this.pastisConfig.getArchivalProfileUnitUrl, {params});
     return allProfilesPUA;
+  }
+
+  getAllProfilesStandalone(): void {
+    this.getStandaloneProfiles().subscribe((profiles: ProfileDescription[]) => {
+      if (profiles) {
+        for (const profile of profiles) {
+          if (profile.controlSchema) {
+            profile.type = 'PUA';
+          } else {
+            profile.type = 'PA';
+          }
+        }
+        this.retrievedProfiles.next(profiles);
+      }
+    });
   }
 
   getAllProfilesVitam(): void {
@@ -257,6 +267,10 @@ export class ProfileService implements OnDestroy  {
 
   getPuaProfile(id: string, headers?: HttpHeaders): Observable<ArchivalProfileUnit> {
     return this.puaService.getOne(id, headers);
+  }
+
+  getPaProfile(id: string, headers?: HttpHeaders): Observable<Profile> {
+    return this.paService.getOne(id, headers);
   }
 
   createProfile(path: string, type: string): Observable<ProfileResponse> {

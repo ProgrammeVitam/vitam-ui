@@ -278,7 +278,7 @@ public class RNGConstants {
 
     public static boolean isCardinality(String type) {
         for (Cardinality typeElement : Cardinality.values()) {
-            if (typeElement.toString().equals(type)) {
+            if (typeElement.getName().equals(type)) {
                 return true;
             }
         }
@@ -305,9 +305,10 @@ public class RNGConstants {
 
     public static boolean isValueOrData(String type) {
 
-        return (null != type && (MetadaDataType.DATA.toString().equals(type)
-            || MetadaDataType.NS_NAME.toString().equals(type)
-            || MetadaDataType.VALUE.toString().equals(type)));
+        return (null != type && (MetadaDataType.DATA.label.equals(type)
+            || MetadaDataType.NS_NAME.label.equals(type)
+            || MetadaDataType.VALUE.label.equals(type)));
+
     }
 
     public enum DataType {
@@ -368,23 +369,27 @@ public class RNGConstants {
     }
 
     public enum Cardinality {
-        OPTIONAL("0-1"),
-        ZERO_OR_MORE("0-N"),
-        OBLIGATOIRE("1"),
-        ONE_OR_MORE("1-N");
+        OPTIONAL("0-1", "optional"),
+        ZERO_OR_MORE("0-N", "zeroOrMore"),
+        OBLIGATOIRE("1", "obligatoire"),
+        ONE_OR_MORE("1-N", "oneOrMore");
         private String label;
+        private String name;
 
-        Cardinality(final String value) {
+        Cardinality(final String value, String name) {
+            setName(name);
             setLabel(value);
         }
 
         public String getLabel() {
             return label;
         }
+        public String getName() { return name; }
 
         void setLabel(final String label) {
             this.label = label;
         }
+        void setName(final String name) { this.name = name; }
     }
 
     public enum GroupOrChoice {

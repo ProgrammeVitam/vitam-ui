@@ -138,7 +138,7 @@ export class SedaService {
       x.Cardinality !== CardinalityConstants.Obligatoire.valueOf())
       ||
       (fileNodesNames.includes(x.Name) &&
-        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf())
+        (x.Cardinality === CardinalityConstants['Zero or More'].valueOf() || x.Cardinality === CardinalityConstants["One Or More"].valueOf())
       ));
     return allowedSelectableList;
   }
@@ -194,13 +194,13 @@ export class SedaService {
     if (node) {
       return node.Element;
     }
-    // return false;
   }
+
   findSedaChildByName(nodeName: string, sedaNode: SedaData): SedaData {
     if (nodeName === sedaNode.Name) {
       return sedaNode;
     }
-    const childFound = sedaNode.Children.find(c => c.Name == nodeName);
+    const childFound = sedaNode.Children.find(c => c.Name === nodeName);
     return childFound ? childFound : null;
   }
 
