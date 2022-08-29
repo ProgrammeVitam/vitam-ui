@@ -54,6 +54,7 @@ import {ManagementContractPreviewComponent} from './management-contract-preview.
 import {
   ManagementContractStorageTabComponent
 } from "./management-contract-storage-tab/management-contract-storage-tab.component";
+import { ManagementContractRetentionPolicyTabComponent } from './management-contract-retention-policy-tab/management-contract-retention-policy-tab.component';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import {
   declarations: [
     ManagementContractPreviewComponent,
     ManagementContractInformationTabComponent,
-    ManagementContractStorageTabComponent
+    ManagementContractStorageTabComponent,
+    ManagementContractRetentionPolicyTabComponent
   ],
   exports: [
     ManagementContractPreviewComponent

@@ -25,6 +25,11 @@
                                                      [readOnly]="isPopup" (updated)="updatedChange($event, 0)"></app-management-contract-storage-tab>
           </mat-tab>
 
+          <mat-tab label="Préservation" i18n-label="Préservation tab@@managementContractPreviewTabRetentionPolicy">
+            <app-management-contract-retention-policy-tab [inputManagementContract]="inputManagementContract" #infoTab
+                                                 [readOnly]="isPopup" (updated)="updatedChange($event, 0)"></app-management-contract-retention-policy-tab>
+          </mat-tab>
+
             <mat-tab label="Historique" i18n-label="History tab@@managementContractPreviewTabHistory">
                 <vitamui-common-operation-history-tab [id]="inputManagementContract?.identifier"
                                                       [identifier]="inputManagementContract?.identifier" collectionName="managementContract" [filter]="filterEvents">
