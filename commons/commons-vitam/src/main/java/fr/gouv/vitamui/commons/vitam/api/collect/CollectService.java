@@ -176,4 +176,12 @@ public class CollectService {
         return response;
     }
 
+    public RequestResponse<JsonNode> deleteProjectById(final VitamContext vitamContext, final String projectId)
+        throws VitamClientException {
+        LOGGER.debug("projectId : {}", projectId);
+        final RequestResponse<JsonNode> result = collectClient.deleteProjectById(vitamContext, projectId);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
 }

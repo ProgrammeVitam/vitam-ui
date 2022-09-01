@@ -24,14 +24,14 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
-import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfirmDialogService, ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus } from 'ui-frontend-common';
+import { ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus } from 'ui-frontend-common';
 import { FilingPlanMode } from 'vitamui-library';
 
 import { ProjectsService } from '../projects.service';
@@ -85,19 +85,23 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     this.translationService.instant('LEGAL_STATUS.PUBLIC_PRIVATE_ARCHIVE'),
   ];
   closeModal = false;
+  uploadZipCompleted = false;
+
+  @ViewChild('confirmDeleteAddRuleDialog', { static: true }) confirmDeleteAddRuleDialog: TemplateRef<CreateProjectComponent>;
 
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<CreateProjectComponent>,
+    private dialogRefToClose: MatDialogRef<CreateProjectComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private projectsService: ProjectsService,
     private uploadService: CollectUploadService,
     private snackBar: MatSnackBar,
     private logger: Logger,
     private externalParameterService: ExternalParametersService,
-    private confirmDialogService: ConfirmDialogService,
     private cdr: ChangeDetectorRef,
-    private translationService: TranslateService
+    private translationService: TranslateService,
+    public dialog: MatDialog,
   ) { }
 
   get linkParentIdControl() {
@@ -141,11 +145,27 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   }
 
   onCancel() {
-    if (this.projectForm.dirty) {
-      this.confirmDialogService.confirmBeforeClosing(this.dialogRef);
+      const dialogToOpen = this.confirmDeleteAddRuleDialog;
+      this.dialogRefToClose = this.dialog.open(dialogToOpen, { panelClass: 'vitamui-dialog' });
+  }
+
+  onClose() {
+    this.dialogRefToClose.close(true);
+  }
+
+  onConfirm() {
+    if (this.uploadZipCompleted) {
+      this.projectsService.deleteProjectId(this.projectId).subscribe(
+        () => {
+          this.dialogRefToClose.close(true); 
+          this.close();
+        }
+      );
     } else {
-      this.uploadService.reinitializeZip();
-      this.dialogRef.close();
+      this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TRACKING_TITLE'), null, {
+        panelClass: 'vitamui-snack-bar',
+        duration: 10000,
+      });
     }
   }
 
@@ -220,6 +240,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
             this.logger.error(error);
           },
           () => {
+            this.uploadZipCompleted = true;
             this.closeModal = true;
             this.snackBar.open(this.translationService.instant('COLLECT.UPLOAD.TERMINATED'), null, {
               panelClass: 'vitamui-snack-bar',

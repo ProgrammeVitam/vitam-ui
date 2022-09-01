@@ -53,4 +53,8 @@ export class ProjectsService extends SearchService<Project> {
   public getProjectById(projectId: string) {
     return this.projectsApiService.getById(projectId);
   }
+
+  public deleteProjectId(projectId: string) : Observable<void> {
+    return this.projectsApiService.deletebyId(projectId);
+  }
 }

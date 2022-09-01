@@ -40,12 +40,16 @@ import { Observable } from 'rxjs';
 import { BASE_URL, BaseHttpClient, PageRequest, PaginatedResponse, Project } from 'ui-frontend-common';
 import { SearchCriteriaDto, SearchResponse } from '../models';
 
+
+
+
 @Injectable({
   providedIn: 'root',
 })
+
 export class ProjectsApiService extends BaseHttpClient<any> {
   baseUrl: string;
-
+  
   constructor(http: HttpClient, @Inject(BASE_URL) baseUrl: string) {
     super(http, baseUrl + '/projects');
     this.baseUrl = baseUrl;
@@ -77,5 +81,9 @@ export class ProjectsApiService extends BaseHttpClient<any> {
 
   getDownloadObjectFromUnitUrl(unitId: string, accessContractId: string, tenantId: number): string {
     return `${this.apiUrl}/object-groups/downloadobjectfromunit/${unitId}?tenantId=${tenantId}&contractId=${accessContractId}`;
+  }
+
+  public deletebyId(projectId: string) {
+    return this.http.delete<void>(`${this.apiUrl}/${projectId}`);
   }
 }

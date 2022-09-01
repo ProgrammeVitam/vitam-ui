@@ -84,4 +84,8 @@ public class ProjectService extends AbstractPaginateService<CollectProjectDto> {
         String projectId, InputStream inputStream) {
         return collectStreamingExternalRestClient.streamingUpload(context, fileName, projectId, inputStream);
     }
+
+    public void deleteProject(String projectId, final ExternalHttpContext context) {
+        collectExternalRestClient.deleteProject(projectId, context);
+    }
 }

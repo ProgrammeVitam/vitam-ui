@@ -139,7 +139,6 @@ export class CollectUploadService {
         );
       });
   }
-
   reinitializeZip() {
     for (let file of this.filesToUpload) {
       this.zipFile.remove(file.name);

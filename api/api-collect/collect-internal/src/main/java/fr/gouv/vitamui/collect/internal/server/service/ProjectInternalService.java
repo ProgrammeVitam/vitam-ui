@@ -252,4 +252,15 @@ public class ProjectInternalService {
             throw new VitamClientException("Unable to find project : ", e);
         }
     }
+
+    public void deleteProjectById(String id, VitamContext vitamContext) throws VitamClientException {
+        try {
+            RequestResponse<JsonNode> requestResponse = collectService.deleteProjectById(vitamContext, id);
+            if (requestResponse.getStatus() != Response.Status.OK.getStatusCode()) {
+                throw new VitamClientException("Error occurs when deleteing project!");
+            }
+        } catch (VitamClientException e) {
+            throw new VitamClientException("Unable to delete project : ", e);
+        }
+    }
 }
