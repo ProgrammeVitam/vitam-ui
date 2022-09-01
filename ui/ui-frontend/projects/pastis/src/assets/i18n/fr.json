@@ -42,7 +42,7 @@
   },
   "PROFILE_PREVIEW": {
     "NOTICE": "Notice",
-    "HISTORIQUE": "History",
+    "HISTORIQUE": "Historique",
     "MENU": {
       "MODIFIER_PROFILE": "Modifier le profil",
       "TELECHARGER_PROFILE": "Télécharger le profil"
@@ -339,8 +339,8 @@
       "TOOLTIP": "Accéder, Créer, Modifier ou Supprimer les profils d'archivage et les profils d'unité archivistique"
     },
     "ARCHIVAL_PROFILE_APP": {
-      "NAME": "Profiles d'archives",
-      "TOOLTIP": "Paramétrer les profile d'archivage"
+      "NAME": "Profils d'archives",
+      "TOOLTIP": "Paramétrer les profils d'archivage"
     },
     "CUSTOMERS_APP": {
       "NAME": "Organisations",

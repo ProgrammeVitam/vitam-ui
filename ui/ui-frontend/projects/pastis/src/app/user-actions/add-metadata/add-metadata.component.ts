@@ -107,9 +107,22 @@ export class UserActionAddMetadataComponent implements OnInit {
             .filter(e => e.Name === 'Management' || e.Name === 'ArchiveUnitProfile');
         }
       } else {
-        this.allowedChildren = this.sedaNodeFound.Children;
-      }
+        this.allowedChildren = this.sedaNodeFound.Children.filter((e: SedaData) => e.Name !== 'id');
+        if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
+          if (this.fileNode.children.filter( (e: FileNode) => e.name === 'PreventInheritance').length > 0) {
+            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'RefNonRuleId');
+          }
+          if (this.fileNode.children.filter( (e: FileNode) => e.name === 'RefNonRuleId').length > 0) {
+            this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
+          }
+        }
 
+      }
+      this.fileNode.children.forEach( (child: FileNode) => {
+        if (child.cardinality.endsWith("1")) {
+          this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== child.name);
+        }
+      })
     }
     // Subscribe observer to button status and
     // set the inital state of the ok button to disabled
@@ -153,6 +166,16 @@ export class UserActionAddMetadataComponent implements OnInit {
     if (element.Cardinality.endsWith("1")) {
       this.allowedChildren = this.allowedChildren.filter(e => e != element);
     }
+
+    if (this.fileNode.sedaData.Children.filter((e: SedaData) => e.Name.endsWith('Rule')).length > 0) {
+      if (element.Name === 'PreventInheritance') {
+        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'RefNonRuleId');
+      }
+      if (element.Name === 'RefNonRuleId') {
+        this.allowedChildren = this.allowedChildren.filter((e: SedaData) => e.Name !== 'PreventInheritance');
+      }
+    }
+
     this.addedItems.length > 0 ? this.atLeastOneIsSelected = true : this.atLeastOneIsSelected = false;
     this.upateButtonStatusAndDataToSend();
   }

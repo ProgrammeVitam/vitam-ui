@@ -89,7 +89,7 @@
     "POP_UP_CREATION_NOTICE": {
       "AUTORISER_PRESENCE_METADONNEES": "Allow in the manifest the presence of metadata not declared in the PUA?",
       "ENREGISTRER_ACTIF_INACTIF": "Would you like to save it in active or inactive state?",
-      "INTITULE": "Entitled",
+      "INTITULE": "Title",
       "DESCRIPTION" : "Description",
       "CHOICE": {
         "PROFIL_ACTIF": "Active Profile",
@@ -220,8 +220,8 @@
       "TABLE": {
         "TYPE_ETAT": "Type / State",
         "TYPE": "Type",
-        "IDENTIFIANT": "Username",
-        "INTITULE": "Entitled",
+        "IDENTIFIANT": "Identifier",
+        "INTITULE": "Title",
         "DERNIERES_MODIFICATIONS": "Latest changes"
       },
       "MODIFIER_PROFIL_TOOLTIP": "Modify the profile",

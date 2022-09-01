@@ -179,7 +179,7 @@ export class FileTreeComponent implements OnDestroy {
     constantToTranslate.call(this);
     this.translatedOnChange();
     } else if (this.isStandalone) {
-      this.notificationRemoveSuccessOne = ' a été';
+      this.notificationRemoveSuccessOne = ' a été ';
       this.notificationRemoveSuccessTwo = 'avec succès';
       this.notificationDuplicateSuccessOne = ' a été ';
       this.notificationDuplicateSuccessTwo = 'avec succès';
@@ -279,7 +279,41 @@ export class FileTreeComponent implements OnDestroy {
         this.loggingService.showSuccess(this.notificationAddmetadonneeSOne + ' ' + names + ' ' + this.notificationAddmetadonneeSTwo);
     }
   }
-  insertItemIterate(parent: FileNode, elementsToAddFromSeda: SedaData [] , node?: FileNode, insertItemDuplicate?: boolean) {
+
+
+  /** Add an item (or a list of items) in the Tree */
+  insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
+    console.log('After data is : %o', this.fileTreeService.nestedDataSource.data);
+    const elementsToAddFromSeda: SedaData[] = [];
+    for (const element of elementsToAdd) {
+      parent.sedaData.Children.forEach((child) => {
+        if (child.Name === element) {
+          elementsToAddFromSeda.push(child);
+        }
+      });
+    }
+
+    if (parent.children && elementsToAddFromSeda) {
+      this.insertItemIterate(elementsToAddFromSeda, insertItemDuplicate, node, parent);
+      // 4. Order elements according to seda definition
+      const sedaChildrenName: string[] = [];
+      parent.sedaData.Children.forEach((child: { Name: string; }) => {
+        sedaChildrenName.push(child.Name);
+      });
+      parent.children.sort((a, b) => {
+        return sedaChildrenName.indexOf(a.name) - sedaChildrenName.indexOf(b.name);
+      });
+      // 5. Update tree
+      this.sendNodeMetadata(parent);
+      console.log('New fileNode data is : %o', this.fileTreeService.nestedDataSource.data);
+
+      // 6. No more nodes to add
+    } else {
+      console.log('No More Nodes can be inserted : No node was selected or node name is invalid');
+    }
+  }
+
+  private insertItemIterate(elementsToAddFromSeda: SedaData[], insertItemDuplicate: boolean, node: FileNode, parent: FileNode) {
     for (const element of elementsToAddFromSeda) {
       // 1. Define a new file node, its id and seda data;
       const newNode = {} as FileNode;
@@ -297,7 +331,7 @@ export class FileTreeComponent implements OnDestroy {
         newNode.documentation = node.documentation;
         newNode.type = node.type;
       } else {
-      newNode.cardinality = Object.values(CardinalityConstants).find(c => c.valueOf() === sedaChild.Cardinality);
+        newNode.cardinality = Object.values(CardinalityConstants).find(c => c.valueOf() === sedaChild.Cardinality);
       }
       newNode.name = element.Name;
       newNode.id = newId;
@@ -328,67 +362,40 @@ export class FileTreeComponent implements OnDestroy {
             childrenOfComplexElement.push(child.Name);
           }
         });
-        this.insertItem(newNode, childrenOfComplexElement);
+        if (insertItemDuplicate) {
+          node.children.forEach((child: FileNode) => {
+            this.insertItem(newNode, [child.name], child, insertItemDuplicate);
+          })
+
+        } else {
+          this.insertItem(newNode, childrenOfComplexElement);
+        }
+
       }
 
-      if (insertItemDuplicate) {
-        this.insertAttributes(newNode, null, node, insertItemDuplicate);
-      } else {
 
-        // 3. Insert all olbigatory attributes of the added node, if there is
-        if (sedaChild.Children.some((child: { Element: any; }) => child.Element === SedaElementConstants.attribute)) {
-          const attributes: FileNode[] = [];
-          sedaChild.Children.filter((c: { Element: any; }) => c.Element === SedaElementConstants.attribute).forEach((child: { Name: string; Element: any; Cardinality: any; }) => {
-            const isAttributeAlreadyIncluded = newNode.children.some(nodeChild => nodeChild.name.includes(child.Name));
-            // If the added node contains an obligatory attribute,
-            // on its seda definition and the attribute is not already part of the node,
-            // we then, build an attribute node based on the seda atribute defintion
-            if (child.Element === SedaElementConstants.attribute &&
-              child.Cardinality === SedaCardinalityConstants.one &&
-              !isAttributeAlreadyIncluded) {
-              const childAttribute = {} as FileNode;
-              childAttribute.name = child.Name;
-              childAttribute.cardinality = child.Cardinality === SedaCardinalityConstants.one ? '1' : null;
-              childAttribute.sedaData = sedaChild;
-              attributes.push(childAttribute);
-            }
-          });
-          this.insertAttributes(newNode, attributes);
-        }
+      // 3. Insert all olbigatory attributes of the added node, if there is
+      if (sedaChild.Children.some((child: { Element: any; }) => child.Element === SedaElementConstants.attribute)) {
+        const attributes: FileNode[] = [];
+        sedaChild.Children.filter((c: { Element: any; }) => c.Element === SedaElementConstants.attribute).forEach((child: { Name: string; Element: any; Cardinality: any; }) => {
+          const isAttributeAlreadyIncluded = newNode.children.some(nodeChild => nodeChild.name.includes(child.Name));
+          // If the added node contains an obligatory attribute,
+          // on its seda definition and the attribute is not already part of the node,
+          // we then, build an attribute node based on the seda atribute defintion
+          if (child.Element === SedaElementConstants.attribute &&
+            child.Cardinality === SedaCardinalityConstants.one &&
+            !isAttributeAlreadyIncluded) {
+            const childAttribute = {} as FileNode;
+            childAttribute.name = child.Name;
+            childAttribute.cardinality = child.Cardinality === SedaCardinalityConstants.one ? '1' : null;
+            childAttribute.sedaData = sedaChild;
+            attributes.push(childAttribute);
+          }
+        });
+        this.insertAttributes(newNode, attributes);
       }
 
-    }
-  }
 
-  /** Add an item (or a list of items) in the Tree */
-  insertItem(parent: FileNode, elementsToAdd: string[], node?: FileNode, insertItemDuplicate?: boolean) {
-    console.log('After data is : %o', this.fileTreeService.nestedDataSource.data);
-    const elementsToAddFromSeda: SedaData[] = [];
-    for (const element of elementsToAdd) {
-      parent.sedaData.Children.forEach((child) => {
-        if (child.Name === element) {
-          elementsToAddFromSeda.push(child);
-        }
-      });
-    }
-
-    if (parent.children && elementsToAddFromSeda) {
-      this.insertItemIterate(parent, elementsToAddFromSeda, node, insertItemDuplicate);
-      // 4. Order elements according to seda definition
-      const sedaChildrenName: string[] = [];
-      parent.sedaData.Children.forEach((child: { Name: string; }) => {
-        sedaChildrenName.push(child.Name);
-      });
-      parent.children.sort((a, b) => {
-        return sedaChildrenName.indexOf(a.name) - sedaChildrenName.indexOf(b.name);
-      });
-      // 5. Update tree
-      this.sendNodeMetadata(parent);
-      console.log('New fileNode data is : %o', this.fileTreeService.nestedDataSource.data);
-
-      // 6. No more nodes to add
-    } else {
-      console.log('No More Nodes can be inserted : No node was selected or node name is invalid');
     }
   }
 

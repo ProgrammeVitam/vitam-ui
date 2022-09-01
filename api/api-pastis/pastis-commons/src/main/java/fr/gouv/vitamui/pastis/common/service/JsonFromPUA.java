@@ -230,7 +230,6 @@ public class JsonFromPUA {
 
 	private void buildChildrenDefinition(SedaNode childrenSedaNode, JSONObject childPua, ElementProperties childrenParent,
 			String childName, List<String> requiredFieldsActual){
-        childName = sanitizeNodeName(childName);
         if (childrenSedaNode != null) {
 			ElementProperties childProfile =
 					getElementProperties(childrenSedaNode, childrenParent, childName, childPua,
