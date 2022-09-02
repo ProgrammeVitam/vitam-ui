@@ -110,6 +110,7 @@ public class ManagementContractController extends AbstractUiRestController {
     @ApiOperation(value = "Get management contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     public ManagementContractDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException, InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
@@ -123,6 +124,7 @@ public class ManagementContractController extends AbstractUiRestController {
     @ApiOperation(value = "Check ability to create entity")
     @PostMapping(path = CommonConstants.PATH_CHECK)
     public ResponseEntity<Void> check(@RequestBody  ManagementContractDto managementContractDto) throws InvalidParseOperationException {
+        SanityChecker.sanitizeCriteria(managementContractDto);
         LOGGER.debug("check ability to create managementContract={}", managementContractDto);
         final boolean exist = service.check(buildUiHttpContext(), managementContractDto);
         LOGGER.debug("response value={}" + exist);
@@ -141,6 +143,8 @@ public class ManagementContractController extends AbstractUiRestController {
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
     public ManagementContractDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) throws InvalidParseOperationException {
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch managementContract {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch managementContract : the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);

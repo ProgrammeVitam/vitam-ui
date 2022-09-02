@@ -121,7 +121,7 @@ public class ManagementContractInternalService {
             RequestResponse<ManagementContractModel> requestResponse = managementContractService.findManagementContractById(vitamContext, identifier);
             final ManagementContractResponseDto managementContractResponseDto = objectMapper
                 .treeToValue(requestResponse.toJsonNode(), ManagementContractResponseDto.class);
-            if (managementContractResponseDto.getResults().size() == 0) {
+            if (managementContractResponseDto.getResults().isEmpty()) {
                 return null;
             } else {
                 return converter.convertVitamToDto(managementContractResponseDto.getResults().get(0));
@@ -248,6 +248,7 @@ public class ManagementContractInternalService {
     public ManagementContractDto patch(VitamContext vitamContext, final Map<String, Object> partialDto) {
         String id = (String) partialDto.get("identifier");
         if (id == null) {
+            LOGGER.error("id must be one the the update criteria");
             throw new BadRequestException("id must be one the the update criteria");
         }
         partialDto.remove("id");

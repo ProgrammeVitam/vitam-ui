@@ -3,9 +3,10 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable, of, Subscription} from "rxjs";
 import {ManagementContract} from "../../../../../../vitamui-library/src/lib/models/management-contract";
 import {ManagementContractService} from "../../management-contract.service";
-import {diff} from "ui-frontend-common";
+import {diff, Option} from "ui-frontend-common";
 import {catchError, filter, map, switchMap} from "rxjs/operators";
 import {extend, isEmpty} from "underscore";
+import {USAGES} from "../../management-contract.constants";
 
 @Component({
   selector: 'app-management-contract-retention-policy-tab',
@@ -19,8 +20,21 @@ export class ManagementContractRetentionPolicyTabComponent implements OnInit {
 
   statusControlValueChangesSubscribe: Subscription;
 
+  usages = USAGES;
+
+  initialVersionConservations : Option[] = [
+    { key: 'yes', label: 'Oui', info: '' },
+    { key: 'no', label: 'Non', info: '' }
+  ];
+
+  versionsToPreserves : Option[] = [
+    { key: 'all', label: 'Toutes', info: '' }
+  ];
+
   @Input()
   set inputManagementContract(managementContract: ManagementContract) {
+    this._inputManagementContract=managementContract;
+
     if (!managementContract.versionRetentionPolicy.initialVersion) {
       managementContract.versionRetentionPolicy.initialVersion = true;
     }
@@ -30,7 +44,7 @@ export class ManagementContractRetentionPolicyTabComponent implements OnInit {
     if (managementContract.versionRetentionPolicy.usages.size == 0) {
       // managementContract.storage.objectStrategy = "";
     }
-    this._inputManagementContract=managementContract;
+
 
     if(!managementContract.description) {
       this._inputManagementContract.description='';
@@ -55,7 +69,7 @@ export class ManagementContractRetentionPolicyTabComponent implements OnInit {
   // tslint:disable-next-line:variable-name
   public _inputManagementContract: ManagementContract;
   public statusControl = new FormControl();
-  constructor() { }
+  // constructor() { }
 
   @Input()
   set readOnly(readOnly: boolean) {

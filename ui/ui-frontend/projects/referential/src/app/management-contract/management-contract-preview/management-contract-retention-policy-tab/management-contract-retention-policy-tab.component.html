@@ -1,8 +1,10 @@
 <form [formGroup]="form" class="side-form" (ngSubmit)="onSubmit()">
-  <div class="row">
+
     <h5 class="m-0 text-primary">Stratégies de préservation</h5>
     <div formGroupName="retention">
-      <div class="col-10 form-control">
+      <div class="row">
+        <div class="col-10 form-control">
+          <mat-form-field class="vitamui-mat-select">
         <mat-select [(value)]="usages[0].key"
                     placeholder="Usage"
                     panelclass="vitamui-mat-select"
@@ -10,8 +12,12 @@
                     i18n-placeholder="Identifier@@usageCreateUsagelaceholder">
           <mat-option *ngFor="let usage of usages" [value]="usage.key">{{ usage.label }}</mat-option>
         </mat-select>
+          </mat-form-field>
+        </div>
       </div>
+      <div class="row">
       <div class="col-10 form-control">
+        <mat-form-field class="vitamui-mat-select">
         <mat-select [(value)]="initialVersionConservations[0].key"
                     placeholder="initialVersionConservation"
                     panelclass="vitamui-mat-select"
@@ -19,8 +25,12 @@
                     i18n-placeholder="Identifier@@initialVersionConservationPlaceholder">
           <mat-option *ngFor="let initialVersionConservation of initialVersionConservations" [value]="initialVersionConservation.key">{{ initialVersionConservation.label }}</mat-option>
         </mat-select>
+        </mat-form-field>
       </div>
+      </div>
+      <div class="row">
       <div class="col-10 form-control">
+        <mat-form-field class="vitamui-mat-select">
         <mat-select [(value)]="versionsToPreserves[0].key"
                     placeholder="versionsToPreserve"
                     panelclass="vitamui-mat-select"
@@ -29,9 +39,10 @@
         >
           <mat-option *ngFor="let versionsToPreserve of versionsToPreserves" [value]="versionsToPreserve.key">{{ versionsToPreserve.label }}</mat-option>
         </mat-select>
+        </mat-form-field>
+      </div>
       </div>
     </div>
-  </div>
 
   <div class="form-group bottom">
     <button type="submit" class="btn secondary" [disabled]="unchanged() || submited">Enregistrer</button>
