@@ -32,6 +32,9 @@
       "IN_PROGRESS": "In progress"
     }
   },
+  "LOGBOOK_OPERATION_DETAIL": {
+    "DOWNLOAD_ATR": "Download the ATR"
+  },
   "LOGBOOK_OPERATION_PAGE": {
     "TITLE": "Operations management",
     "SEARCH": "Search by operation identifier",

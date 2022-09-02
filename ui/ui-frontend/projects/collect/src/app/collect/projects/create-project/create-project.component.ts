@@ -24,19 +24,19 @@
  * The fact that you are presently reading this means that you have had knowledge of the CeCILL 2.1 license and that you
  * accept its terms.
  */
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewChecked, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { Observable, Subscription } from 'rxjs';
 import { ExternalParameters, ExternalParametersService, Logger, Project, ProjectStatus } from 'ui-frontend-common';
 import { FilingPlanMode } from 'vitamui-library';
 
-import { ProjectsService } from '../projects.service';
-import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
 import { CollectUploadFile, CollectZippedUploadFile } from '../../shared/collect-upload/collect-upload-file';
+import { CollectUploadService } from '../../shared/collect-upload/collect-upload.service';
+import { ProjectsService } from '../projects.service';
 
 
 @Component({
@@ -105,11 +105,11 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   ) { }
 
   get linkParentIdControl() {
-    return this.projectForm.controls['linkParentIdControl'] as FormControl;
+    return this.projectForm.controls.linkParentIdControl as FormControl;
   }
 
   get accessContractSelect() {
-    return this.projectForm.controls['accessContractSelect'];
+    return this.projectForm.controls.accessContractSelect;
   }
 
   ngOnInit(): void {
@@ -157,7 +157,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
     if (this.uploadZipCompleted) {
       this.projectsService.deleteProjectId(this.projectId).subscribe(
         () => {
-          this.dialogRefToClose.close(true); 
+          this.dialogRefToClose.close(true);
           this.close();
         }
       );
@@ -257,32 +257,32 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
   /*** Step 3 : Description du versement ***/
   validateThirdStep() {
     return (
-      this.projectForm.controls['originatingAgencyIdentifier'].invalid ||
-      this.projectForm.controls['messageIdentifier'].invalid ||
-      this.projectForm.controls['submissionAgencyIdentifier'].invalid
+      this.projectForm.controls.originatingAgencyIdentifier.invalid ||
+      this.projectForm.controls.messageIdentifier.invalid ||
+      this.projectForm.controls.submissionAgencyIdentifier.invalid
     );
   }
 
   /*** Step 4 : Contexte de versement ***/
   validateFourStep() {
     return (
-      this.projectForm.controls['archivalAgencyIdentifier'].invalid ||
-      this.projectForm.controls['transferringAgencyIdentifier'].invalid ||
-      this.projectForm.controls['archivalAgreement'].invalid
+      this.projectForm.controls.archivalAgencyIdentifier.invalid ||
+      this.projectForm.controls.transferringAgencyIdentifier.invalid ||
+      this.projectForm.controls.archivalAgreement.invalid
     );
   }
 
   updateProject() {
     // Project name should be setted from messageIdentifier field until further notice
     const projectToUpdate = {
-      ...this.projectForm.value,  name: this.projectForm.controls['messageIdentifier'].value
+      ...this.projectForm.value,  name: this.projectForm.controls.messageIdentifier.value
     };
     this.mapProjectInternalFields(projectToUpdate);
     this.updateDialogSub = this.projectsService.updateProject(projectToUpdate).subscribe();
     this.move();
   }
 
-  mapProjectInternalFields(project: Project){
+  mapProjectInternalFields(project: Project) {
     project.id = this.createdProject.id;
     project.createdOn = this.createdProject.createdOn;
     project.unitUp = this.createdProject.unitUp;
