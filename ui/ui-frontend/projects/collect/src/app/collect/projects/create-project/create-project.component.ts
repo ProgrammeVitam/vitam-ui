@@ -155,7 +155,7 @@ export class CreateProjectComponent implements OnInit, OnDestroy, AfterViewCheck
 
   onConfirm() {
     if (this.uploadZipCompleted) {
-      this.projectsService.deleteProjectId(this.projectId).subscribe(
+      this.projectsService.deleteProjectId(this.createdProject.id).subscribe(
         () => {
           this.dialogRefToClose.close(true); 
           this.close();
