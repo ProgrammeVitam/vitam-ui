@@ -69,11 +69,11 @@ export class ManagementContractsApiService extends BaseHttpClient<ManagementCont
   }
 
   create(managementContract: ManagementContract, headers?: HttpHeaders): Observable<ManagementContract> {
-    return super.getHttp().post<any>(super.getApiUrl(), managementContract, {headers});
+    return super.getHttp().post<ManagementContract>(super.getApiUrl(), managementContract, {headers});
   }
 
   check(managementContract: ManagementContract, headers?: HttpHeaders): Observable<boolean> {
-    return super.getHttp().post<any>(super.getApiUrl() + '/check', managementContract, {observe: 'response', headers})
+    return super.getHttp().post<void>(super.getApiUrl() + '/check', managementContract, {observe: 'response', headers})
       .pipe(map((response: HttpResponse<void>) => response.status === HTTP_STATUS_OK));
   }
 

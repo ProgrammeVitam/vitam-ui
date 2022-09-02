@@ -98,19 +98,9 @@ public class ManagementContractService {
         }
     }
 
-    public RequestResponse<?> createManagementContracts(final VitamContext vitamContext, final InputStream managementContract)
-        throws InvalidParseOperationException, AccessExternalClientException {
-        return adminExternalClient.createManagementContracts(vitamContext, managementContract);
-    }
-
     public RequestResponse createManagementContract(final VitamContext vitamContext, final List<ManagementContractModelDto> managementContractModelDtos)
         throws InvalidParseOperationException, IOException, AccessExternalClientException {
         return createManagementContract(vitamContext, managementContractModelDtos);
-    }
-
-    public RequestResponse<?> createManagementContract(final VitamContext vitamContext, final InputStream managementContract, String fileName)
-        throws InvalidParseOperationException, AccessExternalClientException {
-        return adminExternalClient.createManagementContracts(vitamContext, managementContract);
     }
 
     private ByteArrayInputStream serializeManagementContracts(final List<ManagementContractModelDto> managementContractModelDtos) throws IOException {
