@@ -75,7 +75,7 @@ public class ProjectInternalController {
         this.projectInternalService = projectInternalService;
     }
 
-    @GetMapping(params = {"page", "size"})
+    @GetMapping(params = {"page", "size", "criteria"})
     public PaginatedValuesDto<CollectProjectDto> getAllProjectsPaginated(@RequestParam final Integer page,
         @RequestParam final Integer size, @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,

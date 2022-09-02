@@ -33,6 +33,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.query.BooleanQuery;
@@ -56,11 +57,10 @@ import fr.gouv.vitamui.commons.api.exception.InternalServerException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.collect.CollectService;
-import fr.gouv.vitamui.commons.vitam.api.dto.ResultsDto;
 import org.springframework.util.CollectionUtils;
 
-import javax.ws.rs.core.Response;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -117,7 +117,20 @@ public class ProjectInternalService {
         LOGGER.debug("Direction: ", direction.orElse(null));
         LOGGER.debug("Criteria: ", criteria.orElse(null));
         try {
-            RequestResponse<JsonNode> requestResponse = collectService.getProjects(vitamContext);
+            RequestResponse<JsonNode> requestResponse;
+            if (criteria.isPresent()) {
+
+                TypeReference<HashMap<String, String>> typRef = new TypeReference<>() {
+                };
+                HashMap<String, String> vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
+                var criteriaProjectDto = new CriteriaProjectDto();
+                criteriaProjectDto.setQuery(vitamCriteria.get("query"));
+                requestResponse = collectService.searchProject(vitamContext, criteriaProjectDto);
+            } else {
+
+                requestResponse = collectService.getProjects(vitamContext);
+            }
+
             if (!requestResponse.isOk()) {
                 throw new VitamClientException("Error occurs when retrieving projects!");
             }

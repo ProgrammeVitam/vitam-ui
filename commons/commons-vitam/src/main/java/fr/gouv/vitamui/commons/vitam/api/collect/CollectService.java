@@ -31,6 +31,7 @@ package fr.gouv.vitamui.commons.vitam.api.collect;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.collect.external.client.CollectClient;
+import fr.gouv.vitam.collect.external.dto.CriteriaProjectDto;
 import fr.gouv.vitam.collect.external.dto.ProjectDto;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.exception.VitamClientException;
@@ -114,6 +115,24 @@ public class CollectService {
     public RequestResponse<JsonNode> getProjects(final VitamContext vitamContext)
         throws VitamClientException {
         final RequestResponse<JsonNode> result = collectClient.getProjects(vitamContext);
+        VitamRestUtils.checkResponse(result);
+        return result;
+    }
+
+    /**
+     * get all created projects from Vitam
+     *
+     * @param vitamContext
+     * @param criteriaProjectDto
+     * @return
+     * @throws VitamClientException
+     */
+    public RequestResponse<JsonNode> searchProject(final VitamContext vitamContext,
+        CriteriaProjectDto criteriaProjectDto)
+        throws VitamClientException {
+
+
+        final RequestResponse<JsonNode> result = collectClient.searchProject(vitamContext, criteriaProjectDto);
         VitamRestUtils.checkResponse(result);
         return result;
     }
