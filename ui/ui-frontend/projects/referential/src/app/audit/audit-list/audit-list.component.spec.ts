@@ -34,31 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {of} from 'rxjs';
-import {AuditService} from '../audit.service';
-import {AuditListComponent} from './audit-list.component';
+import { Event } from 'projects/vitamui-library/src/lib/models/event';
+import { of } from 'rxjs';
+import { AuditService } from '../audit.service';
+import { AuditListComponent } from './audit-list.component';
 
 describe('AuditListComponent', () => {
   let component: AuditListComponent;
   let fixture: ComponentFixture<AuditListComponent>;
 
   beforeEach(waitForAsync(() => {
-
     const auditServiceMock = {
-      search: () => of(null)
+      search: () => of(null),
     };
 
     TestBed.configureTestingModule({
       declarations: [AuditListComponent],
-      providers: [
-        {provide: AuditService, useValue: auditServiceMock}
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
+      providers: [{ provide: AuditService, useValue: auditServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -67,7 +63,198 @@ describe('AuditListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('Audit status should be OK when the last event is OK', () => {
+    // Given
+    const audit: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: 'data',
+      outcome: 'OK',
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idAppSession: 'AUDIT_APP166149000110:18b963b9-129f-4704-ba6e-600278466343:Contexte UI Referential:1:-:1',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: 'bad json format',
+      parentId: null,
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [
+        null,
+        {
+          id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          type: 'PROCESS_AUDIT',
+          typeProc: 'AUDIT',
+          obIdReq: 'obIdReq',
+          data: 'data',
+          outcome: 'OK',
+          outDetail: 'PROCESS_AUDIT.STARTED',
+          outMessage: 'Audit terminé avec succès',
+          objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          agId: '247521940',
+          agIdApp: 'vitamui-context',
+          rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+          parentId: null,
+          dateTime: null,
+          collectionName: 'collectionName',
+          parsedData: {
+            dataKey: 'dataValue',
+          },
+          agIdExt: 'agIdExt',
+        },
+      ],
+    };
+
+    // When
+    const returnedStatus = component.auditStatus(audit);
+
+    // Then
+    expect(returnedStatus).toBeDefined();
+    expect(returnedStatus).toEqual('OK');
+  });
+
+  it('Audit status should return the outCome of the principal event when events is an empty array', () => {
+    // Given
+    const audit: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: 'data',
+      outcome: 'STARTED',
+      parentId: null,
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idAppSession: 'AUDIT_APP166149000110:18b963b9-129f-4704-ba6e-600278466343:Contexte UI Referential:1:-:1',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [],
+    };
+
+    // When
+    const returnedStatus = component.auditStatus(audit);
+
+    // Then
+    expect(returnedStatus).toBeDefined();
+    expect(returnedStatus).toEqual('STARTED');
+  });
+
+  it('Audit Message should be the outMessage when the last event', () => {
+    // Given
+    const returnedMessage = 'Audit terminé avec succès';
+    const audit: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: 'data',
+      outcome: 'OK',
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idAppSession: 'AUDIT_APP166149000110:18b963b9-129f-4704-ba6e-600278466343:Contexte UI Referential:1:-:1',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+      parentId: null,
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [
+        null,
+        null,
+        {
+          id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          type: 'PROCESS_AUDIT',
+          typeProc: 'AUDIT',
+          obIdReq: 'obIdReq',
+          data: 'data',
+          parentId: null,
+          outcome: 'OK',
+          outDetail: 'PROCESS_AUDIT.STARTED',
+          outMessage: 'Audit terminé avec succès',
+          objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+          agId: '247521940',
+          agIdApp: 'vitamui-context',
+          rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+          dateTime: null,
+          collectionName: 'collectionName',
+          parsedData: {
+            dataKey: 'dataValue',
+          },
+          agIdExt: 'agIdExt',
+        },
+      ],
+    };
+
+    // When
+    const response = component.auditMessage(audit);
+
+    // Then
+    expect(response).toBeDefined();
+    expect(response).toEqual(returnedMessage);
+  });
+
+  it('Audit status should return the outMessage of the principal event when events is an empty array', () => {
+    // Given
+    const returnedMessage = 'Début audit';
+    const audit: Event = {
+      id: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idRequest: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      type: 'PROCESS_AUDIT',
+      typeProc: 'AUDIT',
+      obIdReq: 'obIdReq',
+      data: 'data',
+      outcome: 'STARTED',
+      outDetail: 'PROCESS_AUDIT.STARTED',
+      outMessage: 'Début audit',
+      objectId: 'aeeaaaaaaghhhxzdaayfsamdb6bwiriaaaaq',
+      idAppSession: 'AUDIT_APP166149000110:18b963b9-129f-4704-ba6e-600278466343:Contexte UI Referential:1:-:1',
+      agId: '247521940',
+      agIdApp: 'vitamui-context',
+      rightsStatementIdentifier: '{"AccessContract":"ContratTNR"}',
+      parentId: null,
+      dateTime: null,
+      collectionName: 'collectionName',
+      parsedData: {
+        dataKey: 'dataValue',
+      },
+      agIdExt: 'agIdExt',
+      events: [],
+    };
+
+    // When
+    const response = component.auditMessage(audit);
+
+    // Then
+    expect(response).toBeDefined();
+    expect(response).toEqual(returnedMessage);
   });
 });
