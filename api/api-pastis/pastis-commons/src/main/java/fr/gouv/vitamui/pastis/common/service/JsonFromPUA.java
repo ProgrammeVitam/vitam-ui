@@ -252,7 +252,7 @@ public class JsonFromPUA {
 			if (childrenSedaNode == null && parent.getName().equals("ArchiveUnit")) {
 				childrenSedaNode = getChildrenSedaNode(getChildrenSedaNode(sedaNode, CONTENT), childName);
                 if (childPua.optString("type").equals("string") && null !=childrenSedaNode && childrenSedaNode.getCardinality().equals("0-N")) {
-                    childPua.put("minItems", 1);
+                    childPua.put("minItems", 0);
                     childPua.put("maxItems", 1);
 
                 }

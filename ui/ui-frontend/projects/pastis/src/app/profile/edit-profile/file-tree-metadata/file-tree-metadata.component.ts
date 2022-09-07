@@ -344,7 +344,7 @@ export class FileTreeMetadataComponent {
       this.matDataSource = new MatTableDataSource<MetadataHeaders>(data);
     });
 
-    this.rootAdditionalProperties = FileTreeComponent.archiveUnits.additionalProperties
+    this.rootAdditionalProperties = this.clickedNode.additionalProperties;
   }
 
   navigate(d: BreadcrumbDataTop) {
