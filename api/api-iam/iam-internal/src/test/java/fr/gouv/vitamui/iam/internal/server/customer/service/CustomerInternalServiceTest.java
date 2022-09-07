@@ -1,5 +1,11 @@
 package fr.gouv.vitamui.iam.internal.server.customer.service;
 
+import fr.gouv.vitamui.commons.api.domain.AddressDto;
+import fr.gouv.vitamui.commons.api.domain.DirectionDto;
+import fr.gouv.vitamui.commons.api.domain.LanguageDto;
+import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -22,11 +28,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.query.Query;
 
-import fr.gouv.vitamui.commons.api.domain.AddressDto;
-import fr.gouv.vitamui.commons.api.domain.DirectionDto;
-import fr.gouv.vitamui.commons.api.domain.LanguageDto;
-import fr.gouv.vitamui.commons.api.domain.OwnerDto;
-import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.test.utils.TestUtils;
@@ -306,5 +307,13 @@ public class CustomerInternalServiceTest {
         dto.setGdprAlert(false);
         dto.setGdprAlertDelay(72);
         return dto;
+    }
+
+    @Test
+    public void testCheckNotExistByDomainMail() {
+        when(customerRepository.findByEmailDomainsIgnoreCase(any())).thenReturn(null);
+
+        final boolean result = internalCustomerService.checkExist(null);
+        Assert.assertFalse("Customers shouldn't be found.", result);
     }
 }

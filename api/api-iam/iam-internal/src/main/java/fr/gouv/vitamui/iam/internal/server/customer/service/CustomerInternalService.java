@@ -521,7 +521,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             Assert.isTrue(!optCustomer.isPresent(), message + ": a customer has already the email domain " + domain);
         }
     }
@@ -532,7 +532,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             if (optCustomer.isPresent()) {
                 Assert.isTrue(StringUtils.equals(optCustomer.get().getId(), customerId),
                     message + ": a customer has already the email domain " + domain);
