@@ -192,6 +192,7 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.empty());
         when(customerRepository.findById(customerDto.getId())).thenReturn(Optional.of(buildCustomer()));
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString())).thenReturn(Optional.empty());
+        when(customerRepository.findByEmailDomainsIgnoreCase(anyString())).thenReturn(Optional.empty());
 
         when(internalOwnerService.findByCustomerId(customerDto.getId())).thenReturn(Arrays.asList(new OwnerDto()));
         when(internalOwnerService.create(any())).thenReturn(new OwnerDto());
@@ -303,27 +304,6 @@ public final class CustomerCrudControllerTest {
         } catch (final IllegalArgumentException e) {
             assertEquals(
                 "Integrity constraint error on the customer [Undefined] : the new code is already used by another customer.",
-                e.getMessage());
-        }
-    }
-
-    @Test
-    public void testCreationFailsAsTheDomainIsAlreadyUsed() throws InvalidParseOperationException,
-        PreconditionFailedException {
-        final CustomerDto customerDto = buildFullCustomerDto();
-        customerDto.setId(null);
-
-        prepareServices();
-        when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString()))
-            .thenReturn(Optional.of(buildCustomer()));
-
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
-                    customerDto.getDefaultEmailDomain(),
                 e.getMessage());
         }
     }
@@ -491,6 +471,26 @@ public final class CustomerCrudControllerTest {
             controller.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(), Optional.empty(),
                 Optional.of(DirectionDto.ASC));
         Assert.assertNotNull("Customer should be created.", result);
+    }
+    @Test
+    public void testCreationFailsAsTheDomainMailIsAlreadyUsed() throws InvalidParseOperationException,
+        PreconditionFailedException {
+        final CustomerDto customerDto = buildFullCustomerDto();
+        customerDto.setId(null);
+
+        prepareServices();
+        when(customerRepository.findByEmailDomainsIgnoreCase(anyString()))
+            .thenReturn(Optional.of(buildCustomer()));
+
+        try {
+            controller.create(buildCustomerData(customerDto));
+            fail("should fail");
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
+                    customerDto.getDefaultEmailDomain(),
+                e.getMessage());
+        }
     }
 
     private CustomerDto buildFullCustomerDto() {
