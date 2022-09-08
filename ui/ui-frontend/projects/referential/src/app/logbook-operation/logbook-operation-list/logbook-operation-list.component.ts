@@ -144,17 +144,15 @@ export class LogbookOperationListComponent extends InfiniteScrollTable<Event> im
     this.logbookDownloadService.logbookOperationsReloaded.next(this.dataSource);
   }
 
-
-  private manageOperationLabel(logbookOperation: Event) {
-    if (logbookOperation.type === 'ARCHIVE_TRANSFER') {
-      logbookOperation.type = 'ARCHIVE_TRANSFER_LABEL';
+  manageOperationLabel(type: string) {
+    if (type === 'ARCHIVE_TRANSFER') {
+      return 'ARCHIVE_TRANSFER_LABEL';
     }
   }
 
   private updateLogbookOperations(logbookOperationsReloaded: Event[]) {
-    logbookOperationsReloaded.forEach(logbookOperation => {
-      const index = this.dataSource.findIndex(o => o.id === logbookOperation.id);
-      this.manageOperationLabel(logbookOperation);
+    logbookOperationsReloaded.forEach((logbookOperation) => {
+      const index = this.dataSource.findIndex((o) => o.id === logbookOperation.id);
       this.dataSource[index] = logbookOperation;
     });
   }
