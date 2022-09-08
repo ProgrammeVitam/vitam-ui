@@ -26,14 +26,27 @@
  */
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { merge, Subject, Subscription } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
-import { CriteriaDataType, CriteriaOperator, Direction, Logger, VitamuiRoles } from 'ui-frontend-common';
+import { CriteriaDataType, CriteriaOperator, Direction, Logger, VitamuiRoles, FilingHoldingSchemeNode } from 'ui-frontend-common';
 import { ArchiveSharedDataService } from '../../core/archive-shared-data.service';
 import { ManagementRulesSharedDataService } from '../../core/management-rules-shared-data.service';
 import { ArchiveService } from '../archive.service';
@@ -43,7 +56,6 @@ import { ArchiveUnitDipService } from '../common-services/archive-unit-dip.servi
 import { ArchiveUnitEliminationService } from '../common-services/archive-unit-elimination.service';
 import { ComputeInheritedRulesService } from '../common-services/compute-inherited-rules.service';
 import { UpdateUnitManagementRuleService } from '../common-services/update-unit-management-rule.service';
-import { FilingHoldingSchemeNode } from '../models/node.interface';
 import { NodeData } from '../models/nodedata.interface';
 import { ActionsRules } from '../models/ruleAction.interface';
 import { SearchCriteriaEltements, SearchCriteriaHistory } from '../models/search-criteria-history.interface';
@@ -59,7 +71,6 @@ import {
   SearchCriteriaTypeEnum,
 } from '../models/search.criteria';
 import { Unit } from '../models/unit.interface';
-import { ActionType } from './action-type.enum';
 import { ReclassificationComponent } from './reclassification/reclassification.component';
 import { SearchCriteriaSaverComponent } from './search-criteria-saver/search-criteria-saver.component';
 
@@ -73,9 +84,7 @@ const ALL_ARCHIVE_UNIT_TYPES = 'ALL_ARCHIVE_UNIT_TYPES';
   templateUrl: './archive-search.component.html',
   styleUrls: ['./archive-search.component.scss'],
 })
-export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
-  ActionType = ActionType;
-
+export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy, AfterContentChecked {
   constructor(
     private archiveService: ArchiveService,
     private archiveFacetsService: ArchiveFacetsService,
@@ -91,12 +100,9 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     private updateUnitManagementRuleService: UpdateUnitManagementRuleService,
     private archiveUnitEliminationService: ArchiveUnitEliminationService,
     private computeInheritedRulesService: ComputeInheritedRulesService,
-    private archiveUnitDipService: ArchiveUnitDipService
+    private archiveUnitDipService: ArchiveUnitDipService,
+    private cdr: ChangeDetectorRef
   ) {
-    this.subscriptionEntireNodes = this.archiveExchangeDataService.getEntireNodes().subscribe((nodes) => {
-      this.entireNodesIds = nodes;
-    });
-
     this.subscriptionNodes = this.archiveExchangeDataService.getNodes().subscribe((node) => {
       if (node.checked) {
         this.archiveHelperService.addCriteria(
@@ -250,7 +256,6 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
   listOfUAIdToInclude: CriteriaValue[] = [];
   listOfUAIdToExclude: CriteriaValue[] = [];
   nodeArray: FilingHoldingSchemeNode[] = [];
-  entireNodesIds: string[];
   archiveUnits: Unit[];
   searchCriteriaHistory: SearchCriteriaHistory[] = [];
   criteriaSearchList: SearchCriteriaEltDto[] = [];
@@ -375,6 +380,10 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  ngAfterContentChecked(): void {
+    this.cdr.detectChanges();
+  }
+
   showHidePanel(show: boolean) {
     this.showCriteriaPanel = show;
   }
@@ -458,7 +467,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
     this.archiveHelperService.buildNodesListForQUery(this.searchCriterias, this.criteriaSearchList);
     this.archiveHelperService.buildFieldsCriteriaListForQUery(this.searchCriterias, this.criteriaSearchList);
 
-    for (var mgtRuleType in SearchCriteriaMgtRuleEnum) {
+    for (let mgtRuleType in SearchCriteriaMgtRuleEnum) {
       this.archiveHelperService.buildManagementRulesCriteriaListForQuery(mgtRuleType, this.searchCriterias, this.criteriaSearchList);
     }
     if (this.criteriaSearchList && this.criteriaSearchList.length > 0) {
@@ -555,8 +564,7 @@ export class ArchiveSearchComponent implements OnInit, OnChanges, OnDestroy {
       computeFacets: includeFacets,
     };
     this.archiveExchangeDataService.emitLastSearchCriteriaDtoSubject(searchCriteria);
-    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract)
-      .subscribe(
+    this.archiveService.searchArchiveUnitsByCriteria(searchCriteria, this.accessContract).subscribe(
       (pagedResult: PagedResult) => {
         if (includeFacets) {
           this.archiveSearchResultFacets = this.archiveFacetsService.extractRulesFacetsResults(pagedResult.facets);

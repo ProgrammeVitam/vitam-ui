@@ -15,12 +15,15 @@
   [(ngModel)]="node.checked"
   [(indeterminate)]="node.disabledChild"
   [disabled]="node.disabled"
-  (ngModelChange)="labelClick.emit()"
+  (ngModelChange)="onCheckboxClick()"
+  (click)="onCheckboxClick()"
   matTooltip="{{ node?.title }}"
   matTooltipClass="vitamui-tooltip"
   [matTooltipShowDelay]="300"
 >
-  <i class="pad vitamui-icon vitamui-icon-folder"></i>
-  {{ node?.title }}
+  <label class="node-label" (click)="onLabelClick($event)">
+    <i class="pad vitamui-icon vitamui-icon-folder"></i>
+    {{ node?.title }}
+  </label>
 </mat-checkbox>
-<label for="{{ node?.id }}" class="node-label" (click)="labelClick.emit()"></label>
+

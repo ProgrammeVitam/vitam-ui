@@ -46,10 +46,10 @@ import {
   CriteriaOperator,
   SearchService,
   SecurityService,
+  FilingHoldingSchemeNode,
 } from 'ui-frontend-common';
 import { ArchiveApiService } from '../core/api/archive-api.service';
 import { ExportDIPCriteriaList } from './models/dip-request-detail.interface';
-import { FilingHoldingSchemeNode } from './models/node.interface';
 import { ReclassificationCriteriaDto } from './models/reclassification-request.interface';
 import { RuleSearchCriteriaDto } from './models/ruleAction.interface';
 import { SearchResponse } from './models/search-response.interface';
