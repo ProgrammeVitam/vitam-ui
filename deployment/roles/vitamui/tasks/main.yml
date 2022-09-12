@@ -94,7 +94,7 @@
     mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_fileglob:
     - "{{ role_path }}/templates/{{ vitamui_struct.vitamui_component }}/*"
-  no_log: "{{ hide_passwords_during_deploy }}"
+  #no_log: "{{ hide_passwords_during_deploy }}"
   tags:
     - update_vitam_configuration
   notify:
