@@ -202,9 +202,9 @@
 	.agencies_app_185{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_AGENCIES_APP_01);}
 	.agencies_app_186{fill-rule:evenodd;clip-rule:evenodd;fill:#2A2C2B;}
 	.agencies_app_187{fill-rule:evenodd;clip-rule:evenodd;fill:#4C4C4C;}
-	.agencies_app_188{fill:#2563A9;}
-	.agencies_app_189{fill:#478AD7;}
-	.agencies_app_190{fill:#8DB6E6;}
+	.agencies_app_188{fill:var(--vitamui-secondary);}
+	.agencies_app_189{fill:var(--vitamui-secondary-300);}
+	.agencies_app_190{fill:var(--vitamui-secondary-100);}
 	.agencies_app_191{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000039845445819364464520000007815037469907195569_);}
 	.agencies_app_192{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000178919231453532329000000010784422089640860047_);}
 	.agencies_app_193{fill-rule:evenodd;clip-rule:evenodd;fill:url(#SVGID_00000081648244514044969020000015970459914473895842_);}
