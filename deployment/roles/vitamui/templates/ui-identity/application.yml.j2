@@ -151,6 +151,10 @@ cas:
     hostname-verification: {{ vitamui.cas_server.hostname_verification }}
 {% endif %}
 
+portal:
+  message: {{vitamui_platform_informations.portal_message}}
+  title: {{vitamui_platform_informations.portal_title}}
+
 opentracing:
   jaeger:
     enabled: {{ opentracing.jaeger.enabled }}
