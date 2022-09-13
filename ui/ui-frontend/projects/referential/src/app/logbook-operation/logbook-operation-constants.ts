@@ -41,6 +41,7 @@ export const LOGBOOK_OPERATION_CATEGORIES: Option[] = [
     {key: 'MASTERDATA', label: 'Données de base', info: ''},
     {key: 'ELIMINATION', label: 'Élimination', info: ''},
     {key: 'INGEST', label: 'Entrée', info: ''},
+    {key: 'INGEST_TEST', label: 'Entrée à blanc', info: ''},
     {key: 'EXPORT_DIP', label: 'Export DIP', info: ''},
     {key: 'UPDATE', label: 'Mise à jour', info: ''},
     {key: 'PRESERVATION', label: 'Préservation', info: ''},
@@ -48,7 +49,8 @@ export const LOGBOOK_OPERATION_CATEGORIES: Option[] = [
     {key: 'STORAGE_BACKUP', label: 'Sauvegarde d\'écriture', info: ''},
     {key: 'TRACEABILITY', label: 'Sécurisation', info: ''},
     {key: 'CHECK', label: 'Vérification', info: ''},
-    {key: 'EXTERNAL_LOGBOOK', label: 'Journalisation externe', info: ''}
+    {key: 'EXTERNAL_LOGBOOK', label: 'Journalisation externe', info: ''},
+    {key: 'ARCHIVE_TRANSFER', label: 'Transfert', info: ''}
 ];
 
 export const NULL_TYPE: Option[] = [

@@ -36,12 +36,14 @@
  */
 package fr.gouv.vitamui.ingest.external.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationDto;
@@ -89,7 +91,14 @@ public class IngestExternalController {
         @RequestParam final Integer size,
         @RequestParam(required = false) final Optional<String> criteria,
         @RequestParam(required = false) final Optional<String> orderBy,
-        @RequestParam(required = false) final Optional<DirectionDto> direction) {
+        @RequestParam(required = false) final Optional<DirectionDto> direction) throws PreconditionFailedException,  InvalidParseOperationException {
+        if(direction.isPresent()) {
+            SanityChecker.sanitizeCriteria(direction.get());
+        }
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("getPaginateEntities page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, orderBy,
             direction);
         return ingestExternalService.getAllPaginated(page, size, criteria, orderBy, direction);
@@ -97,17 +106,20 @@ public class IngestExternalController {
 
     @Secured(ServicesData.ROLE_GET_INGEST)
     @GetMapping(CommonConstants.PATH_ID)
-    public LogbookOperationDto getOne(@PathVariable("id") final String id) {
-        LOGGER.debug("get One Ingest id={}", id);
+    public LogbookOperationDto getOne(@PathVariable("id") final String id) throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get One Ingest id={}", id);
         return ingestExternalService.getOne(id);
     }
 
     @Secured(ServicesData.ROLE_LOGBOOKS)
     @GetMapping(RestApi.INGEST_REPORT_ODT + CommonConstants.PATH_ID)
-    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id) {
-        LOGGER.debug("export ODT report for ingest with id :{}", id);
+    public ResponseEntity<byte[]> generateODTReport(final @PathVariable("id") String id)
+        throws PreconditionFailedException, InvalidParseOperationException {
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter :", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("export ODT report for ingest with id :{}", id);
         return ingestExternalService.generateODTReport(id);
     }
 
@@ -118,11 +130,12 @@ public class IngestExternalController {
         @RequestHeader(value = CommonConstants.X_ACTION) final String action,
         @RequestHeader(value = CommonConstants.X_CONTEXT_ID) final String contextId,
         @RequestHeader(value = CommonConstants.X_ORIGINAL_FILENAME_HEADER) final String originalFileName
-    ) {
-        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
+    ) throws InvalidParseOperationException, PreconditionFailedException {
         ParameterChecker.checkParameter("The action and the context ID are mandatory parameters: ", action, contextId,
             originalFileName);
+        SanityChecker.checkSecureParameter(action, contextId, originalFileName);
         SanityChecker.isValidFileName(originalFileName);
+        LOGGER.debug("[Internal] upload file v2: {}", originalFileName);
         return ingestExternalService.streamingUpload(inputStream, originalFileName, contextId, action);
     }
 }

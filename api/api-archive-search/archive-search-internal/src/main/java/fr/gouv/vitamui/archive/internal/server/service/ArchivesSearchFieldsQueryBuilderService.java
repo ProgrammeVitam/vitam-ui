@@ -58,10 +58,8 @@ public class ArchivesSearchFieldsQueryBuilderService {
     public void fillQueryFromCriteriaList(BooleanQuery queryToFill, List<SearchCriteriaEltDto> criteriaList)
         throws InvalidCreateOperationException {
         if (!CollectionUtils.isEmpty(criteriaList)) {
-            String mappedCriteriaName;
             for (SearchCriteriaEltDto searchCriteria : criteriaList) {
                 if (searchCriteria.getCriteria() == null) {
-                    LOGGER.error("Field not mapped correctly  " + searchCriteria.getCriteria());
                     throw new IllegalArgumentException("Field not mapped correctly  ");
                 }
                 switch (searchCriteria.getCriteria()) {
@@ -113,7 +111,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
                             ArchiveSearchConsts.CriteriaOperators.EQ, ArchiveSearchConsts.CriteriaOperators.NOT_EQ);
                         break;
                     default:
-                        mappedCriteriaName = handleSimpleFieldCriteria(queryToFill, searchCriteria);
+                        handleSimpleFieldCriteria(queryToFill, searchCriteria);
                         break;
                 }
                 if (ArchiveSearchConsts.CriteriaDataType.DATE.name().equals(searchCriteria.getDataType())) {
@@ -259,7 +257,7 @@ public class ArchivesSearchFieldsQueryBuilderService {
             default:
                 criteria = null;
         }
-        LOGGER.info("The search criteria Date is {} ", criteria);
+        LOGGER.debug("The search criteria Date is {} ", criteria);
         if (!CollectionUtils.isEmpty(searchValues)) {
             for (String value : searchValues) {
                 LocalDateTime searchDate =

@@ -36,23 +36,12 @@
  */
 package fr.gouv.vitamui.referential.internal.server.accesscontract;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import fr.gouv.vitam.access.external.common.exception.AccessExternalClientException;
 import fr.gouv.vitam.common.client.VitamContext;
 import fr.gouv.vitam.common.database.builder.request.exception.InvalidCreateOperationException;
@@ -76,6 +65,15 @@ import fr.gouv.vitamui.referential.common.dto.AccessContractDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractResponseDto;
 import fr.gouv.vitamui.referential.common.dto.AccessContractVitamDto;
 import fr.gouv.vitamui.referential.common.service.VitamUIAccessContractService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class AccessContractInternalService {
@@ -104,7 +102,7 @@ public class AccessContractInternalService {
     public AccessContractDto getOne(VitamContext vitamContext, String identifier) {
         try {
 
-            LOGGER.info("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse<AccessContractModel> requestResponse = accessContractService.findAccessContractById(vitamContext, identifier);
             final AccessContractResponseDto accessContractResponseDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
@@ -122,7 +120,7 @@ public class AccessContractInternalService {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
 
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = accessContractService
                     .findAccessContracts(vitamContext, new Select().getFinalSelect());
             final AccessContractResponseDto accessContractResponseDto = objectMapper
@@ -141,7 +139,7 @@ public class AccessContractInternalService {
         Map<String, Object> vitamCriteria = new HashMap<>();
         JsonNode query = null;
         try {
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             if (criteria.isPresent()) {
                 TypeReference<HashMap<String, Object>> typRef = new TypeReference<HashMap<String, Object>>() {};
                 vitamCriteria = objectMapper.readValue(criteria.get(), typRef);
@@ -165,7 +163,7 @@ public class AccessContractInternalService {
     public AccessContractResponseDto findAll(VitamContext vitamContext, JsonNode query) {
         final RequestResponse<AccessContractModel> requestResponse;
         try {
-            LOGGER.info("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("List of Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             requestResponse = accessContractService.findAccessContracts(vitamContext, query);
             return objectMapper.treeToValue(requestResponse.toJsonNode(), AccessContractResponseDto.class);
 
@@ -176,7 +174,7 @@ public class AccessContractInternalService {
 
     public Boolean check(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
-            LOGGER.info("Access Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Access Contract Check EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             Integer accessContractCheckedTenant = accessContractService.checkAbilityToCreateAccessContractInVitam(converter.convertDtosToVitams(Arrays.asList(accessContractDto)), vitamContext.getApplicationSessionId());
             return !vitamContext.getTenantId().equals(accessContractCheckedTenant);
         } catch (ConflictException e) {
@@ -186,7 +184,7 @@ public class AccessContractInternalService {
 
     public AccessContractDto create(VitamContext vitamContext, AccessContractDto accessContractDto) {
         try {
-            LOGGER.info("Create Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Create Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             RequestResponse requestResponse = accessContractService.createAccessContracts(vitamContext, converter.convertDtosToVitams(Arrays.asList(accessContractDto)));
             final AccessContractVitamDto accessContractVitamDto = objectMapper
                     .treeToValue(requestResponse.toJsonNode(), AccessContractVitamDto.class);
@@ -289,7 +287,7 @@ public class AccessContractInternalService {
         partialDto.remove("identifier");
 
         try {
-            LOGGER.info("Patch Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patch Access Contract EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             // Fix because Vitam doesn't allow String Array as action value (transformed to a string representation"[value1, value2]"
             // Manual setting instead of updateRequest.addActions( UpdateActionHelper.set(fieldsUpdated));
             JsonNode fieldsUpdated = convertMapPartialDtoToUpperCaseVitamFields(partialDto);

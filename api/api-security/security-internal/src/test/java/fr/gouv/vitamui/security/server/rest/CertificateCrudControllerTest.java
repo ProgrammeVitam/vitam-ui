@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.Optional;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -62,7 +63,7 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
             getController().create(buildDto());
             fail("should fail");
         }
-        catch (final IllegalArgumentException e) {
+        catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("The context: " + CONTEXT_ID + " does not exist.", e.getMessage());
         }
     }
@@ -82,7 +83,7 @@ public final class CertificateCrudControllerTest extends AbstractCrudControllerT
             getController().update(ID, dto);
             fail("should fail");
         }
-        catch (final IllegalArgumentException e) {
+        catch (final IllegalArgumentException | InvalidParseOperationException e) {
             assertEquals("Unable to update certificate: no entity found with id: " + ID, e.getMessage());
         }
     }

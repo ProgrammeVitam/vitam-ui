@@ -36,21 +36,33 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import {NO_ERRORS_SCHEMA} from '@angular/core';
-import {FormBuilder} from '@angular/forms';
-import {AgencyService} from '../../agency.service';
-import {AgencyInformationTabComponent} from './agency-information-tab.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { of } from 'rxjs';
+import { AgencyService } from '../../agency.service';
+import { AgencyInformationTabComponent } from './agency-information-tab.component';
+import { SecurityService } from 'ui-frontend-common';
+import { ActivatedRoute } from '@angular/router';
 
 describe('AgencyInformationTabComponent', () => {
   let component: AgencyInformationTabComponent;
   let fixture: ComponentFixture<AgencyInformationTabComponent>;
+
+  const securityServiceMock = {
+    hasRole: () => of(true),
+  };
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AgencyInformationTabComponent],
       providers: [
         FormBuilder,
-        {provide: AgencyService, useValue: {}}
+        { provide: AgencyService, useValue: {} },
+        { provide: SecurityService, useValue: securityServiceMock },
+        {
+          provide: ActivatedRoute,
+          useValue: { params: of({ tenantIdentifier: 1 }), data: of({ appId: 'AGENCIES_APP' }) },
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })

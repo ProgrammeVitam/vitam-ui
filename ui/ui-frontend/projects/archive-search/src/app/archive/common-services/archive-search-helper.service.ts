@@ -86,6 +86,16 @@ export class ArchiveSearchHelperService {
         if (category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
+        if (category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+          this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+        if (category === SearchCriteriaTypeEnum.REUSE_RULE) {
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+
+        if (category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
       } else if (searchCriterias) {
         nbQueryCriteria++;
         let criteria: SearchCriteria;
@@ -148,6 +158,23 @@ export class ArchiveSearchHelperService {
         if (emit === true && category === SearchCriteriaTypeEnum.ACCESS_RULE) {
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
         }
+        if (emit === true && category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+          this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({ keyElt, valueElt, action: ActionOnCriteria.ADD });
+        }
+        if (emit === true && category === SearchCriteriaTypeEnum.REUSE_RULE) {
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.ADD,
+          });
+        }
+        if (emit === true && category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.ADD,
+          });
+        }
       }
     }
   }
@@ -209,9 +236,24 @@ export class ArchiveSearchHelperService {
             valueElt,
             action: ActionOnCriteria.REMOVE,
           });
-        }
-        if (emit === true) {
+
           this.archiveExchangeDataService.sendAccessFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+
+          this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+          this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+            keyElt,
+            valueElt,
+            action: ActionOnCriteria.REMOVE,
+          });
+          this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
             keyElt,
             valueElt,
             action: ActionOnCriteria.REMOVE,
@@ -263,6 +305,27 @@ export class ArchiveSearchHelperService {
               action: ActionOnCriteria.REMOVE,
             });
           }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.STORAGE_RULE) {
+            this.archiveExchangeDataService.sendStorageFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.REUSE_RULE) {
+            this.archiveExchangeDataService.sendReuseFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
+          if (emit === true && val.category === SearchCriteriaTypeEnum.DISSEMINATION_RULE) {
+            this.archiveExchangeDataService.sendDisseminationFromMainSearchCriteriaAction({
+              keyElt,
+              valueElt,
+              action: ActionOnCriteria.REMOVE,
+            });
+          }
           if (emit === true && val.category === SearchCriteriaTypeEnum.FIELDS && val.key === ALL_ARCHIVE_UNIT_TYPES) {
             this.archiveExchangeDataService.sendRemoveFromChildSearchCriteriaAction({
               keyElt,
@@ -300,20 +363,56 @@ export class ArchiveSearchHelperService {
     });
   }
 
-  checkIfShowingFacetsRule(searchCriterias: Map<string, SearchCriteria>): boolean {
-    let hasAppraisalRuleCriteria = false;
+  findDefaultFacetTabIndex(searchCriterias: Map<string, SearchCriteria>): number {
+    let defaultFacetTabIndex = 100;
     if (searchCriterias && searchCriterias.size > 0) {
       for (const criteria of searchCriterias.values()) {
-        if (
-          (!hasAppraisalRuleCriteria && this.archiveService.isAppraisalRuleCriteria(criteria)) ||
-          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
-          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
-        ) {
-          hasAppraisalRuleCriteria = true;
+        if (defaultFacetTabIndex > 0 && this.archiveService.isStorageRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 0;
+        }
+
+        if (defaultFacetTabIndex > 1 && this.archiveService.isAppraisalRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 1;
+        }
+        if (defaultFacetTabIndex > 3 && this.archiveService.isAccessRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 3;
+        }
+
+        if (defaultFacetTabIndex > 4 && this.archiveService.isDisseminationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 4;
+        }
+        if (defaultFacetTabIndex > 5 && this.archiveService.isReuseRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 5;
+        }
+        if (defaultFacetTabIndex > 6 && this.archiveService.isClassificationRuleCriteria(criteria)) {
+          defaultFacetTabIndex = 6;
         }
       }
     }
-    return hasAppraisalRuleCriteria;
+    if (defaultFacetTabIndex === 100) {
+      defaultFacetTabIndex = 0;
+    }
+    return defaultFacetTabIndex;
+  }
+  checkIfRulesFacetsCanBeComputed(searchCriterias: Map<string, SearchCriteria>): boolean {
+    let hasMgtRuleCriteria = false;
+    if (searchCriterias && searchCriterias.size > 0) {
+      for (const criteria of searchCriterias.values()) {
+        if (
+          (!hasMgtRuleCriteria &&
+            (this.archiveService.isAppraisalRuleCriteria(criteria) ||
+              this.archiveService.isAccessRuleCriteria(criteria) ||
+              this.archiveService.isStorageRuleCriteria(criteria) ||
+              this.archiveService.isReuseRuleCriteria(criteria) ||
+              this.archiveService.isDisseminationRuleCriteria(criteria))) ||
+          this.archiveService.isWaitingToRecalculateCriteria(criteria.key) ||
+          this.archiveService.isEliminationTenchnicalIdCriteria(criteria.key)
+        ) {
+          hasMgtRuleCriteria = true;
+        }
+      }
+    }
+    return hasMgtRuleCriteria;
   }
 
   buildFieldsCriteriaListForQUery(searchCriterias: Map<string, SearchCriteria>, criteriaSearchList: SearchCriteriaEltDto[]) {
@@ -337,16 +436,15 @@ export class ArchiveSearchHelperService {
     criteriaSearchList: SearchCriteriaEltDto[]
   ) {
     searchCriterias.forEach((criteria: SearchCriteria) => {
-      if (criteria.category === SearchCriteriaTypeEnum.ACCESS_RULE || criteria.category === SearchCriteriaTypeEnum.APPRAISAL_RULE) {
+      if (criteria.category.toString() === managementRuleType) {
         const strValues: CriteriaValue[] = [];
         criteria.values.forEach((elt) => {
           strValues.push(elt.value);
         });
+        let replacedCriteria = criteria.key.replace('_' + managementRuleType, '');
+
         criteriaSearchList.push({
-          criteria:
-            managementRuleType === SearchCriteriaTypeEnum.ACCESS_RULE
-              ? criteria.key.replace('_ACCESS_RULE', '')
-              : criteria.key.replace('_APPRAISAL_RULE', ''),
+          criteria: replacedCriteria,
           values: strValues,
           operator: criteria.operator,
           category: criteria.category,

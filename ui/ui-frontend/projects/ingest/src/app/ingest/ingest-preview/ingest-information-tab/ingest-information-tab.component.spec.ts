@@ -34,30 +34,27 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
+import { VitamUICommonTestModule } from 'ui-frontend-common/testing';
 
 import { IngestInformationTabComponent } from './ingest-information-tab.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IngestService } from '../../ingest.service';
-import { of } from 'rxjs';
-import { TranslateModule } from '@ngx-translate/core';
 
 describe('IngestInformationTabComponent', () => {
   let component: IngestInformationTabComponent;
   let fixture: ComponentFixture<IngestInformationTabComponent>;
 
-  const ingestServiceMock = { getIngestOperation: () => of({}) };
-
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IngestInformationTabComponent ],
+      declarations: [IngestInformationTabComponent],
       imports: [
-        TranslateModule.forRoot()  
+        TranslateModule.forRoot(),
+        VitamUICommonTestModule
       ],
-      providers: [ {provide: IngestService, useValue: ingestServiceMock}],
-      schemas: [ NO_ERRORS_SCHEMA ]
+      schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -65,9 +62,8 @@ describe('IngestInformationTabComponent', () => {
     component = fixture.componentInstance;
     component.ingest = {
       id: 'aeeaaaaaaoem5lyiaa3lialtbt3j6haaaaaq',
-      data: {},
       agIdExt: {},
-      events: [ { data: {} } ]
+      events: [{}]
     };
     fixture.detectChanges();
   });

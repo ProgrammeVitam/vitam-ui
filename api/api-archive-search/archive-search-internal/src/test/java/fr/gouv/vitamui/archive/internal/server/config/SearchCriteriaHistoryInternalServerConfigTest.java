@@ -76,7 +76,7 @@ public class SearchCriteriaHistoryInternalServerConfigTest {
     private SearchCriteriaHistoryInternalService searchCriteriaHistoryInternalService;
 
     @Test
-    public void testSarchCriteriaHistoryInternalServiceConf() {
+    void testSearchCriteriaHistoryInternalServiceConf() {
         Assertions.assertNotNull(searchCriteriaHistoryInternalService);
     }
 }

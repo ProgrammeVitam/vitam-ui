@@ -49,7 +49,6 @@ import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.CastUtils;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
 import fr.gouv.vitamui.commons.logbook.dto.EventDiffDto;
-import fr.gouv.vitamui.commons.mongo.dao.CustomSequenceRepository;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.mongo.service.VitamUICrudService;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -265,7 +264,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         final VitamContext vitamContext =
             internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
         if (vitamContext != null) {
-            LOGGER.info("Patching Customer EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.debug("Patching Customer EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
         }
 
         for (final Entry<String, Object> entry : customerFormData.getPartialCustomerDto().entrySet()) {
@@ -436,7 +435,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
         try {
             final VitamContext vitamContext =
                 internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
-            LOGGER.info("Graphic identity EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
+            LOGGER.debug("Graphic identity EvIdAppSession : {} ", vitamContext.getApplicationSessionId());
 
             final String base64 = VitamUIUtils.getBase64(file);
             switch (attachmentType) {
@@ -539,7 +538,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             Assert.isTrue(!optCustomer.isPresent(), message + ": a customer has already the email domain " + domain);
         }
     }
@@ -550,7 +549,7 @@ public class CustomerInternalService extends VitamUICrudService<CustomerDto, Cus
 
         for (final String domain : emailDomains) {
             Assert.isTrue(StringUtils.isNoneBlank(domain), message + ": an email domain is empty");
-            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsContainsIgnoreCase(domain);
+            final Optional<Customer> optCustomer = customerRepository.findByEmailDomainsIgnoreCase(domain);
             if (optCustomer.isPresent()) {
                 Assert.isTrue(StringUtils.equals(optCustomer.get().getId(), customerId),
                     message + ": a customer has already the email domain " + domain);

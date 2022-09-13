@@ -45,5 +45,4 @@ import java.io.Serializable;
 @ToString
 public class ArchiveUnitsDto extends IdDto implements Serializable {
     private VitamUIArchiveUnitResponseDto archives;
-
 }

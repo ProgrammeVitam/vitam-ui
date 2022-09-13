@@ -1,11 +1,10 @@
 package fr.gouv.vitamui.cas.webflow.actions;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitamui.cas.BaseWebflowActionTest;
 import fr.gouv.vitamui.cas.provider.ProvidersService;
 import fr.gouv.vitamui.cas.util.Utils;
+import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
 import fr.gouv.vitamui.iam.common.utils.IdentityProviderHelper;
 import lombok.val;
 import org.apereo.cas.authentication.credential.UsernamePasswordCredential;
@@ -19,9 +18,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import fr.gouv.vitamui.commons.api.identity.ServerIdentityAutoConfiguration;
+import java.io.FileNotFoundException;
 
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link CustomDelegatedClientAuthenticationAction}.
@@ -41,7 +43,7 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
 
     @Override
     @Before
-    public void setUp() {
+    public void setUp() throws FileNotFoundException, InvalidParseOperationException {
         super.setUp();
 
         val configContext = mock(DelegatedClientAuthenticationConfigurationContext.class);
@@ -57,8 +59,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         action.doExecute(context);
 
         assertEquals(EMAIL1, ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
-        assertEquals(null, flowParameters.get("surrogate"));
-        assertEquals(null, flowParameters.get("superUser"));
+        assertNull(flowParameters.get("surrogate"));
+        assertNull(flowParameters.get("superUser"));
     }
 
     @Test
@@ -68,8 +70,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
         action.doExecute(context);
 
         assertEquals(EMAIL2, ((UsernamePasswordCredential) flowParameters.get("credential")).getUsername());
-        assertEquals(null, flowParameters.get("surrogate"));
-        assertEquals(null, flowParameters.get("superUser"));
+        assertNull(flowParameters.get("surrogate"));
+        assertNull(flowParameters.get("superUser"));
     }
 
     @Test
@@ -88,8 +90,8 @@ public final class CustomDelegatedClientAuthenticationActionTest extends BaseWeb
     public void testNoUsername() {
         action.doExecute(context);
 
-        assertEquals(null, flowParameters.get("credential"));
-        assertEquals(null, flowParameters.get("surrogate"));
-        assertEquals(null, flowParameters.get("superUser"));
+        assertNull(flowParameters.get("credential"));
+        assertNull(flowParameters.get("surrogate"));
+        assertNull(flowParameters.get("superUser"));
     }
 }

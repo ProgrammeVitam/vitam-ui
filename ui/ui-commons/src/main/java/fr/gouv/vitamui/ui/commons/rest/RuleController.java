@@ -37,10 +37,13 @@
 package fr.gouv.vitamui.ui.commons.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -102,7 +105,12 @@ public class RuleController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<RuleDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+        @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(criteria);
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -110,24 +118,31 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<RuleDto> getAll(final Optional<String> criteria) {
+    public Collection<RuleDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
     @ApiOperation(value = "Get rule by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public RuleDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
-        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
+    public RuleDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
+        SanityChecker.checkSecureParameter(identifier);
+        LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
     }
 
     @ApiOperation(value = "Check ability to create rule")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto) {
+    public ResponseEntity<Void> check(@RequestBody RuleDto ruleDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("check ability to create rule={}", ruleDto);
         final boolean exist = service.check(buildUiHttpContext(), ruleDto);
         LOGGER.debug("response value={}" + exist);
@@ -137,7 +152,9 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Create rule")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) {
+    public ResponseEntity<Void> create(@Valid @RequestBody  RuleDto ruleDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ruleDto);
         LOGGER.debug("create rule={}", ruleDto);
         return RestUtils.buildBooleanResponse(
             service.createRule(buildUiHttpContext(), ruleDto)
@@ -147,9 +164,12 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch User {} with {}", id, partialDto);
+    public ResponseEntity<Void> patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier, the partialEntity are mandatory parameters: ", id, partialDto);
+        LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch rule : the DTO id must match the path id.");
         return RestUtils.buildBooleanResponse(
             service.patchRule(buildUiHttpContext(), partialDto, id)
@@ -158,7 +178,8 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "get history by rule's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("get logbook for rule with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -166,9 +187,12 @@ public class RuleController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete rule")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public ResponseEntity<Void> delete(final @PathVariable String id) {
-        LOGGER.debug("delete rule with id :{}", id);
+    public ResponseEntity<Void> delete(final @PathVariable String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("delete rule with id :{}", id);
         return RestUtils.buildBooleanResponse(
             service.deleteRule(buildUiHttpContext(), id)
         );
@@ -177,14 +201,15 @@ public class RuleController extends AbstractUiRestController {
     @ApiOperation(value = "get exported csv for rules")
     @GetMapping("/export")
     @Produces(MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<Resource> export() {
+    public ResponseEntity<Resource> export() throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("export rules");
         return service.export(buildUiHttpContext());
     }
-    
+
     @ApiOperation(value = "import a rule file")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importRules(@Context HttpServletRequest request, MultipartFile file) {
+    public JsonNode importRules(@Context HttpServletRequest request, MultipartFile file)
+        throws InvalidParseOperationException, PreconditionFailedException {
         LOGGER.debug("Import rule file {}", file != null ? file.getOriginalFilename() : null);
         return service.importRules(buildUiHttpContext(), file);
     }

@@ -6,7 +6,7 @@
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.NAME' | translate}}</label>
-    <div>{{ getEvDetData(ingest)?.EvDetailReq }}</div>
+    <div>{{ evDetDataDeflated?.EvDetailReq }}</div>
   </div>
 </div>
 
@@ -19,41 +19,41 @@
 
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.START_DATE' | translate}}</label>
-    <div>{{ ingest?.evDateTime | date: 'dd/MM/yyyy' }}</div>
+    <div>{{ ingest?.evDateTime | dateTime: 'dd/MM/yyyy' }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.END_DATE' | translate}}</label>
-    <div>{{ ingestEndDate(ingest) | date: 'dd/MM/yyyy' }}</div>
+    <div>{{ ingestEndDate(ingest) | dateTime: 'dd/MM/yyyy' }}</div>
   </div>
   <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.PRODUCT_SERVICE' | translate}}</label>
-    <div>{{ getAgIdExt(ingest)?.originatingAgency }}</div>
+    <div>{{ agIdExtDeflated?.originatingAgency }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.VERSATILE_SERVICE' | translate}}</label>
-    <div>{{ getAgIdExt(ingest)?.submissionAgency }}</div>
+    <div>{{ agIdExtDeflated?.submissionAgency }}</div>
   </div>
   <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.ENTRY_CONTRACT' | translate}}</label>
-    <div>{{ getEvDetData(ingest)?.ArchivalAgreement }}</div>
+    <div>{{ evDetDataDeflated?.ArchivalAgreement }}</div>
   </div>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.ARCHIVING_PROFIL' | translate}}</label>
-    <div>{{ ingest?.ArchivalProfile }}</div>
+    <div>{{ evDetDataDeflated?.ArchivalProfile }}</div>
   </div>
   <br>
   <div class="col-6 mb-3">
     <label>{{'INGEST_DETAIL.STATUS' | translate}}</label>
-    <div>{{ getEvDetData(ingest)?.LegalStatus }}</div>
+    <div>{{ evDetDataDeflated?.LegalStatus }}</div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-12 mb-3">
     <label>{{'INGEST_DETAIL.MESSAGE' | translate}}</label>
-    <div class="vitamui-snack-bar-content" [ngSwitch]="ingestStatus(ingest)">
+    <div class="vitamui-snack-bar-content" [ngSwitch]="getIngestStatus(ingest)">
       <div *ngSwitchCase="'OK'" class="text-green">{{ ingestMessage(ingest) }}</div>
       <div *ngSwitchCase="'WARNING'" class="text-orange">{{ ingestMessage(ingest) }}</div>
       <div *ngSwitchCase="'KO'" class="text-red">{{ ingestMessage(ingest) }}</div>
@@ -65,11 +65,8 @@
 <div class="row">
   <div class="col-12 mb-3">
     <label>{{'INGEST_DETAIL.OPERATION_DETAILS' | translate}}</label>
-    <div *ngIf="ingestDetails">
-      <app-ingest-event-detail [ingest]="ingestDetails"></app-ingest-event-detail>
+    <div *ngIf="hasEvent()">
+      <app-ingest-event-detail [ingest]="ingest"></app-ingest-event-detail>
     </div>
   </div>
 </div>
-
-
-

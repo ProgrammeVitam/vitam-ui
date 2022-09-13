@@ -161,7 +161,7 @@ public class ExternalParamProfileInternalService {
         entityDto.setIdExternalParam(savedExternalParametersDto.getId());
         entityDto.setIdProfile(savedProfileDto.getId());
         entityDto.setId(savedProfileDto.getId());
-        LOGGER.info("savedProfileDto = {}", savedProfileDto);
+        LOGGER.debug("savedProfileDto = {}", savedProfileDto);
 
         // Journalisation
         iamLogbookService.createExternalParamProfileEvent(entityDto);
@@ -192,7 +192,7 @@ public class ExternalParamProfileInternalService {
 
     @Transactional
     public ExternalParamProfileDto patch(final Map<String, Object> partialDto) {
-        LOGGER.info("Patch with {}", partialDto);
+        LOGGER.debug("Patch with {}", partialDto);
         final Collection<EventDiffDto> externalParamProfileLogbooks = new ArrayList<>();
         String idProfile = (String) partialDto.get(ID_PROFILE);
 

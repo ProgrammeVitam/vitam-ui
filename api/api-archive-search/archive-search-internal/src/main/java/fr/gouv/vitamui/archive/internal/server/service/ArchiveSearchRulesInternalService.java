@@ -161,32 +161,11 @@ public class ArchiveSearchRulesInternalService {
     }
 
 
-    /**
-     * fill archive unit by adding originResponse
-     *
-     * @param originResponse
-     * @param actualAgenciesMapById
-     * @return
-     */
-    public ArchiveUnit fillOriginatingAgencyName(ResultsDto originResponse,
-        Map<String, AgencyModelDto> actualAgenciesMapById) {
-        ArchiveUnit archiveUnit = new ArchiveUnit();
-        BeanUtils.copyProperties(originResponse, archiveUnit);
-        if (actualAgenciesMapById != null && !actualAgenciesMapById.isEmpty()) {
-            AgencyModelDto agencyModel = actualAgenciesMapById.get(originResponse.getOriginatingAgency());
-            if (agencyModel != null) {
-                archiveUnit.setOriginatingAgencyName(agencyModel.getName());
-            }
-        }
-        return archiveUnit;
-    }
-
-
     public List<FileRulesModel> findRulesByCriteria(VitamContext vitamContext, String field,
         List<String> rulesIdentifiers, String ruleType) throws VitamClientException {
         List<FileRulesModel> rules = new ArrayList<>();
         if (rulesIdentifiers != null && !rulesIdentifiers.isEmpty()) {
-            LOGGER.info("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
+            LOGGER.debug("Finding management rules by field {}  values {} ", field, rulesIdentifiers);
             Map<String, Object> searchCriteriaMap = new HashMap<>();
             searchCriteriaMap.put(field, rulesIdentifiers.get(0));
             if (ruleType != null) {
@@ -219,22 +198,6 @@ public class ArchiveSearchRulesInternalService {
         }
         LOGGER.debug("management rules  found {} ", rules);
         return rules;
-    }
-
-    /**
-     * Search origin agencies by theirs codes
-     *
-     * @param vitamContext
-     * @param rulesIdentifiers
-     * @return
-     * @throws InvalidParseOperationException
-     * @throws VitamClientException
-     */
-    public List<FileRulesModel> findRulesByIdentifiers(VitamContext vitamContext, Set<String> rulesIdentifiers,
-        String ruleType)
-        throws VitamClientException {
-        List<String> rulesIdentifiersList = new ArrayList<>(rulesIdentifiers);
-        return findRulesByCriteria(vitamContext, ArchiveSearchConsts.RULE_ID_FIELD, rulesIdentifiersList, ruleType);
     }
 
     /**

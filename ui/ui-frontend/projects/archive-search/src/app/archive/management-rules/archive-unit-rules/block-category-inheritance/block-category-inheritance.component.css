@@ -1,0 +1,15 @@
+.container {
+    border-radius: 10px;
+    background-color: #ffffff;
+    font-style: Mulish;
+    font-weight: 800;
+    line-height: 32px;
+    padding-top: 15px;
+}
+.margin-btn {
+    margin-right: 300px;
+}
+.message-text-ok {
+    color: green;
+    padding-bottom: 15px;
+}

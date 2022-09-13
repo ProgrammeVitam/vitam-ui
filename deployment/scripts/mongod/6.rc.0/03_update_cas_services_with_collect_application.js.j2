@@ -1,0 +1,24 @@
+db = db.getSiblingDB('cas')
+
+print("START 6.rc.0/03_update_cas_services_with_collect_application.js");
+
+var nbInsert = db.services.insert({
+   "_id" : NumberInt(7),
+   "_class": "org.apereo.cas.services.RegexRegisteredService",
+{% if vitamui.collect.base_url is defined %}
+   "serviceId": "^{{ vitamui.collect.base_url }}/.*",
+   "logoutUrl": "{{ vitamui.collect.base_url }}/logout",
+{% else %}
+   "serviceId": "^{{ url_prefix }}/collect/.*",
+   "logoutUrl": "{{ url_prefix }}/collect/logout",
+{% endif %}
+   "name": "Collect Application",
+   "logoutType" : "FRONT_CHANNEL",
+   "attributeReleasePolicy": {
+      "_class": "org.apereo.cas.services.ReturnAllAttributeReleasePolicy"
+   }
+});
+
+print("inserted: " + nbInsert);
+
+print("END 6.rc.0/03_update_cas_services_with_collect_application.js");

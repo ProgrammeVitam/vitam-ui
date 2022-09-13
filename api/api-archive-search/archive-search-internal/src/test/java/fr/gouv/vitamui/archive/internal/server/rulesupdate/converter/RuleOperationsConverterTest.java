@@ -43,28 +43,32 @@ import fr.gouv.vitam.common.model.massupdate.ManagementMetadataAction;
 import fr.gouv.vitam.common.model.massupdate.RuleAction;
 import fr.gouv.vitam.common.model.massupdate.RuleActions;
 import fr.gouv.vitam.common.model.massupdate.RuleCategoryAction;
+import fr.gouv.vitam.common.model.massupdate.RuleCategoryActionDeletion;
 import fr.gouv.vitamui.archive.internal.server.rulesupdate.RuleUpdateUtils;
 import fr.gouv.vitamui.archives.search.common.common.ArchiveSearchConsts;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiManagementMetadataAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleAction;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleActions;
 import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryAction;
+import fr.gouv.vitamui.archives.search.common.dto.VitamUiRuleCategoryActionDeletion;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-public class RuleOperationsConverterTest {
+class RuleOperationsConverterTest {
     private RuleOperationsConverter ruleOperationsConverter = new RuleOperationsConverter();
 
     @Test
-    public void testConvertVitamUiRuleActionToVitamRuleAction() {
+    void testConvertVitamUiRuleActionToVitamRuleAction() {
         VitamUiRuleAction vitamUiRuleAction = new VitamUiRuleAction();
         vitamUiRuleAction.setRule("rule_Id");
         vitamUiRuleAction.setOldRule("old_Rule");
@@ -90,7 +94,7 @@ public class RuleOperationsConverterTest {
     }
 
     @Test
-    public void testCovertVitamUiManagementMetadataActionToVitamManagementMetadataAction() {
+    void testCovertVitamUiManagementMetadataActionToVitamManagementMetadataAction() {
         VitamUiManagementMetadataAction vitamUiManagementMetadataAction = new VitamUiManagementMetadataAction();
         vitamUiManagementMetadataAction.setArchiveUnitProfile("archive_unit-profile");
         ManagementMetadataAction managementMetadataActionResult = ruleOperationsConverter
@@ -101,7 +105,7 @@ public class RuleOperationsConverterTest {
     }
 
     @Test
-    public void testCovertVitamUiRuleCategoryActionToVitamRuleCategoryAction() {
+    void testCovertVitamUiRuleCategoryActionToVitamRuleCategoryAction() {
 
         VitamUiRuleCategoryAction vitamUiRuleCategoryAction = new VitamUiRuleCategoryAction();
         vitamUiRuleCategoryAction.setFinalAction("Keep");
@@ -109,6 +113,8 @@ public class RuleOperationsConverterTest {
         vitamUiRuleCategoryAction.setClassificationLevel("Keep");
         vitamUiRuleCategoryAction.setPreventInheritance(true);
         vitamUiRuleCategoryAction.setRules(new ArrayList<>());
+        vitamUiRuleCategoryAction.setPreventRulesId(new HashSet<>());
+        vitamUiRuleCategoryAction.setPreventRulesIdToAdd(new HashSet<>());
 
         RuleCategoryAction ruleCategoryActionResult = ruleOperationsConverter
             .convertToRuleCategoryAction(vitamUiRuleCategoryAction);
@@ -117,7 +123,28 @@ public class RuleOperationsConverterTest {
     }
 
     @Test
-    public void testConvertVitamUiRuleActionsToVitamRuleActions() {
+    void testCovertVitamUiRuleCategoryActionDeletionToRuleCategoryActionDeletion() {
+
+        // Given
+        Set<String> rulesIdToRemove =  new HashSet<>();
+        VitamUiRuleCategoryActionDeletion vitamUiRuleCategoryActionDeletion = new VitamUiRuleCategoryActionDeletion();
+        rulesIdToRemove.add("rulesId1");
+        rulesIdToRemove.add("rulesId2");
+        rulesIdToRemove.add("rulesId3");
+        rulesIdToRemove.add("rulesId4");
+        vitamUiRuleCategoryActionDeletion.setPreventRulesIdToRemove(rulesIdToRemove);
+
+        // When
+        RuleCategoryActionDeletion ruleCategoryActionDeletion = ruleOperationsConverter
+            .convertToRuleCategoryActionDeletion(vitamUiRuleCategoryActionDeletion);
+
+        // Then
+        assertThat(ruleCategoryActionDeletion).isEqualToComparingFieldByField(vitamUiRuleCategoryActionDeletion);
+
+    }
+
+    @Test
+    void testConvertVitamUiRuleActionsToVitamRuleActions() {
         VitamUiRuleActions vitamUiRuleActions = new VitamUiRuleActions();
         vitamUiRuleActions.setAdd(new ArrayList<>());
         vitamUiRuleActions.setDelete(new ArrayList<>());
@@ -129,7 +156,7 @@ public class RuleOperationsConverterTest {
     }
 
     @Test
-    public void testConvertVitamUiListOfRuleActionToVitamRuleAction() {
+    void testConvertVitamUiListOfRuleActionToVitamRuleAction() {
         List<VitamUiRuleAction> vitamUiRuleActionList = RuleUpdateUtils.createListOfVitamUiRule();
         vitamUiRuleActionList.forEach(vitamUiRuleAction -> {
 

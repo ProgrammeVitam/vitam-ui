@@ -36,26 +36,28 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.gouv.vitam.common.LocalDateUtil;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.json.JsonHandler;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.exception.BadRequestException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.commons.vitam.api.dto.LogbookOperationsResponseDto;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.service.OperationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.bouncycastle.asn1.ASN1InputStream;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x500.X500Name;
@@ -67,19 +69,22 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Api(tags = "operation")
 @RestController
@@ -100,9 +105,11 @@ public class OperationController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<LogbookOperationDto> getAll(final Optional<String> criteria) {
+    public Collection<LogbookOperationDto> getAll(final Optional<String> criteria)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -110,14 +117,21 @@ public class OperationController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<LogbookOperationDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-                                                                   @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+                                                                   @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        LOGGER.debug("Get all with criteria={}", criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
 
     @ApiOperation(value = "get history by operation's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for operation with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -125,9 +139,12 @@ public class OperationController extends AbstractUiRestController {
 
     @ApiOperation(value = "export operation by id")
     @GetMapping(value = CommonConstants.PATH_ID + "/download/{type}")
-    public ResponseEntity<Resource> export(final @PathVariable("id") String id, final @PathVariable("type") ReportType type) {
-        LOGGER.debug("export {} operation with id :{}", type, id);
+    public ResponseEntity<Resource> export(final @PathVariable("id") String id, final @PathVariable("type") ReportType type)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        LOGGER.debug("export {} operation with id :{}", type, id);
         Resource body = service.export(buildUiHttpContext(), id, type).getBody();
         return ResponseEntity.ok()
             .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")
@@ -137,7 +154,9 @@ public class OperationController extends AbstractUiRestController {
     @ApiOperation(value = "Create audit")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public boolean create(@Valid @RequestBody AuditOptions auditOptions) {
+    public boolean create(@Valid @RequestBody AuditOptions auditOptions) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(auditOptions);
         LOGGER.debug("create audit={}", auditOptions);
         return service.runAudit(buildUiHttpContext(), auditOptions);
     }
@@ -165,24 +184,32 @@ public class OperationController extends AbstractUiRestController {
 
     @ApiOperation(value = "check traceability operation")
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public LogbookOperationsResponseDto checkTraceabilityOperation(final @PathVariable String id) {
-        LOGGER.debug("Launch check traceability operation with id = {}", id);
+    public LogbookOperationsResponseDto checkTraceabilityOperation(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Launch check traceability operation with id = {}", id);
         return service.checkTraceabilityOperation(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "run probative value operation")
     @PostMapping(value = "/probativeValue")
-    public boolean runProbativeValue(@Valid @RequestBody ProbativeValueRequest probativeValueOptions) { /* Todo: Make DTO */
+    public boolean runProbativeValue(@Valid @RequestBody ProbativeValueRequest probativeValueOptions)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(probativeValueOptions);
         LOGGER.debug("launch probative value = {}", probativeValueOptions);
         return service.runProbativeValue(buildUiHttpContext(), probativeValueOptions);
     }
 
     @ApiOperation(value = "Export probative value as zip")
     @GetMapping(value = "/probativeValue" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> exportProbativeValue(final @PathVariable String id) {
-        LOGGER.debug("export probative value with id :{}", id);
+    public ResponseEntity<Resource> exportProbativeValue(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("export probative value with id :{}", id);
         Resource body = service.exportProbativeValue(buildUiHttpContext(), id).getBody();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM).header("Content-Disposition","attachment")

@@ -120,8 +120,6 @@
           >
         </div>
 
-        <!-- FIXME: Hide if oa filter is on -->
-
         <div class="form-group" *ngIf="form.controls.everyOriginatingAgency.value === false">
           <mat-form-field class="vitamui-mat-select">
             <mat-select
@@ -147,8 +145,6 @@
           <vitamui-common-slide-toggle formControlName="everyDataObjectVersion">Tous les usages </vitamui-common-slide-toggle>
           <i class="material-icons" matTooltip="Usage auquel donne droit le contrat d'accès" matTooltipClass="vitamui-tooltip">info</i>
         </div>
-
-        <!-- FIXME: Hide if usage filter is on (Check usecase) -->
 
         <div class="form-group" *ngIf="form.controls.everyDataObjectVersion.value === false">
           <mat-form-field class="vitamui-mat-select">
@@ -194,7 +190,6 @@
           <i class="material-icons" matTooltip="Donner des droits en écriture sur les archives" matTooltipClass="vitamui-tooltip">info</i>
         </div>
 
-        <!-- FIXME: Hide if WritingPermission is off -->
         <div class="form-group" *ngIf="form.controls.writingPermission.value === true">
           <vitamui-common-slide-toggle formControlName="writingRestrictedDesc"
             >Restriction de modification aux métadonnées de description

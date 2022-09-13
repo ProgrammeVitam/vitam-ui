@@ -81,14 +81,17 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
         return getAllPaginated(context, page, size, criteria, orderBy, direction, Optional.empty());
     }
 
-    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size,
-        final Optional<String> criteria,
-        final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
-        LOGGER
-            .debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
+    public PaginatedValuesDto<D> getAllPaginated(final URIBuilder builder, final C context, final Integer page,
+        final Integer size, final Optional<String> criteria, final Optional<String> orderBy, final Optional<DirectionDto> direction,
+        final Optional<String> embedded) {
+        SanityChecker.sanitizeCriteria(criteria);
+        LOGGER.debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
                 orderBy, direction, embedded);
+        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded, context);
+    }
 
-        final URIBuilder builder = getUriBuilderFromUrl();
+    private PaginatedValuesDto<D> fillOutUriParametersAndReturnResponse(URIBuilder builder, Integer page, Integer size, Optional<String> criteria,
+        Optional<String> orderBy, Optional<DirectionDto> direction, Optional<String> embedded, C context) {
         builder.addParameter("page", page.toString());
         builder.addParameter("size", size.toString());
         criteria.ifPresent(o -> builder.addParameter("criteria", o));
@@ -101,6 +104,16 @@ public abstract class BasePaginatingAndSortingRestClient<D extends IdDto, C exte
             restTemplate.exchange(buildUriBuilder(builder), HttpMethod.GET, request, getDtoPaginatedClass());
         checkResponse(response);
         return response.getBody();
+    }
+
+    public PaginatedValuesDto<D> getAllPaginated(final C context, final Integer page, final Integer size,
+        final Optional<String> criteria,
+        final Optional<String> orderBy, final Optional<DirectionDto> direction, final Optional<String> embedded) {
+        LOGGER
+            .debug("search page={}, size={}, criteria={}, orderBy={}, direction={}, embedded={}", page, size, criteria,
+                orderBy, direction, embedded);
+        final URIBuilder builder = getUriBuilderFromUrl();
+        return fillOutUriParametersAndReturnResponse(builder, page, size, criteria, orderBy, direction, embedded, context);
     }
 
     public ResultsDto<D> getAllRequest(final C context, final RequestParamDto requestParam) {

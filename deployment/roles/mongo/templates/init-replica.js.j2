@@ -5,10 +5,7 @@ rs.initiate(
         members:
         [
             { _id: 0, host: "{{ ip_service }}:{{ mongodb.mongod_port }}" }
-        ],
-        settings: {
-    	    getLastErrorDefaults : { w: "majority" }
-		}
+        ]
     }
 )
 

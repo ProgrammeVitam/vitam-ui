@@ -45,11 +45,12 @@ import { RuleSearchCriteriaDto } from '../../archive/models/ruleAction.interface
 import { SearchCriteriaHistory } from '../../archive/models/search-criteria-history.interface';
 import { SearchResponse } from '../../archive/models/search-response.interface';
 import { SearchCriteriaDto } from '../../archive/models/search.criteria';
+import { TransferRequestDto } from '../../archive/models/transfer-request-detail.interface';
 import { Unit } from '../../archive/models/unit.interface';
 import { UnitDescriptiveMetadataDto } from '../../archive/models/unitDescriptiveMetadata.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ArchiveApiService extends BaseHttpClient<any> {
   baseUrl: string;
@@ -84,7 +85,7 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   exportCsvSearchArchiveUnitsByCriteria(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Blob> {
     return this.http.post(`${this.apiUrl}/export-csv-search`, criteriaDto, {
       responseType: 'blob',
-      headers
+      headers,
     });
   }
 
@@ -111,6 +112,7 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   updateSearchCriteriaHistory(searchCriteriaHistory: SearchCriteriaHistory): Observable<SearchCriteriaHistory> {
     return this.http.put<SearchCriteriaHistory>(`${this.apiUrl}/searchcriteriahistory/${searchCriteriaHistory.id}`, searchCriteriaHistory);
   }
+
   getObjectById(id: string, headers?: HttpHeaders): Observable<any> {
     return this.http.get(`${this.apiUrl}/object/${id}`, { headers, responseType: 'text' });
   }
@@ -118,47 +120,58 @@ export class ArchiveApiService extends BaseHttpClient<any> {
   exportDipApiService(exportDIPCriteriaList: ExportDIPCriteriaList, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/export-dip`, exportDIPCriteriaList, {
       responseType: 'text',
-      headers
+      headers,
+    });
+  }
+
+  transferDipApiService(transferDipCriteriaDto: TransferRequestDto, headers?: HttpHeaders): Observable<string> {
+    return this.http.post(`${this.apiUrl}/transfer-request`, transferDipCriteriaDto, {
+      responseType: 'text',
+      headers,
     });
   }
 
   startEliminationAnalysis(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/analysis`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   launchEliminationAction(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<any> {
     return this.http.post(`${this.apiUrl}/elimination/action`, criteriaDto, {
-      headers
+      headers,
     });
   }
 
   updateUnitsRules(ruleSearchCriteriaDto: RuleSearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/units/rules`, ruleSearchCriteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   launchComputedInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/computed-inherited-rules`, criteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   reclassification(criteriaDto: ReclassificationCriteriaDto, headers?: HttpHeaders): Observable<string> {
     return this.http.post(`${this.apiUrl}/reclassification`, criteriaDto, {
       responseType: 'text',
-      headers
+      headers,
     });
   }
 
   selectUnitWithInheritedRules(criteriaDto: SearchCriteriaDto, headers?: HttpHeaders): Observable<Unit> {
     return this.http.post<Unit>(`${this.apiUrl}/unit-with-inherited-rules`, criteriaDto, { headers });
   }
+
   updateUnit(id: string, unitMDDDto: UnitDescriptiveMetadataDto, headers?: HttpHeaders): Observable<string> {
-    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, { headers, responseType: 'text' as 'json' });
+    return this.http.put<any>(this.apiUrl + '/archiveunit/' + id, unitMDDDto, {
+      headers,
+      responseType: 'text' as 'json',
+    });
   }
 }

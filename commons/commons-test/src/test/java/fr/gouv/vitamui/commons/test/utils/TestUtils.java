@@ -1,5 +1,9 @@
 package fr.gouv.vitamui.commons.test.utils;
 
+import fr.gouv.vitamui.commons.utils.VitamUIUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.springframework.util.CollectionUtils;
+
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -8,11 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.springframework.util.CollectionUtils;
-
-import fr.gouv.vitamui.commons.utils.VitamUIUtils;
 
 public final class TestUtils {
 
@@ -69,7 +68,7 @@ public final class TestUtils {
 
         }
         catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Exception error :", e);
         }
 
         return val;

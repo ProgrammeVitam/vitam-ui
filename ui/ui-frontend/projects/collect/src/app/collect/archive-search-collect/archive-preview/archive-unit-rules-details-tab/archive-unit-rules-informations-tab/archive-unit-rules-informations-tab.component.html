@@ -1,0 +1,144 @@
+<div class="vitamui-table-head text-color">
+  <div class="col-5">
+    <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showlistOfRulesBloc()">
+      {{ listOfRulesCollapsed ? 'expand_less' : 'expand_more' }}
+    </i>
+    {{ getRuleCategoryName(ruleCategory) }}
+  </div>
+  <div class="col" *ngIf="!isPreventInheritance">{{ getMaxEndDate(unitRuleDTO) | dateTime: 'dd/MM/yyyy' }}</div>
+  <div class="col" *ngIf="!isPreventInheritance">{{ getFinalActionValue(propertiesList) }}</div>
+</div>
+<div class="collapsible" [@collapse]="listOfRulesCollapsed">
+  <div class="vitamui-table" *ngIf="isPreventInheritance; then noResults; else resultsFound"></div>
+</div>
+<div class="vitamui-table-head" *ngIf="isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule'">
+  <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
+    {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
+  </i>
+  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+</div>
+<div
+  class="vitamui-table collapsible"
+  [@collapse]="listOfPropertiesCollapsed"
+  *ngIf="isToShowPropertiesList && ruleCategory !== 'ClassificationRule' && ruleCategory !== 'HoldRule'"
+>
+  <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+  </div>
+
+  <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
+    <div class="vitamui-table-rows" *ngFor="let property of propertiesList">
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-4 text">{{ getPropertyName(property.PropertyName) }}</div>
+        <div class="col-4 text">{{ getPropertyValue(property.PropertyValue) }}</div>
+        <div class="col-4 text">{{ getFinalActionStatus(property) }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="vitamui-table-head" *ngIf="isToShowPropertiesList && ruleCategory === 'HoldRule'">
+  <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
+    {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
+  </i>
+  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+</div>
+<div
+  class="vitamui-table collapsible"
+  [@collapse]="listOfPropertiesCollapsed"
+  *ngIf="isToShowPropertiesList && ruleCategory === 'HoldRule'"
+>
+  <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
+    <div class="col-6">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+  </div>
+
+  <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
+    <div class="vitamui-table-rows" *ngIf="isShowHoldRuleDetails">
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-6 text">{{ getHoldAndClassificationRulePropertyName('HoldReason') }}</div>
+        <div class="col-4 text">{{ holdRuleDetails?.HoldReason }}</div>
+        <div class="col-2 text">{{ holdRuleStatus }}</div>
+      </div>
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-6 text">{{ getHoldAndClassificationRulePropertyName('HoldOwner') }}</div>
+        <div class="col-4 text">{{ holdRuleDetails?.HoldOwner }}</div>
+        <div class="col-2 text">{{ holdRuleStatus }}</div>
+      </div>
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-6 text">{{ getHoldAndClassificationRulePropertyName('PreventRearrangement') }}</div>
+        <div class="col-4 text">{{ holdRuleDetails?.PreventRearrangement | yesNo }}</div>
+        <div class="col-2 text">{{ holdRuleStatus }}</div>
+      </div>
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-6 text">{{ getHoldAndClassificationRulePropertyName('HoldReassessingDate') }}</div>
+        <div class="col-4 text">{{ holdRuleDetails?.HoldReassessingDate }}</div>
+        <div class="col-2 text">{{ holdRuleStatus }}</div>
+      </div>
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-6 text">{{ getHoldAndClassificationRulePropertyName('HoldEndDate') }}</div>
+        <div class="col-4 text">{{ holdRuleDetails?.HoldEndDate }}</div>
+        <div class="col-2 text">{{ holdRuleStatus }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="vitamui-table-head" *ngIf="isToShowPropertiesList && ruleCategory === 'ClassificationRule'">
+  <i class="clickable material-icons mat-icon-rtl-mirror arrow-icon" [style.fontSize.px]="20" (click)="showListOfPropertiesBloc()">
+    {{ listOfPropertiesCollapsed ? 'expand_less' : 'expand_more' }}
+  </i>
+  {{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.PROPERTIES' | translate }}
+</div>
+<div
+  class="vitamui-table collapsible"
+  [@collapse]="listOfPropertiesCollapsed"
+  *ngIf="isToShowPropertiesList && ruleCategory === 'ClassificationRule'"
+>
+  <div class="vitamui-table-head" *ngIf="categoryHasPropertiesList">
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.PROPERTY' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.VALUE' | translate }}</div>
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.FINAL_ACTION.STATUS' | translate }}</div>
+  </div>
+
+  <div class="vitamui-table-body" *ngIf="categoryHasPropertiesList">
+    <div class="vitamui-table-rows" *ngFor="let property of propertiesList">
+      <div class="vitamui-row d-flex align-items-center">
+        <div class="col-4 text">{{ getHoldAndClassificationRulePropertyName(property.PropertyName) }}</div>
+        <div class="col-4 text">{{ property.PropertyValue | yesNo }}</div>
+        <div class="col-4 text">{{ getClassificationRulePropertyStatus(property.PropertyName) }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #resultsFound>
+  <div class="vitamui-table-head" *ngIf="isToShowRulesList || isToShowBlockedRulesList">
+    <div class="col-4">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.IDENTIFIER' | translate }}</div>
+    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.START_DATE' | translate }}</div>
+    <div class="col-3">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.END_DATE' | translate }}</div>
+    <div class="col-2">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.RULE.STATUS' | translate }}</div>
+  </div>
+
+  <div class="vitamui-table-body" *ngIf="isToShowRulesList">
+    <div class="vitamui-table-rows" *ngFor="let rule of unitRuleDTO">
+      <div
+        class="vitamui-row d-flex align-items-center"
+        [ngClass]="ruleCategory === 'HoldRule' ? 'enabled-div clickable' : 'disabled-div'"
+        (click)="getHoldRuleInformations(rule)"
+      >
+        <div class="col-4 text">{{ rule.Rule }}</div>
+        <div class="col-3 text">{{ rule.StartDate | dateTime: 'dd/MM/yyyy' }}</div>
+        <div class="col-3 text">{{ rule.EndDate | dateTime: 'dd/MM/yyyy' }}</div>
+        <div class="col-2 text">{{ getRuleStatus(rule) }}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noResults>
+  <div class="vitamui-table-head text-color">{{ 'COLLECT.ARCHIVE_UNIT_PREVIEW.INHERITANCE_BLOCKED' | translate }}</div>
+</ng-template>

@@ -1,0 +1,244 @@
+{
+  "COLLECT": {
+    "SEARCH_PLACEHOLDER": "Communication request, customer code",
+    "APP_BREADCRUMB": "Collection and Remittance Preparation",
+    "NB_ENTRIES": "{{nb}} projects",
+    "PROJECT_LIST_TITLE": "Remittance projects",
+    "CREATE_PROJECT": "Create a remittance project",
+    "CREATE_PROJECT_TOOLTIP": "Create a remittance project",
+    "CONFIRM_UPLOAD_FILES_TITLE": "Ask for validation",
+    "CONFIRM_UPLOAD_FILES": "Moving on to the next step, the file download will begin.",
+    "CREATE_PROJECT_TITLE": "Create a remittance project",
+    "FIELD_ARCHIVAL_AGREEMENT": "Archival agreement",
+    "FIELD_MESSAGE_IDENTIFIER": "Message identifier",
+    "FIELD_ARCHIVAL_AGENCY_IDENTIFIER": "Archival agency identifier",
+    "FIELD_TRANSFERRING_AGENCY_IDENTIFIER": "Transferring agency identifier",
+    "FIELD_ORIGINATING_AGENCY_IDENTIFIER": "Originating agency identifier",
+    "FIELD_SUBMISSION_AGENCY_IDENTIFIER": "Submission agency identifier",
+    "FIELD_ARCHIVAL_PROFILE": "Archival profile",
+    "FIELD_COMMENT": "Comment",
+    "NO_RESULT": "No result",
+    "LOAD_MORE_RESULTS": "Load more results...",
+    "NO_ACCESS_CONTRACT": "No access contract is associated with the user",
+    "UPLOAD_TITLE": "Loading office archives",
+    "UPLOAD_SUB_TITLE": "Loading directories to be poured",
+    "UPLOAD_FILE_ALREADY_IMPORTED": "File already imported!",
+    "ARCHIVE_POSITION_TITLE": "Attachment of archives to a position",
+    "ARCHIVE_POSITION_SUB_TITLE": "Position of attachment",
+    "PROJECT_DESCRIPTION_TITLE": "Remittance description",
+    "PROJECT_DESCRIPTION_SUB_TITLE": "Remittance description",
+    "PROJECT_DESCRIPTION_LABEL": "Entitled",
+    "PROJECT_DESCRIPTION_DESC": "Description",
+    "PROJECT_DESCRIPTION_BOUNDED_DATES": "Extreme dates of remittance",
+    "PROJECT_DESCRIPTION_START_DATE": "Start date",
+    "PROJECT_DESCRIPTION_END_DATE": "End date",
+    "PROJECT_DESCRIPTION_DATE_ERROR": "The start date cannot be greater than the end date!",
+    "PROJECT_DESCRIPTION_SERVICES": "Originating agency / Submission agency",
+    "PROJECT_DESCRIPTION_REFERENTIAL_CHECKUP": "Referential control",
+    "PROJECT_DESCRIPTION_ORIGINATING_AGENCY": "Originating agency",
+    "PROJECT_DESCRIPTION_SUBMISSION_AGENCY": "Submission agency",
+    "PROJECT_CONTEXT_ARCHIVAL_AGENCY": "Archive Service",
+    "PROJECT_CONTEXT_SUB_TITLE": "Remittance context",
+    "PROJECT_CONTEXT_TRANSFERRING_AGENCY": "Service responsible for the transfer",
+    "PROJECT_CONTEXT_ARCHIVAL_AGREEMENT": "Archival agreement",
+    "PROJECT_CONTEXT_ARCHIVE_PROFILE": "Archival profile",
+    "PROJECT_CONTEXT_ACQUISITION_INFORMATION": "Acquisition information",
+    "PROJECT_CONTEXT_LEGAL_STATUS": "Legal status",
+    "COMMENTS": "Comments",
+    "UPLOAD": {
+      "TRACKING_TITLE": "Files remittance in progress",
+      "TERMINATED": "Files upload complete!",
+      "ZIP_NAME": "ZIP Name",
+      "ZIP_TRACKING_TITLE": "Compression",
+      "STATUS": "Loading",
+      "WEIGHT": "Weight",
+      "ADD_FILE": "Drag and drop ",
+      "BROWSE": "or browse",
+      "ADD_FILE_DESCRIPTION": "Max size: 1 GB"
+    },
+    "FACETS": {
+      "OPEN": "Open",
+      "CLOSE": "Close",
+      "SENT": "Sent",
+      "WAITING_ACK": "Waiting Ack",
+      "ACK_OK": "Finish",
+      "ACK_ERROR": "Refused"
+    },
+    "TITLE_SEARCH": "Search : ",
+    "TITLE_SEARCH_AREA": "Searching an archive unit in project ",
+    "LAUNCH_SEARCH_ACTION": "Launch the search",
+    "ACCESS_CONTRACT_NOT_FOUND_IN_VITAM": "Error fetching contract from vitam",
+    "ACCESS_CONTRACT_NOT_FOUND": "No contract associated with current user",
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Title",
+        "START_DATE": "Start date",
+        "END_DATE": "End date",
+        "DESCRIPTION": "Description",
+        "GUID": "Ingest Technical ID",
+        "UAID": "Archive Technical ID",
+        "SP": "Originating agency",
+        "SP_CODE": "ID",
+        "SP_LABEL": "Name",
+        "PATH": "Path",
+        "DESCRIPTION_LEVEL": "Description level",
+        "DOWNLOAD_DOC": "Download the document",
+        "BTN_SHOW_COMPLETE_PATH": "SHOW COMPLETE PATH"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations",
+        "RULES": "Rules",
+        "OBJECTS": "Objects"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Hide management metadata"
+      }
+    },
+    "ARCHIVE_UNIT_RULES_DETAILS": {
+      "RULES_FINAL_ACTION": {
+        "KEEP": "Conservation",
+        "DESTROY": "Elimination",
+        "CONFLICT": "Conflict",
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "COPY": "Copy",
+        "TRANSFER": "Transfer",
+        "RESTRICTACCESS": "Restrict access"
+      },
+      "RULE_STATUS": {
+        "INHERITED": "Inherited",
+        "CARRIED": "Carried",
+        "BLOCKED": "Blocked"
+      },
+      "RULE": {
+        "IDENTIFIER": "Identifier",
+        "START_DATE": "Start",
+        "END_DATE": "End",
+        "STATUS": "Status"
+      },
+      "FINAL_ACTION": {
+        "VALUE": "Value",
+        "STATUS": "Status",
+        "PROPERTY": "Property"
+      },
+      "PROPERTIES": "Properties",
+      "FINAL_ACTION_VALUE": "Sort final",
+      "INHERITANCE_BLOCKED": "Category inheritance blocked",
+      "CATEGORY_NAME": {
+        "APPRAISALRULE": "DUA",
+        "STORAGERULE": "DUC",
+        "HOLDRULE": "Freeze",
+        "ACCESSRULE": "Communicability",
+        "DISSEMINATIONRULE": "Dissemination",
+        "REUSERULE": "Reuse",
+        "CLASSIFICATIONRULE": "Classification"
+      },
+      "CLASSIFICATION_RULE_PROPERTIES": {
+        "CLASSIFICATIONLEVEL": "Classification level",
+        "CLASSIFICATIONOWNER": "Owner",
+        "CLASSIFICATIONAUDIENCE": "Broadcast scope limitation",
+        "CLASSIFICATIONREASSESSINGDATE": "Reassessment date",
+        "NEEDREASSESSINGAUTHORIZATION": "Need for re-evaluation authorization"
+      },
+      "HOLD_RULE_PROPERTIES": {
+        "HOLDREASON": "Motif de la règle de gel",
+        "HOLDOWNER": "Propriétaire",
+        "PREVENTREARRANGEMENT": "Blocage de reclassement",
+        "HOLDREASSESSINGDATE": "Date de réévaluation",
+        "HOLDENDDATE": "Date de fin de gel"
+      },
+      "COMMON_YES": "Yes",
+      "COMMON_NO": "No"
+    },
+    "ARCHIVE_UNIT_PREVIEW": {
+      "FIELDS": {
+        "NAME": "Intitulé",
+        "START_DATE": "Date de début",
+        "END_DATE": "Date de fin",
+        "DESCRIPTION": "Description",
+        "GUID": "Identifiant technique du versement",
+        "UAID": "Identifiant technique de l'unité archivistique",
+        "SP": "Service producteur",
+        "SP_CODE": "Identifiant",
+        "SP_LABEL": "Nom",
+        "PATH": "Chemin",
+        "DESCRIPTION_LEVEL": "Niveau de description",
+        "DOWNLOAD_DOC": "Télécharger le document",
+        "BTN_SHOW_COMPLETE_PATH": "AFFICHER TOUT"
+      },
+      "TABS": {
+        "INFORMATIONS": "Informations",
+        "RULES": "Règles",
+        "OBJECTS": "Objets"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Afficher l'ensemble des métadonnées",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Masquer les métadonnées de gestion"
+      }
+    },
+    "PROJECT_UNIT_PREVIEW": {
+      "TABS": {
+        "DESCRIPTION": "Description",
+        "CONTEXT": "Context",
+        "ATTACHEMENT": "Attachement"
+      },
+      "ACTIONS": {
+        "SHOW_MORE_DETAILS": "Show all metadata",
+        "SHOW_ONLY_INFORMATION_DETAILS": "Hide metadata",
+        "SHOW_PROJECT_ARCHIVE_UNITS": "Get archives"
+      },
+      "FIELDS": {
+        "NAME": "Name",
+        "ID": "Project technical identifier",
+        "DESCRIPTION": "Description",
+        "SP_ID": "Originating agency",
+        "SV_ID": "Submission agency",
+        "UNIT_UPS_ID": "Attachement technical identifier",
+        "UNIT_UPS_LABEL": "Attachement unit label",
+        "NO_EXSISTANT_ATTACHEMENT": "No attachement"
+      }
+    }
+  },
+  "ACQUISITION_INFORMATION": {
+    "PAYMENT": "Payment",
+    "PROTOCOL": "Protocol",
+    "PURCHASE": "Purchase",
+    "COPY": "Copy",
+    "DATION": "Dation",
+    "DEPOSIT": "Deposit",
+    "DEVOLUTION": "Devolution",
+    "DONATION": "Donation",
+    "BEQUEST": "Bequest",
+    "REINSTATEMENT": "Reinstatement",
+    "OTHER": "Other",
+    "UNKNOWN": "Unknown"
+  },
+  "LEGAL_STATUS": {
+    "PUBLIC_ARCHIVE": "Public archives",
+    "PRIVATE_ARCHIVE": "Private archives",
+    "PUBLIC_PRIVATE_ARCHIVE": "Public and private archives"
+  },
+  "UNIT_UPDATE": {
+    "EXECUTE_UNIT_UPDATE_MESSAGE": "The archival unit description metadata update request demand is successfully sent",
+    "MESSAGE": "Do you want to confirm the update of the metadata of this archival unit?",
+    "HINT": "Update validation",
+    "NO_PERMISSION": "Your access contract does not authorize this action",
+    "UPDATE_DESC_METADATA": " Mettre à jour les metadonnées descriptives",
+    "CLOSE": "CLOSE",
+    "CONFIRM_CLOSE": "Modified data will not be saved. Are you sure you want to close the window ?",
+    "CLOSE_WINDOW_HINT": "Close archival unit update",
+    "RECORDGRP": "RecordGrp",
+    "FILE": "File",
+    "ITEM": "Item",
+    "COLLECTION": "Collection",
+    "SUBFONDS": "Subfonds",
+    "CLASS": "Class",
+    "SUBGRP": "SubGrp",
+    "OTHERLEVEL": "Otherlevel",
+    "SERIES": "Series",
+    "SUBSERIES": "Subseries",
+    "FONDS": "Fonds",
+    "SAVE": "SAVE"
+  }
+}

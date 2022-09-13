@@ -39,18 +39,15 @@ import { VitamUICommonTestModule } from '../../../../../testing/src';
 
 import { EventTypeLabelComponent } from './event-type-label.component';
 
-// TODO test jenkins
-// Error: Timeout - Async callback was not invoked within 5000ms (set by jasmine.DEFAULT_TIMEOUT_INTERVAL)
-xdescribe('EventTypeLabelComponent', () => {
+describe('EventTypeLabelComponent', () => {
   let component: EventTypeLabelComponent;
   let fixture: ComponentFixture<EventTypeLabelComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports : [VitamUICommonTestModule],
-      declarations: [ EventTypeLabelComponent ]
-    })
-    .compileComponents();
+      imports: [VitamUICommonTestModule],
+      declarations: [EventTypeLabelComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -59,7 +56,7 @@ xdescribe('EventTypeLabelComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
   });
 });

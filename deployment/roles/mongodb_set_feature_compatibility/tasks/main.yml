@@ -1,0 +1,17 @@
+---
+
+
+- name: Copy the database scripts files
+  template:
+    src: "{{ item }}"
+    dest: "{{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/{{ item | basename | regex_replace('\\.j2$') }}"
+    owner: "{{ vitamui_defaults.users.vitamuidb | default('vitamuidb') }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
+  with_fileglob:
+    - "{{ role_path }}/templates/*"
+
+- name: "Set_feature_compatibility to {{ mongo_version }}"
+  shell: "mongo {{ ip_service }}:{{ mongodb.mongod_port }}/admin -u {{ mongodb.admin.user }} -p {{ mongodb.admin.password }} --quiet < {{ vitamui_defaults.folder.root_path | default('/vitamui') }}/app/mongod/set_feature_compatibility.js"
+  no_log: "{{ hide_passwords_during_deploy }}"
+

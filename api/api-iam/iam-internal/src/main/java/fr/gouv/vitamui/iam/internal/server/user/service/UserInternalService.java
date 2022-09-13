@@ -341,7 +341,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
 
             final VitamContext vitamContext =  internalSecurityService.buildVitamContext(internalSecurityService.getTenantIdentifier());
             if(vitamContext != null) {
-                LOGGER.info("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
+                LOGGER.debug("Update User EvIdAppSession : {} " , vitamContext.getApplicationSessionId());
             }
 
             LOGGER.debug("Update {} {}", getObjectName(), dto);
@@ -425,7 +425,7 @@ public class UserInternalService extends VitamUICrudService<UserDto, User> {
         }
 
         try {
-            LOGGER.info("Patch {} with {}", getObjectName(), partialDto);
+            LOGGER.debug("Patch {} with {}", getObjectName(), partialDto);
 
             // replacing the email with the lowercase version during update
             String email = CastUtils.toString(partialDto.get("email"));

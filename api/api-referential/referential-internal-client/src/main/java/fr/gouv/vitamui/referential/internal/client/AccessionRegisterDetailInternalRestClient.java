@@ -36,7 +36,7 @@
  */
 package fr.gouv.vitamui.referential.internal.client;
 
-import fr.gouv.vitamui.commons.api.domain.AccessionRegisterDetailsSearchStatsDto;
+import fr.gouv.vitamui.commons.api.domain.AccessionRegisterSearchDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
@@ -54,7 +54,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
+public class AccessionRegisterDetailInternalRestClient
+    extends BasePaginatingAndSortingRestClient<AccessionRegisterDetailDto, InternalHttpContext> {
 
     private static final VitamUILogger LOGGER =
         VitamUILoggerFactory.getInstance(AccessionRegisterDetailInternalRestClient.class);
@@ -63,8 +64,10 @@ public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAnd
         super(restTemplate, baseUrl);
     }
 
-    @Override protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
-        return new ParameterizedTypeReference<>() { };
+    @Override
+    protected ParameterizedTypeReference<PaginatedValuesDto<AccessionRegisterDetailDto>> getDtoPaginatedClass() {
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
     @Override
@@ -72,20 +75,22 @@ public class AccessionRegisterDetailInternalRestClient extends BasePaginatingAnd
         return RestApi.ACCESSION_REGISTER_URL + RestApi.DETAILS;
     }
 
-    @Override protected Class<AccessionRegisterDetailDto> getDtoClass() {
+    @Override
+    protected Class<AccessionRegisterDetailDto> getDtoClass() {
         return AccessionRegisterDetailDto.class;
     }
 
     protected ParameterizedTypeReference<List<AccessionRegisterDetailDto>> getDtoListClass() {
-        return new ParameterizedTypeReference<>() { };
+        return new ParameterizedTypeReference<>() {
+        };
     }
 
-    public Resource exportAccessionRegisterCsv(final AccessionRegisterDetailsSearchStatsDto query,
-                                               final InternalHttpContext context) {
+    public Resource exportAccessionRegisterCsv(final AccessionRegisterSearchDto query,
+        final InternalHttpContext context) {
         LOGGER.debug("Calling exportAccessionRegisterCsv with query {} ", query);
         MultiValueMap<String, String> headers = buildSearchHeaders(context);
-        final HttpEntity<AccessionRegisterDetailsSearchStatsDto> request = new HttpEntity<>(query, headers);
-        final ResponseEntity<Resource> response = restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV ,
+        final HttpEntity<AccessionRegisterSearchDto> request = new HttpEntity<>(query, headers);
+        final ResponseEntity<Resource> response = restTemplate.exchange(getUrl() + RestApi.EXPORT_CSV,
             HttpMethod.POST, request, Resource.class);
         checkResponse(response);
         return response.getBody();

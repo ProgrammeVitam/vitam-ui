@@ -75,8 +75,12 @@ export interface RuleAction {
 }
 
 export interface RuleCategoryAction {
-  rules: RuleAction[];
+  rules?: RuleAction[];
   finalAction?: string;
+  preventInheritance?: boolean;
+  preventRulesId?: string[];
+  preventRulesIdToAdd?: string[];
+  preventRulesIdToRemove?: string[];
 }
 
 export interface RuleCat {
@@ -91,13 +95,14 @@ export interface RuleActions {
 }
 
 export interface RuleCategoryActionDeletion {
-  rules: RuleActions[];
-  finalAction: string;
-  classificationAudience: string;
-  classificationReassessingDate: string;
-  needReassessingAuthorization: boolean;
-  preventInheritance: boolean;
-  preventRulesId: string[];
+  rules?: RuleActions[];
+  finalAction?: string;
+  classificationAudience?: string;
+  classificationReassessingDate?: string;
+  needReassessingAuthorization?: boolean;
+  preventInheritance?: boolean;
+  preventRulesId?: string[];
+  preventRulesIdToRemove?: string[];
 }
 
 export interface ManagementMetadataAction {
@@ -122,4 +127,8 @@ export enum RuleActionsEnum {
   UPDATE_RULES = 'UPDATE_RULES',
   DELETE_RULES = 'DELETE_RULES',
   DELETE_PROPERTY = 'DELETE_PROPERTY',
+  BLOCK_CATEGORY_INHERITANCE = 'BLOCK_CATEGORY_INHERITANCE',
+  UNLOCK_CATEGORY_INHERITANCE = 'UNLOCK_CATEGORY_INHERITANCE',
+  BLOCK_RULE_INHERITANCE = 'BLOCK_RULE_INHERITANCE',
+  UNLOCK_RULE_INHERITANCE = 'UNLOCK_RULE_INHERITANCE',
 }

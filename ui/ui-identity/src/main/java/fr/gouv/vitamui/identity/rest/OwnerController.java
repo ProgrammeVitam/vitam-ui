@@ -36,9 +36,12 @@
  */
 package fr.gouv.vitamui.identity.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.OwnerDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -88,16 +91,21 @@ public class OwnerController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public OwnerDto getOne(final @PathVariable String id) {
-        LOGGER.debug("Get owner={}", id);
+    public OwnerDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Get owner={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
 
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OwnerDto create(@RequestBody final OwnerDto entityDto) {
+    public OwnerDto create(@RequestBody final OwnerDto entityDto)
+        throws PreconditionFailedException, InvalidParseOperationException {
+
+        SanityChecker.sanitizeCriteria(entityDto);
         LOGGER.debug("create class={}", entityDto.getClass().getName());
         return service.create(buildUiHttpContext(), entityDto);
     }
@@ -105,18 +113,24 @@ public class OwnerController extends AbstractUiRestController {
     @ApiOperation(value = "Update entity")
     @PutMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public OwnerDto update(final @PathVariable("id") String id, @RequestBody final OwnerDto entityDto) {
-        LOGGER.debug("update class={}", entityDto.getClass().getName());
+    public OwnerDto update(final @PathVariable("id") String id, @RequestBody final OwnerDto entityDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(entityDto);
+        LOGGER.debug("update class={}", entityDto.getClass().getName());
         Assert.isTrue(StringUtils.equals(id, entityDto.getId()), "The DTO identifier must match the path identifier for update.");
         return service.update(buildUiHttpContext(), entityDto);
     }
 
     @ApiOperation(value = "Check entity exist by criteria")
     @RequestMapping(path = CommonConstants.PATH_CHECK, method = RequestMethod.HEAD)
-    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) {
+    public ResponseEntity<Void> checkExist(@RequestParam final String criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(Optional.of(criteria));
         LOGGER.debug("check exists criteria={}", criteria);
-        RestUtils.checkCriteria(Optional.of(criteria));
         final boolean exist = service.checkExist(buildUiHttpContext(), criteria);
         LOGGER.debug("response value={}", exist);
         return RestUtils.buildBooleanResponse(exist);
@@ -125,18 +139,25 @@ public class OwnerController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
-        LOGGER.debug("Patch Owner {} with {}", id, partialDto);
+    public OwnerDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
+        LOGGER.debug("Patch Owner {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch owner : the DTO id must match the path id");
         return service.patch(buildUiHttpContext(), partialDto, id);
     }
 
     @ApiOperation(value = "get history by owner's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
-        LOGGER.debug("get logbook for owner with id :{}", id);
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Identifier is mandatory : ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for owner with id :{}", id);
         return service.findHistoryById(buildUiHttpContext(), id);
     }
 }

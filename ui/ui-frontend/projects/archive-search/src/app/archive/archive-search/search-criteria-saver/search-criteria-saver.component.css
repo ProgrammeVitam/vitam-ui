@@ -22,13 +22,13 @@
 }
 
 .scroll::-webkit-scrollbar-track {
-  background: #F7EBFA;
+  background: #f7ebfa;
 }
 
 .scroll::-webkit-scrollbar-thumb {
-  background-color: #9C31B5;
+  background-color: #9c31b5;
   border-radius: 20px;
-  border: 3px solid #F7EBFA;
+  border: 3px solid #f7ebfa;
 }
 
 .pad {
@@ -38,7 +38,7 @@
 }
 
 .rectangle {
-  background: #EEEEEE;
+  background: #eeeeee;
 }
 
 .actif-filters {
@@ -57,33 +57,17 @@
 }
 
 .input-text {
-  width: 85%;
+  width: 95%;
   padding-left: 5%;
   padding-top: 25px;
 }
 
 .btn-ok {
-  padding-top: 214px;
-  padding-left: 40px;
+  margin-top: 30px;
 }
 
 .input-width {
-  width: 450px;
-}
-
-.btn-close-it-no-results {
-  padding-left: 480px;
-  padding-top: 0;
-}
-
-.btn-close-it {
-  padding-left: 470px;
-  padding-top: 10px;
-}
-
-.btn-close-it-input {
-  padding-left: 470px;
-  padding-top: 10px;
+  width: 475px;
 }
 
 .pad5 {
@@ -101,8 +85,8 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: #FFFFFF;
-  border: 1px solid #BDBDBD;
+  background: #ffffff;
+  border: 1px solid #bdbdbd;
   box-sizing: border-box;
   border-radius: 10px;
   margin-top: 17px;
@@ -113,7 +97,7 @@
   width: 107%;
   padding-left: 25px;
   overflow-y: scroll;
-  scrollbar-color: var(--vitamui-primary-light) #F7EBFA;
+  scrollbar-color: var(--vitamui-primary-light) #f7ebfa;
   scrollbar-width: thin;
 }
 
@@ -136,7 +120,7 @@
 }
 
 .pink-color {
-  background: #F6F3FB;
+  background: #f6f3fb;
 }
 
 .boutton:focus {
@@ -153,7 +137,7 @@
 }
 
 .save-icon {
-  color: #9D9D9D;
+  color: #9d9d9d;
   font-size: 35px;
 }
 
@@ -178,7 +162,7 @@
   height: 470px;
   overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-color: var(--vitamui-primary-light) #F7EBFA;
+  scrollbar-color: var(--vitamui-primary-light) #f7ebfa;
   scrollbar-width: thin;
 }
 
@@ -187,13 +171,13 @@
 }
 
 .scroll-filters::-webkit-scrollbar-track {
-  background: #F7EBFA;
+  background: #f7ebfa;
 }
 
 .scroll-filters::-webkit-scrollbar-thumb {
   background-color: var(--vitamui-primary-light);
   border-radius: 20px;
-  border: 3px solid #F7EBFA;
+  border: 3px solid #f7ebfa;
 }
 
 .results-message {
@@ -249,14 +233,6 @@
   color: var(--vitamui-grey-700);
 }
 
-.criteria-list-width {
-  width: 730px;
-}
-
-.confirm-width {
-  width: 730px;
-}
-
 .warning-message {
   font-family: Mulish;
   font-style: normal;
@@ -280,7 +256,6 @@
   overflow-x: hidden;
 }
 
-.width-save-form {
-  width: 610px;
-
+.form-width {
+  width: 730px;
 }

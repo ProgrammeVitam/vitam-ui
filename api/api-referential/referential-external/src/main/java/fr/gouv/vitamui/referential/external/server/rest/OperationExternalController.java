@@ -37,6 +37,7 @@
 package fr.gouv.vitamui.referential.external.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitam.common.model.ProbativeValueRequest;
 import fr.gouv.vitamui.common.security.SanityChecker;
@@ -45,15 +46,14 @@ import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.api.utils.EnumUtils;
-import fr.gouv.vitamui.commons.rest.util.RestUtils;
 import fr.gouv.vitamui.referential.common.dto.LogbookOperationDto;
 import fr.gouv.vitamui.referential.common.dto.ReportType;
 import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.external.server.service.OperationExternalService;
-import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +81,9 @@ public class OperationExternalController {
     @GetMapping()
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     public Collection<LogbookOperationDto> getAll(final Optional<String> criteria) {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("get all audits criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return operationExternalService.getAll(criteria);
     }
 
@@ -97,35 +98,45 @@ public class OperationExternalController {
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping("/{id}/history")
-    public JsonNode findHistoryById(final @PathVariable("id") String id) {
-        LOGGER.debug("get logbook for audit with id :{}", id);
+    public JsonNode findHistoryById(final @PathVariable("id") String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("get logbook for audit with id :{}", id);
         return operationExternalService.findHistoryById(id);
     }
 
     @GetMapping(CommonConstants.PATH_ID + "/download/{type}")
-    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id, final @PathVariable("type") ReportType type) {
-        LOGGER.debug("export logbook for {} operation with id :{}", type, id);
+    public ResponseEntity<Resource> exportEventById(final @PathVariable("id") String id, final @PathVariable("type") ReportType type)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         EnumUtils.checkValidEnum(ReportType.class, Optional.of(type.name()));
         ParameterChecker.checkParameter("Event Identifier is mandatory : " , id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("export logbook for {} operation with id :{}", type, id);
         return operationExternalService.export(id, type);
     }
 
     @Secured(ServicesData.ROLE_RUN_AUDITS)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) {
-        LOGGER.debug("Create {}", auditOptions);
+    public boolean create(final @Valid @RequestBody AuditOptions auditOptions) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Audit Options is mandatory parameter : " , auditOptions);
-        SanityChecker.sanitizeCriteria(Optional.of(auditOptions.getQuery().toString()));
+        SanityChecker.sanitizeCriteria(auditOptions);
+        LOGGER.debug("Create {}", auditOptions);
         return operationExternalService.runAudit(auditOptions);
     }
 
     @Secured(ServicesData.ROLE_GET_OPERATIONS)
     @GetMapping(value = "/check" + CommonConstants.PATH_ID)
-    public JsonNode checkTraceabilityOperation(final @PathVariable String id) {
-        LOGGER.debug("Launch check traceability operation with id = {}", id);
+    public JsonNode checkTraceabilityOperation(final @PathVariable String id) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("Launch check traceability operation with id = {}", id);
         return operationExternalService.checkTraceabilityOperation(id);
     }
 
@@ -133,17 +144,21 @@ public class OperationExternalController {
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/probativeValue")
-    public boolean runProbativeValue(final @Valid @RequestBody ProbativeValueRequest probativeValueRequest) {
+    public boolean runProbativeValue(final @Valid @RequestBody ProbativeValueRequest probativeValueRequest)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(probativeValueRequest);
         LOGGER.debug("Run {}", probativeValueRequest);
-        SanityChecker.sanitizeCriteria(Optional.of(probativeValueRequest.getDslQuery().toString()));
         return operationExternalService.runProbativeValue(probativeValueRequest);
     }
 
     @Secured(ServicesData.ROLE_RUN_PROBATIVE_VALUE)
     @GetMapping("/probativeValue" + CommonConstants.PATH_ID)
-    public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId) {
-        LOGGER.debug("export logbook for operation with id :{}", operationId);
+    public ResponseEntity<Resource> exportProbativeValue(final @PathVariable("id") String operationId)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("Operation Identifier is mandatory : " , operationId);
+        SanityChecker.checkSecureParameter(operationId);
+        LOGGER.debug("export logbook for operation with id :{}", operationId);
         return operationExternalService.exportProbativeValue(operationId);
     }
 }

@@ -38,7 +38,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -70,14 +70,14 @@ const ruleActions: ActionsRules[] = [
   {
     ruleType: 'ruleType2',
     actionType: 'actionType2',
-    id: 1,
+    id: 2,
     ruleId: 'ruleId2',
     stepValid: true,
   },
   {
     ruleType: 'ruleType3',
     actionType: 'actionType3',
-    id: 1,
+    id: 3,
     ruleId: 'ruleId3',
     stepValid: false,
   },
@@ -114,8 +114,8 @@ describe('ManagementRulesComponent', () => {
     { id: 'AppraisalRule', name: 'name', isDisabled: false },
     { id: 'HoldRule', name: 'name', isDisabled: true },
     { id: 'AccessRule', name: 'name', isDisabled: true },
-    { id: 'DisseminationRule', name: 'name', isDisabled: true },
-    { id: 'ReuseRule', name: 'name', isDisabled: true },
+    { id: 'DisseminationRule', name: 'name', isDisabled: false },
+    { id: 'ReuseRule', name: 'name', isDisabled: false },
     { id: 'ClassificationRule', name: 'name', isDisabled: true },
   ];
 
@@ -140,7 +140,10 @@ describe('ManagementRulesComponent', () => {
       getAccessContract: () => of('AccessContract'),
       getselectedItems: () => of(35),
       getCriteriaSearchListToSave: () => of({}),
-      getRuleActions: () => of(ruleActions),
+      getRuleActions: () => of([...ruleActions]),
+      getHasExactCount: () => of(true),
+      emitRuleCategory: () => of(),
+      emitRuleActions: (_: ActionsRules[]) => {}
     };
 
     await TestBed.configureTestingModule({
@@ -161,7 +164,6 @@ describe('ManagementRulesComponent', () => {
         { provide: StartupService, useValue: startupServiceStub },
         { provide: MatDialogRef, useValue: matDialogRefSpy },
         { provide: MatDialog, useValue: matDialogSpy },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: WINDOW_LOCATION, useValue: window.location },
         { provide: ArchiveService, useValue: archiveServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
@@ -176,7 +178,7 @@ describe('ManagementRulesComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it(' component should be created', () => {
     expect(component).toBeTruthy();
   });
 
@@ -201,4 +203,131 @@ describe('ManagementRulesComponent', () => {
     component.ruleActions = ruleActions;
     expect(component.isAllActionsValid()).not.toBeTruthy();
   });
+
+  it('Should return the hasExactCount parameter have a value ', () => {
+    // when
+    component.loadHasExactCount();
+    // then
+    expect(component.hasExactCount).not.toBeNull();
+    expect(component.hasExactCount).not.toBeUndefined();
+  });
+
+  it('Should return the criteriaSearchDSLQuery parameter have a value ', () => {
+    // when
+    component.loadCriteriaSearchDSLQuery();
+    // then
+    expect(component.criteriaSearchDSLQuery).not.toBeNull();
+    expect(component.criteriaSearchDSLQuery).not.toBeUndefined();
+  });
+
+  it('Should return the a value of the DSL query to save ', () => {
+    // when
+    component.loadCriteriaSearchListToSave();
+    // then
+    expect(component.criteriaSearchListToSave).not.toBeNull();
+    expect(component.criteriaSearchListToSave).not.toBeNaN();
+    expect(component.criteriaSearchListToSave).not.toBeUndefined();
+  });
+
+  it('Should the property isDisseminationRuleActionDisabled is true when the category selected is DisseminationRule  ', () => {
+    // when
+    component.selectRule(rulesCatygories[4]);
+    // then
+    expect(component.isDisseminationActionDisabled).not.toBeNull();
+    expect(component.isDisseminationActionDisabled).toBeTruthy();
+  });
+
+  it('Should the property to disabled delete property button be true when the category selected is DUA  ', () => {
+    // when
+    component.selectRule(rulesCatygories[1]);
+    // then
+    expect(component.isDeletePropertyDisabled).not.toBeNull();
+    expect(component.isDeletePropertyDisabled).toBeTruthy();
+  });
+
+  it('Should the property to disabled delete property button be false when the category selected is not DUA  ', () => {
+    // when
+    component.selectRule(rulesCatygories[3]);
+    // then
+    expect(component.isDeletePropertyDisabled).not.toBeNull();
+    expect(component.isDeletePropertyDisabled).toBeFalsy();
+  });
+
+  it('Should the property isReuseRuleActionDisabled is true when the category selected is ReuseRule  ', () => {
+    // when
+    component.selectRule(rulesCatygories[5]);
+    // then
+    expect(component.isReuseRuleActionDisabled).not.toBeNull();
+    expect(component.isReuseRuleActionDisabled).toBeTruthy();
+  });
+
+  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for AppraisalRule', () => {
+    component.selectRule(rulesCatygories[1]);
+    component.onSelectAction('ADD_RULES');
+    expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+    expect(component.ruleActions.length).toEqual(5);
+    expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+    expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+    expect(component.ruleActions[4].actionType).toEqual('ADD_RULES');
+    expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+  });
+
+  fit('Should append BLOCK_RULE_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+    component.selectRule(rulesCatygories[1]);
+    component.onSelectAction('BLOCK_RULE_INHERITANCE');
+    expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+    expect(component.ruleActions.length).toEqual(5);
+    expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+    expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+    expect(component.ruleActions[4].actionType).toEqual('BLOCK_RULE_INHERITANCE');
+    expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+  });
+
+  fit('Should append BLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+      component.selectRule(rulesCatygories[1]);
+      component.onSelectAction('BLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+      expect(component.ruleActions[4].actionType).toEqual('BLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+    });
+
+  fit('Should append UNLOCK_CATEGORY_INHERITANCE & UPDATE_PROPERTY actions when selecting BLOCK_RULE_INHERITANCE action for AppraisalRule',
+    () => {
+      component.selectRule(rulesCatygories[1]);
+      component.onSelectAction('UNLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleCategorySelected).toEqual('AppraisalRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('AppraisalRule');
+      expect(component.ruleActions[4].actionType).toEqual('UNLOCK_CATEGORY_INHERITANCE');
+      expect(component.ruleActions[4].ruleType).toEqual('AppraisalRule');
+    });
+
+  fit('Should append ADD_RULES & UPDATE_PROPERTY actions when selecting ADD_RULES action for StorageRule',
+    () => {
+      component.selectRule(rulesCatygories[0]);
+      component.onSelectAction('ADD_RULES');
+      expect(component.ruleCategorySelected).toEqual('StorageRule');
+      expect(component.ruleActions.length).toEqual(5);
+      expect(component.ruleActions[3].actionType).toEqual('UPDATE_PROPERTY');
+      expect(component.ruleActions[3].ruleType).toEqual('StorageRule');
+      expect(component.ruleActions[4].actionType).toEqual('ADD_RULES');
+      expect(component.ruleActions[4].ruleType).toEqual('StorageRule');
+    });
+
+  fit('Should only append ADD_RULES actions when selecting ADD_RULES action for AccessRule',
+    () => {
+      component.selectRule(rulesCatygories[3]);
+      component.onSelectAction('ADD_RULES');
+      expect(component.ruleCategorySelected).toEqual('AccessRule');
+      expect(component.ruleActions.length).toEqual(4);
+      expect(component.ruleActions[3].actionType).toEqual('ADD_RULES');
+      expect(component.ruleActions[3].ruleType).toEqual('AccessRule');
+    });
+
 });

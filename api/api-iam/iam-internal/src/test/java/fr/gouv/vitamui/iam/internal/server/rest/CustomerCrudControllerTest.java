@@ -1,5 +1,6 @@
 package fr.gouv.vitamui.iam.internal.server.rest;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.*;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 
 import fr.gouv.vitamui.commons.api.domain.*;
 import fr.gouv.vitamui.commons.api.exception.InternalServerException;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.mongo.service.SequenceGeneratorService;
 import fr.gouv.vitamui.commons.test.utils.ServerIdentityConfigurationBuilder;
 import fr.gouv.vitamui.commons.utils.VitamUIUtils;
@@ -213,6 +215,7 @@ public final class CustomerCrudControllerTest {
         when(customerRepository.findByCode(customerDto.getCode())).thenReturn(Optional.empty());
         when(customerRepository.findById(customerDto.getId())).thenReturn(Optional.of(buildCustomer()));
         when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString())).thenReturn(Optional.empty());
+        when(customerRepository.findByEmailDomainsIgnoreCase(anyString())).thenReturn(Optional.empty());
 
         when(internalOwnerService.findByCustomerId(customerDto.getId())).thenReturn(Arrays.asList(new OwnerDto()));
         when(internalOwnerService.create(any())).thenReturn(new OwnerDto());
@@ -233,7 +236,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationOK() {
+    public void testCreationOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
 
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -245,7 +248,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutTenantOK()  {
+    public void testCreationWithoutTenantOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -256,7 +259,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationWithoutIdpOK()  {
+    public void testCreationWithoutIdpOK() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
 
         final CustomerDto customerDto = buildFullCustomerDto();
@@ -268,7 +271,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsNull() {
+    public void testCreationFailsAsOwnersIsNull() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(null);
 
@@ -283,7 +286,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsOwnersIsEmpty() {
+    public void testCreationFailsAsOwnersIsEmpty() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setOwners(Collections.emptyList());
 
@@ -311,7 +314,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testCreationFailsAsTheCodeIsAlreadyUsed() {
+    public void testCreationFailsAsTheCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
         customerDto.setId(null);
 
@@ -328,28 +331,8 @@ public final class CustomerCrudControllerTest {
         }
     }
 
-    @Test
-    public void testCreationFailsAsTheDomainIsAlreadyUsed() {
-        final CustomerDto customerDto = buildFullCustomerDto();
-        customerDto.setId(null);
-
-        prepareServices();
-        when(customerRepository.findByEmailDomainsContainsIgnoreCase(anyString()))
-            .thenReturn(Optional.of(buildCustomer()));
-
-        try {
-            controller.create(buildCustomerData(customerDto));
-            fail("should fail");
-        } catch (final IllegalArgumentException e) {
-            assertEquals(
-                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
-                    customerDto.getDefaultEmailDomain(),
-                e.getMessage());
-        }
-    }
-
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnIdpError() {
+    public void testRollbackOnIdpError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -361,7 +344,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnOwnerError() {
+    public void testRollbackOnOwnerError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -372,7 +355,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnTenantError() {
+    public void testRollbackOnTenantError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -383,7 +366,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnGroupError() {
+    public void testRollbackOnGroupError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -394,7 +377,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnProfileError() {
+    public void testRollbackOnProfileError() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildFullCustomerDto();
 
         prepareServices();
@@ -405,7 +388,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = InternalServerException.class)
-    public void testRollbackOnUserError() {
+    public void testRollbackOnUserError() throws InvalidParseOperationException, PreconditionFailedException {
         when(userInfoInternalService.create(any())).thenReturn(buildUserInfoDto());
         final CustomerDto customerDto = buildFullCustomerDto();
 
@@ -445,7 +428,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test
-    public void testUpdateFailsAsTheNewCodeIsAlreadyUsed() {
+    public void testUpdateFailsAsTheNewCodeIsAlreadyUsed() throws InvalidParseOperationException, PreconditionFailedException {
         final CustomerDto customerDto = buildCustomerDto();
         final Customer conlictedCustomerDto = new Customer();
         conlictedCustomerDto.setId("conflict");
@@ -468,7 +451,7 @@ public final class CustomerCrudControllerTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void testCannotDelete() {
+    public void testCannotDelete() throws InvalidParseOperationException, PreconditionFailedException {
         prepareServices();
         controller.delete("id");
     }
@@ -511,6 +494,26 @@ public final class CustomerCrudControllerTest {
             controller.getAllPaginated(Integer.valueOf(0), Integer.valueOf(5), Optional.empty(), Optional.empty(),
                 Optional.of(DirectionDto.ASC));
         Assert.assertNotNull("Customer should be created.", result);
+    }
+    @Test
+    public void testCreationFailsAsTheDomainMailIsAlreadyUsed() throws InvalidParseOperationException,
+        PreconditionFailedException {
+        final CustomerDto customerDto = buildFullCustomerDto();
+        customerDto.setId(null);
+
+        prepareServices();
+        when(customerRepository.findByEmailDomainsIgnoreCase(anyString()))
+            .thenReturn(Optional.of(buildCustomer()));
+
+        try {
+            controller.create(buildCustomerData(customerDto));
+            fail("should fail");
+        } catch (final IllegalArgumentException e) {
+            assertEquals(
+                "Unable to create customer " + customerDto.getName() + ": a customer has already the email domain " +
+                    customerDto.getDefaultEmailDomain(),
+                e.getMessage());
+        }
     }
 
     private CustomerDto buildFullCustomerDto() {

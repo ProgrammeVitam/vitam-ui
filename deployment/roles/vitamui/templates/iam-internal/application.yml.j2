@@ -14,13 +14,13 @@ spring:
 logging:
   config: {{ vitamui_folder_conf }}/logback.xml
   level:
-    fr.gouv.vitamui.iam.internal.server: {{ vitamui_struct.log.vitamui_level }}
+    fr.gouv.vitamui.iam.internal.server: {{ vitamui_struct.log.vitamui_level | default(log.vitamui_level) }}
 
 server:
   port: {{ vitamui_struct.port_service }}
-{% if vitamui_struct.secure|lower == "true" %}
+{% if vitamui_struct.secure | default(secure) | lower == "true" %}
   ssl:
-    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+    key-store: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
     key-store-password: {{ password_keystore }}
     key-password: {{ password_keystore }}
     trust-store: {{ vitamui_folder_conf }}/truststore_{{ vitamui_certificate_type }}.jks
@@ -34,8 +34,11 @@ server:
 {% endif %}
   tomcat:
     accesslog:
-      enabled: "{{ vitamui_struct.jvm_log|lower }}"
+      enabled: "{{ vitamui_struct.accesslogs | default(accesslogs) | lower }}"
       directory: "{{ vitamui_folder_log }}"
+      prefix: "accesslog-{{ vitamui_struct.vitamui_component}}"
+      file-date-format: ".yyyy-MM-dd"
+      suffix: ".log"
 
 gdpr_alert_readonly: {{ vitamui_struct.gdpr_alert_readonly | default(true) }}
 
@@ -53,11 +56,11 @@ server-identity:
 security:
   host: {{ vitamui.security_internal.host }}
   port: {{ vitamui.security_internal.port_service }}
-{% if vitamui.security_internal.secure|lower == "true" %}
+{% if vitamui.security_internal.secure | default(secure) | lower == "true" %}
   secure: true
   ssl-configuration:
     keystore:
-      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.package_name }}.jks
+      key-path: {{ vitamui_folder_conf }}/keystore_{{ vitamui_struct.service_name | default(service_name) }}.jks
       key-password: {{ password_keystore }}
       type: JKS
     truststore:
@@ -77,7 +80,7 @@ login:
 cas-client:
   server-host: {{ vitamui.cas_server.host }}
   server-port: {{ vitamui.cas_server.port_service }}
-{% if vitamui.cas_server.secure|lower == "true" %}
+{% if vitamui.cas_server.secure | default(secure) | lower == "true" %}
   secure: true
   ssl-configuration:
     truststore:
@@ -92,16 +95,16 @@ cas.reset.password.url: {{ vitamui.cas_server.reset_password_url }}
 cas.reset.password.url: /cas{{ vitamui.cas_server.reset_password_url }}
 {% endif %}
 
-login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure|default('5') }}
-login.attempts.time.interval: {{ vitamui_struct.login_interval|default('20') }}
+login.attempts.maximum.failures: {{ vitamui_struct.login_max_failure | default(5) }}
+login.attempts.time.interval: {{ vitamui_struct.login_interval|default(20) }}
 
 vitam.tenant.init.mandatory: true # true/false, see with Romain for further info ... later...
 
 logbook:
   scheduling:
-    enabled: {{ vitamui_struct.logbook.enabled|lower }}
+    enabled: {{ vitamui_struct.logbook.enabled | default('true') | lower }}
     sendEventToVitamTasks:
-      delay: {{ vitamui_struct.logbook.delay }}
+      delay: {{ vitamui_struct.logbook.delay | default(60000) }}
 
 customer.init.config.file: {{ vitamui_folder_conf }}/customer-init.yml
 

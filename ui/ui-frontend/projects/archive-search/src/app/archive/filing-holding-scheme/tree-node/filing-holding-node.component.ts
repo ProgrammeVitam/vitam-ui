@@ -34,8 +34,8 @@
  * The fact that you are presently reading this means that you have had
  * knowledge of the CeCILL-C license and that you accept its terms.
  */
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FilingHoldingSchemeNode } from '../../models/node.interface';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FilingHoldingSchemeNode} from '../../models/node.interface';
 
 @Component({
   selector: 'app-filing-holding-node',

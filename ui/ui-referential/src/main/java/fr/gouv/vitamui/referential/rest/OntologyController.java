@@ -36,10 +36,15 @@
  */
 package fr.gouv.vitamui.referential.rest;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SafeFileChecker;
+import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.DirectionDto;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.rest.AbstractUiRestController;
@@ -50,24 +55,28 @@ import fr.gouv.vitamui.referential.common.rest.RestApi;
 import fr.gouv.vitamui.referential.service.OntologyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -94,9 +103,11 @@ public class OntologyController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<OntologyDto> getAll(final Optional<String> criteria) {
+    public Collection<OntologyDto> getAll(final Optional<String> criteria) throws InvalidParseOperationException,
+        PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(criteria);
         LOGGER.debug("Get all with criteria={}", criteria);
-        RestUtils.checkCriteria(criteria);
         return service.getAll(buildUiHttpContext(), criteria);
     }
 
@@ -104,7 +115,12 @@ public class OntologyController extends AbstractUiRestController {
     @GetMapping(params = { "page", "size" })
     @ResponseStatus(HttpStatus.OK)
     public PaginatedValuesDto<OntologyDto> getAllPaginated(@RequestParam final Integer page, @RequestParam final Integer size,
-            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction) {
+            @RequestParam final Optional<String> criteria, @RequestParam final Optional<String> orderBy, @RequestParam final Optional<DirectionDto> direction)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(orderBy.isPresent()) {
+            SanityChecker.checkSecureParameter(orderBy.get());
+        }
+        LOGGER.debug("Get all with criteria={}", criteria);
         LOGGER.debug("getAllPaginated page={}, size={}, criteria={}, orderBy={}, ascendant={}", page, size, criteria, orderBy, direction);
         return service.getAllPaginated(page, size, criteria, orderBy, direction, buildUiHttpContext());
     }
@@ -112,7 +128,9 @@ public class OntologyController extends AbstractUiRestController {
     @ApiOperation(value = "Get ingest contract by ID")
     @GetMapping(path = RestApi.PATH_REFERENTIAL_ID)
     @ResponseStatus(HttpStatus.OK)
-    public OntologyDto getById(final @PathVariable("identifier") String identifier) throws UnsupportedEncodingException {
+    public OntologyDto getById(final @PathVariable("identifier") String identifier)
+        throws UnsupportedEncodingException, InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(identifier);
         LOGGER.debug("getById {} / {}", identifier, URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", identifier);
         return service.getOne(buildUiHttpContext(), URLEncoder.encode(identifier, StandardCharsets.UTF_8.toString()));
@@ -126,7 +144,9 @@ public class OntologyController extends AbstractUiRestController {
      */
     @ApiOperation(value = "Check ability to create ontology")
     @PostMapping(path = CommonConstants.PATH_CHECK)
-    public ResponseEntity<Void> check(@RequestBody OntologyDto ontologyDto) {
+    public ResponseEntity<Void> check(@RequestBody OntologyDto ontologyDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("check ability to create ontology={}", ontologyDto);
         final boolean exist = service.check(buildUiHttpContext(), ontologyDto);
         LOGGER.debug("response value={}" + exist);
@@ -136,14 +156,18 @@ public class OntologyController extends AbstractUiRestController {
     @ApiOperation(value = "Create ontology")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OntologyDto create(@Valid @RequestBody  OntologyDto ontologyDto) {
+    public OntologyDto create(@Valid @RequestBody  OntologyDto ontologyDto) throws InvalidParseOperationException,
+        PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(ontologyDto);
         LOGGER.debug("create ontology={}", ontologyDto);
         return service.create(buildUiHttpContext(), ontologyDto);
     }
 
     @ApiOperation(value = "get history by ontology's id")
     @GetMapping(CommonConstants.PATH_LOGBOOK)
-    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id) {
+    public LogbookOperationsResponseDto findHistoryById(final @PathVariable String id)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("get logbook for ontology with id :{}", id);
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         return service.findHistoryById(buildUiHttpContext(), id);
@@ -152,7 +176,10 @@ public class OntologyController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public OntologyDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        SanityChecker.sanitizeCriteria(partialDto);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Patch Ontology {} with {}", id, partialDto);
         ParameterChecker.checkParameter("The Identifier, the OntologyEntity are mandatory parameters: ", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch ontology: the DTO id must match the path id.");
@@ -161,21 +188,26 @@ public class OntologyController extends AbstractUiRestController {
 
     @ApiOperation(value = "delete ontology")
     @DeleteMapping(CommonConstants.PATH_ID)
-    public void delete(final @PathVariable String id) {
-        LOGGER.debug("delete ontology with id :{}", id);
+    public void delete(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
         ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        SanityChecker.checkSecureParameter(id);
+        LOGGER.debug("delete ontology with id :{}", id);
         service.delete(buildUiHttpContext(), id);
     }
-    
+
     /***
      * Import ontologies from a json file
      * @param request HTTP request
-     * @param input the agency csv file
      * @return the Vitam response
      */
     @ApiOperation(value = "import an ontology file")
     @PostMapping(CommonConstants.PATH_IMPORT)
-    public JsonNode importOntologies(@Context HttpServletRequest request, MultipartFile file) {
+    public JsonNode importOntologies(@Context HttpServletRequest request, MultipartFile file)
+        throws InvalidParseOperationException, PreconditionFailedException {
+        if(file != null) {
+            SafeFileChecker.checkSafeFilePath(file.getOriginalFilename());
+        }
         LOGGER.debug("Import ontology file {}", file != null ? file.getOriginalFilename() : null);
         return service.importOntologies(buildUiHttpContext(), file);
     }

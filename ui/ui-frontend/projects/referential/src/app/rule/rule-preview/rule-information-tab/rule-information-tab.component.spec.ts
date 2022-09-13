@@ -37,18 +37,27 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Rule } from 'projects/vitamui-library/src/public-api';
 import { of } from 'rxjs';
-import { RuleService } from 'ui-frontend-common';
+import { AuthService, RuleService, SecurityService, WINDOW_LOCATION } from 'ui-frontend-common';
+import { RULE_MEASUREMENTS } from '../../rules.constants';
 import { RuleInformationTabComponent } from './rule-information-tab.component';
 
 describe('RuleInformationTabComponent', () => {
   let component: RuleInformationTabComponent;
   let fixture: ComponentFixture<RuleInformationTabComponent>;
 
+  const authServiceMock = {
+    getAnyTenantIdentifier: () => '/fake-tenantId',
+  };
+  const securityServiceMock = {
+    hasRole: () => of(true),
+  };
+
   const ruleServiceMock = {
-    // tslint:disable-next-line:variable-name
-    patch: (_data: any) => of(null)
+    // tslint:disable-next-line: variable-name
+    patch: (_data: any) => of(true),
   };
 
   const ruleValue = {
@@ -56,7 +65,7 @@ describe('RuleInformationTabComponent', () => {
     ruleDescription: 'Règle de gestion XXXX',
     ruleDuration: '20',
     ruleMeasurement: 'Day',
-    ruleValue: 'RuleValue'
+    ruleValue: 'RuleValue',
   };
 
   const previousValue: Rule = {
@@ -70,18 +79,27 @@ describe('RuleInformationTabComponent', () => {
     ruleDuration: '10',
     ruleMeasurement: 'Day',
     creationDate: '20/02/2020',
-    updateDate: '20/02/2020'
+    updateDate: '20/02/2020',
   };
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RuleInformationTabComponent],
-        providers: [FormBuilder, { provide: RuleService, useValue: ruleServiceMock }],
-        schemas: [NO_ERRORS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    const activatedRouteMock = {
+      params: of({ tenantIdentifier: 1 }),
+      data: of({ appId: 'RULES_APP' }),
+    };
+    TestBed.configureTestingModule({
+      declarations: [RuleInformationTabComponent],
+      providers: [
+        FormBuilder,
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: WINDOW_LOCATION, useValue: window.location },
+        { provide: AuthService, useValue: authServiceMock },
+        { provide: RuleService, useValue: ruleServiceMock },
+        { provide: SecurityService, useValue: securityServiceMock },
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RuleInformationTabComponent);
@@ -91,7 +109,24 @@ describe('RuleInformationTabComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Component should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should return empty as ruleMeasurement default value', () => {
+    // Given
+    component.ruleMeasurements = RULE_MEASUREMENTS;
+    const returnValue = '';
+
+    // Then
+    expect(component.getRuleMeasurementLabel()).toEqual(returnValue);
+  });
+
+  it('should return Durée d’utilité administrative as ruleType when type selected is AppraisalRule', () => {
+    // Given
+    const returnValue = 'Durée d’utilité administrative';
+
+    // Then
+    expect(component.getRuleTypeLabel()).toEqual(returnValue);
   });
 });

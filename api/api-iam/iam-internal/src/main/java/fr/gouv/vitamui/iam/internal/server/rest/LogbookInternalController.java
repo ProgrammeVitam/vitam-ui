@@ -38,11 +38,13 @@ package fr.gouv.vitamui.iam.internal.server.rest;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import fr.gouv.vitam.common.client.VitamContext;
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
 import fr.gouv.vitam.common.exception.VitamClientException;
 import fr.gouv.vitamui.common.security.SanityChecker;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.ParameterChecker;
 import fr.gouv.vitamui.commons.api.domain.ServicesData;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
 import fr.gouv.vitamui.commons.api.logger.VitamUILoggerFactory;
 import fr.gouv.vitamui.commons.vitam.api.access.LogbookService;
@@ -90,6 +92,8 @@ public class LogbookInternalController {
 
     private final LogbookService logbookService;
 
+    private static final String MANDATORY_IDENTIFIER = "The Identifier is a mandatory parameter: ";
+
     @Autowired
     public LogbookInternalController(final LogbookService logbookService,
         final InternalSecurityService securityService) {
@@ -104,7 +108,6 @@ public class LogbookInternalController {
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER) final String accessContractId,
         @RequestBody final JsonNode select) throws VitamClientException {
-        SanityChecker.sanitizeJson(select);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId,accessContractId);
         return VitamRestUtils.responseMapping(logbookService.selectOperations(select, vitamContext).toJsonNode(),
             LogbookOperationsResponseDto.class);
@@ -117,8 +120,10 @@ public class LogbookInternalController {
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
         final String accessContractId, @PathVariable final String id)
-        throws VitamClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, accessContractId);
+        LOGGER.debug("Get log book operation by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return VitamRestUtils.responseMapping(logbookService.selectOperationbyId(id, vitamContext).toJsonNode(),
             LogbookOperationsResponseDto.class);
@@ -131,8 +136,10 @@ public class LogbookInternalController {
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
         final String accessContractId, @PathVariable final String id)
-        throws VitamClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, accessContractId);
+        LOGGER.debug("Get unit lifecycle by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return VitamRestUtils.responseMapping(logbookService.findUnitLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
             LogbookLifeCycleResponseDto.class);
@@ -145,8 +152,10 @@ public class LogbookInternalController {
         @RequestHeader(required = true, value = CommonConstants.X_TENANT_ID_HEADER) final Integer tenantId,
         @RequestHeader(required = true, value = CommonConstants.X_ACCESS_CONTRACT_ID_HEADER)
         final String accessContractId, @PathVariable final String id)
-        throws VitamClientException {
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
+        throws VitamClientException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, accessContractId);
+        LOGGER.debug("Get object lifecycle by id : {} ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantId, accessContractId);
         return VitamRestUtils
             .responseMapping(logbookService.findObjectGroupLifeCyclesByUnitId(id, vitamContext).toJsonNode(),
@@ -159,9 +168,10 @@ public class LogbookInternalController {
     @ResponseStatus(HttpStatus.OK)
     public void downloadManifest(@PathVariable final String id, final HttpServletResponse response,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier)
-        throws IOException {
+        throws IOException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the manifest for the following Vitam operation : {}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantIdentifier);
         final Response vitamResponse = logbookService.downloadManifest(id, vitamContext);
         VitamRestUtils.writeFileResponse(vitamResponse, response);
@@ -173,9 +183,10 @@ public class LogbookInternalController {
     @ResponseStatus(HttpStatus.OK)
     public void downloadAtr(@PathVariable final String id, final HttpServletResponse response,
         @RequestHeader(value = CommonConstants.X_TENANT_ID_HEADER, required = true) final Integer tenantIdentifier)
-        throws IOException {
+        throws IOException, InvalidParseOperationException, PreconditionFailedException {
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Download the ATR file for the following Vitam operation : {}", id);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
         final VitamContext vitamContext = securityService.buildVitamContext(tenantIdentifier);
         final Response vitamResponse = logbookService.downloadAtr(id, vitamContext);
         VitamRestUtils.writeFileResponse(vitamResponse, response);
@@ -191,9 +202,12 @@ public class LogbookInternalController {
         final String accessContractId,
         @PathVariable final String id,
         @PathVariable final String downloadType,
-        final HttpServletResponse response) throws VitamClientException, IOException {
+        final HttpServletResponse response) throws VitamClientException, IOException, InvalidParseOperationException,
+        PreconditionFailedException {
+
+        ParameterChecker.checkParameter(MANDATORY_IDENTIFIER, id);
+        SanityChecker.checkSecureParameter(id, downloadType, accessContractId);
         LOGGER.debug("Download the report file for the Vitam operation : {} with download type : {}", id, downloadType);
-        ParameterChecker.checkParameter("The Identifier is a mandatory parameter: ", id);
 
         LOGGER.debug("Access Contract {} ", accessContractId);
         ParameterChecker

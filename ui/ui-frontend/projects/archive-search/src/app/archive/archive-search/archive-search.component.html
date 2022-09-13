@@ -58,16 +58,36 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="!pending && submited && showFacets">
+  <div class="row" *ngIf="pendingComputeFacets">
+    <mat-spinner diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
+  </div>
+  <div class="card-criteria" *ngIf="!pendingComputeFacets && submited && rulesFacetsComputed && showingFacets">
+    <i
+      id="show-hide-facet-button"
+      *ngIf="!pendingComputeFacets && showingFacets && submited"
+      (click)="showHideFacets(false)"
+      class="vitamui-icon vitamui-icon-chevron-down vitamui-row-icon clickable"
+      [ngClass]="'vitamui-icon vitamui-icon-cross vitamui-row-icon'"
+    ></i>
     <app-archive-search-rules-facets
       class="facet-div"
       [appraisalRuleFacets]="archiveSearchResultFacets?.appraisalRuleFacets"
+      [accessRuleFacets]="archiveSearchResultFacets?.accessRuleFacets"
+      [storageRuleFacets]="archiveSearchResultFacets?.storageRuleFacets"
+      [reuseRuleFacets]="archiveSearchResultFacets?.reuseRuleFacets"
+      [disseminationRuleFacets]="archiveSearchResultFacets?.disseminationRuleFacets"
+      [holdRuleFacets]="archiveSearchResultFacets?.holdRuleFacets"
+      [classificationRuleFacets]="archiveSearchResultFacets?.classificationRuleFacets"
       [tenantIdentifier]="tenantIdentifier"
       [totalResults]="totalResults"
+      [defaultFacetTabIndex]="defaultFacetTabIndex"
     ></app-archive-search-rules-facets>
   </div>
-  <div class="row" *ngIf="!showCriteriaPanel">
-    <a class="hide-ink" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a>
+  <div class="row" *ngIf="!pending">
+    <a class="hide-ink" *ngIf="!showCriteriaPanel" (click)="showHidePanel(true)">{{ 'ARCHIVE_SEARCH.SHOW_SEARCH_CRITERIA' | translate }}</a
+    ><a class="hide-ink" *ngIf="!pendingComputeFacets && !showingFacets && submited" (click)="showHideFacets(true)">{{
+      'ARCHIVE_SEARCH.COMPUTE_RULES_FACETS' | translate
+    }}</a>
   </div>
 
   <div [hidden]="!showCriteriaPanel">
@@ -79,11 +99,32 @@
       </mat-tab>
       <mat-tab *ngFor="let category of additionalSearchCriteriaCategories; let index = index">
         <ng-template mat-tab-label>
-          <span> {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.' + category.name | translate }} </span>
+          <span (click)="sendRuleCategorySelected(category.name)">
+            {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.' + category.name | translate }}
+          </span>
           <button class="mat-boutton clickable" (click)="removeCriteriaCategory(category.name)">
             <i class="vitamui-icon vitamui-icon-cross vitamui-row-icon"></i>
           </button>
         </ng-template>
+
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'STORAGE_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('STORAGE_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-storage-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-storage-rule-search>
+          </div>
+        </ng-container>
         <ng-container
           *vitamuiCommonHasRole="{
             appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
@@ -120,6 +161,42 @@
             ></app-access-rule-search>
           </div>
         </ng-container>
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'REUSE_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('REUSE_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-reuse-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-reuse-rule-search>
+          </div>
+        </ng-container>
+        <ng-container
+          *vitamuiCommonHasRole="{
+            appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
+            tenantIdentifier: +this.tenantIdentifier,
+            role: 'ROLE_SEARCH_WITH_RULES'
+          }"
+        >
+          <div class="card-criteria" *ngIf="category.name === 'DISSEMINATION_RULE'">
+            <div class="row justify-content-end text-on-right-side">
+              <a class="hide-ink" (click)="removeCriteriaByCategory('DISSEMINATION_RULE')">{{
+                'ARCHIVE_SEARCH.REMOVE_SEARCH_CRITERIA_BY_CATEGORY' | translate
+              }}</a>
+            </div>
+            <app-dissemination-rule-search
+              [hasWaitingToRecalculateCriteria]="containsWaitingToRecalculateInheritenceRuleCriteria()"
+            ></app-dissemination-rule-search>
+          </div>
+        </ng-container>
       </mat-tab>
 
       <mat-tab disabled>
@@ -133,6 +210,14 @@
 
       <mat-menu #menuTabs="matMenu" class="my-menu">
         <button
+          mat-menu-item
+          class="btn-new-save"
+          (click)="addCriteriaCategory('STORAGE_RULE')"
+          [disabled]="isCategoryAdded('STORAGE_RULE')"
+        >
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.STORAGE_RULE' | translate }}
+        </button>
+        <button
           *vitamuiCommonHasRole="{
             appId: 'ARCHIVE_SEARCH_MANAGEMENT_APP',
             tenantIdentifier: +this.tenantIdentifier,
@@ -143,24 +228,25 @@
           (click)="addCriteriaCategory('APPRAISAL_RULE')"
           [disabled]="isCategoryAdded('APPRAISAL_RULE')"
         >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.APPRAISAL_RULE' | translate }}
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.APPRAISAL_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('DUC')" [disabled]="isCategoryAdded('DUC') || true">
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DUC' | translate }}
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.GEL' | translate }}
         </button>
         <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('ACCESS_RULE')" [disabled]="isCategoryAdded('ACCESS_RULE')">
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.ACCESS_RULE' | translate }}
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.ACCESS_RULE' | translate }}
         </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSING')" [disabled]="isCategoryAdded('REUSING') || true">
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.REUSING' | translate }}
-        </button>
+
         <button
           mat-menu-item
           class="btn-new-save"
-          (click)="addCriteriaCategory('DIFFUSION')"
-          [disabled]="isCategoryAdded('DIFFUSION') || true"
+          (click)="addCriteriaCategory('DISSEMINATION_RULE')"
+          [disabled]="isCategoryAdded('DISSEMINATION_RULE')"
         >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.DIFFUSION' | translate }}
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.DISSEMINATION_RULE' | translate }}
+        </button>
+        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('REUSE_RULE')" [disabled]="isCategoryAdded('REUSE_RULE')">
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.REUSE_RULE' | translate }}
         </button>
         <button
           mat-menu-item
@@ -168,10 +254,7 @@
           (click)="addCriteriaCategory('CLASSIFICATION')"
           [disabled]="isCategoryAdded('CLASSIFICATION') || true"
         >
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.CLASSIFICATION' | translate }}
-        </button>
-        <button mat-menu-item class="btn-new-save" (click)="addCriteriaCategory('GEL')" [disabled]="isCategoryAdded('GEL') || true">
-          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY.GEL' | translate }}
+          {{ 'ARCHIVE_SEARCH.CRITERIA_CATEGORY_SHORT_NAME.CLASSIFICATION' | translate }}
         </button>
       </mat-menu>
     </mat-tab-group>
@@ -203,24 +286,41 @@
             >
           </ng-container>
           <ng-container *ngIf="!isAllchecked">
-            <span>{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }} {{ 'ARCHIVE_SEARCH.DIP.SELECTED' | translate }}</span>
+            <span
+              >{{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
+              {{
+                itemSelected === 1 || itemSelected === 0
+                  ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate)
+                  : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate)
+              }}</span
+            >
           </ng-container>
         </ng-container>
       </div>
       <div class="col-8" *ngIf="!waitingToGetFixedCount">
         <mat-spinner *ngIf="pendingGetFixedCount || pending" diameter="20" color="accent" class="spinner-wrapper"></mat-spinner>
 
-        <ng-container *ngIf="(totalResults > 1 || totalResults === 0) && !pendingGetFixedCount && !pending">
+        <ng-container *ngIf="totalResults > 1 && !pendingGetFixedCount && !pending">
           <span
             >{{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULTS' | translate }} / {{ itemSelected }}
 
-            {{ itemSelected === 1 ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate) : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate) }}
+            {{
+              itemSelected === 1 || itemSelected === 0
+                ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate)
+                : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate)
+            }}
           </span>
         </ng-container>
         <ng-container *ngIf="totalResults === 1">
           <span>
             {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
-            {{ itemSelected === 1 ? ('ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate) : ('ARCHIVE_SEARCH.DIP.SELECTED' | translate) }}
+            {{ 'ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate }}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="totalResults === 0">
+          <span>
+            {{ totalResults }} {{ 'ARCHIVE_SEARCH.RESULT' | translate }} / {{ itemSelected }}
+            {{ 'ARCHIVE_SEARCH.DIP.ONE_SELECTED' | translate }}
           </span>
         </ng-container>
       </div>
@@ -230,12 +330,15 @@
       </div>
       <div class="col-1">
         <vitamui-common-menu-button [overlayPos]="'end'" [icon]="'vitamui-icon-more-horiz'">
-          <button mat-menu-item (click)="prepareToLaunchVitamAction('EXPORT_DIP')" [disabled]="itemSelected === 0 || !hasDipExportRole">
+          <button mat-menu-item (click)="launchExportDipModal()" [disabled]="itemSelected === 0 || !hasDipExportRole">
             {{ 'ARCHIVE_SEARCH.DIP.EXPORT_DIP' | translate }}
+          </button>
+          <button mat-menu-item (click)="launchTransferRequestModal()" [disabled]="itemSelected === 0 || !hasTransferRequestRole">
+            {{ 'ARCHIVE_SEARCH.DIP.TRANSFER_REQUEST' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchVitamAction('UPDATE_MANAGEMENT_RULES')"
+            (click)="goToUpdateManagementRule()"
             matTooltip="{{ !hasAccessContractManagementPermissions ? hasAccessContractManagementPermissionsMessage : '' }}"
             matTooltipClass="vitamui-tooltip"
             [matTooltipShowDelay]="300"
@@ -245,21 +348,17 @@
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchVitamAction('ELIMINATION_ANALYSIS')"
+            (click)="launchEliminationAnalysisModal()"
             [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.ELIMINATION.ANALYSIS' | translate }}
           </button>
-          <button
-            mat-menu-item
-            (click)="prepareToLaunchVitamAction('ELIMINATION_ACTION')"
-            [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0"
-          >
+          <button mat-menu-item (click)="launchEliminationModal()" [disabled]="!hasEliminationAnalysisOrActionRole || itemSelected === 0">
             {{ 'ARCHIVE_SEARCH.ELIMINATION.EXECUTION' | translate }}
           </button>
           <button
             mat-menu-item
-            (click)="prepareToLaunchVitamAction('COMPUTED_INHERITED_RULES')"
+            (click)="launchComputedInheritedRulesModal()"
             [disabled]="!hasComputedInheritedRulesRole || itemSelected === 0"
           >
             {{ 'ARCHIVE_SEARCH.COMPUTED_INHERITED_RULES.EXECUTION_ACTION' | translate }}
@@ -421,10 +520,10 @@
             </ng-template>
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.StartDate | date: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.StartDate | dateTime: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
-            {{ archiveUnit?.EndDate | date: 'dd/MM/yyyy' }}
+            {{ archiveUnit?.EndDate | dateTime: 'dd/MM/yyyy' }}
           </div>
           <div class="col-2 d-flex align-items-center clickable" (click)="archiveUnitClick.emit(archiveUnit)">
             <p
@@ -461,7 +560,7 @@
         }}</span
       >
       <span *ngIf="itemSelected === 1">
-        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE' }}</span
+        {{ 'ARCHIVE_SEARCH.OTHER_ACTIONS.DIALOG_MESSAGE.ACTION_ON_BIG_NUMBERS_TITLE_EXACT_COUNT_ONE' | translate }}</span
       >
     </div>
     <div class="text large bold" *ngIf="!selectedItemCountKnown()">

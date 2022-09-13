@@ -37,6 +37,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from '../../pipes/pipes.module';
 import { VitamUISnackBarComponent } from './vitamui-snack-bar.component';
 import { VitamUISnackBar } from './vitamui-snack-bar.service';
 
@@ -44,6 +45,7 @@ import { VitamUISnackBar } from './vitamui-snack-bar.service';
   imports: [
     CommonModule,
     TranslateModule,
+    PipesModule
   ],
   declarations: [VitamUISnackBarComponent],
   exports: [VitamUISnackBarComponent],

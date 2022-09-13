@@ -1,5 +1,5 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="false">
-  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"> </mat-sidenav>
+  <mat-sidenav #panel mode="side" position="end" [fixedInViewport]="true"></mat-sidenav>
 
   <mat-sidenav-content>
     <div class="vitamui-heading">
@@ -11,13 +11,16 @@
         [searchbarPlaceholder]="'FILLING_HOLDING_SCHEME.SEARCH' | translate"
         i18n-placeholder="@@treePlanSearchPlaceholder"
       >
-        <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup('HOLDING_SCHEME')">
+        <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup(IngestType.HOLDING_SCHEME)">
           <span>{{ 'FILLING_HOLDING_SCHEME.IMPORT_HOLDING' | translate }}</span>
         </button>
-        <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup('FILING_SCHEME')">
+        <button class="btn primary elt-spaced" (click)="openImportTreePlanPopup(IngestType.FILING_SCHEME)">
           <span>{{ 'FILLING_HOLDING_SCHEME.IMPORT_FILLING' | translate }}</span>
         </button>
       </vitamui-common-banner>
+    </div>
+    <div class="vitamui-content">
+      <app-upload-tracking></app-upload-tracking>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

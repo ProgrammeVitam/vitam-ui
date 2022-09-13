@@ -36,17 +36,16 @@
  */
 
 import { registerLocaleData } from '@angular/common';
+import { HttpBackend, HttpClient } from '@angular/common/http';
 import { default as localeFr } from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
-
-import {HttpClient} from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { QuicklinkModule } from 'ngx-quicklink';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { VitamUICommonModule, VitamuiMissingTranslationHandler, WINDOW_LOCATION } from 'ui-frontend-common';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -54,17 +53,15 @@ import { CoreModule } from './core/core.module';
 
 registerLocaleData(localeFr, 'fr');
 
-export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoader {
-  return new MultiTranslateHttpLoader(httpClient,  [
-  {prefix: './assets/shared-i18n/', suffix: '.json'},
-  {prefix: './assets/i18n/', suffix: '.json'}
-]);
+export function httpLoaderFactory(httpBackend: HttpBackend): MultiTranslateHttpLoader {
+  return new MultiTranslateHttpLoader(new HttpClient(httpBackend), [
+    { prefix: './assets/shared-i18n/', suffix: '.json' },
+    { prefix: './assets/i18n/', suffix: '.json' },
+  ]);
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     CoreModule,
     BrowserAnimationsModule,
@@ -73,21 +70,17 @@ export function httpLoaderFactory(httpClient: HttpClient): MultiTranslateHttpLoa
     AppRoutingModule,
     QuicklinkModule,
     TranslateModule.forRoot({
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler},
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: VitamuiMissingTranslationHandler },
       defaultLanguage: 'fr',
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [HttpClient]
-      }
+        deps: [HttpBackend],
+      },
     }),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [
-    Title,
-    { provide: LOCALE_ID, useValue: 'fr' },
-    { provide: WINDOW_LOCATION, useValue: window.location },
-  ],
+  providers: [Title, { provide: LOCALE_ID, useValue: 'fr' }, { provide: WINDOW_LOCATION, useValue: window.location }],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

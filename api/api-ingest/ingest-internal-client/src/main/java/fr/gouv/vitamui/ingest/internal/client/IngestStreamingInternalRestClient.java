@@ -37,7 +37,6 @@
 package fr.gouv.vitamui.ingest.internal.client;
 
 
-import fr.gouv.vitam.common.model.AuditOptions;
 import fr.gouv.vitamui.commons.api.CommonConstants;
 import fr.gouv.vitamui.commons.api.domain.PaginatedValuesDto;
 import fr.gouv.vitamui.commons.api.logger.VitamUILogger;
@@ -118,7 +117,7 @@ public class IngestStreamingInternalRestClient
         final ResponseEntity<Void> response =
             restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.POST,
                 request, Void.class);
-        LOGGER.info("The response on ingest is {} ", response.toString());
+        LOGGER.debug("The response on ingest is {} ", response.toString());
         return response;
     }
 }

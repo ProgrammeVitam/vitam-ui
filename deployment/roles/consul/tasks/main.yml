@@ -18,7 +18,7 @@
 - name: rustine VITAMUI ensure vitam user is member of vitamui group
   user:
     name: vitam
-    groups: vitam, {{ vitamui_defaults.users.group }}
+    groups: vitam, {{ vitamui_defaults.users.group | default('vitamui') }}
 
 #### Configuration ####
 
@@ -27,8 +27,8 @@
     path: "{{ vitam_defaults.folder.root_path }}/{{ item }}/consul"
     state: directory
     owner: "{{ vitam_defaults.users.vitam }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.folder_permission }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.folder_permission | default('0750') }}"
   with_items:
     - app
     - bin
@@ -45,8 +45,8 @@
     src: "{{ item }}.j2"
     dest: "{{ consul.conf_folder }}/{{ item }}"
     owner: "{{ vitam_defaults.users.vitam }}"
-    group: "{{ vitamui_defaults.users.group }}"
-    mode: "{{ vitamui_defaults.folder.conf_permission }}"
+    group: "{{ vitamui_defaults.users.group | default('vitamui') }}"
+    mode: "{{ vitamui_defaults.folder.conf_permission | default('0440') }}"
   with_items:
     - "consul.json"
   notify:

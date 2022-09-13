@@ -49,6 +49,7 @@ export class ManagementRulesSharedDataService {
   private criteriaSearchListToSave = new BehaviorSubject<SearchCriteriaEltDto[]>([]);
   private criteriaSearchDSLQuery = new BehaviorSubject<SearchCriteriaDto>(null);
   private ruleActions = new BehaviorSubject<ActionsRules[]>([]);
+  private ruleCategory = new BehaviorSubject<string>('');
 
   private managementRules = new BehaviorSubject<ManagementRules[]>([]);
   private hasExactCount = new BehaviorSubject<boolean>(false);
@@ -61,6 +62,14 @@ export class ManagementRulesSharedDataService {
   hasExactCounts = this.hasExactCount.asObservable();
 
   constructor() {}
+
+  emitRuleCategory(ruleCategory: string) {
+    this.ruleCategory.next(ruleCategory);
+  }
+
+  getRuleCategory(): Observable<string> {
+    return this.ruleCategory.asObservable();
+  }
 
   emitAccessContract(accessContract: string) {
     this.accessContract.next(accessContract);

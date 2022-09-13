@@ -232,6 +232,7 @@ export class StartupService {
     }
     return null;
   }
+
   getConfigStringValue(key: string): string {
     if (this.configurationLoaded() && this.configurationData.hasOwnProperty(key)) {
       return this.configurationData[key];

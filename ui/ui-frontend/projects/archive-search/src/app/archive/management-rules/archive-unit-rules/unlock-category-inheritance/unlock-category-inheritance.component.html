@@ -1,0 +1,44 @@
+<div class="container">
+  <div *ngIf="isLoading; then loadingMode; else okTotalFound"></div>
+
+  <div class="d-flex padding-btm-style">
+    <button type="button" (click)="onUnlockCategoryInheritance()" [disabled]="isValidValue" class="btn primary mr-4">
+      {{ 'RULES.COMMON.CONTROL' | translate }}
+    </button>
+    <button type="button" (click)="onCancelUnlockCategoryInheritance()" [disabled]="false" class="btn link cancel">
+      {{ 'RULES.COMMON.UNDO' | translate }}
+    </button>
+  </div>
+</div>
+
+<ng-template #loadingMode>
+  <div class="vitamui-min-content">
+    <mat-spinner class="vitamui-spinner large"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #okTotalFound>
+  <div *ngIf="showText && itemsCategoryToUnlock !== '0'" class="row message-text-ok">
+    <div class="col-1"><i class="material-icons">check_circle</i></div>
+    <div class="col-11">{{ itemsCategoryToUnlock }} {{ 'RULES.APRAISAL_RULES.UA_TO_UPDATE' | translate }}</div>
+  </div>
+
+  <div *ngIf="showText && itemsToNotUpdate !== '0'" class="row message-text-ko">
+    <div class="col-1"><i class="material-icons">error</i></div>
+    <div class="col-11">{{ 'RULES.APRAISAL_RULES.UA_INHERITANCE_TO_IGNORE' | translate: { itemsToNotUpdate: itemsToNotUpdate } }}</div>
+  </div>
+</ng-template>
+
+<ng-template #confirmDeleteUnlockCategoryInheritance>
+  <mat-dialog-content>
+    <br />
+
+    <div class="text large bold">{{ 'RULES.DIALOG_MESSAGE.DELETE_COMPONENT' | translate }}</div>
+  </mat-dialog-content>
+  <br />
+  <mat-dialog-actions>
+    <button [matDialogClose]="true" class="btn primary btn-confirm-dialog margin-btn">{{ 'RULES.COMMON.CONFIRM' | translate }}</button>
+
+    <button matDialogClose class="btn cancel">{{ 'RULES.COMMON.UNDO' | translate }}</button>
+  </mat-dialog-actions>
+</ng-template>

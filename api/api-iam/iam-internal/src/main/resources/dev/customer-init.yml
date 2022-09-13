@@ -89,7 +89,7 @@ customer-init:
         - ROLE_GET_ARCHIVE_PROFILES
 
     - name: Profil pour les services agents
-      description: Gestion des services agents dans Vitam
+      description: Profil de gestion du référentiel des services agent avec possibilité de mise à jour
       app-name: AGENCIES_APP
       level:
       roles:
@@ -98,6 +98,13 @@ customer-init:
         - ROLE_UPDATE_AGENCIES
         - ROLE_DELETE_AGENCIES
         - ROLE_EXPORT_AGENCIES
+
+    - name: Profil consultation des services agents
+      description: Profil de consultation du référentiel des services agent sans possibilité de mise à jour
+      app-name: AGENCIES_APP
+      level:
+      roles:
+        - ROLE_GET_AGENCIES
 
     - name: Profil pour la gestion des Audits
       description: Gestion des audits dans Vitam
@@ -133,6 +140,25 @@ customer-init:
         - ROLE_GET_HOLDING_FILLING_SCHEME
         - ROLE_GET_ALL_HOLDING_FILLING_SCHEME
 
+    - name: Profil pour la gestion des règles de gestion
+      description: Gestion des règles de gestion
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
+        - ROLE_CREATE_RULES
+        - ROLE_UPDATE_RULES
+        - ROLE_DELETE_RULES
+        - ROLE_IMPORT_RULES
+        - ROLE_EXPORT_RULES
+
+    - name: Profil consultation des règles de gestion
+      description: Profil pour la consultation des règles de gestion dans Vitam sans mises à jour des règles
+      app-name: RULES_APP
+      level:
+      roles:
+        - ROLE_GET_RULES
+
     - name: Profil pour la gestion des opérations
       description: Gérer et consulter l'ensemble des opérations d'entrées qui sont en cours
       app-name: LOGBOOK_MANAGEMENT_OPERATION_APP
@@ -165,6 +191,8 @@ customer-init:
         - ROLE_GET_ALL_ARCHIVE_SEARCH
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
+        - ROLE_GET_RULES
+
 
     - name: Archiviste
       description: Profil pour la recherche et consultation des archives dans Vitam sans mises à jour des règles de gestion, avec export DIP et sans élimination
@@ -178,6 +206,7 @@ customer-init:
         - ROLE_SEARCH_WITH_RULES
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_GET_RULES
 
     - name: Archiviste administrateur
       description: Profil pour la recherche et consultation des archives dans Vitam avec mises à jour des règles, export DIP et opérations d'élimination
@@ -195,6 +224,19 @@ customer-init:
         - ROLE_GET_ACCESS_CONTRACTS
         - ROLE_RECLASSIFICATION
         - ROLE_UPDATE_UNIT_DESC_METADATA
+        - ROLE_TRANSFER_REQUEST
+        - ROLE_GET_RULES
+
+    - name: Collecte
+      description: Collecte de données, Application de préparation de versements
+      app-name: COLLECT_APP
+      level:
+      roles:
+        - ROLE_GET_PROJECTS
+        - ROLE_CREATE_PROJECTS
+        - ROLE_UPDATE_PROJECTS
+        - ROLE_GET_FILLING_PLAN_ACCESS
+        - ROLE_GET_ACCESS_CONTRACTS
 
   #- name: profileName
   #  description: desc

@@ -38,6 +38,9 @@ package fr.gouv.vitamui.identity.rest;
 
 import java.util.Map;
 
+import fr.gouv.vitam.common.exception.InvalidParseOperationException;
+import fr.gouv.vitamui.common.security.SanityChecker;
+import fr.gouv.vitamui.commons.api.exception.PreconditionFailedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,7 +83,9 @@ public class UserInfoController extends AbstractUiRestController {
     @ApiOperation(value = "Get entity")
     @GetMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto getOne(final @PathVariable String id) {
+    public UserInfoDto getOne(final @PathVariable String id) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
         LOGGER.debug("Get user={}", id);
         return service.getOne(buildUiHttpContext(), id);
     }
@@ -95,7 +100,9 @@ public class UserInfoController extends AbstractUiRestController {
     @ApiOperation(value = "Create entity")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserInfoDto create(@RequestBody final UserInfoDto dto) {
+    public UserInfoDto create(@RequestBody final UserInfoDto dto) throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.sanitizeCriteria(dto);
         LOGGER.debug("create user info  = {}", dto.getLanguage());
         return service.create(buildUiHttpContext(), dto);
     }
@@ -104,7 +111,11 @@ public class UserInfoController extends AbstractUiRestController {
     @ApiOperation(value = "Patch entity")
     @PatchMapping(CommonConstants.PATH_ID)
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto) {
+    public UserInfoDto patch(final @PathVariable("id") String id, @RequestBody final Map<String, Object> partialDto)
+        throws InvalidParseOperationException, PreconditionFailedException {
+
+        SanityChecker.checkSecureParameter(id);
+        SanityChecker.sanitizeCriteria(partialDto);
         LOGGER.debug("Patch User {} with {}", id, partialDto);
         Assert.isTrue(StringUtils.equals(id, (String) partialDto.get("id")), "Unable to patch user  info: the DTO id must match the path id.");
         return service.patch(buildUiHttpContext(), partialDto, id);
